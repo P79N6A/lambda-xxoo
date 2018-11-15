@@ -307,4 +307,9 @@
       <![CDATA[ limit #{page.begin} , #{page.length} ]]>
     </if>
   </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
 </mapper>
