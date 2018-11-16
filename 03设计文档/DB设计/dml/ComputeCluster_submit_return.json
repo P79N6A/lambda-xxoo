@@ -1,0 +1,66 @@
+
+task_submit.json : 
+{
+	exec:{
+	    <!- 调用执行规格类型 ->
+		"exec_mode":"spark_on_yarn",
+		"resource_manager_ip":"100.20.10.222",
+		"resource_manager_port":"9000",
+		"jar_path":"hdfs://....../cmpt_ml_lr.jar",
+		"class":"xxx.xxx.xxx.LogisticRegression",
+		"args":"submit.json文件的存放路径"
+	    $CHAR_NAME:$CHAR_VALUE
+	},
+	exec_optimize:{
+	    <!- 执行调优规格类型 ->
+	    "executor_number":20,
+	    "executor_cores":8,
+	    "executor_memory":"20g",
+	    "driver_cores":8,
+	    "driver_memory"20g,
+	    $CHAR_NAME:$CHAR_VALUE
+	},
+	intput:{
+	    <!- 输入内容规格类型 ->
+		m1:{
+			$MODEL_INFORMATION
+		},
+		t1:{
+			$TABLE_INFORMATION
+		},
+		...
+	},
+	output:{
+	    <!- 输出内容规格类型 ->
+		m1:{
+			$MODEL_INFORMATION
+		},
+		t1:{
+			$TABLE_INFORMATION
+		},
+		...
+	},
+	param:{
+	    "eta":0.0001,
+	    "L1L2_option":"None/L1/L2",
+		$CHAR_NAME:$CHAR_VALUE
+	}
+}
+
+
+task_return.json : 
+{
+	output:{
+		m1:{
+			$MODEL_INFORMATION
+		},
+		t1:{
+			$TABLE_INFORMATION
+		},
+		...
+	},
+	success:true/false,
+	message:""
+	logFilePath:""
+	costTime:1000
+}
