@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-11-17 02:02:08
+Date: 2018-11-18 00:58:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -42,7 +42,7 @@ CREATE TABLE `cf_cmpt_algorithm` (
 -- Records of cf_cmpt_algorithm
 -- ----------------------------
 INSERT INTO `cf_cmpt_algorithm` VALUES ('1001', 'OneClass-SVM', '单分类支持向量机', '1', '', '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('1002', 'PCA-Based-AnomalyDetection', '基于PCA异常检测', '1', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('1002', 'PCA-Based-AnomalyDetection', '基于PCA异常检测', '1', '', '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
 INSERT INTO `cf_cmpt_algorithm` VALUES ('2001', 'LR-TwoClassClassification', '逻辑回归二分类', '2', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
 INSERT INTO `cf_cmpt_algorithm` VALUES ('2002', 'RF-TwoClassClassification', '随机森林二分类', '2', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
 INSERT INTO `cf_cmpt_algorithm` VALUES ('2003', 'GBDT-TwoClassClassification', 'GBDT二分类', '2', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
@@ -74,7 +74,7 @@ CREATE TABLE `cf_cmpt_char` (
   `CHAR_TYPE` int(11) NOT NULL COMMENT '特征类型ID，说明参考CF_CMPT_CHAR_TYPE.CHAR_TYPE_ID',
   `VALUE_SRC` int(11) NOT NULL COMMENT '特征值来源\r\n            0：计算组件规格\r\n            1：计算组件\r\n            2：工作流节点\r\n            \r\n            注意，仅限在正确的地方配置特征值有效，否则无效，未配置则使用默认值',
   `IS_REQUIRED` int(11) NOT NULL COMMENT '特征值是否必须设置\r\n            0：否\r\n            1：是',
-  `IS_LIMITED` int(11) NOT NULL COMMENT '特征值是否受限定\r\n            0：否\r\n            1：开区间方式限定，限数值和日期类型\r\n            2：闭区间方式限定，限数值和日期类型\r\n            3：枚举方式限定',
+  `IS_LIMITED` int(11) NOT NULL COMMENT '特征值是否受限定\r\n            0：否\r\n            1：枚举方式限定\r\n            2：开区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n            3：闭区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n            4：左开右闭方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n            5：左闭右开方式限定，限数值和日期类型，结合最大值和最小值构成区间范围',
   `STEP_SIZE` varchar(2000) DEFAULT NULL COMMENT '特征值步长，限数值和日期类型，日期以天为单位，时间以秒为单位',
   `MIN_VALUE` varchar(2000) DEFAULT NULL COMMENT '最大特征值，未设置表示无穷小',
   `MAX_VALUE` varchar(2000) DEFAULT NULL COMMENT '最大特征值，未设置表示无穷大',
@@ -125,6 +125,7 @@ CREATE TABLE `cf_cmpt_char_type` (
   `CHAR_TYPE_ID` int(11) NOT NULL COMMENT '特征类型ID',
   `CHAR_TYPE_CODE` varchar(200) NOT NULL COMMENT '特征类型代码',
   `CHAR_TYPE_NAME` varchar(200) NOT NULL COMMENT '特征类型名称',
+  `IS_COMBINE` int(11) NOT NULL DEFAULT '0' COMMENT '是否为组合类型\r\n0：否\r\n1：是',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -133,38 +134,54 @@ CREATE TABLE `cf_cmpt_char_type` (
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`CHAR_TYPE_ID`),
   UNIQUE KEY `Index_1` (`CHAR_TYPE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征类型表（仅查询用）';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征类型表（仅查询用），相关定义辅助于数据校验和画布连线输入输出类型匹配校验';
 
 -- ----------------------------
 -- Records of cf_cmpt_char_type
 -- ----------------------------
-INSERT INTO `cf_cmpt_char_type` VALUES ('1', 'Boolean', '布尔值', '特征值为true/false字符串', '0', '2017-05-12 00:42:11', 'admin', '2017-05-12 00:42:11', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('2', 'SmallInt', '16位整数（预留）', '', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('3', 'Int', '32为整数', '', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('4', 'BigInt', '64位整数（预留）', '', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('5', 'Float', '单精度浮点数', '', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('6', 'Double', '双精度浮点数（预留）', '', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('7', 'String', '字符串', '', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('8', 'Date', '日期', '特征值为“yyyy-mm-dd”格式字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('9', 'DateTime', '日期时间', '特征值为“yyyy-mm-dd hh24:mi:ss”格式字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('101', 'Tuning-Parameter<SmallInt>', '16位整数调参类型（预留）', null, '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('102', 'Tuning-Parameter<Int>', '32位整数调参类型', '', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('103', 'Tuning-Parameter<BigInt>', '64位整数调参类型（预留）', '', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('104', 'Tuning-Parameter<Float>', '单精度浮点数调参类型', '', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('105', 'Tuning-Parameter<Double>', '双精度浮点数调参类型（预留）', '', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('106', 'Tuning-Parameter<String>', '字符串调参类型', '', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('107', 'Tuning-Parameter<Date>', '日期调参类型（预留）', '', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('108', 'Tuning-Parameter<DateTime>', '时间调参类型（预留）', '', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('1100', 'Algorithm', '算法', '特征值为算法ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('1101', 'Data Table', '数据表', '特征值为数据表ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('1102', 'Trained Model', '已训练模型', '特征值为模型ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('1200', 'SQL Script', 'SQL脚本', '特征值为脚本ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('1201', 'Python Script', 'Python脚本', '特征值为脚本ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('1202', 'RScript', 'R脚本', '特征值为脚本ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('11000', 'Statistics Analysis Report', '统计分析报告', '特征值为JSON数据ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('11001', 'Model Evaluation Report', '模型评估报告', '特征值为JSON数据ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('11002', 'Smart Rules', '智能规则', '特征值为JSON数据ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('19999', 'Json Data', 'json数据', '特征值为JSON数据ID字符串', '0', '2017-05-12 00:31:39', 'admin', '2017-05-12 00:31:39', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('1', 'Boolean', '布尔值', '0', '特征值为true/false字符串', '0', '2017-05-12 00:42:11', 'admin', '2017-05-12 00:42:11', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('2', 'SmallInt', '16位整数', '0', '', '-1', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('3', 'Int', '32为整数', '0', '推荐', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('4', 'BigInt', '64位整数', '0', '', '-1', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('5', 'Float', '单精度浮点数', '0', '', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('6', 'Double', '双精度浮点数', '0', '推荐', '-1', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('7', 'String', '字符串', '0', '', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('8', 'Date', '日期', '0', '特征值为“yyyy-mm-dd”格式字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('9', 'DateTime', '日期时间', '0', '特征值为“yyyy-mm-dd hh24:mi:ss”格式字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('102', 'Tuning-Parameter<Int>', '32位整数调参类型', '0', '', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('103', 'Tuning-Parameter<BigInt>', '64位整数调参类型', '0', '', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('104', 'Tuning-Parameter<Float>', '单精度浮点数调参类型', '0', '', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('105', 'Tuning-Parameter<Double>', '双精度浮点数调参类型', '0', '', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('1100', 'Algorithm', '算法', '0', '特征值为算法ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('1101', 'Data Table', '数据表', '0', '特征值为数据表ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('1102', 'Trained Model', '已训练模型', '0', '特征值为模型ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('12001', 'SQL Script', 'SQL脚本', '0', '特征值为脚本ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('12011', 'Python Script', 'Python脚本', '0', '特征值为脚本ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('12021', 'RScript', 'R脚本', '0', '特征值为脚本ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('1100111', 'Model Evaluation Report', '模型评估报告', '0', '特征值为JSON数据ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('1100211', 'Smart Rules', '智能规则', '0', '特征值为JSON数据ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('11000111', 'Statistics Analysis Report', '统计分析报告', '0', '特征值为JSON数据ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('19999111', 'Json Data', 'json数据', '0', '特征值为JSON数据ID字符串', '0', '2017-05-12 00:31:39', 'admin', '2017-05-12 00:31:39', 'admin');
+
+-- ----------------------------
+-- Table structure for cf_cmpt_char_type_combine
+-- ----------------------------
+DROP TABLE IF EXISTS `cf_cmpt_char_type_combine`;
+CREATE TABLE `cf_cmpt_char_type_combine` (
+  `COMBINE_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '组合特征类型ID',
+  `MEMEBER_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '成员特征类型ID',
+  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
+  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
+  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
+  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
+  PRIMARY KEY (`COMBINE_CHAR_TYPE_ID`,`MEMEBER_CHAR_TYPE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征类型组合表（仅查询用），配置组合类型和成员类型的关系';
+
+-- ----------------------------
+-- Records of cf_cmpt_char_type_combine
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for cf_cmpt_char_value
@@ -299,8 +316,8 @@ INSERT INTO `cf_component` VALUES ('DL@COM-0000', '#DeepLearning', '深度学习
 INSERT INTO `cf_component` VALUES ('DP@COM-0000', '#DataPreprocessing', '数据预处理 | #数据预处理', '2', '0', '-1', '', '-1', '2017-05-27 16:28:04', 'admin', '2017-05-27 16:28:04', 'admin');
 INSERT INTO `cf_component` VALUES ('FE@COM-0000', '#FeatureEngineering', '特征工程 | #特征工程', '3', '0', '-1', '', '-1', '2017-05-27 16:28:50', 'admin', '2017-05-27 16:28:50', 'admin');
 INSERT INTO `cf_component` VALUES ('IO@COM-0000', '#InputOutput', '输入输出 | #输入输出', '0', '0', '-1', '', '-1', '2017-05-16 17:52:14', 'admin', '2017-05-16 17:52:14', 'admin');
-INSERT INTO `cf_component` VALUES ('IO@COM-0001', 'ReadDataTable', '输入输出 | 读数据表', '0', '0', '-1', '', '0', '2017-05-16 17:52:14', 'admin', '2017-05-16 17:52:14', 'admin');
-INSERT INTO `cf_component` VALUES ('IO@COM-0002', 'ReadModel', '输入输出 | 读模型', '0', '0', '-1', '', '0', '2017-05-16 17:55:43', 'admin', '2017-05-16 17:55:43', 'admin');
+INSERT INTO `cf_component` VALUES ('IO@COM-0001', 'Read-DataTable', '输入输出 | 读数据表', '0', '0', '-1', '', '0', '2017-05-16 17:52:14', 'admin', '2017-05-16 17:52:14', 'admin');
+INSERT INTO `cf_component` VALUES ('IO@COM-0002', 'Read-Model', '输入输出 | 读模型', '0', '0', '-1', '', '0', '2017-05-16 17:55:43', 'admin', '2017-05-16 17:55:43', 'admin');
 INSERT INTO `cf_component` VALUES ('IO@COM-0003', 'WriteDataTable', '输入输出 | #写数据表（待定）', '0', '0', '-1', '示例用，该组件是否开发待评估', '-1', '2017-05-16 17:52:14', 'admin', '2017-05-16 17:52:14', 'admin');
 INSERT INTO `cf_component` VALUES ('ML@COM-0000', '#MachineLearning', '机器学习 | #机器学习', '5', '0', '-1', '', '-1', '2017-05-17 13:13:53', 'admin', '2017-05-17 13:13:53', 'admin');
 INSERT INTO `cf_component` VALUES ('ML@COM-0001', 'LR-TwoClassClassification', '机器学习 | 逻辑回归二分类', '5', '0', '2001', '', '0', '2017-05-17 13:13:53', 'admin', '2017-05-17 13:13:53', 'admin');
@@ -319,18 +336,19 @@ INSERT INTO `cf_component` VALUES ('ML@COM-0013', 'GBDT-Regression', '机器学�
 INSERT INTO `cf_component` VALUES ('ML@COM-0014', 'XGBoost-Regression', '机器学习 | XGBoost回归（待定）', '5', '0', '5003', '', '0', '2017-05-17 13:13:53', 'admin', '2017-05-17 13:13:53', 'admin');
 INSERT INTO `cf_component` VALUES ('ML@COM-0015', 'OneClass-SVM', '机器学习 | 单分类支持向量机（待定）', '5', '0', '1001', '', '-1', '2017-05-17 13:13:53', 'admin', '2017-05-17 13:13:53', 'admin');
 INSERT INTO `cf_component` VALUES ('ML@COM-0016', 'PCA-Based-AnomalyDetection', '机器学习 | 基于PCA异常检测（待定）', '5', '0', '1002', '', '-1', '2017-05-17 13:13:53', 'admin', '2017-05-17 13:13:53', 'admin');
-INSERT INTO `cf_component` VALUES ('ML@COM-3001', 'TrainModel', '机器学习 | 训练模型', '5', '0', '-1', '支持回归和分类算法', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
-INSERT INTO `cf_component` VALUES ('ML@COM-3002', 'TuneModelHyperparameters', '机器学习 | 调模型超参数', '5', '0', '-1', '支持回归和分类算法', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
-INSERT INTO `cf_component` VALUES ('ML@COM-3003', 'CrossValidateModel', '机器学习 | 交叉验证模型', '5', '0', '-1', '支持回归和分类算法', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
-INSERT INTO `cf_component` VALUES ('ML@COM-3004', 'TrainClusteringModel', '机器学习 | 训练聚类模型', '5', '0', '-1', '', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
-INSERT INTO `cf_component` VALUES ('ML@COM-3005', 'SweepClustering', '机器学习 | 扫描聚类', '5', '0', '-1', '', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
-INSERT INTO `cf_component` VALUES ('ML@COM-3006', 'Train-AnomalyDetection-Model', '机器学习 | 训练异常检测模型（待定）', '5', '0', '-1', '', '-1', '2017-05-17 13:13:53', 'admin', '2017-05-17 13:13:53', 'admin');
+INSERT INTO `cf_component` VALUES ('ML@COM-3001', 'Train-Model', '机器学习 | 训练模型', '5', '0', '-1', '支持回归和分类算法', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
+INSERT INTO `cf_component` VALUES ('ML@COM-3002', 'Tune-ModelHyperparameters', '机器学习 | 自动化模型调参', '5', '0', '-1', '支持回归和分类算法', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
+INSERT INTO `cf_component` VALUES ('ML@COM-3003', 'CrossValidate-Model', '机器学习 | 交叉验证模型', '5', '0', '-1', '支持回归和分类算法', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
+INSERT INTO `cf_component` VALUES ('ML@COM-3004', 'Train-Clustering-Model', '机器学习 | 训练聚类模型', '5', '0', '-1', '', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
+INSERT INTO `cf_component` VALUES ('ML@COM-3005', 'Tune-Clustering-ModelHyperparameters', '机器学习 | 自动化聚类模型调参', '5', '0', '-1', '', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
+INSERT INTO `cf_component` VALUES ('ML@COM-3006', 'Train-AnomalyDetection-Model', '机器学习 | 训练异常检测模型（待定）', '5', '0', '-1', '单分类训练集不带标签列', '-1', '2017-05-17 13:13:53', 'admin', '2017-05-17 13:13:53', 'admin');
 INSERT INTO `cf_component` VALUES ('ML@COM-3007', 'Train-ALS-CollaborativeFiltering-Model', '机器学习 | 训练ALS协同过滤模型（待定）', '5', '0', '7001', '', '-1', '2017-05-17 13:13:53', 'admin', '2017-05-17 13:13:53', 'admin');
-INSERT INTO `cf_component` VALUES ('ML@COM-6001', 'GenerateRules', '机器学习 | 生成规则（待定）', '5', '0', '-1', '', '-1', '2017-05-17 12:34:44', 'admin', '2017-05-17 12:34:44', 'admin');
+INSERT INTO `cf_component` VALUES ('ML@COM-6001', 'Generate-Rules', '机器学习 | 生成规则（待定）', '5', '0', '-1', '', '-1', '2017-05-17 12:34:44', 'admin', '2017-05-17 12:34:44', 'admin');
 INSERT INTO `cf_component` VALUES ('ML@COM-6002', 'Apriori-AssociationRules', '机器学习 | Apriori关联规则（待定）', '5', '0', '6001', '', '-1', '2017-05-17 13:13:53', 'admin', '2017-05-17 13:13:53', 'admin');
 INSERT INTO `cf_component` VALUES ('ML@COM-6003', 'FPG-AssociationRules', '机器学习 | FP-Growth关联规则（待定）', '5', '0', '6002', '', '-1', '2017-05-17 13:13:53', 'admin', '2017-05-17 13:13:53', 'admin');
 INSERT INTO `cf_component` VALUES ('ML@COM-8001', 'Prediction', '机器学习 | 预测', '5', '0', '-1', '支持回归和分类算法', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
-INSERT INTO `cf_component` VALUES ('ML@COM-8002', 'ClusteringPrediction', '机器学习 | 聚类预测', '5', '0', '-1', '', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
+INSERT INTO `cf_component` VALUES ('ML@COM-8002', 'Clustering-Prediction', '机器学习 | 聚类预测', '5', '0', '-1', '', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
+INSERT INTO `cf_component` VALUES ('ML@COM-8003', 'CollaborativeFiltering-Prediction', '机器学习 | 协同过滤预测（待定）', '5', '0', '-1', '', '0', '2017-05-17 13:48:44', 'admin', '2017-05-17 13:48:44', 'admin');
 INSERT INTO `cf_component` VALUES ('ML@COM-9001', 'OneClassClassification-Evaluation', '机器学习 | 单分类评估（异常检测）', '5', '0', '-1', '', '0', '2017-05-17 13:40:58', 'admin', '2017-05-17 13:40:58', 'admin');
 INSERT INTO `cf_component` VALUES ('ML@COM-9002', 'TwoClassClassification-Evaluation', '机器学习 | 二分类评估', '5', '0', '-1', '', '0', '2017-05-17 13:40:58', 'admin', '2017-05-17 13:40:58', 'admin');
 INSERT INTO `cf_component` VALUES ('ML@COM-9003', 'MultipleClassClassification-Evaluation', '机器学习 | 多分类评估', '5', '0', '-1', '', '0', '2017-05-17 13:41:51', 'admin', '2017-05-17 13:41:59', 'admin');
@@ -466,7 +484,7 @@ CREATE TABLE `em_experiment_template` (
 DROP TABLE IF EXISTS `mw_model`;
 CREATE TABLE `mw_model` (
   `MODEL_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '模型ID',
-  `MODEL_NAME` varchar(200) NOT NULL COMMENT '模型名称\r\n            \r\n            普通模型：由字符和数字组成，无特殊字符\r\n            临时模型：tmp$<node_id>_<node_port_id>_<snapshot_version>',
+  `MODEL_NAME` varchar(200) NOT NULL COMMENT '模型名称\r\n\r\n普通模型：由字符和数字组成，无特殊字符\r\n临时模型：组件名称 - 同组件节点序号 - Model [ - 评估指标 - 排名序号]',
   `MODEL_TYPE` int(11) NOT NULL COMMENT '模型类型\r\n            0：普通模型\r\n            1：动态模型（预留）\r\n            2：临时模型',
   `MODEL_SRC` int(11) NOT NULL COMMENT '模型来源\r\n            0：内部生成\r\n            1：外部导入',
   `OWNER_MW_ID` bigint(20) NOT NULL COMMENT '所属模型库ID',
@@ -495,38 +513,12 @@ CREATE TABLE `mw_model` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for mw_model_evaluation_report
--- ----------------------------
-DROP TABLE IF EXISTS `mw_model_evaluation_report`;
-CREATE TABLE `mw_model_evaluation_report` (
-  `REPORT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '评估报告ID',
-  `REPORT_NAME` varchar(200) NOT NULL COMMENT '评估报告名称',
-  `OWNER_MODEL_ID` bigint(20) NOT NULL COMMENT ' 所属模型ID',
-  `REL_SNAPSHOT_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照ID，无关联则设为-1',
-  `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，无关联则设为-1',
-  `TEST_TABLE_ID` bigint(20) DEFAULT NULL COMMENT '测试集数据表ID\r\n            \r\n            由于快照策略会使得工作流节点的输出模型特征值记录被置位为被拷贝过，暂时无需做任何处理\r\n            （关联测试集是否需要另外拷贝一份全量数据，待定）',
-  `REPORT_FILE` mediumblob COMMENT '模型文件名，存放于模型目录下\r\n            \r\n            普通模型完整路径：model_<model_id>_<report_id>.rpt',
-  `REPORT_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '报告状态\r\n            0：空报告\r\n            1：正常',
-  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
-  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
-  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`REPORT_ID`),
-  KEY `Index_1` (`OWNER_MODEL_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型评估报告表（预留），仅存放普通模型的评估报告，模型可以有多份评估报告';
-
--- ----------------------------
--- Records of mw_model_evaluation_report
--- ----------------------------
-
--- ----------------------------
 -- Table structure for mw_model_warehouse
 -- ----------------------------
 DROP TABLE IF EXISTS `mw_model_warehouse`;
 CREATE TABLE `mw_model_warehouse` (
   `MW_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '数据库ID',
-  `MW_CODE` varchar(100) NOT NULL COMMENT '模型库代码（预留）\r\n            \r\n            公共模型库：由英文字符、数字和下划线组成，起始字符不能为下划线\r\n            项目模型库：$符号前缀 + 项目代码',
+  `MW_CODE` varchar(100) NOT NULL COMMENT '模型库代码\r\n\r\n公共模型库：由英文字符、数字和下划线组成，起始字符不能为下划线\r\n项目模型库：$符号前缀 + 项目代码',
   `MW_NAME` varchar(200) NOT NULL COMMENT '模型库名',
   `MW_TYPE` int(11) NOT NULL COMMENT '数据库类型\r\n            0：公共模型库（预留）\r\n            1：项目模型库，随项目创建同时生成，存放项目中产生的模型',
   `OWNER_PROJECT_ID` bigint(20) DEFAULT NULL COMMENT '所属项目ID，模型库类型为公共模型库时设为-1',
@@ -630,7 +622,7 @@ CREATE TABLE `wf_code_script` (
   `REL_SNAPSHOT_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照ID，创建脚本时的工作流快照，无关联则设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建脚本的工作流节点，无关联则设为-1',
   `REL_CHAR_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建脚本的工作流节点输出特征，无关联则设为-1',
-  `SCRIPT_CONTENT` mediumtext COMMENT '脚本内容',
+  `SCRIPT_CONTENT` text COMMENT '脚本内容',
   `SCRIPT_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '脚本状态\r\n            0：正常\r\n            1：空脚本',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -955,9 +947,9 @@ CREATE TABLE `wf_flow_node_link` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`LINK_ID`),
-  UNIQUE KEY `Index_2` (`DST_NODE_PORT_ID`),
   KEY `Index_1` (`SRC_NODE_PORT_ID`),
-  KEY `Index_3` (`OWNER_FLOW_ID`)
+  KEY `Index_3` (`OWNER_FLOW_ID`),
+  KEY `Index_2` (`DST_NODE_PORT_ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点链路表';
 
 -- ----------------------------
@@ -973,7 +965,7 @@ CREATE TABLE `wf_flow_node_parameter` (
   `CHAR_ID` bigint(20) NOT NULL COMMENT '组件特征ID',
   `CHAR_VALUE` varchar(2000) DEFAULT NULL COMMENT '特征值',
   `IS_GLOBAL_PARAMETER` int(11) NOT NULL DEFAULT '0' COMMENT '是否为全局参数\r\n            0：否\r\n            1：是',
-  `IS_DUPLICATED` int(11) NOT NULL DEFAULT '0' COMMENT '是否被复制\r\n            0：否\r\n            1：是\r\n            \r\n            创建快照和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型特征值发生更新时，判断是否创建新对象来保存新值',
+  `IS_DUPLICATED` int(11) NOT NULL DEFAULT '0' COMMENT '是否被复制\r\n            0：否\r\n            1：是\r\n            \r\n            创建副本和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型组件参数发生更新时，判断是否创建新对象来保存新值',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
@@ -1048,8 +1040,7 @@ CREATE TABLE `wf_json_object` (
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`OBJECT_ID`),
-  KEY `Index_1` (`OBJECT_STATE`)
+  PRIMARY KEY (`OBJECT_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
 
 -- ----------------------------
