@@ -616,6 +616,66 @@ public class WfFlowExample {
             return (Criteria) this;
         }
 
+        public Criteria andNextDeleteSequenceIsNull() {
+            addCriterion("NEXT_DELETE_SEQUENCE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNextDeleteSequenceIsNotNull() {
+            addCriterion("NEXT_DELETE_SEQUENCE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNextDeleteSequenceEqualTo(Long value) {
+            addCriterion("NEXT_DELETE_SEQUENCE =", value, "nextDeleteSequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andNextDeleteSequenceNotEqualTo(Long value) {
+            addCriterion("NEXT_DELETE_SEQUENCE <>", value, "nextDeleteSequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andNextDeleteSequenceGreaterThan(Long value) {
+            addCriterion("NEXT_DELETE_SEQUENCE >", value, "nextDeleteSequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andNextDeleteSequenceGreaterThanOrEqualTo(Long value) {
+            addCriterion("NEXT_DELETE_SEQUENCE >=", value, "nextDeleteSequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andNextDeleteSequenceLessThan(Long value) {
+            addCriterion("NEXT_DELETE_SEQUENCE <", value, "nextDeleteSequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andNextDeleteSequenceLessThanOrEqualTo(Long value) {
+            addCriterion("NEXT_DELETE_SEQUENCE <=", value, "nextDeleteSequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andNextDeleteSequenceIn(List<Long> values) {
+            addCriterion("NEXT_DELETE_SEQUENCE in", values, "nextDeleteSequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andNextDeleteSequenceNotIn(List<Long> values) {
+            addCriterion("NEXT_DELETE_SEQUENCE not in", values, "nextDeleteSequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andNextDeleteSequenceBetween(Long value1, Long value2) {
+            addCriterion("NEXT_DELETE_SEQUENCE between", value1, value2, "nextDeleteSequence");
+            return (Criteria) this;
+        }
+
+        public Criteria andNextDeleteSequenceNotBetween(Long value1, Long value2) {
+            addCriterion("NEXT_DELETE_SEQUENCE not between", value1, value2, "nextDeleteSequence");
+            return (Criteria) this;
+        }
+
         public Criteria andLastJobIdIsNull() {
             addCriterion("LAST_JOB_ID is null");
             return (Criteria) this;

@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yatop.lambda.base.mapper.WfModuleMapper" >
-  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.WfModule" >
+<mapper namespace="com.yatop.lambda.base.mapper.WfFlowNodeDeleteQueueMapper" >
+  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.WfFlowNodeDeleteQueue" >
     <!--
       WARNING - @mbggenerated
     -->
-    <id column="MODULE_ID" property="moduleId" jdbcType="BIGINT" />
-    <result column="MODULE_CODE" property="moduleCode" jdbcType="VARCHAR" />
-    <result column="MODULE_NAME" property="moduleName" jdbcType="VARCHAR" />
-    <result column="CATALOG_ID" property="catalogId" jdbcType="BIGINT" />
+    <result column="FLOW_ID" property="flowId" jdbcType="BIGINT" />
     <result column="SEQUENCE" property="sequence" jdbcType="INTEGER" />
-    <result column="CATEGORY" property="category" jdbcType="VARCHAR" />
-    <result column="ICON_TYPE" property="iconType" jdbcType="INTEGER" />
-    <result column="CLASS_PATH" property="classPath" jdbcType="VARCHAR" />
-    <result column="PKG_CMPT_ID" property="pkgCmptId" jdbcType="VARCHAR" />
-    <result column="IS_SIMULATE" property="isSimulate" jdbcType="INTEGER" />
-    <result column="IS_EXTENDED" property="isExtended" jdbcType="INTEGER" />
+    <result column="NODE_ID" property="nodeId" jdbcType="BIGINT" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
-    <result column="STATUS" property="status" jdbcType="INTEGER" />
-    <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
-    <result column="LAST_UPDATE_OPER" property="lastUpdateOper" jdbcType="VARCHAR" />
     <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
     <result column="CREATE_OPER" property="createOper" jdbcType="VARCHAR" />
   </resultMap>
@@ -91,11 +80,9 @@
     <!--
       WARNING - @mbggenerated
     -->
-    MODULE_ID, MODULE_CODE, MODULE_NAME, CATALOG_ID, SEQUENCE, CATEGORY, ICON_TYPE, CLASS_PATH, 
-    PKG_CMPT_ID, IS_SIMULATE, IS_EXTENDED, DESCRIPTION, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, 
-    CREATE_TIME, CREATE_OPER
+    FLOW_ID, SEQUENCE, NODE_ID, DESCRIPTION, CREATE_TIME, CREATE_OPER
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.WfModuleExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.WfFlowNodeDeleteQueueExample" >
     <!--
       WARNING - @mbggenerated
     -->
@@ -104,7 +91,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from wf_module
+    from wf_flow_node_delete_queue
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -113,20 +100,20 @@
     </if>
     <include refid="MysqlSuffix" />
   </select>
-  <delete id="deleteByExample" parameterType="com.yatop.lambda.base.model.WfModuleExample" >
+  <delete id="deleteByExample" parameterType="com.yatop.lambda.base.model.WfFlowNodeDeleteQueueExample" >
     <!--
       WARNING - @mbggenerated
     -->
-    delete from wf_module
+    delete from wf_flow_node_delete_queue
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <select id="countByExample" parameterType="com.yatop.lambda.base.model.WfModuleExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.yatop.lambda.base.model.WfFlowNodeDeleteQueueExample" resultType="java.lang.Integer" >
     <!--
       WARNING - @mbggenerated
     -->
-    select count(*) from wf_module
+    select count(*) from wf_flow_node_delete_queue
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -135,52 +122,19 @@
     <!--
       WARNING - @mbggenerated
     -->
-    update wf_module
+    update wf_flow_node_delete_queue
     <set >
-      <if test="record.moduleId != null" >
-        MODULE_ID = #{record.moduleId,jdbcType=BIGINT},
-      </if>
-      <if test="record.moduleCode != null" >
-        MODULE_CODE = #{record.moduleCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.moduleName != null" >
-        MODULE_NAME = #{record.moduleName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.catalogId != null" >
-        CATALOG_ID = #{record.catalogId,jdbcType=BIGINT},
+      <if test="record.flowId != null" >
+        FLOW_ID = #{record.flowId,jdbcType=BIGINT},
       </if>
       <if test="record.sequence != null" >
         SEQUENCE = #{record.sequence,jdbcType=INTEGER},
       </if>
-      <if test="record.category != null" >
-        CATEGORY = #{record.category,jdbcType=VARCHAR},
-      </if>
-      <if test="record.iconType != null" >
-        ICON_TYPE = #{record.iconType,jdbcType=INTEGER},
-      </if>
-      <if test="record.classPath != null" >
-        CLASS_PATH = #{record.classPath,jdbcType=VARCHAR},
-      </if>
-      <if test="record.pkgCmptId != null" >
-        PKG_CMPT_ID = #{record.pkgCmptId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isSimulate != null" >
-        IS_SIMULATE = #{record.isSimulate,jdbcType=INTEGER},
-      </if>
-      <if test="record.isExtended != null" >
-        IS_EXTENDED = #{record.isExtended,jdbcType=INTEGER},
+      <if test="record.nodeId != null" >
+        NODE_ID = #{record.nodeId,jdbcType=BIGINT},
       </if>
       <if test="record.description != null" >
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      </if>
-      <if test="record.status != null" >
-        STATUS = #{record.status,jdbcType=INTEGER},
-      </if>
-      <if test="record.lastUpdateTime != null" >
-        LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.lastUpdateOper != null" >
-        LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null" >
         CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
@@ -197,22 +151,11 @@
     <!--
       WARNING - @mbggenerated
     -->
-    update wf_module
-    set MODULE_ID = #{record.moduleId,jdbcType=BIGINT},
-      MODULE_CODE = #{record.moduleCode,jdbcType=VARCHAR},
-      MODULE_NAME = #{record.moduleName,jdbcType=VARCHAR},
-      CATALOG_ID = #{record.catalogId,jdbcType=BIGINT},
+    update wf_flow_node_delete_queue
+    set FLOW_ID = #{record.flowId,jdbcType=BIGINT},
       SEQUENCE = #{record.sequence,jdbcType=INTEGER},
-      CATEGORY = #{record.category,jdbcType=VARCHAR},
-      ICON_TYPE = #{record.iconType,jdbcType=INTEGER},
-      CLASS_PATH = #{record.classPath,jdbcType=VARCHAR},
-      PKG_CMPT_ID = #{record.pkgCmptId,jdbcType=VARCHAR},
-      IS_SIMULATE = #{record.isSimulate,jdbcType=INTEGER},
-      IS_EXTENDED = #{record.isExtended,jdbcType=INTEGER},
+      NODE_ID = #{record.nodeId,jdbcType=BIGINT},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      STATUS = #{record.status,jdbcType=INTEGER},
-      LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
-      LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
       CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
       CREATE_OPER = #{record.createOper,jdbcType=VARCHAR}
     <if test="_parameter != null" >

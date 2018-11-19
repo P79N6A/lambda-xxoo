@@ -62,6 +62,22 @@ public class WfModule implements Serializable {
     private String pkgCmptId;
 
     /**
+     * 是否为可动态模拟组件
+            0：否
+            1：是
+     */
+    @Column(name = "IS_SIMULATE")
+    private Integer isSimulate;
+
+    /**
+     * 是否为扩展组件（预留）
+            0：否
+            1：是
+     */
+    @Column(name = "IS_EXTENDED")
+    private Integer isExtended;
+
+    /**
      * 描述
      */
     @Column(name = "DESCRIPTION")
@@ -264,6 +280,58 @@ public class WfModule implements Serializable {
     }
 
     /**
+     * 获取是否为可动态模拟组件
+            0：否
+            1：是
+     *
+     * @return IS_SIMULATE - 是否为可动态模拟组件
+            0：否
+            1：是
+     */
+    public Integer getIsSimulate() {
+        return isSimulate;
+    }
+
+    /**
+     * 设置是否为可动态模拟组件
+            0：否
+            1：是
+     *
+     * @param isSimulate 是否为可动态模拟组件
+            0：否
+            1：是
+     */
+    public void setIsSimulate(Integer isSimulate) {
+        this.isSimulate = isSimulate;
+    }
+
+    /**
+     * 获取是否为扩展组件（预留）
+            0：否
+            1：是
+     *
+     * @return IS_EXTENDED - 是否为扩展组件（预留）
+            0：否
+            1：是
+     */
+    public Integer getIsExtended() {
+        return isExtended;
+    }
+
+    /**
+     * 设置是否为扩展组件（预留）
+            0：否
+            1：是
+     *
+     * @param isExtended 是否为扩展组件（预留）
+            0：否
+            1：是
+     */
+    public void setIsExtended(Integer isExtended) {
+        this.isExtended = isExtended;
+    }
+
+    /**
      * 获取描述
      *
      * @return DESCRIPTION - 描述
@@ -400,6 +468,8 @@ public class WfModule implements Serializable {
             && (this.getIconType() == null ? other.getIconType() == null : this.getIconType().equals(other.getIconType()))
             && (this.getClassPath() == null ? other.getClassPath() == null : this.getClassPath().equals(other.getClassPath()))
             && (this.getPkgCmptId() == null ? other.getPkgCmptId() == null : this.getPkgCmptId().equals(other.getPkgCmptId()))
+            && (this.getIsSimulate() == null ? other.getIsSimulate() == null : this.getIsSimulate().equals(other.getIsSimulate()))
+            && (this.getIsExtended() == null ? other.getIsExtended() == null : this.getIsExtended().equals(other.getIsExtended()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getLastUpdateTime() == null ? other.getLastUpdateTime() == null : this.getLastUpdateTime().equals(other.getLastUpdateTime()))
@@ -421,6 +491,8 @@ public class WfModule implements Serializable {
         result = prime * result + ((getIconType() == null) ? 0 : getIconType().hashCode());
         result = prime * result + ((getClassPath() == null) ? 0 : getClassPath().hashCode());
         result = prime * result + ((getPkgCmptId() == null) ? 0 : getPkgCmptId().hashCode());
+        result = prime * result + ((getIsSimulate() == null) ? 0 : getIsSimulate().hashCode());
+        result = prime * result + ((getIsExtended() == null) ? 0 : getIsExtended().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getLastUpdateTime() == null) ? 0 : getLastUpdateTime().hashCode());

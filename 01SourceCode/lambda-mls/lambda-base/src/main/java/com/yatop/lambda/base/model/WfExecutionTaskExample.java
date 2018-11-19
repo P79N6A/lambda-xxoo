@@ -236,66 +236,6 @@ public class WfExecutionTaskExample {
             return (Criteria) this;
         }
 
-        public Criteria andOwnerPathIdIsNull() {
-            addCriterion("OWNER_PATH_ID is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwnerPathIdIsNotNull() {
-            addCriterion("OWNER_PATH_ID is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwnerPathIdEqualTo(Long value) {
-            addCriterion("OWNER_PATH_ID =", value, "ownerPathId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwnerPathIdNotEqualTo(Long value) {
-            addCriterion("OWNER_PATH_ID <>", value, "ownerPathId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwnerPathIdGreaterThan(Long value) {
-            addCriterion("OWNER_PATH_ID >", value, "ownerPathId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwnerPathIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("OWNER_PATH_ID >=", value, "ownerPathId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwnerPathIdLessThan(Long value) {
-            addCriterion("OWNER_PATH_ID <", value, "ownerPathId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwnerPathIdLessThanOrEqualTo(Long value) {
-            addCriterion("OWNER_PATH_ID <=", value, "ownerPathId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwnerPathIdIn(List<Long> values) {
-            addCriterion("OWNER_PATH_ID in", values, "ownerPathId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwnerPathIdNotIn(List<Long> values) {
-            addCriterion("OWNER_PATH_ID not in", values, "ownerPathId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwnerPathIdBetween(Long value1, Long value2) {
-            addCriterion("OWNER_PATH_ID between", value1, value2, "ownerPathId");
-            return (Criteria) this;
-        }
-
-        public Criteria andOwnerPathIdNotBetween(Long value1, Long value2) {
-            addCriterion("OWNER_PATH_ID not between", value1, value2, "ownerPathId");
-            return (Criteria) this;
-        }
-
         public Criteria andSequenceIsNull() {
             addCriterion("SEQUENCE is null");
             return (Criteria) this;

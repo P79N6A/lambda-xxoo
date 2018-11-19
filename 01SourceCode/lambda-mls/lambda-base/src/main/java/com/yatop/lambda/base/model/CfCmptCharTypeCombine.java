@@ -4,42 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "wf_execution_fork")
-public class WfExecutionFork implements Serializable {
-    /**
-     * 分叉ID
-     */
-    @Id
-    @Column(name = "FORK_ID")
-    private Long forkId;
-
-    /**
-     * 所属作业ID
-     */
-    @Column(name = "OWNER_JOB_ID")
-    private Long ownerJobId;
-
-    /**
-     * 触发分叉节点ID
-     */
-    @Column(name = "FORK_NODE_ID")
-    private Long forkNodeId;
-
-    /**
-     * 分叉数量
-     */
-    @Column(name = "FORK_NUM")
-    private Integer forkNum;
-
-    /**
-     * 分叉状态
-            0：waiting，等待中
-            1：passed，已通过
-            2：terminated，已终止
-     */
-    @Column(name = "FORK_STATE")
-    private Integer forkState;
-
+@Table(name = "cf_cmpt_char_type_combine")
+public class CfCmptCharTypeCombine extends CfCmptCharTypeCombineKey implements Serializable {
     /**
      * 描述
      */
@@ -79,108 +45,6 @@ public class WfExecutionFork implements Serializable {
     private String createOper;
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 获取分叉ID
-     *
-     * @return FORK_ID - 分叉ID
-     */
-    public Long getForkId() {
-        return forkId;
-    }
-
-    /**
-     * 设置分叉ID
-     *
-     * @param forkId 分叉ID
-     */
-    public void setForkId(Long forkId) {
-        this.forkId = forkId;
-    }
-
-    /**
-     * 获取所属作业ID
-     *
-     * @return OWNER_JOB_ID - 所属作业ID
-     */
-    public Long getOwnerJobId() {
-        return ownerJobId;
-    }
-
-    /**
-     * 设置所属作业ID
-     *
-     * @param ownerJobId 所属作业ID
-     */
-    public void setOwnerJobId(Long ownerJobId) {
-        this.ownerJobId = ownerJobId;
-    }
-
-    /**
-     * 获取触发分叉节点ID
-     *
-     * @return FORK_NODE_ID - 触发分叉节点ID
-     */
-    public Long getForkNodeId() {
-        return forkNodeId;
-    }
-
-    /**
-     * 设置触发分叉节点ID
-     *
-     * @param forkNodeId 触发分叉节点ID
-     */
-    public void setForkNodeId(Long forkNodeId) {
-        this.forkNodeId = forkNodeId;
-    }
-
-    /**
-     * 获取分叉数量
-     *
-     * @return FORK_NUM - 分叉数量
-     */
-    public Integer getForkNum() {
-        return forkNum;
-    }
-
-    /**
-     * 设置分叉数量
-     *
-     * @param forkNum 分叉数量
-     */
-    public void setForkNum(Integer forkNum) {
-        this.forkNum = forkNum;
-    }
-
-    /**
-     * 获取分叉状态
-            0：waiting，等待中
-            1：passed，已通过
-            2：terminated，已终止
-     *
-     * @return FORK_STATE - 分叉状态
-            0：waiting，等待中
-            1：passed，已通过
-            2：terminated，已终止
-     */
-    public Integer getForkState() {
-        return forkState;
-    }
-
-    /**
-     * 设置分叉状态
-            0：waiting，等待中
-            1：passed，已通过
-            2：terminated，已终止
-     *
-     * @param forkState 分叉状态
-            0：waiting，等待中
-            1：passed，已通过
-            2：terminated，已终止
-     */
-    public void setForkState(Integer forkState) {
-        this.forkState = forkState;
-    }
 
     /**
      * 获取描述
@@ -309,12 +173,9 @@ public class WfExecutionFork implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        WfExecutionFork other = (WfExecutionFork) that;
-        return (this.getForkId() == null ? other.getForkId() == null : this.getForkId().equals(other.getForkId()))
-            && (this.getOwnerJobId() == null ? other.getOwnerJobId() == null : this.getOwnerJobId().equals(other.getOwnerJobId()))
-            && (this.getForkNodeId() == null ? other.getForkNodeId() == null : this.getForkNodeId().equals(other.getForkNodeId()))
-            && (this.getForkNum() == null ? other.getForkNum() == null : this.getForkNum().equals(other.getForkNum()))
-            && (this.getForkState() == null ? other.getForkState() == null : this.getForkState().equals(other.getForkState()))
+        CfCmptCharTypeCombine other = (CfCmptCharTypeCombine) that;
+        return (this.getCombineCharTypeId() == null ? other.getCombineCharTypeId() == null : this.getCombineCharTypeId().equals(other.getCombineCharTypeId()))
+            && (this.getMemeberCharTypeId() == null ? other.getMemeberCharTypeId() == null : this.getMemeberCharTypeId().equals(other.getMemeberCharTypeId()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getLastUpdateTime() == null ? other.getLastUpdateTime() == null : this.getLastUpdateTime().equals(other.getLastUpdateTime()))
@@ -327,11 +188,8 @@ public class WfExecutionFork implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((getForkId() == null) ? 0 : getForkId().hashCode());
-        result = prime * result + ((getOwnerJobId() == null) ? 0 : getOwnerJobId().hashCode());
-        result = prime * result + ((getForkNodeId() == null) ? 0 : getForkNodeId().hashCode());
-        result = prime * result + ((getForkNum() == null) ? 0 : getForkNum().hashCode());
-        result = prime * result + ((getForkState() == null) ? 0 : getForkState().hashCode());
+        result = prime * result + ((getCombineCharTypeId() == null) ? 0 : getCombineCharTypeId().hashCode());
+        result = prime * result + ((getMemeberCharTypeId() == null) ? 0 : getMemeberCharTypeId().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getLastUpdateTime() == null) ? 0 : getLastUpdateTime().hashCode());

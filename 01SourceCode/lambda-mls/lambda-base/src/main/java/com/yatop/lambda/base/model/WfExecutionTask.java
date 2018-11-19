@@ -20,13 +20,7 @@ public class WfExecutionTask implements Serializable {
     private Long ownerJobId;
 
     /**
-     * 所属路径ID
-     */
-    @Column(name = "OWNER_PATH_ID")
-    private Long ownerPathId;
-
-    /**
-     * 路径中任务序号
+     * 作业中任务序号
      */
     @Column(name = "SEQUENCE")
     private Integer sequence;
@@ -52,7 +46,7 @@ public class WfExecutionTask implements Serializable {
     /**
      * 提交文件名，存放在运行目录下
             
-            submit_<exec_path_id>_<exec_task_id>_<module_code>.json
+            ${JOB_DIR}/submit_<task_id>_<module_code>.json
      */
     @Column(name = "SUBMIT_FILE")
     private String submitFile;
@@ -60,7 +54,7 @@ public class WfExecutionTask implements Serializable {
     /**
      * 返回文件名，存放在运行目录下
             
-            return_<exec_path_id>_<exec_task_id>_<module_code>.json
+            ${JOB_DIR}/return_<task_id>_<module_code>.json
      */
     @Column(name = "RETURN_FILE")
     private String returnFile;
@@ -68,7 +62,7 @@ public class WfExecutionTask implements Serializable {
     /**
      * 日志文件名，存放在运行目录下
             
-            log_<exec_path_id>_<exec_task_id>_<module_code>.log
+            ${JOB_DIR}/log_<task_id>_<module_code>.log
      */
     @Column(name = "LOG_FILE")
     private String logFile;
@@ -82,7 +76,7 @@ public class WfExecutionTask implements Serializable {
     /**
      * 运行状态
             0：ready，已就绪
-            1：preparing，准备中
+            1：queueing，排队中
             2：running，运行中
             3：finished，运行完成
             4：error terminated，出错终止
@@ -174,36 +168,18 @@ public class WfExecutionTask implements Serializable {
     }
 
     /**
-     * 获取所属路径ID
+     * 获取作业中任务序号
      *
-     * @return OWNER_PATH_ID - 所属路径ID
-     */
-    public Long getOwnerPathId() {
-        return ownerPathId;
-    }
-
-    /**
-     * 设置所属路径ID
-     *
-     * @param ownerPathId 所属路径ID
-     */
-    public void setOwnerPathId(Long ownerPathId) {
-        this.ownerPathId = ownerPathId;
-    }
-
-    /**
-     * 获取路径中任务序号
-     *
-     * @return SEQUENCE - 路径中任务序号
+     * @return SEQUENCE - 作业中任务序号
      */
     public Integer getSequence() {
         return sequence;
     }
 
     /**
-     * 设置路径中任务序号
+     * 设置作业中任务序号
      *
-     * @param sequence 路径中任务序号
+     * @param sequence 作业中任务序号
      */
     public void setSequence(Integer sequence) {
         this.sequence = sequence;
@@ -266,11 +242,11 @@ public class WfExecutionTask implements Serializable {
     /**
      * 获取提交文件名，存放在运行目录下
             
-            submit_<exec_path_id>_<exec_task_id>_<module_code>.json
+            ${JOB_DIR}/submit_<task_id>_<module_code>.json
      *
      * @return SUBMIT_FILE - 提交文件名，存放在运行目录下
             
-            submit_<exec_path_id>_<exec_task_id>_<module_code>.json
+            ${JOB_DIR}/submit_<task_id>_<module_code>.json
      */
     public String getSubmitFile() {
         return submitFile;
@@ -279,11 +255,11 @@ public class WfExecutionTask implements Serializable {
     /**
      * 设置提交文件名，存放在运行目录下
             
-            submit_<exec_path_id>_<exec_task_id>_<module_code>.json
+            ${JOB_DIR}/submit_<task_id>_<module_code>.json
      *
      * @param submitFile 提交文件名，存放在运行目录下
             
-            submit_<exec_path_id>_<exec_task_id>_<module_code>.json
+            ${JOB_DIR}/submit_<task_id>_<module_code>.json
      */
     public void setSubmitFile(String submitFile) {
         this.submitFile = submitFile == null ? null : submitFile.trim();
@@ -292,11 +268,11 @@ public class WfExecutionTask implements Serializable {
     /**
      * 获取返回文件名，存放在运行目录下
             
-            return_<exec_path_id>_<exec_task_id>_<module_code>.json
+            ${JOB_DIR}/return_<task_id>_<module_code>.json
      *
      * @return RETURN_FILE - 返回文件名，存放在运行目录下
             
-            return_<exec_path_id>_<exec_task_id>_<module_code>.json
+            ${JOB_DIR}/return_<task_id>_<module_code>.json
      */
     public String getReturnFile() {
         return returnFile;
@@ -305,11 +281,11 @@ public class WfExecutionTask implements Serializable {
     /**
      * 设置返回文件名，存放在运行目录下
             
-            return_<exec_path_id>_<exec_task_id>_<module_code>.json
+            ${JOB_DIR}/return_<task_id>_<module_code>.json
      *
      * @param returnFile 返回文件名，存放在运行目录下
             
-            return_<exec_path_id>_<exec_task_id>_<module_code>.json
+            ${JOB_DIR}/return_<task_id>_<module_code>.json
      */
     public void setReturnFile(String returnFile) {
         this.returnFile = returnFile == null ? null : returnFile.trim();
@@ -318,11 +294,11 @@ public class WfExecutionTask implements Serializable {
     /**
      * 获取日志文件名，存放在运行目录下
             
-            log_<exec_path_id>_<exec_task_id>_<module_code>.log
+            ${JOB_DIR}/log_<task_id>_<module_code>.log
      *
      * @return LOG_FILE - 日志文件名，存放在运行目录下
             
-            log_<exec_path_id>_<exec_task_id>_<module_code>.log
+            ${JOB_DIR}/log_<task_id>_<module_code>.log
      */
     public String getLogFile() {
         return logFile;
@@ -331,11 +307,11 @@ public class WfExecutionTask implements Serializable {
     /**
      * 设置日志文件名，存放在运行目录下
             
-            log_<exec_path_id>_<exec_task_id>_<module_code>.log
+            ${JOB_DIR}/log_<task_id>_<module_code>.log
      *
      * @param logFile 日志文件名，存放在运行目录下
             
-            log_<exec_path_id>_<exec_task_id>_<module_code>.log
+            ${JOB_DIR}/log_<task_id>_<module_code>.log
      */
     public void setLogFile(String logFile) {
         this.logFile = logFile == null ? null : logFile.trim();
@@ -362,7 +338,7 @@ public class WfExecutionTask implements Serializable {
     /**
      * 获取运行状态
             0：ready，已就绪
-            1：preparing，准备中
+            1：queueing，排队中
             2：running，运行中
             3：finished，运行完成
             4：error terminated，出错终止
@@ -370,7 +346,7 @@ public class WfExecutionTask implements Serializable {
      *
      * @return TASK_STATE - 运行状态
             0：ready，已就绪
-            1：preparing，准备中
+            1：queueing，排队中
             2：running，运行中
             3：finished，运行完成
             4：error terminated，出错终止
@@ -383,7 +359,7 @@ public class WfExecutionTask implements Serializable {
     /**
      * 设置运行状态
             0：ready，已就绪
-            1：preparing，准备中
+            1：queueing，排队中
             2：running，运行中
             3：finished，运行完成
             4：error terminated，出错终止
@@ -391,7 +367,7 @@ public class WfExecutionTask implements Serializable {
      *
      * @param taskState 运行状态
             0：ready，已就绪
-            1：preparing，准备中
+            1：queueing，排队中
             2：running，运行中
             3：finished，运行完成
             4：error terminated，出错终止
@@ -549,7 +525,6 @@ public class WfExecutionTask implements Serializable {
         WfExecutionTask other = (WfExecutionTask) that;
         return (this.getTaskId() == null ? other.getTaskId() == null : this.getTaskId().equals(other.getTaskId()))
             && (this.getOwnerJobId() == null ? other.getOwnerJobId() == null : this.getOwnerJobId().equals(other.getOwnerJobId()))
-            && (this.getOwnerPathId() == null ? other.getOwnerPathId() == null : this.getOwnerPathId().equals(other.getOwnerPathId()))
             && (this.getSequence() == null ? other.getSequence() == null : this.getSequence().equals(other.getSequence()))
             && (this.getRelNodeId() == null ? other.getRelNodeId() == null : this.getRelNodeId().equals(other.getRelNodeId()))
             && (this.getEngineType() == null ? other.getEngineType() == null : this.getEngineType().equals(other.getEngineType()))
@@ -574,7 +549,6 @@ public class WfExecutionTask implements Serializable {
         int result = 1;
         result = prime * result + ((getTaskId() == null) ? 0 : getTaskId().hashCode());
         result = prime * result + ((getOwnerJobId() == null) ? 0 : getOwnerJobId().hashCode());
-        result = prime * result + ((getOwnerPathId() == null) ? 0 : getOwnerPathId().hashCode());
         result = prime * result + ((getSequence() == null) ? 0 : getSequence().hashCode());
         result = prime * result + ((getRelNodeId() == null) ? 0 : getRelNodeId().hashCode());
         result = prime * result + ((getEngineType() == null) ? 0 : getEngineType().hashCode());

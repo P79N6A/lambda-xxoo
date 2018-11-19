@@ -316,6 +316,66 @@ public class CfCmptCharTypeExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsCombineIsNull() {
+            addCriterion("IS_COMBINE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCombineIsNotNull() {
+            addCriterion("IS_COMBINE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCombineEqualTo(Integer value) {
+            addCriterion("IS_COMBINE =", value, "isCombine");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCombineNotEqualTo(Integer value) {
+            addCriterion("IS_COMBINE <>", value, "isCombine");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCombineGreaterThan(Integer value) {
+            addCriterion("IS_COMBINE >", value, "isCombine");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCombineGreaterThanOrEqualTo(Integer value) {
+            addCriterion("IS_COMBINE >=", value, "isCombine");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCombineLessThan(Integer value) {
+            addCriterion("IS_COMBINE <", value, "isCombine");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCombineLessThanOrEqualTo(Integer value) {
+            addCriterion("IS_COMBINE <=", value, "isCombine");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCombineIn(List<Integer> values) {
+            addCriterion("IS_COMBINE in", values, "isCombine");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCombineNotIn(List<Integer> values) {
+            addCriterion("IS_COMBINE not in", values, "isCombine");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCombineBetween(Integer value1, Integer value2) {
+            addCriterion("IS_COMBINE between", value1, value2, "isCombine");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCombineNotBetween(Integer value1, Integer value2) {
+            addCriterion("IS_COMBINE not between", value1, value2, "isCombine");
+            return (Criteria) this;
+        }
+
         public Criteria andDescriptionIsNull() {
             addCriterion("DESCRIPTION is null");
             return (Criteria) this;

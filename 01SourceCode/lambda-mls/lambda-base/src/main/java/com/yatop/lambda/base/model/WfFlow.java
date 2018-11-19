@@ -59,6 +59,12 @@ public class WfFlow implements Serializable {
     private Long nextSnapshotVersion;
 
     /**
+     * 下一删除序号
+     */
+    @Column(name = "NEXT_DELETE_SEQUENCE")
+    private Long nextDeleteSequence;
+
+    /**
      * 最后作业ID
      */
     @Column(name = "LAST_JOB_ID")
@@ -280,6 +286,24 @@ public class WfFlow implements Serializable {
      */
     public void setNextSnapshotVersion(Long nextSnapshotVersion) {
         this.nextSnapshotVersion = nextSnapshotVersion;
+    }
+
+    /**
+     * 获取下一删除序号
+     *
+     * @return NEXT_DELETE_SEQUENCE - 下一删除序号
+     */
+    public Long getNextDeleteSequence() {
+        return nextDeleteSequence;
+    }
+
+    /**
+     * 设置下一删除序号
+     *
+     * @param nextDeleteSequence 下一删除序号
+     */
+    public void setNextDeleteSequence(Long nextDeleteSequence) {
+        this.nextDeleteSequence = nextDeleteSequence;
     }
 
     /**
@@ -506,6 +530,7 @@ public class WfFlow implements Serializable {
             && (this.getLockMsg() == null ? other.getLockMsg() == null : this.getLockMsg().equals(other.getLockMsg()))
             && (this.getLastSnapshotId() == null ? other.getLastSnapshotId() == null : this.getLastSnapshotId().equals(other.getLastSnapshotId()))
             && (this.getNextSnapshotVersion() == null ? other.getNextSnapshotVersion() == null : this.getNextSnapshotVersion().equals(other.getNextSnapshotVersion()))
+            && (this.getNextDeleteSequence() == null ? other.getNextDeleteSequence() == null : this.getNextDeleteSequence().equals(other.getNextDeleteSequence()))
             && (this.getLastJobId() == null ? other.getLastJobId() == null : this.getLastJobId().equals(other.getLastJobId()))
             && (this.getFlowState() == null ? other.getFlowState() == null : this.getFlowState().equals(other.getFlowState()))
             && (this.getSummary() == null ? other.getSummary() == null : this.getSummary().equals(other.getSummary()))
@@ -530,6 +555,7 @@ public class WfFlow implements Serializable {
         result = prime * result + ((getLockMsg() == null) ? 0 : getLockMsg().hashCode());
         result = prime * result + ((getLastSnapshotId() == null) ? 0 : getLastSnapshotId().hashCode());
         result = prime * result + ((getNextSnapshotVersion() == null) ? 0 : getNextSnapshotVersion().hashCode());
+        result = prime * result + ((getNextDeleteSequence() == null) ? 0 : getNextDeleteSequence().hashCode());
         result = prime * result + ((getLastJobId() == null) ? 0 : getLastJobId().hashCode());
         result = prime * result + ((getFlowState() == null) ? 0 : getFlowState().hashCode());
         result = prime * result + ((getSummary() == null) ? 0 : getSummary().hashCode());

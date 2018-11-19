@@ -33,11 +33,11 @@ public class CfCmptSpec implements Serializable {
 
     /**
      * 规格类型
-            0：input，输入内容规格（无此类规格代表无输入内容）
-            1：output，输出内容规格（无此类规格代表无输出内容）
-            2：execution，调用执行规格（无此类规格代表无需执行）
-            3：execution_optimize，执行调优参数规格（无此类规格代表无执行调优参数）
-            4：parameter，组件参数规格（无此类规格代表无需组件参数配置）
+            0：input，输入内容规格（无此类规格代表无输入内容，仅供数据流转和连线校验用，不做存储）
+            1：output，输出内容规格（无此类规格代表无输出内容，在运行时分配存储）
+            2：execution，调用执行规格（无此类规格代表无需执行，基本是配置数据）
+            3：optimize execution，执行调优参数规格（无此类规格代表无执行调优参数，在编辑时分配存储）
+            4：parameter，组件参数规格（无此类规格代表无需组件参数配置，在编辑时分配存储）
      */
     @Column(name = "SPEC_TYPE")
     private Integer specType;
@@ -162,18 +162,18 @@ public class CfCmptSpec implements Serializable {
 
     /**
      * 获取规格类型
-            0：input，输入内容规格（无此类规格代表无输入内容）
-            1：output，输出内容规格（无此类规格代表无输出内容）
-            2：execution，调用执行规格（无此类规格代表无需执行）
-            3：execution_optimize，执行调优参数规格（无此类规格代表无执行调优参数）
-            4：parameter，组件参数规格（无此类规格代表无需组件参数配置）
+            0：input，输入内容规格（无此类规格代表无输入内容，仅供数据流转和连线校验用，不做存储）
+            1：output，输出内容规格（无此类规格代表无输出内容，在运行时分配存储）
+            2：execution，调用执行规格（无此类规格代表无需执行，基本是配置数据）
+            3：optimize execution，执行调优参数规格（无此类规格代表无执行调优参数，在编辑时分配存储）
+            4：parameter，组件参数规格（无此类规格代表无需组件参数配置，在编辑时分配存储）
      *
      * @return SPEC_TYPE - 规格类型
-            0：input，输入内容规格（无此类规格代表无输入内容）
-            1：output，输出内容规格（无此类规格代表无输出内容）
-            2：execution，调用执行规格（无此类规格代表无需执行）
-            3：execution_optimize，执行调优参数规格（无此类规格代表无执行调优参数）
-            4：parameter，组件参数规格（无此类规格代表无需组件参数配置）
+            0：input，输入内容规格（无此类规格代表无输入内容，仅供数据流转和连线校验用，不做存储）
+            1：output，输出内容规格（无此类规格代表无输出内容，在运行时分配存储）
+            2：execution，调用执行规格（无此类规格代表无需执行，基本是配置数据）
+            3：optimize execution，执行调优参数规格（无此类规格代表无执行调优参数，在编辑时分配存储）
+            4：parameter，组件参数规格（无此类规格代表无需组件参数配置，在编辑时分配存储）
      */
     public Integer getSpecType() {
         return specType;
@@ -181,18 +181,18 @@ public class CfCmptSpec implements Serializable {
 
     /**
      * 设置规格类型
-            0：input，输入内容规格（无此类规格代表无输入内容）
-            1：output，输出内容规格（无此类规格代表无输出内容）
-            2：execution，调用执行规格（无此类规格代表无需执行）
-            3：execution_optimize，执行调优参数规格（无此类规格代表无执行调优参数）
-            4：parameter，组件参数规格（无此类规格代表无需组件参数配置）
+            0：input，输入内容规格（无此类规格代表无输入内容，仅供数据流转和连线校验用，不做存储）
+            1：output，输出内容规格（无此类规格代表无输出内容，在运行时分配存储）
+            2：execution，调用执行规格（无此类规格代表无需执行，基本是配置数据）
+            3：optimize execution，执行调优参数规格（无此类规格代表无执行调优参数，在编辑时分配存储）
+            4：parameter，组件参数规格（无此类规格代表无需组件参数配置，在编辑时分配存储）
      *
      * @param specType 规格类型
-            0：input，输入内容规格（无此类规格代表无输入内容）
-            1：output，输出内容规格（无此类规格代表无输出内容）
-            2：execution，调用执行规格（无此类规格代表无需执行）
-            3：execution_optimize，执行调优参数规格（无此类规格代表无执行调优参数）
-            4：parameter，组件参数规格（无此类规格代表无需组件参数配置）
+            0：input，输入内容规格（无此类规格代表无输入内容，仅供数据流转和连线校验用，不做存储）
+            1：output，输出内容规格（无此类规格代表无输出内容，在运行时分配存储）
+            2：execution，调用执行规格（无此类规格代表无需执行，基本是配置数据）
+            3：optimize execution，执行调优参数规格（无此类规格代表无执行调优参数，在编辑时分配存储）
+            4：parameter，组件参数规格（无此类规格代表无需组件参数配置，在编辑时分配存储）
      */
     public void setSpecType(Integer specType) {
         this.specType = specType;

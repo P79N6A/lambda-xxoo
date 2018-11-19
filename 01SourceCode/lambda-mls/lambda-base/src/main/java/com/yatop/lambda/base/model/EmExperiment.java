@@ -46,6 +46,22 @@ public class EmExperiment implements Serializable {
     private Long flowId;
 
     /**
+     * DFS实验目录
+            
+            ${HDFS_SITE}/${DFS_WORK_ROOT}/exp_data/<project_id>/<experiment_id>
+     */
+    @Column(name = "EXPERIMENT_DFS_DIR")
+    private String experimentDfsDir;
+
+    /**
+     * 本地实验目录
+            
+            ${LOCAL_WORK_ROOT}/exp_data/<project_id>/<experiment_id>
+     */
+    @Column(name = "EXPERIMENT_LOCAL_DIR")
+    private String experimentLocalDir;
+
+    /**
      * 实验序号，用于辅助复制实验时的新名称后缀编号
      */
     @Column(name = "SEQUENCE")
@@ -211,6 +227,58 @@ public class EmExperiment implements Serializable {
      */
     public void setFlowId(Long flowId) {
         this.flowId = flowId;
+    }
+
+    /**
+     * 获取DFS实验目录
+            
+            ${HDFS_SITE}/${DFS_WORK_ROOT}/exp_data/<project_id>/<experiment_id>
+     *
+     * @return EXPERIMENT_DFS_DIR - DFS实验目录
+            
+            ${HDFS_SITE}/${DFS_WORK_ROOT}/exp_data/<project_id>/<experiment_id>
+     */
+    public String getExperimentDfsDir() {
+        return experimentDfsDir;
+    }
+
+    /**
+     * 设置DFS实验目录
+            
+            ${HDFS_SITE}/${DFS_WORK_ROOT}/exp_data/<project_id>/<experiment_id>
+     *
+     * @param experimentDfsDir DFS实验目录
+            
+            ${HDFS_SITE}/${DFS_WORK_ROOT}/exp_data/<project_id>/<experiment_id>
+     */
+    public void setExperimentDfsDir(String experimentDfsDir) {
+        this.experimentDfsDir = experimentDfsDir == null ? null : experimentDfsDir.trim();
+    }
+
+    /**
+     * 获取本地实验目录
+            
+            ${LOCAL_WORK_ROOT}/exp_data/<project_id>/<experiment_id>
+     *
+     * @return EXPERIMENT_LOCAL_DIR - 本地实验目录
+            
+            ${LOCAL_WORK_ROOT}/exp_data/<project_id>/<experiment_id>
+     */
+    public String getExperimentLocalDir() {
+        return experimentLocalDir;
+    }
+
+    /**
+     * 设置本地实验目录
+            
+            ${LOCAL_WORK_ROOT}/exp_data/<project_id>/<experiment_id>
+     *
+     * @param experimentLocalDir 本地实验目录
+            
+            ${LOCAL_WORK_ROOT}/exp_data/<project_id>/<experiment_id>
+     */
+    public void setExperimentLocalDir(String experimentLocalDir) {
+        this.experimentLocalDir = experimentLocalDir == null ? null : experimentLocalDir.trim();
     }
 
     /**
@@ -383,6 +451,8 @@ public class EmExperiment implements Serializable {
             && (this.getMainExperimentId() == null ? other.getMainExperimentId() == null : this.getMainExperimentId().equals(other.getMainExperimentId()))
             && (this.getOwnerProjectId() == null ? other.getOwnerProjectId() == null : this.getOwnerProjectId().equals(other.getOwnerProjectId()))
             && (this.getFlowId() == null ? other.getFlowId() == null : this.getFlowId().equals(other.getFlowId()))
+            && (this.getExperimentDfsDir() == null ? other.getExperimentDfsDir() == null : this.getExperimentDfsDir().equals(other.getExperimentDfsDir()))
+            && (this.getExperimentLocalDir() == null ? other.getExperimentLocalDir() == null : this.getExperimentLocalDir().equals(other.getExperimentLocalDir()))
             && (this.getSequence() == null ? other.getSequence() == null : this.getSequence().equals(other.getSequence()))
             && (this.getSummary() == null ? other.getSummary() == null : this.getSummary().equals(other.getSummary()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
@@ -403,6 +473,8 @@ public class EmExperiment implements Serializable {
         result = prime * result + ((getMainExperimentId() == null) ? 0 : getMainExperimentId().hashCode());
         result = prime * result + ((getOwnerProjectId() == null) ? 0 : getOwnerProjectId().hashCode());
         result = prime * result + ((getFlowId() == null) ? 0 : getFlowId().hashCode());
+        result = prime * result + ((getExperimentDfsDir() == null) ? 0 : getExperimentDfsDir().hashCode());
+        result = prime * result + ((getExperimentLocalDir() == null) ? 0 : getExperimentLocalDir().hashCode());
         result = prime * result + ((getSequence() == null) ? 0 : getSequence().hashCode());
         result = prime * result + ((getSummary() == null) ? 0 : getSummary().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());

@@ -63,12 +63,20 @@ public class CfCmptChar implements Serializable {
      * 特征值来源
             0：计算组件规格
             1：计算组件
-            2：工作流节点
+            2：工作流节点（仅限组件参数、执行调优、输入输出）
             
             注意，仅限在正确的地方配置特征值有效，否则无效，未配置则使用默认值
      */
     @Column(name = "VALUE_SRC")
     private Integer valueSrc;
+
+    /**
+     * 允许设置为全局变量
+            0：否
+            1：是
+     */
+    @Column(name = "ALLOW_GLOBAL")
+    private Integer allowGlobal;
 
     /**
      * 特征值是否必须设置
@@ -81,9 +89,11 @@ public class CfCmptChar implements Serializable {
     /**
      * 特征值是否受限定
             0：否
-            1：开区间方式限定，限数值和日期类型
-            2：闭区间方式限定，限数值和日期类型
-            3：枚举方式限定
+            1：枚举方式限定
+            2：开区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            3：闭区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            4：左开右闭方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            5：左闭右开方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
      */
     @Column(name = "IS_LIMITED")
     private Integer isLimited;
@@ -328,14 +338,14 @@ public class CfCmptChar implements Serializable {
      * 获取特征值来源
             0：计算组件规格
             1：计算组件
-            2：工作流节点
+            2：工作流节点（仅限组件参数、执行调优、输入输出）
             
             注意，仅限在正确的地方配置特征值有效，否则无效，未配置则使用默认值
      *
      * @return VALUE_SRC - 特征值来源
             0：计算组件规格
             1：计算组件
-            2：工作流节点
+            2：工作流节点（仅限组件参数、执行调优、输入输出）
             
             注意，仅限在正确的地方配置特征值有效，否则无效，未配置则使用默认值
      */
@@ -347,19 +357,45 @@ public class CfCmptChar implements Serializable {
      * 设置特征值来源
             0：计算组件规格
             1：计算组件
-            2：工作流节点
+            2：工作流节点（仅限组件参数、执行调优、输入输出）
             
             注意，仅限在正确的地方配置特征值有效，否则无效，未配置则使用默认值
      *
      * @param valueSrc 特征值来源
             0：计算组件规格
             1：计算组件
-            2：工作流节点
+            2：工作流节点（仅限组件参数、执行调优、输入输出）
             
             注意，仅限在正确的地方配置特征值有效，否则无效，未配置则使用默认值
      */
     public void setValueSrc(Integer valueSrc) {
         this.valueSrc = valueSrc;
+    }
+
+    /**
+     * 获取允许设置为全局变量
+            0：否
+            1：是
+     *
+     * @return ALLOW_GLOBAL - 允许设置为全局变量
+            0：否
+            1：是
+     */
+    public Integer getAllowGlobal() {
+        return allowGlobal;
+    }
+
+    /**
+     * 设置允许设置为全局变量
+            0：否
+            1：是
+     *
+     * @param allowGlobal 允许设置为全局变量
+            0：否
+            1：是
+     */
+    public void setAllowGlobal(Integer allowGlobal) {
+        this.allowGlobal = allowGlobal;
     }
 
     /**
@@ -391,15 +427,19 @@ public class CfCmptChar implements Serializable {
     /**
      * 获取特征值是否受限定
             0：否
-            1：开区间方式限定，限数值和日期类型
-            2：闭区间方式限定，限数值和日期类型
-            3：枚举方式限定
+            1：枚举方式限定
+            2：开区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            3：闭区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            4：左开右闭方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            5：左闭右开方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
      *
      * @return IS_LIMITED - 特征值是否受限定
             0：否
-            1：开区间方式限定，限数值和日期类型
-            2：闭区间方式限定，限数值和日期类型
-            3：枚举方式限定
+            1：枚举方式限定
+            2：开区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            3：闭区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            4：左开右闭方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            5：左闭右开方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
      */
     public Integer getIsLimited() {
         return isLimited;
@@ -408,15 +448,19 @@ public class CfCmptChar implements Serializable {
     /**
      * 设置特征值是否受限定
             0：否
-            1：开区间方式限定，限数值和日期类型
-            2：闭区间方式限定，限数值和日期类型
-            3：枚举方式限定
+            1：枚举方式限定
+            2：开区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            3：闭区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            4：左开右闭方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            5：左闭右开方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
      *
      * @param isLimited 特征值是否受限定
             0：否
-            1：开区间方式限定，限数值和日期类型
-            2：闭区间方式限定，限数值和日期类型
-            3：枚举方式限定
+            1：枚举方式限定
+            2：开区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            3：闭区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            4：左开右闭方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
+            5：左闭右开方式限定，限数值和日期类型，结合最大值和最小值构成区间范围
      */
     public void setIsLimited(Integer isLimited) {
         this.isLimited = isLimited;
@@ -629,6 +673,7 @@ public class CfCmptChar implements Serializable {
             && (this.getSpecType() == null ? other.getSpecType() == null : this.getSpecType().equals(other.getSpecType()))
             && (this.getCharType() == null ? other.getCharType() == null : this.getCharType().equals(other.getCharType()))
             && (this.getValueSrc() == null ? other.getValueSrc() == null : this.getValueSrc().equals(other.getValueSrc()))
+            && (this.getAllowGlobal() == null ? other.getAllowGlobal() == null : this.getAllowGlobal().equals(other.getAllowGlobal()))
             && (this.getIsRequired() == null ? other.getIsRequired() == null : this.getIsRequired().equals(other.getIsRequired()))
             && (this.getIsLimited() == null ? other.getIsLimited() == null : this.getIsLimited().equals(other.getIsLimited()))
             && (this.getStepSize() == null ? other.getStepSize() == null : this.getStepSize().equals(other.getStepSize()))
@@ -654,6 +699,7 @@ public class CfCmptChar implements Serializable {
         result = prime * result + ((getSpecType() == null) ? 0 : getSpecType().hashCode());
         result = prime * result + ((getCharType() == null) ? 0 : getCharType().hashCode());
         result = prime * result + ((getValueSrc() == null) ? 0 : getValueSrc().hashCode());
+        result = prime * result + ((getAllowGlobal() == null) ? 0 : getAllowGlobal().hashCode());
         result = prime * result + ((getIsRequired() == null) ? 0 : getIsRequired().hashCode());
         result = prime * result + ((getIsLimited() == null) ? 0 : getIsLimited().hashCode());
         result = prime * result + ((getStepSize() == null) ? 0 : getStepSize().hashCode());

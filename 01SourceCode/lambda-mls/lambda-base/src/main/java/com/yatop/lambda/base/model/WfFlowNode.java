@@ -20,6 +20,12 @@ public class WfFlowNode implements Serializable {
     private String nodeName;
 
     /**
+     * 所属项目ID
+     */
+    @Column(name = "OWNER_PROJECT_ID")
+    private Long ownerProjectId;
+
+    /**
      * 所属工作流ID，无关联实验设为-1
      */
     @Column(name = "OWNER_FLOW_ID")
@@ -54,6 +60,12 @@ public class WfFlowNode implements Serializable {
      */
     @Column(name = "LAST_TASK_ID")
     private Long lastTaskId;
+
+    /**
+     * 警告消息
+     */
+    @Column(name = "WARNING_MSG")
+    private String warningMsg;
 
     /**
      * 流程图节点描述
@@ -141,6 +153,24 @@ public class WfFlowNode implements Serializable {
      */
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName == null ? null : nodeName.trim();
+    }
+
+    /**
+     * 获取所属项目ID
+     *
+     * @return OWNER_PROJECT_ID - 所属项目ID
+     */
+    public Long getOwnerProjectId() {
+        return ownerProjectId;
+    }
+
+    /**
+     * 设置所属项目ID
+     *
+     * @param ownerProjectId 所属项目ID
+     */
+    public void setOwnerProjectId(Long ownerProjectId) {
+        this.ownerProjectId = ownerProjectId;
     }
 
     /**
@@ -249,6 +279,24 @@ public class WfFlowNode implements Serializable {
      */
     public void setLastTaskId(Long lastTaskId) {
         this.lastTaskId = lastTaskId;
+    }
+
+    /**
+     * 获取警告消息
+     *
+     * @return WARNING_MSG - 警告消息
+     */
+    public String getWarningMsg() {
+        return warningMsg;
+    }
+
+    /**
+     * 设置警告消息
+     *
+     * @param warningMsg 警告消息
+     */
+    public void setWarningMsg(String warningMsg) {
+        this.warningMsg = warningMsg == null ? null : warningMsg.trim();
     }
 
     /**
@@ -423,12 +471,14 @@ public class WfFlowNode implements Serializable {
         WfFlowNode other = (WfFlowNode) that;
         return (this.getNodeId() == null ? other.getNodeId() == null : this.getNodeId().equals(other.getNodeId()))
             && (this.getNodeName() == null ? other.getNodeName() == null : this.getNodeName().equals(other.getNodeName()))
+            && (this.getOwnerProjectId() == null ? other.getOwnerProjectId() == null : this.getOwnerProjectId().equals(other.getOwnerProjectId()))
             && (this.getOwnerFlowId() == null ? other.getOwnerFlowId() == null : this.getOwnerFlowId().equals(other.getOwnerFlowId()))
             && (this.getRefModuleId() == null ? other.getRefModuleId() == null : this.getRefModuleId().equals(other.getRefModuleId()))
             && (this.getPositionX() == null ? other.getPositionX() == null : this.getPositionX().equals(other.getPositionX()))
             && (this.getPositionY() == null ? other.getPositionY() == null : this.getPositionY().equals(other.getPositionY()))
             && (this.getSequence() == null ? other.getSequence() == null : this.getSequence().equals(other.getSequence()))
             && (this.getLastTaskId() == null ? other.getLastTaskId() == null : this.getLastTaskId().equals(other.getLastTaskId()))
+            && (this.getWarningMsg() == null ? other.getWarningMsg() == null : this.getWarningMsg().equals(other.getWarningMsg()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getNodeState() == null ? other.getNodeState() == null : this.getNodeState().equals(other.getNodeState()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
@@ -444,12 +494,14 @@ public class WfFlowNode implements Serializable {
         int result = 1;
         result = prime * result + ((getNodeId() == null) ? 0 : getNodeId().hashCode());
         result = prime * result + ((getNodeName() == null) ? 0 : getNodeName().hashCode());
+        result = prime * result + ((getOwnerProjectId() == null) ? 0 : getOwnerProjectId().hashCode());
         result = prime * result + ((getOwnerFlowId() == null) ? 0 : getOwnerFlowId().hashCode());
         result = prime * result + ((getRefModuleId() == null) ? 0 : getRefModuleId().hashCode());
         result = prime * result + ((getPositionX() == null) ? 0 : getPositionX().hashCode());
         result = prime * result + ((getPositionY() == null) ? 0 : getPositionY().hashCode());
         result = prime * result + ((getSequence() == null) ? 0 : getSequence().hashCode());
         result = prime * result + ((getLastTaskId() == null) ? 0 : getLastTaskId().hashCode());
+        result = prime * result + ((getWarningMsg() == null) ? 0 : getWarningMsg().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getNodeState() == null) ? 0 : getNodeState().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());

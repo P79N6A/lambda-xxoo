@@ -506,63 +506,123 @@ public class CfCmptAlgorithmExample {
             return (Criteria) this;
         }
 
-        public Criteria andOptimizeModeIsNull() {
-            addCriterion("OPTIMIZE_MODE is null");
+        public Criteria andOptimizeMethodIsNull() {
+            addCriterion("OPTIMIZE_METHOD is null");
             return (Criteria) this;
         }
 
-        public Criteria andOptimizeModeIsNotNull() {
-            addCriterion("OPTIMIZE_MODE is not null");
+        public Criteria andOptimizeMethodIsNotNull() {
+            addCriterion("OPTIMIZE_METHOD is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOptimizeModeEqualTo(Integer value) {
-            addCriterion("OPTIMIZE_MODE =", value, "optimizeMode");
+        public Criteria andOptimizeMethodEqualTo(Integer value) {
+            addCriterion("OPTIMIZE_METHOD =", value, "optimizeMethod");
             return (Criteria) this;
         }
 
-        public Criteria andOptimizeModeNotEqualTo(Integer value) {
-            addCriterion("OPTIMIZE_MODE <>", value, "optimizeMode");
+        public Criteria andOptimizeMethodNotEqualTo(Integer value) {
+            addCriterion("OPTIMIZE_METHOD <>", value, "optimizeMethod");
             return (Criteria) this;
         }
 
-        public Criteria andOptimizeModeGreaterThan(Integer value) {
-            addCriterion("OPTIMIZE_MODE >", value, "optimizeMode");
+        public Criteria andOptimizeMethodGreaterThan(Integer value) {
+            addCriterion("OPTIMIZE_METHOD >", value, "optimizeMethod");
             return (Criteria) this;
         }
 
-        public Criteria andOptimizeModeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("OPTIMIZE_MODE >=", value, "optimizeMode");
+        public Criteria andOptimizeMethodGreaterThanOrEqualTo(Integer value) {
+            addCriterion("OPTIMIZE_METHOD >=", value, "optimizeMethod");
             return (Criteria) this;
         }
 
-        public Criteria andOptimizeModeLessThan(Integer value) {
-            addCriterion("OPTIMIZE_MODE <", value, "optimizeMode");
+        public Criteria andOptimizeMethodLessThan(Integer value) {
+            addCriterion("OPTIMIZE_METHOD <", value, "optimizeMethod");
             return (Criteria) this;
         }
 
-        public Criteria andOptimizeModeLessThanOrEqualTo(Integer value) {
-            addCriterion("OPTIMIZE_MODE <=", value, "optimizeMode");
+        public Criteria andOptimizeMethodLessThanOrEqualTo(Integer value) {
+            addCriterion("OPTIMIZE_METHOD <=", value, "optimizeMethod");
             return (Criteria) this;
         }
 
-        public Criteria andOptimizeModeIn(List<Integer> values) {
-            addCriterion("OPTIMIZE_MODE in", values, "optimizeMode");
+        public Criteria andOptimizeMethodIn(List<Integer> values) {
+            addCriterion("OPTIMIZE_METHOD in", values, "optimizeMethod");
             return (Criteria) this;
         }
 
-        public Criteria andOptimizeModeNotIn(List<Integer> values) {
-            addCriterion("OPTIMIZE_MODE not in", values, "optimizeMode");
+        public Criteria andOptimizeMethodNotIn(List<Integer> values) {
+            addCriterion("OPTIMIZE_METHOD not in", values, "optimizeMethod");
             return (Criteria) this;
         }
 
-        public Criteria andOptimizeModeBetween(Integer value1, Integer value2) {
-            addCriterion("OPTIMIZE_MODE between", value1, value2, "optimizeMode");
+        public Criteria andOptimizeMethodBetween(Integer value1, Integer value2) {
+            addCriterion("OPTIMIZE_METHOD between", value1, value2, "optimizeMethod");
             return (Criteria) this;
         }
 
-        public Criteria andOptimizeModeNotBetween(Integer value1, Integer value2) {
-            addCriterion("OPTIMIZE_MODE not between", value1, value2, "optimizeMode");
+        public Criteria andOptimizeMethodNotBetween(Integer value1, Integer value2) {
+            addCriterion("OPTIMIZE_METHOD not between", value1, value2, "optimizeMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTunableIsNull() {
+            addCriterion("IS_TUNABLE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTunableIsNotNull() {
+            addCriterion("IS_TUNABLE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTunableEqualTo(Integer value) {
+            addCriterion("IS_TUNABLE =", value, "isTunable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTunableNotEqualTo(Integer value) {
+            addCriterion("IS_TUNABLE <>", value, "isTunable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTunableGreaterThan(Integer value) {
+            addCriterion("IS_TUNABLE >", value, "isTunable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTunableGreaterThanOrEqualTo(Integer value) {
+            addCriterion("IS_TUNABLE >=", value, "isTunable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTunableLessThan(Integer value) {
+            addCriterion("IS_TUNABLE <", value, "isTunable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTunableLessThanOrEqualTo(Integer value) {
+            addCriterion("IS_TUNABLE <=", value, "isTunable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTunableIn(List<Integer> values) {
+            addCriterion("IS_TUNABLE in", values, "isTunable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTunableNotIn(List<Integer> values) {
+            addCriterion("IS_TUNABLE not in", values, "isTunable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTunableBetween(Integer value1, Integer value2) {
+            addCriterion("IS_TUNABLE between", value1, value2, "isTunable");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsTunableNotBetween(Integer value1, Integer value2) {
+            addCriterion("IS_TUNABLE not between", value1, value2, "isTunable");
             return (Criteria) this;
         }
 

@@ -26,6 +26,14 @@ public class CfCmptCharType implements Serializable {
     private String charTypeName;
 
     /**
+     * 是否为组合类型
+0：否
+1：是
+     */
+    @Column(name = "IS_COMBINE")
+    private Integer isCombine;
+
+    /**
      * 描述
      */
     @Column(name = "DESCRIPTION")
@@ -117,6 +125,32 @@ public class CfCmptCharType implements Serializable {
      */
     public void setCharTypeName(String charTypeName) {
         this.charTypeName = charTypeName == null ? null : charTypeName.trim();
+    }
+
+    /**
+     * 获取是否为组合类型
+0：否
+1：是
+     *
+     * @return IS_COMBINE - 是否为组合类型
+0：否
+1：是
+     */
+    public Integer getIsCombine() {
+        return isCombine;
+    }
+
+    /**
+     * 设置是否为组合类型
+0：否
+1：是
+     *
+     * @param isCombine 是否为组合类型
+0：否
+1：是
+     */
+    public void setIsCombine(Integer isCombine) {
+        this.isCombine = isCombine;
     }
 
     /**
@@ -250,6 +284,7 @@ public class CfCmptCharType implements Serializable {
         return (this.getCharTypeId() == null ? other.getCharTypeId() == null : this.getCharTypeId().equals(other.getCharTypeId()))
             && (this.getCharTypeCode() == null ? other.getCharTypeCode() == null : this.getCharTypeCode().equals(other.getCharTypeCode()))
             && (this.getCharTypeName() == null ? other.getCharTypeName() == null : this.getCharTypeName().equals(other.getCharTypeName()))
+            && (this.getIsCombine() == null ? other.getIsCombine() == null : this.getIsCombine().equals(other.getIsCombine()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getLastUpdateTime() == null ? other.getLastUpdateTime() == null : this.getLastUpdateTime().equals(other.getLastUpdateTime()))
@@ -265,6 +300,7 @@ public class CfCmptCharType implements Serializable {
         result = prime * result + ((getCharTypeId() == null) ? 0 : getCharTypeId().hashCode());
         result = prime * result + ((getCharTypeCode() == null) ? 0 : getCharTypeCode().hashCode());
         result = prime * result + ((getCharTypeName() == null) ? 0 : getCharTypeName().hashCode());
+        result = prime * result + ((getIsCombine() == null) ? 0 : getIsCombine().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getLastUpdateTime() == null) ? 0 : getLastUpdateTime().hashCode());

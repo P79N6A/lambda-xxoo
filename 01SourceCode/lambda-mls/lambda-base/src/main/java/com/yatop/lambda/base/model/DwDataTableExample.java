@@ -426,63 +426,63 @@ public class DwDataTableExample {
             return (Criteria) this;
         }
 
-        public Criteria andRelSnapshotIdIsNull() {
-            addCriterion("REL_SNAPSHOT_ID is null");
+        public Criteria andRelJobIdIsNull() {
+            addCriterion("REL_JOB_ID is null");
             return (Criteria) this;
         }
 
-        public Criteria andRelSnapshotIdIsNotNull() {
-            addCriterion("REL_SNAPSHOT_ID is not null");
+        public Criteria andRelJobIdIsNotNull() {
+            addCriterion("REL_JOB_ID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRelSnapshotIdEqualTo(Long value) {
-            addCriterion("REL_SNAPSHOT_ID =", value, "relSnapshotId");
+        public Criteria andRelJobIdEqualTo(Long value) {
+            addCriterion("REL_JOB_ID =", value, "relJobId");
             return (Criteria) this;
         }
 
-        public Criteria andRelSnapshotIdNotEqualTo(Long value) {
-            addCriterion("REL_SNAPSHOT_ID <>", value, "relSnapshotId");
+        public Criteria andRelJobIdNotEqualTo(Long value) {
+            addCriterion("REL_JOB_ID <>", value, "relJobId");
             return (Criteria) this;
         }
 
-        public Criteria andRelSnapshotIdGreaterThan(Long value) {
-            addCriterion("REL_SNAPSHOT_ID >", value, "relSnapshotId");
+        public Criteria andRelJobIdGreaterThan(Long value) {
+            addCriterion("REL_JOB_ID >", value, "relJobId");
             return (Criteria) this;
         }
 
-        public Criteria andRelSnapshotIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("REL_SNAPSHOT_ID >=", value, "relSnapshotId");
+        public Criteria andRelJobIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("REL_JOB_ID >=", value, "relJobId");
             return (Criteria) this;
         }
 
-        public Criteria andRelSnapshotIdLessThan(Long value) {
-            addCriterion("REL_SNAPSHOT_ID <", value, "relSnapshotId");
+        public Criteria andRelJobIdLessThan(Long value) {
+            addCriterion("REL_JOB_ID <", value, "relJobId");
             return (Criteria) this;
         }
 
-        public Criteria andRelSnapshotIdLessThanOrEqualTo(Long value) {
-            addCriterion("REL_SNAPSHOT_ID <=", value, "relSnapshotId");
+        public Criteria andRelJobIdLessThanOrEqualTo(Long value) {
+            addCriterion("REL_JOB_ID <=", value, "relJobId");
             return (Criteria) this;
         }
 
-        public Criteria andRelSnapshotIdIn(List<Long> values) {
-            addCriterion("REL_SNAPSHOT_ID in", values, "relSnapshotId");
+        public Criteria andRelJobIdIn(List<Long> values) {
+            addCriterion("REL_JOB_ID in", values, "relJobId");
             return (Criteria) this;
         }
 
-        public Criteria andRelSnapshotIdNotIn(List<Long> values) {
-            addCriterion("REL_SNAPSHOT_ID not in", values, "relSnapshotId");
+        public Criteria andRelJobIdNotIn(List<Long> values) {
+            addCriterion("REL_JOB_ID not in", values, "relJobId");
             return (Criteria) this;
         }
 
-        public Criteria andRelSnapshotIdBetween(Long value1, Long value2) {
-            addCriterion("REL_SNAPSHOT_ID between", value1, value2, "relSnapshotId");
+        public Criteria andRelJobIdBetween(Long value1, Long value2) {
+            addCriterion("REL_JOB_ID between", value1, value2, "relJobId");
             return (Criteria) this;
         }
 
-        public Criteria andRelSnapshotIdNotBetween(Long value1, Long value2) {
-            addCriterion("REL_SNAPSHOT_ID not between", value1, value2, "relSnapshotId");
+        public Criteria andRelJobIdNotBetween(Long value1, Long value2) {
+            addCriterion("REL_JOB_ID not between", value1, value2, "relJobId");
             return (Criteria) this;
         }
 

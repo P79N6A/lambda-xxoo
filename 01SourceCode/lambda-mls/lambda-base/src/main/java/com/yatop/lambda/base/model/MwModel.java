@@ -16,8 +16,8 @@ public class MwModel implements Serializable {
     /**
      * 模型名称
             
-            普通模型：由字符和数字组成，无特殊字符
-            临时模型：tmp$<node_id>_<node_port_id>_<snapshot_version>
+            普通和动态模型：由字符和数字组成，无特殊字符
+            临时模型：组件名称 - 同组件节点序号 - Model [ - 评估指标 - 排名序号] - 作业ID
      */
     @Column(name = "MODEL_NAME")
     private String modelName;
@@ -25,7 +25,7 @@ public class MwModel implements Serializable {
     /**
      * 模型类型
             0：普通模型
-            1：动态模型（预留）
+            1：动态模型，由写模型组件产生，在编辑过程中创建
             2：临时模型
      */
     @Column(name = "MODEL_TYPE")
@@ -35,6 +35,7 @@ public class MwModel implements Serializable {
      * 模型来源
             0：内部生成
             1：外部导入
+            2：服务输入（不使用）
      */
     @Column(name = "MODEL_SRC")
     private Integer modelSrc;
@@ -46,10 +47,10 @@ public class MwModel implements Serializable {
     private Long ownerMwId;
 
     /**
-     * 关联快照ID，创建模型时的工作流快照，无关联则设为-1
+     * 关联作业ID，无关联则设为-1
      */
-    @Column(name = "REL_SNAPSHOT_ID")
-    private Long relSnapshotId;
+    @Column(name = "REL_JOB_ID")
+    private Long relJobId;
 
     /**
      * 关联节点ID，创建模型的工作流节点，无关联则设为-1
@@ -76,19 +77,19 @@ public class MwModel implements Serializable {
     private Long modelFileSize;
 
     /**
-     * 模型文件名，存放于模型目录下
+     * 模型文件名，普通模型存放于模型目录下，临时模型存放于作业目录下
             
-            普通模型：model_<model_id>.mdl
-            临时模型完整路径：<model_dir>/tmp/<flow_id>/<snapshot_version>/model_<model_id>.mdl
+            普通模型和动态：${MODEL_DIR}/model_<model_id>.mdl
+            临时模型：${JOB_DIR}/model_<task_id>_<model_id>.mdl
      */
     @Column(name = "MODEL_FILE")
     private String modelFile;
 
     /**
-     * 模型概要文件名，存放于模型目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息
+     * 模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息
             
-            普通模型：model_<model_dir>_summary.json
-            临时模型完整路径：<model_dir>/tmp/<flow_id>/<snapshot_version>/model_<model_id>_summary.json
+            普通和动态模型：${MODEL_DIR}/model_summary_<model_id>.json
+            临时模型：${JOB_DIR}/model_summary_<task_id>_<model_id>.json
      */
     @Column(name = "MODEL_SUMMARY_FILE")
     private String modelSummaryFile;
@@ -102,10 +103,7 @@ public class MwModel implements Serializable {
     private Integer modelState;
 
     /**
-     * 训练集数据表ID
-            
-            由于快照策略会使得工作流节点的输出模型特征值记录被置位为被拷贝过，暂时无需做任何处理
-            （关联训练集是否需要另外拷贝一份全量数据，待定）
+     * 训练集数据表ID（关联训练集是否需要另外拷贝一份全量数据，待定）
      */
     @Column(name = "TRAIN_TABLE_ID")
     private Long trainTableId;
@@ -177,13 +175,13 @@ public class MwModel implements Serializable {
     /**
      * 获取模型名称
             
-            普通模型：由字符和数字组成，无特殊字符
-            临时模型：tmp$<node_id>_<node_port_id>_<snapshot_version>
+            普通和动态模型：由字符和数字组成，无特殊字符
+            临时模型：组件名称 - 同组件节点序号 - Model [ - 评估指标 - 排名序号] - 作业ID
      *
      * @return MODEL_NAME - 模型名称
             
-            普通模型：由字符和数字组成，无特殊字符
-            临时模型：tmp$<node_id>_<node_port_id>_<snapshot_version>
+            普通和动态模型：由字符和数字组成，无特殊字符
+            临时模型：组件名称 - 同组件节点序号 - Model [ - 评估指标 - 排名序号] - 作业ID
      */
     public String getModelName() {
         return modelName;
@@ -192,13 +190,13 @@ public class MwModel implements Serializable {
     /**
      * 设置模型名称
             
-            普通模型：由字符和数字组成，无特殊字符
-            临时模型：tmp$<node_id>_<node_port_id>_<snapshot_version>
+            普通和动态模型：由字符和数字组成，无特殊字符
+            临时模型：组件名称 - 同组件节点序号 - Model [ - 评估指标 - 排名序号] - 作业ID
      *
      * @param modelName 模型名称
             
-            普通模型：由字符和数字组成，无特殊字符
-            临时模型：tmp$<node_id>_<node_port_id>_<snapshot_version>
+            普通和动态模型：由字符和数字组成，无特殊字符
+            临时模型：组件名称 - 同组件节点序号 - Model [ - 评估指标 - 排名序号] - 作业ID
      */
     public void setModelName(String modelName) {
         this.modelName = modelName == null ? null : modelName.trim();
@@ -207,12 +205,12 @@ public class MwModel implements Serializable {
     /**
      * 获取模型类型
             0：普通模型
-            1：动态模型（预留）
+            1：动态模型，由写模型组件产生，在编辑过程中创建
             2：临时模型
      *
      * @return MODEL_TYPE - 模型类型
             0：普通模型
-            1：动态模型（预留）
+            1：动态模型，由写模型组件产生，在编辑过程中创建
             2：临时模型
      */
     public Integer getModelType() {
@@ -222,12 +220,12 @@ public class MwModel implements Serializable {
     /**
      * 设置模型类型
             0：普通模型
-            1：动态模型（预留）
+            1：动态模型，由写模型组件产生，在编辑过程中创建
             2：临时模型
      *
      * @param modelType 模型类型
             0：普通模型
-            1：动态模型（预留）
+            1：动态模型，由写模型组件产生，在编辑过程中创建
             2：临时模型
      */
     public void setModelType(Integer modelType) {
@@ -238,10 +236,12 @@ public class MwModel implements Serializable {
      * 获取模型来源
             0：内部生成
             1：外部导入
+            2：服务输入（不使用）
      *
      * @return MODEL_SRC - 模型来源
             0：内部生成
             1：外部导入
+            2：服务输入（不使用）
      */
     public Integer getModelSrc() {
         return modelSrc;
@@ -251,10 +251,12 @@ public class MwModel implements Serializable {
      * 设置模型来源
             0：内部生成
             1：外部导入
+            2：服务输入（不使用）
      *
      * @param modelSrc 模型来源
             0：内部生成
             1：外部导入
+            2：服务输入（不使用）
      */
     public void setModelSrc(Integer modelSrc) {
         this.modelSrc = modelSrc;
@@ -279,21 +281,21 @@ public class MwModel implements Serializable {
     }
 
     /**
-     * 获取关联快照ID，创建模型时的工作流快照，无关联则设为-1
+     * 获取关联作业ID，无关联则设为-1
      *
-     * @return REL_SNAPSHOT_ID - 关联快照ID，创建模型时的工作流快照，无关联则设为-1
+     * @return REL_JOB_ID - 关联作业ID，无关联则设为-1
      */
-    public Long getRelSnapshotId() {
-        return relSnapshotId;
+    public Long getRelJobId() {
+        return relJobId;
     }
 
     /**
-     * 设置关联快照ID，创建模型时的工作流快照，无关联则设为-1
+     * 设置关联作业ID，无关联则设为-1
      *
-     * @param relSnapshotId 关联快照ID，创建模型时的工作流快照，无关联则设为-1
+     * @param relJobId 关联作业ID，无关联则设为-1
      */
-    public void setRelSnapshotId(Long relSnapshotId) {
-        this.relSnapshotId = relSnapshotId;
+    public void setRelJobId(Long relJobId) {
+        this.relJobId = relJobId;
     }
 
     /**
@@ -369,60 +371,60 @@ public class MwModel implements Serializable {
     }
 
     /**
-     * 获取模型文件名，存放于模型目录下
+     * 获取模型文件名，普通模型存放于模型目录下，临时模型存放于作业目录下
             
-            普通模型：model_<model_id>.mdl
-            临时模型完整路径：<model_dir>/tmp/<flow_id>/<snapshot_version>/model_<model_id>.mdl
+            普通模型和动态：${MODEL_DIR}/model_<model_id>.mdl
+            临时模型：${JOB_DIR}/model_<task_id>_<model_id>.mdl
      *
-     * @return MODEL_FILE - 模型文件名，存放于模型目录下
+     * @return MODEL_FILE - 模型文件名，普通模型存放于模型目录下，临时模型存放于作业目录下
             
-            普通模型：model_<model_id>.mdl
-            临时模型完整路径：<model_dir>/tmp/<flow_id>/<snapshot_version>/model_<model_id>.mdl
+            普通模型和动态：${MODEL_DIR}/model_<model_id>.mdl
+            临时模型：${JOB_DIR}/model_<task_id>_<model_id>.mdl
      */
     public String getModelFile() {
         return modelFile;
     }
 
     /**
-     * 设置模型文件名，存放于模型目录下
+     * 设置模型文件名，普通模型存放于模型目录下，临时模型存放于作业目录下
             
-            普通模型：model_<model_id>.mdl
-            临时模型完整路径：<model_dir>/tmp/<flow_id>/<snapshot_version>/model_<model_id>.mdl
+            普通模型和动态：${MODEL_DIR}/model_<model_id>.mdl
+            临时模型：${JOB_DIR}/model_<task_id>_<model_id>.mdl
      *
-     * @param modelFile 模型文件名，存放于模型目录下
+     * @param modelFile 模型文件名，普通模型存放于模型目录下，临时模型存放于作业目录下
             
-            普通模型：model_<model_id>.mdl
-            临时模型完整路径：<model_dir>/tmp/<flow_id>/<snapshot_version>/model_<model_id>.mdl
+            普通模型和动态：${MODEL_DIR}/model_<model_id>.mdl
+            临时模型：${JOB_DIR}/model_<task_id>_<model_id>.mdl
      */
     public void setModelFile(String modelFile) {
         this.modelFile = modelFile == null ? null : modelFile.trim();
     }
 
     /**
-     * 获取模型概要文件名，存放于模型目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息
+     * 获取模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息
             
-            普通模型：model_<model_dir>_summary.json
-            临时模型完整路径：<model_dir>/tmp/<flow_id>/<snapshot_version>/model_<model_id>_summary.json
+            普通和动态模型：${MODEL_DIR}/model_summary_<model_id>.json
+            临时模型：${JOB_DIR}/model_summary_<task_id>_<model_id>.json
      *
-     * @return MODEL_SUMMARY_FILE - 模型概要文件名，存放于模型目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息
+     * @return MODEL_SUMMARY_FILE - 模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息
             
-            普通模型：model_<model_dir>_summary.json
-            临时模型完整路径：<model_dir>/tmp/<flow_id>/<snapshot_version>/model_<model_id>_summary.json
+            普通和动态模型：${MODEL_DIR}/model_summary_<model_id>.json
+            临时模型：${JOB_DIR}/model_summary_<task_id>_<model_id>.json
      */
     public String getModelSummaryFile() {
         return modelSummaryFile;
     }
 
     /**
-     * 设置模型概要文件名，存放于模型目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息
+     * 设置模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息
             
-            普通模型：model_<model_dir>_summary.json
-            临时模型完整路径：<model_dir>/tmp/<flow_id>/<snapshot_version>/model_<model_id>_summary.json
+            普通和动态模型：${MODEL_DIR}/model_summary_<model_id>.json
+            临时模型：${JOB_DIR}/model_summary_<task_id>_<model_id>.json
      *
-     * @param modelSummaryFile 模型概要文件名，存放于模型目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息
+     * @param modelSummaryFile 模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息
             
-            普通模型：model_<model_dir>_summary.json
-            临时模型完整路径：<model_dir>/tmp/<flow_id>/<snapshot_version>/model_<model_id>_summary.json
+            普通和动态模型：${MODEL_DIR}/model_summary_<model_id>.json
+            临时模型：${JOB_DIR}/model_summary_<task_id>_<model_id>.json
      */
     public void setModelSummaryFile(String modelSummaryFile) {
         this.modelSummaryFile = modelSummaryFile == null ? null : modelSummaryFile.trim();
@@ -455,30 +457,18 @@ public class MwModel implements Serializable {
     }
 
     /**
-     * 获取训练集数据表ID
-            
-            由于快照策略会使得工作流节点的输出模型特征值记录被置位为被拷贝过，暂时无需做任何处理
-            （关联训练集是否需要另外拷贝一份全量数据，待定）
+     * 获取训练集数据表ID（关联训练集是否需要另外拷贝一份全量数据，待定）
      *
-     * @return TRAIN_TABLE_ID - 训练集数据表ID
-            
-            由于快照策略会使得工作流节点的输出模型特征值记录被置位为被拷贝过，暂时无需做任何处理
-            （关联训练集是否需要另外拷贝一份全量数据，待定）
+     * @return TRAIN_TABLE_ID - 训练集数据表ID（关联训练集是否需要另外拷贝一份全量数据，待定）
      */
     public Long getTrainTableId() {
         return trainTableId;
     }
 
     /**
-     * 设置训练集数据表ID
-            
-            由于快照策略会使得工作流节点的输出模型特征值记录被置位为被拷贝过，暂时无需做任何处理
-            （关联训练集是否需要另外拷贝一份全量数据，待定）
+     * 设置训练集数据表ID（关联训练集是否需要另外拷贝一份全量数据，待定）
      *
-     * @param trainTableId 训练集数据表ID
-            
-            由于快照策略会使得工作流节点的输出模型特征值记录被置位为被拷贝过，暂时无需做任何处理
-            （关联训练集是否需要另外拷贝一份全量数据，待定）
+     * @param trainTableId 训练集数据表ID（关联训练集是否需要另外拷贝一份全量数据，待定）
      */
     public void setTrainTableId(Long trainTableId) {
         this.trainTableId = trainTableId;
@@ -635,7 +625,7 @@ public class MwModel implements Serializable {
             && (this.getModelType() == null ? other.getModelType() == null : this.getModelType().equals(other.getModelType()))
             && (this.getModelSrc() == null ? other.getModelSrc() == null : this.getModelSrc().equals(other.getModelSrc()))
             && (this.getOwnerMwId() == null ? other.getOwnerMwId() == null : this.getOwnerMwId().equals(other.getOwnerMwId()))
-            && (this.getRelSnapshotId() == null ? other.getRelSnapshotId() == null : this.getRelSnapshotId().equals(other.getRelSnapshotId()))
+            && (this.getRelJobId() == null ? other.getRelJobId() == null : this.getRelJobId().equals(other.getRelJobId()))
             && (this.getRelNodeId() == null ? other.getRelNodeId() == null : this.getRelNodeId().equals(other.getRelNodeId()))
             && (this.getRelCharId() == null ? other.getRelCharId() == null : this.getRelCharId().equals(other.getRelCharId()))
             && (this.getRefAlgorithmId() == null ? other.getRefAlgorithmId() == null : this.getRefAlgorithmId().equals(other.getRefAlgorithmId()))
@@ -662,7 +652,7 @@ public class MwModel implements Serializable {
         result = prime * result + ((getModelType() == null) ? 0 : getModelType().hashCode());
         result = prime * result + ((getModelSrc() == null) ? 0 : getModelSrc().hashCode());
         result = prime * result + ((getOwnerMwId() == null) ? 0 : getOwnerMwId().hashCode());
-        result = prime * result + ((getRelSnapshotId() == null) ? 0 : getRelSnapshotId().hashCode());
+        result = prime * result + ((getRelJobId() == null) ? 0 : getRelJobId().hashCode());
         result = prime * result + ((getRelNodeId() == null) ? 0 : getRelNodeId().hashCode());
         result = prime * result + ((getRelCharId() == null) ? 0 : getRelCharId().hashCode());
         result = prime * result + ((getRefAlgorithmId() == null) ? 0 : getRefAlgorithmId().hashCode());

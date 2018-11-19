@@ -576,6 +576,66 @@ public class CfCmptCharExample {
             return (Criteria) this;
         }
 
+        public Criteria andAllowGlobalIsNull() {
+            addCriterion("ALLOW_GLOBAL is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllowGlobalIsNotNull() {
+            addCriterion("ALLOW_GLOBAL is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllowGlobalEqualTo(Integer value) {
+            addCriterion("ALLOW_GLOBAL =", value, "allowGlobal");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllowGlobalNotEqualTo(Integer value) {
+            addCriterion("ALLOW_GLOBAL <>", value, "allowGlobal");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllowGlobalGreaterThan(Integer value) {
+            addCriterion("ALLOW_GLOBAL >", value, "allowGlobal");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllowGlobalGreaterThanOrEqualTo(Integer value) {
+            addCriterion("ALLOW_GLOBAL >=", value, "allowGlobal");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllowGlobalLessThan(Integer value) {
+            addCriterion("ALLOW_GLOBAL <", value, "allowGlobal");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllowGlobalLessThanOrEqualTo(Integer value) {
+            addCriterion("ALLOW_GLOBAL <=", value, "allowGlobal");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllowGlobalIn(List<Integer> values) {
+            addCriterion("ALLOW_GLOBAL in", values, "allowGlobal");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllowGlobalNotIn(List<Integer> values) {
+            addCriterion("ALLOW_GLOBAL not in", values, "allowGlobal");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllowGlobalBetween(Integer value1, Integer value2) {
+            addCriterion("ALLOW_GLOBAL between", value1, value2, "allowGlobal");
+            return (Criteria) this;
+        }
+
+        public Criteria andAllowGlobalNotBetween(Integer value1, Integer value2) {
+            addCriterion("ALLOW_GLOBAL not between", value1, value2, "allowGlobal");
+            return (Criteria) this;
+        }
+
         public Criteria andIsRequiredIsNull() {
             addCriterion("IS_REQUIRED is null");
             return (Criteria) this;

@@ -27,13 +27,15 @@ public class CfCmptAlgorithm implements Serializable {
 
     /**
      * 算法类型
-            1：One-Classification，单分类算法
-            2：Binary-Classification，二分类算法
-            3：Multiple-Classification，多分类算法
-            4：Clustering，聚类算法
-            5：Regression，回归算法
-            
-            //更多算法类型在后续组件开发中确定
+1：One Class Classfication(Anomaly Detection)，异常检测算法
+2：Binary Class Classification，二分类算法
+3：Multiple Class Classification，多分类算法
+4：Clustering，聚类算法
+5：Regression，回归算法
+6：Association Rules，关联规则算法
+7：Collaborative filtering，协同过滤算法
+
+//更多算法类型在后续组件开发中确定
      */
     @Column(name = "ALGORITHM_TYPE")
     private Integer algorithmType;
@@ -46,21 +48,35 @@ public class CfCmptAlgorithm implements Serializable {
 
     /**
      * 算法学习方式（预留）
-            0：Supervised Learning，有监督学习
-            1：Unsupervised Learning，无监督学习
-            2：Semi-Supervised Learning，半监督学习
+            1：Supervised Learning，有监督学习
+            2：Unsupervised Learning，无监督学习
+            3：Semi-Supervised Learning，半监督学习
      */
     @Column(name = "LEARNING_MODE")
     private Integer learningMode;
 
     /**
-     * 算法最优化方式（预留）
-            0：Full-batch Learning，全批量学习
-            1：Mini-batch Learning，小批量学习
-            2：Online Learning，在线学习
+     * 算法最优化方法（预留）
+0：unknown
+1：批量梯度下降法
+2：随机梯度下降法
+3：mini-batch梯度下降法
+4：牛顿法
+5：拟牛顿法
+6：共轭梯度法
+7：启发式优化方法
+8：拉格朗日乘数法
      */
-    @Column(name = "OPTIMIZE_MODE")
-    private Integer optimizeMode;
+    @Column(name = "OPTIMIZE_METHOD")
+    private Integer optimizeMethod;
+
+    /**
+     * 是否可调参
+            0：否
+            1：是
+     */
+    @Column(name = "IS_TUNABLE")
+    private Integer isTunable;
 
     /**
      * 描述
@@ -158,22 +174,26 @@ public class CfCmptAlgorithm implements Serializable {
 
     /**
      * 获取算法类型
-            1：One-Classification，单分类算法
-            2：Binary-Classification，二分类算法
-            3：Multiple-Classification，多分类算法
-            4：Clustering，聚类算法
-            5：Regression，回归算法
-            
-            //更多算法类型在后续组件开发中确定
+1：One Class Classfication(Anomaly Detection)，异常检测算法
+2：Binary Class Classification，二分类算法
+3：Multiple Class Classification，多分类算法
+4：Clustering，聚类算法
+5：Regression，回归算法
+6：Association Rules，关联规则算法
+7：Collaborative filtering，协同过滤算法
+
+//更多算法类型在后续组件开发中确定
      *
      * @return ALGORITHM_TYPE - 算法类型
-            1：One-Classification，单分类算法
-            2：Binary-Classification，二分类算法
-            3：Multiple-Classification，多分类算法
-            4：Clustering，聚类算法
-            5：Regression，回归算法
-            
-            //更多算法类型在后续组件开发中确定
+1：One Class Classfication(Anomaly Detection)，异常检测算法
+2：Binary Class Classification，二分类算法
+3：Multiple Class Classification，多分类算法
+4：Clustering，聚类算法
+5：Regression，回归算法
+6：Association Rules，关联规则算法
+7：Collaborative filtering，协同过滤算法
+
+//更多算法类型在后续组件开发中确定
      */
     public Integer getAlgorithmType() {
         return algorithmType;
@@ -181,22 +201,26 @@ public class CfCmptAlgorithm implements Serializable {
 
     /**
      * 设置算法类型
-            1：One-Classification，单分类算法
-            2：Binary-Classification，二分类算法
-            3：Multiple-Classification，多分类算法
-            4：Clustering，聚类算法
-            5：Regression，回归算法
-            
-            //更多算法类型在后续组件开发中确定
+1：One Class Classfication(Anomaly Detection)，异常检测算法
+2：Binary Class Classification，二分类算法
+3：Multiple Class Classification，多分类算法
+4：Clustering，聚类算法
+5：Regression，回归算法
+6：Association Rules，关联规则算法
+7：Collaborative filtering，协同过滤算法
+
+//更多算法类型在后续组件开发中确定
      *
      * @param algorithmType 算法类型
-            1：One-Classification，单分类算法
-            2：Binary-Classification，二分类算法
-            3：Multiple-Classification，多分类算法
-            4：Clustering，聚类算法
-            5：Regression，回归算法
-            
-            //更多算法类型在后续组件开发中确定
+1：One Class Classfication(Anomaly Detection)，异常检测算法
+2：Binary Class Classification，二分类算法
+3：Multiple Class Classification，多分类算法
+4：Clustering，聚类算法
+5：Regression，回归算法
+6：Association Rules，关联规则算法
+7：Collaborative filtering，协同过滤算法
+
+//更多算法类型在后续组件开发中确定
      */
     public void setAlgorithmType(Integer algorithmType) {
         this.algorithmType = algorithmType;
@@ -222,14 +246,14 @@ public class CfCmptAlgorithm implements Serializable {
 
     /**
      * 获取算法学习方式（预留）
-            0：Supervised Learning，有监督学习
-            1：Unsupervised Learning，无监督学习
-            2：Semi-Supervised Learning，半监督学习
+            1：Supervised Learning，有监督学习
+            2：Unsupervised Learning，无监督学习
+            3：Semi-Supervised Learning，半监督学习
      *
      * @return LEARNING_MODE - 算法学习方式（预留）
-            0：Supervised Learning，有监督学习
-            1：Unsupervised Learning，无监督学习
-            2：Semi-Supervised Learning，半监督学习
+            1：Supervised Learning，有监督学习
+            2：Unsupervised Learning，无监督学习
+            3：Semi-Supervised Learning，半监督学习
      */
     public Integer getLearningMode() {
         return learningMode;
@@ -237,47 +261,97 @@ public class CfCmptAlgorithm implements Serializable {
 
     /**
      * 设置算法学习方式（预留）
-            0：Supervised Learning，有监督学习
-            1：Unsupervised Learning，无监督学习
-            2：Semi-Supervised Learning，半监督学习
+            1：Supervised Learning，有监督学习
+            2：Unsupervised Learning，无监督学习
+            3：Semi-Supervised Learning，半监督学习
      *
      * @param learningMode 算法学习方式（预留）
-            0：Supervised Learning，有监督学习
-            1：Unsupervised Learning，无监督学习
-            2：Semi-Supervised Learning，半监督学习
+            1：Supervised Learning，有监督学习
+            2：Unsupervised Learning，无监督学习
+            3：Semi-Supervised Learning，半监督学习
      */
     public void setLearningMode(Integer learningMode) {
         this.learningMode = learningMode;
     }
 
     /**
-     * 获取算法最优化方式（预留）
-            0：Full-batch Learning，全批量学习
-            1：Mini-batch Learning，小批量学习
-            2：Online Learning，在线学习
+     * 获取算法最优化方法（预留）
+0：unknown
+1：批量梯度下降法
+2：随机梯度下降法
+3：mini-batch梯度下降法
+4：牛顿法
+5：拟牛顿法
+6：共轭梯度法
+7：启发式优化方法
+8：拉格朗日乘数法
      *
-     * @return OPTIMIZE_MODE - 算法最优化方式（预留）
-            0：Full-batch Learning，全批量学习
-            1：Mini-batch Learning，小批量学习
-            2：Online Learning，在线学习
+     * @return OPTIMIZE_METHOD - 算法最优化方法（预留）
+0：unknown
+1：批量梯度下降法
+2：随机梯度下降法
+3：mini-batch梯度下降法
+4：牛顿法
+5：拟牛顿法
+6：共轭梯度法
+7：启发式优化方法
+8：拉格朗日乘数法
      */
-    public Integer getOptimizeMode() {
-        return optimizeMode;
+    public Integer getOptimizeMethod() {
+        return optimizeMethod;
     }
 
     /**
-     * 设置算法最优化方式（预留）
-            0：Full-batch Learning，全批量学习
-            1：Mini-batch Learning，小批量学习
-            2：Online Learning，在线学习
+     * 设置算法最优化方法（预留）
+0：unknown
+1：批量梯度下降法
+2：随机梯度下降法
+3：mini-batch梯度下降法
+4：牛顿法
+5：拟牛顿法
+6：共轭梯度法
+7：启发式优化方法
+8：拉格朗日乘数法
      *
-     * @param optimizeMode 算法最优化方式（预留）
-            0：Full-batch Learning，全批量学习
-            1：Mini-batch Learning，小批量学习
-            2：Online Learning，在线学习
+     * @param optimizeMethod 算法最优化方法（预留）
+0：unknown
+1：批量梯度下降法
+2：随机梯度下降法
+3：mini-batch梯度下降法
+4：牛顿法
+5：拟牛顿法
+6：共轭梯度法
+7：启发式优化方法
+8：拉格朗日乘数法
      */
-    public void setOptimizeMode(Integer optimizeMode) {
-        this.optimizeMode = optimizeMode;
+    public void setOptimizeMethod(Integer optimizeMethod) {
+        this.optimizeMethod = optimizeMethod;
+    }
+
+    /**
+     * 获取是否可调参
+            0：否
+            1：是
+     *
+     * @return IS_TUNABLE - 是否可调参
+            0：否
+            1：是
+     */
+    public Integer getIsTunable() {
+        return isTunable;
+    }
+
+    /**
+     * 设置是否可调参
+            0：否
+            1：是
+     *
+     * @param isTunable 是否可调参
+            0：否
+            1：是
+     */
+    public void setIsTunable(Integer isTunable) {
+        this.isTunable = isTunable;
     }
 
     /**
@@ -414,7 +488,8 @@ public class CfCmptAlgorithm implements Serializable {
             && (this.getAlgorithmType() == null ? other.getAlgorithmType() == null : this.getAlgorithmType().equals(other.getAlgorithmType()))
             && (this.getAlgorithmLabels() == null ? other.getAlgorithmLabels() == null : this.getAlgorithmLabels().equals(other.getAlgorithmLabels()))
             && (this.getLearningMode() == null ? other.getLearningMode() == null : this.getLearningMode().equals(other.getLearningMode()))
-            && (this.getOptimizeMode() == null ? other.getOptimizeMode() == null : this.getOptimizeMode().equals(other.getOptimizeMode()))
+            && (this.getOptimizeMethod() == null ? other.getOptimizeMethod() == null : this.getOptimizeMethod().equals(other.getOptimizeMethod()))
+            && (this.getIsTunable() == null ? other.getIsTunable() == null : this.getIsTunable().equals(other.getIsTunable()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getLastUpdateTime() == null ? other.getLastUpdateTime() == null : this.getLastUpdateTime().equals(other.getLastUpdateTime()))
@@ -433,7 +508,8 @@ public class CfCmptAlgorithm implements Serializable {
         result = prime * result + ((getAlgorithmType() == null) ? 0 : getAlgorithmType().hashCode());
         result = prime * result + ((getAlgorithmLabels() == null) ? 0 : getAlgorithmLabels().hashCode());
         result = prime * result + ((getLearningMode() == null) ? 0 : getLearningMode().hashCode());
-        result = prime * result + ((getOptimizeMode() == null) ? 0 : getOptimizeMode().hashCode());
+        result = prime * result + ((getOptimizeMethod() == null) ? 0 : getOptimizeMethod().hashCode());
+        result = prime * result + ((getIsTunable() == null) ? 0 : getIsTunable().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getLastUpdateTime() == null) ? 0 : getLastUpdateTime().hashCode());

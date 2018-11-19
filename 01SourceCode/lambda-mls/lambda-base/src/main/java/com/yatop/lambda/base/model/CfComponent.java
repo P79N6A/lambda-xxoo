@@ -18,6 +18,12 @@ public class CfComponent implements Serializable {
             深度学习组件ID范围：DL@COM-[0000 ~ 9999]
             文本分析组件ID范围：TA@COM-[0000 ~ 9999]
             网络分析组件ID范围：NA@COM-[0000 ~ 9999]
+            时间序列组件ID范围：TS@COM-[0000 ~ 9999]
+            在线服务组件ID范围：OS@COM-[0000 ~ 9999]
+            业务场景组件ID范围：BS@COM-[0000 ~ 9999]
+            深度学习组件ID范围：DL@COM-[0000 ~ 9999]
+            文本分析组件ID范围：TA@COM-[0000 ~ 9999]
+            网络分析组件ID范围：NA@COM-[0000 ~ 9999]
             
      */
     @Id
@@ -47,6 +53,9 @@ public class CfComponent implements Serializable {
             6：深度学习组件
             7：文本分析组件
             8：网络分析组件
+            9：时间序列组件
+            10：在线服务组件
+            11：业务场景组件
      */
     @Column(name = "CMPT_TYPE")
     private Integer cmptType;
@@ -115,6 +124,12 @@ public class CfComponent implements Serializable {
             深度学习组件ID范围：DL@COM-[0000 ~ 9999]
             文本分析组件ID范围：TA@COM-[0000 ~ 9999]
             网络分析组件ID范围：NA@COM-[0000 ~ 9999]
+            时间序列组件ID范围：TS@COM-[0000 ~ 9999]
+            在线服务组件ID范围：OS@COM-[0000 ~ 9999]
+            业务场景组件ID范围：BS@COM-[0000 ~ 9999]
+            深度学习组件ID范围：DL@COM-[0000 ~ 9999]
+            文本分析组件ID范围：TA@COM-[0000 ~ 9999]
+            网络分析组件ID范围：NA@COM-[0000 ~ 9999]
             
      *
      * @return CMPT_ID - 组件ID，长度限制20
@@ -125,6 +140,12 @@ public class CfComponent implements Serializable {
             特征工程组件ID范围：FE@COM-[0000 ~ 9999]
             统计分析组件ID范围：SA@COM-[0000 ~ 9999]
             机器学习组件ID范围：ML@COM-[0000 ~ 9999]
+            深度学习组件ID范围：DL@COM-[0000 ~ 9999]
+            文本分析组件ID范围：TA@COM-[0000 ~ 9999]
+            网络分析组件ID范围：NA@COM-[0000 ~ 9999]
+            时间序列组件ID范围：TS@COM-[0000 ~ 9999]
+            在线服务组件ID范围：OS@COM-[0000 ~ 9999]
+            业务场景组件ID范围：BS@COM-[0000 ~ 9999]
             深度学习组件ID范围：DL@COM-[0000 ~ 9999]
             文本分析组件ID范围：TA@COM-[0000 ~ 9999]
             网络分析组件ID范围：NA@COM-[0000 ~ 9999]
@@ -146,6 +167,12 @@ public class CfComponent implements Serializable {
             深度学习组件ID范围：DL@COM-[0000 ~ 9999]
             文本分析组件ID范围：TA@COM-[0000 ~ 9999]
             网络分析组件ID范围：NA@COM-[0000 ~ 9999]
+            时间序列组件ID范围：TS@COM-[0000 ~ 9999]
+            在线服务组件ID范围：OS@COM-[0000 ~ 9999]
+            业务场景组件ID范围：BS@COM-[0000 ~ 9999]
+            深度学习组件ID范围：DL@COM-[0000 ~ 9999]
+            文本分析组件ID范围：TA@COM-[0000 ~ 9999]
+            网络分析组件ID范围：NA@COM-[0000 ~ 9999]
             
      *
      * @param cmptId 组件ID，长度限制20
@@ -156,6 +183,12 @@ public class CfComponent implements Serializable {
             特征工程组件ID范围：FE@COM-[0000 ~ 9999]
             统计分析组件ID范围：SA@COM-[0000 ~ 9999]
             机器学习组件ID范围：ML@COM-[0000 ~ 9999]
+            深度学习组件ID范围：DL@COM-[0000 ~ 9999]
+            文本分析组件ID范围：TA@COM-[0000 ~ 9999]
+            网络分析组件ID范围：NA@COM-[0000 ~ 9999]
+            时间序列组件ID范围：TS@COM-[0000 ~ 9999]
+            在线服务组件ID范围：OS@COM-[0000 ~ 9999]
+            业务场景组件ID范围：BS@COM-[0000 ~ 9999]
             深度学习组件ID范围：DL@COM-[0000 ~ 9999]
             文本分析组件ID范围：TA@COM-[0000 ~ 9999]
             网络分析组件ID范围：NA@COM-[0000 ~ 9999]
@@ -212,6 +245,9 @@ public class CfComponent implements Serializable {
             6：深度学习组件
             7：文本分析组件
             8：网络分析组件
+            9：时间序列组件
+            10：在线服务组件
+            11：业务场景组件
      *
      * @return CMPT_TYPE - 组件种类
             0：输入输出组件
@@ -223,6 +259,9 @@ public class CfComponent implements Serializable {
             6：深度学习组件
             7：文本分析组件
             8：网络分析组件
+            9：时间序列组件
+            10：在线服务组件
+            11：业务场景组件
      */
     public Integer getCmptType() {
         return cmptType;
@@ -239,6 +278,9 @@ public class CfComponent implements Serializable {
             6：深度学习组件
             7：文本分析组件
             8：网络分析组件
+            9：时间序列组件
+            10：在线服务组件
+            11：业务场景组件
      *
      * @param cmptType 组件种类
             0：输入输出组件
@@ -250,6 +292,9 @@ public class CfComponent implements Serializable {
             6：深度学习组件
             7：文本分析组件
             8：网络分析组件
+            9：时间序列组件
+            10：在线服务组件
+            11：业务场景组件
      */
     public void setCmptType(Integer cmptType) {
         this.cmptType = cmptType;

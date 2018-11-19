@@ -16,29 +16,37 @@ public class WfJsonObject implements Serializable {
     /**
      * 对象名称
             
-            字段列表
-            schema_<node_id>_<node_port_id>
-            
-            输出内容
-            output_<node_id>_<node_port_id>_<snapshot_version>
-            
-            节点参数 （预留）
-            param_<node_id>_<char_id>_<snapshot_version> 
+            普通对象：object_<node_id>_<char_id>_<snapshot_version> 
+            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>
+            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>
+            统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>
+            自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>
+            生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>
+            输出端口schema：outport_schema_<node_id>_<char_id>_<snapshot_version>
      */
     @Column(name = "OBJECT_NAME")
     private String objectName;
 
     /**
      * 对象类型
-            0：普通对象（暂无）
-            1：模型参数（未训练模型）
-            2：模型评估报告
-            3：统计分析报告
-            4：智能规则（预留）
-            5：表schema
+            0：普通对象（仅存放于OBJECT_DATA）
+            1：算法参数（输出内容，正常存放于OBJECT_DATA）
+            2：模型评估报告（输出内容，正常存放于OBJECT_DATA）
+            3：统计分析报告（输出内容，正常存放于OBJECT_DATA）
+            4：自动调参报告（输出内容，正常存放位置待定）
+            5：生成规则报告（输出内容，正常存放位置待定）
+            99：输出端口schema（端口信息，字段数量不超过2000存放于OBJECT_DATA）
      */
     @Column(name = "OBJECTY_TYPE")
     private Integer objectyType;
+
+    /**
+     * 对象来源
+            0：作业运行
+            1：实验编辑
+     */
+    @Column(name = "OBJECT_SRC")
+    private Integer objectSrc;
 
     /**
      * 所属项目ID
@@ -47,10 +55,22 @@ public class WfJsonObject implements Serializable {
     private Long ownerProjectId;
 
     /**
-     * 关联快照ID，创建脚本时的工作流快照，无关联则设为-1
+     * 关联工作流ID，无关联工作流设为-1
      */
-    @Column(name = "REL_SNAPSHOT_ID")
-    private Long relSnapshotId;
+    @Column(name = "REL_FLOW_ID")
+    private Long relFlowId;
+
+    /**
+     * 关联快照版本，取FLOW表的NEXT_SNAPSHOT_VERSION值，无关联则设为-1
+     */
+    @Column(name = "REL_SNAPSHOT_VERSION")
+    private Long relSnapshotVersion;
+
+    /**
+     * 关联作业ID，无关联则设为-1
+     */
+    @Column(name = "REL_JOB_ID")
+    private Long relJobId;
 
     /**
      * 关联节点ID，创建脚本的工作流节点，无关联则设为-1
@@ -66,6 +86,7 @@ public class WfJsonObject implements Serializable {
 
     /**
      * 存储位置
+            
             0：OBJECT_DATA字段
             1：文件系统
      */
@@ -73,11 +94,14 @@ public class WfJsonObject implements Serializable {
     private Integer storageLocation;
 
     /**
-     * JSON文件路径（预留）
+     * 对象文件名
             
-            视具体来源决定存储位置
-            ${HDFS_SITE}/${DFS_WORK_ROOT}/json_data/<project_id>/<experiment_id>/
-            ${LOCAL_WORK_ROOT}/json_data/<project_id>/<experiment_id>/
+            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json
+            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json
+            统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json
+            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json
+            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json
+            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json
      */
     @Column(name = "OBJECT_FILE")
     private String objectFile;
@@ -126,7 +150,7 @@ public class WfJsonObject implements Serializable {
      * JSON数据
      */
     @Column(name = "OBJECT_DATA")
-    private byte[] objectData;
+    private String objectData;
 
     private static final long serialVersionUID = 1L;
 
@@ -151,25 +175,23 @@ public class WfJsonObject implements Serializable {
     /**
      * 获取对象名称
             
-            字段列表
-            schema_<node_id>_<node_port_id>
-            
-            输出内容
-            output_<node_id>_<node_port_id>_<snapshot_version>
-            
-            节点参数 （预留）
-            param_<node_id>_<char_id>_<snapshot_version> 
+            普通对象：object_<node_id>_<char_id>_<snapshot_version> 
+            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>
+            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>
+            统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>
+            自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>
+            生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>
+            输出端口schema：outport_schema_<node_id>_<char_id>_<snapshot_version>
      *
      * @return OBJECT_NAME - 对象名称
             
-            字段列表
-            schema_<node_id>_<node_port_id>
-            
-            输出内容
-            output_<node_id>_<node_port_id>_<snapshot_version>
-            
-            节点参数 （预留）
-            param_<node_id>_<char_id>_<snapshot_version> 
+            普通对象：object_<node_id>_<char_id>_<snapshot_version> 
+            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>
+            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>
+            统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>
+            自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>
+            生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>
+            输出端口schema：outport_schema_<node_id>_<char_id>_<snapshot_version>
      */
     public String getObjectName() {
         return objectName;
@@ -178,25 +200,23 @@ public class WfJsonObject implements Serializable {
     /**
      * 设置对象名称
             
-            字段列表
-            schema_<node_id>_<node_port_id>
-            
-            输出内容
-            output_<node_id>_<node_port_id>_<snapshot_version>
-            
-            节点参数 （预留）
-            param_<node_id>_<char_id>_<snapshot_version> 
+            普通对象：object_<node_id>_<char_id>_<snapshot_version> 
+            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>
+            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>
+            统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>
+            自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>
+            生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>
+            输出端口schema：outport_schema_<node_id>_<char_id>_<snapshot_version>
      *
      * @param objectName 对象名称
             
-            字段列表
-            schema_<node_id>_<node_port_id>
-            
-            输出内容
-            output_<node_id>_<node_port_id>_<snapshot_version>
-            
-            节点参数 （预留）
-            param_<node_id>_<char_id>_<snapshot_version> 
+            普通对象：object_<node_id>_<char_id>_<snapshot_version> 
+            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>
+            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>
+            统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>
+            自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>
+            生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>
+            输出端口schema：outport_schema_<node_id>_<char_id>_<snapshot_version>
      */
     public void setObjectName(String objectName) {
         this.objectName = objectName == null ? null : objectName.trim();
@@ -204,20 +224,22 @@ public class WfJsonObject implements Serializable {
 
     /**
      * 获取对象类型
-            0：普通对象（暂无）
-            1：模型参数（未训练模型）
-            2：模型评估报告
-            3：统计分析报告
-            4：智能规则（预留）
-            5：表schema
+            0：普通对象（仅存放于OBJECT_DATA）
+            1：算法参数（输出内容，正常存放于OBJECT_DATA）
+            2：模型评估报告（输出内容，正常存放于OBJECT_DATA）
+            3：统计分析报告（输出内容，正常存放于OBJECT_DATA）
+            4：自动调参报告（输出内容，正常存放位置待定）
+            5：生成规则报告（输出内容，正常存放位置待定）
+            99：输出端口schema（端口信息，字段数量不超过2000存放于OBJECT_DATA）
      *
      * @return OBJECTY_TYPE - 对象类型
-            0：普通对象（暂无）
-            1：模型参数（未训练模型）
-            2：模型评估报告
-            3：统计分析报告
-            4：智能规则（预留）
-            5：表schema
+            0：普通对象（仅存放于OBJECT_DATA）
+            1：算法参数（输出内容，正常存放于OBJECT_DATA）
+            2：模型评估报告（输出内容，正常存放于OBJECT_DATA）
+            3：统计分析报告（输出内容，正常存放于OBJECT_DATA）
+            4：自动调参报告（输出内容，正常存放位置待定）
+            5：生成规则报告（输出内容，正常存放位置待定）
+            99：输出端口schema（端口信息，字段数量不超过2000存放于OBJECT_DATA）
      */
     public Integer getObjectyType() {
         return objectyType;
@@ -225,23 +247,51 @@ public class WfJsonObject implements Serializable {
 
     /**
      * 设置对象类型
-            0：普通对象（暂无）
-            1：模型参数（未训练模型）
-            2：模型评估报告
-            3：统计分析报告
-            4：智能规则（预留）
-            5：表schema
+            0：普通对象（仅存放于OBJECT_DATA）
+            1：算法参数（输出内容，正常存放于OBJECT_DATA）
+            2：模型评估报告（输出内容，正常存放于OBJECT_DATA）
+            3：统计分析报告（输出内容，正常存放于OBJECT_DATA）
+            4：自动调参报告（输出内容，正常存放位置待定）
+            5：生成规则报告（输出内容，正常存放位置待定）
+            99：输出端口schema（端口信息，字段数量不超过2000存放于OBJECT_DATA）
      *
      * @param objectyType 对象类型
-            0：普通对象（暂无）
-            1：模型参数（未训练模型）
-            2：模型评估报告
-            3：统计分析报告
-            4：智能规则（预留）
-            5：表schema
+            0：普通对象（仅存放于OBJECT_DATA）
+            1：算法参数（输出内容，正常存放于OBJECT_DATA）
+            2：模型评估报告（输出内容，正常存放于OBJECT_DATA）
+            3：统计分析报告（输出内容，正常存放于OBJECT_DATA）
+            4：自动调参报告（输出内容，正常存放位置待定）
+            5：生成规则报告（输出内容，正常存放位置待定）
+            99：输出端口schema（端口信息，字段数量不超过2000存放于OBJECT_DATA）
      */
     public void setObjectyType(Integer objectyType) {
         this.objectyType = objectyType;
+    }
+
+    /**
+     * 获取对象来源
+            0：作业运行
+            1：实验编辑
+     *
+     * @return OBJECT_SRC - 对象来源
+            0：作业运行
+            1：实验编辑
+     */
+    public Integer getObjectSrc() {
+        return objectSrc;
+    }
+
+    /**
+     * 设置对象来源
+            0：作业运行
+            1：实验编辑
+     *
+     * @param objectSrc 对象来源
+            0：作业运行
+            1：实验编辑
+     */
+    public void setObjectSrc(Integer objectSrc) {
+        this.objectSrc = objectSrc;
     }
 
     /**
@@ -263,21 +313,57 @@ public class WfJsonObject implements Serializable {
     }
 
     /**
-     * 获取关联快照ID，创建脚本时的工作流快照，无关联则设为-1
+     * 获取关联工作流ID，无关联工作流设为-1
      *
-     * @return REL_SNAPSHOT_ID - 关联快照ID，创建脚本时的工作流快照，无关联则设为-1
+     * @return REL_FLOW_ID - 关联工作流ID，无关联工作流设为-1
      */
-    public Long getRelSnapshotId() {
-        return relSnapshotId;
+    public Long getRelFlowId() {
+        return relFlowId;
     }
 
     /**
-     * 设置关联快照ID，创建脚本时的工作流快照，无关联则设为-1
+     * 设置关联工作流ID，无关联工作流设为-1
      *
-     * @param relSnapshotId 关联快照ID，创建脚本时的工作流快照，无关联则设为-1
+     * @param relFlowId 关联工作流ID，无关联工作流设为-1
      */
-    public void setRelSnapshotId(Long relSnapshotId) {
-        this.relSnapshotId = relSnapshotId;
+    public void setRelFlowId(Long relFlowId) {
+        this.relFlowId = relFlowId;
+    }
+
+    /**
+     * 获取关联快照版本，取FLOW表的NEXT_SNAPSHOT_VERSION值，无关联则设为-1
+     *
+     * @return REL_SNAPSHOT_VERSION - 关联快照版本，取FLOW表的NEXT_SNAPSHOT_VERSION值，无关联则设为-1
+     */
+    public Long getRelSnapshotVersion() {
+        return relSnapshotVersion;
+    }
+
+    /**
+     * 设置关联快照版本，取FLOW表的NEXT_SNAPSHOT_VERSION值，无关联则设为-1
+     *
+     * @param relSnapshotVersion 关联快照版本，取FLOW表的NEXT_SNAPSHOT_VERSION值，无关联则设为-1
+     */
+    public void setRelSnapshotVersion(Long relSnapshotVersion) {
+        this.relSnapshotVersion = relSnapshotVersion;
+    }
+
+    /**
+     * 获取关联作业ID，无关联则设为-1
+     *
+     * @return REL_JOB_ID - 关联作业ID，无关联则设为-1
+     */
+    public Long getRelJobId() {
+        return relJobId;
+    }
+
+    /**
+     * 设置关联作业ID，无关联则设为-1
+     *
+     * @param relJobId 关联作业ID，无关联则设为-1
+     */
+    public void setRelJobId(Long relJobId) {
+        this.relJobId = relJobId;
     }
 
     /**
@@ -318,10 +404,12 @@ public class WfJsonObject implements Serializable {
 
     /**
      * 获取存储位置
+            
             0：OBJECT_DATA字段
             1：文件系统
      *
      * @return STORAGE_LOCATION - 存储位置
+            
             0：OBJECT_DATA字段
             1：文件系统
      */
@@ -331,10 +419,12 @@ public class WfJsonObject implements Serializable {
 
     /**
      * 设置存储位置
+            
             0：OBJECT_DATA字段
             1：文件系统
      *
      * @param storageLocation 存储位置
+            
             0：OBJECT_DATA字段
             1：文件系统
      */
@@ -343,34 +433,46 @@ public class WfJsonObject implements Serializable {
     }
 
     /**
-     * 获取JSON文件路径（预留）
+     * 获取对象文件名
             
-            视具体来源决定存储位置
-            ${HDFS_SITE}/${DFS_WORK_ROOT}/json_data/<project_id>/<experiment_id>/
-            ${LOCAL_WORK_ROOT}/json_data/<project_id>/<experiment_id>/
+            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json
+            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json
+            统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json
+            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json
+            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json
+            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json
      *
-     * @return OBJECT_FILE - JSON文件路径（预留）
+     * @return OBJECT_FILE - 对象文件名
             
-            视具体来源决定存储位置
-            ${HDFS_SITE}/${DFS_WORK_ROOT}/json_data/<project_id>/<experiment_id>/
-            ${LOCAL_WORK_ROOT}/json_data/<project_id>/<experiment_id>/
+            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json
+            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json
+            统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json
+            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json
+            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json
+            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json
      */
     public String getObjectFile() {
         return objectFile;
     }
 
     /**
-     * 设置JSON文件路径（预留）
+     * 设置对象文件名
             
-            视具体来源决定存储位置
-            ${HDFS_SITE}/${DFS_WORK_ROOT}/json_data/<project_id>/<experiment_id>/
-            ${LOCAL_WORK_ROOT}/json_data/<project_id>/<experiment_id>/
+            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json
+            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json
+            统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json
+            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json
+            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json
+            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json
      *
-     * @param objectFile JSON文件路径（预留）
+     * @param objectFile 对象文件名
             
-            视具体来源决定存储位置
-            ${HDFS_SITE}/${DFS_WORK_ROOT}/json_data/<project_id>/<experiment_id>/
-            ${LOCAL_WORK_ROOT}/json_data/<project_id>/<experiment_id>/
+            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json
+            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json
+            统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json
+            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json
+            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json
+            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json
      */
     public void setObjectFile(String objectFile) {
         this.objectFile = objectFile == null ? null : objectFile.trim();
@@ -505,7 +607,7 @@ public class WfJsonObject implements Serializable {
      *
      * @return OBJECT_DATA - JSON数据
      */
-    public byte[] getObjectData() {
+    public String getObjectData() {
         return objectData;
     }
 
@@ -514,8 +616,8 @@ public class WfJsonObject implements Serializable {
      *
      * @param objectData JSON数据
      */
-    public void setObjectData(byte[] objectData) {
-        this.objectData = objectData;
+    public void setObjectData(String objectData) {
+        this.objectData = objectData == null ? null : objectData.trim();
     }
 
     @Override
@@ -533,8 +635,11 @@ public class WfJsonObject implements Serializable {
         return (this.getObjectId() == null ? other.getObjectId() == null : this.getObjectId().equals(other.getObjectId()))
             && (this.getObjectName() == null ? other.getObjectName() == null : this.getObjectName().equals(other.getObjectName()))
             && (this.getObjectyType() == null ? other.getObjectyType() == null : this.getObjectyType().equals(other.getObjectyType()))
+            && (this.getObjectSrc() == null ? other.getObjectSrc() == null : this.getObjectSrc().equals(other.getObjectSrc()))
             && (this.getOwnerProjectId() == null ? other.getOwnerProjectId() == null : this.getOwnerProjectId().equals(other.getOwnerProjectId()))
-            && (this.getRelSnapshotId() == null ? other.getRelSnapshotId() == null : this.getRelSnapshotId().equals(other.getRelSnapshotId()))
+            && (this.getRelFlowId() == null ? other.getRelFlowId() == null : this.getRelFlowId().equals(other.getRelFlowId()))
+            && (this.getRelSnapshotVersion() == null ? other.getRelSnapshotVersion() == null : this.getRelSnapshotVersion().equals(other.getRelSnapshotVersion()))
+            && (this.getRelJobId() == null ? other.getRelJobId() == null : this.getRelJobId().equals(other.getRelJobId()))
             && (this.getRelNodeId() == null ? other.getRelNodeId() == null : this.getRelNodeId().equals(other.getRelNodeId()))
             && (this.getRelCharId() == null ? other.getRelCharId() == null : this.getRelCharId().equals(other.getRelCharId()))
             && (this.getStorageLocation() == null ? other.getStorageLocation() == null : this.getStorageLocation().equals(other.getStorageLocation()))
@@ -555,8 +660,11 @@ public class WfJsonObject implements Serializable {
         result = prime * result + ((getObjectId() == null) ? 0 : getObjectId().hashCode());
         result = prime * result + ((getObjectName() == null) ? 0 : getObjectName().hashCode());
         result = prime * result + ((getObjectyType() == null) ? 0 : getObjectyType().hashCode());
+        result = prime * result + ((getObjectSrc() == null) ? 0 : getObjectSrc().hashCode());
         result = prime * result + ((getOwnerProjectId() == null) ? 0 : getOwnerProjectId().hashCode());
-        result = prime * result + ((getRelSnapshotId() == null) ? 0 : getRelSnapshotId().hashCode());
+        result = prime * result + ((getRelFlowId() == null) ? 0 : getRelFlowId().hashCode());
+        result = prime * result + ((getRelSnapshotVersion() == null) ? 0 : getRelSnapshotVersion().hashCode());
+        result = prime * result + ((getRelJobId() == null) ? 0 : getRelJobId().hashCode());
         result = prime * result + ((getRelNodeId() == null) ? 0 : getRelNodeId().hashCode());
         result = prime * result + ((getRelCharId() == null) ? 0 : getRelCharId().hashCode());
         result = prime * result + ((getStorageLocation() == null) ? 0 : getStorageLocation().hashCode());

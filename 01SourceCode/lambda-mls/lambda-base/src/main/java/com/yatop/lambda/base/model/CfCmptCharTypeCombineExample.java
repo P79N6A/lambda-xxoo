@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class WfExecutionForkPathExample {
+public class CfCmptCharTypeCombineExample {
     protected String orderByClause;
 
     protected boolean distinct;
@@ -14,7 +14,7 @@ public class WfExecutionForkPathExample {
 
     protected Page page;
 
-    public WfExecutionForkPathExample() {
+    public CfCmptCharTypeCombineExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -116,183 +116,123 @@ public class WfExecutionForkPathExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andForkIdIsNull() {
-            addCriterion("FORK_ID is null");
+        public Criteria andCombineCharTypeIdIsNull() {
+            addCriterion("COMBINE_CHAR_TYPE_ID is null");
             return (Criteria) this;
         }
 
-        public Criteria andForkIdIsNotNull() {
-            addCriterion("FORK_ID is not null");
+        public Criteria andCombineCharTypeIdIsNotNull() {
+            addCriterion("COMBINE_CHAR_TYPE_ID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andForkIdEqualTo(Long value) {
-            addCriterion("FORK_ID =", value, "forkId");
+        public Criteria andCombineCharTypeIdEqualTo(Integer value) {
+            addCriterion("COMBINE_CHAR_TYPE_ID =", value, "combineCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andForkIdNotEqualTo(Long value) {
-            addCriterion("FORK_ID <>", value, "forkId");
+        public Criteria andCombineCharTypeIdNotEqualTo(Integer value) {
+            addCriterion("COMBINE_CHAR_TYPE_ID <>", value, "combineCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andForkIdGreaterThan(Long value) {
-            addCriterion("FORK_ID >", value, "forkId");
+        public Criteria andCombineCharTypeIdGreaterThan(Integer value) {
+            addCriterion("COMBINE_CHAR_TYPE_ID >", value, "combineCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andForkIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("FORK_ID >=", value, "forkId");
+        public Criteria andCombineCharTypeIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("COMBINE_CHAR_TYPE_ID >=", value, "combineCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andForkIdLessThan(Long value) {
-            addCriterion("FORK_ID <", value, "forkId");
+        public Criteria andCombineCharTypeIdLessThan(Integer value) {
+            addCriterion("COMBINE_CHAR_TYPE_ID <", value, "combineCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andForkIdLessThanOrEqualTo(Long value) {
-            addCriterion("FORK_ID <=", value, "forkId");
+        public Criteria andCombineCharTypeIdLessThanOrEqualTo(Integer value) {
+            addCriterion("COMBINE_CHAR_TYPE_ID <=", value, "combineCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andForkIdIn(List<Long> values) {
-            addCriterion("FORK_ID in", values, "forkId");
+        public Criteria andCombineCharTypeIdIn(List<Integer> values) {
+            addCriterion("COMBINE_CHAR_TYPE_ID in", values, "combineCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andForkIdNotIn(List<Long> values) {
-            addCriterion("FORK_ID not in", values, "forkId");
+        public Criteria andCombineCharTypeIdNotIn(List<Integer> values) {
+            addCriterion("COMBINE_CHAR_TYPE_ID not in", values, "combineCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andForkIdBetween(Long value1, Long value2) {
-            addCriterion("FORK_ID between", value1, value2, "forkId");
+        public Criteria andCombineCharTypeIdBetween(Integer value1, Integer value2) {
+            addCriterion("COMBINE_CHAR_TYPE_ID between", value1, value2, "combineCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andForkIdNotBetween(Long value1, Long value2) {
-            addCriterion("FORK_ID not between", value1, value2, "forkId");
+        public Criteria andCombineCharTypeIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("COMBINE_CHAR_TYPE_ID not between", value1, value2, "combineCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDownstreamPathIdIsNull() {
-            addCriterion("DOWNSTREAM_PATH_ID is null");
+        public Criteria andMemeberCharTypeIdIsNull() {
+            addCriterion("MEMEBER_CHAR_TYPE_ID is null");
             return (Criteria) this;
         }
 
-        public Criteria andDownstreamPathIdIsNotNull() {
-            addCriterion("DOWNSTREAM_PATH_ID is not null");
+        public Criteria andMemeberCharTypeIdIsNotNull() {
+            addCriterion("MEMEBER_CHAR_TYPE_ID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDownstreamPathIdEqualTo(Long value) {
-            addCriterion("DOWNSTREAM_PATH_ID =", value, "downstreamPathId");
+        public Criteria andMemeberCharTypeIdEqualTo(Integer value) {
+            addCriterion("MEMEBER_CHAR_TYPE_ID =", value, "memeberCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDownstreamPathIdNotEqualTo(Long value) {
-            addCriterion("DOWNSTREAM_PATH_ID <>", value, "downstreamPathId");
+        public Criteria andMemeberCharTypeIdNotEqualTo(Integer value) {
+            addCriterion("MEMEBER_CHAR_TYPE_ID <>", value, "memeberCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDownstreamPathIdGreaterThan(Long value) {
-            addCriterion("DOWNSTREAM_PATH_ID >", value, "downstreamPathId");
+        public Criteria andMemeberCharTypeIdGreaterThan(Integer value) {
+            addCriterion("MEMEBER_CHAR_TYPE_ID >", value, "memeberCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDownstreamPathIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("DOWNSTREAM_PATH_ID >=", value, "downstreamPathId");
+        public Criteria andMemeberCharTypeIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("MEMEBER_CHAR_TYPE_ID >=", value, "memeberCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDownstreamPathIdLessThan(Long value) {
-            addCriterion("DOWNSTREAM_PATH_ID <", value, "downstreamPathId");
+        public Criteria andMemeberCharTypeIdLessThan(Integer value) {
+            addCriterion("MEMEBER_CHAR_TYPE_ID <", value, "memeberCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDownstreamPathIdLessThanOrEqualTo(Long value) {
-            addCriterion("DOWNSTREAM_PATH_ID <=", value, "downstreamPathId");
+        public Criteria andMemeberCharTypeIdLessThanOrEqualTo(Integer value) {
+            addCriterion("MEMEBER_CHAR_TYPE_ID <=", value, "memeberCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDownstreamPathIdIn(List<Long> values) {
-            addCriterion("DOWNSTREAM_PATH_ID in", values, "downstreamPathId");
+        public Criteria andMemeberCharTypeIdIn(List<Integer> values) {
+            addCriterion("MEMEBER_CHAR_TYPE_ID in", values, "memeberCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDownstreamPathIdNotIn(List<Long> values) {
-            addCriterion("DOWNSTREAM_PATH_ID not in", values, "downstreamPathId");
+        public Criteria andMemeberCharTypeIdNotIn(List<Integer> values) {
+            addCriterion("MEMEBER_CHAR_TYPE_ID not in", values, "memeberCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDownstreamPathIdBetween(Long value1, Long value2) {
-            addCriterion("DOWNSTREAM_PATH_ID between", value1, value2, "downstreamPathId");
+        public Criteria andMemeberCharTypeIdBetween(Integer value1, Integer value2) {
+            addCriterion("MEMEBER_CHAR_TYPE_ID between", value1, value2, "memeberCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andDownstreamPathIdNotBetween(Long value1, Long value2) {
-            addCriterion("DOWNSTREAM_PATH_ID not between", value1, value2, "downstreamPathId");
-            return (Criteria) this;
-        }
-
-        public Criteria andForkStateIsNull() {
-            addCriterion("FORK_STATE is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andForkStateIsNotNull() {
-            addCriterion("FORK_STATE is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andForkStateEqualTo(Integer value) {
-            addCriterion("FORK_STATE =", value, "forkState");
-            return (Criteria) this;
-        }
-
-        public Criteria andForkStateNotEqualTo(Integer value) {
-            addCriterion("FORK_STATE <>", value, "forkState");
-            return (Criteria) this;
-        }
-
-        public Criteria andForkStateGreaterThan(Integer value) {
-            addCriterion("FORK_STATE >", value, "forkState");
-            return (Criteria) this;
-        }
-
-        public Criteria andForkStateGreaterThanOrEqualTo(Integer value) {
-            addCriterion("FORK_STATE >=", value, "forkState");
-            return (Criteria) this;
-        }
-
-        public Criteria andForkStateLessThan(Integer value) {
-            addCriterion("FORK_STATE <", value, "forkState");
-            return (Criteria) this;
-        }
-
-        public Criteria andForkStateLessThanOrEqualTo(Integer value) {
-            addCriterion("FORK_STATE <=", value, "forkState");
-            return (Criteria) this;
-        }
-
-        public Criteria andForkStateIn(List<Integer> values) {
-            addCriterion("FORK_STATE in", values, "forkState");
-            return (Criteria) this;
-        }
-
-        public Criteria andForkStateNotIn(List<Integer> values) {
-            addCriterion("FORK_STATE not in", values, "forkState");
-            return (Criteria) this;
-        }
-
-        public Criteria andForkStateBetween(Integer value1, Integer value2) {
-            addCriterion("FORK_STATE between", value1, value2, "forkState");
-            return (Criteria) this;
-        }
-
-        public Criteria andForkStateNotBetween(Integer value1, Integer value2) {
-            addCriterion("FORK_STATE not between", value1, value2, "forkState");
+        public Criteria andMemeberCharTypeIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("MEMEBER_CHAR_TYPE_ID not between", value1, value2, "memeberCharTypeId");
             return (Criteria) this;
         }
 

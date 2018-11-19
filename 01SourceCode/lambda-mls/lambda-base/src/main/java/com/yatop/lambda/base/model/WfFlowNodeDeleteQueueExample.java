@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class WfExecutionJoinPathExample {
+public class WfFlowNodeDeleteQueueExample {
     protected String orderByClause;
 
     protected boolean distinct;
@@ -14,7 +14,7 @@ public class WfExecutionJoinPathExample {
 
     protected Page page;
 
-    public WfExecutionJoinPathExample() {
+    public WfFlowNodeDeleteQueueExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -116,243 +116,183 @@ public class WfExecutionJoinPathExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andJoinIdIsNull() {
-            addCriterion("JOIN_ID is null");
+        public Criteria andFlowIdIsNull() {
+            addCriterion("FLOW_ID is null");
             return (Criteria) this;
         }
 
-        public Criteria andJoinIdIsNotNull() {
-            addCriterion("JOIN_ID is not null");
+        public Criteria andFlowIdIsNotNull() {
+            addCriterion("FLOW_ID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andJoinIdEqualTo(Long value) {
-            addCriterion("JOIN_ID =", value, "joinId");
+        public Criteria andFlowIdEqualTo(Long value) {
+            addCriterion("FLOW_ID =", value, "flowId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinIdNotEqualTo(Long value) {
-            addCriterion("JOIN_ID <>", value, "joinId");
+        public Criteria andFlowIdNotEqualTo(Long value) {
+            addCriterion("FLOW_ID <>", value, "flowId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinIdGreaterThan(Long value) {
-            addCriterion("JOIN_ID >", value, "joinId");
+        public Criteria andFlowIdGreaterThan(Long value) {
+            addCriterion("FLOW_ID >", value, "flowId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("JOIN_ID >=", value, "joinId");
+        public Criteria andFlowIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("FLOW_ID >=", value, "flowId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinIdLessThan(Long value) {
-            addCriterion("JOIN_ID <", value, "joinId");
+        public Criteria andFlowIdLessThan(Long value) {
+            addCriterion("FLOW_ID <", value, "flowId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinIdLessThanOrEqualTo(Long value) {
-            addCriterion("JOIN_ID <=", value, "joinId");
+        public Criteria andFlowIdLessThanOrEqualTo(Long value) {
+            addCriterion("FLOW_ID <=", value, "flowId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinIdIn(List<Long> values) {
-            addCriterion("JOIN_ID in", values, "joinId");
+        public Criteria andFlowIdIn(List<Long> values) {
+            addCriterion("FLOW_ID in", values, "flowId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinIdNotIn(List<Long> values) {
-            addCriterion("JOIN_ID not in", values, "joinId");
+        public Criteria andFlowIdNotIn(List<Long> values) {
+            addCriterion("FLOW_ID not in", values, "flowId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinIdBetween(Long value1, Long value2) {
-            addCriterion("JOIN_ID between", value1, value2, "joinId");
+        public Criteria andFlowIdBetween(Long value1, Long value2) {
+            addCriterion("FLOW_ID between", value1, value2, "flowId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinIdNotBetween(Long value1, Long value2) {
-            addCriterion("JOIN_ID not between", value1, value2, "joinId");
+        public Criteria andFlowIdNotBetween(Long value1, Long value2) {
+            addCriterion("FLOW_ID not between", value1, value2, "flowId");
             return (Criteria) this;
         }
 
-        public Criteria andUpstreamPathIdIsNull() {
-            addCriterion("UPSTREAM_PATH_ID is null");
+        public Criteria andSequenceIsNull() {
+            addCriterion("SEQUENCE is null");
             return (Criteria) this;
         }
 
-        public Criteria andUpstreamPathIdIsNotNull() {
-            addCriterion("UPSTREAM_PATH_ID is not null");
+        public Criteria andSequenceIsNotNull() {
+            addCriterion("SEQUENCE is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUpstreamPathIdEqualTo(Long value) {
-            addCriterion("UPSTREAM_PATH_ID =", value, "upstreamPathId");
+        public Criteria andSequenceEqualTo(Integer value) {
+            addCriterion("SEQUENCE =", value, "sequence");
             return (Criteria) this;
         }
 
-        public Criteria andUpstreamPathIdNotEqualTo(Long value) {
-            addCriterion("UPSTREAM_PATH_ID <>", value, "upstreamPathId");
+        public Criteria andSequenceNotEqualTo(Integer value) {
+            addCriterion("SEQUENCE <>", value, "sequence");
             return (Criteria) this;
         }
 
-        public Criteria andUpstreamPathIdGreaterThan(Long value) {
-            addCriterion("UPSTREAM_PATH_ID >", value, "upstreamPathId");
+        public Criteria andSequenceGreaterThan(Integer value) {
+            addCriterion("SEQUENCE >", value, "sequence");
             return (Criteria) this;
         }
 
-        public Criteria andUpstreamPathIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("UPSTREAM_PATH_ID >=", value, "upstreamPathId");
+        public Criteria andSequenceGreaterThanOrEqualTo(Integer value) {
+            addCriterion("SEQUENCE >=", value, "sequence");
             return (Criteria) this;
         }
 
-        public Criteria andUpstreamPathIdLessThan(Long value) {
-            addCriterion("UPSTREAM_PATH_ID <", value, "upstreamPathId");
+        public Criteria andSequenceLessThan(Integer value) {
+            addCriterion("SEQUENCE <", value, "sequence");
             return (Criteria) this;
         }
 
-        public Criteria andUpstreamPathIdLessThanOrEqualTo(Long value) {
-            addCriterion("UPSTREAM_PATH_ID <=", value, "upstreamPathId");
+        public Criteria andSequenceLessThanOrEqualTo(Integer value) {
+            addCriterion("SEQUENCE <=", value, "sequence");
             return (Criteria) this;
         }
 
-        public Criteria andUpstreamPathIdIn(List<Long> values) {
-            addCriterion("UPSTREAM_PATH_ID in", values, "upstreamPathId");
+        public Criteria andSequenceIn(List<Integer> values) {
+            addCriterion("SEQUENCE in", values, "sequence");
             return (Criteria) this;
         }
 
-        public Criteria andUpstreamPathIdNotIn(List<Long> values) {
-            addCriterion("UPSTREAM_PATH_ID not in", values, "upstreamPathId");
+        public Criteria andSequenceNotIn(List<Integer> values) {
+            addCriterion("SEQUENCE not in", values, "sequence");
             return (Criteria) this;
         }
 
-        public Criteria andUpstreamPathIdBetween(Long value1, Long value2) {
-            addCriterion("UPSTREAM_PATH_ID between", value1, value2, "upstreamPathId");
+        public Criteria andSequenceBetween(Integer value1, Integer value2) {
+            addCriterion("SEQUENCE between", value1, value2, "sequence");
             return (Criteria) this;
         }
 
-        public Criteria andUpstreamPathIdNotBetween(Long value1, Long value2) {
-            addCriterion("UPSTREAM_PATH_ID not between", value1, value2, "upstreamPathId");
+        public Criteria andSequenceNotBetween(Integer value1, Integer value2) {
+            addCriterion("SEQUENCE not between", value1, value2, "sequence");
             return (Criteria) this;
         }
 
-        public Criteria andJoinStateIsNull() {
-            addCriterion("JOIN_STATE is null");
+        public Criteria andNodeIdIsNull() {
+            addCriterion("NODE_ID is null");
             return (Criteria) this;
         }
 
-        public Criteria andJoinStateIsNotNull() {
-            addCriterion("JOIN_STATE is not null");
+        public Criteria andNodeIdIsNotNull() {
+            addCriterion("NODE_ID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andJoinStateEqualTo(Integer value) {
-            addCriterion("JOIN_STATE =", value, "joinState");
+        public Criteria andNodeIdEqualTo(Long value) {
+            addCriterion("NODE_ID =", value, "nodeId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinStateNotEqualTo(Integer value) {
-            addCriterion("JOIN_STATE <>", value, "joinState");
+        public Criteria andNodeIdNotEqualTo(Long value) {
+            addCriterion("NODE_ID <>", value, "nodeId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinStateGreaterThan(Integer value) {
-            addCriterion("JOIN_STATE >", value, "joinState");
+        public Criteria andNodeIdGreaterThan(Long value) {
+            addCriterion("NODE_ID >", value, "nodeId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinStateGreaterThanOrEqualTo(Integer value) {
-            addCriterion("JOIN_STATE >=", value, "joinState");
+        public Criteria andNodeIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("NODE_ID >=", value, "nodeId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinStateLessThan(Integer value) {
-            addCriterion("JOIN_STATE <", value, "joinState");
+        public Criteria andNodeIdLessThan(Long value) {
+            addCriterion("NODE_ID <", value, "nodeId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinStateLessThanOrEqualTo(Integer value) {
-            addCriterion("JOIN_STATE <=", value, "joinState");
+        public Criteria andNodeIdLessThanOrEqualTo(Long value) {
+            addCriterion("NODE_ID <=", value, "nodeId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinStateIn(List<Integer> values) {
-            addCriterion("JOIN_STATE in", values, "joinState");
+        public Criteria andNodeIdIn(List<Long> values) {
+            addCriterion("NODE_ID in", values, "nodeId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinStateNotIn(List<Integer> values) {
-            addCriterion("JOIN_STATE not in", values, "joinState");
+        public Criteria andNodeIdNotIn(List<Long> values) {
+            addCriterion("NODE_ID not in", values, "nodeId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinStateBetween(Integer value1, Integer value2) {
-            addCriterion("JOIN_STATE between", value1, value2, "joinState");
+        public Criteria andNodeIdBetween(Long value1, Long value2) {
+            addCriterion("NODE_ID between", value1, value2, "nodeId");
             return (Criteria) this;
         }
 
-        public Criteria andJoinStateNotBetween(Integer value1, Integer value2) {
-            addCriterion("JOIN_STATE not between", value1, value2, "joinState");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNull() {
-            addCriterion("STATUS is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIsNotNull() {
-            addCriterion("STATUS is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusEqualTo(Integer value) {
-            addCriterion("STATUS =", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotEqualTo(Integer value) {
-            addCriterion("STATUS <>", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThan(Integer value) {
-            addCriterion("STATUS >", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
-            addCriterion("STATUS >=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThan(Integer value) {
-            addCriterion("STATUS <", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusLessThanOrEqualTo(Integer value) {
-            addCriterion("STATUS <=", value, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusIn(List<Integer> values) {
-            addCriterion("STATUS in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotIn(List<Integer> values) {
-            addCriterion("STATUS not in", values, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusBetween(Integer value1, Integer value2) {
-            addCriterion("STATUS between", value1, value2, "status");
-            return (Criteria) this;
-        }
-
-        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
-            addCriterion("STATUS not between", value1, value2, "status");
+        public Criteria andNodeIdNotBetween(Long value1, Long value2) {
+            addCriterion("NODE_ID not between", value1, value2, "nodeId");
             return (Criteria) this;
         }
 
@@ -423,136 +363,6 @@ public class WfExecutionJoinPathExample {
 
         public Criteria andDescriptionNotBetween(String value1, String value2) {
             addCriterion("DESCRIPTION not between", value1, value2, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateTimeIsNull() {
-            addCriterion("LAST_UPDATE_TIME is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateTimeIsNotNull() {
-            addCriterion("LAST_UPDATE_TIME is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateTimeEqualTo(Date value) {
-            addCriterion("LAST_UPDATE_TIME =", value, "lastUpdateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateTimeNotEqualTo(Date value) {
-            addCriterion("LAST_UPDATE_TIME <>", value, "lastUpdateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateTimeGreaterThan(Date value) {
-            addCriterion("LAST_UPDATE_TIME >", value, "lastUpdateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("LAST_UPDATE_TIME >=", value, "lastUpdateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateTimeLessThan(Date value) {
-            addCriterion("LAST_UPDATE_TIME <", value, "lastUpdateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateTimeLessThanOrEqualTo(Date value) {
-            addCriterion("LAST_UPDATE_TIME <=", value, "lastUpdateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateTimeIn(List<Date> values) {
-            addCriterion("LAST_UPDATE_TIME in", values, "lastUpdateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateTimeNotIn(List<Date> values) {
-            addCriterion("LAST_UPDATE_TIME not in", values, "lastUpdateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateTimeBetween(Date value1, Date value2) {
-            addCriterion("LAST_UPDATE_TIME between", value1, value2, "lastUpdateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateTimeNotBetween(Date value1, Date value2) {
-            addCriterion("LAST_UPDATE_TIME not between", value1, value2, "lastUpdateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperIsNull() {
-            addCriterion("LAST_UPDATE_OPER is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperIsNotNull() {
-            addCriterion("LAST_UPDATE_OPER is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperEqualTo(String value) {
-            addCriterion("LAST_UPDATE_OPER =", value, "lastUpdateOper");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperNotEqualTo(String value) {
-            addCriterion("LAST_UPDATE_OPER <>", value, "lastUpdateOper");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperGreaterThan(String value) {
-            addCriterion("LAST_UPDATE_OPER >", value, "lastUpdateOper");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperGreaterThanOrEqualTo(String value) {
-            addCriterion("LAST_UPDATE_OPER >=", value, "lastUpdateOper");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperLessThan(String value) {
-            addCriterion("LAST_UPDATE_OPER <", value, "lastUpdateOper");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperLessThanOrEqualTo(String value) {
-            addCriterion("LAST_UPDATE_OPER <=", value, "lastUpdateOper");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperLike(String value) {
-            addCriterion("LAST_UPDATE_OPER like", value, "lastUpdateOper");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperNotLike(String value) {
-            addCriterion("LAST_UPDATE_OPER not like", value, "lastUpdateOper");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperIn(List<String> values) {
-            addCriterion("LAST_UPDATE_OPER in", values, "lastUpdateOper");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperNotIn(List<String> values) {
-            addCriterion("LAST_UPDATE_OPER not in", values, "lastUpdateOper");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperBetween(String value1, String value2) {
-            addCriterion("LAST_UPDATE_OPER between", value1, value2, "lastUpdateOper");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperNotBetween(String value1, String value2) {
-            addCriterion("LAST_UPDATE_OPER not between", value1, value2, "lastUpdateOper");
             return (Criteria) this;
         }
 
@@ -688,11 +498,6 @@ public class WfExecutionJoinPathExample {
 
         public Criteria andDescriptionLikeInsensitive(String value) {
             addCriterion("upper(DESCRIPTION) like", value.toUpperCase(), "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andLastUpdateOperLikeInsensitive(String value) {
-            addCriterion("upper(LAST_UPDATE_OPER) like", value.toUpperCase(), "lastUpdateOper");
             return (Criteria) this;
         }
 
