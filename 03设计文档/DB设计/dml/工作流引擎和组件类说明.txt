@@ -1,0 +1,100 @@
+
+系统配置
+（1）临时数据缓存级别开关，系统参数WK_OUTPUT_CACHE_DATA_LEVEL设定缓存级别，FULL_CACHE全量缓存，EXPIRE_CLEAN过期清理（配合WK_OUTPUT_CACHE_EXPIRE_DAYS），ONLY_LAST仅最后一次，NO_CACHE不做缓存（作业完毕清理）
+（2）数据输出端口schema分析开关，系统参数WK_OUTPORT_SCHEMA_MAX_FIELDS控制是否为超限终端，默认值256字段数，以及组件类是否支持动态分析
+
+实验管理 & 工作流引擎
+（1）组件参数更新，先校验新老参数值是否发生变化
+（2）组件数据输出端口schema更新失败时，自动对所有下游节点的schema做清理
+（3）读数据组件的数据查看走viewDataTableByName，其他组件输出数据查看走viewDataTableByID
+（4）通过ClassLoader.findClass方法查找组件类，再找到组件类bean
+（5）任一输入端口schema状态非正常，停止动态分析，并将该状态传递到下游
+
+组件基类
+
+class ModuleBoard {
+	//在所有组件类init里注册singleton bean object
+	
+	//ModuleMapper<module-class-path, module-bean-object>
+	static HashMap<String, ModuleBase> mapper = new HashMap<String, ModuleBase>();
+	
+	//获取组件class-path to object映射器 
+	static Mapper getMapper();
+}
+
+@service
+interface ModuleBase {
+	//方法失败或异常抛出moduleException，组件类实现该接口，适当封装一些中间abstract组件类以便复用
+	
+	
+	////////////////////////////////////组件bean初始化//////////////////////////////////////////
+	
+	//必须
+	@postconstruct
+	void init() {
+		ModuleBoard.getMapper().put(this.getClass().getName(), this);
+	
+	
+	////////////////////////////////////参数更新事件相关//////////////////////////////////////////
+	
+	//是否捕获参数更新前事件
+	//返回false，否
+	//返回true，是
+	boolean catchBeforeParameterUpdate();
+
+	//在组件参数更新之前，例如：参数在业务逻辑上的合法校验
+	void beforeParameterUpdate(parameterMap, upstreamSchemaList, changeParameterMap);
+	
+	//是否捕获参数更新后事件（预留）
+	//返回false，否
+	//返回true，是
+	boolean catchAfterParameterUpdate();
+	
+	//在组件参数更新之后（预留），例如：
+	void afterParameterUpdate(parameterMap, upstreamSchemaList, changeParameterMap);
+	
+	
+	////////////////////////////////////任务执行事件相关//////////////////////////////////////////
+	
+	//是否捕获任务执行前事件
+	//返回false，否
+	//返回true，是
+	boolean catchBeforeTaskExecution();
+	
+	//任务执行前处理，例如：读数据表将输出内容"OUT@DataTable-t1<M>"特征值置为"CCP@TableName"特征值对应数据表的ID值
+	//返回需更新的output信息，NULL代表无需更新
+	changeOutputMap beforeTaskExecution(parameterMap, outputMap);
+	
+	//是否捕获任务执行后事件（预留）
+	//返回false，否
+	//返回true，是
+	boolean catchAfterTaskExecution();
+	
+	//任务执行后处理（预留），例如：暂无
+	//返回需更新的output信息，NULL代表无需更新
+	changeOutputMap afterTaskExecution(parameterMap, outputMap);
+	
+	
+	////////////////////////////////////运行动态模拟相关//////////////////////////////////////////
+	
+	//是否支持动态分析数据输出端口schema
+	//返回false，不支持
+	//返回true，支持
+	boolean supportDynamicAnalyzeSchema();
+	
+	//触发分析数据输出端口schema的特征代码集合
+	//返回特征代码集合，NULL代表无触发特征
+	paremeterCodeSet triggerAnalyzeSchemaParameters() {
+		static final HashSet<parameterCode> triggerParameters = new HashSet<String>() {{
+			add("xxx");
+			add("yyy")
+		}};
+		resturn triggerParameters;
+	};
+	
+	//分析数据输出端口schema
+	//返回需更新的schema信息，NULL代表无需更新
+	changeSchemaList analyzeSchema(parameterMap, inportSchemaList, outportSchemaList)；
+	
+	//组件菜单配置，数据库中配置，模版怎么定义，还是暂时先放前端工程里配置
+}
