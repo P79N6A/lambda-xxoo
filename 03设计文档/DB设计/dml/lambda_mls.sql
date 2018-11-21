@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-11-22 04:32:20
+Date: 2018-11-22 04:34:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -581,7 +581,7 @@ CREATE TABLE `cf_cmpt_spec_rel` (
 -- ----------------------------
 -- Records of cf_cmpt_spec_rel
 -- ----------------------------
-INSERT INTO `cf_cmpt_spec_rel` VALUES ('IO@COM-0001', 'OUT@SPEC-0001', '2', 'OUT@One-DataTable-t1<M>', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('IO@COM-0001', 'OUT@SPEC-0001', '2', 'IO@Read-DataTable：OUT@One-DataTable-t1<M>', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
 INSERT INTO `cf_cmpt_spec_rel` VALUES ('IO@COM-0001', 'CP@SPEC-IO@COM-0001', '5', 'IO@Read-DataTable：CP@Read-DataTable', '0', '2018-11-21 21:30:46', 'admin', '2018-11-21 21:30:46', 'admin');
 
 -- ----------------------------
