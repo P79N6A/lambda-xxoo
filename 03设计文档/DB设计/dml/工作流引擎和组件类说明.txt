@@ -1,7 +1,9 @@
 
 系统配置
-（1）临时数据缓存级别开关，系统参数WK_OUTPUT_CACHE_DATA_LEVEL设定缓存级别，FULL_CACHE全量缓存，EXPIRE_CLEAN过期清理（配合WK_OUTPUT_CACHE_EXPIRE_DAYS），ONLY_LAST仅最后一次，NO_CACHE不做缓存（作业完毕清理）
+（1）临时数据缓存级别，系统参数WK_OUTPUT_CACHE_DATA_LEVEL设定缓存级别，FULL_CACHE全量缓存，EXPIRE_CLEAN过期清理（配合WK_OUTPUT_CACHE_EXPIRE_DAYS），ONLY_LAST仅最后一次，NO_CACHE不做缓存（作业完毕清理）
+	<!-- 先只支持ONLY_LAST，实验工作台运行、实验离线调度运行、实验在线调度运行，先只考虑仅缓存最后一次运行的数据输出内容，同时搭配WK_OUTPUT_CACHE_EXPIRE_DAYS做定期清理 -->
 （2）数据输出端口schema分析开关，系统参数WK_OUTPORT_SCHEMA_MAX_FIELDS控制是否为超限终端，默认值256字段数，以及组件类是否支持动态分析
+（3）实验最多节点数量WK_FLOW_MAX_NODES默认1024
 
 实验管理 & 工作流引擎
 （1）组件参数更新，先校验新老参数值是否发生变化
@@ -9,6 +11,7 @@
 （3）读数据组件的数据查看走viewDataTableByName，其他组件输出数据查看走viewDataTableByID
 （4）通过ClassLoader.findClass方法查找组件类，再找到组件类bean
 （5）任一输入端口schema状态非正常，停止动态分析，并将该状态传递到下游
+（6）数据表写入（动态）和实验发布版本（实验调度）：保存关联工作流快照信息，对动态模型仅一处地方写入，对动态数据表仅一处地方写入，发布版本更新或者删除自动清理过期动态模型和动态数据表
 
 组件基类
 
@@ -37,7 +40,34 @@ public interface ModuleBase {
 	}
 	
 	
-	////////////////////////////////////节点链接事件相关//////////////////////////////////////////
+	//////////////////////////////节点增删和参数更改事件相关////////////////////////////////////
+	
+	//是否捕获节点新增事件
+	//返回false，否
+	//返回true，是
+	boolean catchCreateNode();
+
+	//发生节点新增时，例如：数据表/模型写入组件，需要新建相关的动态数据表/模型，并将
+	void onCreateNode(NodeContentDto<parameters, inputPorts, outputPorts>);
+	
+	//是否捕获节点删除事件
+	//返回false，否
+	//返回true，是
+	boolean catchDeleteNode();
+	
+	//发生节点删除时，例如：暂无
+	void onDeleteNode(NodeContentDto<parameters, inputPorts, outputPorts>);
+	
+	//是否捕获参数更改事件
+	//返回false，否
+	//返回true，是
+	boolean catchUpdateParameter();
+
+	//发生参数更改时，例如：参数在业务逻辑上的合法校验
+	void onUpdateParameter(NodeContentDto<parameters, inputPorts, outputPorts>, updateParameterList);
+	
+	
+	///////////////////////////////////节点链接事件相关/////////////////////////////////////////
 	
 	//是否捕获入站链接事件
 	//返回false，否
@@ -45,7 +75,7 @@ public interface ModuleBase {
 	boolean catchInboundLink();
 
 	//发生入站链接时，例如：暂无
-	void onInboundLink(NodeContentDto, OutportDto);
+	void onInboundLink(NodeContentDto<parameters, inputPorts, outputPorts>, OutputPortDto);
 	
 	//是否捕获出站链接事件
 	//返回false，否
@@ -53,21 +83,10 @@ public interface ModuleBase {
 	boolean catchOutboundLink();
 	
 	//发生出站链接时，例如：暂无
-	void onOutboundLink(NodeContentDto, InportDto);
+	void onOutboundLink(NodeContentDto<parameters, inputPorts, outputPorts>, InputPortDto);
 	
 	
-	////////////////////////////////////参数更新事件相关//////////////////////////////////////////
-	
-	//是否捕获校验参数事件
-	//返回false，否
-	//返回true，是
-	boolean catchValidateParameter();
-
-	//校验参数事件处理，例如：参数在业务逻辑上的合法校验
-	void validateParameter(NodeContentDto<parameters, inports, outports>);
-	
-	
-	////////////////////////////////////任务执行事件相关//////////////////////////////////////////
+	///////////////////////////////////任务执行事件相关/////////////////////////////////////////
 	
 	//是否捕获任务执行事件
 	//返回false，否
@@ -79,7 +98,7 @@ public interface ModuleBase {
 	TaskContextDto onTaskExecution(TaskContextDto<task_info, cmpt_info, execution, optimize_execution, input, output, parameter>);
 	
 	
-	////////////////////////////////////运行动态模拟相关//////////////////////////////////////////
+	////////////////////////////////////运行动态模拟相关////////////////////////////////////////
 	
 	//是否支持动态分析数据输出端口schema
 	//返回false，不支持
@@ -88,17 +107,17 @@ public interface ModuleBase {
 	
 	//触发分析数据输出端口schema的特征代码集合
 	//返回特征代码集合，NULL代表无触发特征
-	paremeterCodeSet triggerAnalyzeSchemaParameters() {
+	paremeterCodeSet analyzeSchemaTriggerParameters() {
 		static final HashSet<parameterCode> triggerParameters = new HashSet<String>() {{
 			add("xxx");
-			add("yyy")
+			add("yyy");
 		}};
 		resturn triggerParameters;
 	};
 	
 	//分析数据输出端口schema
 	//返回更新后的数据输出端schema列表，NULL代表无更新
-	OutportSchemaDtoList analyzeSchema(NodeContentDto<parameters, inports, outports>)；
+	OutportSchemaDtoList analyzeSchema(NodeContentDto<parameters, inputPorts, outputPorts>)；
 	
 	//组件菜单配置，数据库中配置，模版怎么定义，还是暂时先放前端工程里配置
 }
