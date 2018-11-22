@@ -12,18 +12,19 @@
 
 组件基类
 
-class ModuleBoard {
+public class ModuleBoard {
 	//在所有组件类init里注册singleton bean object
 	
 	//ModuleMapper<module-class-path, module-bean-object>
-	static HashMap<String, ModuleBase> mapper = new HashMap<String, ModuleBase>();
+	static final HashMap<String, ModuleBase> mapper = new HashMap<String, ModuleBase>();
 	
 	//获取组件class-path to object映射器 
 	static Mapper getMapper();
 }
 
+
 @service
-interface ModuleBase {
+public interface ModuleBase {
 	//方法失败或异常抛出moduleException，组件类实现该接口，适当封装一些中间abstract组件类以便复用
 	
 	
@@ -31,48 +32,51 @@ interface ModuleBase {
 	
 	//必须
 	@postconstruct
-	void init() {
+	void register() {
 		ModuleBoard.getMapper().put(this.getClass().getName(), this);
+	}
+	
+	
+	////////////////////////////////////节点链接事件相关//////////////////////////////////////////
+	
+	//是否捕获入站链接事件
+	//返回false，否
+	//返回true，是
+	boolean catchInboundLink();
+
+	//发生入站链接时，例如：暂无
+	void onInboundLink(NodeContentDto, OutportDto);
+	
+	//是否捕获出站链接事件
+	//返回false，否
+	//返回true，是
+	boolean catchOutboundLink();
+	
+	//发生出站链接时，例如：暂无
+	void onOutboundLink(NodeContentDto, InportDto);
 	
 	
 	////////////////////////////////////参数更新事件相关//////////////////////////////////////////
 	
-	//是否捕获参数更新前事件
+	//是否捕获校验参数事件
 	//返回false，否
 	//返回true，是
-	boolean catchBeforeParameterUpdate();
+	boolean catchValidateParameter();
 
-	//在组件参数更新之前，例如：参数在业务逻辑上的合法校验
-	void beforeParameterUpdate(parameterMap, upstreamSchemaList, changeParameterMap);
-	
-	//是否捕获参数更新后事件（预留）
-	//返回false，否
-	//返回true，是
-	boolean catchAfterParameterUpdate();
-	
-	//在组件参数更新之后（预留），例如：
-	void afterParameterUpdate(parameterMap, upstreamSchemaList, changeParameterMap);
+	//校验参数事件处理，例如：参数在业务逻辑上的合法校验
+	void validateParameter(NodeContentDto<parameters, inports, outports>);
 	
 	
 	////////////////////////////////////任务执行事件相关//////////////////////////////////////////
 	
-	//是否捕获任务执行前事件
+	//是否捕获任务执行事件
 	//返回false，否
 	//返回true，是
-	boolean catchBeforeTaskExecution();
+	boolean catchTaskExecution();
 	
-	//任务执行前处理，例如：读数据表将输出内容"OUT@DataTable-t1<M>"特征值置为"CCP@TableName"特征值对应数据表的ID值
-	//返回需更新的output信息，NULL代表无需更新
-	changeOutputMap beforeTaskExecution(parameterMap, outputMap);
-	
-	//是否捕获任务执行后事件（预留）
-	//返回false，否
-	//返回true，是
-	boolean catchAfterTaskExecution();
-	
-	//任务执行后处理（预留），例如：暂无
-	//返回需更新的output信息，NULL代表无需更新
-	changeOutputMap afterTaskExecution(parameterMap, outputMap);
+	//任务执行事件处理，例如：读数据表将输出内容"OUT@DataTable-t1<M>"特征值置为"CCP@TableName"特征值对应数据表的ID值
+	//返回更新后的task-context信息，NULL代表无更新
+	TaskContextDto onTaskExecution(TaskContextDto<task_info, cmpt_info, execution, optimize_execution, input, output, parameter>);
 	
 	
 	////////////////////////////////////运行动态模拟相关//////////////////////////////////////////
@@ -93,8 +97,8 @@ interface ModuleBase {
 	};
 	
 	//分析数据输出端口schema
-	//返回需更新的schema信息，NULL代表无需更新
-	changeSchemaList analyzeSchema(parameterMap, inportSchemaList, outportSchemaList)；
+	//返回更新后的数据输出端schema列表，NULL代表无更新
+	OutportSchemaDtoList analyzeSchema(NodeContentDto<parameters, inports, outports>)；
 	
 	//组件菜单配置，数据库中配置，模版怎么定义，还是暂时先放前端工程里配置
 }
