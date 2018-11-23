@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-11-22 18:13:03
+Date: 2018-11-23 18:18:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -157,12 +157,14 @@ INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0012', 'CCP@RandSeed', '通用组件�
 INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0013', 'CCP@TableName', '通用组件参数 | 数据表名', 'tableName', '5', '7', '2', '0', '1', '0', null, '', '', '', '', '用于数据表读取系列的表名值存放', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0014', 'CCP@Model-ID', '通用组件参数 | 模型ID', 'modelID', '5', '4', '2', '0', '1', '0', null, '', '', '', '', '用于模型读取系列组件的模型ID值存放', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0000', 'EX@#Execution', '调用执行 | #调用执行', '', '3', '-1', '-1', '-1', '-1', '-1', null, '', '', '', '', '', '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0001', 'EX@Engine-Type', '调用执行 | 计算引擎类型', 'engineType', '3', '3', '0', '0', '1', '5', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0001', 'EX@Engine-Type', '调用执行 | 计算引擎类型', 'engineType', '3', '7', '0', '0', '1', '5', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0002', 'EX@Spark-Cmpt-Jar-Dir', '调用执行 | spark组件jar库目录', 'jarDir', '3', '7', '0', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0003', 'EX@Spark-Cmpt-Jar-File', '调用执行 | spark组件jar包文件名', 'jarFile', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0004', 'EX@Spark-Cmpt-Class-Path', '调用执行 | spark组件class类路径', 'class', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0005', 'EX@Spark-Cmpt-Python-Script-Path', '调用执行 | spark组件python脚本路径', '--待补充', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0006', 'EX@Spark-Cmpt-R-Script-Path', '调用执行 | spark组件R脚本路径', '--待补充', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0005', 'EX@Spark-Cmpt-Python-Pkg-Dir', '调用执行 | spark组件python包目录', 'pythonPkgDir', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0006', 'EX@Spark-Cmpt-Python-File', '调用执行 | spark组件python文件名', 'pythonFile', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0007', 'EX@Spark-Cmpt-R-Pkg-Dir', '调用执行 | spark组件R包目录', 'rPkgDir', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0008', 'EX@Spark-Cmpt-R-File', '调用执行 | spark组件R文件名', 'rFile', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0000', 'IN@#Input-Content', '输入内容 | #输入内容', '', '1', '-1', '-1', '-1', '-1', '-1', null, '', '', '', '', '', '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0001', 'IN@DataTable-t1<M>', '输入内容 | 数据表t1<M>', 't1', '1', '1001', '2', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0002', 'IN@DataTable-t2<M>', '输入内容 | 数据表t2<M>', 't2', '1', '1001', '2', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
@@ -265,8 +267,8 @@ INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '40510002-1', '专用组件�
 INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '40510002-2', '专用组件参数 | 机器学习 | KMeans | 质心初始化方法 | 使用初始质心表', 'uniform', '2', '', '0', '2017-05-17 21:15:12', 'admin', '2017-05-17 21:15:12', 'admin');
 INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '40510002-3', '专用组件参数 | 机器学习 | KMeans | 质心初始化方法 | 使用初始质心表', 'kmpp', '3', '', '0', '2017-05-17 21:15:55', 'admin', '2017-05-17 21:15:55', 'admin');
 INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '40510002-4', '专用组件参数 | 机器学习 | KMeans | 质心初始化方法 | 使用初始质心表', 'external', '4', '', '0', '2017-05-17 21:16:46', 'admin', '2017-05-17 21:16:46', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('EX@C-0001', 'EX@C-0001@Spark-On-Mesos', '调用执行 | 计算引擎类型 | power on mesos', '1', '1', '', '0', '2017-05-17 15:25:50', 'admin', '2017-05-17 15:25:50', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('EX@C-0001', 'EX@C-0001@Spark-On-Yarn', '调用执行 | 计算引擎类型 | spark on yarn', '0', '0', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('EX@C-0001', 'EX@C-0001@Spark-On-Mesos', '调用执行 | 计算引擎类型 | spark on mesos', 'spark on mesos', '1', '', '0', '2017-05-17 15:25:50', 'admin', '2017-05-17 15:25:50', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('EX@C-0001', 'EX@C-0001@Spark-On-Yarn', '调用执行 | 计算引擎类型 | spark on yarn', 'spark on yarn', '0', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_cmpt_char_type
@@ -455,12 +457,12 @@ INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-ML@COM-9003', 'CP@MultipleClass-Clas
 INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-ML@COM-9004', 'CP@Clustering-Evaluation', '组件参数 | 机器学习 | 聚类模型评估', '5', '', '0', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-ML@COM-9005', 'CP@Regression-Evaluation', '组件参数 | 机器学习 | 回归模型评估', '5', '', '0', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-ML@COM-9006', 'CP@CollaborativeFiltering-Evaluation', '组件参数 | 机器学习 | 协同过滤模型评估（待定）', '5', '', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-OS@COM-0001', 'CP@Input-DataFile', '组件参数 | 在线服务 | 数据文件输入（待定）', '5', '输入数据文件key', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-OS@COM-0002', 'CP@Output-DataFile', '组件参数 | 在线服务 | 数据文件输出（待定）', '5', '输出数据文件key', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-OS@COM-0003', 'CP@Output-ModelFile', '组件参数 | 在线服务 | 模型文件输出（待定）', '5', '输出模型文件key', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-ST@COM-0001', 'CP@Sql-Script', '组件参数 | 脚本工具 | SQL脚本', '5', '', '0', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-ST@COM-0002', 'CP@Python-Script', '组件参数 | 脚本工具 | Python脚本（待定）', '5', '', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-ST@COM-0003', 'CP@R-Script', '组件参数 | 脚本工具 | R脚本（待定）', '5', '', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-WS@COM-0001', 'CP@Input-DataFile', '组件参数 | 在线服务 | 数据文件输入（待定）', '5', '输入数据文件key', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-WS@COM-0002', 'CP@Output-DataFile', '组件参数 | 在线服务 | 数据文件输出（待定）', '5', '输出数据文件key', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-WS@COM-0003', 'CP@Output-ModelFile', '组件参数 | 在线服务 | 模型文件输出（待定）', '5', '输出模型文件key', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('EX@SPEC-0000', 'EX@#Execution', '调用执行 | #调用执行', '3', '', '0', '2017-05-17 15:08:09', 'admin', '2017-05-17 15:08:09', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('EX@SPEC-0001', 'EX@Spark-On-Yarn', '调用执行 | Spark On Yarn', '3', '', '0', '2017-05-17 15:08:09', 'admin', '2017-05-17 15:08:09', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('IN@SPEC-0000', 'IN@#Input-Content', '输入内容 | #输入内容', '1', '', '-1', '2017-05-17 14:24:10', 'admin', '2017-05-17 14:24:10', 'admin');
@@ -506,17 +508,23 @@ INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0008', 'OUT@One-Algorithm<OneClass-
 INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0009', 'OUT@One-Algorithm<TwoClass-Classification>-a1<M>', '输出内容 | 一个二分类算法参数a1<M>', '2', '', '0', '2017-05-17 14:24:10', 'admin', '2017-05-17 14:24:10', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0010', 'OUT@One-Algorithm<MultipleClass-Classification>-a1<M>', '输出内容 | 一个多分类算法参数a1<M>', '2', '', '0', '2017-05-17 14:24:10', 'admin', '2017-05-17 14:24:10', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0011', 'OUT@One-Algorithm<Clustering>-a1<M>', '输出内容 | 一个聚类算法参数a1<M>', '2', '', '0', '2017-05-17 14:33:20', 'admin', '2017-05-17 14:33:20', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0012', 'OUT@One-Algorithm<Regression>-a1<M>', '输出内容 | 一个回归算法参数a1<M>', '2', '', '0', '2017-05-17 14:24:10', 'admin', '2017-05-17 14:24:10', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0013', 'OUT@One-Model<Classification,Regression>-m1<M>', '输出内容 | 一个通配分类和回归模型m1<M>', '2', '', '0', '2017-05-17 14:44:42', 'admin', '2017-05-17 14:44:42', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0014', 'OUT@One-Model<Classification,Regression>-m1<M> + One-DataTable-t1<M> +One-Report<TuneParameters>-<r1>', '输出内容 | 一个通配分类和回归模型m1<M> + 一个数据表t1<M> + 调参报告<r1>', '2', '自动调参（最优模型 + 算法参数表 + 调参报告）', '0', '2017-05-17 14:44:42', 'admin', '2017-05-17 14:44:42', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0015', 'OUT@One-Model<Clustering>-m1<M> + One-DataTable-t1<M>', '输出内容 | 一个聚类模型m1<M> + 一个数据表t1<M>', '2', '聚类训练', '0', '2017-05-17 14:33:20', 'admin', '2017-05-17 14:33:20', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0016', 'OUT@One-Model<Clustering>-m1<M> + Two-DataTable-t1<M>,t2<M> + One-Report<TuneParameters>-<r1>', '输出内容 | 一个聚类模型m1<M> + 二个数据表t1<M>,t2<M> + 调参报告<r1>', '2', '聚类自动调参（最优模型 + 算法参数表 + 结果集 + 调参报告）', '0', '2017-05-17 14:33:20', 'admin', '2017-05-17 14:33:20', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0017', 'OUT@One-Model<CollaborativeFiltering>-m1<M>', '输出内容 | 一个协同过滤模型m1<M>', '2', '协同过滤训练', '0', '2017-05-17 14:44:42', 'admin', '2017-05-17 14:44:42', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0018', 'OUT@One-Report<Model Evaluation>-r1<M> + One-DataTable-t1<M>', '输出内容 | 一个模型评估报告 + 一个数据表t1<M>', '2', '单分类、多分类、聚类、回归、混淆矩阵、协同过滤等模型评估', '0', '2017-05-17 14:35:15', 'admin', '2017-05-17 14:35:15', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0019', 'OUT@One-Report<Model Evaluation>-r1<M> + Three-DataTable-t1<M>,t2<M>,t3<M>', '输出内容 | 一个模型评估报告 + 三个数据表t1<M>,t2<M>,t3<M>', '2', '二分类模型评估', '0', '2017-05-17 14:35:15', 'admin', '2017-05-17 14:35:15', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0020', 'OUT@One-Report<StatisticsAnalysis>-r1<M> + One-DataTable-t1<M>', '输出内容 | 一个统计分析报告 + 一个数据表t1<M>', '2', '', '0', '2017-05-17 14:35:15', 'admin', '2017-05-17 14:35:15', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0021', 'OUT@One-Report<CrossValidation>-r1<M> + Two-DataTable-t1<M>,t2<M>', '输出内容 | 一个交叉验证报告 + 二个数据表t1<M>,t2<M> ', '2', '', '0', '2017-05-17 14:35:15', 'admin', '2017-05-17 14:35:15', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0022', 'OUT@One-Report<GenerateRules>-r1<M> + One-DataTable-t1<M>', '输出内容 | 一个生成规则报告 + 一个数据表t1<M>', '2', '', '0', '2017-05-17 14:35:15', 'admin', '2017-05-17 14:35:15', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0012', 'OUT@One-Algorithm<Regression>-a1<M>', '输出内容 | 一个回归算法参数m1<M>', '2', '', '0', '2017-05-17 14:24:10', 'admin', '2017-05-17 14:24:10', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0013', 'OUT@One-Model<OneClass-Classification>-m1<M>', '输出内容 | 一个单分类模型参数m1<M>', '2', '', '0', '2017-05-17 14:24:10', 'admin', '2017-05-17 14:24:10', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0014', 'OUT@One-Model<TwoClass-Classification>-m1<M>', '输出内容 | 一个二分类模型参数m1<M>', '2', '', '0', '2017-05-17 14:24:10', 'admin', '2017-05-17 14:24:10', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0015', 'OUT@One-Model<MultipleClass-Classification>-m1<M>', '输出内容 | 一个多分类模型参数m1<M>', '2', '', '0', '2017-05-17 14:24:10', 'admin', '2017-05-17 14:24:10', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0016', 'OUT@One-Model<Clustering>-m1<M>', '输出内容 | 一个聚类模型参数m1<M>', '2', '', '0', '2017-05-17 14:33:20', 'admin', '2017-05-17 14:33:20', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0017', 'OUT@One-Model<Regression>-m1<M>', '输出内容 | 一个回归模型参数m1<M>', '2', '', '0', '2017-05-17 14:24:10', 'admin', '2017-05-17 14:24:10', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0018', 'OUT@One-Model<CollaborativeFiltering>-m1<M>', '输出内容 | 一个协同过滤模型m1<M>', '2', '协同过滤训练', '0', '2017-05-17 14:44:42', 'admin', '2017-05-17 14:44:42', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0019', 'OUT@One-Model<Classification>-m1<M>', '输出内容 | 一个通配分类模型m1<M>', '2', '', '0', '2017-05-17 14:44:42', 'admin', '2017-05-17 14:44:42', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0020', 'OUT@One-Model<Classification,Regression>-m1<M>', '输出内容 | 一个通配分类和回归模型m1<M>', '2', '', '0', '2017-05-17 14:44:42', 'admin', '2017-05-17 14:44:42', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0021', 'OUT@One-Model<Classification,Regression>-m1<M> + One-DataTable-t1<M> +One-Report<TuneParameters>-<r1>', '输出内容 | 一个通配分类和回归模型m1<M> + 一个数据表t1<M> + 调参报告<r1>', '2', '自动调参（最优模型 + 算法参数表 + 调参报告）', '0', '2017-05-17 14:44:42', 'admin', '2017-05-17 14:44:42', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0022', 'OUT@One-Model<Clustering>-m1<M> + One-DataTable-t1<M>', '输出内容 | 一个聚类模型m1<M> + 一个数据表t1<M>', '2', '聚类训练', '0', '2017-05-17 14:33:20', 'admin', '2017-05-17 14:33:20', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0023', 'OUT@One-Model<Clustering>-m1<M> + Two-DataTable-t1<M>,t2<M> + One-Report<TuneParameters>-<r1>', '输出内容 | 一个聚类模型m1<M> + 二个数据表t1<M>,t2<M> + 调参报告<r1>', '2', '聚类自动调参（最优模型 + 算法参数表 + 结果集 + 调参报告）', '0', '2017-05-17 14:33:20', 'admin', '2017-05-17 14:33:20', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0024', 'OUT@One-Report<Model Evaluation>-r1<M> + One-DataTable-t1<M>', '输出内容 | 一个模型评估报告 + 一个数据表t1<M>', '2', '单分类、多分类、聚类、回归、混淆矩阵、协同过滤等模型评估', '0', '2017-05-17 14:35:15', 'admin', '2017-05-17 14:35:15', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0025', 'OUT@One-Report<Model Evaluation>-r1<M> + Three-DataTable-t1<M>,t2<M>,t3<M>', '输出内容 | 一个模型评估报告 + 三个数据表t1<M>,t2<M>,t3<M>', '2', '二分类模型评估', '0', '2017-05-17 14:35:15', 'admin', '2017-05-17 14:35:15', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0026', 'OUT@One-Report<StatisticsAnalysis>-r1<M> + One-DataTable-t1<M>', '输出内容 | 一个统计分析报告 + 一个数据表t1<M>', '2', '', '0', '2017-05-17 14:35:15', 'admin', '2017-05-17 14:35:15', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0027', 'OUT@One-Report<CrossValidation>-r1<M> + Two-DataTable-t1<M>,t2<M>', '输出内容 | 一个交叉验证报告 + 二个数据表t1<M>,t2<M> ', '2', '', '0', '2017-05-17 14:35:15', 'admin', '2017-05-17 14:35:15', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('OUT@SPEC-0028', 'OUT@One-Report<GenerateRules>-r1<M> + One-DataTable-t1<M>', '输出内容 | 一个生成规则报告 + 一个数据表t1<M>', '2', '', '0', '2017-05-17 14:35:15', 'admin', '2017-05-17 14:35:15', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_cmpt_spec_char_rel
@@ -537,8 +545,17 @@ CREATE TABLE `cf_cmpt_spec_char_rel` (
 -- ----------------------------
 -- Records of cf_cmpt_spec_char_rel
 -- ----------------------------
-INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-0001', 'CCP@C-0013', 'CP@Read-DataTable：CCP@TableName', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('OUT@SPEC-0001', 'OUT@C-0001', 'OUT@One-DataTable-t1<M>：OUT@DataTable-t1<M>', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-0001', 'CCP@C-0013', '组件参数 | 输入输出 | 数据表读取，数据表名', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-0002', 'CCP@C-0014', '组件参数 | 输入输出 | 单分类模型读取，模型ID', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-0003', 'CCP@C-0014', '组件参数 | 输入输出 | 二分类模型读取，模型ID', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-0004', 'CCP@C-0014', '组件参数 | 输入输出 | 多分类模型读取，模型ID', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-0005', 'CCP@C-0014', '组件参数 | 输入输出 | 聚类模型读取，模型ID', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-0006', 'CCP@C-0014', '组件参数 | 输入输出 | 回归模型读取，模型ID', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-0007', 'CCP@C-0014', '组件参数 | 输入输出 | 协同过滤模型读取，模型ID', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-0008', 'CCP@C-0013', '组件参数 | 输入输出 | 数据表写入，数据表名', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('OUT@SPEC-0001', 'OUT@C-0001', '输出内容 | 一个数据表t1<M>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('OUT@SPEC-0013', 'OUT@C-0018', '输出内容 | 一个单分类模型参数m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('OUT@SPEC-0014', 'OUT@C-0019', '输出内容 | 一个二分类模型参数m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_cmpt_spec_char_value
@@ -581,8 +598,12 @@ CREATE TABLE `cf_cmpt_spec_rel` (
 -- ----------------------------
 -- Records of cf_cmpt_spec_rel
 -- ----------------------------
-INSERT INTO `cf_cmpt_spec_rel` VALUES ('IO@COM-0001', 'OUT@SPEC-0001', '2', 'IO@Read-DataTable：OUT@One-DataTable-t1<M>', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec_rel` VALUES ('IO@COM-0001', 'CP@SPEC-IO@COM-0001', '5', 'IO@Read-DataTable：CP@Read-DataTable', '0', '2018-11-21 21:30:46', 'admin', '2018-11-21 21:30:46', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('IO@COM-0001', 'OUT@SPEC-0001', '2', '输入输出 | 数据表读取，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('IO@COM-0001', 'CP@SPEC-IO@COM-0001', '5', '输入输出 | 数据表读取，组件参数', '0', '2018-11-21 21:30:46', 'admin', '2018-11-21 21:30:46', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('IO@COM-0002', 'OUT@SPEC-0013', '2', '输入输出 | 单分类模型读取，输出内容', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('IO@COM-0002', 'CP@SPEC-IO@COM-0002', '5', '输入输出 | 单分类模型读取，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('IO@COM-0003', 'OUT@SPEC-0014', '2', '输入输出 | 单分类模型读取，输出内容', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('IO@COM-0003', 'CP@SPEC-IO@COM-0003', '5', '输入输出 | 二分类模型读取，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_component

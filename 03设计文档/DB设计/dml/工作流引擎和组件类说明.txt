@@ -47,8 +47,8 @@ public interface ModuleBase {
 	//返回true，是
 	boolean catchCreateNode();
 
-	//发生节点新增时，例如：数据表/模型写入组件，需要新建相关的动态数据表/模型，并将
-	void onCreateNode(NodeContentDto<parameters, inputPorts, outputPorts>);
+	//发生节点新增时，例如：数据表读取组件判断表名对应的数据表是否存在，存在情况下，设置节点状态为ready，否则为not ready
+	void onCreateNode(NodeContentDto<node, parameters, inputPorts, outputPorts>);
 	
 	//是否捕获节点删除事件
 	//返回false，否
@@ -56,7 +56,7 @@ public interface ModuleBase {
 	boolean catchDeleteNode();
 	
 	//发生节点删除时，例如：暂无
-	void onDeleteNode(NodeContentDto<parameters, inputPorts, outputPorts>);
+	void onDeleteNode(NodeContentDto<node, parameters, inputPorts, outputPorts>);
 	
 	//是否捕获参数更改事件
 	//返回false，否
@@ -64,7 +64,7 @@ public interface ModuleBase {
 	boolean catchUpdateParameter();
 
 	//发生参数更改时，例如：参数在业务逻辑上的合法校验
-	void onUpdateParameter(NodeContentDto<parameters, inputPorts, outputPorts>, updateParameterList);
+	void onUpdateParameter(NodeContentDto<node, parameters, inputPorts, outputPorts>, updateParameterList);
 	
 	
 	///////////////////////////////////节点链接事件相关/////////////////////////////////////////
@@ -75,7 +75,7 @@ public interface ModuleBase {
 	boolean catchInboundLink();
 
 	//发生入站链接时，例如：暂无
-	void onInboundLink(NodeContentDto<parameters, inputPorts, outputPorts>, OutputPortDto);
+	void onInboundLink(NodeContentDto<node, parameters, inputPorts, outputPorts>, OutputPortDto);
 	
 	//是否捕获出站链接事件
 	//返回false，否
@@ -83,7 +83,7 @@ public interface ModuleBase {
 	boolean catchOutboundLink();
 	
 	//发生出站链接时，例如：暂无
-	void onOutboundLink(NodeContentDto<parameters, inputPorts, outputPorts>, InputPortDto);
+	void onOutboundLink(NodeContentDto<node, parameters, inputPorts, outputPorts>, InputPortDto);
 	
 	
 	///////////////////////////////////任务执行事件相关/////////////////////////////////////////
@@ -95,7 +95,7 @@ public interface ModuleBase {
 	
 	//任务执行事件处理，例如：读数据表将输出内容"OUT@DataTable-t1<M>"特征值置为"CCP@TableName"特征值对应数据表的ID值
 	//返回更新后的task-context信息，NULL代表无更新
-	TaskContextDto onTaskExecution(TaskContextDto<task_info, cmpt_info, execution, optimize_execution, input, output, parameter>);
+	TaskContextDto onTaskExecution(TaskContextDto<task, component, execution, optimize_execution, input, output, parameter>);
 	
 	
 	////////////////////////////////////运行动态模拟相关////////////////////////////////////////
@@ -117,7 +117,7 @@ public interface ModuleBase {
 	
 	//分析数据输出端口schema
 	//返回更新后的数据输出端schema列表，NULL代表无更新
-	OutportSchemaDtoList analyzeSchema(NodeContentDto<parameters, inputPorts, outputPorts>)；
+	OutportSchemaDtoList analyzeSchema(NodeContentDto<node, parameters, inputPorts, outputPorts>)；
 	
 	//组件菜单配置，数据库中配置，模版怎么定义，还是暂时先放前端工程里配置
 }

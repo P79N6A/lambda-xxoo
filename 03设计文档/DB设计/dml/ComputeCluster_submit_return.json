@@ -2,11 +2,11 @@
 task_context & task_submit.json:{
 <!-- 任务提交上下文，value为对象内容根据对象类型自动展开 ->
 
-	task_info:{
+	task:{
 	<!- 任务信息 ->
 		$TASK_PROPERTY:$TASK_PROPERTY_VALUE
 	},
-	component_info:{
+	component:{
 	<!- 组件信息 ->
 		$CMPT_PROPERTY:$CMPT_PROPERTY_VALUE
 	},
@@ -51,7 +51,7 @@ task_context & task_submit.json:{
 		}
 	},
 	optimize_execution:{
-			<!- 执行调优规格 ->
+		<!- 执行调优规格 ->
 		$SPEC_PROPERTY:$SPEC_PROPERTY_VALUE,
 		characteristic_map:{
 			"OEX@Spark-Executor-Number":{
@@ -109,12 +109,6 @@ task_context & task_submit.json:{
 		<!- 输入内容规格 ->
 		$SPEC_PROPERTY:$SPEC_PROPERTY_VALUE,
 		characteristic_map:{
-			m1:{
-				$MODEL_INFORMATION
-			},
-			t1:{
-				$TABLE_INFORMATION
-			},
 			$CHAR_CODE:$CHAR_PROPERTY_OBJECT
 		}
 	},
@@ -122,12 +116,6 @@ task_context & task_submit.json:{
 		<!- 输出内容规格 ->
 		$SPEC_PROPERTY:$SPEC_PROPERTY_VALUE,
 		characteristic_map:{
-			m1:{
-				$MODEL_INFORMATION
-			},
-			t1:{
-				$TABLE_INFORMATION
-			},
 			$CHAR_CODE:$CHAR_PROPERTY_OBJECT
 		}
 	},
@@ -135,9 +123,6 @@ task_context & task_submit.json:{
 		<!- 组件参数规格 ->
 		$SPEC_PROPERTY:$SPEC_PROPERTY_VALUE,
 		characteristic_map:{
-			"eta":0.0001,
-			"L1L2_option":"None/L1/L2",
-			$CHAR_NAME_ALIAS:$CHAR_VALUE,
 			$CHAR_CODE:$CHAR_PROPERTY_OBJECT
 		}
 	}
