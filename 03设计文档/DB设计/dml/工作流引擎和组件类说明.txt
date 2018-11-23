@@ -40,14 +40,14 @@ public interface ModuleBase {
 	}
 	
 	
-	//////////////////////////////节点增删和参数更改事件相关////////////////////////////////////
+	//////////////////////////////节点增删查和参数更改事件相关//////////////////////////////////
 	
 	//是否捕获节点新增事件
 	//返回false，否
 	//返回true，是
 	boolean catchCreateNode();
 
-	//发生节点新增时，例如：数据表读取组件判断表名对应的数据表是否存在，存在情况下，设置节点状态为ready，否则为not ready
+	//发生节点新增时，例如：数据表读取组件需要校验表名对应的数据表是否正常，存在情况下，设置节点状态为ready，否则为not ready
 	void onCreateNode(NodeContentDto<node, parameters, inputPorts, outputPorts>);
 	
 	//是否捕获节点删除事件
@@ -57,6 +57,14 @@ public interface ModuleBase {
 	
 	//发生节点删除时，例如：暂无
 	void onDeleteNode(NodeContentDto<node, parameters, inputPorts, outputPorts>);
+	
+	//是否捕获节点查询事件
+	//返回false，否
+	//返回true，是
+	boolean catchQueryNode();
+	
+	//发生节点查询时，例如：数据表读取组件需要校验对应的数据表是否正常，存在情况下，设置节点状态为ready，否则为not ready
+	void onQueryNode(NodeContentDto<node, parameters, inputPorts, outputPorts>);
 	
 	//是否捕获参数更改事件
 	//返回false，否
@@ -68,22 +76,24 @@ public interface ModuleBase {
 	
 	
 	///////////////////////////////////节点链接事件相关/////////////////////////////////////////
+	//该类事件目前不开放，如无必要，后期也不建议开放，对框架冲突太大，代码复杂度加大
 	
-	//是否捕获入站链接事件
+	
+	//是否捕获入站链接事件（待定）
 	//返回false，否
 	//返回true，是
-	boolean catchInboundLink();
+	//boolean catchInboundLink();
 
-	//发生入站链接时，例如：暂无
-	void onInboundLink(NodeContentDto<node, parameters, inputPorts, outputPorts>, OutputPortDto);
+	//发生入站链接时（待定），例如：暂无
+	//void onInboundLink(NodeContentDto<node, parameters, inputPorts, outputPorts>, OutputPortDto);
 	
-	//是否捕获出站链接事件
+	//是否捕获出站链接事件（待定）
 	//返回false，否
 	//返回true，是
-	boolean catchOutboundLink();
+	//boolean catchOutboundLink();
 	
-	//发生出站链接时，例如：暂无
-	void onOutboundLink(NodeContentDto<node, parameters, inputPorts, outputPorts>, InputPortDto);
+	//发生出站链接时（待定），例如：暂无
+	//void onOutboundLink(NodeContentDto<node, parameters, inputPorts, outputPorts>, InputPortDto);
 	
 	
 	///////////////////////////////////任务执行事件相关/////////////////////////////////////////
