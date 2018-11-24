@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-11-24 23:13:35
+Date: 2018-11-24 23:18:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -99,9 +99,6 @@ INSERT INTO `cf_cmpt_char` VALUES ('10031', 'eta', '通用参数 | 机器学习 
 INSERT INTO `cf_cmpt_char` VALUES ('10032', 'epsilon', '通用参数 | 机器学习 | 收敛系数eplison（最小收敛误差）', '', '5', '5', '3', '0', '0', '0', null, '0.01', '', '', '0.000001', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('10034', 'regularizedType', '通用参数 | 机器学习 | 正则项类型', '', '5', '7', '3', '0', '0', '5', null, '', '', '', 'None', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('10035', 'regularizedCoef', '通用参数 | 机器学习 | 正则系数', '', '5', '5', '3', '0', '0', '0', null, '0.1', '', '', '1', '可选，正则类型为None时此值无效', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40100000', 'sqlScript', '专用参数 | 脚本工具 | SQL脚本', '', '5', '200', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40100100', 'pythonScript', '专用参数 | 脚本工具 | Python脚本', '', '5', '201', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40100200', 'rScript', '专用参数 | 脚本工具 | R脚本', '', '5', '202', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('40500300', 'treeNumber', '专用参数 | 机器学习 | 随机森林 | 森林中树的数目', '', '5', '3', '3', '0', '1', '2', null, '1', '1', '1000', '100', '', '0', '2017-05-17 18:00:30', 'admin', '2017-05-17 18:00:30', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('40500301', 'algorithmDistribution', '专用参数 | 机器学习 | 随机森林 | 森林中树的算法分布', '', '5', '7', '3', '0', '0', '0', null, '', '', '', '', '如果有则长度为2.比如有n棵树，algorithmTypes=a,b  则[0,a) 是 id3, [a,b) 是cart， [b,n) 是c4.5。例如：在一个拥有5棵树的森林中，[2, 4]表示0，1为id3算法，2, 3为cart算法，4为c4.5算法。如果输入为None，则算法在森林中均分。', '0', '2017-05-17 19:07:52', 'admin', '2017-05-17 19:08:01', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('40500302', 'randomFeatureNumber', '专用参数 | 机器学习 | 随机森林 | 单颗树输入随机特征的个数', '', '5', '3', '3', '0', '0', '2', null, '1', '1', '', '', '范围 [1, N]，N为feature数，默认log2N', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
@@ -231,6 +228,9 @@ INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-08', 'SCP@Import-DataFile@
 INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-09', 'SCP@Import-DataFile@TimeFormat', '专用参数 | 输入输出 | 数据文件导入 | 时间格式', 'timeFormat', '5', '7', '3', '0', '0', '0', null, '', '', '', 'yyyy-mm-dd hh24:mi:ss', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-10', 'SCP@Import-DataFile@TypeException', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理', 'typeException', '5', '7', '3', '0', '0', '5', null, '', '', '', 'missing value', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-11', 'SCP@Import-DataFile@ColumnsException', '专用参数 | 输入输出 | 数据文件导入 | 列数异常处理', 'columnsException', '5', '7', '3', '0', '0', '5', null, '', '', '', 'discard row', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-ST@COM-0001-01', 'sqlScript', '专用参数 | 脚本工具 | SQL脚本 | SQL脚本', '', '5', '3001', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-ST@COM-0002-01', 'pythonScript', '专用参数 | 脚本工具 | Python脚本 | Python脚本', '', '5', '3002', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-ST@COM-0003-01', 'rScript', '专用参数 | 脚本工具 | R脚本 | R脚本', '', '5', '3003', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_cmpt_char_enum
