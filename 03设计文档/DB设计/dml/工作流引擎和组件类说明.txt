@@ -27,7 +27,7 @@ public class ModuleBoard {
 
 
 @service
-public interface ModuleBase {
+public interface IModuleBase {
 	//方法失败或异常抛出moduleException，组件类实现该接口，适当封装一些中间abstract组件类以便复用
 	
 	
