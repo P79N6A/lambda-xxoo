@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-11-24 23:18:45
+Date: 2018-11-25 22:10:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -88,8 +88,9 @@ CREATE TABLE `cf_cmpt_char` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`CHAR_ID`),
-  UNIQUE KEY `Index_1` (`CHAR_CODE`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征表，配置组件相关的一系列特征参数项';
+  UNIQUE KEY `Index_1` (`CHAR_CODE`) USING BTREE,
+  UNIQUE KEY `Index_2` (`CHAR_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征表，配置组件相关的一系列特征参数项\r\n\r\n特征别名为空时，自动采用特征代码来填充\r\n后期可以考虑给每个特征配置特征Class，用于自定义特征值校验';
 
 -- ----------------------------
 -- Records of cf_cmpt_char
@@ -143,13 +144,13 @@ INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-IO@COM-0014', 'CCP@IO-ModelID', '通�
 INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-ML@COM-0001', 'CCP@ML-RandSeed', '通用参数 | 机器学习 | 随机数种子', 'randomSeed', '5', '3', '3', '0', '0', '2', null, '1', '0', '10', '0', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0000', 'EX@#Execution', '调用执行 | #调用执行', '', '3', '-1', '-1', '-1', '-1', '-1', null, '', '', '', '', '', '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0001', 'EX@Engine-Type', '调用执行 | 计算引擎', 'engineType', '3', '7', '1', '0', '1', '5', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0002', 'EX@Spark-Cmpt-Jar-Dir', '调用执行 | spark组件jar库目录', 'jarDir', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0003', 'EX@Spark-Cmpt-Jar-File', '调用执行 | spark组件jar包文件名', 'jarFile', '3', '7', '2', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0004', 'EX@Spark-Cmpt-Class-Path', '调用执行 | spark组件class路径', 'class', '3', '7', '2', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0005', 'EX@Spark-Cmpt-Python-Pkg-Dir', '调用执行 | spark组件python包目录', 'pythonPkgDir', '3', '7', '2', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0006', 'EX@Spark-Cmpt-Python-File', '调用执行 | spark组件python文件名', 'pythonFile', '3', '7', '2', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0007', 'EX@Spark-Cmpt-R-Pkg-Dir', '调用执行 | spark组件R包目录', 'rPkgDir', '3', '7', '2', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0008', 'EX@Spark-Cmpt-R-File', '调用执行 | spark组件R文件名', 'rFile', '3', '7', '2', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0002', 'EX@Spark-Scala-Cmpt-Jar-Dir', '调用执行 | spark scala组件jar库目录', 'jarDir', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0003', 'EX@Spark-Scala-Cmpt-Jar-File', '调用执行 | spark scala组件jar包文件名', 'jarFile', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0004', 'EX@Spark-Scala-Cmpt-Class-Path', '调用执行 | spark scala组件class路径', 'class', '3', '7', '2', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0005', 'EX@Spark-Python-Cmpt-Pkg-Dir', '调用执行 | spark python组件包目录', 'pythonPkgDir', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0006', 'EX@Spark-Python-Cmpt-File', '调用执行 | spark python组件文件名', 'pythonFile', '3', '7', '2', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0007', 'EX@Spark-R-Cmpt-Pkg-Dir', '调用执行 | spark R组件包目录', 'rPkgDir', '3', '7', '1', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0008', 'EX@Spark-R-Cmpt-File', '调用执行 | spark R组件文件名', 'rFile', '3', '7', '2', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0000', 'IN@#Input-Content', '输入内容 | #输入内容', '', '1', '-1', '-1', '-1', '-1', '-1', null, '', '', '', '', '', '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0001', 'IN@DataTable-t1<M>', '输入内容 | 数据表t1<M>', 't1', '1', '1001', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0002', 'IN@DataTable-t2<M>', '输入内容 | 数据表t2<M>', 't2', '1', '1001', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
@@ -248,44 +249,45 @@ CREATE TABLE `cf_cmpt_char_enum` (
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`CHAR_ID`,`SEQUENCE`)
+  PRIMARY KEY (`CHAR_ID`,`ENUM_NAME`),
+  UNIQUE KEY `Index_1` (`CHAR_ID`,`SEQUENCE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征枚举表，配置受枚举方式限定的组件特征，其所有预置的枚举项';
 
 -- ----------------------------
 -- Records of cf_cmpt_char_enum
 -- ----------------------------
-INSERT INTO `cf_cmpt_char_enum` VALUES ('40034', '专用参数 | 机器学习 | 正则项类型 | None', 'None', null, '0', '', '0', '2017-05-12 02:06:11', 'admin', '2017-05-12 02:06:11', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('40034', '专用参数 | 机器学习 | 正则项类型 | L1', 'L1', null, '1', '', '0', '2017-05-12 02:07:04', 'admin', '2017-05-12 02:07:04', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('40034', '专用参数 | 机器学习 | 正则项类型 | L2', 'L2', null, '2', '', '0', '2017-05-12 02:07:39', 'admin', '2017-05-12 02:07:39', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('40510001', '专用参数 | 机器学习 | KMeans | 距离度量方式 | Euclidean', 'euclidean', null, '0', '', '0', '2017-05-17 21:03:39', 'admin', '2017-05-17 21:03:48', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('40510001', '专用参数 | 机器学习 | KMeans | 距离度量方式 | Cosine', 'cosine', null, '1', '', '0', '2017-05-17 21:04:16', 'admin', '2017-05-17 21:04:16', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('40510001', '专用参数 | 机器学习 | KMeans | 距离度量方式 | Cityblock', 'cityblock', null, '2', '', '0', '2017-05-17 21:05:03', 'admin', '2017-05-17 21:05:03', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '专用参数 | 机器学习 | KMeans | 质心初始化方法 | Random', 'random', null, '0', '', '0', '2017-05-17 21:13:49', 'admin', '2017-05-17 21:13:49', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '专用参数 | 机器学习 | KMeans | 质心初始化方法 | Top K', 'topk', null, '1', '', '0', '2017-05-17 21:14:51', 'admin', '2017-05-17 21:14:51', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '专用参数 | 机器学习 | KMeans | 质心初始化方法 | Uniform', 'uniform', null, '2', '', '0', '2017-05-17 21:15:12', 'admin', '2017-05-17 21:15:12', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '专用参数 | 机器学习 | KMeans | 质心初始化方法 | KMPP', 'kmpp', null, '3', '', '0', '2017-05-17 21:15:55', 'admin', '2017-05-17 21:15:55', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '专用参数 | 机器学习 | KMeans | 质心初始化方法 | External', 'external', null, '4', '', '0', '2017-05-17 21:16:46', 'admin', '2017-05-17 21:16:46', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('EX@C-0001', '调用执行 | 计算引擎 | spark on yarn', 'spark on yarn', null, '0', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('EX@C-0001', '调用执行 | 计算引擎 | spark on mesos', 'spark on mesos', null, '1', '', '0', '2017-05-17 15:25:50', 'admin', '2017-05-17 15:25:50', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | CSV', 'CSV', null, '0', '字段逗号分隔', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | TSV', 'TSV', null, '1', '字段TAB分割', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | TXT', 'TXT', null, '2', '字段空格分隔', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | ARFF', 'ARFF', null, '3', 'weka专用的文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | COO', 'COO', null, '4', 'Coordinate稀疏矩阵文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | CSR', 'CSR', null, '5', 'Compressed Sparse Row稀疏矩阵文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | CSC', 'CSC', null, '6', 'Compressed Sparse Column稀疏矩阵文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | ELL', 'ELL', null, '7', 'ELLPACK稀疏矩阵文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | DIA', 'DIA', null, '8', 'Diagonal稀疏矩阵文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | HYB', 'HYB', null, '9', 'Hybrid ELLPACK + Coordinate稀疏矩阵文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | Parquet', 'Parquet', null, '10', 'Parquet列式存储文件格式', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 输入输出 | 数据文件导入 | 字符编码 | UTF-8', 'UTF-8', null, '0', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 输入输出 | 数据文件导入 | 字符编码 | Unicode', 'Unicode', null, '1', '', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 输入输出 | 数据文件导入 | 字符编码 | GBK', 'GBK', null, '2', '', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 输入输出 | 数据文件导入 | 字符编码 | GB2312', 'GB2312', null, '3', '', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 输入输出 | 数据文件导入 | 字符编码 | GB18030', 'GB18030', null, '4', '', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 输入输出 | 数据文件导入 | 字符编码 | BIG5', 'BIG5', null, '5', '', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-10', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理 | Missing Value', 'missing value', '值设置为缺失', '0', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('40034', '专用参数 | 机器学习 | 正则项类型 | L1', 'L1', '', '1', '', '0', '2017-05-12 02:07:04', 'admin', '2017-05-12 02:07:04', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('40034', '专用参数 | 机器学习 | 正则项类型 | L2', 'L2', '', '2', '', '0', '2017-05-12 02:07:39', 'admin', '2017-05-12 02:07:39', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('40034', '专用参数 | 机器学习 | 正则项类型 | None', 'None', '', '0', '', '0', '2017-05-12 02:06:11', 'admin', '2017-05-12 02:06:11', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('40510001', '专用参数 | 机器学习 | KMeans | 距离度量方式 | Cityblock', 'cityblock', '', '2', '', '0', '2017-05-17 21:05:03', 'admin', '2017-05-17 21:05:03', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('40510001', '专用参数 | 机器学习 | KMeans | 距离度量方式 | Cosine', 'cosine', '', '1', '', '0', '2017-05-17 21:04:16', 'admin', '2017-05-17 21:04:16', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('40510001', '专用参数 | 机器学习 | KMeans | 距离度量方式 | Euclidean', 'euclidean', '', '0', '', '0', '2017-05-17 21:03:39', 'admin', '2017-05-17 21:03:48', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '专用参数 | 机器学习 | KMeans | 质心初始化方法 | External', 'external', '', '4', '', '0', '2017-05-17 21:16:46', 'admin', '2017-05-17 21:16:46', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '专用参数 | 机器学习 | KMeans | 质心初始化方法 | KMPP', 'kmpp', '', '3', '', '0', '2017-05-17 21:15:55', 'admin', '2017-05-17 21:15:55', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '专用参数 | 机器学习 | KMeans | 质心初始化方法 | Random', 'random', '', '0', '', '0', '2017-05-17 21:13:49', 'admin', '2017-05-17 21:13:49', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '专用参数 | 机器学习 | KMeans | 质心初始化方法 | Top K', 'topk', '', '1', '', '0', '2017-05-17 21:14:51', 'admin', '2017-05-17 21:14:51', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('40510002', '专用参数 | 机器学习 | KMeans | 质心初始化方法 | Uniform', 'uniform', '', '2', '', '0', '2017-05-17 21:15:12', 'admin', '2017-05-17 21:15:12', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('EX@C-0001', '调用执行 | 计算引擎 | spark on mesos', 'spark on mesos', '', '1', '', '0', '2017-05-17 15:25:50', 'admin', '2017-05-17 15:25:50', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('EX@C-0001', '调用执行 | 计算引擎 | spark on yarn', 'spark on yarn', '', '0', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | ARFF', 'ARFF', '', '3', 'weka专用的文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | COO', 'COO', '', '4', 'Coordinate稀疏矩阵文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | CSC', 'CSC', '', '6', 'Compressed Sparse Column稀疏矩阵文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | CSR', 'CSR', '', '5', 'Compressed Sparse Row稀疏矩阵文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | CSV', 'CSV', '', '0', '字段逗号分隔', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | DIA', 'DIA', '', '8', 'Diagonal稀疏矩阵文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | ELL', 'ELL', '', '7', 'ELLPACK稀疏矩阵文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | HYB', 'HYB', '', '9', 'Hybrid ELLPACK + Coordinate稀疏矩阵文件格式', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | Parquet', 'Parquet', '', '10', 'Parquet列式存储文件格式', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | TSV', 'TSV', '', '1', '字段TAB分割', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-01', '专用参数 | 输入输出 | 数据文件导入 | 文件类型 | TXT', 'TXT', '', '2', '字段空格分隔', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 输入输出 | 数据文件导入 | 字符编码 | BIG5', 'BIG5', '', '5', '', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 输入输出 | 数据文件导入 | 字符编码 | GB18030', 'GB18030', '', '4', '', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 输入输出 | 数据文件导入 | 字符编码 | GB2312', 'GB2312', '', '3', '', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 输入输出 | 数据文件导入 | 字符编码 | GBK', 'GBK', '', '2', '', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 输入输出 | 数据文件导入 | 字符编码 | Unicode', 'Unicode', '', '1', '', '-1', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 输入输出 | 数据文件导入 | 字符编码 | UTF-8', 'UTF-8', '', '0', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
 INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-10', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理 | Discard Row', 'discard row', '丢弃异常行', '1', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-10', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理 | Missing Value', 'missing value', '值设置为缺失', '0', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
 INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-10', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理 | Return Failed', 'return failed', '返回失败', '2', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
 INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-11', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理 | Discard Row', 'discard row', '丢弃异常行', '0', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
 INSERT INTO `cf_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-11', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理 | Return Failed', 'return failed', '返回失败', '1', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
@@ -308,7 +310,7 @@ CREATE TABLE `cf_cmpt_char_type` (
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`CHAR_TYPE_ID`),
   UNIQUE KEY `Index_1` (`CHAR_TYPE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征类型表（仅查询用），相关定义辅助于数据校验和画布连线输入输出类型匹配校验';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征类型表（仅查询用），相关定义辅助于数据校验和画布连线输入输出类型匹配校验\r\n\r\n特征值的读写行为由特征类型控制，后期可以考虑把特征类型Class做成配置化';
 
 -- ----------------------------
 -- Records of cf_cmpt_char_type
@@ -399,6 +401,7 @@ CREATE TABLE `cf_cmpt_char_value` (
   `CHAR_ID` varchar(64) NOT NULL COMMENT '特征ID',
   `IS_SYSTEM_PARAM` int(11) NOT NULL COMMENT '特征值是否为系统参数\r\n            0：否\r\n            1：是',
   `CHAR_VALUE` varchar(2000) DEFAULT NULL COMMENT '特征值',
+  `DESCRIPTION` varchar(800) NOT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
@@ -427,7 +430,8 @@ CREATE TABLE `cf_cmpt_spec` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`SPEC_ID`),
-  UNIQUE KEY `Index_1` (`SPEC_CODE`)
+  UNIQUE KEY `Index_1` (`SPEC_CODE`),
+  UNIQUE KEY `Index_2` (`SPEC_NAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件规格表，同一组件规格下组件特征别名不能冲突';
 
 -- ----------------------------
@@ -484,9 +488,9 @@ INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-WS@COM-0001', 'CP@Input-DataFile', '
 INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-WS@COM-0002', 'CP@Output-DataFile', '组件参数 | 在线服务 | 数据文件输出（待定）', '5', '输出数据文件key', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-WS@COM-0003', 'CP@Output-ModelFile', '组件参数 | 在线服务 | 模型文件输出（待定）', '5', '输出模型文件key', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('EX@SPEC-0000', 'EX@#Execution', '调用执行 | #调用执行', '3', '', '-1', '2017-05-17 15:08:09', 'admin', '2017-05-17 15:08:09', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('EX@SPEC-0001', 'EX@Scala-Spark', '调用执行 | Scala Spark', '3', '', '0', '2017-05-17 15:08:09', 'admin', '2017-05-17 15:08:09', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('EX@SPEC-0002', 'EX@Python-Spark', '调用执行 | Python Spark（待定）', '3', '', '-1', '2017-05-17 15:08:09', 'admin', '2017-05-17 15:08:09', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('EX@SPEC-0003', 'EX@R-Spark', '调用执行 | R Spark（待定）', '3', '', '-1', '2017-05-17 15:08:09', 'admin', '2017-05-17 15:08:09', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('EX@SPEC-0001', 'EX@Spark-Scala', '调用执行 | Spark Scala', '3', '', '0', '2017-05-17 15:08:09', 'admin', '2017-05-17 15:08:09', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('EX@SPEC-0002', 'EX@Spark-Python', '调用执行 | Spark Python（待定）', '3', '', '-1', '2017-05-17 15:08:09', 'admin', '2017-05-17 15:08:09', 'admin');
+INSERT INTO `cf_cmpt_spec` VALUES ('EX@SPEC-0003', 'EX@Spark-R', '调用执行 | Spark R待定）', '3', '', '-1', '2017-05-17 15:08:09', 'admin', '2017-05-17 15:08:09', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('IN@SPEC-0000', 'IN@#Input-Content', '输入内容 | #输入内容', '1', '', '-1', '2017-05-17 14:24:10', 'admin', '2017-05-17 14:24:10', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('IN@SPEC-0001', 'IN@One-DataTable-t1<M>', '输入内容 | 一个数据表t1<M>', '1', '', '0', '2017-05-17 14:24:10', 'admin', '2017-05-17 14:24:10', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('IN@SPEC-0002', 'IN@Two-DataTable-t1<M>,t2<C>', '输入内容 | 二个数据表t1<M>,t2<C>', '1', '', '0', '2017-05-17 14:26:05', 'admin', '2017-05-17 14:26:05', 'admin');
@@ -587,15 +591,16 @@ INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-9999', 'SCP@C-IO@COM
 INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-9999', 'SCP@C-IO@COM-9999-09', '组件参数 | 输入输出 | 数据文件导入，时间格式', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
 INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-9999', 'SCP@C-IO@COM-9999-10', '组件参数 | 输入输出 | 数据文件导入，字段类型异常处理', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
 INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-9999', 'SCP@C-IO@COM-9999-11', '组件参数 | 输入输出 | 数据文件导入，列数异常处理', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('EX@SPEC-0001', 'EX@C-0001', '调用执行 | Scala Spark，计算引擎', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('EX@SPEC-0001', 'EX@C-0002', '调用执行 | Scala Spark，spark组件jar库目录', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('EX@SPEC-0001', 'EX@C-0003', '调用执行 | Scala Spark，spark组件jar包文件名', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('EX@SPEC-0001', 'EX@C-0004', '调用执行 | Scala Spark，spark组件class路径', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('EX@SPEC-0001', 'EX@C-0001', '调用执行 | Spark Scala，计算引擎', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('EX@SPEC-0001', 'EX@C-0002', '调用执行 | Spark Scala，spark scala组件jar库目录', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('EX@SPEC-0001', 'EX@C-0003', '调用执行 | Spark Scala，spark scala组件jar包文件名', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('EX@SPEC-0001', 'EX@C-0004', '调用执行 | Spark Scala，spark scala组件class路径', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
 INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0001', 'IN@C-0001', '输入内容 | 一个数据表t1<M>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0004', 'IN@C-0001', '输入内容 | 四个数据表t1<M>,t2<C>,t3<C>,t4<C>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0004', 'IN@C-0003', '输入内容 | 四个数据表t1<M>,t2<C>,t3<C>,t4<C>，输入数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0004', 'IN@C-0005', '输入内容 | 四个数据表t1<M>,t2<C>,t3<C>,t4<C>，输入数据表t3', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0004', 'IN@C-0007', '输入内容 | 四个数据表t1<M>,t2<C>,t3<C>,t4<C>，输入数据表t4', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0005', 'IN@C-0001', '输入内容 | 五个数据表t1<M>,t2<C>,t3<C>,t4<C>,t5<C>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0005', 'IN@C-0003', '输入内容 | 五个数据表t1<M>,t2<C>,t3<C>,t4<C>,t5<C>，输入数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0005', 'IN@C-0005', '输入内容 | 五个数据表t1<M>,t2<C>,t3<C>,t4<C>,t5<C>，输入数据表t3', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0005', 'IN@C-0007', '输入内容 | 五个数据表t1<M>,t2<C>,t3<C>,t4<C>,t5<C>，输入数据表t4', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0005', 'IN@C-0009', '输入内容 | 五个数据表t1<M>,t2<C>,t3<C>,t4<C>,t5<C>，输入数据表t5', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
 INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0023', 'IN@C-0001', '输入内容 | 一个通配分类和回归算法参数a1<M> + 一个数据表t1<M>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
 INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0023', 'IN@C-0018', '输入内容 | 一个通配分类和回归算法参数a1<M> + 一个数据表t1<M>，输入算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
 INSERT INTO `cf_cmpt_spec_char_rel` VALUES ('IN@SPEC-0024', 'IN@C-0001', '输入内容 | 一个通配分类和回归算法参数a1<M> + 两个数据表t1<M>,t2<C>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
@@ -654,6 +659,7 @@ CREATE TABLE `cf_cmpt_spec_char_value` (
   `CHAR_ID` varchar(64) NOT NULL COMMENT '特征ID',
   `IS_SYSTEM_PARAM` int(11) NOT NULL COMMENT '特征值是否为系统参数\r\n            0：否\r\n            1：是',
   `CHAR_VALUE` varchar(2000) DEFAULT NULL COMMENT '特征值',
+  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
@@ -665,6 +671,14 @@ CREATE TABLE `cf_cmpt_spec_char_value` (
 -- ----------------------------
 -- Records of cf_cmpt_spec_char_value
 -- ----------------------------
+INSERT INTO `cf_cmpt_spec_char_value` VALUES ('EX@SPEC-0001', 'EX@C-0001', '0', 'spark on yarn', null, '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
+INSERT INTO `cf_cmpt_spec_char_value` VALUES ('EX@SPEC-0001', 'EX@C-0002', '1', 'CF_SPARK_SCALA_CMPT_JAR_DIR', null, '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
+INSERT INTO `cf_cmpt_spec_char_value` VALUES ('EX@SPEC-0001', 'EX@C-0003', '1', 'CF_SPARK_SCALA_CMPT_JAR_FILE', null, '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
+INSERT INTO `cf_cmpt_spec_char_value` VALUES ('OEX@SPEC-0001', 'OEX@C-0001', '1', 'CF_SPARK_EXECUTOR_NUMBER', null, '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
+INSERT INTO `cf_cmpt_spec_char_value` VALUES ('OEX@SPEC-0001', 'OEX@C-0002', '1', 'CF_SPARK_EXECUTOR_CORES', null, '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
+INSERT INTO `cf_cmpt_spec_char_value` VALUES ('OEX@SPEC-0001', 'OEX@C-0003', '1', 'CF_SPARK_EXECUTOR_MEMORY', null, '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
+INSERT INTO `cf_cmpt_spec_char_value` VALUES ('OEX@SPEC-0001', 'OEX@C-0004', '1', 'CF_SPARK_DRIVER_CORES', null, '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
+INSERT INTO `cf_cmpt_spec_char_value` VALUES ('OEX@SPEC-0001', 'OEX@C-0005', '1', 'CF_SPARK_DRIVER_MEMORY', null, '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_cmpt_spec_rel
@@ -781,11 +795,11 @@ INSERT INTO `cf_cmpt_spec_rel` VALUES ('ML@COM-9005', 'OUT@SPEC-0024', '2', '机
 INSERT INTO `cf_cmpt_spec_rel` VALUES ('ML@COM-9005', 'EX@SPEC-0001', '3', '机器学习 | 回归模型评估，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
 INSERT INTO `cf_cmpt_spec_rel` VALUES ('ML@COM-9005', 'OEX@SPEC-0001', '4', '机器学习 | 回归模型评估，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
 INSERT INTO `cf_cmpt_spec_rel` VALUES ('ML@COM-9005', 'CP@SPEC-ML@COM-9005', '5', '机器学习 | 回归模型评估，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec_rel` VALUES ('ST@COM-0001', 'IN@SPEC-0004', '1', '机器学习 | 回归模型评估，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec_rel` VALUES ('ST@COM-0001', 'OUT@SPEC-0001', '2', '机器学习 | 回归模型评估，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec_rel` VALUES ('ST@COM-0001', 'EX@SPEC-0001', '3', '机器学习 | 回归模型评估，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec_rel` VALUES ('ST@COM-0001', 'OEX@SPEC-0001', '4', '机器学习 | 回归模型评估，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec_rel` VALUES ('ST@COM-0001', 'CP@SPEC-ST@COM-0001', '5', '机器学习 | 回归模型评估，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('ST@COM-0001', 'IN@SPEC-0005', '1', '机器学习 | SQL脚本，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('ST@COM-0001', 'OUT@SPEC-0001', '2', '机器学习 | SQL脚本，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('ST@COM-0001', 'EX@SPEC-0001', '3', '机器学习 | SQL脚本，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('ST@COM-0001', 'OEX@SPEC-0001', '4', '机器学习 | SQL脚本，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('ST@COM-0001', 'CP@SPEC-ST@COM-0001', '5', '机器学习 | SQL脚本，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_component
@@ -804,7 +818,8 @@ CREATE TABLE `cf_component` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`CMPT_ID`),
-  UNIQUE KEY `Index_1` (`CMPT_CODE`)
+  UNIQUE KEY `Index_1` (`CMPT_CODE`),
+  UNIQUE KEY `Index_2` (`CMPT_NAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件表';
 
 -- ----------------------------
@@ -880,9 +895,10 @@ DROP TABLE IF EXISTS `dw_data_table`;
 CREATE TABLE `dw_data_table` (
   `TABLE_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '数据表ID',
   `TABLE_NAME` varchar(200) NOT NULL COMMENT '数据表名\r\n            \r\n            普通和动态数据表：由英文字符、数字和下划线组成，起始字符不能为下划线\r\n            临时数据表：tmp$<node_id>_<node_port_id>_<job_id>',
-  `TABLE_TYPE` int(11) NOT NULL COMMENT '数据表类型\r\n            0：普通数据表\r\n            1：动态数据表，由写数据表组件产生，在编辑过程中创建\r\n            2：临时数据表\r\n            3：外部数据表，由在线服务的数据文件输入组件产生，DATA_FILE关联完整文件路径，作业完成时被立即清理',
+  `TABLE_TYPE` int(11) NOT NULL COMMENT '数据表类型\r\n            0：普通数据表\r\n            1：临时数据表\r\n            2：外部数据表，由在线服务的数据文件输入组件产生，DATA_FILE关联完整文件路径，作业完成时被立即清理',
   `TABLE_SRC` int(11) NOT NULL DEFAULT '0' COMMENT '数据表来源\r\n            0：内部生成\r\n            1：外部导入',
   `OWNER_DW_ID` bigint(20) NOT NULL COMMENT '所属数据库ID',
+  `REL_EXPERIMENT_ID` bigint(20) NOT NULL COMMENT '关联实验ID，无关联实验设为-1',
   `REL_JOB_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联作业ID，无关联则设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建数据表的工作流节点，无关联则设为-1',
   `REL_CHAR_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建数据表的工作流节点输出特征，无关联则设为-1',
@@ -900,8 +916,9 @@ CREATE TABLE `dw_data_table` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`TABLE_ID`),
-  UNIQUE KEY `Index_1` (`OWNER_DW_ID`,`TABLE_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据表';
+  KEY `Index_1` (`OWNER_DW_ID`,`TABLE_NAME`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`OWNER_DW_ID`,`TABLE_TYPE`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
 
 -- ----------------------------
 -- Records of dw_data_table
@@ -915,7 +932,7 @@ CREATE TABLE `dw_data_warehouse` (
   `DW_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '数据库ID',
   `DW_CODE` varchar(100) NOT NULL COMMENT '数据库代码\r\n            \r\n            公共数据库：由英文字符、数字和下划线组成，起始字符不能为下划线\r\n            项目数据库：$符号前缀 + 项目代码',
   `DW_NAME` varchar(200) NOT NULL COMMENT '数据库名',
-  `DW_TYPE` int(11) NOT NULL COMMENT '数据库类型\r\n            0：公共数据库，暂用于存放实验模版所预置的数据表\r\n            1：项目数据库，随项目创建同时生成，存放项目中产生的数据表',
+  `DW_TYPE` int(11) NOT NULL COMMENT '数据库类型\r\n            0：公共数据库，仅有一个，用于存放实验模版所预置的数据表\r\n            1：项目数据库，随项目创建同时生成，存放项目中产生的数据表',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID，数据库类型为公共数据库时设为-1',
   `DATA_DFS_DIR` varchar(800) NOT NULL COMMENT 'DFS数据目录，存放普通数据表的数据文件和数据概要文件\r\n            \r\n            ${HDFS_SITE}/${DFS_WORK_ROOT}/dw_data/<dw_code>',
   `DATA_LOCAL_DIR` varchar(800) NOT NULL COMMENT '本地数据目录，缓存普通数据表的数据概要文件\r\n            \r\n            ${LOCAL_WORK_ROOT}/dw_data/<dw_code>',
@@ -926,12 +943,15 @@ CREATE TABLE `dw_data_warehouse` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`DW_ID`),
-  UNIQUE KEY `Index_1` (`DW_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据库表，对数据表做分组，辅助项目权限隔离';
+  KEY `Index_1` (`DW_CODE`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`DW_TYPE`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_3` (`DW_NAME`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8 COMMENT='数据库表，对数据表做分组，辅助项目权限隔离\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
 
 -- ----------------------------
 -- Records of dw_data_warehouse
 -- ----------------------------
+INSERT INTO `dw_data_warehouse` VALUES ('10000', 'lambda_pub_db', '公共数据库', '0', '-1', '${HDFS_SITE}/${DFS_WORK_ROOT}/dw_data/lambda_pub_db', '${LOCAL_WORK_ROOT}/dw_data/lambda_pub_db', '平台内置公共数据库，唯一', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
 
 -- ----------------------------
 -- Table structure for em_experiment
@@ -940,12 +960,13 @@ DROP TABLE IF EXISTS `em_experiment`;
 CREATE TABLE `em_experiment` (
   `EXPERIMENT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '实验ID',
   `EXPERIMENT_NAME` varchar(200) NOT NULL COMMENT '实验名称',
-  `EXPERIMENT_TYPE` int(11) NOT NULL DEFAULT '0' COMMENT '实验类型\r\n            0：主实验，正常创建实验\r\n            1：预测实验，通过选择主实验中的已训练模型进行自动创建',
-  `MAIN_EXPERIMENT_ID` bigint(20) NOT NULL COMMENT '所属主实验ID，正常创建实验设为-1',
+  `EXPERIMENT_TYPE` int(11) NOT NULL DEFAULT '0' COMMENT '实验类型\r\n            0：主实验，正常创建实验\r\n            1：预测实验（预留），通过选择主实验中的已训练模型进行自动创建',
+  `MAIN_EXPERIMENT_ID` bigint(20) DEFAULT NULL COMMENT '所属主实验ID，主实验设为自身ID',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `FLOW_ID` bigint(20) NOT NULL COMMENT '流程图ID',
   `EXPERIMENT_DFS_DIR` varchar(800) NOT NULL COMMENT 'DFS实验目录\r\n            \r\n            ${HDFS_SITE}/${DFS_WORK_ROOT}/exp_data/<project_id>/<experiment_id>',
   `EXPERIMENT_LOCAL_DIR` varchar(800) NOT NULL COMMENT '本地实验目录\r\n            \r\n            ${LOCAL_WORK_ROOT}/exp_data/<project_id>/<experiment_id>',
+  `SEQUENCE2` int(11) NOT NULL DEFAULT '0' COMMENT '实验序号，用于辅助复制实验时的新名称后缀编号',
   `SEQUENCE` int(11) NOT NULL DEFAULT '0' COMMENT '实验序号，用于辅助复制实验时的新名称后缀编号',
   `SUMMARY` varchar(256) DEFAULT NULL COMMENT '摘要，冗余WF_FLOW.SUMMARY信息',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述，冗余WF_FLOW.DESCRIPTION信息',
@@ -955,10 +976,10 @@ CREATE TABLE `em_experiment` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`EXPERIMENT_ID`),
-  UNIQUE KEY `Index_1` (`OWNER_PROJECT_ID`,`EXPERIMENT_NAME`),
-  KEY `Index_3` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`MAIN_EXPERIMENT_ID`),
-  KEY `Index_2` (`OWNER_PROJECT_ID`,`SEQUENCE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='实验表，实验是工作流的外壳主体';
+  KEY `Index_1` (`OWNER_PROJECT_ID`,`EXPERIMENT_NAME`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_3` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`MAIN_EXPERIMENT_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='实验表，实验是工作流的外壳主体\r\n\r\n逻辑删除，主实验正常状态的预测实验唯一';
 
 -- ----------------------------
 -- Records of em_experiment
@@ -971,9 +992,9 @@ DROP TABLE IF EXISTS `em_experiment_template`;
 CREATE TABLE `em_experiment_template` (
   `TEMPLATE_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '模版ID',
   `TEMPLATE_NAME` varchar(200) NOT NULL COMMENT '模版名称',
-  `SEQUENCE` int(11) NOT NULL COMMENT '模版序号',
+  `SEQUENCE` int(11) NOT NULL COMMENT '模版序号，排序用',
   `TEMPLATE_CONTENT` mediumtext COMMENT '模版内容',
-  `TEMPLATE_COUNT` bigint(20) NOT NULL DEFAULT '0' COMMENT '模版计数',
+  `TEMPLATE_COUNT` bigint(20) NOT NULL DEFAULT '1000' COMMENT '模版使用计数',
   `SUMMARY` varchar(256) DEFAULT NULL COMMENT '摘要',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -982,9 +1003,8 @@ CREATE TABLE `em_experiment_template` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`TEMPLATE_ID`),
-  UNIQUE KEY `Index_1` (`TEMPLATE_NAME`),
-  KEY `Index_2` (`SEQUENCE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='实验模版表';
+  KEY `Index_1` (`SEQUENCE`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='实验模版表';
 
 -- ----------------------------
 -- Records of em_experiment_template
@@ -997,9 +1017,10 @@ DROP TABLE IF EXISTS `mw_model`;
 CREATE TABLE `mw_model` (
   `MODEL_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '模型ID',
   `MODEL_NAME` varchar(200) NOT NULL COMMENT '模型名称\r\n            \r\n            普通和动态模型：由字符和数字组成，无特殊字符\r\n            临时模型：组件名称 - 同组件节点序号 - Model [ - 评估指标 - 排名序号] - 作业ID',
-  `MODEL_TYPE` int(11) NOT NULL COMMENT '模型类型\r\n            0：普通模型\r\n            1：动态模型，由写模型组件产生，在编辑过程中创建\r\n            2：临时模型',
+  `MODEL_TYPE` int(11) NOT NULL COMMENT '模型类型\r\n            0：普通模型\r\n            1：临时模型\r\n            \r\n             禁止做需要动态模型的组件设计和功能设计',
   `MODEL_SRC` int(11) NOT NULL COMMENT '模型来源\r\n            0：内部生成\r\n            1：外部导入',
   `OWNER_MW_ID` bigint(20) NOT NULL COMMENT '所属模型库ID',
+  `REL_EXPERIMENT_ID` bigint(20) NOT NULL COMMENT '关联实验ID，无关联实验设为-1',
   `REL_JOB_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联作业ID，无关联则设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建模型的工作流节点，无关联则设为-1',
   `REL_CHAR_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建模型的工作流节点输出特征，无关联则设为-1',
@@ -1017,8 +1038,9 @@ CREATE TABLE `mw_model` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`MODEL_ID`),
-  UNIQUE KEY `Index_1` (`OWNER_MW_ID`,`MODEL_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑';
+  KEY `Index_1` (`OWNER_MW_ID`,`MODEL_NAME`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`OWNER_MW_ID`,`MODEL_TYPE`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除，同一库下正常状态的名称唯一';
 
 -- ----------------------------
 -- Records of mw_model
@@ -1032,7 +1054,7 @@ CREATE TABLE `mw_model_warehouse` (
   `MW_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '数据库ID',
   `MW_CODE` varchar(100) NOT NULL COMMENT '模型库代码\r\n            \r\n            公共模型库：由英文字符、数字和下划线组成，起始字符不能为下划线\r\n            项目模型库：$符号前缀 + 项目代码',
   `MW_NAME` varchar(200) NOT NULL COMMENT '模型库名',
-  `MW_TYPE` int(11) NOT NULL COMMENT '数据库类型\r\n            0：公共模型库（预留）\r\n            1：项目模型库，随项目创建同时生成，存放项目中产生的模型',
+  `MW_TYPE` int(11) NOT NULL COMMENT '数据库类型\r\n            0：公共模型库（长期建议不支持）\r\n            1：项目模型库，随项目创建同时生成，存放项目中产生的模型',
   `OWNER_PROJECT_ID` bigint(20) DEFAULT NULL COMMENT '所属项目ID，模型库类型为公共模型库时设为-1',
   `MODEL_DFS_DIR` varchar(800) NOT NULL COMMENT 'DFS模型目录，存放普通模型的模型文件和模型概要文件\r\n            \r\n            ${HDFS_SITE}/${DFS_WORK_ROOT}/mw_model/<mw_code>',
   `MODEL_LOCAL_DIR` varchar(800) NOT NULL COMMENT '本地模型目录，缓存普通模型的模型概要文件\r\n            \r\n            ${LOCAL_WORK_ROOT}/mw_model/<mw_code>',
@@ -1043,8 +1065,10 @@ CREATE TABLE `mw_model_warehouse` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`MW_ID`),
-  UNIQUE KEY `Index_1` (`MW_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型库表，对模型做分组，辅助项目权限隔离';
+  UNIQUE KEY `Index_1` (`MW_NAME`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`MW_TYPE`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_3` (`MW_CODE`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8 COMMENT='模型库表，对模型做分组，辅助项目权限隔离\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
 
 -- ----------------------------
 -- Records of mw_model_warehouse
@@ -1067,9 +1091,9 @@ CREATE TABLE `pr_project` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`PROJECT_ID`),
-  UNIQUE KEY `Index_1` (`PROJECT_CODE`),
-  UNIQUE KEY `Index_2` (`PROJECT_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目表';
+  UNIQUE KEY `Index_1` (`PROJECT_CODE`,`STATUS`,`CREATE_TIME`),
+  UNIQUE KEY `Index_2` (`PROJECT_NAME`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8 COMMENT='项目表\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
 
 -- ----------------------------
 -- Records of pr_project
@@ -1089,9 +1113,9 @@ CREATE TABLE `pr_project_member` (
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`PROJECT_ID`,`MEMBER_USER`),
-  KEY `Index_1` (`MEMBER_USER`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目成员表';
+  KEY `Index_1` (`MEMBER_USER`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`PROJECT_ID`,`MEMBER_USER`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目成员表\r\n\r\n逻辑删除，正常状态的项目和用户唯一';
 
 -- ----------------------------
 -- Records of pr_project_member
@@ -1115,8 +1139,8 @@ CREATE TABLE `sys_parameter` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`PARAM_ID`),
-  UNIQUE KEY `Index_1` (`PARAM_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统参数表';
+  UNIQUE KEY `Index_1` (`PARAM_CODE`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='系统参数表\r\n\r\n逻辑删除，正常状态的代码唯一';
 
 -- ----------------------------
 -- Records of sys_parameter
@@ -1129,21 +1153,25 @@ DROP TABLE IF EXISTS `wf_code_script`;
 CREATE TABLE `wf_code_script` (
   `SCRIPT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '脚本ID',
   `SCRIPT_NAME` varchar(200) NOT NULL COMMENT '脚本名称\r\n            \r\n            由工作流创建：<module_code>_<node_id>_<char_id>_<snapshot_version>',
-  `SCRIPT_TYPE` int(11) NOT NULL COMMENT '脚本类型\r\n            0：普通脚本\r\n            1：SQL脚本\r\n            2：Python脚本（预留）\r\n            3：R脚本（预留）\r\n            4：特征抽取脚本（预留）',
+  `SCRIPT_TYPE` int(11) NOT NULL COMMENT '脚本类型\r\n            1：SQL脚本\r\n            2：Python脚本（预留）\r\n            3：R脚本（预留）\r\n            4：特征抽取脚本（预留）',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
-  `REL_SNAPSHOT_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照ID，创建脚本时的工作流快照，无关联则设为-1',
+  `REL_FLOW_ID` bigint(20) NOT NULL COMMENT '关联工作流ID，无关联工作流设为-1',
+  `REL_SNAPSHOT_VERSION` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照版本，取FLOW表的NEXT_SNAPSHOT_VERSION值，无关联则设为-1',
+  `REL_JOB_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联作业ID，无关联则设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建脚本的工作流节点，无关联则设为-1',
   `REL_CHAR_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建脚本的工作流节点输出特征，无关联则设为-1',
   `SCRIPT_CONTENT` text COMMENT '脚本内容',
   `SCRIPT_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '脚本状态\r\n            0：正常\r\n            1：空脚本',
+  `DESCRIPTION` varchar(800) NOT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`SCRIPT_ID`),
-  KEY `Index_1` (`OWNER_PROJECT_ID`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
+  KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`OWNER_PROJECT_ID`,`SCRIPT_TYPE`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
 
 -- ----------------------------
 -- Records of wf_code_script
@@ -1176,9 +1204,9 @@ CREATE TABLE `wf_execution_job` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`JOB_ID`),
-  KEY `Index_1` (`OWNER_PROJECT_ID`,`REL_FLOW_ID`,`CREATE_TIME`),
-  KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_TYPE`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
+  KEY `Index_1` (`OWNER_PROJECT_ID`,`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_TYPE`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
 
 -- ----------------------------
 -- Records of wf_execution_job
@@ -1190,13 +1218,18 @@ CREATE TABLE `wf_execution_job` (
 DROP TABLE IF EXISTS `wf_execution_queue`;
 CREATE TABLE `wf_execution_queue` (
   `JOB_ID` bigint(20) NOT NULL COMMENT '作业ID',
-  `STATE` int(11) NOT NULL DEFAULT '0' COMMENT '处理状态\r\n            0：queueing，排队中\r\n            1：processing，处理中',
+  `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
+  `JOB_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作业时间\r\n            \r\n            指定作业的开始处理时间，值来自进入队列时和继续执行时',
+  `JOB_SIGNAL` int(11) NOT NULL DEFAULT '0' COMMENT '作业信号\r\n            0：SIG_NORMAL，正常信号\r\n            1：SIG_KILL，杀死作业信号\r\n            2：SIG_STOP，停止执行信号\r\n            3：SIG_CONT，继续执行信号',
+  `JOB_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '处理状态\r\n            0：queueing，排队中\r\n            1：processing，处理中\r\n            2：finished，运行结束',
   `DESCRIPTION` varchar(800) NOT NULL COMMENT '描述',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`JOB_ID`)
+  PRIMARY KEY (`JOB_ID`),
+  KEY `Index_1` (`JOB_STATE`,`JOB_SIGNAL`,`JOB_TIME`),
+  KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_STATE`,`CREATE_TIME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行队列表，结束运行后移除';
 
 -- ----------------------------
@@ -1231,11 +1264,32 @@ CREATE TABLE `wf_execution_task` (
   PRIMARY KEY (`TASK_ID`),
   UNIQUE KEY `Index_1` (`OWNER_JOB_ID`,`REL_NODE_ID`),
   KEY `Index_2` (`OWNER_JOB_ID`,`SEQUENCE`),
-  KEY `Index_3` (`OWNER_JOB_ID`,`STATUS`,`SEQUENCE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
+  KEY `Index_3` (`OWNER_JOB_ID`,`TASK_STATE`,`SEQUENCE`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
 
 -- ----------------------------
 -- Records of wf_execution_task
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_execution_task_output
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_execution_task_output`;
+CREATE TABLE `wf_execution_task_output` (
+  `TASK_ID` bigint(20) NOT NULL COMMENT '节点ID',
+  `CHAR_ID` bigint(20) NOT NULL COMMENT '组件特征ID',
+  `CHAR_VALUE` varchar(2000) DEFAULT NULL COMMENT '特征值',
+  `DESCRIPTION` varchar(800) NOT NULL COMMENT '描述',
+  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
+  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
+  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
+  PRIMARY KEY (`TASK_ID`,`CHAR_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务输出表，记录输出内容的特征值';
+
+-- ----------------------------
+-- Records of wf_execution_task_output
 -- ----------------------------
 
 -- ----------------------------
@@ -1263,8 +1317,10 @@ CREATE TABLE `wf_flow` (
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   `VERSION` bigint(20) NOT NULL COMMENT '版本号，解决同一实验多用户编辑问题',
   PRIMARY KEY (`FLOW_ID`),
-  UNIQUE KEY `Index_1` (`OWNER_EXPERIMENT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流表，记录当前的实验状态，由一系列子表记录实验画布上节点和边的图形信息，以及节点参数内容和输出内容';
+  UNIQUE KEY `Index_1` (`OWNER_EXPERIMENT_ID`),
+  KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_3` (`OWNER_PROJECT_ID`,`STATUS`,`FLOW_STATE`,`LAST_UPDATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流表，记录当前的实验状态，由一系列子表记录实验画布上节点和边的图形信息，以及节点参数内容和输出内容\r\n\r\n                            ';
 
 -- ----------------------------
 -- Records of wf_flow
@@ -1288,10 +1344,10 @@ CREATE TABLE `wf_flow_global_parameter` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`GLOBAL_PARAM_ID`),
-  UNIQUE KEY `Index_1` (`REL_FLOW_ID`,`REL_NODE_ID`,`REL_CHAR_ID`),
-  UNIQUE KEY `Index_2` (`REL_FLOW_ID`,`GLOBAL_PARAM_NAME`),
-  KEY `Index_3` (`REL_FLOW_ID`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流全局参数表，用于定时调度任务和开放服务API，指定哪些参数可以暴露到外部，从而调用方可以根据作业需要动态设置工作流节点参数值。';
+  KEY `Index_1` (`REL_NODE_ID`,`REL_CHAR_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`REL_FLOW_ID`,`GLOBAL_PARAM_NAME`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_3` (`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流全局参数表，用于定时调度任务和开放服务API，指定哪些参数可以暴露到外部，从而调用方可以根据作业需要动态设置工作流';
 
 -- ----------------------------
 -- Records of wf_flow_global_parameter
@@ -1309,11 +1365,11 @@ CREATE TABLE `wf_flow_node` (
   `REF_MODULE_ID` bigint(20) NOT NULL COMMENT '引用工作流组件ID',
   `POSITION_X` bigint(20) NOT NULL DEFAULT '0' COMMENT '流程图节点X轴坐标',
   `POSITION_Y` bigint(20) NOT NULL DEFAULT '0' COMMENT '流程图节点Y轴坐标',
-  `SEQUENCE` int(11) NOT NULL DEFAULT '0' COMMENT '节点序号，用于辅助创建新节点时节点名称的自动生成',
+  `SEQUENCE` bigint(20) NOT NULL DEFAULT '0' COMMENT '节点序号，用于辅助创建新节点时节点名称的自动生成',
   `LAST_TASK_ID` bigint(20) DEFAULT NULL COMMENT '最后任务ID',
   `WARNING_MSG` varchar(256) DEFAULT NULL COMMENT '警告消息',
-  `DESCRIPTION` varchar(800) NOT NULL COMMENT '流程图节点描述',
   `NODE_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '节点状态\r\n            0：not ready，未就绪\r\n            1：ready，已就绪\r\n            2：preparing，准备中\r\n            3：running，运行中\r\n            4：success，运行成功\r\n            5：error，运行出错',
+  `DESCRIPTION` varchar(800) NOT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
@@ -1321,8 +1377,9 @@ CREATE TABLE `wf_flow_node` (
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`NODE_ID`),
   KEY `Index_1` (`OWNER_FLOW_ID`,`REF_MODULE_ID`,`SEQUENCE`),
-  KEY `Index_2` (`OWNER_PROJECT_ID`,`REF_MODULE_ID`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
+  KEY `Index_2` (`OWNER_PROJECT_ID`,`REF_MODULE_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_3` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
 
 -- ----------------------------
 -- Records of wf_flow_node
@@ -1334,13 +1391,14 @@ CREATE TABLE `wf_flow_node` (
 DROP TABLE IF EXISTS `wf_flow_node_delete_queue`;
 CREATE TABLE `wf_flow_node_delete_queue` (
   `FLOW_ID` bigint(20) NOT NULL COMMENT '工作流ID',
-  `SEQUENCE` int(11) NOT NULL COMMENT '删除序号',
   `NODE_ID` bigint(20) NOT NULL COMMENT '节点ID',
+  `SEQUENCE` int(11) NOT NULL COMMENT '删除序号',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
+  PRIMARY KEY (`FLOW_ID`,`NODE_ID`),
   KEY `Index_1` (`FLOW_ID`,`SEQUENCE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点删除队列表，一次删除序号可以有多个删除节点\r\n\r\n节点删除为逻辑删除，输出内容根据缓存策略';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点删除队列表，一次删除序号可以有多个删除节点，撤销后从队列移除\r\n\r\n节点删除为逻辑删除，输';
 
 -- ----------------------------
 -- Records of wf_flow_node_delete_queue
@@ -1353,18 +1411,20 @@ DROP TABLE IF EXISTS `wf_flow_node_link`;
 CREATE TABLE `wf_flow_node_link` (
   `LINK_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '链路ID',
   `OWNER_FLOW_ID` bigint(20) NOT NULL COMMENT '所属工作流ID',
-  `SRC_NODE_PORT_ID` bigint(20) NOT NULL COMMENT '流出节点端口ID',
-  `DST_NODE_PORT_ID` bigint(20) NOT NULL COMMENT '流入节点端口ID',
+  `IS_WEB_SRC_PORT` int(11) NOT NULL DEFAULT '0' COMMENT '是否为web组件的流出节点端口\r\n            0：否\r\n            1：是',
+  `SRC_PORT_ID` bigint(20) NOT NULL COMMENT '流出节点端口ID',
+  `DST_PORT_ID` bigint(20) NOT NULL COMMENT '流入节点端口ID',
+  `DESCRIPTION` varchar(800) NOT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`LINK_ID`),
-  KEY `Index_1` (`SRC_NODE_PORT_ID`),
-  KEY `Index_3` (`OWNER_FLOW_ID`),
-  KEY `Index_2` (`DST_NODE_PORT_ID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点链路表';
+  KEY `Index_1` (`SRC_PORT_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`DST_PORT_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_3` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点链接表\r\n\r\n逻辑删除，同一节点流入端口下正常状态的普通组件流出节点端口唯一和web服务组';
 
 -- ----------------------------
 -- Records of wf_flow_node_link
@@ -1400,14 +1460,17 @@ CREATE TABLE `wf_flow_node_port` (
   `NODE_PORT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '节点端口ID',
   `OWNER_NODE_ID` bigint(20) NOT NULL COMMENT '所属节点ID',
   `REF_PORT_ID` bigint(20) NOT NULL COMMENT '引用组件端口ID',
+  `REF_CHAR_ID` varchar(64) NOT NULL COMMENT '引用计算组件输入输出特征ID',
+  `DESCRIPTION` varchar(800) NOT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`NODE_PORT_ID`),
-  UNIQUE KEY `Index_1` (`OWNER_NODE_ID`,`REF_PORT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点端口表';
+  UNIQUE KEY `Index_1` (`OWNER_NODE_ID`,`REF_PORT_ID`),
+  KEY `Index_2` (`OWNER_NODE_ID`,`REF_CHAR_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点端口表';
 
 -- ----------------------------
 -- Records of wf_flow_node_port
@@ -1418,16 +1481,18 @@ CREATE TABLE `wf_flow_node_port` (
 -- ----------------------------
 DROP TABLE IF EXISTS `wf_flow_node_schema`;
 CREATE TABLE `wf_flow_node_schema` (
-  `NODE_PORT_ID` bigint(20) NOT NULL COMMENT '所属节点输出端口ID',
-  `JSON_OBJECT_ID` bigint(20) DEFAULT NULL COMMENT 'json对象ID',
-  `SCHEMA_STATE` int(11) NOT NULL DEFAULT '0' COMMENT 'JSON数据状态\r\n            0：空对象\r\n            1：非空对象',
+  `NODE_PORT_ID` bigint(20) NOT NULL COMMENT '节点输出端口ID',
+  `OBJECT_ID` bigint(20) DEFAULT NULL COMMENT 'json对象ID',
+  `SCHEMA_STATE` int(11) NOT NULL DEFAULT '0' COMMENT 'schema状态\r\n            0：空schema\r\n            1：正常\r\n            2：不支持，组件不支持动态分析\r\n            3：超限中断，输出字段数量大于${WK_OUTPORT_SCHEMA_MAX_FIELDS}',
+  `DESCRIPTION` varchar(800) NOT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`NODE_PORT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点schema表，缓存节点输出端口内容为数据表的字段结构\r\n\r\n实验发布时，数据读取和数据输';
+  PRIMARY KEY (`NODE_PORT_ID`),
+  KEY `Index_1` (`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点schema表，缓存节点输出端口内容为数据表的字段结构\r\n\r\nweb服务组件的节点输出端口';
 
 -- ----------------------------
 -- Records of wf_flow_node_schema
@@ -1439,17 +1504,19 @@ CREATE TABLE `wf_flow_node_schema` (
 DROP TABLE IF EXISTS `wf_flow_node_value`;
 CREATE TABLE `wf_flow_node_value` (
   `NODE_ID` bigint(20) NOT NULL COMMENT '节点ID',
-  `CHAR_ID` bigint(20) NOT NULL COMMENT '组件特征ID',
   `SPEC_TYPE` int(11) NOT NULL COMMENT '规格类型，说明参考CF_CMPT_SPEC.SPEC_TYPE\r\n            节点上只设置组件参数和调优执行',
+  `CHAR_ID` bigint(20) NOT NULL COMMENT '组件特征ID',
   `CHAR_VALUE` varchar(2000) DEFAULT NULL COMMENT '特征值',
   `IS_GLOBAL_PARAMETER` int(11) NOT NULL DEFAULT '0' COMMENT '是否为全局参数\r\n            0：否\r\n            1：是',
   `IS_DUPLICATED` int(11) NOT NULL DEFAULT '0' COMMENT '是否被复制\r\n            0：否\r\n            1：是\r\n            \r\n            创建快照和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型特征值发生更新时，判断是否创建新对象来保存新值',
+  `DESCRIPTION` varchar(800) NOT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`NODE_ID`,`CHAR_ID`,`SPEC_TYPE`)
+  PRIMARY KEY (`NODE_ID`,`SPEC_TYPE`,`CHAR_ID`),
+  KEY `Index_1` (`SPEC_TYPE`,`CHAR_ID`,`STATUS`,`CREATE_TIME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点设置特征值表，记录组件参数和调优参数的特征值';
 
 -- ----------------------------
@@ -1462,8 +1529,8 @@ CREATE TABLE `wf_flow_node_value` (
 DROP TABLE IF EXISTS `wf_json_object`;
 CREATE TABLE `wf_json_object` (
   `OBJECT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '对象ID',
-  `OBJECT_NAME` varchar(200) NOT NULL COMMENT '对象名称\r\n            \r\n            普通对象：object_<node_id>_<char_id>_<snapshot_version> \r\n            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>\r\n            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>\r\n            统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>\r\n            自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>\r\n            生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>\r\n            输出端口schema：outport_schema_<node_id>_<char_id>_<snapshot_version>',
-  `OBJECTY_TYPE` int(11) NOT NULL COMMENT '对象类型\r\n            0：普通对象（仅存放于OBJECT_DATA）\r\n            1：算法参数（输出内容，正常存放于OBJECT_DATA）\r\n            2：模型评估报告（输出内容，正常存放于OBJECT_DATA）\r\n            3：统计分析报告（输出内容，正常存放于OBJECT_DATA）\r\n            4：自动调参报告（输出内容，正常存放位置待定）\r\n            5：生成规则报告（输出内容，正常存放位置待定）\r\n            99：输出端口schema（端口信息，字段数量不超过2000存放于OBJECT_DATA）',
+  `OBJECT_NAME` varchar(200) NOT NULL COMMENT '对象名称\r\n            \r\n            普通对象：object_<node_id>_<char_id>_<snapshot_version> \r\n            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>\r\n            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>\r\n            统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>\r\n            自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>\r\n            生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>\r\n            输出端口schema：outport_schema_<node_id>_<char_id>',
+  `OBJECTY_TYPE` int(11) NOT NULL COMMENT '对象类型\r\n            0：JsonObject&JsonArray（组件参数，仅存放于OBJECT_DATA）\r\n            1：算法参数（输出内容，仅存放于OBJECT_DATA）\r\n            2：模型评估报告（输出内容，存放于文件系统）\r\n            3：统计分析报告（输出内容，存放于文件系统）\r\n            4：自动调参报告（输出内容，存放于文件系统）\r\n            5：生成规则报告（输出内容，存放于文件系统）\r\n            99：输出端口schema（端口信息，仅存放于OBJECT_DATA）',
   `OBJECT_SRC` int(11) NOT NULL DEFAULT '0' COMMENT '对象来源\r\n            0：作业运行\r\n            1：实验编辑',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `REL_FLOW_ID` bigint(20) NOT NULL COMMENT '关联工作流ID，无关联工作流设为-1',
@@ -1473,16 +1540,17 @@ CREATE TABLE `wf_json_object` (
   `REL_CHAR_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建脚本的工作流节点输出特征，无关联则设为-1',
   `STORAGE_LOCATION` int(11) NOT NULL DEFAULT '0' COMMENT '存储位置\r\n            \r\n            0：OBJECT_DATA字段\r\n            1：文件系统',
   `OBJECT_DATA` mediumtext COMMENT 'JSON数据',
-  `OBJECT_FILE` varchar(800) DEFAULT NULL COMMENT '对象文件名\r\n            \r\n            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json\r\n            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json\r\n            统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json\r\n            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json\r\n            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json\r\n            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json',
+  `OBJECT_FILE` varchar(800) DEFAULT NULL COMMENT '对象文件名\r\n            \r\n            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json（预留）\r\n            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json\r\n            统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json\r\n            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json\r\n            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json\r\n            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json（预留）',
   `OBJECT_STATE` int(11) NOT NULL DEFAULT '0' COMMENT 'JSON数据状态\r\n            0：空对象\r\n            1：非空对象',
+  `DESCRIPTION` varchar(800) NOT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`OBJECT_ID`),
-  KEY `Index_1` (`OWNER_PROJECT_ID`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
+  KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
 
 -- ----------------------------
 -- Records of wf_json_object
@@ -1502,7 +1570,6 @@ CREATE TABLE `wf_module` (
   `ICON_TYPE` int(11) NOT NULL COMMENT '图标类型',
   `CLASS_PATH` varchar(200) NOT NULL COMMENT '组件java类class path',
   `PKG_CMPT_ID` varchar(64) NOT NULL COMMENT '所封装的计算组件ID',
-  `IS_EXTENDED` int(11) NOT NULL DEFAULT '0' COMMENT '是否为扩展组件（预留）\r\n            0：否\r\n            1：是',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -1518,6 +1585,27 @@ CREATE TABLE `wf_module` (
 -- ----------------------------
 -- Records of wf_module
 -- ----------------------------
+INSERT INTO `wf_module` VALUES ('1', 'ReadDataTable', '读数据表', '1', '0', 'source', '0', 'ReadDataTable.class', '1', '', '0', '2017-05-27 16:11:04', 'admin', '2017-05-27 16:11:04', 'admin');
+INSERT INTO `wf_module` VALUES ('2', 'ReadModel', '读模型', '1', '1', 'source', '0', 'ReadModel.class', '2', '', '0', '2017-05-27 16:13:58', 'admin', '2017-05-27 16:13:58', 'admin');
+INSERT INTO `wf_module` VALUES ('3', 'WriteDataTable', '写数据表', '1', '2', 'destination', '0', 'WriteDataTable.class', '3', '', '0', '2017-05-27 16:11:04', 'admin', '2017-05-27 16:11:04', 'admin');
+INSERT INTO `wf_module` VALUES ('4', 'SqlScript', 'SQL脚本', '2', '0', 'user_code', '0', 'SqlScript.class', '1000', '', '0', '2017-05-27 16:18:13', 'admin', '2017-05-27 16:18:13', 'admin');
+INSERT INTO `wf_module` VALUES ('5', 'LogisticRegression_Binary', '逻辑回归二分类', '11', '0', 'training', '0', 'LogisticRegressionBinaryClassification.class', '5001', '', '0', '2017-05-27 16:43:05', 'admin', '2017-05-27 16:43:05', 'admin');
+INSERT INTO `wf_module` VALUES ('6', 'RandomForest_Binary', '随机森林二分类', '11', '1', 'training', '0', 'RandomForestClassification.class', '5003', '', '0', '2017-05-27 16:49:30', 'admin', '2017-05-27 16:49:30', 'admin');
+INSERT INTO `wf_module` VALUES ('7', 'GBDT_Binary', 'GBDT二分类', '11', '2', 'training', '0', 'GradientBoostingDecisionTreeBinaryClassification.class', '5004', '', '0', '2017-05-27 16:50:15', 'admin', '2017-05-27 16:50:15', 'admin');
+INSERT INTO `wf_module` VALUES ('8', 'LinearSVM', '线性支持向量机', '11', '3', 'training', '0', 'LinearSupportVectorMachineBinaryClassification.class', '5005', '', '0', '2017-05-27 16:51:14', 'admin', '2017-05-27 16:51:14', 'admin');
+INSERT INTO `wf_module` VALUES ('9', 'LogisticRegression_Multiple', '逻辑回归多分类', '12', '4', 'training', '0', 'LogisticRegressionMultipleClassification.class', '5002', '', '0', '2017-05-27 16:44:06', 'admin', '2017-05-27 16:44:06', 'admin');
+INSERT INTO `wf_module` VALUES ('10', 'RandomForest_Multiple', '随机森林多分类', '12', '1', 'training', '0', 'RandomForestClassification.class', '5003', '', '0', '2017-05-27 16:49:30', 'admin', '2017-05-27 16:49:30', 'admin');
+INSERT INTO `wf_module` VALUES ('11', 'NaiveBayesian', '朴素贝叶斯', '12', '2', 'training', '0', 'NaiveBayesianMultipleClassification.class', '5006', '', '0', '2017-05-27 16:52:06', 'admin', '2017-05-27 16:52:06', 'admin');
+INSERT INTO `wf_module` VALUES ('12', 'KNN', 'K近邻（无模型保存，直接预测）', '12', '3', 'training', '0', 'KNearestNeighborsMultipleClassification.class', '5007', '', '-1', '2017-05-27 16:53:28', 'admin', '2017-05-27 16:53:28', 'admin');
+INSERT INTO `wf_module` VALUES ('13', 'KMeans', 'K均值（输入输出项待定）', '13', '0', 'training', '0', 'KMeansClustering.class', '5100', '', '-1', '2017-05-27 17:25:18', 'admin', '2017-05-27 17:25:18', 'admin');
+INSERT INTO `wf_module` VALUES ('14', 'Linear_Regression', '线性回归', '14', '0', 'training', '0', 'LinearRegression.class', '5200', '', '0', '2017-05-27 17:26:08', 'admin', '2017-05-27 17:26:08', 'admin');
+INSERT INTO `wf_module` VALUES ('15', 'GBDT_Regression', 'GBDT回归', '14', '1', 'training', '0', 'GradientBoostingDecisionTreeRegression.class', '5201', '', '0', '2017-05-27 17:27:30', 'admin', '2017-05-27 17:27:30', 'admin');
+INSERT INTO `wf_module` VALUES ('16', 'BinaryClassificationEvaluation', '二分类评估', '17', '0', 'evaluation', '0', 'BinaryClassificationEvaluation', '5901', '', '0', '2017-05-27 17:38:00', 'admin', '2017-05-27 17:38:00', 'admin');
+INSERT INTO `wf_module` VALUES ('17', 'MultipleClassificationEvaluation', '多分类评估', '17', '1', 'evaluation', '0', 'MultipleClassificationEvaluation', '5902', '', '0', '2017-05-27 17:38:38', 'admin', '2017-05-27 17:38:38', 'admin');
+INSERT INTO `wf_module` VALUES ('18', 'ClusteringEvaluation', '聚类模型评估', '17', '2', 'evaluation', '0', 'ClusteringEvaluation', '5903', '', '0', '2017-05-27 17:39:13', 'admin', '2017-05-27 17:39:13', 'admin');
+INSERT INTO `wf_module` VALUES ('19', 'RegressionEvaluation', '回归模型评估', '17', '3', 'evaluation', '0', 'RegressionEvaluation', '5904', '', '0', '2017-05-27 17:39:48', 'admin', '2017-05-27 17:39:48', 'admin');
+INSERT INTO `wf_module` VALUES ('20', 'Prediction', '预测', '6', '0', 'prediction', '0', 'Prediction', '5900', '', '0', '2017-05-27 17:37:12', 'admin', '2017-05-27 17:37:12', 'admin');
+INSERT INTO `wf_module` VALUES ('21', 'SmartRules', '智能规则', '6', '1', '0', '0', 'SmartRules', '5999', '', '0', '2017-05-27 17:42:51', 'admin', '2017-05-27 17:42:51', 'admin');
 
 -- ----------------------------
 -- Table structure for wf_module_catalog
@@ -1545,6 +1633,24 @@ CREATE TABLE `wf_module_catalog` (
 -- ----------------------------
 -- Records of wf_module_catalog
 -- ----------------------------
+INSERT INTO `wf_module_catalog` VALUES ('0', 'RootCategory', '根目录', '-1', '0', '0', 'menu', '节点目录根目录', '0', '2017-06-06 16:09:16', 'admin', '2017-06-06 16:09:16', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('1', 'SourceDestination', '源 / 目标', '0', '0', '0', 'source_destination', '数据表的输入源和输出目标', '0', '2017-05-27 15:08:17', 'admin', '2017-05-27 15:08:17', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('2', 'UserCode', '脚本工具', '0', '1', '0', 'user_code', 'SQL、Python、R等多种脚本支持', '0', '2017-05-27 15:18:10', 'admin', '2017-05-27 15:18:03', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('3', 'DataPreprocessing', '数据预处理', '0', '2', '0', 'process', '数据预处理', '-1', '2017-05-27 15:25:40', 'admin', '2017-05-27 15:25:40', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('4', 'FeatureEngineering', '特征工程', '0', '3', '0', 'process', '特征工程', '-1', '2017-05-27 15:27:10', 'admin', '2017-05-27 15:27:10', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('5', 'Analytics', '统计分析', '0', '4', '0', 'analytics', '统计分析', '-1', '2017-05-27 15:28:10', 'admin', '2017-05-27 15:28:10', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('6', 'MachineLearning', '机器学习', '0', '5', '0', 'training', '算法建模', '0', '2017-05-27 17:55:44', 'admin', '2017-05-27 17:55:41', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('7', 'DeepLearning', '深度学习', '0', '6', '0', 'process', '深度学习', '-1', '2017-05-27 17:56:16', 'admin', '2017-05-27 17:56:16', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('8', 'NaturalLanguageProcessing', '文本分析', '0', '7', '0', 'process', '文本分析', '-1', '2017-05-27 17:56:55', 'admin', '2017-05-27 17:56:55', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('9', 'NetworkAnalysis', '网络分析', '0', '8', '0', 'process', '网络分析', '-1', '2017-05-27 17:57:23', 'admin', '2017-05-27 17:57:23', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('10', 'StreamProcessing', '流式处理', '0', '9', '0', 'process', '流式处理', '-1', '2017-05-27 17:57:53', 'admin', '2017-05-27 17:57:53', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('11', 'BinaryClassification', '二分类', '6', '0', '0', 'training', '二分类算法', '0', '2017-05-31 14:32:08', 'admin', '2017-05-31 14:32:08', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('12', 'MultipleClassification', '多分类', '6', '1', '0', 'training', '多分类算法', '0', '2017-05-31 14:33:41', 'admin', '2017-05-31 14:33:41', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('13', 'Clustering', '聚类', '6', '2', '0', 'training', '聚类算法', '0', '2017-05-31 14:34:41', 'admin', '2017-05-31 14:34:41', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('14', 'Regression', '回归', '6', '3', '0', 'training', '回归算法', '0', '2017-05-31 14:58:30', 'admin', '2017-05-31 14:58:30', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('15', 'AssociationRules', '关联规则', '6', '4', '0', 'process', '关联规则算法', '0', '2017-05-31 15:05:25', 'admin', '2017-05-31 15:05:25', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('16', 'CollaborativeFiltering', '协同过滤', '6', '5', '0', 'training', '协同过滤算法', '0', '2017-05-31 15:06:19', 'admin', '2017-05-31 15:06:19', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('17', 'Evaluation', '评估', '6', '6', '0', 'evaluation', '评估模型效果', '0', '2017-05-31 15:14:49', 'admin', '2017-05-31 15:14:49', 'admin');
 
 -- ----------------------------
 -- Table structure for wf_module_port
@@ -1553,7 +1659,7 @@ DROP TABLE IF EXISTS `wf_module_port`;
 CREATE TABLE `wf_module_port` (
   `PORT_ID` bigint(20) NOT NULL COMMENT '端口ID，组件的同一类型端口数最多6个\r\n            端口ID值组成：工作流组件ID * 100 + 一位节点端口类型 * 10 + 一位端口序号',
   `PORT_NAME` varchar(200) NOT NULL COMMENT '端口名称',
-  `PORT_TYPE` int(11) NOT NULL COMMENT '端口类型\r\n            0：输入端口\r\n            1：输出端口',
+  `PORT_TYPE` int(11) NOT NULL COMMENT '端口类型\r\n            1：输入端口\r\n            2：输出端口',
   `OWNER_MODULE_ID` bigint(20) NOT NULL COMMENT '所属工作流组件ID',
   `BIND_CHAR_ID` varchar(64) NOT NULL COMMENT '绑定计算组件输入输出特征ID，SPEC_TYPE in （0, 1）',
   `SEQUENCE` int(11) NOT NULL COMMENT '端口序号',
@@ -1571,48 +1677,48 @@ CREATE TABLE `wf_module_port` (
 -- ----------------------------
 -- Records of wf_module_port
 -- ----------------------------
-
--- ----------------------------
--- Table structure for wf_oper_favorite_module
--- ----------------------------
-DROP TABLE IF EXISTS `wf_oper_favorite_module`;
-CREATE TABLE `wf_oper_favorite_module` (
-  `PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID，数据库类型为公共数据库时设为-1',
-  `OPER_ID` varchar(100) NOT NULL COMMENT '用户ID',
-  `MODULE_ID` bigint(20) NOT NULL COMMENT '组件ID',
-  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
-  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
-  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
-  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`PROJECT_ID`,`OPER_ID`,`MODULE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户收藏数据表';
-
--- ----------------------------
--- Records of wf_oper_favorite_module
--- ----------------------------
-
--- ----------------------------
--- Table structure for wf_oper_favorite_table
--- ----------------------------
-DROP TABLE IF EXISTS `wf_oper_favorite_table`;
-CREATE TABLE `wf_oper_favorite_table` (
-  `PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID，数据库类型为公共数据库时设为-1',
-  `OPER_ID` varchar(100) NOT NULL COMMENT '用户ID',
-  `TABLE_ID` bigint(20) NOT NULL COMMENT '数据表ID',
-  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
-  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
-  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
-  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`PROJECT_ID`,`OPER_ID`,`TABLE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户收藏数据表';
-
--- ----------------------------
--- Records of wf_oper_favorite_table
--- ----------------------------
+INSERT INTO `wf_module_port` VALUES ('110', '读数据表的输出', '1', '1', '10001', '0', '数据输出', '0', '2017-05-27 20:12:15', 'admin', '2017-05-27 20:12:15', 'admin');
+INSERT INTO `wf_module_port` VALUES ('210', '读模型的输出', '1', '2', '10011', '0', '模型输出', '0', '2017-05-27 20:21:59', 'admin', '2017-05-27 20:21:59', 'admin');
+INSERT INTO `wf_module_port` VALUES ('300', '写数据表的输入', '0', '3', '1', '0', '数据输入', '0', '2017-06-06 17:53:42', 'admin', '2017-06-06 17:53:42', 'admin');
+INSERT INTO `wf_module_port` VALUES ('310', '写数据表的输出', '1', '3', '10001', '0', '数据输出', '0', '2017-06-06 17:53:42', 'admin', '2017-06-06 17:53:42', 'admin');
+INSERT INTO `wf_module_port` VALUES ('400', 'SQL脚本的输入t1', '0', '4', '1', '0', 'SQL脚本的输入', '0', '2017-05-27 20:44:40', 'admin', '2017-05-27 20:44:40', 'admin');
+INSERT INTO `wf_module_port` VALUES ('401', 'SQL脚本的输入t2', '0', '4', '2', '1', 'SQL脚本的输入', '0', '2017-05-27 20:48:13', 'admin', '2017-05-27 20:48:13', 'admin');
+INSERT INTO `wf_module_port` VALUES ('402', 'SQL脚本的输入t3', '0', '4', '3', '2', 'SQL脚本的输入', '0', '2017-05-27 20:48:51', 'admin', '2017-05-27 20:48:51', 'admin');
+INSERT INTO `wf_module_port` VALUES ('403', 'SQL脚本的输入t4', '0', '4', '4', '3', 'SQL脚本的输入', '0', '2017-05-27 20:49:21', 'admin', '2017-05-27 20:49:21', 'admin');
+INSERT INTO `wf_module_port` VALUES ('404', 'SQL脚本的输入t5', '0', '4', '5', '4', 'SQL脚本的输入', '0', '2017-05-27 20:49:51', 'admin', '2017-05-27 20:49:51', 'admin');
+INSERT INTO `wf_module_port` VALUES ('405', 'SQL脚本的输入t6', '0', '4', '6', '5', 'SQL脚本的输入', '0', '2017-05-27 20:50:12', 'admin', '2017-05-27 20:50:12', 'admin');
+INSERT INTO `wf_module_port` VALUES ('410', 'SQL脚本的输出', '1', '4', '10001', '0', 'SQL脚本的输出', '0', '2017-05-27 20:55:27', 'admin', '2017-05-27 20:55:27', 'admin');
+INSERT INTO `wf_module_port` VALUES ('500', '逻辑回归二分类的输入', '0', '5', '1', '0', '训练数据输入', '0', '2017-05-31 15:03:21', 'admin', '2017-05-31 15:03:21', 'admin');
+INSERT INTO `wf_module_port` VALUES ('510', '逻辑回归二分类的输出', '1', '5', '10011', '0', '模型输出', '0', '2017-05-31 15:09:31', 'admin', '2017-05-31 15:09:31', 'admin');
+INSERT INTO `wf_module_port` VALUES ('600', '随机森林二分类的输入', '0', '6', '1', '0', '训练数据输入', '0', '2017-05-31 15:27:23', 'admin', '2017-05-31 15:27:23', 'admin');
+INSERT INTO `wf_module_port` VALUES ('610', '随机森林二分类的输出', '1', '6', '10011', '0', '模型输出', '0', '2017-05-31 15:28:16', 'admin', '2017-05-31 15:28:16', 'admin');
+INSERT INTO `wf_module_port` VALUES ('700', 'GBDT二分类的输入', '0', '7', '1', '0', '训练数据输入', '0', '2017-05-31 15:28:49', 'admin', '2017-05-31 15:28:49', 'admin');
+INSERT INTO `wf_module_port` VALUES ('710', 'GBDT二分类的输出', '1', '7', '10011', '0', '模型输出', '0', '2017-05-31 15:29:46', 'admin', '2017-05-31 15:29:46', 'admin');
+INSERT INTO `wf_module_port` VALUES ('800', '线性支持向量机二分类的输入', '0', '8', '1', '0', '训练数据输入', '0', '2017-05-31 15:30:14', 'admin', '2017-05-31 15:30:14', 'admin');
+INSERT INTO `wf_module_port` VALUES ('810', '线性支持向量机二分类的输出', '1', '8', '10011', '0', '模型输出', '0', '2017-05-31 15:30:46', 'admin', '2017-05-31 15:30:46', 'admin');
+INSERT INTO `wf_module_port` VALUES ('900', '逻辑回归多分类的输入', '0', '9', '1', '0', '训练数据输入', '0', '2017-05-31 15:21:20', 'admin', '2017-05-31 15:21:20', 'admin');
+INSERT INTO `wf_module_port` VALUES ('910', '逻辑回归多分类的输出', '1', '9', '10011', '0', '模型输出', '0', '2017-05-31 15:22:14', 'admin', '2017-05-31 15:22:14', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1000', '随机森林多分类的输入', '0', '10', '1', '0', '训练数据输入', '0', '2017-05-31 15:27:23', 'admin', '2017-05-31 15:27:23', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1010', '随机森林多分类的输出', '1', '10', '10011', '0', '模型输出', '0', '2017-05-31 15:28:16', 'admin', '2017-05-31 15:28:16', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1100', '朴素贝叶斯多分类的输入', '0', '11', '1', '0', '训练数据输入', '0', '2017-05-31 15:31:54', 'admin', '2017-05-31 15:31:54', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1110', '朴素贝叶斯多分类的输出', '1', '11', '10011', '0', '模型输出', '0', '2017-05-31 15:32:40', 'admin', '2017-05-31 15:32:40', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1200', 'K近邻多分类的输入（*）', '0', '12', '1', '0', '训练数据输入', '0', '2017-05-31 15:33:42', 'admin', '2017-05-31 15:33:42', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1210', 'K近邻多分类的输出（*）', '1', '12', '10011', '0', '模型输出', '0', '2017-05-31 15:34:12', 'admin', '2017-05-31 15:34:12', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1300', 'K均值聚类的输入（*）', '0', '13', '1', '0', '训练数据输入', '0', '2017-05-31 15:34:48', 'admin', '2017-05-31 15:34:48', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1310', 'K均值聚类的输出（*）', '1', '13', '10011', '0', '模型输出', '0', '2017-05-31 15:35:54', 'admin', '2017-05-31 15:35:54', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1400', '线性回归的输入', '0', '14', '1', '0', '训练数据输入', '0', '2017-05-31 15:36:24', 'admin', '2017-05-31 15:36:24', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1410', '线性回归的输出', '1', '14', '10011', '0', '模型输出', '0', '2017-05-31 15:36:48', 'admin', '2017-05-31 15:36:48', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1500', 'GBDT回归的输入', '0', '15', '1', '0', '训练数据输入', '0', '2017-05-31 15:37:43', 'admin', '2017-05-31 15:37:43', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1510', 'GBDT回归的输出', '1', '15', '10011', '0', '模型输出', '0', '2017-05-31 15:38:08', 'admin', '2017-05-31 15:38:08', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1600', '二分类评估的输入', '0', '16', '1', '0', '预测结果输入', '0', '2017-05-31 15:39:42', 'admin', '2017-05-31 15:39:42', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1610', '二分类评估的输出', '1', '16', '10011', '1', '评估输出', '0', '2017-06-21 12:01:30', 'admin', '2017-06-21 12:01:30', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1700', '多分类评估的输入', '0', '17', '1', '0', '预测结果输入', '0', '2017-05-31 15:49:06', 'admin', '2017-05-31 15:49:06', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1800', '聚类模型评估的输入', '0', '18', '1', '0', '预测结果输入', '0', '2017-05-31 15:54:04', 'admin', '2017-05-31 15:54:04', 'admin');
+INSERT INTO `wf_module_port` VALUES ('1900', '回归模型评估的输入', '0', '19', '1', '0', '预测结果输入', '0', '2017-05-31 15:55:05', 'admin', '2017-05-31 15:55:05', 'admin');
+INSERT INTO `wf_module_port` VALUES ('2000', '预测的输入m1', '0', '20', '11', '0', '模型输入', '0', '2017-05-31 15:38:49', 'admin', '2017-05-31 15:38:49', 'admin');
+INSERT INTO `wf_module_port` VALUES ('2001', '预测的输入t1', '0', '20', '1', '1', '测试数据输入', '0', '2017-05-31 15:38:49', 'admin', '2017-05-31 15:38:49', 'admin');
+INSERT INTO `wf_module_port` VALUES ('2010', '预测的输出', '1', '20', '10001', '0', '预测结果输出', '0', '2017-05-31 15:39:14', 'admin', '2017-05-31 15:39:14', 'admin');
+INSERT INTO `wf_module_port` VALUES ('2100', '智能规则的输入（*）', '0', '21', '1', '0', '训练数据输入', '0', '2017-05-31 15:57:35', 'admin', '2017-05-31 15:57:35', 'admin');
 
 -- ----------------------------
 -- Table structure for wf_snapshot
@@ -1634,9 +1740,52 @@ CREATE TABLE `wf_snapshot` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`SNAPSHOT_ID`),
-  KEY `Index_1` (`OWNER_FLOW_ID`,`SHAPSHOT_SRC`,`SNAPSHOT_VERSION`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流快照表，在实验工作台创建副本和运行实验都会触发快照创建，由此实现类似checkpoint功能\r\n\r\n                                -&';
+  KEY `Index_1` (`OWNER_FLOW_ID`,`SHAPSHOT_SRC`,`SNAPSHOT_VERSION`),
+  KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流快照表，在实验工作台创建副本和运行实验都会触发快照创建，由此实现类似checkpoint功能\r\n\r\n                                -&';
 
 -- ----------------------------
 -- Records of wf_snapshot
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_user_favorite_module
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_user_favorite_module`;
+CREATE TABLE `wf_user_favorite_module` (
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目ID',
+  `OPER_ID` varchar(100) NOT NULL COMMENT '用户ID',
+  `MODULE_ID` bigint(20) NOT NULL COMMENT '组件ID',
+  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
+  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
+  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
+  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
+  KEY `Index_1` (`PROJECT_ID`,`OPER_ID`,`MODULE_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户收藏组件\r\n\r\n逻辑删除，同一项目和用户下正常状态的组件唯一';
+
+-- ----------------------------
+-- Records of wf_user_favorite_module
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_user_favorite_table
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_user_favorite_table`;
+CREATE TABLE `wf_user_favorite_table` (
+  `PROJECT_ID` bigint(20) NOT NULL COMMENT '项目ID',
+  `OPER_ID` varchar(100) NOT NULL COMMENT '用户ID',
+  `TABLE_ID` bigint(20) NOT NULL COMMENT '数据表ID',
+  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
+  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
+  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
+  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
+  KEY `Index_1` (`PROJECT_ID`,`OPER_ID`,`TABLE_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户收藏数据表\r\n\r\n逻辑删除，同一项目和用户下正常状态的数据表唯一';
+
+-- ----------------------------
+-- Records of wf_user_favorite_table
 -- ----------------------------
