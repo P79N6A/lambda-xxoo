@@ -30,7 +30,7 @@ public class MwModelWarehouse implements Serializable {
 
     /**
      * 数据库类型
-            0：公共模型库（预留）
+            0：公共模型库（长期建议不支持）
             1：项目模型库，随项目创建同时生成，存放项目中产生的模型
      */
     @Column(name = "MW_TYPE")
@@ -166,11 +166,11 @@ public class MwModelWarehouse implements Serializable {
 
     /**
      * 获取数据库类型
-            0：公共模型库（预留）
+            0：公共模型库（长期建议不支持）
             1：项目模型库，随项目创建同时生成，存放项目中产生的模型
      *
      * @return MW_TYPE - 数据库类型
-            0：公共模型库（预留）
+            0：公共模型库（长期建议不支持）
             1：项目模型库，随项目创建同时生成，存放项目中产生的模型
      */
     public Integer getMwType() {
@@ -179,11 +179,11 @@ public class MwModelWarehouse implements Serializable {
 
     /**
      * 设置数据库类型
-            0：公共模型库（预留）
+            0：公共模型库（长期建议不支持）
             1：项目模型库，随项目创建同时生成，存放项目中产生的模型
      *
      * @param mwType 数据库类型
-            0：公共模型库（预留）
+            0：公共模型库（长期建议不支持）
             1：项目模型库，随项目创建同时生成，存放项目中产生的模型
      */
     public void setMwType(Integer mwType) {

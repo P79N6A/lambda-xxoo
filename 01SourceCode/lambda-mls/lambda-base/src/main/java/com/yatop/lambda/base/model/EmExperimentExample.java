@@ -626,66 +626,6 @@ public class EmExperimentExample {
             return (Criteria) this;
         }
 
-        public Criteria andSequenceIsNull() {
-            addCriterion("SEQUENCE is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceIsNotNull() {
-            addCriterion("SEQUENCE is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceEqualTo(Integer value) {
-            addCriterion("SEQUENCE =", value, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceNotEqualTo(Integer value) {
-            addCriterion("SEQUENCE <>", value, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceGreaterThan(Integer value) {
-            addCriterion("SEQUENCE >", value, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceGreaterThanOrEqualTo(Integer value) {
-            addCriterion("SEQUENCE >=", value, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceLessThan(Integer value) {
-            addCriterion("SEQUENCE <", value, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceLessThanOrEqualTo(Integer value) {
-            addCriterion("SEQUENCE <=", value, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceIn(List<Integer> values) {
-            addCriterion("SEQUENCE in", values, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceNotIn(List<Integer> values) {
-            addCriterion("SEQUENCE not in", values, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceBetween(Integer value1, Integer value2) {
-            addCriterion("SEQUENCE between", value1, value2, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceNotBetween(Integer value1, Integer value2) {
-            addCriterion("SEQUENCE not between", value1, value2, "sequence");
-            return (Criteria) this;
-        }
-
         public Criteria andSummaryIsNull() {
             addCriterion("SUMMARY is null");
             return (Criteria) this;

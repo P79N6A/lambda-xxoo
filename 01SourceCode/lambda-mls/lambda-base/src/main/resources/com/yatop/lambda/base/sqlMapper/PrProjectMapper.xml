@@ -10,6 +10,7 @@
     <result column="PROJECT_NAME" property="projectName" jdbcType="VARCHAR" />
     <result column="DW_ID" property="dwId" jdbcType="BIGINT" />
     <result column="MW_ID" property="mwId" jdbcType="BIGINT" />
+    <result column="CACHE_EXIPRE_DAYS" property="cacheExipreDays" jdbcType="INTEGER" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
     <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
@@ -85,8 +86,8 @@
     <!--
       WARNING - @mbggenerated
     -->
-    PROJECT_ID, PROJECT_CODE, PROJECT_NAME, DW_ID, MW_ID, DESCRIPTION, STATUS, LAST_UPDATE_TIME, 
-    LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
+    PROJECT_ID, PROJECT_CODE, PROJECT_NAME, DW_ID, MW_ID, CACHE_EXIPRE_DAYS, DESCRIPTION, 
+    STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.PrProjectExample" >
     <!--
@@ -145,6 +146,9 @@
       <if test="record.mwId != null" >
         MW_ID = #{record.mwId,jdbcType=BIGINT},
       </if>
+      <if test="record.cacheExipreDays != null" >
+        CACHE_EXIPRE_DAYS = #{record.cacheExipreDays,jdbcType=INTEGER},
+      </if>
       <if test="record.description != null" >
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
@@ -178,6 +182,7 @@
       PROJECT_NAME = #{record.projectName,jdbcType=VARCHAR},
       DW_ID = #{record.dwId,jdbcType=BIGINT},
       MW_ID = #{record.mwId,jdbcType=BIGINT},
+      CACHE_EXIPRE_DAYS = #{record.cacheExipreDays,jdbcType=INTEGER},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
       LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},

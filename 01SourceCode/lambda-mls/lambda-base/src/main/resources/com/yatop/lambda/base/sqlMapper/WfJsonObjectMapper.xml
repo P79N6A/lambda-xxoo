@@ -18,6 +18,7 @@
     <result column="STORAGE_LOCATION" property="storageLocation" jdbcType="INTEGER" />
     <result column="OBJECT_FILE" property="objectFile" jdbcType="VARCHAR" />
     <result column="OBJECT_STATE" property="objectState" jdbcType="INTEGER" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
     <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
     <result column="LAST_UPDATE_OPER" property="lastUpdateOper" jdbcType="VARCHAR" />
@@ -100,7 +101,8 @@
     -->
     OBJECT_ID, OBJECT_NAME, OBJECTY_TYPE, OBJECT_SRC, OWNER_PROJECT_ID, REL_FLOW_ID, 
     REL_SNAPSHOT_VERSION, REL_JOB_ID, REL_NODE_ID, REL_CHAR_ID, STORAGE_LOCATION, OBJECT_FILE, 
-    OBJECT_STATE, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
+    OBJECT_STATE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, 
+    CREATE_OPER
   </sql>
   <sql id="Blob_Column_List" >
     <!--
@@ -208,6 +210,9 @@
       <if test="record.objectState != null" >
         OBJECT_STATE = #{record.objectState,jdbcType=INTEGER},
       </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null" >
         STATUS = #{record.status,jdbcType=INTEGER},
       </if>
@@ -249,6 +254,7 @@
       STORAGE_LOCATION = #{record.storageLocation,jdbcType=INTEGER},
       OBJECT_FILE = #{record.objectFile,jdbcType=VARCHAR},
       OBJECT_STATE = #{record.objectState,jdbcType=INTEGER},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
       LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
       LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
@@ -277,6 +283,7 @@
       STORAGE_LOCATION = #{record.storageLocation,jdbcType=INTEGER},
       OBJECT_FILE = #{record.objectFile,jdbcType=VARCHAR},
       OBJECT_STATE = #{record.objectState,jdbcType=INTEGER},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
       LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
       LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},

@@ -30,7 +30,7 @@ public class DwDataWarehouse implements Serializable {
 
     /**
      * 数据库类型
-            0：公共数据库，暂用于存放实验模版所预置的数据表
+            0：公共数据库，仅有一个，用于存放实验模版所预置的数据表
             1：项目数据库，随项目创建同时生成，存放项目中产生的数据表
      */
     @Column(name = "DW_TYPE")
@@ -166,11 +166,11 @@ public class DwDataWarehouse implements Serializable {
 
     /**
      * 获取数据库类型
-            0：公共数据库，暂用于存放实验模版所预置的数据表
+            0：公共数据库，仅有一个，用于存放实验模版所预置的数据表
             1：项目数据库，随项目创建同时生成，存放项目中产生的数据表
      *
      * @return DW_TYPE - 数据库类型
-            0：公共数据库，暂用于存放实验模版所预置的数据表
+            0：公共数据库，仅有一个，用于存放实验模版所预置的数据表
             1：项目数据库，随项目创建同时生成，存放项目中产生的数据表
      */
     public Integer getDwType() {
@@ -179,11 +179,11 @@ public class DwDataWarehouse implements Serializable {
 
     /**
      * 设置数据库类型
-            0：公共数据库，暂用于存放实验模版所预置的数据表
+            0：公共数据库，仅有一个，用于存放实验模版所预置的数据表
             1：项目数据库，随项目创建同时生成，存放项目中产生的数据表
      *
      * @param dwType 数据库类型
-            0：公共数据库，暂用于存放实验模版所预置的数据表
+            0：公共数据库，仅有一个，用于存放实验模版所预置的数据表
             1：项目数据库，随项目创建同时生成，存放项目中产生的数据表
      */
     public void setDwType(Integer dwType) {

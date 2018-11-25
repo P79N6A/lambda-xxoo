@@ -5,9 +5,9 @@
     <!--
       WARNING - @mbggenerated
     -->
-    <id column="PROJECT_ID" property="projectId" jdbcType="BIGINT" />
-    <id column="MEMBER_USER" property="memberUser" jdbcType="VARCHAR" />
+    <result column="PROJECT_ID" property="projectId" jdbcType="BIGINT" />
     <result column="IS_OWNER" property="isOwner" jdbcType="INTEGER" />
+    <result column="MEMBER_USER" property="memberUser" jdbcType="VARCHAR" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
     <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
@@ -83,7 +83,7 @@
     <!--
       WARNING - @mbggenerated
     -->
-    PROJECT_ID, MEMBER_USER, IS_OWNER, DESCRIPTION, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, 
+    PROJECT_ID, IS_OWNER, MEMBER_USER, DESCRIPTION, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, 
     CREATE_TIME, CREATE_OPER
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.PrProjectMemberExample" >
@@ -131,11 +131,11 @@
       <if test="record.projectId != null" >
         PROJECT_ID = #{record.projectId,jdbcType=BIGINT},
       </if>
-      <if test="record.memberUser != null" >
-        MEMBER_USER = #{record.memberUser,jdbcType=VARCHAR},
-      </if>
       <if test="record.isOwner != null" >
         IS_OWNER = #{record.isOwner,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberUser != null" >
+        MEMBER_USER = #{record.memberUser,jdbcType=VARCHAR},
       </if>
       <if test="record.description != null" >
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
@@ -166,8 +166,8 @@
     -->
     update pr_project_member
     set PROJECT_ID = #{record.projectId,jdbcType=BIGINT},
-      MEMBER_USER = #{record.memberUser,jdbcType=VARCHAR},
       IS_OWNER = #{record.isOwner,jdbcType=INTEGER},
+      MEMBER_USER = #{record.memberUser,jdbcType=VARCHAR},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
       LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},

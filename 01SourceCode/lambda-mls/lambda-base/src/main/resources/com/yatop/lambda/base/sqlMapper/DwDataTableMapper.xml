@@ -10,6 +10,7 @@
     <result column="TABLE_TYPE" property="tableType" jdbcType="INTEGER" />
     <result column="TABLE_SRC" property="tableSrc" jdbcType="INTEGER" />
     <result column="OWNER_DW_ID" property="ownerDwId" jdbcType="BIGINT" />
+    <result column="REL_EXPERIMENT_ID" property="relExperimentId" jdbcType="BIGINT" />
     <result column="REL_JOB_ID" property="relJobId" jdbcType="BIGINT" />
     <result column="REL_NODE_ID" property="relNodeId" jdbcType="BIGINT" />
     <result column="REL_CHAR_ID" property="relCharId" jdbcType="BIGINT" />
@@ -95,10 +96,10 @@
     <!--
       WARNING - @mbggenerated
     -->
-    TABLE_ID, TABLE_NAME, TABLE_TYPE, TABLE_SRC, OWNER_DW_ID, REL_JOB_ID, REL_NODE_ID, 
-    REL_CHAR_ID, TABLE_COLUMNS, TABLE_ROWS, DATA_FILE_TYPE, DATA_FILE_SIZE, DATA_FILE, 
-    DATA_SUMMARY_FILE, TABLE_STATE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, 
-    CREATE_TIME, CREATE_OPER
+    TABLE_ID, TABLE_NAME, TABLE_TYPE, TABLE_SRC, OWNER_DW_ID, REL_EXPERIMENT_ID, REL_JOB_ID, 
+    REL_NODE_ID, REL_CHAR_ID, TABLE_COLUMNS, TABLE_ROWS, DATA_FILE_TYPE, DATA_FILE_SIZE, 
+    DATA_FILE, DATA_SUMMARY_FILE, TABLE_STATE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, 
+    LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.DwDataTableExample" >
     <!--
@@ -156,6 +157,9 @@
       </if>
       <if test="record.ownerDwId != null" >
         OWNER_DW_ID = #{record.ownerDwId,jdbcType=BIGINT},
+      </if>
+      <if test="record.relExperimentId != null" >
+        REL_EXPERIMENT_ID = #{record.relExperimentId,jdbcType=BIGINT},
       </if>
       <if test="record.relJobId != null" >
         REL_JOB_ID = #{record.relJobId,jdbcType=BIGINT},
@@ -220,6 +224,7 @@
       TABLE_TYPE = #{record.tableType,jdbcType=INTEGER},
       TABLE_SRC = #{record.tableSrc,jdbcType=INTEGER},
       OWNER_DW_ID = #{record.ownerDwId,jdbcType=BIGINT},
+      REL_EXPERIMENT_ID = #{record.relExperimentId,jdbcType=BIGINT},
       REL_JOB_ID = #{record.relJobId,jdbcType=BIGINT},
       REL_NODE_ID = #{record.relNodeId,jdbcType=BIGINT},
       REL_CHAR_ID = #{record.relCharId,jdbcType=BIGINT},

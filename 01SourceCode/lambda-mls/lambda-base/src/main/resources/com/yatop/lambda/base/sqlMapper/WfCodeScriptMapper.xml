@@ -9,10 +9,13 @@
     <result column="SCRIPT_NAME" property="scriptName" jdbcType="VARCHAR" />
     <result column="SCRIPT_TYPE" property="scriptType" jdbcType="INTEGER" />
     <result column="OWNER_PROJECT_ID" property="ownerProjectId" jdbcType="BIGINT" />
-    <result column="REL_SNAPSHOT_ID" property="relSnapshotId" jdbcType="BIGINT" />
+    <result column="REL_FLOW_ID" property="relFlowId" jdbcType="BIGINT" />
+    <result column="REL_SNAPSHOT_VERSION" property="relSnapshotVersion" jdbcType="BIGINT" />
+    <result column="REL_JOB_ID" property="relJobId" jdbcType="BIGINT" />
     <result column="REL_NODE_ID" property="relNodeId" jdbcType="BIGINT" />
     <result column="REL_CHAR_ID" property="relCharId" jdbcType="BIGINT" />
     <result column="SCRIPT_STATE" property="scriptState" jdbcType="INTEGER" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
     <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
     <result column="LAST_UPDATE_OPER" property="lastUpdateOper" jdbcType="VARCHAR" />
@@ -93,9 +96,9 @@
     <!--
       WARNING - @mbggenerated
     -->
-    SCRIPT_ID, SCRIPT_NAME, SCRIPT_TYPE, OWNER_PROJECT_ID, REL_SNAPSHOT_ID, REL_NODE_ID, 
-    REL_CHAR_ID, SCRIPT_STATE, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, 
-    CREATE_OPER
+    SCRIPT_ID, SCRIPT_NAME, SCRIPT_TYPE, OWNER_PROJECT_ID, REL_FLOW_ID, REL_SNAPSHOT_VERSION, 
+    REL_JOB_ID, REL_NODE_ID, REL_CHAR_ID, SCRIPT_STATE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, 
+    LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
   </sql>
   <sql id="Blob_Column_List" >
     <!--
@@ -176,8 +179,14 @@
       <if test="record.ownerProjectId != null" >
         OWNER_PROJECT_ID = #{record.ownerProjectId,jdbcType=BIGINT},
       </if>
-      <if test="record.relSnapshotId != null" >
-        REL_SNAPSHOT_ID = #{record.relSnapshotId,jdbcType=BIGINT},
+      <if test="record.relFlowId != null" >
+        REL_FLOW_ID = #{record.relFlowId,jdbcType=BIGINT},
+      </if>
+      <if test="record.relSnapshotVersion != null" >
+        REL_SNAPSHOT_VERSION = #{record.relSnapshotVersion,jdbcType=BIGINT},
+      </if>
+      <if test="record.relJobId != null" >
+        REL_JOB_ID = #{record.relJobId,jdbcType=BIGINT},
       </if>
       <if test="record.relNodeId != null" >
         REL_NODE_ID = #{record.relNodeId,jdbcType=BIGINT},
@@ -187,6 +196,9 @@
       </if>
       <if test="record.scriptState != null" >
         SCRIPT_STATE = #{record.scriptState,jdbcType=INTEGER},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null" >
         STATUS = #{record.status,jdbcType=INTEGER},
@@ -220,10 +232,13 @@
       SCRIPT_NAME = #{record.scriptName,jdbcType=VARCHAR},
       SCRIPT_TYPE = #{record.scriptType,jdbcType=INTEGER},
       OWNER_PROJECT_ID = #{record.ownerProjectId,jdbcType=BIGINT},
-      REL_SNAPSHOT_ID = #{record.relSnapshotId,jdbcType=BIGINT},
+      REL_FLOW_ID = #{record.relFlowId,jdbcType=BIGINT},
+      REL_SNAPSHOT_VERSION = #{record.relSnapshotVersion,jdbcType=BIGINT},
+      REL_JOB_ID = #{record.relJobId,jdbcType=BIGINT},
       REL_NODE_ID = #{record.relNodeId,jdbcType=BIGINT},
       REL_CHAR_ID = #{record.relCharId,jdbcType=BIGINT},
       SCRIPT_STATE = #{record.scriptState,jdbcType=INTEGER},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
       LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
       LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
@@ -243,10 +258,13 @@
       SCRIPT_NAME = #{record.scriptName,jdbcType=VARCHAR},
       SCRIPT_TYPE = #{record.scriptType,jdbcType=INTEGER},
       OWNER_PROJECT_ID = #{record.ownerProjectId,jdbcType=BIGINT},
-      REL_SNAPSHOT_ID = #{record.relSnapshotId,jdbcType=BIGINT},
+      REL_FLOW_ID = #{record.relFlowId,jdbcType=BIGINT},
+      REL_SNAPSHOT_VERSION = #{record.relSnapshotVersion,jdbcType=BIGINT},
+      REL_JOB_ID = #{record.relJobId,jdbcType=BIGINT},
       REL_NODE_ID = #{record.relNodeId,jdbcType=BIGINT},
       REL_CHAR_ID = #{record.relCharId,jdbcType=BIGINT},
       SCRIPT_STATE = #{record.scriptState,jdbcType=INTEGER},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
       LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
       LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},

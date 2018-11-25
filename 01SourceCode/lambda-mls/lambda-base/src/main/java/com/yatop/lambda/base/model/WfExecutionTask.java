@@ -14,6 +14,12 @@ public class WfExecutionTask implements Serializable {
     private Long taskId;
 
     /**
+     * 任务名称，自动生成
+     */
+    @Column(name = "TASK_NAME")
+    private String taskName;
+
+    /**
      * 所属作业ID
      */
     @Column(name = "OWNER_JOB_ID")
@@ -72,6 +78,12 @@ public class WfExecutionTask implements Serializable {
      */
     @Column(name = "COST_TIME")
     private Long costTime;
+
+    /**
+     * 任务进度，百分比数值0到100
+     */
+    @Column(name = "TASK_PROGRESS")
+    private Integer taskProgress;
 
     /**
      * 运行状态
@@ -147,6 +159,24 @@ public class WfExecutionTask implements Serializable {
      */
     public void setTaskId(Long taskId) {
         this.taskId = taskId;
+    }
+
+    /**
+     * 获取任务名称，自动生成
+     *
+     * @return TASK_NAME - 任务名称，自动生成
+     */
+    public String getTaskName() {
+        return taskName;
+    }
+
+    /**
+     * 设置任务名称，自动生成
+     *
+     * @param taskName 任务名称，自动生成
+     */
+    public void setTaskName(String taskName) {
+        this.taskName = taskName == null ? null : taskName.trim();
     }
 
     /**
@@ -333,6 +363,24 @@ public class WfExecutionTask implements Serializable {
      */
     public void setCostTime(Long costTime) {
         this.costTime = costTime;
+    }
+
+    /**
+     * 获取任务进度，百分比数值0到100
+     *
+     * @return TASK_PROGRESS - 任务进度，百分比数值0到100
+     */
+    public Integer getTaskProgress() {
+        return taskProgress;
+    }
+
+    /**
+     * 设置任务进度，百分比数值0到100
+     *
+     * @param taskProgress 任务进度，百分比数值0到100
+     */
+    public void setTaskProgress(Integer taskProgress) {
+        this.taskProgress = taskProgress;
     }
 
     /**
@@ -524,6 +572,7 @@ public class WfExecutionTask implements Serializable {
         }
         WfExecutionTask other = (WfExecutionTask) that;
         return (this.getTaskId() == null ? other.getTaskId() == null : this.getTaskId().equals(other.getTaskId()))
+            && (this.getTaskName() == null ? other.getTaskName() == null : this.getTaskName().equals(other.getTaskName()))
             && (this.getOwnerJobId() == null ? other.getOwnerJobId() == null : this.getOwnerJobId().equals(other.getOwnerJobId()))
             && (this.getSequence() == null ? other.getSequence() == null : this.getSequence().equals(other.getSequence()))
             && (this.getRelNodeId() == null ? other.getRelNodeId() == null : this.getRelNodeId().equals(other.getRelNodeId()))
@@ -533,6 +582,7 @@ public class WfExecutionTask implements Serializable {
             && (this.getReturnFile() == null ? other.getReturnFile() == null : this.getReturnFile().equals(other.getReturnFile()))
             && (this.getLogFile() == null ? other.getLogFile() == null : this.getLogFile().equals(other.getLogFile()))
             && (this.getCostTime() == null ? other.getCostTime() == null : this.getCostTime().equals(other.getCostTime()))
+            && (this.getTaskProgress() == null ? other.getTaskProgress() == null : this.getTaskProgress().equals(other.getTaskProgress()))
             && (this.getTaskState() == null ? other.getTaskState() == null : this.getTaskState().equals(other.getTaskState()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
@@ -548,6 +598,7 @@ public class WfExecutionTask implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getTaskId() == null) ? 0 : getTaskId().hashCode());
+        result = prime * result + ((getTaskName() == null) ? 0 : getTaskName().hashCode());
         result = prime * result + ((getOwnerJobId() == null) ? 0 : getOwnerJobId().hashCode());
         result = prime * result + ((getSequence() == null) ? 0 : getSequence().hashCode());
         result = prime * result + ((getRelNodeId() == null) ? 0 : getRelNodeId().hashCode());
@@ -557,6 +608,7 @@ public class WfExecutionTask implements Serializable {
         result = prime * result + ((getReturnFile() == null) ? 0 : getReturnFile().hashCode());
         result = prime * result + ((getLogFile() == null) ? 0 : getLogFile().hashCode());
         result = prime * result + ((getCostTime() == null) ? 0 : getCostTime().hashCode());
+        result = prime * result + ((getTaskProgress() == null) ? 0 : getTaskProgress().hashCode());
         result = prime * result + ((getTaskState() == null) ? 0 : getTaskState().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());

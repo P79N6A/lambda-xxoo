@@ -25,8 +25,8 @@ public class DwDataTable implements Serializable {
     /**
      * 数据表类型
             0：普通数据表
-            1：动态数据表，由写数据表组件产生，在编辑过程中创建
-            2：临时数据表
+            1：临时数据表
+            2：外部数据表，由在线服务的数据文件输入组件产生，DATA_FILE关联完整文件路径，作业完成时被立即清理
      */
     @Column(name = "TABLE_TYPE")
     private Integer tableType;
@@ -35,7 +35,6 @@ public class DwDataTable implements Serializable {
      * 数据表来源
             0：内部生成
             1：外部导入
-            2：服务输入
      */
     @Column(name = "TABLE_SRC")
     private Integer tableSrc;
@@ -45,6 +44,12 @@ public class DwDataTable implements Serializable {
      */
     @Column(name = "OWNER_DW_ID")
     private Long ownerDwId;
+
+    /**
+     * 关联实验ID，无关联实验设为-1
+     */
+    @Column(name = "REL_EXPERIMENT_ID")
+    private Long relExperimentId;
 
     /**
      * 关联作业ID，无关联则设为-1
@@ -207,13 +212,13 @@ public class DwDataTable implements Serializable {
     /**
      * 获取数据表类型
             0：普通数据表
-            1：动态数据表，由写数据表组件产生，在编辑过程中创建
-            2：临时数据表
+            1：临时数据表
+            2：外部数据表，由在线服务的数据文件输入组件产生，DATA_FILE关联完整文件路径，作业完成时被立即清理
      *
      * @return TABLE_TYPE - 数据表类型
             0：普通数据表
-            1：动态数据表，由写数据表组件产生，在编辑过程中创建
-            2：临时数据表
+            1：临时数据表
+            2：外部数据表，由在线服务的数据文件输入组件产生，DATA_FILE关联完整文件路径，作业完成时被立即清理
      */
     public Integer getTableType() {
         return tableType;
@@ -222,13 +227,13 @@ public class DwDataTable implements Serializable {
     /**
      * 设置数据表类型
             0：普通数据表
-            1：动态数据表，由写数据表组件产生，在编辑过程中创建
-            2：临时数据表
+            1：临时数据表
+            2：外部数据表，由在线服务的数据文件输入组件产生，DATA_FILE关联完整文件路径，作业完成时被立即清理
      *
      * @param tableType 数据表类型
             0：普通数据表
-            1：动态数据表，由写数据表组件产生，在编辑过程中创建
-            2：临时数据表
+            1：临时数据表
+            2：外部数据表，由在线服务的数据文件输入组件产生，DATA_FILE关联完整文件路径，作业完成时被立即清理
      */
     public void setTableType(Integer tableType) {
         this.tableType = tableType;
@@ -238,12 +243,10 @@ public class DwDataTable implements Serializable {
      * 获取数据表来源
             0：内部生成
             1：外部导入
-            2：服务输入
      *
      * @return TABLE_SRC - 数据表来源
             0：内部生成
             1：外部导入
-            2：服务输入
      */
     public Integer getTableSrc() {
         return tableSrc;
@@ -253,12 +256,10 @@ public class DwDataTable implements Serializable {
      * 设置数据表来源
             0：内部生成
             1：外部导入
-            2：服务输入
      *
      * @param tableSrc 数据表来源
             0：内部生成
             1：外部导入
-            2：服务输入
      */
     public void setTableSrc(Integer tableSrc) {
         this.tableSrc = tableSrc;
@@ -280,6 +281,24 @@ public class DwDataTable implements Serializable {
      */
     public void setOwnerDwId(Long ownerDwId) {
         this.ownerDwId = ownerDwId;
+    }
+
+    /**
+     * 获取关联实验ID，无关联实验设为-1
+     *
+     * @return REL_EXPERIMENT_ID - 关联实验ID，无关联实验设为-1
+     */
+    public Long getRelExperimentId() {
+        return relExperimentId;
+    }
+
+    /**
+     * 设置关联实验ID，无关联实验设为-1
+     *
+     * @param relExperimentId 关联实验ID，无关联实验设为-1
+     */
+    public void setRelExperimentId(Long relExperimentId) {
+        this.relExperimentId = relExperimentId;
     }
 
     /**
@@ -635,6 +654,7 @@ public class DwDataTable implements Serializable {
             && (this.getTableType() == null ? other.getTableType() == null : this.getTableType().equals(other.getTableType()))
             && (this.getTableSrc() == null ? other.getTableSrc() == null : this.getTableSrc().equals(other.getTableSrc()))
             && (this.getOwnerDwId() == null ? other.getOwnerDwId() == null : this.getOwnerDwId().equals(other.getOwnerDwId()))
+            && (this.getRelExperimentId() == null ? other.getRelExperimentId() == null : this.getRelExperimentId().equals(other.getRelExperimentId()))
             && (this.getRelJobId() == null ? other.getRelJobId() == null : this.getRelJobId().equals(other.getRelJobId()))
             && (this.getRelNodeId() == null ? other.getRelNodeId() == null : this.getRelNodeId().equals(other.getRelNodeId()))
             && (this.getRelCharId() == null ? other.getRelCharId() == null : this.getRelCharId().equals(other.getRelCharId()))
@@ -662,6 +682,7 @@ public class DwDataTable implements Serializable {
         result = prime * result + ((getTableType() == null) ? 0 : getTableType().hashCode());
         result = prime * result + ((getTableSrc() == null) ? 0 : getTableSrc().hashCode());
         result = prime * result + ((getOwnerDwId() == null) ? 0 : getOwnerDwId().hashCode());
+        result = prime * result + ((getRelExperimentId() == null) ? 0 : getRelExperimentId().hashCode());
         result = prime * result + ((getRelJobId() == null) ? 0 : getRelJobId().hashCode());
         result = prime * result + ((getRelNodeId() == null) ? 0 : getRelNodeId().hashCode());
         result = prime * result + ((getRelCharId() == null) ? 0 : getRelCharId().hashCode());

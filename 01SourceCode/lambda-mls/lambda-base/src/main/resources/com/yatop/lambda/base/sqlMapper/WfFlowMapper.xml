@@ -13,6 +13,7 @@
     <result column="LOCK_MSG" property="lockMsg" jdbcType="VARCHAR" />
     <result column="LAST_SNAPSHOT_ID" property="lastSnapshotId" jdbcType="BIGINT" />
     <result column="NEXT_SNAPSHOT_VERSION" property="nextSnapshotVersion" jdbcType="BIGINT" />
+    <result column="NODE_COUNT" property="nodeCount" jdbcType="BIGINT" />
     <result column="NEXT_DELETE_SEQUENCE" property="nextDeleteSequence" jdbcType="BIGINT" />
     <result column="LAST_JOB_ID" property="lastJobId" jdbcType="BIGINT" />
     <result column="FLOW_STATE" property="flowState" jdbcType="INTEGER" />
@@ -94,9 +95,9 @@
       WARNING - @mbggenerated
     -->
     FLOW_ID, FLOW_NAME, OWNER_PROJECT_ID, OWNER_EXPERIMENT_ID, LOCK_STATE, LOCK_MSG, 
-    LAST_SNAPSHOT_ID, NEXT_SNAPSHOT_VERSION, NEXT_DELETE_SEQUENCE, LAST_JOB_ID, FLOW_STATE, 
-    SUMMARY, DESCRIPTION, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER, 
-    VERSION
+    LAST_SNAPSHOT_ID, NEXT_SNAPSHOT_VERSION, NODE_COUNT, NEXT_DELETE_SEQUENCE, LAST_JOB_ID, 
+    FLOW_STATE, SUMMARY, DESCRIPTION, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, 
+    CREATE_OPER, VERSION
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.WfFlowExample" >
     <!--
@@ -164,6 +165,9 @@
       <if test="record.nextSnapshotVersion != null" >
         NEXT_SNAPSHOT_VERSION = #{record.nextSnapshotVersion,jdbcType=BIGINT},
       </if>
+      <if test="record.nodeCount != null" >
+        NODE_COUNT = #{record.nodeCount,jdbcType=BIGINT},
+      </if>
       <if test="record.nextDeleteSequence != null" >
         NEXT_DELETE_SEQUENCE = #{record.nextDeleteSequence,jdbcType=BIGINT},
       </if>
@@ -215,6 +219,7 @@
       LOCK_MSG = #{record.lockMsg,jdbcType=VARCHAR},
       LAST_SNAPSHOT_ID = #{record.lastSnapshotId,jdbcType=BIGINT},
       NEXT_SNAPSHOT_VERSION = #{record.nextSnapshotVersion,jdbcType=BIGINT},
+      NODE_COUNT = #{record.nodeCount,jdbcType=BIGINT},
       NEXT_DELETE_SEQUENCE = #{record.nextDeleteSequence,jdbcType=BIGINT},
       LAST_JOB_ID = #{record.lastJobId,jdbcType=BIGINT},
       FLOW_STATE = #{record.flowState,jdbcType=INTEGER},

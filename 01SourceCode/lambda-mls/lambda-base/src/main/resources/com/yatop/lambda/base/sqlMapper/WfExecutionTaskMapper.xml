@@ -6,6 +6,7 @@
       WARNING - @mbggenerated
     -->
     <id column="TASK_ID" property="taskId" jdbcType="BIGINT" />
+    <result column="TASK_NAME" property="taskName" jdbcType="VARCHAR" />
     <result column="OWNER_JOB_ID" property="ownerJobId" jdbcType="BIGINT" />
     <result column="SEQUENCE" property="sequence" jdbcType="INTEGER" />
     <result column="REL_NODE_ID" property="relNodeId" jdbcType="BIGINT" />
@@ -15,6 +16,7 @@
     <result column="RETURN_FILE" property="returnFile" jdbcType="VARCHAR" />
     <result column="LOG_FILE" property="logFile" jdbcType="VARCHAR" />
     <result column="COST_TIME" property="costTime" jdbcType="BIGINT" />
+    <result column="TASK_PROGRESS" property="taskProgress" jdbcType="INTEGER" />
     <result column="TASK_STATE" property="taskState" jdbcType="INTEGER" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
@@ -97,9 +99,9 @@
     <!--
       WARNING - @mbggenerated
     -->
-    TASK_ID, OWNER_JOB_ID, SEQUENCE, REL_NODE_ID, ENGINE_TYPE, EXTERNAL_ID, SUBMIT_FILE, 
-    RETURN_FILE, LOG_FILE, COST_TIME, TASK_STATE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, 
-    LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
+    TASK_ID, TASK_NAME, OWNER_JOB_ID, SEQUENCE, REL_NODE_ID, ENGINE_TYPE, EXTERNAL_ID, 
+    SUBMIT_FILE, RETURN_FILE, LOG_FILE, COST_TIME, TASK_PROGRESS, TASK_STATE, DESCRIPTION, 
+    STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
   </sql>
   <sql id="Blob_Column_List" >
     <!--
@@ -171,6 +173,9 @@
       <if test="record.taskId != null" >
         TASK_ID = #{record.taskId,jdbcType=BIGINT},
       </if>
+      <if test="record.taskName != null" >
+        TASK_NAME = #{record.taskName,jdbcType=VARCHAR},
+      </if>
       <if test="record.ownerJobId != null" >
         OWNER_JOB_ID = #{record.ownerJobId,jdbcType=BIGINT},
       </if>
@@ -197,6 +202,9 @@
       </if>
       <if test="record.costTime != null" >
         COST_TIME = #{record.costTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.taskProgress != null" >
+        TASK_PROGRESS = #{record.taskProgress,jdbcType=INTEGER},
       </if>
       <if test="record.taskState != null" >
         TASK_STATE = #{record.taskState,jdbcType=INTEGER},
@@ -233,6 +241,7 @@
     -->
     update wf_execution_task
     set TASK_ID = #{record.taskId,jdbcType=BIGINT},
+      TASK_NAME = #{record.taskName,jdbcType=VARCHAR},
       OWNER_JOB_ID = #{record.ownerJobId,jdbcType=BIGINT},
       SEQUENCE = #{record.sequence,jdbcType=INTEGER},
       REL_NODE_ID = #{record.relNodeId,jdbcType=BIGINT},
@@ -242,6 +251,7 @@
       RETURN_FILE = #{record.returnFile,jdbcType=VARCHAR},
       LOG_FILE = #{record.logFile,jdbcType=VARCHAR},
       COST_TIME = #{record.costTime,jdbcType=BIGINT},
+      TASK_PROGRESS = #{record.taskProgress,jdbcType=INTEGER},
       TASK_STATE = #{record.taskState,jdbcType=INTEGER},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
@@ -260,6 +270,7 @@
     -->
     update wf_execution_task
     set TASK_ID = #{record.taskId,jdbcType=BIGINT},
+      TASK_NAME = #{record.taskName,jdbcType=VARCHAR},
       OWNER_JOB_ID = #{record.ownerJobId,jdbcType=BIGINT},
       SEQUENCE = #{record.sequence,jdbcType=INTEGER},
       REL_NODE_ID = #{record.relNodeId,jdbcType=BIGINT},
@@ -269,6 +280,7 @@
       RETURN_FILE = #{record.returnFile,jdbcType=VARCHAR},
       LOG_FILE = #{record.logFile,jdbcType=VARCHAR},
       COST_TIME = #{record.costTime,jdbcType=BIGINT},
+      TASK_PROGRESS = #{record.taskProgress,jdbcType=INTEGER},
       TASK_STATE = #{record.taskState,jdbcType=INTEGER},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},

@@ -25,8 +25,9 @@ public class MwModel implements Serializable {
     /**
      * 模型类型
             0：普通模型
-            1：动态模型，由写模型组件产生，在编辑过程中创建
-            2：临时模型
+            1：临时模型
+            
+             禁止做需要动态模型的组件设计和功能设计
      */
     @Column(name = "MODEL_TYPE")
     private Integer modelType;
@@ -35,7 +36,6 @@ public class MwModel implements Serializable {
      * 模型来源
             0：内部生成
             1：外部导入
-            2：服务输入（不使用）
      */
     @Column(name = "MODEL_SRC")
     private Integer modelSrc;
@@ -45,6 +45,12 @@ public class MwModel implements Serializable {
      */
     @Column(name = "OWNER_MW_ID")
     private Long ownerMwId;
+
+    /**
+     * 关联实验ID，无关联实验设为-1
+     */
+    @Column(name = "REL_EXPERIMENT_ID")
+    private Long relExperimentId;
 
     /**
      * 关联作业ID，无关联则设为-1
@@ -205,13 +211,15 @@ public class MwModel implements Serializable {
     /**
      * 获取模型类型
             0：普通模型
-            1：动态模型，由写模型组件产生，在编辑过程中创建
-            2：临时模型
+            1：临时模型
+            
+             禁止做需要动态模型的组件设计和功能设计
      *
      * @return MODEL_TYPE - 模型类型
             0：普通模型
-            1：动态模型，由写模型组件产生，在编辑过程中创建
-            2：临时模型
+            1：临时模型
+            
+             禁止做需要动态模型的组件设计和功能设计
      */
     public Integer getModelType() {
         return modelType;
@@ -220,13 +228,15 @@ public class MwModel implements Serializable {
     /**
      * 设置模型类型
             0：普通模型
-            1：动态模型，由写模型组件产生，在编辑过程中创建
-            2：临时模型
+            1：临时模型
+            
+             禁止做需要动态模型的组件设计和功能设计
      *
      * @param modelType 模型类型
             0：普通模型
-            1：动态模型，由写模型组件产生，在编辑过程中创建
-            2：临时模型
+            1：临时模型
+            
+             禁止做需要动态模型的组件设计和功能设计
      */
     public void setModelType(Integer modelType) {
         this.modelType = modelType;
@@ -236,12 +246,10 @@ public class MwModel implements Serializable {
      * 获取模型来源
             0：内部生成
             1：外部导入
-            2：服务输入（不使用）
      *
      * @return MODEL_SRC - 模型来源
             0：内部生成
             1：外部导入
-            2：服务输入（不使用）
      */
     public Integer getModelSrc() {
         return modelSrc;
@@ -251,12 +259,10 @@ public class MwModel implements Serializable {
      * 设置模型来源
             0：内部生成
             1：外部导入
-            2：服务输入（不使用）
      *
      * @param modelSrc 模型来源
             0：内部生成
             1：外部导入
-            2：服务输入（不使用）
      */
     public void setModelSrc(Integer modelSrc) {
         this.modelSrc = modelSrc;
@@ -278,6 +284,24 @@ public class MwModel implements Serializable {
      */
     public void setOwnerMwId(Long ownerMwId) {
         this.ownerMwId = ownerMwId;
+    }
+
+    /**
+     * 获取关联实验ID，无关联实验设为-1
+     *
+     * @return REL_EXPERIMENT_ID - 关联实验ID，无关联实验设为-1
+     */
+    public Long getRelExperimentId() {
+        return relExperimentId;
+    }
+
+    /**
+     * 设置关联实验ID，无关联实验设为-1
+     *
+     * @param relExperimentId 关联实验ID，无关联实验设为-1
+     */
+    public void setRelExperimentId(Long relExperimentId) {
+        this.relExperimentId = relExperimentId;
     }
 
     /**
@@ -625,6 +649,7 @@ public class MwModel implements Serializable {
             && (this.getModelType() == null ? other.getModelType() == null : this.getModelType().equals(other.getModelType()))
             && (this.getModelSrc() == null ? other.getModelSrc() == null : this.getModelSrc().equals(other.getModelSrc()))
             && (this.getOwnerMwId() == null ? other.getOwnerMwId() == null : this.getOwnerMwId().equals(other.getOwnerMwId()))
+            && (this.getRelExperimentId() == null ? other.getRelExperimentId() == null : this.getRelExperimentId().equals(other.getRelExperimentId()))
             && (this.getRelJobId() == null ? other.getRelJobId() == null : this.getRelJobId().equals(other.getRelJobId()))
             && (this.getRelNodeId() == null ? other.getRelNodeId() == null : this.getRelNodeId().equals(other.getRelNodeId()))
             && (this.getRelCharId() == null ? other.getRelCharId() == null : this.getRelCharId().equals(other.getRelCharId()))
@@ -652,6 +677,7 @@ public class MwModel implements Serializable {
         result = prime * result + ((getModelType() == null) ? 0 : getModelType().hashCode());
         result = prime * result + ((getModelSrc() == null) ? 0 : getModelSrc().hashCode());
         result = prime * result + ((getOwnerMwId() == null) ? 0 : getOwnerMwId().hashCode());
+        result = prime * result + ((getRelExperimentId() == null) ? 0 : getRelExperimentId().hashCode());
         result = prime * result + ((getRelJobId() == null) ? 0 : getRelJobId().hashCode());
         result = prime * result + ((getRelNodeId() == null) ? 0 : getRelNodeId().hashCode());
         result = prime * result + ((getRelCharId() == null) ? 0 : getRelCharId().hashCode());

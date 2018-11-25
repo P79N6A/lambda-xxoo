@@ -616,6 +616,66 @@ public class WfFlowExample {
             return (Criteria) this;
         }
 
+        public Criteria andNodeCountIsNull() {
+            addCriterion("NODE_COUNT is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeCountIsNotNull() {
+            addCriterion("NODE_COUNT is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeCountEqualTo(Long value) {
+            addCriterion("NODE_COUNT =", value, "nodeCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeCountNotEqualTo(Long value) {
+            addCriterion("NODE_COUNT <>", value, "nodeCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeCountGreaterThan(Long value) {
+            addCriterion("NODE_COUNT >", value, "nodeCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeCountGreaterThanOrEqualTo(Long value) {
+            addCriterion("NODE_COUNT >=", value, "nodeCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeCountLessThan(Long value) {
+            addCriterion("NODE_COUNT <", value, "nodeCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeCountLessThanOrEqualTo(Long value) {
+            addCriterion("NODE_COUNT <=", value, "nodeCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeCountIn(List<Long> values) {
+            addCriterion("NODE_COUNT in", values, "nodeCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeCountNotIn(List<Long> values) {
+            addCriterion("NODE_COUNT not in", values, "nodeCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeCountBetween(Long value1, Long value2) {
+            addCriterion("NODE_COUNT between", value1, value2, "nodeCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeCountNotBetween(Long value1, Long value2) {
+            addCriterion("NODE_COUNT not between", value1, value2, "nodeCount");
+            return (Criteria) this;
+        }
+
         public Criteria andNextDeleteSequenceIsNull() {
             addCriterion("NEXT_DELETE_SEQUENCE is null");
             return (Criteria) this;

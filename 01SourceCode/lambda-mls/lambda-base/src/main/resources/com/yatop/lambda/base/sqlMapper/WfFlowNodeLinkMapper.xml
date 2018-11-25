@@ -7,8 +7,10 @@
     -->
     <id column="LINK_ID" property="linkId" jdbcType="BIGINT" />
     <result column="OWNER_FLOW_ID" property="ownerFlowId" jdbcType="BIGINT" />
-    <result column="SRC_NODE_PORT_ID" property="srcNodePortId" jdbcType="BIGINT" />
-    <result column="DST_NODE_PORT_ID" property="dstNodePortId" jdbcType="BIGINT" />
+    <result column="IS_WEB_LINK" property="isWebLink" jdbcType="INTEGER" />
+    <result column="SRC_PORT_ID" property="srcPortId" jdbcType="BIGINT" />
+    <result column="DST_PORT_ID" property="dstPortId" jdbcType="BIGINT" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
     <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
     <result column="LAST_UPDATE_OPER" property="lastUpdateOper" jdbcType="VARCHAR" />
@@ -83,8 +85,8 @@
     <!--
       WARNING - @mbggenerated
     -->
-    LINK_ID, OWNER_FLOW_ID, SRC_NODE_PORT_ID, DST_NODE_PORT_ID, STATUS, LAST_UPDATE_TIME, 
-    LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
+    LINK_ID, OWNER_FLOW_ID, IS_WEB_LINK, SRC_PORT_ID, DST_PORT_ID, DESCRIPTION, STATUS, 
+    LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.WfFlowNodeLinkExample" >
     <!--
@@ -134,11 +136,17 @@
       <if test="record.ownerFlowId != null" >
         OWNER_FLOW_ID = #{record.ownerFlowId,jdbcType=BIGINT},
       </if>
-      <if test="record.srcNodePortId != null" >
-        SRC_NODE_PORT_ID = #{record.srcNodePortId,jdbcType=BIGINT},
+      <if test="record.isWebLink != null" >
+        IS_WEB_LINK = #{record.isWebLink,jdbcType=INTEGER},
       </if>
-      <if test="record.dstNodePortId != null" >
-        DST_NODE_PORT_ID = #{record.dstNodePortId,jdbcType=BIGINT},
+      <if test="record.srcPortId != null" >
+        SRC_PORT_ID = #{record.srcPortId,jdbcType=BIGINT},
+      </if>
+      <if test="record.dstPortId != null" >
+        DST_PORT_ID = #{record.dstPortId,jdbcType=BIGINT},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null" >
         STATUS = #{record.status,jdbcType=INTEGER},
@@ -167,8 +175,10 @@
     update wf_flow_node_link
     set LINK_ID = #{record.linkId,jdbcType=BIGINT},
       OWNER_FLOW_ID = #{record.ownerFlowId,jdbcType=BIGINT},
-      SRC_NODE_PORT_ID = #{record.srcNodePortId,jdbcType=BIGINT},
-      DST_NODE_PORT_ID = #{record.dstNodePortId,jdbcType=BIGINT},
+      IS_WEB_LINK = #{record.isWebLink,jdbcType=INTEGER},
+      SRC_PORT_ID = #{record.srcPortId,jdbcType=BIGINT},
+      DST_PORT_ID = #{record.dstPortId,jdbcType=BIGINT},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
       LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
       LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},

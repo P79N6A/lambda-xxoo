@@ -8,6 +8,8 @@
     <id column="NODE_PORT_ID" property="nodePortId" jdbcType="BIGINT" />
     <result column="OWNER_NODE_ID" property="ownerNodeId" jdbcType="BIGINT" />
     <result column="REF_PORT_ID" property="refPortId" jdbcType="BIGINT" />
+    <result column="REF_CHAR_ID" property="refCharId" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
     <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
     <result column="LAST_UPDATE_OPER" property="lastUpdateOper" jdbcType="VARCHAR" />
@@ -82,8 +84,8 @@
     <!--
       WARNING - @mbggenerated
     -->
-    NODE_PORT_ID, OWNER_NODE_ID, REF_PORT_ID, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, 
-    CREATE_TIME, CREATE_OPER
+    NODE_PORT_ID, OWNER_NODE_ID, REF_PORT_ID, REF_CHAR_ID, DESCRIPTION, STATUS, LAST_UPDATE_TIME, 
+    LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.WfFlowNodePortExample" >
     <!--
@@ -136,6 +138,12 @@
       <if test="record.refPortId != null" >
         REF_PORT_ID = #{record.refPortId,jdbcType=BIGINT},
       </if>
+      <if test="record.refCharId != null" >
+        REF_CHAR_ID = #{record.refCharId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null" >
         STATUS = #{record.status,jdbcType=INTEGER},
       </if>
@@ -164,6 +172,8 @@
     set NODE_PORT_ID = #{record.nodePortId,jdbcType=BIGINT},
       OWNER_NODE_ID = #{record.ownerNodeId,jdbcType=BIGINT},
       REF_PORT_ID = #{record.refPortId,jdbcType=BIGINT},
+      REF_CHAR_ID = #{record.refCharId,jdbcType=VARCHAR},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
       LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
       LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},

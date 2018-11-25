@@ -5,9 +5,9 @@
     <!--
       WARNING - @mbggenerated
     -->
-    <result column="FLOW_ID" property="flowId" jdbcType="BIGINT" />
+    <id column="FLOW_ID" property="flowId" jdbcType="BIGINT" />
+    <id column="NODE_ID" property="nodeId" jdbcType="BIGINT" />
     <result column="SEQUENCE" property="sequence" jdbcType="INTEGER" />
-    <result column="NODE_ID" property="nodeId" jdbcType="BIGINT" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
     <result column="CREATE_OPER" property="createOper" jdbcType="VARCHAR" />
@@ -80,7 +80,7 @@
     <!--
       WARNING - @mbggenerated
     -->
-    FLOW_ID, SEQUENCE, NODE_ID, DESCRIPTION, CREATE_TIME, CREATE_OPER
+    FLOW_ID, NODE_ID, SEQUENCE, DESCRIPTION, CREATE_TIME, CREATE_OPER
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.WfFlowNodeDeleteQueueExample" >
     <!--
@@ -127,11 +127,11 @@
       <if test="record.flowId != null" >
         FLOW_ID = #{record.flowId,jdbcType=BIGINT},
       </if>
-      <if test="record.sequence != null" >
-        SEQUENCE = #{record.sequence,jdbcType=INTEGER},
-      </if>
       <if test="record.nodeId != null" >
         NODE_ID = #{record.nodeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.sequence != null" >
+        SEQUENCE = #{record.sequence,jdbcType=INTEGER},
       </if>
       <if test="record.description != null" >
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
@@ -153,8 +153,8 @@
     -->
     update wf_flow_node_delete_queue
     set FLOW_ID = #{record.flowId,jdbcType=BIGINT},
-      SEQUENCE = #{record.sequence,jdbcType=INTEGER},
       NODE_ID = #{record.nodeId,jdbcType=BIGINT},
+      SEQUENCE = #{record.sequence,jdbcType=INTEGER},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
       CREATE_OPER = #{record.createOper,jdbcType=VARCHAR}

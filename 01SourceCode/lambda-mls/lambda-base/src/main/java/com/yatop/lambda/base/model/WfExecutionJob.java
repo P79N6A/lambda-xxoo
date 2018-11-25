@@ -31,7 +31,7 @@ public class WfExecutionJob implements Serializable {
             13：执行该节点（小数据试运行）
             20：定时调度运行
             30：在线调度运行
-            99：其他任务运行（数据文件上传）
+            1001：数据文件上传
      */
     @Column(name = "JOB_TYPE")
     private Integer jobType;
@@ -63,8 +63,8 @@ public class WfExecutionJob implements Serializable {
     /**
      * DFS作业目录
             
-            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/job_data/<project_id>/<experiment_id>/<job_id>
-            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/job_data/<project_id>/other/<job_id>
+            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>
+            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc<project_id>/other/<job_id>
      */
     @Column(name = "JOB_DFS_DIR")
     private String jobDfsDir;
@@ -72,8 +72,8 @@ public class WfExecutionJob implements Serializable {
     /**
      * 本地作业目录（预留）
             
-            实验作业：${LOCAL_WORK_ROOT}/job_data/<project_id>/<experiment_id>/<job_id>
-            其他作业：${LOCAL_WORK_ROOT}/job_data/<project_id>/other/<job_id>
+            实验作业：${LOCAL_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>
+            其他作业：${LOCAL_WORK_ROOT}/proc/<project_id>/other/<job_id>
      */
     @Column(name = "JOB_LOCAL_DIR")
     private String jobLocalDir;
@@ -208,7 +208,7 @@ public class WfExecutionJob implements Serializable {
             13：执行该节点（小数据试运行）
             20：定时调度运行
             30：在线调度运行
-            99：其他任务运行（数据文件上传）
+            1001：数据文件上传
      *
      * @return JOB_TYPE - 作业类型
             0：全部运行
@@ -221,7 +221,7 @@ public class WfExecutionJob implements Serializable {
             13：执行该节点（小数据试运行）
             20：定时调度运行
             30：在线调度运行
-            99：其他任务运行（数据文件上传）
+            1001：数据文件上传
      */
     public Integer getJobType() {
         return jobType;
@@ -239,7 +239,7 @@ public class WfExecutionJob implements Serializable {
             13：执行该节点（小数据试运行）
             20：定时调度运行
             30：在线调度运行
-            99：其他任务运行（数据文件上传）
+            1001：数据文件上传
      *
      * @param jobType 作业类型
             0：全部运行
@@ -252,7 +252,7 @@ public class WfExecutionJob implements Serializable {
             13：执行该节点（小数据试运行）
             20：定时调度运行
             30：在线调度运行
-            99：其他任务运行（数据文件上传）
+            1001：数据文件上传
      */
     public void setJobType(Integer jobType) {
         this.jobType = jobType;
@@ -333,13 +333,13 @@ public class WfExecutionJob implements Serializable {
     /**
      * 获取DFS作业目录
             
-            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/job_data/<project_id>/<experiment_id>/<job_id>
-            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/job_data/<project_id>/other/<job_id>
+            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>
+            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc<project_id>/other/<job_id>
      *
      * @return JOB_DFS_DIR - DFS作业目录
             
-            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/job_data/<project_id>/<experiment_id>/<job_id>
-            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/job_data/<project_id>/other/<job_id>
+            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>
+            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc<project_id>/other/<job_id>
      */
     public String getJobDfsDir() {
         return jobDfsDir;
@@ -348,13 +348,13 @@ public class WfExecutionJob implements Serializable {
     /**
      * 设置DFS作业目录
             
-            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/job_data/<project_id>/<experiment_id>/<job_id>
-            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/job_data/<project_id>/other/<job_id>
+            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>
+            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc<project_id>/other/<job_id>
      *
      * @param jobDfsDir DFS作业目录
             
-            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/job_data/<project_id>/<experiment_id>/<job_id>
-            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/job_data/<project_id>/other/<job_id>
+            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>
+            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc<project_id>/other/<job_id>
      */
     public void setJobDfsDir(String jobDfsDir) {
         this.jobDfsDir = jobDfsDir == null ? null : jobDfsDir.trim();
@@ -363,13 +363,13 @@ public class WfExecutionJob implements Serializable {
     /**
      * 获取本地作业目录（预留）
             
-            实验作业：${LOCAL_WORK_ROOT}/job_data/<project_id>/<experiment_id>/<job_id>
-            其他作业：${LOCAL_WORK_ROOT}/job_data/<project_id>/other/<job_id>
+            实验作业：${LOCAL_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>
+            其他作业：${LOCAL_WORK_ROOT}/proc/<project_id>/other/<job_id>
      *
      * @return JOB_LOCAL_DIR - 本地作业目录（预留）
             
-            实验作业：${LOCAL_WORK_ROOT}/job_data/<project_id>/<experiment_id>/<job_id>
-            其他作业：${LOCAL_WORK_ROOT}/job_data/<project_id>/other/<job_id>
+            实验作业：${LOCAL_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>
+            其他作业：${LOCAL_WORK_ROOT}/proc/<project_id>/other/<job_id>
      */
     public String getJobLocalDir() {
         return jobLocalDir;
@@ -378,13 +378,13 @@ public class WfExecutionJob implements Serializable {
     /**
      * 设置本地作业目录（预留）
             
-            实验作业：${LOCAL_WORK_ROOT}/job_data/<project_id>/<experiment_id>/<job_id>
-            其他作业：${LOCAL_WORK_ROOT}/job_data/<project_id>/other/<job_id>
+            实验作业：${LOCAL_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>
+            其他作业：${LOCAL_WORK_ROOT}/proc/<project_id>/other/<job_id>
      *
      * @param jobLocalDir 本地作业目录（预留）
             
-            实验作业：${LOCAL_WORK_ROOT}/job_data/<project_id>/<experiment_id>/<job_id>
-            其他作业：${LOCAL_WORK_ROOT}/job_data/<project_id>/other/<job_id>
+            实验作业：${LOCAL_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>
+            其他作业：${LOCAL_WORK_ROOT}/proc/<project_id>/other/<job_id>
      */
     public void setJobLocalDir(String jobLocalDir) {
         this.jobLocalDir = jobLocalDir == null ? null : jobLocalDir.trim();

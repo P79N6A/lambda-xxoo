@@ -176,6 +176,76 @@ public class WfExecutionTaskExample {
             return (Criteria) this;
         }
 
+        public Criteria andTaskNameIsNull() {
+            addCriterion("TASK_NAME is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameIsNotNull() {
+            addCriterion("TASK_NAME is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameEqualTo(String value) {
+            addCriterion("TASK_NAME =", value, "taskName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameNotEqualTo(String value) {
+            addCriterion("TASK_NAME <>", value, "taskName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameGreaterThan(String value) {
+            addCriterion("TASK_NAME >", value, "taskName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameGreaterThanOrEqualTo(String value) {
+            addCriterion("TASK_NAME >=", value, "taskName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameLessThan(String value) {
+            addCriterion("TASK_NAME <", value, "taskName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameLessThanOrEqualTo(String value) {
+            addCriterion("TASK_NAME <=", value, "taskName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameLike(String value) {
+            addCriterion("TASK_NAME like", value, "taskName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameNotLike(String value) {
+            addCriterion("TASK_NAME not like", value, "taskName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameIn(List<String> values) {
+            addCriterion("TASK_NAME in", values, "taskName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameNotIn(List<String> values) {
+            addCriterion("TASK_NAME not in", values, "taskName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameBetween(String value1, String value2) {
+            addCriterion("TASK_NAME between", value1, value2, "taskName");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameNotBetween(String value1, String value2) {
+            addCriterion("TASK_NAME not between", value1, value2, "taskName");
+            return (Criteria) this;
+        }
+
         public Criteria andOwnerJobIdIsNull() {
             addCriterion("OWNER_JOB_ID is null");
             return (Criteria) this;
@@ -766,6 +836,66 @@ public class WfExecutionTaskExample {
             return (Criteria) this;
         }
 
+        public Criteria andTaskProgressIsNull() {
+            addCriterion("TASK_PROGRESS is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskProgressIsNotNull() {
+            addCriterion("TASK_PROGRESS is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskProgressEqualTo(Integer value) {
+            addCriterion("TASK_PROGRESS =", value, "taskProgress");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskProgressNotEqualTo(Integer value) {
+            addCriterion("TASK_PROGRESS <>", value, "taskProgress");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskProgressGreaterThan(Integer value) {
+            addCriterion("TASK_PROGRESS >", value, "taskProgress");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskProgressGreaterThanOrEqualTo(Integer value) {
+            addCriterion("TASK_PROGRESS >=", value, "taskProgress");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskProgressLessThan(Integer value) {
+            addCriterion("TASK_PROGRESS <", value, "taskProgress");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskProgressLessThanOrEqualTo(Integer value) {
+            addCriterion("TASK_PROGRESS <=", value, "taskProgress");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskProgressIn(List<Integer> values) {
+            addCriterion("TASK_PROGRESS in", values, "taskProgress");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskProgressNotIn(List<Integer> values) {
+            addCriterion("TASK_PROGRESS not in", values, "taskProgress");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskProgressBetween(Integer value1, Integer value2) {
+            addCriterion("TASK_PROGRESS between", value1, value2, "taskProgress");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskProgressNotBetween(Integer value1, Integer value2) {
+            addCriterion("TASK_PROGRESS not between", value1, value2, "taskProgress");
+            return (Criteria) this;
+        }
+
         public Criteria andTaskStateIsNull() {
             addCriterion("TASK_STATE is null");
             return (Criteria) this;
@@ -1213,6 +1343,11 @@ public class WfExecutionTaskExample {
 
         public Criteria andCreateOperNotBetween(String value1, String value2) {
             addCriterion("CREATE_OPER not between", value1, value2, "createOper");
+            return (Criteria) this;
+        }
+
+        public Criteria andTaskNameLikeInsensitive(String value) {
+            addCriterion("upper(TASK_NAME) like", value.toUpperCase(), "taskName");
             return (Criteria) this;
         }
 

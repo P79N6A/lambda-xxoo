@@ -50,12 +50,6 @@ public class WfFlowNode implements Serializable {
     private Long positionY;
 
     /**
-     * 节点序号，用于辅助创建新节点时节点名称的自动生成
-     */
-    @Column(name = "SEQUENCE")
-    private Integer sequence;
-
-    /**
      * 最后任务ID
      */
     @Column(name = "LAST_TASK_ID")
@@ -68,12 +62,6 @@ public class WfFlowNode implements Serializable {
     private String warningMsg;
 
     /**
-     * 流程图节点描述
-     */
-    @Column(name = "DESCRIPTION")
-    private String description;
-
-    /**
      * 节点状态
             0：not ready，未就绪
             1：ready，已就绪
@@ -84,6 +72,12 @@ public class WfFlowNode implements Serializable {
      */
     @Column(name = "NODE_STATE")
     private Integer nodeState;
+
+    /**
+     * 描述
+     */
+    @Column(name = "DESCRIPTION")
+    private String description;
 
     /**
      * 状态
@@ -246,24 +240,6 @@ public class WfFlowNode implements Serializable {
     }
 
     /**
-     * 获取节点序号，用于辅助创建新节点时节点名称的自动生成
-     *
-     * @return SEQUENCE - 节点序号，用于辅助创建新节点时节点名称的自动生成
-     */
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    /**
-     * 设置节点序号，用于辅助创建新节点时节点名称的自动生成
-     *
-     * @param sequence 节点序号，用于辅助创建新节点时节点名称的自动生成
-     */
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
-    }
-
-    /**
      * 获取最后任务ID
      *
      * @return LAST_TASK_ID - 最后任务ID
@@ -297,24 +273,6 @@ public class WfFlowNode implements Serializable {
      */
     public void setWarningMsg(String warningMsg) {
         this.warningMsg = warningMsg == null ? null : warningMsg.trim();
-    }
-
-    /**
-     * 获取流程图节点描述
-     *
-     * @return DESCRIPTION - 流程图节点描述
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * 设置流程图节点描述
-     *
-     * @param description 流程图节点描述
-     */
-    public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
     }
 
     /**
@@ -357,6 +315,24 @@ public class WfFlowNode implements Serializable {
      */
     public void setNodeState(Integer nodeState) {
         this.nodeState = nodeState;
+    }
+
+    /**
+     * 获取描述
+     *
+     * @return DESCRIPTION - 描述
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * 设置描述
+     *
+     * @param description 描述
+     */
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
     /**
@@ -476,11 +452,10 @@ public class WfFlowNode implements Serializable {
             && (this.getRefModuleId() == null ? other.getRefModuleId() == null : this.getRefModuleId().equals(other.getRefModuleId()))
             && (this.getPositionX() == null ? other.getPositionX() == null : this.getPositionX().equals(other.getPositionX()))
             && (this.getPositionY() == null ? other.getPositionY() == null : this.getPositionY().equals(other.getPositionY()))
-            && (this.getSequence() == null ? other.getSequence() == null : this.getSequence().equals(other.getSequence()))
             && (this.getLastTaskId() == null ? other.getLastTaskId() == null : this.getLastTaskId().equals(other.getLastTaskId()))
             && (this.getWarningMsg() == null ? other.getWarningMsg() == null : this.getWarningMsg().equals(other.getWarningMsg()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getNodeState() == null ? other.getNodeState() == null : this.getNodeState().equals(other.getNodeState()))
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getLastUpdateTime() == null ? other.getLastUpdateTime() == null : this.getLastUpdateTime().equals(other.getLastUpdateTime()))
             && (this.getLastUpdateOper() == null ? other.getLastUpdateOper() == null : this.getLastUpdateOper().equals(other.getLastUpdateOper()))
@@ -499,11 +474,10 @@ public class WfFlowNode implements Serializable {
         result = prime * result + ((getRefModuleId() == null) ? 0 : getRefModuleId().hashCode());
         result = prime * result + ((getPositionX() == null) ? 0 : getPositionX().hashCode());
         result = prime * result + ((getPositionY() == null) ? 0 : getPositionY().hashCode());
-        result = prime * result + ((getSequence() == null) ? 0 : getSequence().hashCode());
         result = prime * result + ((getLastTaskId() == null) ? 0 : getLastTaskId().hashCode());
         result = prime * result + ((getWarningMsg() == null) ? 0 : getWarningMsg().hashCode());
-        result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getNodeState() == null) ? 0 : getNodeState().hashCode());
+        result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getLastUpdateTime() == null) ? 0 : getLastUpdateTime().hashCode());
         result = prime * result + ((getLastUpdateOper() == null) ? 0 : getLastUpdateOper().hashCode());

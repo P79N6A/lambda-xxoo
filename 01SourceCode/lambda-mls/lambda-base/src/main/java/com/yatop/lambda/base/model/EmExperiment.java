@@ -22,13 +22,13 @@ public class EmExperiment implements Serializable {
     /**
      * 实验类型
             0：主实验，正常创建实验
-            1：预测实验，通过选择主实验中的已训练模型进行自动创建
+            1：预测实验（预留），通过选择主实验中的已训练模型进行自动创建
      */
     @Column(name = "EXPERIMENT_TYPE")
     private Integer experimentType;
 
     /**
-     * 所属主实验ID，正常创建实验设为-1
+     * 所属主实验ID，主实验设为自身ID
      */
     @Column(name = "MAIN_EXPERIMENT_ID")
     private Long mainExperimentId;
@@ -60,12 +60,6 @@ public class EmExperiment implements Serializable {
      */
     @Column(name = "EXPERIMENT_LOCAL_DIR")
     private String experimentLocalDir;
-
-    /**
-     * 实验序号，用于辅助复制实验时的新名称后缀编号
-     */
-    @Column(name = "SEQUENCE")
-    private Integer sequence;
 
     /**
      * 摘要，冗余WF_FLOW.SUMMARY信息
@@ -152,11 +146,11 @@ public class EmExperiment implements Serializable {
     /**
      * 获取实验类型
             0：主实验，正常创建实验
-            1：预测实验，通过选择主实验中的已训练模型进行自动创建
+            1：预测实验（预留），通过选择主实验中的已训练模型进行自动创建
      *
      * @return EXPERIMENT_TYPE - 实验类型
             0：主实验，正常创建实验
-            1：预测实验，通过选择主实验中的已训练模型进行自动创建
+            1：预测实验（预留），通过选择主实验中的已训练模型进行自动创建
      */
     public Integer getExperimentType() {
         return experimentType;
@@ -165,29 +159,29 @@ public class EmExperiment implements Serializable {
     /**
      * 设置实验类型
             0：主实验，正常创建实验
-            1：预测实验，通过选择主实验中的已训练模型进行自动创建
+            1：预测实验（预留），通过选择主实验中的已训练模型进行自动创建
      *
      * @param experimentType 实验类型
             0：主实验，正常创建实验
-            1：预测实验，通过选择主实验中的已训练模型进行自动创建
+            1：预测实验（预留），通过选择主实验中的已训练模型进行自动创建
      */
     public void setExperimentType(Integer experimentType) {
         this.experimentType = experimentType;
     }
 
     /**
-     * 获取所属主实验ID，正常创建实验设为-1
+     * 获取所属主实验ID，主实验设为自身ID
      *
-     * @return MAIN_EXPERIMENT_ID - 所属主实验ID，正常创建实验设为-1
+     * @return MAIN_EXPERIMENT_ID - 所属主实验ID，主实验设为自身ID
      */
     public Long getMainExperimentId() {
         return mainExperimentId;
     }
 
     /**
-     * 设置所属主实验ID，正常创建实验设为-1
+     * 设置所属主实验ID，主实验设为自身ID
      *
-     * @param mainExperimentId 所属主实验ID，正常创建实验设为-1
+     * @param mainExperimentId 所属主实验ID，主实验设为自身ID
      */
     public void setMainExperimentId(Long mainExperimentId) {
         this.mainExperimentId = mainExperimentId;
@@ -279,24 +273,6 @@ public class EmExperiment implements Serializable {
      */
     public void setExperimentLocalDir(String experimentLocalDir) {
         this.experimentLocalDir = experimentLocalDir == null ? null : experimentLocalDir.trim();
-    }
-
-    /**
-     * 获取实验序号，用于辅助复制实验时的新名称后缀编号
-     *
-     * @return SEQUENCE - 实验序号，用于辅助复制实验时的新名称后缀编号
-     */
-    public Integer getSequence() {
-        return sequence;
-    }
-
-    /**
-     * 设置实验序号，用于辅助复制实验时的新名称后缀编号
-     *
-     * @param sequence 实验序号，用于辅助复制实验时的新名称后缀编号
-     */
-    public void setSequence(Integer sequence) {
-        this.sequence = sequence;
     }
 
     /**
@@ -453,7 +429,6 @@ public class EmExperiment implements Serializable {
             && (this.getFlowId() == null ? other.getFlowId() == null : this.getFlowId().equals(other.getFlowId()))
             && (this.getExperimentDfsDir() == null ? other.getExperimentDfsDir() == null : this.getExperimentDfsDir().equals(other.getExperimentDfsDir()))
             && (this.getExperimentLocalDir() == null ? other.getExperimentLocalDir() == null : this.getExperimentLocalDir().equals(other.getExperimentLocalDir()))
-            && (this.getSequence() == null ? other.getSequence() == null : this.getSequence().equals(other.getSequence()))
             && (this.getSummary() == null ? other.getSummary() == null : this.getSummary().equals(other.getSummary()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
@@ -475,7 +450,6 @@ public class EmExperiment implements Serializable {
         result = prime * result + ((getFlowId() == null) ? 0 : getFlowId().hashCode());
         result = prime * result + ((getExperimentDfsDir() == null) ? 0 : getExperimentDfsDir().hashCode());
         result = prime * result + ((getExperimentLocalDir() == null) ? 0 : getExperimentLocalDir().hashCode());
-        result = prime * result + ((getSequence() == null) ? 0 : getSequence().hashCode());
         result = prime * result + ((getSummary() == null) ? 0 : getSummary().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());

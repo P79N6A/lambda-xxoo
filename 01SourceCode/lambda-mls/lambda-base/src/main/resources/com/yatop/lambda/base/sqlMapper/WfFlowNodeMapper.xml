@@ -12,11 +12,10 @@
     <result column="REF_MODULE_ID" property="refModuleId" jdbcType="BIGINT" />
     <result column="POSITION_X" property="positionX" jdbcType="BIGINT" />
     <result column="POSITION_Y" property="positionY" jdbcType="BIGINT" />
-    <result column="SEQUENCE" property="sequence" jdbcType="INTEGER" />
     <result column="LAST_TASK_ID" property="lastTaskId" jdbcType="BIGINT" />
     <result column="WARNING_MSG" property="warningMsg" jdbcType="VARCHAR" />
-    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="NODE_STATE" property="nodeState" jdbcType="INTEGER" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
     <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
     <result column="LAST_UPDATE_OPER" property="lastUpdateOper" jdbcType="VARCHAR" />
@@ -92,8 +91,8 @@
       WARNING - @mbggenerated
     -->
     NODE_ID, NODE_NAME, OWNER_PROJECT_ID, OWNER_FLOW_ID, REF_MODULE_ID, POSITION_X, POSITION_Y, 
-    SEQUENCE, LAST_TASK_ID, WARNING_MSG, DESCRIPTION, NODE_STATE, STATUS, LAST_UPDATE_TIME, 
-    LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
+    LAST_TASK_ID, WARNING_MSG, NODE_STATE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, 
+    CREATE_TIME, CREATE_OPER
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.WfFlowNodeExample" >
     <!--
@@ -158,20 +157,17 @@
       <if test="record.positionY != null" >
         POSITION_Y = #{record.positionY,jdbcType=BIGINT},
       </if>
-      <if test="record.sequence != null" >
-        SEQUENCE = #{record.sequence,jdbcType=INTEGER},
-      </if>
       <if test="record.lastTaskId != null" >
         LAST_TASK_ID = #{record.lastTaskId,jdbcType=BIGINT},
       </if>
       <if test="record.warningMsg != null" >
         WARNING_MSG = #{record.warningMsg,jdbcType=VARCHAR},
       </if>
-      <if test="record.description != null" >
-        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      </if>
       <if test="record.nodeState != null" >
         NODE_STATE = #{record.nodeState,jdbcType=INTEGER},
+      </if>
+      <if test="record.description != null" >
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null" >
         STATUS = #{record.status,jdbcType=INTEGER},
@@ -205,11 +201,10 @@
       REF_MODULE_ID = #{record.refModuleId,jdbcType=BIGINT},
       POSITION_X = #{record.positionX,jdbcType=BIGINT},
       POSITION_Y = #{record.positionY,jdbcType=BIGINT},
-      SEQUENCE = #{record.sequence,jdbcType=INTEGER},
       LAST_TASK_ID = #{record.lastTaskId,jdbcType=BIGINT},
       WARNING_MSG = #{record.warningMsg,jdbcType=VARCHAR},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       NODE_STATE = #{record.nodeState,jdbcType=INTEGER},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
       LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
       LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},

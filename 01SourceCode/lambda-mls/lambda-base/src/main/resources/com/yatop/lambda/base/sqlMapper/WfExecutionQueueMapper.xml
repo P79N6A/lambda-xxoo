@@ -6,7 +6,10 @@
       WARNING - @mbggenerated
     -->
     <id column="JOB_ID" property="jobId" jdbcType="BIGINT" />
-    <result column="STATE" property="state" jdbcType="INTEGER" />
+    <result column="OWNER_PROJECT_ID" property="ownerProjectId" jdbcType="BIGINT" />
+    <result column="JOB_TIME" property="jobTime" jdbcType="TIMESTAMP" />
+    <result column="JOB_SIGNAL" property="jobSignal" jdbcType="INTEGER" />
+    <result column="JOB_STATE" property="jobState" jdbcType="INTEGER" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
     <result column="LAST_UPDATE_OPER" property="lastUpdateOper" jdbcType="VARCHAR" />
@@ -81,7 +84,8 @@
     <!--
       WARNING - @mbggenerated
     -->
-    JOB_ID, STATE, DESCRIPTION, LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
+    JOB_ID, OWNER_PROJECT_ID, JOB_TIME, JOB_SIGNAL, JOB_STATE, DESCRIPTION, LAST_UPDATE_TIME, 
+    LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.WfExecutionQueueExample" >
     <!--
@@ -128,8 +132,17 @@
       <if test="record.jobId != null" >
         JOB_ID = #{record.jobId,jdbcType=BIGINT},
       </if>
-      <if test="record.state != null" >
-        STATE = #{record.state,jdbcType=INTEGER},
+      <if test="record.ownerProjectId != null" >
+        OWNER_PROJECT_ID = #{record.ownerProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.jobTime != null" >
+        JOB_TIME = #{record.jobTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.jobSignal != null" >
+        JOB_SIGNAL = #{record.jobSignal,jdbcType=INTEGER},
+      </if>
+      <if test="record.jobState != null" >
+        JOB_STATE = #{record.jobState,jdbcType=INTEGER},
       </if>
       <if test="record.description != null" >
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
@@ -157,7 +170,10 @@
     -->
     update wf_execution_queue
     set JOB_ID = #{record.jobId,jdbcType=BIGINT},
-      STATE = #{record.state,jdbcType=INTEGER},
+      OWNER_PROJECT_ID = #{record.ownerProjectId,jdbcType=BIGINT},
+      JOB_TIME = #{record.jobTime,jdbcType=TIMESTAMP},
+      JOB_SIGNAL = #{record.jobSignal,jdbcType=INTEGER},
+      JOB_STATE = #{record.jobState,jdbcType=INTEGER},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
       LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},

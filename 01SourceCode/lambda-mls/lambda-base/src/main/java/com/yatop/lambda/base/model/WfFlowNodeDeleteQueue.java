@@ -5,24 +5,12 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "wf_flow_node_delete_queue")
-public class WfFlowNodeDeleteQueue implements Serializable {
-    /**
-     * 工作流ID
-     */
-    @Column(name = "FLOW_ID")
-    private Long flowId;
-
+public class WfFlowNodeDeleteQueue extends WfFlowNodeDeleteQueueKey implements Serializable {
     /**
      * 删除序号
      */
     @Column(name = "SEQUENCE")
     private Integer sequence;
-
-    /**
-     * 节点ID
-     */
-    @Column(name = "NODE_ID")
-    private Long nodeId;
 
     /**
      * 描述
@@ -45,24 +33,6 @@ public class WfFlowNodeDeleteQueue implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 获取工作流ID
-     *
-     * @return FLOW_ID - 工作流ID
-     */
-    public Long getFlowId() {
-        return flowId;
-    }
-
-    /**
-     * 设置工作流ID
-     *
-     * @param flowId 工作流ID
-     */
-    public void setFlowId(Long flowId) {
-        this.flowId = flowId;
-    }
-
-    /**
      * 获取删除序号
      *
      * @return SEQUENCE - 删除序号
@@ -78,24 +48,6 @@ public class WfFlowNodeDeleteQueue implements Serializable {
      */
     public void setSequence(Integer sequence) {
         this.sequence = sequence;
-    }
-
-    /**
-     * 获取节点ID
-     *
-     * @return NODE_ID - 节点ID
-     */
-    public Long getNodeId() {
-        return nodeId;
-    }
-
-    /**
-     * 设置节点ID
-     *
-     * @param nodeId 节点ID
-     */
-    public void setNodeId(Long nodeId) {
-        this.nodeId = nodeId;
     }
 
     /**
@@ -165,8 +117,8 @@ public class WfFlowNodeDeleteQueue implements Serializable {
         }
         WfFlowNodeDeleteQueue other = (WfFlowNodeDeleteQueue) that;
         return (this.getFlowId() == null ? other.getFlowId() == null : this.getFlowId().equals(other.getFlowId()))
-            && (this.getSequence() == null ? other.getSequence() == null : this.getSequence().equals(other.getSequence()))
             && (this.getNodeId() == null ? other.getNodeId() == null : this.getNodeId().equals(other.getNodeId()))
+            && (this.getSequence() == null ? other.getSequence() == null : this.getSequence().equals(other.getSequence()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getCreateOper() == null ? other.getCreateOper() == null : this.getCreateOper().equals(other.getCreateOper()));
@@ -177,8 +129,8 @@ public class WfFlowNodeDeleteQueue implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getFlowId() == null) ? 0 : getFlowId().hashCode());
-        result = prime * result + ((getSequence() == null) ? 0 : getSequence().hashCode());
         result = prime * result + ((getNodeId() == null) ? 0 : getNodeId().hashCode());
+        result = prime * result + ((getSequence() == null) ? 0 : getSequence().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getCreateOper() == null) ? 0 : getCreateOper().hashCode());

@@ -13,7 +13,6 @@
     <result column="FLOW_ID" property="flowId" jdbcType="BIGINT" />
     <result column="EXPERIMENT_DFS_DIR" property="experimentDfsDir" jdbcType="VARCHAR" />
     <result column="EXPERIMENT_LOCAL_DIR" property="experimentLocalDir" jdbcType="VARCHAR" />
-    <result column="SEQUENCE" property="sequence" jdbcType="INTEGER" />
     <result column="SUMMARY" property="summary" jdbcType="VARCHAR" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
@@ -91,8 +90,8 @@
       WARNING - @mbggenerated
     -->
     EXPERIMENT_ID, EXPERIMENT_NAME, EXPERIMENT_TYPE, MAIN_EXPERIMENT_ID, OWNER_PROJECT_ID, 
-    FLOW_ID, EXPERIMENT_DFS_DIR, EXPERIMENT_LOCAL_DIR, SEQUENCE, SUMMARY, DESCRIPTION, 
-    STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
+    FLOW_ID, EXPERIMENT_DFS_DIR, EXPERIMENT_LOCAL_DIR, SUMMARY, DESCRIPTION, STATUS, 
+    LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.EmExperimentExample" >
     <!--
@@ -160,9 +159,6 @@
       <if test="record.experimentLocalDir != null" >
         EXPERIMENT_LOCAL_DIR = #{record.experimentLocalDir,jdbcType=VARCHAR},
       </if>
-      <if test="record.sequence != null" >
-        SEQUENCE = #{record.sequence,jdbcType=INTEGER},
-      </if>
       <if test="record.summary != null" >
         SUMMARY = #{record.summary,jdbcType=VARCHAR},
       </if>
@@ -202,7 +198,6 @@
       FLOW_ID = #{record.flowId,jdbcType=BIGINT},
       EXPERIMENT_DFS_DIR = #{record.experimentDfsDir,jdbcType=VARCHAR},
       EXPERIMENT_LOCAL_DIR = #{record.experimentLocalDir,jdbcType=VARCHAR},
-      SEQUENCE = #{record.sequence,jdbcType=INTEGER},
       SUMMARY = #{record.summary,jdbcType=VARCHAR},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},

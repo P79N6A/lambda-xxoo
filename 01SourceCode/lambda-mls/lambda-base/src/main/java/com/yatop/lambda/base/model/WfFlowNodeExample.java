@@ -546,66 +546,6 @@ public class WfFlowNodeExample {
             return (Criteria) this;
         }
 
-        public Criteria andSequenceIsNull() {
-            addCriterion("SEQUENCE is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceIsNotNull() {
-            addCriterion("SEQUENCE is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceEqualTo(Integer value) {
-            addCriterion("SEQUENCE =", value, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceNotEqualTo(Integer value) {
-            addCriterion("SEQUENCE <>", value, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceGreaterThan(Integer value) {
-            addCriterion("SEQUENCE >", value, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceGreaterThanOrEqualTo(Integer value) {
-            addCriterion("SEQUENCE >=", value, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceLessThan(Integer value) {
-            addCriterion("SEQUENCE <", value, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceLessThanOrEqualTo(Integer value) {
-            addCriterion("SEQUENCE <=", value, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceIn(List<Integer> values) {
-            addCriterion("SEQUENCE in", values, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceNotIn(List<Integer> values) {
-            addCriterion("SEQUENCE not in", values, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceBetween(Integer value1, Integer value2) {
-            addCriterion("SEQUENCE between", value1, value2, "sequence");
-            return (Criteria) this;
-        }
-
-        public Criteria andSequenceNotBetween(Integer value1, Integer value2) {
-            addCriterion("SEQUENCE not between", value1, value2, "sequence");
-            return (Criteria) this;
-        }
-
         public Criteria andLastTaskIdIsNull() {
             addCriterion("LAST_TASK_ID is null");
             return (Criteria) this;
@@ -736,6 +676,66 @@ public class WfFlowNodeExample {
             return (Criteria) this;
         }
 
+        public Criteria andNodeStateIsNull() {
+            addCriterion("NODE_STATE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeStateIsNotNull() {
+            addCriterion("NODE_STATE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeStateEqualTo(Integer value) {
+            addCriterion("NODE_STATE =", value, "nodeState");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeStateNotEqualTo(Integer value) {
+            addCriterion("NODE_STATE <>", value, "nodeState");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeStateGreaterThan(Integer value) {
+            addCriterion("NODE_STATE >", value, "nodeState");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeStateGreaterThanOrEqualTo(Integer value) {
+            addCriterion("NODE_STATE >=", value, "nodeState");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeStateLessThan(Integer value) {
+            addCriterion("NODE_STATE <", value, "nodeState");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeStateLessThanOrEqualTo(Integer value) {
+            addCriterion("NODE_STATE <=", value, "nodeState");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeStateIn(List<Integer> values) {
+            addCriterion("NODE_STATE in", values, "nodeState");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeStateNotIn(List<Integer> values) {
+            addCriterion("NODE_STATE not in", values, "nodeState");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeStateBetween(Integer value1, Integer value2) {
+            addCriterion("NODE_STATE between", value1, value2, "nodeState");
+            return (Criteria) this;
+        }
+
+        public Criteria andNodeStateNotBetween(Integer value1, Integer value2) {
+            addCriterion("NODE_STATE not between", value1, value2, "nodeState");
+            return (Criteria) this;
+        }
+
         public Criteria andDescriptionIsNull() {
             addCriterion("DESCRIPTION is null");
             return (Criteria) this;
@@ -803,66 +803,6 @@ public class WfFlowNodeExample {
 
         public Criteria andDescriptionNotBetween(String value1, String value2) {
             addCriterion("DESCRIPTION not between", value1, value2, "description");
-            return (Criteria) this;
-        }
-
-        public Criteria andNodeStateIsNull() {
-            addCriterion("NODE_STATE is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNodeStateIsNotNull() {
-            addCriterion("NODE_STATE is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andNodeStateEqualTo(Integer value) {
-            addCriterion("NODE_STATE =", value, "nodeState");
-            return (Criteria) this;
-        }
-
-        public Criteria andNodeStateNotEqualTo(Integer value) {
-            addCriterion("NODE_STATE <>", value, "nodeState");
-            return (Criteria) this;
-        }
-
-        public Criteria andNodeStateGreaterThan(Integer value) {
-            addCriterion("NODE_STATE >", value, "nodeState");
-            return (Criteria) this;
-        }
-
-        public Criteria andNodeStateGreaterThanOrEqualTo(Integer value) {
-            addCriterion("NODE_STATE >=", value, "nodeState");
-            return (Criteria) this;
-        }
-
-        public Criteria andNodeStateLessThan(Integer value) {
-            addCriterion("NODE_STATE <", value, "nodeState");
-            return (Criteria) this;
-        }
-
-        public Criteria andNodeStateLessThanOrEqualTo(Integer value) {
-            addCriterion("NODE_STATE <=", value, "nodeState");
-            return (Criteria) this;
-        }
-
-        public Criteria andNodeStateIn(List<Integer> values) {
-            addCriterion("NODE_STATE in", values, "nodeState");
-            return (Criteria) this;
-        }
-
-        public Criteria andNodeStateNotIn(List<Integer> values) {
-            addCriterion("NODE_STATE not in", values, "nodeState");
-            return (Criteria) this;
-        }
-
-        public Criteria andNodeStateBetween(Integer value1, Integer value2) {
-            addCriterion("NODE_STATE between", value1, value2, "nodeState");
-            return (Criteria) this;
-        }
-
-        public Criteria andNodeStateNotBetween(Integer value1, Integer value2) {
-            addCriterion("NODE_STATE not between", value1, value2, "nodeState");
             return (Criteria) this;
         }
 

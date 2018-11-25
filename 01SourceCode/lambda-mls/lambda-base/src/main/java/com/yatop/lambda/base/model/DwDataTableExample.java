@@ -426,6 +426,66 @@ public class DwDataTableExample {
             return (Criteria) this;
         }
 
+        public Criteria andRelExperimentIdIsNull() {
+            addCriterion("REL_EXPERIMENT_ID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelExperimentIdIsNotNull() {
+            addCriterion("REL_EXPERIMENT_ID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelExperimentIdEqualTo(Long value) {
+            addCriterion("REL_EXPERIMENT_ID =", value, "relExperimentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelExperimentIdNotEqualTo(Long value) {
+            addCriterion("REL_EXPERIMENT_ID <>", value, "relExperimentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelExperimentIdGreaterThan(Long value) {
+            addCriterion("REL_EXPERIMENT_ID >", value, "relExperimentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelExperimentIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("REL_EXPERIMENT_ID >=", value, "relExperimentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelExperimentIdLessThan(Long value) {
+            addCriterion("REL_EXPERIMENT_ID <", value, "relExperimentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelExperimentIdLessThanOrEqualTo(Long value) {
+            addCriterion("REL_EXPERIMENT_ID <=", value, "relExperimentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelExperimentIdIn(List<Long> values) {
+            addCriterion("REL_EXPERIMENT_ID in", values, "relExperimentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelExperimentIdNotIn(List<Long> values) {
+            addCriterion("REL_EXPERIMENT_ID not in", values, "relExperimentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelExperimentIdBetween(Long value1, Long value2) {
+            addCriterion("REL_EXPERIMENT_ID between", value1, value2, "relExperimentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andRelExperimentIdNotBetween(Long value1, Long value2) {
+            addCriterion("REL_EXPERIMENT_ID not between", value1, value2, "relExperimentId");
+            return (Criteria) this;
+        }
+
         public Criteria andRelJobIdIsNull() {
             addCriterion("REL_JOB_ID is null");
             return (Criteria) this;

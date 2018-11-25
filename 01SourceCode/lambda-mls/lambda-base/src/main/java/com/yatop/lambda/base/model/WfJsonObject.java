@@ -22,20 +22,20 @@ public class WfJsonObject implements Serializable {
             统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>
             自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>
             生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>
-            输出端口schema：outport_schema_<node_id>_<char_id>_<snapshot_version>
+            输出端口schema：outport_schema_<node_id>_<char_id>
      */
     @Column(name = "OBJECT_NAME")
     private String objectName;
 
     /**
      * 对象类型
-            0：普通对象（仅存放于OBJECT_DATA）
-            1：算法参数（输出内容，正常存放于OBJECT_DATA）
-            2：模型评估报告（输出内容，正常存放于OBJECT_DATA）
-            3：统计分析报告（输出内容，正常存放于OBJECT_DATA）
-            4：自动调参报告（输出内容，正常存放位置待定）
-            5：生成规则报告（输出内容，正常存放位置待定）
-            99：输出端口schema（端口信息，字段数量不超过2000存放于OBJECT_DATA）
+            0：JsonObject&JsonArray（组件参数，仅存放于OBJECT_DATA）
+            1：算法参数（输出内容，仅存放于OBJECT_DATA）
+            2：模型评估报告（输出内容，存放于文件系统）
+            3：统计分析报告（输出内容，存放于文件系统）
+            4：自动调参报告（输出内容，存放于文件系统）
+            5：生成规则报告（输出内容，存放于文件系统）
+            99：输出端口schema（端口信息，仅存放于OBJECT_DATA）
      */
     @Column(name = "OBJECTY_TYPE")
     private Integer objectyType;
@@ -96,12 +96,12 @@ public class WfJsonObject implements Serializable {
     /**
      * 对象文件名
             
-            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json
+            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json（预留）
             模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json
             统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json
             自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json
             生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json
-            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json
+            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json（预留）
      */
     @Column(name = "OBJECT_FILE")
     private String objectFile;
@@ -113,6 +113,12 @@ public class WfJsonObject implements Serializable {
      */
     @Column(name = "OBJECT_STATE")
     private Integer objectState;
+
+    /**
+     * 描述
+     */
+    @Column(name = "DESCRIPTION")
+    private String description;
 
     /**
      * 状态
@@ -181,7 +187,7 @@ public class WfJsonObject implements Serializable {
             统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>
             自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>
             生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>
-            输出端口schema：outport_schema_<node_id>_<char_id>_<snapshot_version>
+            输出端口schema：outport_schema_<node_id>_<char_id>
      *
      * @return OBJECT_NAME - 对象名称
             
@@ -191,7 +197,7 @@ public class WfJsonObject implements Serializable {
             统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>
             自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>
             生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>
-            输出端口schema：outport_schema_<node_id>_<char_id>_<snapshot_version>
+            输出端口schema：outport_schema_<node_id>_<char_id>
      */
     public String getObjectName() {
         return objectName;
@@ -206,7 +212,7 @@ public class WfJsonObject implements Serializable {
             统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>
             自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>
             生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>
-            输出端口schema：outport_schema_<node_id>_<char_id>_<snapshot_version>
+            输出端口schema：outport_schema_<node_id>_<char_id>
      *
      * @param objectName 对象名称
             
@@ -216,7 +222,7 @@ public class WfJsonObject implements Serializable {
             统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>
             自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>
             生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>
-            输出端口schema：outport_schema_<node_id>_<char_id>_<snapshot_version>
+            输出端口schema：outport_schema_<node_id>_<char_id>
      */
     public void setObjectName(String objectName) {
         this.objectName = objectName == null ? null : objectName.trim();
@@ -224,22 +230,22 @@ public class WfJsonObject implements Serializable {
 
     /**
      * 获取对象类型
-            0：普通对象（仅存放于OBJECT_DATA）
-            1：算法参数（输出内容，正常存放于OBJECT_DATA）
-            2：模型评估报告（输出内容，正常存放于OBJECT_DATA）
-            3：统计分析报告（输出内容，正常存放于OBJECT_DATA）
-            4：自动调参报告（输出内容，正常存放位置待定）
-            5：生成规则报告（输出内容，正常存放位置待定）
-            99：输出端口schema（端口信息，字段数量不超过2000存放于OBJECT_DATA）
+            0：JsonObject&JsonArray（组件参数，仅存放于OBJECT_DATA）
+            1：算法参数（输出内容，仅存放于OBJECT_DATA）
+            2：模型评估报告（输出内容，存放于文件系统）
+            3：统计分析报告（输出内容，存放于文件系统）
+            4：自动调参报告（输出内容，存放于文件系统）
+            5：生成规则报告（输出内容，存放于文件系统）
+            99：输出端口schema（端口信息，仅存放于OBJECT_DATA）
      *
      * @return OBJECTY_TYPE - 对象类型
-            0：普通对象（仅存放于OBJECT_DATA）
-            1：算法参数（输出内容，正常存放于OBJECT_DATA）
-            2：模型评估报告（输出内容，正常存放于OBJECT_DATA）
-            3：统计分析报告（输出内容，正常存放于OBJECT_DATA）
-            4：自动调参报告（输出内容，正常存放位置待定）
-            5：生成规则报告（输出内容，正常存放位置待定）
-            99：输出端口schema（端口信息，字段数量不超过2000存放于OBJECT_DATA）
+            0：JsonObject&JsonArray（组件参数，仅存放于OBJECT_DATA）
+            1：算法参数（输出内容，仅存放于OBJECT_DATA）
+            2：模型评估报告（输出内容，存放于文件系统）
+            3：统计分析报告（输出内容，存放于文件系统）
+            4：自动调参报告（输出内容，存放于文件系统）
+            5：生成规则报告（输出内容，存放于文件系统）
+            99：输出端口schema（端口信息，仅存放于OBJECT_DATA）
      */
     public Integer getObjectyType() {
         return objectyType;
@@ -247,22 +253,22 @@ public class WfJsonObject implements Serializable {
 
     /**
      * 设置对象类型
-            0：普通对象（仅存放于OBJECT_DATA）
-            1：算法参数（输出内容，正常存放于OBJECT_DATA）
-            2：模型评估报告（输出内容，正常存放于OBJECT_DATA）
-            3：统计分析报告（输出内容，正常存放于OBJECT_DATA）
-            4：自动调参报告（输出内容，正常存放位置待定）
-            5：生成规则报告（输出内容，正常存放位置待定）
-            99：输出端口schema（端口信息，字段数量不超过2000存放于OBJECT_DATA）
+            0：JsonObject&JsonArray（组件参数，仅存放于OBJECT_DATA）
+            1：算法参数（输出内容，仅存放于OBJECT_DATA）
+            2：模型评估报告（输出内容，存放于文件系统）
+            3：统计分析报告（输出内容，存放于文件系统）
+            4：自动调参报告（输出内容，存放于文件系统）
+            5：生成规则报告（输出内容，存放于文件系统）
+            99：输出端口schema（端口信息，仅存放于OBJECT_DATA）
      *
      * @param objectyType 对象类型
-            0：普通对象（仅存放于OBJECT_DATA）
-            1：算法参数（输出内容，正常存放于OBJECT_DATA）
-            2：模型评估报告（输出内容，正常存放于OBJECT_DATA）
-            3：统计分析报告（输出内容，正常存放于OBJECT_DATA）
-            4：自动调参报告（输出内容，正常存放位置待定）
-            5：生成规则报告（输出内容，正常存放位置待定）
-            99：输出端口schema（端口信息，字段数量不超过2000存放于OBJECT_DATA）
+            0：JsonObject&JsonArray（组件参数，仅存放于OBJECT_DATA）
+            1：算法参数（输出内容，仅存放于OBJECT_DATA）
+            2：模型评估报告（输出内容，存放于文件系统）
+            3：统计分析报告（输出内容，存放于文件系统）
+            4：自动调参报告（输出内容，存放于文件系统）
+            5：生成规则报告（输出内容，存放于文件系统）
+            99：输出端口schema（端口信息，仅存放于OBJECT_DATA）
      */
     public void setObjectyType(Integer objectyType) {
         this.objectyType = objectyType;
@@ -435,21 +441,21 @@ public class WfJsonObject implements Serializable {
     /**
      * 获取对象文件名
             
-            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json
+            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json（预留）
             模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json
             统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json
             自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json
             生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json
-            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json
+            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json（预留）
      *
      * @return OBJECT_FILE - 对象文件名
             
-            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json
+            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json（预留）
             模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json
             统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json
             自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json
             生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json
-            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json
+            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json（预留）
      */
     public String getObjectFile() {
         return objectFile;
@@ -458,21 +464,21 @@ public class WfJsonObject implements Serializable {
     /**
      * 设置对象文件名
             
-            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json
+            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json（预留）
             模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json
             统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json
             自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json
             生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json
-            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json
+            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json（预留）
      *
      * @param objectFile 对象文件名
             
-            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json
+            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json（预留）
             模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json
             统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json
             自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json
             生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json
-            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json
+            输出端口schema：${EXPERIMENT_DIR}/outport_schema_<json_id>.json（预留）
      */
     public void setObjectFile(String objectFile) {
         this.objectFile = objectFile == null ? null : objectFile.trim();
@@ -502,6 +508,24 @@ public class WfJsonObject implements Serializable {
      */
     public void setObjectState(Integer objectState) {
         this.objectState = objectState;
+    }
+
+    /**
+     * 获取描述
+     *
+     * @return DESCRIPTION - 描述
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * 设置描述
+     *
+     * @param description 描述
+     */
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
     /**
@@ -645,6 +669,7 @@ public class WfJsonObject implements Serializable {
             && (this.getStorageLocation() == null ? other.getStorageLocation() == null : this.getStorageLocation().equals(other.getStorageLocation()))
             && (this.getObjectFile() == null ? other.getObjectFile() == null : this.getObjectFile().equals(other.getObjectFile()))
             && (this.getObjectState() == null ? other.getObjectState() == null : this.getObjectState().equals(other.getObjectState()))
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getLastUpdateTime() == null ? other.getLastUpdateTime() == null : this.getLastUpdateTime().equals(other.getLastUpdateTime()))
             && (this.getLastUpdateOper() == null ? other.getLastUpdateOper() == null : this.getLastUpdateOper().equals(other.getLastUpdateOper()))
@@ -670,6 +695,7 @@ public class WfJsonObject implements Serializable {
         result = prime * result + ((getStorageLocation() == null) ? 0 : getStorageLocation().hashCode());
         result = prime * result + ((getObjectFile() == null) ? 0 : getObjectFile().hashCode());
         result = prime * result + ((getObjectState() == null) ? 0 : getObjectState().hashCode());
+        result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getLastUpdateTime() == null) ? 0 : getLastUpdateTime().hashCode());
         result = prime * result + ((getLastUpdateOper() == null) ? 0 : getLastUpdateOper().hashCode());
