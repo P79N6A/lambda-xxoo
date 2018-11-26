@@ -16,6 +16,9 @@
     <result column="RETURN_FILE" property="returnFile" jdbcType="VARCHAR" />
     <result column="LOG_FILE" property="logFile" jdbcType="VARCHAR" />
     <result column="COST_TIME" property="costTime" jdbcType="BIGINT" />
+    <result column="TASK_SUBMIT_TIME" property="taskSubmitTime" jdbcType="TIMESTAMP" />
+    <result column="TASK_START_TIME" property="taskStartTime" jdbcType="TIMESTAMP" />
+    <result column="TASK_END_TIME" property="taskEndTime" jdbcType="TIMESTAMP" />
     <result column="TASK_PROGRESS" property="taskProgress" jdbcType="INTEGER" />
     <result column="TASK_STATE" property="taskState" jdbcType="INTEGER" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
@@ -100,8 +103,9 @@
       WARNING - @mbggenerated
     -->
     TASK_ID, TASK_NAME, OWNER_JOB_ID, SEQUENCE, REL_NODE_ID, ENGINE_TYPE, EXTERNAL_ID, 
-    SUBMIT_FILE, RETURN_FILE, LOG_FILE, COST_TIME, TASK_PROGRESS, TASK_STATE, DESCRIPTION, 
-    STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
+    SUBMIT_FILE, RETURN_FILE, LOG_FILE, COST_TIME, TASK_SUBMIT_TIME, TASK_START_TIME, 
+    TASK_END_TIME, TASK_PROGRESS, TASK_STATE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, 
+    LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
   </sql>
   <sql id="Blob_Column_List" >
     <!--
@@ -203,6 +207,15 @@
       <if test="record.costTime != null" >
         COST_TIME = #{record.costTime,jdbcType=BIGINT},
       </if>
+      <if test="record.taskSubmitTime != null" >
+        TASK_SUBMIT_TIME = #{record.taskSubmitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskStartTime != null" >
+        TASK_START_TIME = #{record.taskStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.taskEndTime != null" >
+        TASK_END_TIME = #{record.taskEndTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.taskProgress != null" >
         TASK_PROGRESS = #{record.taskProgress,jdbcType=INTEGER},
       </if>
@@ -251,6 +264,9 @@
       RETURN_FILE = #{record.returnFile,jdbcType=VARCHAR},
       LOG_FILE = #{record.logFile,jdbcType=VARCHAR},
       COST_TIME = #{record.costTime,jdbcType=BIGINT},
+      TASK_SUBMIT_TIME = #{record.taskSubmitTime,jdbcType=TIMESTAMP},
+      TASK_START_TIME = #{record.taskStartTime,jdbcType=TIMESTAMP},
+      TASK_END_TIME = #{record.taskEndTime,jdbcType=TIMESTAMP},
       TASK_PROGRESS = #{record.taskProgress,jdbcType=INTEGER},
       TASK_STATE = #{record.taskState,jdbcType=INTEGER},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
@@ -280,6 +296,9 @@
       RETURN_FILE = #{record.returnFile,jdbcType=VARCHAR},
       LOG_FILE = #{record.logFile,jdbcType=VARCHAR},
       COST_TIME = #{record.costTime,jdbcType=BIGINT},
+      TASK_SUBMIT_TIME = #{record.taskSubmitTime,jdbcType=TIMESTAMP},
+      TASK_START_TIME = #{record.taskStartTime,jdbcType=TIMESTAMP},
+      TASK_END_TIME = #{record.taskEndTime,jdbcType=TIMESTAMP},
       TASK_PROGRESS = #{record.taskProgress,jdbcType=INTEGER},
       TASK_STATE = #{record.taskState,jdbcType=INTEGER},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},

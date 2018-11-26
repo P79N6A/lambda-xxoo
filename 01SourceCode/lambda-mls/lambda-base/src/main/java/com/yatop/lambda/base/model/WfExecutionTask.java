@@ -80,6 +80,24 @@ public class WfExecutionTask implements Serializable {
     private Long costTime;
 
     /**
+     * 任务提交时间
+     */
+    @Column(name = "TASK_SUBMIT_TIME")
+    private Date taskSubmitTime;
+
+    /**
+     * 任务开始时间
+     */
+    @Column(name = "TASK_START_TIME")
+    private Date taskStartTime;
+
+    /**
+     * 任务结束时间
+     */
+    @Column(name = "TASK_END_TIME")
+    private Date taskEndTime;
+
+    /**
      * 任务进度，百分比数值0到100
      */
     @Column(name = "TASK_PROGRESS")
@@ -366,6 +384,60 @@ public class WfExecutionTask implements Serializable {
     }
 
     /**
+     * 获取任务提交时间
+     *
+     * @return TASK_SUBMIT_TIME - 任务提交时间
+     */
+    public Date getTaskSubmitTime() {
+        return taskSubmitTime;
+    }
+
+    /**
+     * 设置任务提交时间
+     *
+     * @param taskSubmitTime 任务提交时间
+     */
+    public void setTaskSubmitTime(Date taskSubmitTime) {
+        this.taskSubmitTime = taskSubmitTime;
+    }
+
+    /**
+     * 获取任务开始时间
+     *
+     * @return TASK_START_TIME - 任务开始时间
+     */
+    public Date getTaskStartTime() {
+        return taskStartTime;
+    }
+
+    /**
+     * 设置任务开始时间
+     *
+     * @param taskStartTime 任务开始时间
+     */
+    public void setTaskStartTime(Date taskStartTime) {
+        this.taskStartTime = taskStartTime;
+    }
+
+    /**
+     * 获取任务结束时间
+     *
+     * @return TASK_END_TIME - 任务结束时间
+     */
+    public Date getTaskEndTime() {
+        return taskEndTime;
+    }
+
+    /**
+     * 设置任务结束时间
+     *
+     * @param taskEndTime 任务结束时间
+     */
+    public void setTaskEndTime(Date taskEndTime) {
+        this.taskEndTime = taskEndTime;
+    }
+
+    /**
      * 获取任务进度，百分比数值0到100
      *
      * @return TASK_PROGRESS - 任务进度，百分比数值0到100
@@ -582,6 +654,9 @@ public class WfExecutionTask implements Serializable {
             && (this.getReturnFile() == null ? other.getReturnFile() == null : this.getReturnFile().equals(other.getReturnFile()))
             && (this.getLogFile() == null ? other.getLogFile() == null : this.getLogFile().equals(other.getLogFile()))
             && (this.getCostTime() == null ? other.getCostTime() == null : this.getCostTime().equals(other.getCostTime()))
+            && (this.getTaskSubmitTime() == null ? other.getTaskSubmitTime() == null : this.getTaskSubmitTime().equals(other.getTaskSubmitTime()))
+            && (this.getTaskStartTime() == null ? other.getTaskStartTime() == null : this.getTaskStartTime().equals(other.getTaskStartTime()))
+            && (this.getTaskEndTime() == null ? other.getTaskEndTime() == null : this.getTaskEndTime().equals(other.getTaskEndTime()))
             && (this.getTaskProgress() == null ? other.getTaskProgress() == null : this.getTaskProgress().equals(other.getTaskProgress()))
             && (this.getTaskState() == null ? other.getTaskState() == null : this.getTaskState().equals(other.getTaskState()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
@@ -608,6 +683,9 @@ public class WfExecutionTask implements Serializable {
         result = prime * result + ((getReturnFile() == null) ? 0 : getReturnFile().hashCode());
         result = prime * result + ((getLogFile() == null) ? 0 : getLogFile().hashCode());
         result = prime * result + ((getCostTime() == null) ? 0 : getCostTime().hashCode());
+        result = prime * result + ((getTaskSubmitTime() == null) ? 0 : getTaskSubmitTime().hashCode());
+        result = prime * result + ((getTaskStartTime() == null) ? 0 : getTaskStartTime().hashCode());
+        result = prime * result + ((getTaskEndTime() == null) ? 0 : getTaskEndTime().hashCode());
         result = prime * result + ((getTaskProgress() == null) ? 0 : getTaskProgress().hashCode());
         result = prime * result + ((getTaskState() == null) ? 0 : getTaskState().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
