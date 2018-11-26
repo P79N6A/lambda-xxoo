@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-11-26 15:54:13
+Date: 2018-11-26 17:09:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,25 +41,25 @@ CREATE TABLE `cc_cmpt_algorithm` (
 -- ----------------------------
 -- Records of cc_cmpt_algorithm
 -- ----------------------------
-INSERT INTO `cc_cmpt_algorithm` VALUES ('1001', 'OneClass-SVM', '单分类支持向量机', '1', '', '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('1002', 'PCA-Based-AnomalyDetection', '基于PCA异常检测', '1', '', '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('2001', 'LR-TwoClassClassification', '逻辑回归二分类', '2', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('2002', 'RF-TwoClassClassification', '随机森林二分类', '2', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('2003', 'GBDT-TwoClassClassification', 'GBDT二分类', '2', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('2004', 'LinearSVM-TwoClassClassification', '线性支持向量机二分类', '2', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('2005', 'XGBoost-TwoClassClassification', 'XGBoost二分类', '2', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('3001', 'LR-MultipleClassClassification', '逻辑回归多分类', '3', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('3002', 'RF-MultipleClassClassification', '随机森林多分类', '3', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('3003', 'XGBoost-MultipleClassClassification', 'XGBoost多分类', '3', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('3004', 'NaiveBayesian-MultipleClassClassification', '朴素贝叶斯多分类', '3', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('3005', 'KNN-MultipleClassClassification', 'K近邻多分类', '3', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('4001', 'KMeans-Clustering', 'K均值聚类', '4', '', '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('5001', 'Linear-Regression', '线性回归', '5', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('5002', 'GBDT-Regression', 'GBDT回归', '5', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('5003', 'XGBoost-Regression', 'XGBoost回归', '5', '', '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('6001', 'Apriori-AssociationRules', 'Apriori关联规则', '6', '', '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('6002', 'FPG-AssociationRules', 'FP-Growth关联规则', '6', '', '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cc_cmpt_algorithm` VALUES ('7001', 'ALS-CollaborativeFiltering', 'ALS协同过滤', '7', '', '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('1001', 'OneClass-SVM', '单分类支持向量机', '1', null, '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('1002', 'PCA-Based-AnomalyDetection', '基于PCA异常检测', '1', null, '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('2001', 'LR-TwoClassClassification', '逻辑回归二分类', '2', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('2002', 'RF-TwoClassClassification', '随机森林二分类', '2', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('2003', 'GBDT-TwoClassClassification', 'GBDT二分类', '2', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('2004', 'LinearSVM-TwoClassClassification', '线性支持向量机二分类', '2', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('2005', 'XGBoost-TwoClassClassification', 'XGBoost二分类', '2', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('3001', 'LR-MultipleClassClassification', '逻辑回归多分类', '3', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('3002', 'RF-MultipleClassClassification', '随机森林多分类', '3', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('3003', 'XGBoost-MultipleClassClassification', 'XGBoost多分类', '3', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('3004', 'NaiveBayesian-MultipleClassClassification', '朴素贝叶斯多分类', '3', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('3005', 'KNN-MultipleClassClassification', 'K近邻多分类', '3', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('4001', 'KMeans-Clustering', 'K均值聚类', '4', null, '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('5001', 'Linear-Regression', '线性回归', '5', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('5002', 'GBDT-Regression', 'GBDT回归', '5', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('5003', 'XGBoost-Regression', 'XGBoost回归', '5', null, '1', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('6001', 'Apriori-AssociationRules', 'Apriori关联规则', '6', null, '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('6002', 'FPG-AssociationRules', 'FP-Growth关联规则', '6', null, '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cc_cmpt_algorithm` VALUES ('7001', 'ALS-CollaborativeFiltering', 'ALS协同过滤', '7', null, '2', '0', '0', '', '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
 
 -- ----------------------------
 -- Table structure for cc_cmpt_char
@@ -229,9 +229,9 @@ INSERT INTO `cc_cmpt_char` VALUES ('SCP@C-IO@COM-9999-08', 'SCP@Import-DataFile@
 INSERT INTO `cc_cmpt_char` VALUES ('SCP@C-IO@COM-9999-09', 'SCP@Import-DataFile@TimeFormat', '专用参数 | 输入输出 | 数据文件导入 | 时间格式', 'timeFormat', '5', '7', '3', '0', '0', '0', null, '', '', '', 'yyyy-mm-dd hh24:mi:ss', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cc_cmpt_char` VALUES ('SCP@C-IO@COM-9999-10', 'SCP@Import-DataFile@TypeException', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理', 'typeException', '5', '7', '3', '0', '0', '5', null, '', '', '', 'missing value', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cc_cmpt_char` VALUES ('SCP@C-IO@COM-9999-11', 'SCP@Import-DataFile@ColumnsException', '专用参数 | 输入输出 | 数据文件导入 | 列数异常处理', 'columnsException', '5', '7', '3', '0', '0', '5', null, '', '', '', 'discard row', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cc_cmpt_char` VALUES ('SCP@C-ST@COM-0001-01', 'sqlScript', '专用参数 | 脚本工具 | SQL脚本 | SQL脚本', '', '5', '3001', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cc_cmpt_char` VALUES ('SCP@C-ST@COM-0002-01', 'pythonScript', '专用参数 | 脚本工具 | Python脚本 | Python脚本', '', '5', '3002', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cc_cmpt_char` VALUES ('SCP@C-ST@COM-0003-01', 'rScript', '专用参数 | 脚本工具 | R脚本 | R脚本', '', '5', '3003', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cc_cmpt_char` VALUES ('SCP@C-ST@COM-0001-01', 'SCP@Sql-Script@sqlScript', '专用参数 | 脚本工具 | SQL脚本 | SQL脚本', 'sqlScript', '5', '3001', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cc_cmpt_char` VALUES ('SCP@C-ST@COM-0002-01', 'SCP@Python-Script@pythonScript', '专用参数 | 脚本工具 | Python脚本 | Python脚本', 'pythonScript', '5', '3002', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cc_cmpt_char` VALUES ('SCP@C-ST@COM-0003-01', 'SCP@R-Script@rScript', '专用参数 | 脚本工具 | R脚本 | R脚本', 'rScript', '5', '3003', '3', '0', '1', '0', null, '', '', '', '', '', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 
 -- ----------------------------
 -- Table structure for cc_cmpt_char_enum
@@ -289,8 +289,8 @@ INSERT INTO `cc_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-05', '专用参数 | 
 INSERT INTO `cc_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-10', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理 | Discard Row', 'discard row', '丢弃异常行', '1', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
 INSERT INTO `cc_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-10', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理 | Missing Value', 'missing value', '值设置为缺失', '0', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
 INSERT INTO `cc_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-10', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理 | Return Failed', 'return failed', '返回失败', '2', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cc_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-11', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理 | Discard Row', 'discard row', '丢弃异常行', '0', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
-INSERT INTO `cc_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-11', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理 | Return Failed', 'return failed', '返回失败', '1', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cc_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-11', '专用参数 | 输入输出 | 数据文件导入 | 列数异常处理 | Discard Row', 'discard row', '丢弃异常行', '0', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
+INSERT INTO `cc_cmpt_char_enum` VALUES ('SCP@C-IO@COM-9999-11', '专用参数 | 输入输出 | 数据文件导入 | 列数异常处理 | Return Failed', 'return failed', '返回失败', '1', '', '0', '2017-05-11 00:26:27', 'admin', '2017-05-11 00:26:27', 'admin');
 
 -- ----------------------------
 -- Table structure for cc_cmpt_char_type
@@ -324,12 +324,12 @@ INSERT INTO `cc_cmpt_char_type` VALUES ('6', 'Double', '双精度浮点数', '0'
 INSERT INTO `cc_cmpt_char_type` VALUES ('7', 'String', '字符串', '0', '28', '', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cc_cmpt_char_type` VALUES ('8', 'Date', '日期', '0', '28', '特征值为“yyyy-mm-dd”格式字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cc_cmpt_char_type` VALUES ('9', 'Datetime', '日期时间', '0', '28', '特征值为“yyyy-mm-dd hh24:mi:ss”格式字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cc_cmpt_char_type` VALUES ('102', 'Tuning-Parameter<Integer>', '32位整数调参类型', '0', '16', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"100\",\r\n  \"tune_range\": {\r\n    \"start\": \"20\",\r\n    \"end\": \"1000\"\r\n  },\r\n  \"tune_udps\": [10, 80, 200, 600, 1000]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
-INSERT INTO `cc_cmpt_char_type` VALUES ('103', 'Tuning-Parameter<Long>', '64位整数调参类型', '0', '16', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"100\",\r\n  \"tune_range\": {\r\n    \"start\": \"20\",\r\n    \"end\": \"1000\"\r\n  },\r\n  \"tune_udps\": [10, 80, 200, 600, 1000]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
-INSERT INTO `cc_cmpt_char_type` VALUES ('104', 'Tuning-Parameter<Float>', '单精度浮点数调参类型', '0', '16', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"0.01\",\r\n  \"tune_range\": {\r\n    \"start\": \"0.00001\",\r\n    \"end\": \"0.1\"\r\n  },\r\n  \"tune_udps\": [0.00001, 0.001, 0.01, 0.1]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
-INSERT INTO `cc_cmpt_char_type` VALUES ('105', 'Tuning-Parameter<Double>', '双精度浮点数调参类型', '0', '16', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"0.01\",\r\n  \"tune_range\": {\r\n    \"start\": \"0.00001\",\r\n    \"end\": \"0.1\"\r\n  },\r\n  \"tune_udps\": [0.00001, 0.001, 0.01, 0.1]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
+INSERT INTO `cc_cmpt_char_type` VALUES ('103', 'Tuning-Parameter<Integer>', '32位整数调参类型', '0', '16', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"100\",\r\n  \"tune_range\": {\r\n    \"start\": \"20\",\r\n    \"end\": \"1000\"\r\n  },\r\n  \"tune_udps\": [10, 80, 200, 600, 1000]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
+INSERT INTO `cc_cmpt_char_type` VALUES ('104', 'Tuning-Parameter<Long>', '64位整数调参类型', '0', '16', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"100\",\r\n  \"tune_range\": {\r\n    \"start\": \"20\",\r\n    \"end\": \"1000\"\r\n  },\r\n  \"tune_udps\": [10, 80, 200, 600, 1000]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
+INSERT INTO `cc_cmpt_char_type` VALUES ('105', 'Tuning-Parameter<Float>', '单精度浮点数调参类型', '0', '16', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"0.01\",\r\n  \"tune_range\": {\r\n    \"start\": \"0.00001\",\r\n    \"end\": \"0.1\"\r\n  },\r\n  \"tune_udps\": [0.00001, 0.001, 0.01, 0.1]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
 INSERT INTO `cc_cmpt_char_type` VALUES ('1000', 'Data Table<?>', '通配泛型数据表', '0', '3', '特征值为数据表ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cc_cmpt_char_type` VALUES ('1001', 'Data Table<Parquet>', 'Parquet数据表（预留）', '0', '3', '特征值为数据表ID字符串，暂时不使用', '-1', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cc_cmpt_char_type` VALUES ('1056', 'Tuning-Parameter<Double>', '双精度浮点数调参类型', '0', '16', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"0.01\",\r\n  \"tune_range\": {\r\n    \"start\": \"0.00001\",\r\n    \"end\": \"0.1\"\r\n  },\r\n  \"tune_udps\": [0.00001, 0.001, 0.01, 0.1]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
 INSERT INTO `cc_cmpt_char_type` VALUES ('2000', 'Trained Model<?>', '通配泛型模型', '1', '3', '特征值为模型ID字符串，用于模型写入、模型文件输出', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cc_cmpt_char_type` VALUES ('2001', 'Trained Model<OneClass-Classification>', '单分类模型', '0', '3', '特征值为模型ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cc_cmpt_char_type` VALUES ('2002', 'Trained Model<TwoClass-Classification>', '二分类模型', '0', '3', '特征值为模型ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
@@ -378,19 +378,19 @@ CREATE TABLE `cc_cmpt_char_type_combine` (
 -- ----------------------------
 -- Records of cc_cmpt_char_type_combine
 -- ----------------------------
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2000', '2005', 'Trained Model<?>：Trained Model<Clustering>', '0', '2018-11-21 16:44:59', 'admin', '2018-11-21 16:44:59', 'admin');
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2000', '2007', 'Trained Model<?>：Algorithm Parameters<Classification,Regression>', '0', '2018-11-21 16:44:59', 'admin', '2018-11-21 16:44:59', 'admin');
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2000', '2008', 'Trained Model<?>：Trained Model<CollaborativeFiltering>', '0', '2018-11-21 16:53:00', 'admin', '2018-11-21 16:53:00', 'admin');
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2004', '2001', 'Trained Model<Classification>：Trained Model<OneClass-Classification>', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2004', '2002', 'Trained Model<Classification>：Trained Model<TwoClass-Classification>', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2004', '2003', 'Trained Model<Classification>：Trained Model<MultipleClass-Classification>', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2007', '2004', 'Trained Model<Classification,Regression>：Trained Model<Classification>', '0', '2018-11-18 19:14:59', 'admin', '2018-11-18 19:14:59', 'admin');
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2007', '2006', 'Trained Model<Classification,Regression>：Trained Model<Regression>', '0', '2018-11-18 19:14:59', 'admin', '2018-11-18 19:14:59', 'admin');
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('4004', '4001', 'Algorithm Parameters<Classification>：Algorithm Parameters<OneClass-Classification>', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('4004', '4002', 'Algorithm Parameters<Classification>：Algorithm Parameters<TwoClass-Classification>', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('4004', '4003', 'Algorithm Parameters<Classification>：Algorithm Parameters<MultipleClass-Classification>', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('4007', '4004', 'Algorithm Parameters<Classification,Regression>：Algorithm Parameters<Classification>', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cc_cmpt_char_type_combine` VALUES ('4007', '4006', 'Algorithm Parameters<Classification,Regression>：Algorithm Parameters<Regression>', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2000', '2005', '通配泛型模型，聚类模型', '0', '2018-11-21 16:44:59', 'admin', '2018-11-21 16:44:59', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2000', '2007', '通配泛型模型，通配分类&回归模型', '0', '2018-11-21 16:44:59', 'admin', '2018-11-21 16:44:59', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2000', '2008', '通配泛型模型，协同过滤模型', '0', '2018-11-21 16:53:00', 'admin', '2018-11-21 16:53:00', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2004', '2001', '通配分类模型，单分类模型', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2004', '2002', '通配分类模型，二分类模型', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2004', '2003', '通配分类模型，多分类模型', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2007', '2004', '通配分类&回归模型，通配分类模型', '0', '2018-11-18 19:14:59', 'admin', '2018-11-18 19:14:59', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('2007', '2006', '通配分类&回归模型，回归模型', '0', '2018-11-18 19:14:59', 'admin', '2018-11-18 19:14:59', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('4004', '4001', '通配分类算法参数，单分类算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('4004', '4002', '通配分类算法参数，二分类算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('4004', '4003', '通配分类算法参数，多分类算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('4007', '4004', '通配分类&回归算法参数，通配分类算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cc_cmpt_char_type_combine` VALUES ('4007', '4006', '通配分类&回归算法参数，回归算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
 
 -- ----------------------------
 -- Table structure for cc_cmpt_char_value
@@ -607,6 +607,9 @@ INSERT INTO `cc_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-9999', 'SCP@C-IO@COM
 INSERT INTO `cc_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-9999', 'SCP@C-IO@COM-9999-09', '组件参数 | 输入输出 | 数据文件导入，时间格式', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
 INSERT INTO `cc_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-9999', 'SCP@C-IO@COM-9999-10', '组件参数 | 输入输出 | 数据文件导入，字段类型异常处理', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
 INSERT INTO `cc_cmpt_spec_char_rel` VALUES ('CP@SPEC-IO@COM-9999', 'SCP@C-IO@COM-9999-11', '组件参数 | 输入输出 | 数据文件导入，列数异常处理', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cc_cmpt_spec_char_rel` VALUES ('CP@SPEC-ST@COM-0001', 'SCP@C-ST@COM-0001-01', '组件参数 | 脚本工具 | SQL脚本，sql脚本', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cc_cmpt_spec_char_rel` VALUES ('CP@SPEC-ST@COM-0002', 'SCP@C-ST@COM-0002-01', '组件参数 | 脚本工具 | Python脚本，python脚本', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cc_cmpt_spec_char_rel` VALUES ('CP@SPEC-ST@COM-0003', 'SCP@C-ST@COM-0003-01', '组件参数 | 脚本工具 | R脚本，r脚本', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
 INSERT INTO `cc_cmpt_spec_char_rel` VALUES ('EX@SPEC-0001', 'EX@C-0001', '调用执行 | Spark Scala，计算引擎', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
 INSERT INTO `cc_cmpt_spec_char_rel` VALUES ('EX@SPEC-0001', 'EX@C-0002', '调用执行 | Spark Scala，spark scala组件jar库目录', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
 INSERT INTO `cc_cmpt_spec_char_rel` VALUES ('EX@SPEC-0001', 'EX@C-0003', '调用执行 | Spark Scala，spark scala组件jar包文件名', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
