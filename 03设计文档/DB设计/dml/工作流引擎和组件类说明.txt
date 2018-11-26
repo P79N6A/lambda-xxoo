@@ -104,7 +104,7 @@ public interface IModule {
 	boolean catchCreateNode();
 
 	//发生节点新增时，例如：数据表读取组件需要校验表名对应的数据表是否正常，存在情况下，设置节点状态为ready，否则为not ready
-	//返回更新后的node-content，NULL代表无更新（仅限节点信息、组件参数）
+	//返回更新部分的node-content，NULL代表无更新（仅限节点信息、组件参数）
 	NodeContentDto onCreateNode(NodeContentDto<node, parameter, inputPorts, outputPorts>);
 	
 	//是否捕获节点删除事件
@@ -113,7 +113,7 @@ public interface IModule {
 	boolean catchDeleteNode();
 	
 	//发生节点删除时，例如：暂无
-	//返回更新后的node-content，NULL代表无更新（仅限节点信息、组件参数）
+	//返回更新部分的node-content，NULL代表无更新（仅限节点信息、组件参数）
 	NodeContentDto onDeleteNode(NodeContentDto<node, parameter, inputPorts, outputPorts>);
 	
 	//是否捕获节点查询事件
@@ -122,7 +122,7 @@ public interface IModule {
 	boolean catchQueryNode();
 	
 	//发生节点查询时，例如：数据表读取组件需要校验对应的数据表是否正常，存在情况下，设置节点状态为ready，否则为not ready
-	//返回更新后的node-content，NULL代表无更新（仅限节点信息，仅查询节点接口不做实验Flow乐观锁加锁）
+	//返回更新部分的node-content，NULL代表无更新（仅限节点信息，仅查询节点接口不做实验Flow乐观锁加锁）
 	NodeContentDto onQueryNode(NodeContentDto<node, parameter, inputPorts, outputPorts>);
 	
 	//是否捕获参数更改事件
@@ -131,8 +131,8 @@ public interface IModule {
 	boolean catchUpdateParameter();
 
 	//发生参数更改时，例如：参数在业务逻辑上的合法校验，不通过时设置节点状态为not ready
-	//返回更新后的node-content，NULL代表无更新（仅限节点信息、组件参数）
-	NodeContentDto onUpdateParameter(NodeContentDto<node, parameter, inputPorts, outputPorts>, updateParameterList);
+	//返回更新部分的node-content，NULL代表无更新（仅限节点信息、组件参数）
+	NodeContentDto onUpdateParameter(NodeContentDto<node, parameter, inputPorts, outputPorts>, updateParameterCodeList);
 	
 	
 	///////////////////////////////////节点链接事件相关/////////////////////////////////////////
@@ -145,7 +145,7 @@ public interface IModule {
 	//boolean catchInboundLink();
 
 	//发生入站链接时（待定），例如：暂无
-	//返回更新后的node-content，NULL代表无更新（仅限节点信息、组件参数）
+	//返回更新部分的node-content，NULL代表无更新（仅限节点信息、组件参数）
 	//NodeContentDto onInboundLink(NodeContentDto<node, parameter, inputPorts, outputPorts>, OutputPortDto);
 	
 	//是否捕获出站链接事件（待定）
@@ -154,7 +154,7 @@ public interface IModule {
 	//boolean catchOutboundLink();
 	
 	//发生出站链接时（待定），例如：暂无
-	//返回更新后的node-content，NULL代表无更新（仅限节点信息、组件参数）
+	//返回更新部分的node-content，NULL代表无更新（仅限节点信息、组件参数）
 	//NodeContentDto onOutboundLink(NodeContentDto<node, parameter, inputPorts, outputPorts>, InputPortDto);
 	
 	
@@ -166,7 +166,7 @@ public interface IModule {
 	boolean catchTaskExecution();
 	
 	//任务执行事件处理，例如：读数据表将输出内容"OUT@DataTable-t1<M>"特征值置为"CCP@TableName"特征值对应数据表的ID值
-	//返回更新后的task-context信息，NULL代表无更新
+	//返回更新部分的task-context信息，NULL代表无更新
 	TaskContextDto onTaskExecution(TaskContextDto<task, component, execution, optimize_execution, input, output, parameter>);
 	
 	
@@ -188,7 +188,7 @@ public interface IModule {
 	};
 	
 	//分析数据输出端口schema
-	//返回更新后的数据输出端schema列表，NULL代表无更新
+	//返回更新部分的数据输出端schema列表，NULL代表无更新
 	OutportSchemaDtoList analyzeSchema(NodeContentDto<node, parameter, inputPorts, outputPorts>)；
 	
 	//组件菜单配置，数据库中配置，模版怎么定义，还是暂时先放前端工程里配置
