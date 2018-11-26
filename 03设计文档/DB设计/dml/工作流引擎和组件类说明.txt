@@ -16,20 +16,66 @@
 （4）web服务组件的数据输出端口不支持schema分析，且流出链接标记为web link为是
 
 实验管理 & 工作流引擎
-（1）组件参数更新，先校验新老参数值是否发生变化
-（2）组件数据输出端口schema更新失败时，自动对所有下游节点的schema做清理
+（1）组件参数更新，先校验新老参数值是否发生变化，脚本更新走脚本接口内部再调用关联组件的参数校验方法
+（2）组件数据输出端口schema更新失败时，自动对所有下游节点的schema做重置
 （3）读数据组件的数据查看走viewDataTableByName，其他组件输出数据查看走viewDataTableByID
-（4）通过ClassLoader.findClass方法查找组件类，再找到组件类bean
+（4）通过ModuleBoard.getMapper().find("class_path")方法查找组件类bean对象
 （5）任一输入端口schema状态非正常，停止动态分析，并将该状态传递到下游
-（6）数据表写入（动态）和实验发布版本（实验调度）：保存关联工作流快照信息，对动态模型仅一处地方写入，对动态数据表仅一处地方写入，发布版本更新或者删除自动清理过期动态模型和动态数据表
+（6）实验调度部署，保存关联工作流快照信息，部署版本更新或者删除自动清理先前的临时数据表、临时模型、临时报告等记录
+（7）实验删除和节点删除，删除过程中遇到的逻辑错误忽略，如果是节点删除遇到，该节点同时不进删除队列表
 
-组件基类
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+CharType类，负责特征层面的事件捕获，承担特征值发生创建（对象创建）、删除（对象删除）、查询（对象展开）、更新（对象更新）时的自定义处理，以及特征值正确性和合法性的常规校验
+Module类，负责节点层面的事件捕获，承担节点发生创建、删除、查询、参数更新、任务运行时的逻辑校验和自定义处理，以及节点输出端口schema分析
+
+CharType类&Module类节点事件流处理说明：
+（1）Create Node Begin --> CharType.validateValue --> CharType.onCreateValue --> ${Engine Insert Node & Port & Schema & Parameter} --> Module.onCreateNode --> ${Engine Accept Change} --> Create Node End
+
+（2）Delete Node Begin --> ${Engine Fetch Node Content} --> CharType.onQueryValue --> Module.onDeleteNode --> ${Engine Merge Change} --> CharType.onDeleteValue --> 
+	 ${Engine Delete Node & Port & Schema & Parameter & Link & Global Parameter} --> Engine Push(Node Delete Queue) --> ${Engine Loop(Downstream Node Schema Clean<Empty Schema>)} --> Delete Node End
+
+Support Canvas Node & Snapshot Node
+（3）Query Node Begin --> ${Engine Fetch Node Content} --> ${Engine Global Parameter Override(From Scheduler Execution)} --> CharType.onQueryValue --> Module.onQueryNode --> ${Engine Accept Change} --> Query Node End
+
+（4）Update Parameter Begin --> CharType.validateValue --> ${Engine Fetch Node Content} --> CharType.onQueryValue --> CharType.onUpdateValue --> Module.onUpdateParameter --> ${Engine Accept Change} -->
+	 ${Engine Loop(Cur & Downstream Node Schema Analyze)} --> Update Parameter End
+
+（5）Inbound Link Begin --> ${Engine Loop(Cur & Downstream Node Schema Analyze)} --> Inbound Link End
+
+（6）Outbound Link Begin --> ${Engine Nothing To Do} --> Outbound Link End
+
+（7）Update Script Begin --> ${Engine Fetch Node Content & Script Context} --> CharType.onQueryValue --> CharType.onUpdateValue --> Module.onUpdateParameter --> ${Engine Accept Change} -->
+	 ${Engine Loop(Cur & Downstream Node Schema Analyze)} --> Update Script End
+
+Support Canvas Node & Snapshot Node
+（8）Execute Task Begin --> ${Engine Fetch Task Context} --> ${Engine Query Node} --> CharType.onQueryValue<Execution, Optimzation Execution, Input> --> CharType.onCreateValue<Output> -->
+	 ${Engine Complete Task Context(Output)} --> Module.onTaskExecution --> ${Engine Submit Task} --> ${Engine Monitor Task Return} --> CharType.onUpdateValue<Output> --> ${Engine Accept Return(Task|Node)} -->
+	 Execute Task End
+
+Support Canvas Node & Snapshot Node
+（9）Execute Job Begin --> ${Engine Fetch Job Context} --> ${Engine Analyze Effective Job Content} --> ${Engine Analyze Job Path} --> ${Engine Analyze Header Task} --> ${Engine Loop(Execute Task<By Path>)} -->
+	 ${Engine Accept Finish(None|Flow|Scheduler)} --> Execute Job End
+
+（10）Create Global Parameter Begin --> ${Engine Check Allow Global} --> CharType.validateValue --> CharType.onCreateValue --> ${Engine Insert Global Parameter} --> Create Global Parameter End
+
+（11）Delete Global Parameter Begin --> ${Engine Fetch Global Parameter} --> CharType.onQueryValue --> CharType.onDeleteValue --> ${Engine Delete Global Parameter} --> Delete Global Parameter End
+
+（12）Query Global Parameter Begin --> ${Engine Fetch Global Parameter} --> CharType.onQueryValue --> Query Global Parameter End
+
+（13）Update Global Parameter Begin --> ${Engine Fetch Global Parameter} --> CharType.validateValue --> CharType.onQueryValue --> CharType.onUpdateValue --> ${Engine Update Global Parameter} -- Update Global Parameter End
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+组件基类（在组件参数特征类型捕获事件通过基础上，对组件的特定业务逻辑做进一步校验判断，Module类不捕获执行调优参数事件，仅CharType类捕获执行调优参数事件）
 
 public class ModuleBoard {
-	//在所有组件类init里注册singleton bean object
+	//在所有Module类init里注册singleton bean object
 	
 	//ModuleMapper<module-class-path, module-bean-object>
-	static final HashMap<String, ModuleBase> mapper = new HashMap<String, ModuleBase>();
+	static final HashMap<String, IModule> mapper = new HashMap<String, IModule>();
 	
 	//获取组件class-path to object映射器 
 	static Mapper getMapper();
@@ -38,7 +84,7 @@ public class ModuleBoard {
 
 @service
 public interface IModule {
-	//方法失败或异常抛出moduleException，组件类实现该接口，适当封装一些中间abstract组件类以便复用
+	//出现严重错误会导致逻辑崩溃抛出moduleException，组件类实现该接口，适当封装一些中间abstract组件类以便复用
 	
 	
 	////////////////////////////////////组件bean初始化//////////////////////////////////////////
@@ -58,7 +104,8 @@ public interface IModule {
 	boolean catchCreateNode();
 
 	//发生节点新增时，例如：数据表读取组件需要校验表名对应的数据表是否正常，存在情况下，设置节点状态为ready，否则为not ready
-	void onCreateNode(NodeContentDto<node, parameters, inputPorts, outputPorts>);
+	//返回更新后的node-content，NULL代表无更新（仅限节点信息、组件参数）
+	NodeContentDto onCreateNode(NodeContentDto<node, parameter, inputPorts, outputPorts>);
 	
 	//是否捕获节点删除事件
 	//返回false，否
@@ -66,7 +113,8 @@ public interface IModule {
 	boolean catchDeleteNode();
 	
 	//发生节点删除时，例如：暂无
-	void onDeleteNode(NodeContentDto<node, parameters, inputPorts, outputPorts>);
+	//返回更新后的node-content，NULL代表无更新（仅限节点信息、组件参数）
+	NodeContentDto onDeleteNode(NodeContentDto<node, parameter, inputPorts, outputPorts>);
 	
 	//是否捕获节点查询事件
 	//返回false，否
@@ -74,19 +122,21 @@ public interface IModule {
 	boolean catchQueryNode();
 	
 	//发生节点查询时，例如：数据表读取组件需要校验对应的数据表是否正常，存在情况下，设置节点状态为ready，否则为not ready
-	void onQueryNode(NodeContentDto<node, parameters, inputPorts, outputPorts>);
+	//返回更新后的node-content，NULL代表无更新（仅限节点信息，仅查询节点接口不做实验Flow乐观锁加锁）
+	NodeContentDto onQueryNode(NodeContentDto<node, parameter, inputPorts, outputPorts>);
 	
 	//是否捕获参数更改事件
 	//返回false，否
 	//返回true，是
 	boolean catchUpdateParameter();
 
-	//发生参数更改时，例如：参数在业务逻辑上的合法校验
-	void onUpdateParameter(NodeContentDto<node, parameters, inputPorts, outputPorts>, updateParameterList);
+	//发生参数更改时，例如：参数在业务逻辑上的合法校验，不通过时设置节点状态为not ready
+	//返回更新后的node-content，NULL代表无更新（仅限节点信息、组件参数）
+	NodeContentDto onUpdateParameter(NodeContentDto<node, parameter, inputPorts, outputPorts>, updateParameterList);
 	
 	
 	///////////////////////////////////节点链接事件相关/////////////////////////////////////////
-	//该类事件目前不开放，如无必要，后期也不建议开放，对框架冲突太大，代码复杂度加大
+	//该类事件目前不开放，如无必要，后期也不建议开放，对框架入侵太大，代码复杂度加大
 	
 	
 	//是否捕获入站链接事件（待定）
@@ -95,7 +145,8 @@ public interface IModule {
 	//boolean catchInboundLink();
 
 	//发生入站链接时（待定），例如：暂无
-	//void onInboundLink(NodeContentDto<node, parameters, inputPorts, outputPorts>, OutputPortDto);
+	//返回更新后的node-content，NULL代表无更新（仅限节点信息、组件参数）
+	//NodeContentDto onInboundLink(NodeContentDto<node, parameter, inputPorts, outputPorts>, OutputPortDto);
 	
 	//是否捕获出站链接事件（待定）
 	//返回false，否
@@ -103,7 +154,8 @@ public interface IModule {
 	//boolean catchOutboundLink();
 	
 	//发生出站链接时（待定），例如：暂无
-	//void onOutboundLink(NodeContentDto<node, parameters, inputPorts, outputPorts>, InputPortDto);
+	//返回更新后的node-content，NULL代表无更新（仅限节点信息、组件参数）
+	//NodeContentDto onOutboundLink(NodeContentDto<node, parameter, inputPorts, outputPorts>, InputPortDto);
 	
 	
 	///////////////////////////////////任务执行事件相关/////////////////////////////////////////
@@ -137,7 +189,7 @@ public interface IModule {
 	
 	//分析数据输出端口schema
 	//返回更新后的数据输出端schema列表，NULL代表无更新
-	OutportSchemaDtoList analyzeSchema(NodeContentDto<node, parameters, inputPorts, outputPorts>)；
+	OutportSchemaDtoList analyzeSchema(NodeContentDto<node, parameter, inputPorts, outputPorts>)；
 	
 	//组件菜单配置，数据库中配置，模版怎么定义，还是暂时先放前端工程里配置
 }

@@ -125,7 +125,8 @@ task_context & task_submit.json:{
 		characteristic_map:{
 			$CHAR_CODE:$CHAR_PROPERTY_OBJECT
 		}
-	}
+	},
+	global_parameter:$GLOBAL_PARAMETER_OBJECT
 }
 
 

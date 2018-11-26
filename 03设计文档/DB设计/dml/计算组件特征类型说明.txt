@@ -1,13 +1,13 @@
 
 
 
-组件基类
+特征类型基类
 
-public class ModuleBoard {
-	//在所有组件类init里注册singleton bean object
+public class CharTypeBoard {
+	//在所有CharType类init里注册singleton bean object
 	
 	//ModuleMapper<module-class-path, module-bean-object>
-	static final HashMap<String, ModuleBase> mapper = new HashMap<String, ModuleBase>();
+	static final HashMap<String, ICharType> mapper = new HashMap<String, ICharType>();
 	
 	//获取组件class-path to object映射器 
 	static Mapper getMapper();
@@ -15,7 +15,7 @@ public class ModuleBoard {
 
 
 @service
-public interface IModuleBase {
+public interface ICharType {
 	//方法失败或异常抛出moduleException，组件类实现该接口，适当封装一些中间abstract组件类以便复用
 	
 	
@@ -24,127 +24,46 @@ public interface IModuleBase {
 	//必须
 	@postconstruct
 	void register() {
-		ModuleBoard.getMapper().put(this.getClass().getName(), this);
+		CharTypeBoard.getMapper().put(this.getClass().getName(), this);
 	}
 	
 	
 	//////////////////////////////节点增删查和参数更改事件相关//////////////////////////////////
 	
-	//是否捕获节点新增事件
+	//是否捕获特征值新增事件
 	//返回false，否
 	//返回true，是
-	boolean catchCreateNode();
+	boolean catchCreateValue();
 
-	//发生节点新增时，例如：数据表读取组件需要校验表名对应的数据表是否正常，存在情况下，设置节点状态为ready，否则为not ready
-	void onCreateNode(NodeContentDto<node, parameters, inputPorts, outputPorts>);
+	//发生特征值新增时
+	void onCreateValue(NodeContentDto<node, parameters, inputPorts, outputPorts>);
 	
-	//是否捕获节点删除事件
+	//是否捕获特征值删除事件
 	//返回false，否
 	//返回true，是
-	boolean catchDeleteNode();
+	boolean catchDeleteValue();
 	
-	//发生节点删除时，例如：暂无
-	void onDeleteNode(NodeContentDto<node, parameters, inputPorts, outputPorts>);
+	//发生特征值删除时
+	void onDeleteValue(NodeContentDto<node, parameters, inputPorts, outputPorts>);
 	
-	//是否捕获节点查询事件
+	//是否捕获特征值查询事件
 	//返回false，否
 	//返回true，是
-	boolean catchQueryNode();
+	boolean catchQueryValue();
 	
-	//发生节点查询时，例如：数据表读取组件需要校验对应的数据表是否正常，存在情况下，设置节点状态为ready，否则为not ready
-	void onQueryNode(NodeContentDto<node, parameters, inputPorts, outputPorts>);
+	//发生特征值查询时（展开内容？）
+	//void onQueryValue(NodeContentDto<node, parameters, inputPorts, outputPorts>);
 	
-	//是否捕获参数更改事件
+	//是否捕获特征值更改事件
 	//返回false，否
 	//返回true，是
-	boolean catchUpdateParameter();
+	boolean catchUpdateValue();
 
-	//发生参数更改时，例如：参数在业务逻辑上的合法校验
-	void onUpdateParameter(NodeContentDto<node, parameters, inputPorts, outputPorts>, updateParameterList);
+	//发生特征值更改时
+	void onUpdateValue(NodeContentDto<node, parameters, inputPorts, outputPorts>, updateParameterList);
 	
-	
-	///////////////////////////////////节点链接事件相关/////////////////////////////////////////
-	//该类事件目前不开放，如无必要，后期也不建议开放，对框架冲突太大，代码复杂度加大
-	
-	
-	//是否捕获入站链接事件（待定）
-	//返回false，否
-	//返回true，是
-	//boolean catchInboundLink();
-
-	//发生入站链接时（待定），例如：暂无
-	//void onInboundLink(NodeContentDto<node, parameters, inputPorts, outputPorts>, OutputPortDto);
-	
-	//是否捕获出站链接事件（待定）
-	//返回false，否
-	//返回true，是
-	//boolean catchOutboundLink();
-	
-	//发生出站链接时（待定），例如：暂无
-	//void onOutboundLink(NodeContentDto<node, parameters, inputPorts, outputPorts>, InputPortDto);
-	
-	
-	///////////////////////////////////任务执行事件相关/////////////////////////////////////////
-	
-	//是否捕获任务执行事件
-	//返回false，否
-	//返回true，是
-	boolean catchTaskExecution();
-	
-	//任务执行事件处理，例如：读数据表将输出内容"OUT@DataTable-t1<M>"特征值置为"CCP@TableName"特征值对应数据表的ID值
-	//返回更新后的task-context信息，NULL代表无更新
-	TaskContextDto onTaskExecution(TaskContextDto<task, component, execution, optimize_execution, input, output, parameter>);
-	
-	
-	////////////////////////////////////运行动态模拟相关////////////////////////////////////////
-	
-	//是否支持动态分析数据输出端口schema
-	//返回false，不支持
-	//返回true，支持
-	boolean supportDynamicAnalyzeSchema();
-	
-	//触发分析数据输出端口schema的特征代码集合
-	//返回特征代码集合，NULL代表无触发特征
-	paremeterCodeSet analyzeSchemaTriggerParameters() {
-		static final HashSet<parameterCode> triggerParameters = new HashSet<String>() {{
-			add("xxx");
-			add("yyy");
-		}};
-		resturn triggerParameters;
-	};
-	
-	//分析数据输出端口schema
-	//返回更新后的数据输出端schema列表，NULL代表无更新
-	OutportSchemaDtoList analyzeSchema(NodeContentDto<node, parameters, inputPorts, outputPorts>)；
-	
-	//组件菜单配置，数据库中配置，模版怎么定义，还是暂时先放前端工程里配置
+	//必须，校验特征值正确性和合法性
+	boolean validateValue();
 }
 
 
-
-
-//////////////////////////////////////////////////////////////////
-
-工作流发布、工作流调度、在线预测服务的相关表结构后面再进一步完善。
-
-｛数据上传 + 服务调度 | 外部数据 + 服务调度｝
-
-工作流发布（运行成功后可发布，需要桥接/重定向/投影类似功能的全局输入输出组件）
-工作流调度流水（定时任务，服务API）
-工作流调度参数（全局参数传入值）
-工作流调度缓存（仅缓存最后一次，临时数据采用动态表、动态模型等等，全局输入输出组件如何设计待商榷）
-
-在线工作流调度服务发布
-在线工作流调度服务的资源和接口信息
-在线工作流调度服务的调用记录和统计信息
-
-
-人工操作的运行，定义为调试模式，快照允许缓存全量数据
-其他操作的运行，定义为发布模式，快照仅保留概要数据
-
-【在线预测服务，以项目为单位对模型预测服务分组】
-在线预测服务发布（普通模型和临时模型都可以发布，前者直接关联模型id，后者关联flowid+nodeid+charid）
-在线预测服务的资源和接口信息 （运行容器、URL和签名认证）
-在线预测服务的接口调用记录和统计信息
-
-【实时流式计算 + 在线预测服务，支撑在线预测场景】
