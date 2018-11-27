@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-11-27 18:07:55
+Date: 2018-11-28 02:50:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -300,7 +300,7 @@ CREATE TABLE `cf_cmpt_char_type` (
   `CHAR_TYPE_ID` int(11) NOT NULL COMMENT '特征类型ID',
   `CHAR_TYPE_CODE` varchar(200) NOT NULL COMMENT '特征类型代码',
   `CHAR_TYPE_NAME` varchar(200) NOT NULL COMMENT '特征类型名称',
-  `IS_COMBINE` int(11) NOT NULL DEFAULT '0' COMMENT '是否为组合类型\r\n0：否\r\n1：是',
+  `IS_WILDTYPE` int(11) NOT NULL DEFAULT '0' COMMENT '是否为通配类型\r\n0：否\r\n1：是',
   `SPEC_TYPE_MASK` int(11) NOT NULL DEFAULT '0' COMMENT '适用规格类型二进制掩码（预留）\r\n\r\n0：不支持作为对应规格的特征类型使用\r\n1：支持作为对应规格的特征类型使用\r\n\r\n第一位，输入内容规格，开关位0x01：数据表、模型、算法参数\r\n第二位，输出内容规格，开关位0x02：数据表、模型、算法参数\r\n第三位，调用执行规格，开关位0x04：基本类型\r\n第四位，执行调优规格，开关位0x08：基本类型\r\n第五位，组件参数规格，开关位0x10：基本类型、调参类型、代码脚本、Json Object、Json Array\r\n',
   `CLASS_PATH` varchar(200) NOT NULL DEFAULT 'unkown' COMMENT '特征类型java类class path',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
@@ -311,7 +311,7 @@ CREATE TABLE `cf_cmpt_char_type` (
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`CHAR_TYPE_ID`),
   UNIQUE KEY `Index_1` (`CHAR_TYPE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征类型表（仅查询用），相关定义辅助于数据校验和画布连线输入输出类型匹配校验\r\n\r\n特征值的读写行为由特征类型控制，后期可以考虑把特征类型Class做成配置化';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征类型表（仅查询用），相关定义辅助于数据校验和画布连线输入输出类型匹配校验\r\n\r\n特征值的读写行为由特征类型控制';
 
 -- ----------------------------
 -- Records of cf_cmpt_char_type
@@ -361,37 +361,37 @@ INSERT INTO `cf_cmpt_char_type` VALUES ('9000', 'Json Object', 'json对象', '0'
 INSERT INTO `cf_cmpt_char_type` VALUES ('9001', 'Json Array', 'json数组', '0', '16', 'unkown', '特征值为JSON对象ID字符串', '0', '2017-05-12 00:31:39', 'admin', '2017-05-12 00:31:39', 'admin');
 
 -- ----------------------------
--- Table structure for cf_cmpt_char_type_combine
+-- Table structure for cf_cmpt_char_type_wild
 -- ----------------------------
-DROP TABLE IF EXISTS `cf_cmpt_char_type_combine`;
-CREATE TABLE `cf_cmpt_char_type_combine` (
-  `COMBINE_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '组合特征类型ID',
-  `MEMEBER_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '成员特征类型ID',
+DROP TABLE IF EXISTS `cf_cmpt_char_type_wild`;
+CREATE TABLE `cf_cmpt_char_type_wild` (
+  `WILD_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '通配特征类型ID',
+  `UNIT_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '单元特征类型ID',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`COMBINE_CHAR_TYPE_ID`,`MEMEBER_CHAR_TYPE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征类型组合表（仅查询用），配置组合类型和成员类型的关系';
+  PRIMARY KEY (`WILD_CHAR_TYPE_ID`,`UNIT_CHAR_TYPE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征类型通配表（仅查询用），配置通配类型和成员类型的关系';
 
 -- ----------------------------
--- Records of cf_cmpt_char_type_combine
+-- Records of cf_cmpt_char_type_wild
 -- ----------------------------
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('2000', '2005', '通配泛型模型，聚类模型', '0', '2018-11-21 16:44:59', 'admin', '2018-11-21 16:44:59', 'admin');
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('2000', '2007', '通配泛型模型，通配分类&回归模型', '0', '2018-11-21 16:44:59', 'admin', '2018-11-21 16:44:59', 'admin');
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('2000', '2008', '通配泛型模型，协同过滤模型', '0', '2018-11-21 16:53:00', 'admin', '2018-11-21 16:53:00', 'admin');
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('2004', '2001', '通配分类模型，单分类模型', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('2004', '2002', '通配分类模型，二分类模型', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('2004', '2003', '通配分类模型，多分类模型', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('2007', '2004', '通配分类&回归模型，通配分类模型', '0', '2018-11-18 19:14:59', 'admin', '2018-11-18 19:14:59', 'admin');
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('2007', '2006', '通配分类&回归模型，回归模型', '0', '2018-11-18 19:14:59', 'admin', '2018-11-18 19:14:59', 'admin');
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('4004', '4001', '通配分类算法参数，单分类算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('4004', '4002', '通配分类算法参数，二分类算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('4004', '4003', '通配分类算法参数，多分类算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('4007', '4004', '通配分类&回归算法参数，通配分类算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
-INSERT INTO `cf_cmpt_char_type_combine` VALUES ('4007', '4006', '通配分类&回归算法参数，回归算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('2000', '2005', '通配泛型模型，聚类模型', '0', '2018-11-21 16:44:59', 'admin', '2018-11-21 16:44:59', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('2000', '2007', '通配泛型模型，通配分类&回归模型', '0', '2018-11-21 16:44:59', 'admin', '2018-11-21 16:44:59', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('2000', '2008', '通配泛型模型，协同过滤模型', '0', '2018-11-21 16:53:00', 'admin', '2018-11-21 16:53:00', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('2004', '2001', '通配分类模型，单分类模型', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('2004', '2002', '通配分类模型，二分类模型', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('2004', '2003', '通配分类模型，多分类模型', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('2007', '2004', '通配分类&回归模型，通配分类模型', '0', '2018-11-18 19:14:59', 'admin', '2018-11-18 19:14:59', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('2007', '2006', '通配分类&回归模型，回归模型', '0', '2018-11-18 19:14:59', 'admin', '2018-11-18 19:14:59', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('4004', '4001', '通配分类算法参数，单分类算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('4004', '4002', '通配分类算法参数，二分类算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('4004', '4003', '通配分类算法参数，多分类算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('4007', '4004', '通配分类&回归算法参数，通配分类算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
+INSERT INTO `cf_cmpt_char_type_wild` VALUES ('4007', '4006', '通配分类&回归算法参数，回归算法参数', '0', '2018-11-18 19:17:03', 'admin', '2018-11-18 19:17:03', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_cmpt_char_value

@@ -26,12 +26,12 @@ public class CfCmptCharType implements Serializable {
     private String charTypeName;
 
     /**
-     * 是否为组合类型
+     * 是否为通配类型
 0：否
 1：是
      */
-    @Column(name = "IS_COMBINE")
-    private Integer isCombine;
+    @Column(name = "IS_WILDTYPE")
+    private Integer isWildtype;
 
     /**
      * 适用规格类型二进制掩码（预留）
@@ -150,29 +150,29 @@ public class CfCmptCharType implements Serializable {
     }
 
     /**
-     * 获取是否为组合类型
+     * 获取是否为通配类型
 0：否
 1：是
      *
-     * @return IS_COMBINE - 是否为组合类型
+     * @return IS_WILDTYPE - 是否为通配类型
 0：否
 1：是
      */
-    public Integer getIsCombine() {
-        return isCombine;
+    public Integer getIsWildtype() {
+        return isWildtype;
     }
 
     /**
-     * 设置是否为组合类型
+     * 设置是否为通配类型
 0：否
 1：是
      *
-     * @param isCombine 是否为组合类型
+     * @param isWildtype 是否为通配类型
 0：否
 1：是
      */
-    public void setIsCombine(Integer isCombine) {
-        this.isCombine = isCombine;
+    public void setIsWildtype(Integer isWildtype) {
+        this.isWildtype = isWildtype;
     }
 
     /**
@@ -382,7 +382,7 @@ public class CfCmptCharType implements Serializable {
         return (this.getCharTypeId() == null ? other.getCharTypeId() == null : this.getCharTypeId().equals(other.getCharTypeId()))
             && (this.getCharTypeCode() == null ? other.getCharTypeCode() == null : this.getCharTypeCode().equals(other.getCharTypeCode()))
             && (this.getCharTypeName() == null ? other.getCharTypeName() == null : this.getCharTypeName().equals(other.getCharTypeName()))
-            && (this.getIsCombine() == null ? other.getIsCombine() == null : this.getIsCombine().equals(other.getIsCombine()))
+            && (this.getIsWildtype() == null ? other.getIsWildtype() == null : this.getIsWildtype().equals(other.getIsWildtype()))
             && (this.getSpecTypeMask() == null ? other.getSpecTypeMask() == null : this.getSpecTypeMask().equals(other.getSpecTypeMask()))
             && (this.getClassPath() == null ? other.getClassPath() == null : this.getClassPath().equals(other.getClassPath()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
@@ -400,7 +400,7 @@ public class CfCmptCharType implements Serializable {
         result = prime * result + ((getCharTypeId() == null) ? 0 : getCharTypeId().hashCode());
         result = prime * result + ((getCharTypeCode() == null) ? 0 : getCharTypeCode().hashCode());
         result = prime * result + ((getCharTypeName() == null) ? 0 : getCharTypeName().hashCode());
-        result = prime * result + ((getIsCombine() == null) ? 0 : getIsCombine().hashCode());
+        result = prime * result + ((getIsWildtype() == null) ? 0 : getIsWildtype().hashCode());
         result = prime * result + ((getSpecTypeMask() == null) ? 0 : getSpecTypeMask().hashCode());
         result = prime * result + ((getClassPath() == null) ? 0 : getClassPath().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());

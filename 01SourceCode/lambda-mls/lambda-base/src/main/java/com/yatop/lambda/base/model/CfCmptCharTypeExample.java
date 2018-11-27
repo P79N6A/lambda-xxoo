@@ -316,63 +316,63 @@ public class CfCmptCharTypeExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsCombineIsNull() {
-            addCriterion("IS_COMBINE is null");
+        public Criteria andIsWildtypeIsNull() {
+            addCriterion("IS_WILDTYPE is null");
             return (Criteria) this;
         }
 
-        public Criteria andIsCombineIsNotNull() {
-            addCriterion("IS_COMBINE is not null");
+        public Criteria andIsWildtypeIsNotNull() {
+            addCriterion("IS_WILDTYPE is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIsCombineEqualTo(Integer value) {
-            addCriterion("IS_COMBINE =", value, "isCombine");
+        public Criteria andIsWildtypeEqualTo(Integer value) {
+            addCriterion("IS_WILDTYPE =", value, "isWildtype");
             return (Criteria) this;
         }
 
-        public Criteria andIsCombineNotEqualTo(Integer value) {
-            addCriterion("IS_COMBINE <>", value, "isCombine");
+        public Criteria andIsWildtypeNotEqualTo(Integer value) {
+            addCriterion("IS_WILDTYPE <>", value, "isWildtype");
             return (Criteria) this;
         }
 
-        public Criteria andIsCombineGreaterThan(Integer value) {
-            addCriterion("IS_COMBINE >", value, "isCombine");
+        public Criteria andIsWildtypeGreaterThan(Integer value) {
+            addCriterion("IS_WILDTYPE >", value, "isWildtype");
             return (Criteria) this;
         }
 
-        public Criteria andIsCombineGreaterThanOrEqualTo(Integer value) {
-            addCriterion("IS_COMBINE >=", value, "isCombine");
+        public Criteria andIsWildtypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("IS_WILDTYPE >=", value, "isWildtype");
             return (Criteria) this;
         }
 
-        public Criteria andIsCombineLessThan(Integer value) {
-            addCriterion("IS_COMBINE <", value, "isCombine");
+        public Criteria andIsWildtypeLessThan(Integer value) {
+            addCriterion("IS_WILDTYPE <", value, "isWildtype");
             return (Criteria) this;
         }
 
-        public Criteria andIsCombineLessThanOrEqualTo(Integer value) {
-            addCriterion("IS_COMBINE <=", value, "isCombine");
+        public Criteria andIsWildtypeLessThanOrEqualTo(Integer value) {
+            addCriterion("IS_WILDTYPE <=", value, "isWildtype");
             return (Criteria) this;
         }
 
-        public Criteria andIsCombineIn(List<Integer> values) {
-            addCriterion("IS_COMBINE in", values, "isCombine");
+        public Criteria andIsWildtypeIn(List<Integer> values) {
+            addCriterion("IS_WILDTYPE in", values, "isWildtype");
             return (Criteria) this;
         }
 
-        public Criteria andIsCombineNotIn(List<Integer> values) {
-            addCriterion("IS_COMBINE not in", values, "isCombine");
+        public Criteria andIsWildtypeNotIn(List<Integer> values) {
+            addCriterion("IS_WILDTYPE not in", values, "isWildtype");
             return (Criteria) this;
         }
 
-        public Criteria andIsCombineBetween(Integer value1, Integer value2) {
-            addCriterion("IS_COMBINE between", value1, value2, "isCombine");
+        public Criteria andIsWildtypeBetween(Integer value1, Integer value2) {
+            addCriterion("IS_WILDTYPE between", value1, value2, "isWildtype");
             return (Criteria) this;
         }
 
-        public Criteria andIsCombineNotBetween(Integer value1, Integer value2) {
-            addCriterion("IS_COMBINE not between", value1, value2, "isCombine");
+        public Criteria andIsWildtypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("IS_WILDTYPE not between", value1, value2, "isWildtype");
             return (Criteria) this;
         }
 

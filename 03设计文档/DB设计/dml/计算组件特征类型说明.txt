@@ -14,6 +14,7 @@ public class CharTypeBoard {
 }
 
 public class CharValue {
+	String cmptChar;
 	String rawValue;
 	JsonObject ObjValue;
 	String warningMsg;

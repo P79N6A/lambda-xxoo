@@ -132,7 +132,7 @@ public interface IModule {
 
 	//发生参数更改时，例如：参数在业务逻辑上的合法校验，不通过时设置节点状态为not ready
 	//返回更新部分的node-content，NULL代表无更新（仅限节点信息、组件参数）
-	NodeContentDto onUpdateParameter(NodeContentDto<node, parameter, inputPorts, outputPorts>, updateParameterCodeList);
+	NodeContentDto onUpdateParameter(NodeContentDto<node, parameter, inputPorts, outputPorts>, updateParameterList);
 	
 	
 	///////////////////////////////////节点链接事件相关/////////////////////////////////////////

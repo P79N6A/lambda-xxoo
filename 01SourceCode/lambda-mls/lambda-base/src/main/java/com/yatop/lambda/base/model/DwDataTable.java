@@ -16,7 +16,7 @@ public class DwDataTable implements Serializable {
     /**
      * 数据表名
             
-            普通和动态数据表：由英文字符、数字和下划线组成，起始字符不能为下划线
+            普通表：由英文字符、数字和下划线组成，起始字符不能为下划线
             临时数据表：tmp$<node_id>_<node_port_id>_<job_id>
      */
     @Column(name = "TABLE_NAME")
@@ -182,12 +182,12 @@ public class DwDataTable implements Serializable {
     /**
      * 获取数据表名
             
-            普通和动态数据表：由英文字符、数字和下划线组成，起始字符不能为下划线
+            普通表：由英文字符、数字和下划线组成，起始字符不能为下划线
             临时数据表：tmp$<node_id>_<node_port_id>_<job_id>
      *
      * @return TABLE_NAME - 数据表名
             
-            普通和动态数据表：由英文字符、数字和下划线组成，起始字符不能为下划线
+            普通表：由英文字符、数字和下划线组成，起始字符不能为下划线
             临时数据表：tmp$<node_id>_<node_port_id>_<job_id>
      */
     public String getTableName() {
@@ -197,12 +197,12 @@ public class DwDataTable implements Serializable {
     /**
      * 设置数据表名
             
-            普通和动态数据表：由英文字符、数字和下划线组成，起始字符不能为下划线
+            普通表：由英文字符、数字和下划线组成，起始字符不能为下划线
             临时数据表：tmp$<node_id>_<node_port_id>_<job_id>
      *
      * @param tableName 数据表名
             
-            普通和动态数据表：由英文字符、数字和下划线组成，起始字符不能为下划线
+            普通表：由英文字符、数字和下划线组成，起始字符不能为下划线
             临时数据表：tmp$<node_id>_<node_port_id>_<job_id>
      */
     public void setTableName(String tableName) {

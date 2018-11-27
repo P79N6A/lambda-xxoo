@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class WfFlowNodeValueExample {
+public class CfCmptCharTypeWildExample {
     protected String orderByClause;
 
     protected boolean distinct;
@@ -14,7 +14,7 @@ public class WfFlowNodeValueExample {
 
     protected Page page;
 
-    public WfFlowNodeValueExample() {
+    public CfCmptCharTypeWildExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -116,443 +116,123 @@ public class WfFlowNodeValueExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andNodeIdIsNull() {
-            addCriterion("NODE_ID is null");
+        public Criteria andWildCharTypeIdIsNull() {
+            addCriterion("WILD_CHAR_TYPE_ID is null");
             return (Criteria) this;
         }
 
-        public Criteria andNodeIdIsNotNull() {
-            addCriterion("NODE_ID is not null");
+        public Criteria andWildCharTypeIdIsNotNull() {
+            addCriterion("WILD_CHAR_TYPE_ID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNodeIdEqualTo(Long value) {
-            addCriterion("NODE_ID =", value, "nodeId");
+        public Criteria andWildCharTypeIdEqualTo(Integer value) {
+            addCriterion("WILD_CHAR_TYPE_ID =", value, "wildCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andNodeIdNotEqualTo(Long value) {
-            addCriterion("NODE_ID <>", value, "nodeId");
+        public Criteria andWildCharTypeIdNotEqualTo(Integer value) {
+            addCriterion("WILD_CHAR_TYPE_ID <>", value, "wildCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andNodeIdGreaterThan(Long value) {
-            addCriterion("NODE_ID >", value, "nodeId");
+        public Criteria andWildCharTypeIdGreaterThan(Integer value) {
+            addCriterion("WILD_CHAR_TYPE_ID >", value, "wildCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andNodeIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("NODE_ID >=", value, "nodeId");
+        public Criteria andWildCharTypeIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("WILD_CHAR_TYPE_ID >=", value, "wildCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andNodeIdLessThan(Long value) {
-            addCriterion("NODE_ID <", value, "nodeId");
+        public Criteria andWildCharTypeIdLessThan(Integer value) {
+            addCriterion("WILD_CHAR_TYPE_ID <", value, "wildCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andNodeIdLessThanOrEqualTo(Long value) {
-            addCriterion("NODE_ID <=", value, "nodeId");
+        public Criteria andWildCharTypeIdLessThanOrEqualTo(Integer value) {
+            addCriterion("WILD_CHAR_TYPE_ID <=", value, "wildCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andNodeIdIn(List<Long> values) {
-            addCriterion("NODE_ID in", values, "nodeId");
+        public Criteria andWildCharTypeIdIn(List<Integer> values) {
+            addCriterion("WILD_CHAR_TYPE_ID in", values, "wildCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andNodeIdNotIn(List<Long> values) {
-            addCriterion("NODE_ID not in", values, "nodeId");
+        public Criteria andWildCharTypeIdNotIn(List<Integer> values) {
+            addCriterion("WILD_CHAR_TYPE_ID not in", values, "wildCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andNodeIdBetween(Long value1, Long value2) {
-            addCriterion("NODE_ID between", value1, value2, "nodeId");
+        public Criteria andWildCharTypeIdBetween(Integer value1, Integer value2) {
+            addCriterion("WILD_CHAR_TYPE_ID between", value1, value2, "wildCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andNodeIdNotBetween(Long value1, Long value2) {
-            addCriterion("NODE_ID not between", value1, value2, "nodeId");
+        public Criteria andWildCharTypeIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("WILD_CHAR_TYPE_ID not between", value1, value2, "wildCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andSpecTypeIsNull() {
-            addCriterion("SPEC_TYPE is null");
+        public Criteria andUnitCharTypeIdIsNull() {
+            addCriterion("UNIT_CHAR_TYPE_ID is null");
             return (Criteria) this;
         }
 
-        public Criteria andSpecTypeIsNotNull() {
-            addCriterion("SPEC_TYPE is not null");
+        public Criteria andUnitCharTypeIdIsNotNull() {
+            addCriterion("UNIT_CHAR_TYPE_ID is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSpecTypeEqualTo(Integer value) {
-            addCriterion("SPEC_TYPE =", value, "specType");
+        public Criteria andUnitCharTypeIdEqualTo(Integer value) {
+            addCriterion("UNIT_CHAR_TYPE_ID =", value, "unitCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andSpecTypeNotEqualTo(Integer value) {
-            addCriterion("SPEC_TYPE <>", value, "specType");
+        public Criteria andUnitCharTypeIdNotEqualTo(Integer value) {
+            addCriterion("UNIT_CHAR_TYPE_ID <>", value, "unitCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andSpecTypeGreaterThan(Integer value) {
-            addCriterion("SPEC_TYPE >", value, "specType");
+        public Criteria andUnitCharTypeIdGreaterThan(Integer value) {
+            addCriterion("UNIT_CHAR_TYPE_ID >", value, "unitCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andSpecTypeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("SPEC_TYPE >=", value, "specType");
+        public Criteria andUnitCharTypeIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("UNIT_CHAR_TYPE_ID >=", value, "unitCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andSpecTypeLessThan(Integer value) {
-            addCriterion("SPEC_TYPE <", value, "specType");
+        public Criteria andUnitCharTypeIdLessThan(Integer value) {
+            addCriterion("UNIT_CHAR_TYPE_ID <", value, "unitCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andSpecTypeLessThanOrEqualTo(Integer value) {
-            addCriterion("SPEC_TYPE <=", value, "specType");
+        public Criteria andUnitCharTypeIdLessThanOrEqualTo(Integer value) {
+            addCriterion("UNIT_CHAR_TYPE_ID <=", value, "unitCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andSpecTypeIn(List<Integer> values) {
-            addCriterion("SPEC_TYPE in", values, "specType");
+        public Criteria andUnitCharTypeIdIn(List<Integer> values) {
+            addCriterion("UNIT_CHAR_TYPE_ID in", values, "unitCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andSpecTypeNotIn(List<Integer> values) {
-            addCriterion("SPEC_TYPE not in", values, "specType");
+        public Criteria andUnitCharTypeIdNotIn(List<Integer> values) {
+            addCriterion("UNIT_CHAR_TYPE_ID not in", values, "unitCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andSpecTypeBetween(Integer value1, Integer value2) {
-            addCriterion("SPEC_TYPE between", value1, value2, "specType");
+        public Criteria andUnitCharTypeIdBetween(Integer value1, Integer value2) {
+            addCriterion("UNIT_CHAR_TYPE_ID between", value1, value2, "unitCharTypeId");
             return (Criteria) this;
         }
 
-        public Criteria andSpecTypeNotBetween(Integer value1, Integer value2) {
-            addCriterion("SPEC_TYPE not between", value1, value2, "specType");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharIdIsNull() {
-            addCriterion("CHAR_ID is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharIdIsNotNull() {
-            addCriterion("CHAR_ID is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharIdEqualTo(Long value) {
-            addCriterion("CHAR_ID =", value, "charId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharIdNotEqualTo(Long value) {
-            addCriterion("CHAR_ID <>", value, "charId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharIdGreaterThan(Long value) {
-            addCriterion("CHAR_ID >", value, "charId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("CHAR_ID >=", value, "charId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharIdLessThan(Long value) {
-            addCriterion("CHAR_ID <", value, "charId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharIdLessThanOrEqualTo(Long value) {
-            addCriterion("CHAR_ID <=", value, "charId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharIdIn(List<Long> values) {
-            addCriterion("CHAR_ID in", values, "charId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharIdNotIn(List<Long> values) {
-            addCriterion("CHAR_ID not in", values, "charId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharIdBetween(Long value1, Long value2) {
-            addCriterion("CHAR_ID between", value1, value2, "charId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharIdNotBetween(Long value1, Long value2) {
-            addCriterion("CHAR_ID not between", value1, value2, "charId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueIsNull() {
-            addCriterion("CHAR_VALUE is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueIsNotNull() {
-            addCriterion("CHAR_VALUE is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueEqualTo(String value) {
-            addCriterion("CHAR_VALUE =", value, "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueNotEqualTo(String value) {
-            addCriterion("CHAR_VALUE <>", value, "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueGreaterThan(String value) {
-            addCriterion("CHAR_VALUE >", value, "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueGreaterThanOrEqualTo(String value) {
-            addCriterion("CHAR_VALUE >=", value, "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueLessThan(String value) {
-            addCriterion("CHAR_VALUE <", value, "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueLessThanOrEqualTo(String value) {
-            addCriterion("CHAR_VALUE <=", value, "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueLike(String value) {
-            addCriterion("CHAR_VALUE like", value, "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueNotLike(String value) {
-            addCriterion("CHAR_VALUE not like", value, "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueIn(List<String> values) {
-            addCriterion("CHAR_VALUE in", values, "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueNotIn(List<String> values) {
-            addCriterion("CHAR_VALUE not in", values, "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueBetween(String value1, String value2) {
-            addCriterion("CHAR_VALUE between", value1, value2, "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueNotBetween(String value1, String value2) {
-            addCriterion("CHAR_VALUE not between", value1, value2, "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsGlobalParameterIsNull() {
-            addCriterion("IS_GLOBAL_PARAMETER is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsGlobalParameterIsNotNull() {
-            addCriterion("IS_GLOBAL_PARAMETER is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsGlobalParameterEqualTo(Integer value) {
-            addCriterion("IS_GLOBAL_PARAMETER =", value, "isGlobalParameter");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsGlobalParameterNotEqualTo(Integer value) {
-            addCriterion("IS_GLOBAL_PARAMETER <>", value, "isGlobalParameter");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsGlobalParameterGreaterThan(Integer value) {
-            addCriterion("IS_GLOBAL_PARAMETER >", value, "isGlobalParameter");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsGlobalParameterGreaterThanOrEqualTo(Integer value) {
-            addCriterion("IS_GLOBAL_PARAMETER >=", value, "isGlobalParameter");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsGlobalParameterLessThan(Integer value) {
-            addCriterion("IS_GLOBAL_PARAMETER <", value, "isGlobalParameter");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsGlobalParameterLessThanOrEqualTo(Integer value) {
-            addCriterion("IS_GLOBAL_PARAMETER <=", value, "isGlobalParameter");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsGlobalParameterIn(List<Integer> values) {
-            addCriterion("IS_GLOBAL_PARAMETER in", values, "isGlobalParameter");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsGlobalParameterNotIn(List<Integer> values) {
-            addCriterion("IS_GLOBAL_PARAMETER not in", values, "isGlobalParameter");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsGlobalParameterBetween(Integer value1, Integer value2) {
-            addCriterion("IS_GLOBAL_PARAMETER between", value1, value2, "isGlobalParameter");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsGlobalParameterNotBetween(Integer value1, Integer value2) {
-            addCriterion("IS_GLOBAL_PARAMETER not between", value1, value2, "isGlobalParameter");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDuplicatedIsNull() {
-            addCriterion("IS_DUPLICATED is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDuplicatedIsNotNull() {
-            addCriterion("IS_DUPLICATED is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDuplicatedEqualTo(Integer value) {
-            addCriterion("IS_DUPLICATED =", value, "isDuplicated");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDuplicatedNotEqualTo(Integer value) {
-            addCriterion("IS_DUPLICATED <>", value, "isDuplicated");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDuplicatedGreaterThan(Integer value) {
-            addCriterion("IS_DUPLICATED >", value, "isDuplicated");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDuplicatedGreaterThanOrEqualTo(Integer value) {
-            addCriterion("IS_DUPLICATED >=", value, "isDuplicated");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDuplicatedLessThan(Integer value) {
-            addCriterion("IS_DUPLICATED <", value, "isDuplicated");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDuplicatedLessThanOrEqualTo(Integer value) {
-            addCriterion("IS_DUPLICATED <=", value, "isDuplicated");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDuplicatedIn(List<Integer> values) {
-            addCriterion("IS_DUPLICATED in", values, "isDuplicated");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDuplicatedNotIn(List<Integer> values) {
-            addCriterion("IS_DUPLICATED not in", values, "isDuplicated");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDuplicatedBetween(Integer value1, Integer value2) {
-            addCriterion("IS_DUPLICATED between", value1, value2, "isDuplicated");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsDuplicatedNotBetween(Integer value1, Integer value2) {
-            addCriterion("IS_DUPLICATED not between", value1, value2, "isDuplicated");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgIsNull() {
-            addCriterion("WARNING_MSG is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgIsNotNull() {
-            addCriterion("WARNING_MSG is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgEqualTo(String value) {
-            addCriterion("WARNING_MSG =", value, "warningMsg");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgNotEqualTo(String value) {
-            addCriterion("WARNING_MSG <>", value, "warningMsg");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgGreaterThan(String value) {
-            addCriterion("WARNING_MSG >", value, "warningMsg");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgGreaterThanOrEqualTo(String value) {
-            addCriterion("WARNING_MSG >=", value, "warningMsg");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgLessThan(String value) {
-            addCriterion("WARNING_MSG <", value, "warningMsg");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgLessThanOrEqualTo(String value) {
-            addCriterion("WARNING_MSG <=", value, "warningMsg");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgLike(String value) {
-            addCriterion("WARNING_MSG like", value, "warningMsg");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgNotLike(String value) {
-            addCriterion("WARNING_MSG not like", value, "warningMsg");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgIn(List<String> values) {
-            addCriterion("WARNING_MSG in", values, "warningMsg");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgNotIn(List<String> values) {
-            addCriterion("WARNING_MSG not in", values, "warningMsg");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgBetween(String value1, String value2) {
-            addCriterion("WARNING_MSG between", value1, value2, "warningMsg");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgNotBetween(String value1, String value2) {
-            addCriterion("WARNING_MSG not between", value1, value2, "warningMsg");
+        public Criteria andUnitCharTypeIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("UNIT_CHAR_TYPE_ID not between", value1, value2, "unitCharTypeId");
             return (Criteria) this;
         }
 
@@ -943,16 +623,6 @@ public class WfFlowNodeValueExample {
 
         public Criteria andCreateOperNotBetween(String value1, String value2) {
             addCriterion("CREATE_OPER not between", value1, value2, "createOper");
-            return (Criteria) this;
-        }
-
-        public Criteria andCharValueLikeInsensitive(String value) {
-            addCriterion("upper(CHAR_VALUE) like", value.toUpperCase(), "charValue");
-            return (Criteria) this;
-        }
-
-        public Criteria andWarningMsgLikeInsensitive(String value) {
-            addCriterion("upper(WARNING_MSG) like", value.toUpperCase(), "warningMsg");
             return (Criteria) this;
         }
 

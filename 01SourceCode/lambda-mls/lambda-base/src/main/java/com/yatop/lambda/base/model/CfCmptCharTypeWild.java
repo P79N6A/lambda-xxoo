@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "cf_cmpt_char_type_combine")
-public class CfCmptCharTypeCombine extends CfCmptCharTypeCombineKey implements Serializable {
+@Table(name = "cf_cmpt_char_type_wild")
+public class CfCmptCharTypeWild extends CfCmptCharTypeWildKey implements Serializable {
     /**
      * 描述
      */
@@ -173,9 +173,9 @@ public class CfCmptCharTypeCombine extends CfCmptCharTypeCombineKey implements S
         if (getClass() != that.getClass()) {
             return false;
         }
-        CfCmptCharTypeCombine other = (CfCmptCharTypeCombine) that;
-        return (this.getCombineCharTypeId() == null ? other.getCombineCharTypeId() == null : this.getCombineCharTypeId().equals(other.getCombineCharTypeId()))
-            && (this.getMemeberCharTypeId() == null ? other.getMemeberCharTypeId() == null : this.getMemeberCharTypeId().equals(other.getMemeberCharTypeId()))
+        CfCmptCharTypeWild other = (CfCmptCharTypeWild) that;
+        return (this.getWildCharTypeId() == null ? other.getWildCharTypeId() == null : this.getWildCharTypeId().equals(other.getWildCharTypeId()))
+            && (this.getUnitCharTypeId() == null ? other.getUnitCharTypeId() == null : this.getUnitCharTypeId().equals(other.getUnitCharTypeId()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getLastUpdateTime() == null ? other.getLastUpdateTime() == null : this.getLastUpdateTime().equals(other.getLastUpdateTime()))
@@ -188,8 +188,8 @@ public class CfCmptCharTypeCombine extends CfCmptCharTypeCombineKey implements S
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((getCombineCharTypeId() == null) ? 0 : getCombineCharTypeId().hashCode());
-        result = prime * result + ((getMemeberCharTypeId() == null) ? 0 : getMemeberCharTypeId().hashCode());
+        result = prime * result + ((getWildCharTypeId() == null) ? 0 : getWildCharTypeId().hashCode());
+        result = prime * result + ((getUnitCharTypeId() == null) ? 0 : getUnitCharTypeId().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getLastUpdateTime() == null) ? 0 : getLastUpdateTime().hashCode());

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yatop.lambda.base.mapper.WfFlowNodeSchemaMapper" >
-  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.WfFlowNodeSchema" >
+<mapper namespace="com.yatop.lambda.base.mapper.CfCmptCharTypeWildMapper" >
+  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.CfCmptCharTypeWild" >
     <!--
       WARNING - @mbggenerated
     -->
-    <id column="NODE_PORT_ID" property="nodePortId" jdbcType="BIGINT" />
-    <result column="OBJECT_ID" property="objectId" jdbcType="BIGINT" />
-    <result column="SCHEMA_STATE" property="schemaState" jdbcType="INTEGER" />
+    <id column="WILD_CHAR_TYPE_ID" property="wildCharTypeId" jdbcType="INTEGER" />
+    <id column="UNIT_CHAR_TYPE_ID" property="unitCharTypeId" jdbcType="INTEGER" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="STATUS" property="status" jdbcType="INTEGER" />
     <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
@@ -83,10 +82,10 @@
     <!--
       WARNING - @mbggenerated
     -->
-    NODE_PORT_ID, OBJECT_ID, SCHEMA_STATE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, 
+    WILD_CHAR_TYPE_ID, UNIT_CHAR_TYPE_ID, DESCRIPTION, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, 
     CREATE_TIME, CREATE_OPER
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.WfFlowNodeSchemaExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.CfCmptCharTypeWildExample" >
     <!--
       WARNING - @mbggenerated
     -->
@@ -95,7 +94,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from wf_flow_node_schema
+    from cf_cmpt_char_type_wild
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -104,20 +103,20 @@
     </if>
     <include refid="MysqlSuffix" />
   </select>
-  <delete id="deleteByExample" parameterType="com.yatop.lambda.base.model.WfFlowNodeSchemaExample" >
+  <delete id="deleteByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharTypeWildExample" >
     <!--
       WARNING - @mbggenerated
     -->
-    delete from wf_flow_node_schema
+    delete from cf_cmpt_char_type_wild
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <select id="countByExample" parameterType="com.yatop.lambda.base.model.WfFlowNodeSchemaExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharTypeWildExample" resultType="java.lang.Integer" >
     <!--
       WARNING - @mbggenerated
     -->
-    select count(*) from wf_flow_node_schema
+    select count(*) from cf_cmpt_char_type_wild
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -126,16 +125,13 @@
     <!--
       WARNING - @mbggenerated
     -->
-    update wf_flow_node_schema
+    update cf_cmpt_char_type_wild
     <set >
-      <if test="record.nodePortId != null" >
-        NODE_PORT_ID = #{record.nodePortId,jdbcType=BIGINT},
+      <if test="record.wildCharTypeId != null" >
+        WILD_CHAR_TYPE_ID = #{record.wildCharTypeId,jdbcType=INTEGER},
       </if>
-      <if test="record.objectId != null" >
-        OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
-      </if>
-      <if test="record.schemaState != null" >
-        SCHEMA_STATE = #{record.schemaState,jdbcType=INTEGER},
+      <if test="record.unitCharTypeId != null" >
+        UNIT_CHAR_TYPE_ID = #{record.unitCharTypeId,jdbcType=INTEGER},
       </if>
       <if test="record.description != null" >
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
@@ -164,10 +160,9 @@
     <!--
       WARNING - @mbggenerated
     -->
-    update wf_flow_node_schema
-    set NODE_PORT_ID = #{record.nodePortId,jdbcType=BIGINT},
-      OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
-      SCHEMA_STATE = #{record.schemaState,jdbcType=INTEGER},
+    update cf_cmpt_char_type_wild
+    set WILD_CHAR_TYPE_ID = #{record.wildCharTypeId,jdbcType=INTEGER},
+      UNIT_CHAR_TYPE_ID = #{record.unitCharTypeId,jdbcType=INTEGER},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
       LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
