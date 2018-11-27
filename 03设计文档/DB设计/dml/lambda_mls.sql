@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-11-27 01:57:09
+Date: 2018-11-27 13:31:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1231,7 +1231,7 @@ CREATE TABLE `wf_execution_job` (
   `JOB_DFS_DIR` varchar(800) NOT NULL COMMENT 'DFS作业目录\r\n            \r\n            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>\r\n            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc<project_id>/other/<job_id>',
   `JOB_LOCAL_DIR` varchar(800) NOT NULL COMMENT '本地作业目录（预留）\r\n            \r\n            实验作业：${LOCAL_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>\r\n            其他作业：${LOCAL_WORK_ROOT}/proc/<project_id>/other/<job_id>',
   `NEXT_TASK_SEQUENCE` bigint(20) NOT NULL DEFAULT '1' COMMENT '下一任务序号',
-  `JOB_SUBMIT_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业提交时间',
+  `JOB_SUBMIT_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业提交时间（提交队列）',
   `JOB_START_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业开始时间',
   `JOB_END_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业结束时间',
   `JOB_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '作业状态\r\n            0：preparing，准备中\r\n            1：queueing，排队中\r\n            2：running，运行中\r\n            3：finished，运行完成\r\n            4：error terminated，出错终止\r\n            5：user terminated，用户终止',
@@ -1291,7 +1291,6 @@ CREATE TABLE `wf_execution_task` (
   `RETURN_FILE` varchar(800) NOT NULL COMMENT '返回文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/return_<task_id>_<module_code>.json',
   `LOG_FILE` varchar(800) NOT NULL COMMENT '日志文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/log_<task_id>_<module_code>.log',
   `COST_TIME` bigint(20) NOT NULL DEFAULT '-1' COMMENT '运行时间，单位毫秒，默认为-1',
-  `TASK_SUBMIT_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '任务提交时间',
   `TASK_START_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '任务开始时间',
   `TASK_END_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '任务结束时间',
   `TASK_PROGRESS` int(11) NOT NULL DEFAULT '0' COMMENT '任务进度，百分比数值0到100',
