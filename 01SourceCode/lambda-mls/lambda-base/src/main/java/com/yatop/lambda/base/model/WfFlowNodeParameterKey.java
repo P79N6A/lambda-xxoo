@@ -13,6 +13,14 @@ public class WfFlowNodeParameterKey implements Serializable {
     private Long nodeId;
 
     /**
+     * 规格类型，说明参考CF_CMPT_SPEC.SPEC_TYPE
+            节点上只设置组件参数和调优执行
+     */
+    @Id
+    @Column(name = "SPEC_TYPE")
+    private Integer specType;
+
+    /**
      * 组件特征ID
      */
     @Id
@@ -37,6 +45,28 @@ public class WfFlowNodeParameterKey implements Serializable {
      */
     public void setNodeId(Long nodeId) {
         this.nodeId = nodeId;
+    }
+
+    /**
+     * 获取规格类型，说明参考CF_CMPT_SPEC.SPEC_TYPE
+            节点上只设置组件参数和调优执行
+     *
+     * @return SPEC_TYPE - 规格类型，说明参考CF_CMPT_SPEC.SPEC_TYPE
+            节点上只设置组件参数和调优执行
+     */
+    public Integer getSpecType() {
+        return specType;
+    }
+
+    /**
+     * 设置规格类型，说明参考CF_CMPT_SPEC.SPEC_TYPE
+            节点上只设置组件参数和调优执行
+     *
+     * @param specType 规格类型，说明参考CF_CMPT_SPEC.SPEC_TYPE
+            节点上只设置组件参数和调优执行
+     */
+    public void setSpecType(Integer specType) {
+        this.specType = specType;
     }
 
     /**
@@ -70,6 +100,7 @@ public class WfFlowNodeParameterKey implements Serializable {
         }
         WfFlowNodeParameterKey other = (WfFlowNodeParameterKey) that;
         return (this.getNodeId() == null ? other.getNodeId() == null : this.getNodeId().equals(other.getNodeId()))
+            && (this.getSpecType() == null ? other.getSpecType() == null : this.getSpecType().equals(other.getSpecType()))
             && (this.getCharId() == null ? other.getCharId() == null : this.getCharId().equals(other.getCharId()));
     }
 
@@ -78,6 +109,7 @@ public class WfFlowNodeParameterKey implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getNodeId() == null) ? 0 : getNodeId().hashCode());
+        result = prime * result + ((getSpecType() == null) ? 0 : getSpecType().hashCode());
         result = prime * result + ((getCharId() == null) ? 0 : getCharId().hashCode());
         return result;
     }

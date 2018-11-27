@@ -25,10 +25,22 @@ public class WfFlowNodeParameter extends WfFlowNodeParameterKey implements Seria
             0：否
             1：是
             
-            创建副本和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型组件参数发生更新时，判断是否创建新对象来保存新值
+            创建快照和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型特征值发生更新时，判断是否创建新对象来保存新值
      */
     @Column(name = "IS_DUPLICATED")
     private Integer isDuplicated;
+
+    /**
+     * 警告消息
+     */
+    @Column(name = "WARNING_MSG")
+    private String warningMsg;
+
+    /**
+     * 描述
+     */
+    @Column(name = "DESCRIPTION")
+    private String description;
 
     /**
      * 状态
@@ -113,13 +125,13 @@ public class WfFlowNodeParameter extends WfFlowNodeParameterKey implements Seria
             0：否
             1：是
             
-            创建副本和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型组件参数发生更新时，判断是否创建新对象来保存新值
+            创建快照和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型特征值发生更新时，判断是否创建新对象来保存新值
      *
      * @return IS_DUPLICATED - 是否被复制
             0：否
             1：是
             
-            创建副本和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型组件参数发生更新时，判断是否创建新对象来保存新值
+            创建快照和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型特征值发生更新时，判断是否创建新对象来保存新值
      */
     public Integer getIsDuplicated() {
         return isDuplicated;
@@ -130,16 +142,52 @@ public class WfFlowNodeParameter extends WfFlowNodeParameterKey implements Seria
             0：否
             1：是
             
-            创建副本和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型组件参数发生更新时，判断是否创建新对象来保存新值
+            创建快照和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型特征值发生更新时，判断是否创建新对象来保存新值
      *
      * @param isDuplicated 是否被复制
             0：否
             1：是
             
-            创建副本和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型组件参数发生更新时，判断是否创建新对象来保存新值
+            创建快照和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型特征值发生更新时，判断是否创建新对象来保存新值
      */
     public void setIsDuplicated(Integer isDuplicated) {
         this.isDuplicated = isDuplicated;
+    }
+
+    /**
+     * 获取警告消息
+     *
+     * @return WARNING_MSG - 警告消息
+     */
+    public String getWarningMsg() {
+        return warningMsg;
+    }
+
+    /**
+     * 设置警告消息
+     *
+     * @param warningMsg 警告消息
+     */
+    public void setWarningMsg(String warningMsg) {
+        this.warningMsg = warningMsg == null ? null : warningMsg.trim();
+    }
+
+    /**
+     * 获取描述
+     *
+     * @return DESCRIPTION - 描述
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * 设置描述
+     *
+     * @param description 描述
+     */
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
     /**
@@ -253,10 +301,13 @@ public class WfFlowNodeParameter extends WfFlowNodeParameterKey implements Seria
         }
         WfFlowNodeParameter other = (WfFlowNodeParameter) that;
         return (this.getNodeId() == null ? other.getNodeId() == null : this.getNodeId().equals(other.getNodeId()))
+            && (this.getSpecType() == null ? other.getSpecType() == null : this.getSpecType().equals(other.getSpecType()))
             && (this.getCharId() == null ? other.getCharId() == null : this.getCharId().equals(other.getCharId()))
             && (this.getCharValue() == null ? other.getCharValue() == null : this.getCharValue().equals(other.getCharValue()))
             && (this.getIsGlobalParameter() == null ? other.getIsGlobalParameter() == null : this.getIsGlobalParameter().equals(other.getIsGlobalParameter()))
             && (this.getIsDuplicated() == null ? other.getIsDuplicated() == null : this.getIsDuplicated().equals(other.getIsDuplicated()))
+            && (this.getWarningMsg() == null ? other.getWarningMsg() == null : this.getWarningMsg().equals(other.getWarningMsg()))
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getLastUpdateTime() == null ? other.getLastUpdateTime() == null : this.getLastUpdateTime().equals(other.getLastUpdateTime()))
             && (this.getLastUpdateOper() == null ? other.getLastUpdateOper() == null : this.getLastUpdateOper().equals(other.getLastUpdateOper()))
@@ -269,10 +320,13 @@ public class WfFlowNodeParameter extends WfFlowNodeParameterKey implements Seria
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getNodeId() == null) ? 0 : getNodeId().hashCode());
+        result = prime * result + ((getSpecType() == null) ? 0 : getSpecType().hashCode());
         result = prime * result + ((getCharId() == null) ? 0 : getCharId().hashCode());
         result = prime * result + ((getCharValue() == null) ? 0 : getCharValue().hashCode());
         result = prime * result + ((getIsGlobalParameter() == null) ? 0 : getIsGlobalParameter().hashCode());
         result = prime * result + ((getIsDuplicated() == null) ? 0 : getIsDuplicated().hashCode());
+        result = prime * result + ((getWarningMsg() == null) ? 0 : getWarningMsg().hashCode());
+        result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getLastUpdateTime() == null) ? 0 : getLastUpdateTime().hashCode());
         result = prime * result + ((getLastUpdateOper() == null) ? 0 : getLastUpdateOper().hashCode());

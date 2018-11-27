@@ -486,6 +486,76 @@ public class WfFlowNodeValueExample {
             return (Criteria) this;
         }
 
+        public Criteria andWarningMsgIsNull() {
+            addCriterion("WARNING_MSG is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgIsNotNull() {
+            addCriterion("WARNING_MSG is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgEqualTo(String value) {
+            addCriterion("WARNING_MSG =", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgNotEqualTo(String value) {
+            addCriterion("WARNING_MSG <>", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgGreaterThan(String value) {
+            addCriterion("WARNING_MSG >", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgGreaterThanOrEqualTo(String value) {
+            addCriterion("WARNING_MSG >=", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgLessThan(String value) {
+            addCriterion("WARNING_MSG <", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgLessThanOrEqualTo(String value) {
+            addCriterion("WARNING_MSG <=", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgLike(String value) {
+            addCriterion("WARNING_MSG like", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgNotLike(String value) {
+            addCriterion("WARNING_MSG not like", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgIn(List<String> values) {
+            addCriterion("WARNING_MSG in", values, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgNotIn(List<String> values) {
+            addCriterion("WARNING_MSG not in", values, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgBetween(String value1, String value2) {
+            addCriterion("WARNING_MSG between", value1, value2, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgNotBetween(String value1, String value2) {
+            addCriterion("WARNING_MSG not between", value1, value2, "warningMsg");
+            return (Criteria) this;
+        }
+
         public Criteria andDescriptionIsNull() {
             addCriterion("DESCRIPTION is null");
             return (Criteria) this;
@@ -878,6 +948,11 @@ public class WfFlowNodeValueExample {
 
         public Criteria andCharValueLikeInsensitive(String value) {
             addCriterion("upper(CHAR_VALUE) like", value.toUpperCase(), "charValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgLikeInsensitive(String value) {
+            addCriterion("upper(WARNING_MSG) like", value.toUpperCase(), "warningMsg");
             return (Criteria) this;
         }
 

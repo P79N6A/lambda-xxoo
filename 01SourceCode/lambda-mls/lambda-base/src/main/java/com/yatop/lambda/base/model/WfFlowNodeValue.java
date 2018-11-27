@@ -31,6 +31,12 @@ public class WfFlowNodeValue extends WfFlowNodeValueKey implements Serializable 
     private Integer isDuplicated;
 
     /**
+     * 警告消息
+     */
+    @Column(name = "WARNING_MSG")
+    private String warningMsg;
+
+    /**
      * 描述
      */
     @Column(name = "DESCRIPTION")
@@ -146,6 +152,24 @@ public class WfFlowNodeValue extends WfFlowNodeValueKey implements Serializable 
      */
     public void setIsDuplicated(Integer isDuplicated) {
         this.isDuplicated = isDuplicated;
+    }
+
+    /**
+     * 获取警告消息
+     *
+     * @return WARNING_MSG - 警告消息
+     */
+    public String getWarningMsg() {
+        return warningMsg;
+    }
+
+    /**
+     * 设置警告消息
+     *
+     * @param warningMsg 警告消息
+     */
+    public void setWarningMsg(String warningMsg) {
+        this.warningMsg = warningMsg == null ? null : warningMsg.trim();
     }
 
     /**
@@ -282,6 +306,7 @@ public class WfFlowNodeValue extends WfFlowNodeValueKey implements Serializable 
             && (this.getCharValue() == null ? other.getCharValue() == null : this.getCharValue().equals(other.getCharValue()))
             && (this.getIsGlobalParameter() == null ? other.getIsGlobalParameter() == null : this.getIsGlobalParameter().equals(other.getIsGlobalParameter()))
             && (this.getIsDuplicated() == null ? other.getIsDuplicated() == null : this.getIsDuplicated().equals(other.getIsDuplicated()))
+            && (this.getWarningMsg() == null ? other.getWarningMsg() == null : this.getWarningMsg().equals(other.getWarningMsg()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getLastUpdateTime() == null ? other.getLastUpdateTime() == null : this.getLastUpdateTime().equals(other.getLastUpdateTime()))
@@ -300,6 +325,7 @@ public class WfFlowNodeValue extends WfFlowNodeValueKey implements Serializable 
         result = prime * result + ((getCharValue() == null) ? 0 : getCharValue().hashCode());
         result = prime * result + ((getIsGlobalParameter() == null) ? 0 : getIsGlobalParameter().hashCode());
         result = prime * result + ((getIsDuplicated() == null) ? 0 : getIsDuplicated().hashCode());
+        result = prime * result + ((getWarningMsg() == null) ? 0 : getWarningMsg().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getLastUpdateTime() == null) ? 0 : getLastUpdateTime().hashCode());

@@ -8,9 +8,6 @@ import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 
 import java.util.Properties;
 
-/**
- * Created by yuyi on 2016/12/16 0016.
- */
 @Configuration
 //TODO 注意，由于MapperScannerConfigurer执行的比较早，所以必须有下面的注解
 @AutoConfigureAfter(MyBatisConfig.class)
@@ -25,7 +22,7 @@ public class MyBatisMapperScannerConfig {
         properties.setProperty("mappers", MyMapper.class.getName());
         properties.setProperty("notEmpty", "false");
         properties.setProperty("IDENTITY", "MYSQL");
-        //这里使用的通用Mapper的MapperScannerConfigurer，所有有下面这个方法
+        //这里使用的通用Mapper的MapperScannerConfigurer，所以有下面这个方法
         mapperScannerConfigurer.setProperties(properties);
         return mapperScannerConfigurer;
     }

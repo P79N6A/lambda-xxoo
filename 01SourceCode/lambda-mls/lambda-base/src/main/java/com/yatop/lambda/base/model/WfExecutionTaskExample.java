@@ -836,66 +836,6 @@ public class WfExecutionTaskExample {
             return (Criteria) this;
         }
 
-        public Criteria andTaskSubmitTimeIsNull() {
-            addCriterion("TASK_SUBMIT_TIME is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaskSubmitTimeIsNotNull() {
-            addCriterion("TASK_SUBMIT_TIME is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaskSubmitTimeEqualTo(Date value) {
-            addCriterion("TASK_SUBMIT_TIME =", value, "taskSubmitTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaskSubmitTimeNotEqualTo(Date value) {
-            addCriterion("TASK_SUBMIT_TIME <>", value, "taskSubmitTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaskSubmitTimeGreaterThan(Date value) {
-            addCriterion("TASK_SUBMIT_TIME >", value, "taskSubmitTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaskSubmitTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("TASK_SUBMIT_TIME >=", value, "taskSubmitTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaskSubmitTimeLessThan(Date value) {
-            addCriterion("TASK_SUBMIT_TIME <", value, "taskSubmitTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaskSubmitTimeLessThanOrEqualTo(Date value) {
-            addCriterion("TASK_SUBMIT_TIME <=", value, "taskSubmitTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaskSubmitTimeIn(List<Date> values) {
-            addCriterion("TASK_SUBMIT_TIME in", values, "taskSubmitTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaskSubmitTimeNotIn(List<Date> values) {
-            addCriterion("TASK_SUBMIT_TIME not in", values, "taskSubmitTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaskSubmitTimeBetween(Date value1, Date value2) {
-            addCriterion("TASK_SUBMIT_TIME between", value1, value2, "taskSubmitTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andTaskSubmitTimeNotBetween(Date value1, Date value2) {
-            addCriterion("TASK_SUBMIT_TIME not between", value1, value2, "taskSubmitTime");
-            return (Criteria) this;
-        }
-
         public Criteria andTaskStartTimeIsNull() {
             addCriterion("TASK_START_TIME is null");
             return (Criteria) this;

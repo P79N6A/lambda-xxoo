@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-11-27 13:31:53
+Date: 2018-11-27 18:07:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -915,7 +915,7 @@ INSERT INTO `cf_component` VALUES ('WS@COM-0003', 'WS@Output-ModelFile', 'Web服
 DROP TABLE IF EXISTS `dw_data_table`;
 CREATE TABLE `dw_data_table` (
   `TABLE_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '数据表ID',
-  `TABLE_NAME` varchar(200) NOT NULL COMMENT '数据表名\r\n            \r\n            普通和动态数据表：由英文字符、数字和下划线组成，起始字符不能为下划线\r\n            临时数据表：tmp$<node_id>_<node_port_id>_<job_id>',
+  `TABLE_NAME` varchar(200) NOT NULL COMMENT '数据表名\r\n            \r\n            普通表：由英文字符、数字和下划线组成，起始字符不能为下划线\r\n            临时数据表：tmp$<node_id>_<node_port_id>_<job_id>',
   `TABLE_TYPE` int(11) NOT NULL COMMENT '数据表类型\r\n            0：普通数据表\r\n            1：临时数据表\r\n            2：外部数据表，由在线服务的数据文件输入组件产生，DATA_FILE关联完整文件路径，作业完成时被立即清理',
   `TABLE_SRC` int(11) NOT NULL DEFAULT '0' COMMENT '数据表来源\r\n            0：内部生成\r\n            1：外部导入',
   `OWNER_DW_ID` bigint(20) NOT NULL COMMENT '所属数据库ID',
@@ -985,8 +985,8 @@ CREATE TABLE `em_experiment` (
   `MAIN_EXPERIMENT_ID` bigint(20) DEFAULT NULL COMMENT '所属主实验ID，主实验设为自身ID',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `FLOW_ID` bigint(20) NOT NULL COMMENT '流程图ID',
-  `EXPERIMENT_DFS_DIR` varchar(800) NOT NULL COMMENT 'DFS实验目录\r\n            \r\n            ${HDFS_SITE}/${DFS_WORK_ROOT}/exp_data/<project_id>/<experiment_id>',
-  `EXPERIMENT_LOCAL_DIR` varchar(800) NOT NULL COMMENT '本地实验目录\r\n            \r\n            ${LOCAL_WORK_ROOT}/exp_data/<project_id>/<experiment_id>',
+  `EXPERIMENT_DFS_DIR` varchar(800) DEFAULT NULL COMMENT 'DFS实验目录\r\n            \r\n            ${HDFS_SITE}/${DFS_WORK_ROOT}/exp_data/<project_id>/<experiment_id>',
+  `EXPERIMENT_LOCAL_DIR` varchar(800) DEFAULT NULL COMMENT '本地实验目录\r\n            \r\n            ${LOCAL_WORK_ROOT}/exp_data/<project_id>/<experiment_id>',
   `SUMMARY` varchar(256) DEFAULT NULL COMMENT '摘要，冗余WF_FLOW.SUMMARY信息',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述，冗余WF_FLOW.DESCRIPTION信息',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -1542,32 +1542,6 @@ CREATE TABLE `wf_flow_node_schema` (
 
 -- ----------------------------
 -- Records of wf_flow_node_schema
--- ----------------------------
-
--- ----------------------------
--- Table structure for wf_flow_node_value
--- ----------------------------
-DROP TABLE IF EXISTS `wf_flow_node_value`;
-CREATE TABLE `wf_flow_node_value` (
-  `NODE_ID` bigint(20) NOT NULL COMMENT '节点ID',
-  `SPEC_TYPE` int(11) NOT NULL COMMENT '规格类型，说明参考CF_CMPT_SPEC.SPEC_TYPE\r\n            节点上只设置组件参数和调优执行',
-  `CHAR_ID` bigint(20) NOT NULL COMMENT '组件特征ID',
-  `CHAR_VALUE` varchar(2000) DEFAULT NULL COMMENT '特征值',
-  `IS_GLOBAL_PARAMETER` int(11) NOT NULL DEFAULT '0' COMMENT '是否为全局参数\r\n            0：否\r\n            1：是',
-  `IS_DUPLICATED` int(11) NOT NULL DEFAULT '0' COMMENT '是否被复制\r\n            0：否\r\n            1：是\r\n            \r\n            创建快照和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型特征值发生更新时，判断是否创建新对象来保存新值',
-  `WARNING_MSG` varchar(256) DEFAULT NULL COMMENT '警告消息',
-  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
-  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
-  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
-  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`NODE_ID`,`SPEC_TYPE`,`CHAR_ID`),
-  KEY `Index_1` (`SPEC_TYPE`,`CHAR_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点设置特征值表，记录组件参数和调优参数的特征值';
-
--- ----------------------------
--- Records of wf_flow_node_value
 -- ----------------------------
 
 -- ----------------------------

@@ -85,7 +85,7 @@ public class WfExecutionJob implements Serializable {
     private Long nextTaskSequence;
 
     /**
-     * 作业提交时间
+     * 作业提交时间（提交队列）
      */
     @Column(name = "JOB_SUBMIT_TIME")
     private Date jobSubmitTime;
@@ -409,18 +409,18 @@ public class WfExecutionJob implements Serializable {
     }
 
     /**
-     * 获取作业提交时间
+     * 获取作业提交时间（提交队列）
      *
-     * @return JOB_SUBMIT_TIME - 作业提交时间
+     * @return JOB_SUBMIT_TIME - 作业提交时间（提交队列）
      */
     public Date getJobSubmitTime() {
         return jobSubmitTime;
     }
 
     /**
-     * 设置作业提交时间
+     * 设置作业提交时间（提交队列）
      *
-     * @param jobSubmitTime 作业提交时间
+     * @param jobSubmitTime 作业提交时间（提交队列）
      */
     public void setJobSubmitTime(Date jobSubmitTime) {
         this.jobSubmitTime = jobSubmitTime;

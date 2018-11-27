@@ -176,6 +176,66 @@ public class WfFlowNodeParameterExample {
             return (Criteria) this;
         }
 
+        public Criteria andSpecTypeIsNull() {
+            addCriterion("SPEC_TYPE is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecTypeIsNotNull() {
+            addCriterion("SPEC_TYPE is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecTypeEqualTo(Integer value) {
+            addCriterion("SPEC_TYPE =", value, "specType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecTypeNotEqualTo(Integer value) {
+            addCriterion("SPEC_TYPE <>", value, "specType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecTypeGreaterThan(Integer value) {
+            addCriterion("SPEC_TYPE >", value, "specType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("SPEC_TYPE >=", value, "specType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecTypeLessThan(Integer value) {
+            addCriterion("SPEC_TYPE <", value, "specType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("SPEC_TYPE <=", value, "specType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecTypeIn(List<Integer> values) {
+            addCriterion("SPEC_TYPE in", values, "specType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecTypeNotIn(List<Integer> values) {
+            addCriterion("SPEC_TYPE not in", values, "specType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecTypeBetween(Integer value1, Integer value2) {
+            addCriterion("SPEC_TYPE between", value1, value2, "specType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("SPEC_TYPE not between", value1, value2, "specType");
+            return (Criteria) this;
+        }
+
         public Criteria andCharIdIsNull() {
             addCriterion("CHAR_ID is null");
             return (Criteria) this;
@@ -423,6 +483,146 @@ public class WfFlowNodeParameterExample {
 
         public Criteria andIsDuplicatedNotBetween(Integer value1, Integer value2) {
             addCriterion("IS_DUPLICATED not between", value1, value2, "isDuplicated");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgIsNull() {
+            addCriterion("WARNING_MSG is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgIsNotNull() {
+            addCriterion("WARNING_MSG is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgEqualTo(String value) {
+            addCriterion("WARNING_MSG =", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgNotEqualTo(String value) {
+            addCriterion("WARNING_MSG <>", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgGreaterThan(String value) {
+            addCriterion("WARNING_MSG >", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgGreaterThanOrEqualTo(String value) {
+            addCriterion("WARNING_MSG >=", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgLessThan(String value) {
+            addCriterion("WARNING_MSG <", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgLessThanOrEqualTo(String value) {
+            addCriterion("WARNING_MSG <=", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgLike(String value) {
+            addCriterion("WARNING_MSG like", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgNotLike(String value) {
+            addCriterion("WARNING_MSG not like", value, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgIn(List<String> values) {
+            addCriterion("WARNING_MSG in", values, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgNotIn(List<String> values) {
+            addCriterion("WARNING_MSG not in", values, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgBetween(String value1, String value2) {
+            addCriterion("WARNING_MSG between", value1, value2, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgNotBetween(String value1, String value2) {
+            addCriterion("WARNING_MSG not between", value1, value2, "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionIsNull() {
+            addCriterion("DESCRIPTION is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionIsNotNull() {
+            addCriterion("DESCRIPTION is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionEqualTo(String value) {
+            addCriterion("DESCRIPTION =", value, "description");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionNotEqualTo(String value) {
+            addCriterion("DESCRIPTION <>", value, "description");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionGreaterThan(String value) {
+            addCriterion("DESCRIPTION >", value, "description");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionGreaterThanOrEqualTo(String value) {
+            addCriterion("DESCRIPTION >=", value, "description");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionLessThan(String value) {
+            addCriterion("DESCRIPTION <", value, "description");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionLessThanOrEqualTo(String value) {
+            addCriterion("DESCRIPTION <=", value, "description");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionLike(String value) {
+            addCriterion("DESCRIPTION like", value, "description");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionNotLike(String value) {
+            addCriterion("DESCRIPTION not like", value, "description");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionIn(List<String> values) {
+            addCriterion("DESCRIPTION in", values, "description");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionNotIn(List<String> values) {
+            addCriterion("DESCRIPTION not in", values, "description");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionBetween(String value1, String value2) {
+            addCriterion("DESCRIPTION between", value1, value2, "description");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionNotBetween(String value1, String value2) {
+            addCriterion("DESCRIPTION not between", value1, value2, "description");
             return (Criteria) this;
         }
 
@@ -748,6 +948,16 @@ public class WfFlowNodeParameterExample {
 
         public Criteria andCharValueLikeInsensitive(String value) {
             addCriterion("upper(CHAR_VALUE) like", value.toUpperCase(), "charValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andWarningMsgLikeInsensitive(String value) {
+            addCriterion("upper(WARNING_MSG) like", value.toUpperCase(), "warningMsg");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescriptionLikeInsensitive(String value) {
+            addCriterion("upper(DESCRIPTION) like", value.toUpperCase(), "description");
             return (Criteria) this;
         }
 

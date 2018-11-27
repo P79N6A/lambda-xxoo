@@ -74,6 +74,12 @@ public class WfFlowNode implements Serializable {
     private Integer nodeState;
 
     /**
+     * 概要，自动生成或者人工编辑
+     */
+    @Column(name = "SUMMARY")
+    private String summary;
+
+    /**
      * 描述
      */
     @Column(name = "DESCRIPTION")
@@ -318,6 +324,24 @@ public class WfFlowNode implements Serializable {
     }
 
     /**
+     * 获取概要，自动生成或者人工编辑
+     *
+     * @return SUMMARY - 概要，自动生成或者人工编辑
+     */
+    public String getSummary() {
+        return summary;
+    }
+
+    /**
+     * 设置概要，自动生成或者人工编辑
+     *
+     * @param summary 概要，自动生成或者人工编辑
+     */
+    public void setSummary(String summary) {
+        this.summary = summary == null ? null : summary.trim();
+    }
+
+    /**
      * 获取描述
      *
      * @return DESCRIPTION - 描述
@@ -455,6 +479,7 @@ public class WfFlowNode implements Serializable {
             && (this.getLastTaskId() == null ? other.getLastTaskId() == null : this.getLastTaskId().equals(other.getLastTaskId()))
             && (this.getWarningMsg() == null ? other.getWarningMsg() == null : this.getWarningMsg().equals(other.getWarningMsg()))
             && (this.getNodeState() == null ? other.getNodeState() == null : this.getNodeState().equals(other.getNodeState()))
+            && (this.getSummary() == null ? other.getSummary() == null : this.getSummary().equals(other.getSummary()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getLastUpdateTime() == null ? other.getLastUpdateTime() == null : this.getLastUpdateTime().equals(other.getLastUpdateTime()))
@@ -477,6 +502,7 @@ public class WfFlowNode implements Serializable {
         result = prime * result + ((getLastTaskId() == null) ? 0 : getLastTaskId().hashCode());
         result = prime * result + ((getWarningMsg() == null) ? 0 : getWarningMsg().hashCode());
         result = prime * result + ((getNodeState() == null) ? 0 : getNodeState().hashCode());
+        result = prime * result + ((getSummary() == null) ? 0 : getSummary().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getLastUpdateTime() == null) ? 0 : getLastUpdateTime().hashCode());
