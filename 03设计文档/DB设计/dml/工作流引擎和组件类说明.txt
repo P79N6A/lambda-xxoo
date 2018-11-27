@@ -81,8 +81,10 @@ public class ModuleBoard {
 	static Mapper getMapper();
 }
 
-
-//NodeContentDto = WfNodeDto : WfNode
+public IRichModel {
+	JsonObject toJson4Engine();
+}
+//NodeContentDto = WfNodeDto implements IRichModel extends WfNode
 
 @service
 public interface IModule {

@@ -13,7 +13,7 @@ public class CharTypeBoard {
 	static Mapper getMapper();
 }
 
-public class CharValue {
+public class CharValue implements IRichModel {
 	String cmptChar;
 	String rawValue;
 	JsonObject ObjValue;
