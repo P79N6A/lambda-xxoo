@@ -82,6 +82,8 @@ public class ModuleBoard {
 }
 
 
+//NodeContentDto = WfNodeDto : WfNode
+
 @service
 public interface IModule {
 	//出现严重错误会导致逻辑崩溃抛出moduleException，组件类实现该接口，适当封装一些中间abstract组件类以便复用
