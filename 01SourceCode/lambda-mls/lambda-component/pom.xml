@@ -9,11 +9,11 @@
         <version>1.0.0</version>
     </parent>
     
-    <artifactId>lambda-component-scala</artifactId>
+    <artifactId>lambda-component</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
 
-    <name>lambda-component-scala</name>
+    <name>lambda-component</name>
     <url>http://maven.apache.org</url>
 
 
