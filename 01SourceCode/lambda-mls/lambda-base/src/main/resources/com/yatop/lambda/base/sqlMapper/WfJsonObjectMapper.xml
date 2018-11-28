@@ -313,4 +313,1111 @@
       <![CDATA[ limit #{page.begin} , #{page.length} ]]>
     </if>
   </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.WfJsonObject">
+    <id column="OBJECT_ID" jdbcType="BIGINT" property="objectId" />
+    <result column="OBJECT_NAME" jdbcType="VARCHAR" property="objectName" />
+    <result column="OBJECTY_TYPE" jdbcType="INTEGER" property="objectyType" />
+    <result column="OBJECT_SRC" jdbcType="INTEGER" property="objectSrc" />
+    <result column="OWNER_PROJECT_ID" jdbcType="BIGINT" property="ownerProjectId" />
+    <result column="REL_FLOW_ID" jdbcType="BIGINT" property="relFlowId" />
+    <result column="REL_SNAPSHOT_VERSION" jdbcType="BIGINT" property="relSnapshotVersion" />
+    <result column="REL_JOB_ID" jdbcType="BIGINT" property="relJobId" />
+    <result column="REL_NODE_ID" jdbcType="BIGINT" property="relNodeId" />
+    <result column="REL_CHAR_ID" jdbcType="BIGINT" property="relCharId" />
+    <result column="STORAGE_LOCATION" jdbcType="INTEGER" property="storageLocation" />
+    <result column="OBJECT_FILE" jdbcType="VARCHAR" property="objectFile" />
+    <result column="OBJECT_STATE" jdbcType="INTEGER" property="objectState" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="LAST_UPDATE_TIME" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="LAST_UPDATE_OPER" jdbcType="VARCHAR" property="lastUpdateOper" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_OPER" jdbcType="VARCHAR" property="createOper" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yatop.lambda.base.model.WfJsonObject">
+    <result column="OBJECT_DATA" jdbcType="LONGVARCHAR" property="objectData" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    OBJECT_ID, OBJECT_NAME, OBJECTY_TYPE, OBJECT_SRC, OWNER_PROJECT_ID, REL_FLOW_ID, 
+    REL_SNAPSHOT_VERSION, REL_JOB_ID, REL_NODE_ID, REL_CHAR_ID, STORAGE_LOCATION, OBJECT_FILE, 
+    OBJECT_STATE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, 
+    CREATE_OPER
+  </sql>
+  <sql id="Blob_Column_List">
+    OBJECT_DATA
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.yatop.lambda.base.model.WfJsonObjectExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from wf_json_object
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.yatop.lambda.base.model.WfJsonObjectExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from wf_json_object
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from wf_json_object
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from wf_json_object
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yatop.lambda.base.model.WfJsonObjectExample">
+    delete from wf_json_object
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yatop.lambda.base.model.WfJsonObject">
+    insert into wf_json_object (OBJECT_ID, OBJECT_NAME, OBJECTY_TYPE, 
+      OBJECT_SRC, OWNER_PROJECT_ID, REL_FLOW_ID, 
+      REL_SNAPSHOT_VERSION, REL_JOB_ID, REL_NODE_ID, 
+      REL_CHAR_ID, STORAGE_LOCATION, OBJECT_FILE, 
+      OBJECT_STATE, DESCRIPTION, STATUS, 
+      LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, 
+      CREATE_OPER, OBJECT_DATA)
+    values (#{objectId,jdbcType=BIGINT}, #{objectName,jdbcType=VARCHAR}, #{objectyType,jdbcType=INTEGER}, 
+      #{objectSrc,jdbcType=INTEGER}, #{ownerProjectId,jdbcType=BIGINT}, #{relFlowId,jdbcType=BIGINT}, 
+      #{relSnapshotVersion,jdbcType=BIGINT}, #{relJobId,jdbcType=BIGINT}, #{relNodeId,jdbcType=BIGINT}, 
+      #{relCharId,jdbcType=BIGINT}, #{storageLocation,jdbcType=INTEGER}, #{objectFile,jdbcType=VARCHAR}, 
+      #{objectState,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{lastUpdateOper,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createOper,jdbcType=VARCHAR}, #{objectData,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yatop.lambda.base.model.WfJsonObject">
+    insert into wf_json_object
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectId != null">
+        OBJECT_ID,
+      </if>
+      <if test="objectName != null">
+        OBJECT_NAME,
+      </if>
+      <if test="objectyType != null">
+        OBJECTY_TYPE,
+      </if>
+      <if test="objectSrc != null">
+        OBJECT_SRC,
+      </if>
+      <if test="ownerProjectId != null">
+        OWNER_PROJECT_ID,
+      </if>
+      <if test="relFlowId != null">
+        REL_FLOW_ID,
+      </if>
+      <if test="relSnapshotVersion != null">
+        REL_SNAPSHOT_VERSION,
+      </if>
+      <if test="relJobId != null">
+        REL_JOB_ID,
+      </if>
+      <if test="relNodeId != null">
+        REL_NODE_ID,
+      </if>
+      <if test="relCharId != null">
+        REL_CHAR_ID,
+      </if>
+      <if test="storageLocation != null">
+        STORAGE_LOCATION,
+      </if>
+      <if test="objectFile != null">
+        OBJECT_FILE,
+      </if>
+      <if test="objectState != null">
+        OBJECT_STATE,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="lastUpdateTime != null">
+        LAST_UPDATE_TIME,
+      </if>
+      <if test="lastUpdateOper != null">
+        LAST_UPDATE_OPER,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="createOper != null">
+        CREATE_OPER,
+      </if>
+      <if test="objectData != null">
+        OBJECT_DATA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectId != null">
+        #{objectId,jdbcType=BIGINT},
+      </if>
+      <if test="objectName != null">
+        #{objectName,jdbcType=VARCHAR},
+      </if>
+      <if test="objectyType != null">
+        #{objectyType,jdbcType=INTEGER},
+      </if>
+      <if test="objectSrc != null">
+        #{objectSrc,jdbcType=INTEGER},
+      </if>
+      <if test="ownerProjectId != null">
+        #{ownerProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="relFlowId != null">
+        #{relFlowId,jdbcType=BIGINT},
+      </if>
+      <if test="relSnapshotVersion != null">
+        #{relSnapshotVersion,jdbcType=BIGINT},
+      </if>
+      <if test="relJobId != null">
+        #{relJobId,jdbcType=BIGINT},
+      </if>
+      <if test="relNodeId != null">
+        #{relNodeId,jdbcType=BIGINT},
+      </if>
+      <if test="relCharId != null">
+        #{relCharId,jdbcType=BIGINT},
+      </if>
+      <if test="storageLocation != null">
+        #{storageLocation,jdbcType=INTEGER},
+      </if>
+      <if test="objectFile != null">
+        #{objectFile,jdbcType=VARCHAR},
+      </if>
+      <if test="objectState != null">
+        #{objectState,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateOper != null">
+        #{lastUpdateOper,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createOper != null">
+        #{createOper,jdbcType=VARCHAR},
+      </if>
+      <if test="objectData != null">
+        #{objectData,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yatop.lambda.base.model.WfJsonObjectExample" resultType="java.lang.Integer">
+    select count(*) from wf_json_object
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update wf_json_object
+    <set>
+      <if test="record.objectId != null">
+        OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.objectName != null">
+        OBJECT_NAME = #{record.objectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.objectyType != null">
+        OBJECTY_TYPE = #{record.objectyType,jdbcType=INTEGER},
+      </if>
+      <if test="record.objectSrc != null">
+        OBJECT_SRC = #{record.objectSrc,jdbcType=INTEGER},
+      </if>
+      <if test="record.ownerProjectId != null">
+        OWNER_PROJECT_ID = #{record.ownerProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.relFlowId != null">
+        REL_FLOW_ID = #{record.relFlowId,jdbcType=BIGINT},
+      </if>
+      <if test="record.relSnapshotVersion != null">
+        REL_SNAPSHOT_VERSION = #{record.relSnapshotVersion,jdbcType=BIGINT},
+      </if>
+      <if test="record.relJobId != null">
+        REL_JOB_ID = #{record.relJobId,jdbcType=BIGINT},
+      </if>
+      <if test="record.relNodeId != null">
+        REL_NODE_ID = #{record.relNodeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.relCharId != null">
+        REL_CHAR_ID = #{record.relCharId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storageLocation != null">
+        STORAGE_LOCATION = #{record.storageLocation,jdbcType=INTEGER},
+      </if>
+      <if test="record.objectFile != null">
+        OBJECT_FILE = #{record.objectFile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.objectState != null">
+        OBJECT_STATE = #{record.objectState,jdbcType=INTEGER},
+      </if>
+      <if test="record.description != null">
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastUpdateTime != null">
+        LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastUpdateOper != null">
+        LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createOper != null">
+        CREATE_OPER = #{record.createOper,jdbcType=VARCHAR},
+      </if>
+      <if test="record.objectData != null">
+        OBJECT_DATA = #{record.objectData,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update wf_json_object
+    set OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      OBJECT_NAME = #{record.objectName,jdbcType=VARCHAR},
+      OBJECTY_TYPE = #{record.objectyType,jdbcType=INTEGER},
+      OBJECT_SRC = #{record.objectSrc,jdbcType=INTEGER},
+      OWNER_PROJECT_ID = #{record.ownerProjectId,jdbcType=BIGINT},
+      REL_FLOW_ID = #{record.relFlowId,jdbcType=BIGINT},
+      REL_SNAPSHOT_VERSION = #{record.relSnapshotVersion,jdbcType=BIGINT},
+      REL_JOB_ID = #{record.relJobId,jdbcType=BIGINT},
+      REL_NODE_ID = #{record.relNodeId,jdbcType=BIGINT},
+      REL_CHAR_ID = #{record.relCharId,jdbcType=BIGINT},
+      STORAGE_LOCATION = #{record.storageLocation,jdbcType=INTEGER},
+      OBJECT_FILE = #{record.objectFile,jdbcType=VARCHAR},
+      OBJECT_STATE = #{record.objectState,jdbcType=INTEGER},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=INTEGER},
+      LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
+      LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      CREATE_OPER = #{record.createOper,jdbcType=VARCHAR},
+      OBJECT_DATA = #{record.objectData,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update wf_json_object
+    set OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      OBJECT_NAME = #{record.objectName,jdbcType=VARCHAR},
+      OBJECTY_TYPE = #{record.objectyType,jdbcType=INTEGER},
+      OBJECT_SRC = #{record.objectSrc,jdbcType=INTEGER},
+      OWNER_PROJECT_ID = #{record.ownerProjectId,jdbcType=BIGINT},
+      REL_FLOW_ID = #{record.relFlowId,jdbcType=BIGINT},
+      REL_SNAPSHOT_VERSION = #{record.relSnapshotVersion,jdbcType=BIGINT},
+      REL_JOB_ID = #{record.relJobId,jdbcType=BIGINT},
+      REL_NODE_ID = #{record.relNodeId,jdbcType=BIGINT},
+      REL_CHAR_ID = #{record.relCharId,jdbcType=BIGINT},
+      STORAGE_LOCATION = #{record.storageLocation,jdbcType=INTEGER},
+      OBJECT_FILE = #{record.objectFile,jdbcType=VARCHAR},
+      OBJECT_STATE = #{record.objectState,jdbcType=INTEGER},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=INTEGER},
+      LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
+      LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      CREATE_OPER = #{record.createOper,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yatop.lambda.base.model.WfJsonObject">
+    update wf_json_object
+    <set>
+      <if test="objectName != null">
+        OBJECT_NAME = #{objectName,jdbcType=VARCHAR},
+      </if>
+      <if test="objectyType != null">
+        OBJECTY_TYPE = #{objectyType,jdbcType=INTEGER},
+      </if>
+      <if test="objectSrc != null">
+        OBJECT_SRC = #{objectSrc,jdbcType=INTEGER},
+      </if>
+      <if test="ownerProjectId != null">
+        OWNER_PROJECT_ID = #{ownerProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="relFlowId != null">
+        REL_FLOW_ID = #{relFlowId,jdbcType=BIGINT},
+      </if>
+      <if test="relSnapshotVersion != null">
+        REL_SNAPSHOT_VERSION = #{relSnapshotVersion,jdbcType=BIGINT},
+      </if>
+      <if test="relJobId != null">
+        REL_JOB_ID = #{relJobId,jdbcType=BIGINT},
+      </if>
+      <if test="relNodeId != null">
+        REL_NODE_ID = #{relNodeId,jdbcType=BIGINT},
+      </if>
+      <if test="relCharId != null">
+        REL_CHAR_ID = #{relCharId,jdbcType=BIGINT},
+      </if>
+      <if test="storageLocation != null">
+        STORAGE_LOCATION = #{storageLocation,jdbcType=INTEGER},
+      </if>
+      <if test="objectFile != null">
+        OBJECT_FILE = #{objectFile,jdbcType=VARCHAR},
+      </if>
+      <if test="objectState != null">
+        OBJECT_STATE = #{objectState,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="lastUpdateTime != null">
+        LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateOper != null">
+        LAST_UPDATE_OPER = #{lastUpdateOper,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createOper != null">
+        CREATE_OPER = #{createOper,jdbcType=VARCHAR},
+      </if>
+      <if test="objectData != null">
+        OBJECT_DATA = #{objectData,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yatop.lambda.base.model.WfJsonObject">
+    update wf_json_object
+    set OBJECT_NAME = #{objectName,jdbcType=VARCHAR},
+      OBJECTY_TYPE = #{objectyType,jdbcType=INTEGER},
+      OBJECT_SRC = #{objectSrc,jdbcType=INTEGER},
+      OWNER_PROJECT_ID = #{ownerProjectId,jdbcType=BIGINT},
+      REL_FLOW_ID = #{relFlowId,jdbcType=BIGINT},
+      REL_SNAPSHOT_VERSION = #{relSnapshotVersion,jdbcType=BIGINT},
+      REL_JOB_ID = #{relJobId,jdbcType=BIGINT},
+      REL_NODE_ID = #{relNodeId,jdbcType=BIGINT},
+      REL_CHAR_ID = #{relCharId,jdbcType=BIGINT},
+      STORAGE_LOCATION = #{storageLocation,jdbcType=INTEGER},
+      OBJECT_FILE = #{objectFile,jdbcType=VARCHAR},
+      OBJECT_STATE = #{objectState,jdbcType=INTEGER},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=INTEGER},
+      LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      LAST_UPDATE_OPER = #{lastUpdateOper,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_OPER = #{createOper,jdbcType=VARCHAR},
+      OBJECT_DATA = #{objectData,jdbcType=LONGVARCHAR}
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yatop.lambda.base.model.WfJsonObject">
+    update wf_json_object
+    set OBJECT_NAME = #{objectName,jdbcType=VARCHAR},
+      OBJECTY_TYPE = #{objectyType,jdbcType=INTEGER},
+      OBJECT_SRC = #{objectSrc,jdbcType=INTEGER},
+      OWNER_PROJECT_ID = #{ownerProjectId,jdbcType=BIGINT},
+      REL_FLOW_ID = #{relFlowId,jdbcType=BIGINT},
+      REL_SNAPSHOT_VERSION = #{relSnapshotVersion,jdbcType=BIGINT},
+      REL_JOB_ID = #{relJobId,jdbcType=BIGINT},
+      REL_NODE_ID = #{relNodeId,jdbcType=BIGINT},
+      REL_CHAR_ID = #{relCharId,jdbcType=BIGINT},
+      STORAGE_LOCATION = #{storageLocation,jdbcType=INTEGER},
+      OBJECT_FILE = #{objectFile,jdbcType=VARCHAR},
+      OBJECT_STATE = #{objectState,jdbcType=INTEGER},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=INTEGER},
+      LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      LAST_UPDATE_OPER = #{lastUpdateOper,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_OPER = #{createOper,jdbcType=VARCHAR}
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.WfJsonObject">
+    <id column="OBJECT_ID" jdbcType="BIGINT" property="objectId" />
+    <result column="OBJECT_NAME" jdbcType="VARCHAR" property="objectName" />
+    <result column="OBJECTY_TYPE" jdbcType="INTEGER" property="objectyType" />
+    <result column="OBJECT_SRC" jdbcType="INTEGER" property="objectSrc" />
+    <result column="OWNER_PROJECT_ID" jdbcType="BIGINT" property="ownerProjectId" />
+    <result column="REL_FLOW_ID" jdbcType="BIGINT" property="relFlowId" />
+    <result column="REL_SNAPSHOT_VERSION" jdbcType="BIGINT" property="relSnapshotVersion" />
+    <result column="REL_JOB_ID" jdbcType="BIGINT" property="relJobId" />
+    <result column="REL_NODE_ID" jdbcType="BIGINT" property="relNodeId" />
+    <result column="REL_CHAR_ID" jdbcType="BIGINT" property="relCharId" />
+    <result column="STORAGE_LOCATION" jdbcType="INTEGER" property="storageLocation" />
+    <result column="OBJECT_FILE" jdbcType="VARCHAR" property="objectFile" />
+    <result column="OBJECT_STATE" jdbcType="INTEGER" property="objectState" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="LAST_UPDATE_TIME" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="LAST_UPDATE_OPER" jdbcType="VARCHAR" property="lastUpdateOper" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_OPER" jdbcType="VARCHAR" property="createOper" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yatop.lambda.base.model.WfJsonObject">
+    <result column="OBJECT_DATA" jdbcType="LONGVARCHAR" property="objectData" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    OBJECT_ID, OBJECT_NAME, OBJECTY_TYPE, OBJECT_SRC, OWNER_PROJECT_ID, REL_FLOW_ID, 
+    REL_SNAPSHOT_VERSION, REL_JOB_ID, REL_NODE_ID, REL_CHAR_ID, STORAGE_LOCATION, OBJECT_FILE, 
+    OBJECT_STATE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, 
+    CREATE_OPER
+  </sql>
+  <sql id="Blob_Column_List">
+    OBJECT_DATA
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.yatop.lambda.base.model.WfJsonObjectExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from wf_json_object
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.yatop.lambda.base.model.WfJsonObjectExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from wf_json_object
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <include refid="MysqlSuffix" />
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from wf_json_object
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from wf_json_object
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yatop.lambda.base.model.WfJsonObjectExample">
+    delete from wf_json_object
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yatop.lambda.base.model.WfJsonObject">
+    insert into wf_json_object (OBJECT_ID, OBJECT_NAME, OBJECTY_TYPE, 
+      OBJECT_SRC, OWNER_PROJECT_ID, REL_FLOW_ID, 
+      REL_SNAPSHOT_VERSION, REL_JOB_ID, REL_NODE_ID, 
+      REL_CHAR_ID, STORAGE_LOCATION, OBJECT_FILE, 
+      OBJECT_STATE, DESCRIPTION, STATUS, 
+      LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, 
+      CREATE_OPER, OBJECT_DATA)
+    values (#{objectId,jdbcType=BIGINT}, #{objectName,jdbcType=VARCHAR}, #{objectyType,jdbcType=INTEGER}, 
+      #{objectSrc,jdbcType=INTEGER}, #{ownerProjectId,jdbcType=BIGINT}, #{relFlowId,jdbcType=BIGINT}, 
+      #{relSnapshotVersion,jdbcType=BIGINT}, #{relJobId,jdbcType=BIGINT}, #{relNodeId,jdbcType=BIGINT}, 
+      #{relCharId,jdbcType=BIGINT}, #{storageLocation,jdbcType=INTEGER}, #{objectFile,jdbcType=VARCHAR}, 
+      #{objectState,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{lastUpdateOper,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createOper,jdbcType=VARCHAR}, #{objectData,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yatop.lambda.base.model.WfJsonObject">
+    insert into wf_json_object
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objectId != null">
+        OBJECT_ID,
+      </if>
+      <if test="objectName != null">
+        OBJECT_NAME,
+      </if>
+      <if test="objectyType != null">
+        OBJECTY_TYPE,
+      </if>
+      <if test="objectSrc != null">
+        OBJECT_SRC,
+      </if>
+      <if test="ownerProjectId != null">
+        OWNER_PROJECT_ID,
+      </if>
+      <if test="relFlowId != null">
+        REL_FLOW_ID,
+      </if>
+      <if test="relSnapshotVersion != null">
+        REL_SNAPSHOT_VERSION,
+      </if>
+      <if test="relJobId != null">
+        REL_JOB_ID,
+      </if>
+      <if test="relNodeId != null">
+        REL_NODE_ID,
+      </if>
+      <if test="relCharId != null">
+        REL_CHAR_ID,
+      </if>
+      <if test="storageLocation != null">
+        STORAGE_LOCATION,
+      </if>
+      <if test="objectFile != null">
+        OBJECT_FILE,
+      </if>
+      <if test="objectState != null">
+        OBJECT_STATE,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="lastUpdateTime != null">
+        LAST_UPDATE_TIME,
+      </if>
+      <if test="lastUpdateOper != null">
+        LAST_UPDATE_OPER,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="createOper != null">
+        CREATE_OPER,
+      </if>
+      <if test="objectData != null">
+        OBJECT_DATA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objectId != null">
+        #{objectId,jdbcType=BIGINT},
+      </if>
+      <if test="objectName != null">
+        #{objectName,jdbcType=VARCHAR},
+      </if>
+      <if test="objectyType != null">
+        #{objectyType,jdbcType=INTEGER},
+      </if>
+      <if test="objectSrc != null">
+        #{objectSrc,jdbcType=INTEGER},
+      </if>
+      <if test="ownerProjectId != null">
+        #{ownerProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="relFlowId != null">
+        #{relFlowId,jdbcType=BIGINT},
+      </if>
+      <if test="relSnapshotVersion != null">
+        #{relSnapshotVersion,jdbcType=BIGINT},
+      </if>
+      <if test="relJobId != null">
+        #{relJobId,jdbcType=BIGINT},
+      </if>
+      <if test="relNodeId != null">
+        #{relNodeId,jdbcType=BIGINT},
+      </if>
+      <if test="relCharId != null">
+        #{relCharId,jdbcType=BIGINT},
+      </if>
+      <if test="storageLocation != null">
+        #{storageLocation,jdbcType=INTEGER},
+      </if>
+      <if test="objectFile != null">
+        #{objectFile,jdbcType=VARCHAR},
+      </if>
+      <if test="objectState != null">
+        #{objectState,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateOper != null">
+        #{lastUpdateOper,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createOper != null">
+        #{createOper,jdbcType=VARCHAR},
+      </if>
+      <if test="objectData != null">
+        #{objectData,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yatop.lambda.base.model.WfJsonObjectExample" resultType="java.lang.Integer">
+    select count(*) from wf_json_object
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update wf_json_object
+    <set>
+      <if test="record.objectId != null">
+        OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.objectName != null">
+        OBJECT_NAME = #{record.objectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.objectyType != null">
+        OBJECTY_TYPE = #{record.objectyType,jdbcType=INTEGER},
+      </if>
+      <if test="record.objectSrc != null">
+        OBJECT_SRC = #{record.objectSrc,jdbcType=INTEGER},
+      </if>
+      <if test="record.ownerProjectId != null">
+        OWNER_PROJECT_ID = #{record.ownerProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="record.relFlowId != null">
+        REL_FLOW_ID = #{record.relFlowId,jdbcType=BIGINT},
+      </if>
+      <if test="record.relSnapshotVersion != null">
+        REL_SNAPSHOT_VERSION = #{record.relSnapshotVersion,jdbcType=BIGINT},
+      </if>
+      <if test="record.relJobId != null">
+        REL_JOB_ID = #{record.relJobId,jdbcType=BIGINT},
+      </if>
+      <if test="record.relNodeId != null">
+        REL_NODE_ID = #{record.relNodeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.relCharId != null">
+        REL_CHAR_ID = #{record.relCharId,jdbcType=BIGINT},
+      </if>
+      <if test="record.storageLocation != null">
+        STORAGE_LOCATION = #{record.storageLocation,jdbcType=INTEGER},
+      </if>
+      <if test="record.objectFile != null">
+        OBJECT_FILE = #{record.objectFile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.objectState != null">
+        OBJECT_STATE = #{record.objectState,jdbcType=INTEGER},
+      </if>
+      <if test="record.description != null">
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastUpdateTime != null">
+        LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastUpdateOper != null">
+        LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createOper != null">
+        CREATE_OPER = #{record.createOper,jdbcType=VARCHAR},
+      </if>
+      <if test="record.objectData != null">
+        OBJECT_DATA = #{record.objectData,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update wf_json_object
+    set OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      OBJECT_NAME = #{record.objectName,jdbcType=VARCHAR},
+      OBJECTY_TYPE = #{record.objectyType,jdbcType=INTEGER},
+      OBJECT_SRC = #{record.objectSrc,jdbcType=INTEGER},
+      OWNER_PROJECT_ID = #{record.ownerProjectId,jdbcType=BIGINT},
+      REL_FLOW_ID = #{record.relFlowId,jdbcType=BIGINT},
+      REL_SNAPSHOT_VERSION = #{record.relSnapshotVersion,jdbcType=BIGINT},
+      REL_JOB_ID = #{record.relJobId,jdbcType=BIGINT},
+      REL_NODE_ID = #{record.relNodeId,jdbcType=BIGINT},
+      REL_CHAR_ID = #{record.relCharId,jdbcType=BIGINT},
+      STORAGE_LOCATION = #{record.storageLocation,jdbcType=INTEGER},
+      OBJECT_FILE = #{record.objectFile,jdbcType=VARCHAR},
+      OBJECT_STATE = #{record.objectState,jdbcType=INTEGER},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=INTEGER},
+      LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
+      LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      CREATE_OPER = #{record.createOper,jdbcType=VARCHAR},
+      OBJECT_DATA = #{record.objectData,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update wf_json_object
+    set OBJECT_ID = #{record.objectId,jdbcType=BIGINT},
+      OBJECT_NAME = #{record.objectName,jdbcType=VARCHAR},
+      OBJECTY_TYPE = #{record.objectyType,jdbcType=INTEGER},
+      OBJECT_SRC = #{record.objectSrc,jdbcType=INTEGER},
+      OWNER_PROJECT_ID = #{record.ownerProjectId,jdbcType=BIGINT},
+      REL_FLOW_ID = #{record.relFlowId,jdbcType=BIGINT},
+      REL_SNAPSHOT_VERSION = #{record.relSnapshotVersion,jdbcType=BIGINT},
+      REL_JOB_ID = #{record.relJobId,jdbcType=BIGINT},
+      REL_NODE_ID = #{record.relNodeId,jdbcType=BIGINT},
+      REL_CHAR_ID = #{record.relCharId,jdbcType=BIGINT},
+      STORAGE_LOCATION = #{record.storageLocation,jdbcType=INTEGER},
+      OBJECT_FILE = #{record.objectFile,jdbcType=VARCHAR},
+      OBJECT_STATE = #{record.objectState,jdbcType=INTEGER},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=INTEGER},
+      LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
+      LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      CREATE_OPER = #{record.createOper,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yatop.lambda.base.model.WfJsonObject">
+    update wf_json_object
+    <set>
+      <if test="objectName != null">
+        OBJECT_NAME = #{objectName,jdbcType=VARCHAR},
+      </if>
+      <if test="objectyType != null">
+        OBJECTY_TYPE = #{objectyType,jdbcType=INTEGER},
+      </if>
+      <if test="objectSrc != null">
+        OBJECT_SRC = #{objectSrc,jdbcType=INTEGER},
+      </if>
+      <if test="ownerProjectId != null">
+        OWNER_PROJECT_ID = #{ownerProjectId,jdbcType=BIGINT},
+      </if>
+      <if test="relFlowId != null">
+        REL_FLOW_ID = #{relFlowId,jdbcType=BIGINT},
+      </if>
+      <if test="relSnapshotVersion != null">
+        REL_SNAPSHOT_VERSION = #{relSnapshotVersion,jdbcType=BIGINT},
+      </if>
+      <if test="relJobId != null">
+        REL_JOB_ID = #{relJobId,jdbcType=BIGINT},
+      </if>
+      <if test="relNodeId != null">
+        REL_NODE_ID = #{relNodeId,jdbcType=BIGINT},
+      </if>
+      <if test="relCharId != null">
+        REL_CHAR_ID = #{relCharId,jdbcType=BIGINT},
+      </if>
+      <if test="storageLocation != null">
+        STORAGE_LOCATION = #{storageLocation,jdbcType=INTEGER},
+      </if>
+      <if test="objectFile != null">
+        OBJECT_FILE = #{objectFile,jdbcType=VARCHAR},
+      </if>
+      <if test="objectState != null">
+        OBJECT_STATE = #{objectState,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="lastUpdateTime != null">
+        LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateOper != null">
+        LAST_UPDATE_OPER = #{lastUpdateOper,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createOper != null">
+        CREATE_OPER = #{createOper,jdbcType=VARCHAR},
+      </if>
+      <if test="objectData != null">
+        OBJECT_DATA = #{objectData,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yatop.lambda.base.model.WfJsonObject">
+    update wf_json_object
+    set OBJECT_NAME = #{objectName,jdbcType=VARCHAR},
+      OBJECTY_TYPE = #{objectyType,jdbcType=INTEGER},
+      OBJECT_SRC = #{objectSrc,jdbcType=INTEGER},
+      OWNER_PROJECT_ID = #{ownerProjectId,jdbcType=BIGINT},
+      REL_FLOW_ID = #{relFlowId,jdbcType=BIGINT},
+      REL_SNAPSHOT_VERSION = #{relSnapshotVersion,jdbcType=BIGINT},
+      REL_JOB_ID = #{relJobId,jdbcType=BIGINT},
+      REL_NODE_ID = #{relNodeId,jdbcType=BIGINT},
+      REL_CHAR_ID = #{relCharId,jdbcType=BIGINT},
+      STORAGE_LOCATION = #{storageLocation,jdbcType=INTEGER},
+      OBJECT_FILE = #{objectFile,jdbcType=VARCHAR},
+      OBJECT_STATE = #{objectState,jdbcType=INTEGER},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=INTEGER},
+      LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      LAST_UPDATE_OPER = #{lastUpdateOper,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_OPER = #{createOper,jdbcType=VARCHAR},
+      OBJECT_DATA = #{objectData,jdbcType=LONGVARCHAR}
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yatop.lambda.base.model.WfJsonObject">
+    update wf_json_object
+    set OBJECT_NAME = #{objectName,jdbcType=VARCHAR},
+      OBJECTY_TYPE = #{objectyType,jdbcType=INTEGER},
+      OBJECT_SRC = #{objectSrc,jdbcType=INTEGER},
+      OWNER_PROJECT_ID = #{ownerProjectId,jdbcType=BIGINT},
+      REL_FLOW_ID = #{relFlowId,jdbcType=BIGINT},
+      REL_SNAPSHOT_VERSION = #{relSnapshotVersion,jdbcType=BIGINT},
+      REL_JOB_ID = #{relJobId,jdbcType=BIGINT},
+      REL_NODE_ID = #{relNodeId,jdbcType=BIGINT},
+      REL_CHAR_ID = #{relCharId,jdbcType=BIGINT},
+      STORAGE_LOCATION = #{storageLocation,jdbcType=INTEGER},
+      OBJECT_FILE = #{objectFile,jdbcType=VARCHAR},
+      OBJECT_STATE = #{objectState,jdbcType=INTEGER},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=INTEGER},
+      LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      LAST_UPDATE_OPER = #{lastUpdateOper,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_OPER = #{createOper,jdbcType=VARCHAR}
+    where OBJECT_ID = #{objectId,jdbcType=BIGINT}
+  </update>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
+  <sql id="MysqlSuffix">
+    <if test="page != null">
+      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
+    </if>
+  </sql>
 </mapper>

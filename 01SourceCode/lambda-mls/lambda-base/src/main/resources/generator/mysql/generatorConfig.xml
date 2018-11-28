@@ -49,7 +49,6 @@
 
 		<table tableName="%" >
 			<property name="ignoreQualifiersAtRuntime" value="true" />
-			<!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
 		</table>
 	</context>
 </generatorConfiguration>
