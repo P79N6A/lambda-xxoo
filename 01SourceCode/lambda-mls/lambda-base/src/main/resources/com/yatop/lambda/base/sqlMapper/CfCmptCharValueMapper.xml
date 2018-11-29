@@ -1,43 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yatop.lambda.base.mapper.CfCmptCharValueMapper">
-  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.CfCmptCharValue">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yatop.lambda.base.mapper.CfCmptCharValueMapper" >
+  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.CfCmptCharValue" >
     <!--
       WARNING - @mbggenerated
     -->
-    <id column="CMPT_ID" jdbcType="VARCHAR" property="cmptId" />
-    <id column="CHAR_ID" jdbcType="VARCHAR" property="charId" />
-    <result column="IS_SYSTEM_PARAM" jdbcType="INTEGER" property="isSystemParam" />
-    <result column="CHAR_VALUE" jdbcType="VARCHAR" property="charValue" />
-    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="STATUS" jdbcType="INTEGER" property="status" />
-    <result column="LAST_UPDATE_TIME" jdbcType="TIMESTAMP" property="lastUpdateTime" />
-    <result column="LAST_UPDATE_OPER" jdbcType="VARCHAR" property="lastUpdateOper" />
-    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="CREATE_OPER" jdbcType="VARCHAR" property="createOper" />
+    <id column="CMPT_ID" property="cmptId" jdbcType="VARCHAR" />
+    <id column="CHAR_ID" property="charId" jdbcType="VARCHAR" />
+    <result column="IS_SYSTEM_PARAM" property="isSystemParam" jdbcType="INTEGER" />
+    <result column="CHAR_VALUE" property="charValue" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_UPDATE_OPER" property="lastUpdateOper" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_OPER" property="createOper" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Example_Where_Clause">
+  <sql id="Example_Where_Clause" >
     <!--
       WARNING - @mbggenerated
     -->
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -48,28 +48,28 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause">
+  <sql id="Update_By_Example_Where_Clause" >
     <!--
       WARNING - @mbggenerated
     -->
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -80,91 +80,91 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List">
+  <sql id="Base_Column_List" >
     <!--
       WARNING - @mbggenerated
     -->
     CMPT_ID, CHAR_ID, IS_SYSTEM_PARAM, CHAR_VALUE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, 
     LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
   </sql>
-  <select id="selectByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharValueExample" resultMap="BaseResultMap">
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yatop.lambda.base.model.CfCmptCharValueExample" >
     <!--
       WARNING - @mbggenerated
     -->
     select
-    <if test="distinct">
+    <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
     from cf_cmpt_char_value
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null">
+    <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
     <include refid="MysqlSuffix" />
   </select>
-  <delete id="deleteByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharValueExample">
+  <delete id="deleteByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharValueExample" >
     <!--
       WARNING - @mbggenerated
     -->
     delete from cf_cmpt_char_value
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <select id="countByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharValueExample" resultType="java.lang.Integer">
+  <select id="countByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharValueExample" resultType="java.lang.Integer" >
     <!--
       WARNING - @mbggenerated
     -->
     select count(*) from cf_cmpt_char_value
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="map" >
     <!--
       WARNING - @mbggenerated
     -->
     update cf_cmpt_char_value
-    <set>
-      <if test="record.cmptId != null">
+    <set >
+      <if test="record.cmptId != null" >
         CMPT_ID = #{record.cmptId,jdbcType=VARCHAR},
       </if>
-      <if test="record.charId != null">
+      <if test="record.charId != null" >
         CHAR_ID = #{record.charId,jdbcType=VARCHAR},
       </if>
-      <if test="record.isSystemParam != null">
+      <if test="record.isSystemParam != null" >
         IS_SYSTEM_PARAM = #{record.isSystemParam,jdbcType=INTEGER},
       </if>
-      <if test="record.charValue != null">
+      <if test="record.charValue != null" >
         CHAR_VALUE = #{record.charValue,jdbcType=VARCHAR},
       </if>
-      <if test="record.description != null">
+      <if test="record.description != null" >
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.status != null">
+      <if test="record.status != null" >
         STATUS = #{record.status,jdbcType=INTEGER},
       </if>
-      <if test="record.lastUpdateTime != null">
+      <if test="record.lastUpdateTime != null" >
         LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.lastUpdateOper != null">
+      <if test="record.lastUpdateOper != null" >
         LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
       </if>
-      <if test="record.createTime != null">
+      <if test="record.createTime != null" >
         CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.createOper != null">
+      <if test="record.createOper != null" >
         CREATE_OPER = #{record.createOper,jdbcType=VARCHAR},
       </if>
     </set>
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
+  <update id="updateByExample" parameterType="map" >
     <!--
       WARNING - @mbggenerated
     -->
@@ -179,678 +179,12 @@
       LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
       CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
       CREATE_OPER = #{record.createOper,jdbcType=VARCHAR}
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.CfCmptCharValue">
-    <id column="CMPT_ID" jdbcType="VARCHAR" property="cmptId" />
-    <id column="CHAR_ID" jdbcType="VARCHAR" property="charId" />
-    <result column="IS_SYSTEM_PARAM" jdbcType="INTEGER" property="isSystemParam" />
-    <result column="CHAR_VALUE" jdbcType="VARCHAR" property="charValue" />
-    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="STATUS" jdbcType="INTEGER" property="status" />
-    <result column="LAST_UPDATE_TIME" jdbcType="TIMESTAMP" property="lastUpdateTime" />
-    <result column="LAST_UPDATE_OPER" jdbcType="VARCHAR" property="lastUpdateOper" />
-    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="CREATE_OPER" jdbcType="VARCHAR" property="createOper" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    CMPT_ID, CHAR_ID, IS_SYSTEM_PARAM, CHAR_VALUE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, 
-    LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
-  </sql>
-  <select id="selectByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharValueExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from cf_cmpt_char_value
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-    <include refid="MysqlSuffix" />
-  </select>
-  <select id="selectByPrimaryKey" parameterType="com.yatop.lambda.base.model.CfCmptCharValueKey" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from cf_cmpt_char_value
-    where CMPT_ID = #{cmptId,jdbcType=VARCHAR}
-      and CHAR_ID = #{charId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.yatop.lambda.base.model.CfCmptCharValueKey">
-    delete from cf_cmpt_char_value
-    where CMPT_ID = #{cmptId,jdbcType=VARCHAR}
-      and CHAR_ID = #{charId,jdbcType=VARCHAR}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharValueExample">
-    delete from cf_cmpt_char_value
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.yatop.lambda.base.model.CfCmptCharValue">
-    insert into cf_cmpt_char_value (CMPT_ID, CHAR_ID, IS_SYSTEM_PARAM, 
-      CHAR_VALUE, DESCRIPTION, STATUS, 
-      LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, 
-      CREATE_OPER)
-    values (#{cmptId,jdbcType=VARCHAR}, #{charId,jdbcType=VARCHAR}, #{isSystemParam,jdbcType=INTEGER}, 
-      #{charValue,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{lastUpdateOper,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{createOper,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.yatop.lambda.base.model.CfCmptCharValue">
-    insert into cf_cmpt_char_value
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="cmptId != null">
-        CMPT_ID,
-      </if>
-      <if test="charId != null">
-        CHAR_ID,
-      </if>
-      <if test="isSystemParam != null">
-        IS_SYSTEM_PARAM,
-      </if>
-      <if test="charValue != null">
-        CHAR_VALUE,
-      </if>
-      <if test="description != null">
-        DESCRIPTION,
-      </if>
-      <if test="status != null">
-        STATUS,
-      </if>
-      <if test="lastUpdateTime != null">
-        LAST_UPDATE_TIME,
-      </if>
-      <if test="lastUpdateOper != null">
-        LAST_UPDATE_OPER,
-      </if>
-      <if test="createTime != null">
-        CREATE_TIME,
-      </if>
-      <if test="createOper != null">
-        CREATE_OPER,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="cmptId != null">
-        #{cmptId,jdbcType=VARCHAR},
-      </if>
-      <if test="charId != null">
-        #{charId,jdbcType=VARCHAR},
-      </if>
-      <if test="isSystemParam != null">
-        #{isSystemParam,jdbcType=INTEGER},
-      </if>
-      <if test="charValue != null">
-        #{charValue,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="lastUpdateTime != null">
-        #{lastUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastUpdateOper != null">
-        #{lastUpdateOper,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createOper != null">
-        #{createOper,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharValueExample" resultType="java.lang.Integer">
-    select count(*) from cf_cmpt_char_value
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update cf_cmpt_char_value
-    <set>
-      <if test="record.cmptId != null">
-        CMPT_ID = #{record.cmptId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.charId != null">
-        CHAR_ID = #{record.charId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isSystemParam != null">
-        IS_SYSTEM_PARAM = #{record.isSystemParam,jdbcType=INTEGER},
-      </if>
-      <if test="record.charValue != null">
-        CHAR_VALUE = #{record.charValue,jdbcType=VARCHAR},
-      </if>
-      <if test="record.description != null">
-        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      </if>
-      <if test="record.status != null">
-        STATUS = #{record.status,jdbcType=INTEGER},
-      </if>
-      <if test="record.lastUpdateTime != null">
-        LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.lastUpdateOper != null">
-        LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
-      </if>
-      <if test="record.createTime != null">
-        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.createOper != null">
-        CREATE_OPER = #{record.createOper,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update cf_cmpt_char_value
-    set CMPT_ID = #{record.cmptId,jdbcType=VARCHAR},
-      CHAR_ID = #{record.charId,jdbcType=VARCHAR},
-      IS_SYSTEM_PARAM = #{record.isSystemParam,jdbcType=INTEGER},
-      CHAR_VALUE = #{record.charValue,jdbcType=VARCHAR},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      STATUS = #{record.status,jdbcType=INTEGER},
-      LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
-      LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
-      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
-      CREATE_OPER = #{record.createOper,jdbcType=VARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yatop.lambda.base.model.CfCmptCharValue">
-    update cf_cmpt_char_value
-    <set>
-      <if test="isSystemParam != null">
-        IS_SYSTEM_PARAM = #{isSystemParam,jdbcType=INTEGER},
-      </if>
-      <if test="charValue != null">
-        CHAR_VALUE = #{charValue,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        DESCRIPTION = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        STATUS = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="lastUpdateTime != null">
-        LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastUpdateOper != null">
-        LAST_UPDATE_OPER = #{lastUpdateOper,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createOper != null">
-        CREATE_OPER = #{createOper,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where CMPT_ID = #{cmptId,jdbcType=VARCHAR}
-      and CHAR_ID = #{charId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yatop.lambda.base.model.CfCmptCharValue">
-    update cf_cmpt_char_value
-    set IS_SYSTEM_PARAM = #{isSystemParam,jdbcType=INTEGER},
-      CHAR_VALUE = #{charValue,jdbcType=VARCHAR},
-      DESCRIPTION = #{description,jdbcType=VARCHAR},
-      STATUS = #{status,jdbcType=INTEGER},
-      LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
-      LAST_UPDATE_OPER = #{lastUpdateOper,jdbcType=VARCHAR},
-      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      CREATE_OPER = #{createOper,jdbcType=VARCHAR}
-    where CMPT_ID = #{cmptId,jdbcType=VARCHAR}
-      and CHAR_ID = #{charId,jdbcType=VARCHAR}
-  </update>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.CfCmptCharValue">
-    <id column="CMPT_ID" jdbcType="VARCHAR" property="cmptId" />
-    <id column="CHAR_ID" jdbcType="VARCHAR" property="charId" />
-    <result column="IS_SYSTEM_PARAM" jdbcType="INTEGER" property="isSystemParam" />
-    <result column="CHAR_VALUE" jdbcType="VARCHAR" property="charValue" />
-    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="STATUS" jdbcType="INTEGER" property="status" />
-    <result column="LAST_UPDATE_TIME" jdbcType="TIMESTAMP" property="lastUpdateTime" />
-    <result column="LAST_UPDATE_OPER" jdbcType="VARCHAR" property="lastUpdateOper" />
-    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="CREATE_OPER" jdbcType="VARCHAR" property="createOper" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    CMPT_ID, CHAR_ID, IS_SYSTEM_PARAM, CHAR_VALUE, DESCRIPTION, STATUS, LAST_UPDATE_TIME, 
-    LAST_UPDATE_OPER, CREATE_TIME, CREATE_OPER
-  </sql>
-  <select id="selectByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharValueExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from cf_cmpt_char_value
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-    <include refid="MysqlSuffix" />
-  </select>
-  <select id="selectByPrimaryKey" parameterType="com.yatop.lambda.base.model.CfCmptCharValueKey" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from cf_cmpt_char_value
-    where CMPT_ID = #{cmptId,jdbcType=VARCHAR}
-      and CHAR_ID = #{charId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="com.yatop.lambda.base.model.CfCmptCharValueKey">
-    delete from cf_cmpt_char_value
-    where CMPT_ID = #{cmptId,jdbcType=VARCHAR}
-      and CHAR_ID = #{charId,jdbcType=VARCHAR}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharValueExample">
-    delete from cf_cmpt_char_value
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.yatop.lambda.base.model.CfCmptCharValue">
-    insert into cf_cmpt_char_value (CMPT_ID, CHAR_ID, IS_SYSTEM_PARAM, 
-      CHAR_VALUE, DESCRIPTION, STATUS, 
-      LAST_UPDATE_TIME, LAST_UPDATE_OPER, CREATE_TIME, 
-      CREATE_OPER)
-    values (#{cmptId,jdbcType=VARCHAR}, #{charId,jdbcType=VARCHAR}, #{isSystemParam,jdbcType=INTEGER}, 
-      #{charValue,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{lastUpdateTime,jdbcType=TIMESTAMP}, #{lastUpdateOper,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{createOper,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.yatop.lambda.base.model.CfCmptCharValue">
-    insert into cf_cmpt_char_value
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="cmptId != null">
-        CMPT_ID,
-      </if>
-      <if test="charId != null">
-        CHAR_ID,
-      </if>
-      <if test="isSystemParam != null">
-        IS_SYSTEM_PARAM,
-      </if>
-      <if test="charValue != null">
-        CHAR_VALUE,
-      </if>
-      <if test="description != null">
-        DESCRIPTION,
-      </if>
-      <if test="status != null">
-        STATUS,
-      </if>
-      <if test="lastUpdateTime != null">
-        LAST_UPDATE_TIME,
-      </if>
-      <if test="lastUpdateOper != null">
-        LAST_UPDATE_OPER,
-      </if>
-      <if test="createTime != null">
-        CREATE_TIME,
-      </if>
-      <if test="createOper != null">
-        CREATE_OPER,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="cmptId != null">
-        #{cmptId,jdbcType=VARCHAR},
-      </if>
-      <if test="charId != null">
-        #{charId,jdbcType=VARCHAR},
-      </if>
-      <if test="isSystemParam != null">
-        #{isSystemParam,jdbcType=INTEGER},
-      </if>
-      <if test="charValue != null">
-        #{charValue,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
-      <if test="lastUpdateTime != null">
-        #{lastUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastUpdateOper != null">
-        #{lastUpdateOper,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createOper != null">
-        #{createOper,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.yatop.lambda.base.model.CfCmptCharValueExample" resultType="java.lang.Integer">
-    select count(*) from cf_cmpt_char_value
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update cf_cmpt_char_value
-    <set>
-      <if test="record.cmptId != null">
-        CMPT_ID = #{record.cmptId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.charId != null">
-        CHAR_ID = #{record.charId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.isSystemParam != null">
-        IS_SYSTEM_PARAM = #{record.isSystemParam,jdbcType=INTEGER},
-      </if>
-      <if test="record.charValue != null">
-        CHAR_VALUE = #{record.charValue,jdbcType=VARCHAR},
-      </if>
-      <if test="record.description != null">
-        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      </if>
-      <if test="record.status != null">
-        STATUS = #{record.status,jdbcType=INTEGER},
-      </if>
-      <if test="record.lastUpdateTime != null">
-        LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.lastUpdateOper != null">
-        LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
-      </if>
-      <if test="record.createTime != null">
-        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.createOper != null">
-        CREATE_OPER = #{record.createOper,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update cf_cmpt_char_value
-    set CMPT_ID = #{record.cmptId,jdbcType=VARCHAR},
-      CHAR_ID = #{record.charId,jdbcType=VARCHAR},
-      IS_SYSTEM_PARAM = #{record.isSystemParam,jdbcType=INTEGER},
-      CHAR_VALUE = #{record.charValue,jdbcType=VARCHAR},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      STATUS = #{record.status,jdbcType=INTEGER},
-      LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
-      LAST_UPDATE_OPER = #{record.lastUpdateOper,jdbcType=VARCHAR},
-      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
-      CREATE_OPER = #{record.createOper,jdbcType=VARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yatop.lambda.base.model.CfCmptCharValue">
-    update cf_cmpt_char_value
-    <set>
-      <if test="isSystemParam != null">
-        IS_SYSTEM_PARAM = #{isSystemParam,jdbcType=INTEGER},
-      </if>
-      <if test="charValue != null">
-        CHAR_VALUE = #{charValue,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null">
-        DESCRIPTION = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null">
-        STATUS = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="lastUpdateTime != null">
-        LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastUpdateOper != null">
-        LAST_UPDATE_OPER = #{lastUpdateOper,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createOper != null">
-        CREATE_OPER = #{createOper,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where CMPT_ID = #{cmptId,jdbcType=VARCHAR}
-      and CHAR_ID = #{charId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.yatop.lambda.base.model.CfCmptCharValue">
-    update cf_cmpt_char_value
-    set IS_SYSTEM_PARAM = #{isSystemParam,jdbcType=INTEGER},
-      CHAR_VALUE = #{charValue,jdbcType=VARCHAR},
-      DESCRIPTION = #{description,jdbcType=VARCHAR},
-      STATUS = #{status,jdbcType=INTEGER},
-      LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},
-      LAST_UPDATE_OPER = #{lastUpdateOper,jdbcType=VARCHAR},
-      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      CREATE_OPER = #{createOper,jdbcType=VARCHAR}
-    where CMPT_ID = #{cmptId,jdbcType=VARCHAR}
-      and CHAR_ID = #{charId,jdbcType=VARCHAR}
-  </update>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
-      <![CDATA[ limit #{page.begin} , #{page.length} ]]>
-    </if>
-  </sql>
-  <sql id="MysqlSuffix">
-    <if test="page != null">
+  <sql id="MysqlSuffix" >
+    <if test="page != null" >
       <![CDATA[ limit #{page.begin} , #{page.length} ]]>
     </if>
   </sql>
