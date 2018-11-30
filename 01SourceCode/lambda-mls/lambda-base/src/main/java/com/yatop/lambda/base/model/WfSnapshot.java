@@ -11,6 +11,7 @@ public class WfSnapshot implements Serializable {
      */
     @Id
     @Column(name = "SNAPSHOT_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long snapshotId;
 
     /**

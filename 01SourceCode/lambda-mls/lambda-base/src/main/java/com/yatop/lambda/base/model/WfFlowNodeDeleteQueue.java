@@ -5,7 +5,21 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "wf_flow_node_delete_queue")
-public class WfFlowNodeDeleteQueue extends WfFlowNodeDeleteQueueKey implements Serializable {
+public class WfFlowNodeDeleteQueue implements Serializable {
+    /**
+     * 工作流ID
+     */
+    @Id
+    @Column(name = "FLOW_ID")
+    private Long flowId;
+
+    /**
+     * 节点ID
+     */
+    @Id
+    @Column(name = "NODE_ID")
+    private Long nodeId;
+
     /**
      * 删除序号
      */
@@ -31,6 +45,42 @@ public class WfFlowNodeDeleteQueue extends WfFlowNodeDeleteQueueKey implements S
     private String createOper;
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 获取工作流ID
+     *
+     * @return FLOW_ID - 工作流ID
+     */
+    public Long getFlowId() {
+        return flowId;
+    }
+
+    /**
+     * 设置工作流ID
+     *
+     * @param flowId 工作流ID
+     */
+    public void setFlowId(Long flowId) {
+        this.flowId = flowId;
+    }
+
+    /**
+     * 获取节点ID
+     *
+     * @return NODE_ID - 节点ID
+     */
+    public Long getNodeId() {
+        return nodeId;
+    }
+
+    /**
+     * 设置节点ID
+     *
+     * @param nodeId 节点ID
+     */
+    public void setNodeId(Long nodeId) {
+        this.nodeId = nodeId;
+    }
 
     /**
      * 获取删除序号

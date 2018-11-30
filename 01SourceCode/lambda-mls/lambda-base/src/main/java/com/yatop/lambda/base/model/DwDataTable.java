@@ -11,6 +11,7 @@ public class DwDataTable implements Serializable {
      */
     @Id
     @Column(name = "TABLE_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tableId;
 
     /**

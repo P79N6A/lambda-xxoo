@@ -11,6 +11,7 @@ public class WfCodeScript implements Serializable {
      */
     @Id
     @Column(name = "SCRIPT_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long scriptId;
 
     /**

@@ -11,6 +11,7 @@ public class WfFlowNode implements Serializable {
      */
     @Id
     @Column(name = "NODE_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long nodeId;
 
     /**

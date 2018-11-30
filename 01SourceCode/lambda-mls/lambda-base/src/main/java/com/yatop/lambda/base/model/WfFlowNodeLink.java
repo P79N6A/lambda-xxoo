@@ -11,6 +11,7 @@ public class WfFlowNodeLink implements Serializable {
      */
     @Id
     @Column(name = "LINK_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long linkId;
 
     /**

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yatop.lambda.base.mapper.WfModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.WfModule" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="MODULE_ID" property="moduleId" jdbcType="BIGINT" />
+    <result column="MODULE_CODE" property="moduleCode" jdbcType="VARCHAR" />
+    <result column="MODULE_NAME" property="moduleName" jdbcType="VARCHAR" />
+    <result column="CATALOG_ID" property="catalogId" jdbcType="BIGINT" />
+    <result column="SEQUENCE" property="sequence" jdbcType="INTEGER" />
+    <result column="CATEGORY" property="category" jdbcType="VARCHAR" />
+    <result column="ICON_TYPE" property="iconType" jdbcType="INTEGER" />
+    <result column="CLASS_PATH" property="classPath" jdbcType="VARCHAR" />
+    <result column="PKG_CMPT_ID" property="pkgCmptId" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_UPDATE_OPER" property="lastUpdateOper" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_OPER" property="createOper" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

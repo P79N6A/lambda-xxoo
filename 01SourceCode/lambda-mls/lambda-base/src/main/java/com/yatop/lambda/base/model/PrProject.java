@@ -11,6 +11,7 @@ public class PrProject implements Serializable {
      */
     @Id
     @Column(name = "PROJECT_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectId;
 
     /**

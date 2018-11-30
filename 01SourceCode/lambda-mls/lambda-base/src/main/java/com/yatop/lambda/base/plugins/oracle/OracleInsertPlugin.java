@@ -1,12 +1,12 @@
 package com.yatop.lambda.base.plugins.oracle;
 
-import org.mybatis.generator.api.IntrospectedTable;
+/*import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.xml.Attribute;
-import org.mybatis.generator.api.dom.xml.XmlElement;
+import org.mybatis.generator.api.dom.xml.XmlElement;*/
 
 import java.util.List;
-
+/*
 public class OracleInsertPlugin extends PluginAdapter {
 
   @Override
@@ -30,4 +30,4 @@ public class OracleInsertPlugin extends PluginAdapter {
     return super.sqlMapInsertSelectiveElementGenerated(element, introspectedTable);
   }
 
-}
+}*/

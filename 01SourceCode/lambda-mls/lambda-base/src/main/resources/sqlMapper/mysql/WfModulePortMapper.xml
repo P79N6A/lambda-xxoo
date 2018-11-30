@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yatop.lambda.base.mapper.WfModulePortMapper" >
+  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.WfModulePort" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="PORT_ID" property="portId" jdbcType="BIGINT" />
+    <result column="PORT_NAME" property="portName" jdbcType="VARCHAR" />
+    <result column="PORT_TYPE" property="portType" jdbcType="INTEGER" />
+    <result column="OWNER_MODULE_ID" property="ownerModuleId" jdbcType="BIGINT" />
+    <result column="BIND_CHAR_ID" property="bindCharId" jdbcType="VARCHAR" />
+    <result column="SEQUENCE" property="sequence" jdbcType="INTEGER" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_UPDATE_OPER" property="lastUpdateOper" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_OPER" property="createOper" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

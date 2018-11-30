@@ -11,6 +11,7 @@ public class WfFlowGlobalParameter implements Serializable {
      */
     @Id
     @Column(name = "GLOBAL_PARAM_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long globalParamId;
 
     /**

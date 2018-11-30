@@ -5,7 +5,21 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "cf_cmpt_spec_rel")
-public class CfCmptSpecRel extends CfCmptSpecRelKey implements Serializable {
+public class CfCmptSpecRel implements Serializable {
+    /**
+     * 组件ID
+     */
+    @Id
+    @Column(name = "CMPT_ID")
+    private String cmptId;
+
+    /**
+     * 组件规格类型
+     */
+    @Id
+    @Column(name = "SPEC_TYPE")
+    private Integer specType;
+
     /**
      * 规格ID
      */
@@ -51,6 +65,42 @@ public class CfCmptSpecRel extends CfCmptSpecRelKey implements Serializable {
     private String createOper;
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 获取组件ID
+     *
+     * @return CMPT_ID - 组件ID
+     */
+    public String getCmptId() {
+        return cmptId;
+    }
+
+    /**
+     * 设置组件ID
+     *
+     * @param cmptId 组件ID
+     */
+    public void setCmptId(String cmptId) {
+        this.cmptId = cmptId == null ? null : cmptId.trim();
+    }
+
+    /**
+     * 获取组件规格类型
+     *
+     * @return SPEC_TYPE - 组件规格类型
+     */
+    public Integer getSpecType() {
+        return specType;
+    }
+
+    /**
+     * 设置组件规格类型
+     *
+     * @param specType 组件规格类型
+     */
+    public void setSpecType(Integer specType) {
+        this.specType = specType;
+    }
 
     /**
      * 获取规格ID

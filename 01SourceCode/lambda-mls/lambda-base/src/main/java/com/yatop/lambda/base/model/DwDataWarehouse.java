@@ -11,6 +11,7 @@ public class DwDataWarehouse implements Serializable {
      */
     @Id
     @Column(name = "DW_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dwId;
 
     /**

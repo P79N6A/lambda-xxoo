@@ -11,6 +11,7 @@ public class WfJsonObject implements Serializable {
      */
     @Id
     @Column(name = "OBJECT_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long objectId;
 
     /**

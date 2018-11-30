@@ -11,6 +11,7 @@ public class WfFlow implements Serializable {
      */
     @Id
     @Column(name = "FLOW_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long flowId;
 
     /**

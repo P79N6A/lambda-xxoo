@@ -9,6 +9,7 @@ package com.yatop.lambda.base.utils;
  * @since 1.0.0
  *
  */
+/*
 public class Page {
 	
 	// 分页查询开始记录位置
@@ -83,4 +84,4 @@ public class Page {
 	public void setTotal(final int total) {
 		this.total = total;
 	}
-}
+}*/

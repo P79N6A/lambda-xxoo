@@ -1,6 +1,6 @@
 package com.yatop.lambda.base.plugins.mysql;
 
-import org.mybatis.generator.api.CommentGenerator;
+/*import org.mybatis.generator.api.CommentGenerator;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.ShellRunner;
@@ -8,10 +8,10 @@ import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.TextElement;
-import org.mybatis.generator.api.dom.xml.XmlElement;
+import org.mybatis.generator.api.dom.xml.XmlElement;*/
 
 import java.util.List;
-
+/*
 public class PaginationPlugin extends PluginAdapter {
 
   private final static FullyQualifiedJavaType TYPE =
@@ -89,4 +89,4 @@ public class PaginationPlugin extends PluginAdapter {
     generate();
   }
 
-}
+}*/

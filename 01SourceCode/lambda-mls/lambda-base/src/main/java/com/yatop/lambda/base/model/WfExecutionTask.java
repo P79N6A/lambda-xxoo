@@ -11,6 +11,7 @@ public class WfExecutionTask implements Serializable {
      */
     @Id
     @Column(name = "TASK_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
 
     /**

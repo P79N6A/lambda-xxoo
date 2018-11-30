@@ -11,6 +11,7 @@ public class EmExperiment implements Serializable {
      */
     @Id
     @Column(name = "EXPERIMENT_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long experimentId;
 
     /**

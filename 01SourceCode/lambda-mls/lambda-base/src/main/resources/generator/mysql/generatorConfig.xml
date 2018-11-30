@@ -4,7 +4,7 @@
 		"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 	<properties resource="./generator/mysql/generator.properties" />
-	<context id="lambda-mls" targetRuntime="MyBatis3">
+	<context id="lambda-mls" targetRuntime="MyBatis3Simple" defaultModelType="flat">
 		<property name="beginningDelimiter" value="`"/>
 		<property name="endingDelimiter" value="`"/>
 
@@ -15,11 +15,11 @@
 		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
 		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
 		<plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />
-		<plugin type="org.mybatis.generator.plugins.MapperConfigPlugin">
-			<property name="targetPackage" value="mybatis" />
+<!--		<plugin type="org.mybatis.generator.plugins.MapperConfigPlugin">
 			<property name="targetProject" value="./src/main/resources" />
-		</plugin>
-		<plugin type="com.yatop.lambda.base.plugins.mysql.PaginationPlugin"/>
+			<property name="targetPackage" value="mybatis/mysql" />
+		</plugin>-->
+		<!--<plugin type="com.yatop.lambda.base.plugins.mysql.PaginationPlugin"/>-->
 
 		<commentGenerator>
 			<property name="suppressDate" value="true" />
@@ -36,7 +36,7 @@
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 
-		<sqlMapGenerator targetPackage="com.yatop.lambda.base.sqlMapper"
+		<sqlMapGenerator targetPackage="sqlMapper.mysql"
 						 targetProject="./src/main/resources">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
@@ -49,6 +49,63 @@
 
 		<table tableName="%" >
 			<property name="ignoreQualifiersAtRuntime" value="true" />
+		</table>
+		<table tableName="DW_DATA_TABLE" >
+			<generatedKey column="TABLE_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="DW_DATA_WAREHOUSE" >
+			<generatedKey column="DW_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="EM_EXPERIMENT" >
+			<generatedKey column="EXPERIMENT_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="EM_EXPERIMENT" >
+			<generatedKey column="EXPERIMENT_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="EM_EXPERIMENT_TEMPLATE" >
+			<generatedKey column="TEMPLATE_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="MW_MODEL" >
+			<generatedKey column="MODEL_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="MW_MODEL_WAREHOUSE" >
+			<generatedKey column="MW_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="PR_PROJECT" >
+			<generatedKey column="PROJECT_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="SYS_PARAMETER" >
+			<generatedKey column="PARAM_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="WF_CODE_SCRIPT" >
+			<generatedKey column="SCRIPT_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="WF_EXECUTION_JOB" >
+			<generatedKey column="JOB_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="WF_EXECUTION_TASK" >
+			<generatedKey column="TASK_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="WF_FLOW" >
+			<generatedKey column="FLOW_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="WF_FLOW_GLOBAL_PARAMETER" >
+			<generatedKey column="GLOBAL_PARAM_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="WF_FLOW_NODE" >
+			<generatedKey column="NODE_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="WF_FLOW_NODE_LINK" >
+			<generatedKey column="LINK_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="WF_FLOW_NODE_PORT" >
+			<generatedKey column="NODE_PORT_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="WF_JSON_OBJECT" >
+			<generatedKey column="OBJECT_ID" sqlStatement="Mysql" identity="true"/>
+		</table>
+		<table tableName="WF_SNAPSHOT" >
+			<generatedKey column="SNAPSHOT_ID" sqlStatement="Mysql" identity="true"/>
 		</table>
 	</context>
 </generatorConfiguration>

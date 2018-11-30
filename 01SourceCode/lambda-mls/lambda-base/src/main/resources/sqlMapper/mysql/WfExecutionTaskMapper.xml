@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yatop.lambda.base.mapper.WfExecutionTaskMapper">
+  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.WfExecutionTask">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="TASK_ID" jdbcType="BIGINT" property="taskId" />
+    <result column="TASK_NAME" jdbcType="VARCHAR" property="taskName" />
+    <result column="OWNER_JOB_ID" jdbcType="BIGINT" property="ownerJobId" />
+    <result column="SEQUENCE" jdbcType="INTEGER" property="sequence" />
+    <result column="REL_NODE_ID" jdbcType="BIGINT" property="relNodeId" />
+    <result column="ENGINE_TYPE" jdbcType="VARCHAR" property="engineType" />
+    <result column="EXTERNAL_ID" jdbcType="VARCHAR" property="externalId" />
+    <result column="SUBMIT_FILE" jdbcType="VARCHAR" property="submitFile" />
+    <result column="RETURN_FILE" jdbcType="VARCHAR" property="returnFile" />
+    <result column="LOG_FILE" jdbcType="VARCHAR" property="logFile" />
+    <result column="COST_TIME" jdbcType="BIGINT" property="costTime" />
+    <result column="TASK_START_TIME" jdbcType="TIMESTAMP" property="taskStartTime" />
+    <result column="TASK_END_TIME" jdbcType="TIMESTAMP" property="taskEndTime" />
+    <result column="TASK_PROGRESS" jdbcType="INTEGER" property="taskProgress" />
+    <result column="TASK_STATE" jdbcType="INTEGER" property="taskState" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="LAST_UPDATE_TIME" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="LAST_UPDATE_OPER" jdbcType="VARCHAR" property="lastUpdateOper" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_OPER" jdbcType="VARCHAR" property="createOper" />
+    <result column="TASK_CONTEXT" jdbcType="LONGVARCHAR" property="taskContext" />
+  </resultMap>
+</mapper>

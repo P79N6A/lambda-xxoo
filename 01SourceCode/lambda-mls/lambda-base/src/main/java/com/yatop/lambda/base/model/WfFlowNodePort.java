@@ -11,6 +11,7 @@ public class WfFlowNodePort implements Serializable {
      */
     @Id
     @Column(name = "NODE_PORT_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long nodePortId;
 
     /**

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yatop.lambda.base.mapper.WfSnapshotMapper">
+  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.WfSnapshot">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="SNAPSHOT_ID" jdbcType="BIGINT" property="snapshotId" />
+    <result column="SNAPSHOT_NAME" jdbcType="VARCHAR" property="snapshotName" />
+    <result column="SHAPSHOT_SRC" jdbcType="INTEGER" property="shapshotSrc" />
+    <result column="OWNER_PROJECT_ID" jdbcType="BIGINT" property="ownerProjectId" />
+    <result column="OWNER_FLOW_ID" jdbcType="BIGINT" property="ownerFlowId" />
+    <result column="SNAPSHOT_VERSION" jdbcType="BIGINT" property="snapshotVersion" />
+    <result column="SNAPSHOT_STATE" jdbcType="INTEGER" property="snapshotState" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="LAST_UPDATE_TIME" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="LAST_UPDATE_OPER" jdbcType="VARCHAR" property="lastUpdateOper" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_OPER" jdbcType="VARCHAR" property="createOper" />
+    <result column="SNAPSHOT_CONTENT" jdbcType="LONGVARCHAR" property="snapshotContent" />
+  </resultMap>
+</mapper>

@@ -11,6 +11,7 @@ public class MwModelWarehouse implements Serializable {
      */
     @Id
     @Column(name = "MW_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mwId;
 
     /**

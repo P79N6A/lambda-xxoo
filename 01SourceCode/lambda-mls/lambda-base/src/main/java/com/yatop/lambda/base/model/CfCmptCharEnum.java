@@ -5,7 +5,21 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "cf_cmpt_char_enum")
-public class CfCmptCharEnum extends CfCmptCharEnumKey implements Serializable {
+public class CfCmptCharEnum implements Serializable {
+    /**
+     * 特征ID
+     */
+    @Id
+    @Column(name = "CHAR_ID")
+    private String charId;
+
+    /**
+     * 枚举值名称
+     */
+    @Id
+    @Column(name = "ENUM_NAME")
+    private String enumName;
+
     /**
      * 枚举值
      */
@@ -63,6 +77,42 @@ public class CfCmptCharEnum extends CfCmptCharEnumKey implements Serializable {
     private String createOper;
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 获取特征ID
+     *
+     * @return CHAR_ID - 特征ID
+     */
+    public String getCharId() {
+        return charId;
+    }
+
+    /**
+     * 设置特征ID
+     *
+     * @param charId 特征ID
+     */
+    public void setCharId(String charId) {
+        this.charId = charId == null ? null : charId.trim();
+    }
+
+    /**
+     * 获取枚举值名称
+     *
+     * @return ENUM_NAME - 枚举值名称
+     */
+    public String getEnumName() {
+        return enumName;
+    }
+
+    /**
+     * 设置枚举值名称
+     *
+     * @param enumName 枚举值名称
+     */
+    public void setEnumName(String enumName) {
+        this.enumName = enumName == null ? null : enumName.trim();
+    }
 
     /**
      * 获取枚举值

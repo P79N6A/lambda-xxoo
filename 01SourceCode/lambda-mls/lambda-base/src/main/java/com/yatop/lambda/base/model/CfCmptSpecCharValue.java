@@ -5,7 +5,21 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "cf_cmpt_spec_char_value")
-public class CfCmptSpecCharValue extends CfCmptSpecCharValueKey implements Serializable {
+public class CfCmptSpecCharValue implements Serializable {
+    /**
+     * 规格ID
+     */
+    @Id
+    @Column(name = "SPEC_ID")
+    private String specId;
+
+    /**
+     * 特征ID
+     */
+    @Id
+    @Column(name = "CHAR_ID")
+    private String charId;
+
     /**
      * 特征值是否为系统参数
             0：否
@@ -59,6 +73,42 @@ public class CfCmptSpecCharValue extends CfCmptSpecCharValueKey implements Seria
     private String createOper;
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 获取规格ID
+     *
+     * @return SPEC_ID - 规格ID
+     */
+    public String getSpecId() {
+        return specId;
+    }
+
+    /**
+     * 设置规格ID
+     *
+     * @param specId 规格ID
+     */
+    public void setSpecId(String specId) {
+        this.specId = specId == null ? null : specId.trim();
+    }
+
+    /**
+     * 获取特征ID
+     *
+     * @return CHAR_ID - 特征ID
+     */
+    public String getCharId() {
+        return charId;
+    }
+
+    /**
+     * 设置特征ID
+     *
+     * @param charId 特征ID
+     */
+    public void setCharId(String charId) {
+        this.charId = charId == null ? null : charId.trim();
+    }
 
     /**
      * 获取特征值是否为系统参数

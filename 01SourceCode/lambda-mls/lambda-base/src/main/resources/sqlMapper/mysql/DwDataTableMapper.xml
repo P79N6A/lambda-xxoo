@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yatop.lambda.base.mapper.DwDataTableMapper">
+  <resultMap id="BaseResultMap" type="com.yatop.lambda.base.model.DwDataTable">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="TABLE_ID" jdbcType="BIGINT" property="tableId" />
+    <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
+    <result column="TABLE_TYPE" jdbcType="INTEGER" property="tableType" />
+    <result column="TABLE_SRC" jdbcType="INTEGER" property="tableSrc" />
+    <result column="OWNER_DW_ID" jdbcType="BIGINT" property="ownerDwId" />
+    <result column="REL_EXPERIMENT_ID" jdbcType="BIGINT" property="relExperimentId" />
+    <result column="REL_JOB_ID" jdbcType="BIGINT" property="relJobId" />
+    <result column="REL_NODE_ID" jdbcType="BIGINT" property="relNodeId" />
+    <result column="REL_CHAR_ID" jdbcType="BIGINT" property="relCharId" />
+    <result column="TABLE_COLUMNS" jdbcType="BIGINT" property="tableColumns" />
+    <result column="TABLE_ROWS" jdbcType="BIGINT" property="tableRows" />
+    <result column="DATA_FILE_TYPE" jdbcType="INTEGER" property="dataFileType" />
+    <result column="DATA_FILE_SIZE" jdbcType="BIGINT" property="dataFileSize" />
+    <result column="DATA_FILE" jdbcType="VARCHAR" property="dataFile" />
+    <result column="DATA_SUMMARY_FILE" jdbcType="VARCHAR" property="dataSummaryFile" />
+    <result column="TABLE_STATE" jdbcType="INTEGER" property="tableState" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="LAST_UPDATE_TIME" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="LAST_UPDATE_OPER" jdbcType="VARCHAR" property="lastUpdateOper" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_OPER" jdbcType="VARCHAR" property="createOper" />
+  </resultMap>
+</mapper>

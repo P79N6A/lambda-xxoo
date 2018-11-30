@@ -5,7 +5,21 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "cf_cmpt_char_type_wild")
-public class CfCmptCharTypeWild extends CfCmptCharTypeWildKey implements Serializable {
+public class CfCmptCharTypeWild implements Serializable {
+    /**
+     * 通配特征类型ID
+     */
+    @Id
+    @Column(name = "WILD_CHAR_TYPE_ID")
+    private Integer wildCharTypeId;
+
+    /**
+     * 单元特征类型ID
+     */
+    @Id
+    @Column(name = "UNIT_CHAR_TYPE_ID")
+    private Integer unitCharTypeId;
+
     /**
      * 描述
      */
@@ -45,6 +59,42 @@ public class CfCmptCharTypeWild extends CfCmptCharTypeWildKey implements Seriali
     private String createOper;
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 获取通配特征类型ID
+     *
+     * @return WILD_CHAR_TYPE_ID - 通配特征类型ID
+     */
+    public Integer getWildCharTypeId() {
+        return wildCharTypeId;
+    }
+
+    /**
+     * 设置通配特征类型ID
+     *
+     * @param wildCharTypeId 通配特征类型ID
+     */
+    public void setWildCharTypeId(Integer wildCharTypeId) {
+        this.wildCharTypeId = wildCharTypeId;
+    }
+
+    /**
+     * 获取单元特征类型ID
+     *
+     * @return UNIT_CHAR_TYPE_ID - 单元特征类型ID
+     */
+    public Integer getUnitCharTypeId() {
+        return unitCharTypeId;
+    }
+
+    /**
+     * 设置单元特征类型ID
+     *
+     * @param unitCharTypeId 单元特征类型ID
+     */
+    public void setUnitCharTypeId(Integer unitCharTypeId) {
+        this.unitCharTypeId = unitCharTypeId;
+    }
 
     /**
      * 获取描述

@@ -11,6 +11,7 @@ public class WfExecutionJob implements Serializable {
      */
     @Id
     @Column(name = "JOB_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobId;
 
     /**

@@ -40,11 +40,11 @@
             <artifactId>mybatis-spring</artifactId>
             <version>${mybatis.spring.version}</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.mybatis.generator</groupId>
             <artifactId>mybatis-generator-core</artifactId>
             <version>${mybatis.generator.core}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -56,7 +56,6 @@
             <version>${mapper.version}</version>
         </dependency>
     </dependencies>
-<!--
     <build>
         <plugins>
             <plugin>
@@ -96,5 +95,4 @@
             </plugin>
         </plugins>
     </build>
--->
 </project>

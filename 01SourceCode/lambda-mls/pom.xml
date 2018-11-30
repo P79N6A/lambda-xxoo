@@ -67,7 +67,7 @@
         <module>lambda-workflow-core</module>
         <module>lambda-workflow-engine</module>
         <module>lambda-workflow-module</module>
-        <module>lambda-studio</module>
+        <module>lambda-manager</module>
         <!-- <module>lambda-studio-ui</module> -->
         <!-- <module>lambda-open</module> -->
         <!-- <module>lambda-decision</module> -->

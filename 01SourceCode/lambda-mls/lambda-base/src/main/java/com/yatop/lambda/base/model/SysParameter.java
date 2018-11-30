@@ -11,6 +11,7 @@ public class SysParameter implements Serializable {
      */
     @Id
     @Column(name = "PARAM_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paramId;
 
     /**

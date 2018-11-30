@@ -1,14 +1,14 @@
 package com.yatop.lambda.base.plugins.oracle;
 
 
-import org.mybatis.generator.api.CommentGenerator;
+/*import org.mybatis.generator.api.CommentGenerator;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.*;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.TextElement;
-import org.mybatis.generator.api.dom.xml.XmlElement;
+import org.mybatis.generator.api.dom.xml.XmlElement;*/
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
  * @since 1.0.0
  *
  */
-public class PaginationPlugin extends PluginAdapter {
+/*public class PaginationPlugin extends PluginAdapter {
 
   private final static FullyQualifiedJavaType TYPE =
       new FullyQualifiedJavaType("com.yatop.lambda.base.utils.Page");
@@ -98,4 +98,4 @@ public class PaginationPlugin extends PluginAdapter {
     topLevelClass.addMethod(method);
   }
 
-}
+}*/
