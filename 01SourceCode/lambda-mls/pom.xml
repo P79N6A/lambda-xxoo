@@ -17,6 +17,7 @@
     <url>http://maven.apache.org</url>
 	
 	<properties>
+        <yatop.lambda.framework>1.0.0</yatop.lambda.framework>
         <yatop.lambda.base>1.0.0</yatop.lambda.base>
         <yatop.lambda.core>1.0.0</yatop.lambda.core>
         <yatop.lambda.tools>1.0.0</yatop.lambda.tools>
@@ -61,6 +62,7 @@
     </properties>
 
     <modules>
+        <module>lambda-framework</module>
         <module>lambda-base</module>
         <module>lambda-core</module>
         <module>lambda-tools</module>
@@ -68,7 +70,7 @@
         <module>lambda-workflow-engine</module>
         <module>lambda-workflow-module</module>
         <module>lambda-manager</module>
-        <!-- <module>lambda-studio-ui</module> -->
+        <!-- <module>lambda-manager-ui</module> -->
         <!-- <module>lambda-open</module> -->
         <!-- <module>lambda-decision</module> -->
         <module>lambda-cluster-adapter</module>

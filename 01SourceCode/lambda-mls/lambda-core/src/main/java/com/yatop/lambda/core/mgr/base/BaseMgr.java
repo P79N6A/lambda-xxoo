@@ -30,9 +30,6 @@ public class BaseMgr {
     protected PrProjectMemberMapper prProjectMemberMapper;
 
     @Autowired
-    protected SysParameterMapper sysParameterMapper;
-
-    @Autowired
     protected WfCodeScriptMapper wfCodeScriptMapper;
 
     @Autowired
@@ -82,4 +79,51 @@ public class BaseMgr {
 
     @Autowired
     protected WfUserFavoriteTableMapper wfUserFavoriteTableMapper;
+
+    //配置数据Mapper
+
+    @Autowired
+    protected SysParameterMapper sysParameterMapper;
+
+    @Autowired
+    protected CfCmptAlgorithmMapper cfCmptAlgorithmMapper;
+
+    @Autowired
+    protected CfCmptCharEnumMapper cfCmptCharEnumMapper;
+
+    @Autowired
+    protected CfCmptCharMapper cfCmptCharMapper;
+
+    @Autowired
+    protected CfCmptCharTypeMapper cfCmptCharTypeMapper;
+
+    @Autowired
+    protected CfCmptCharTypeWildMapper cfCmptCharTypeWildMapper;
+
+    @Autowired
+    protected CfCmptCharValueMapper cfCmptCharValueMapper;
+
+    @Autowired
+    protected CfCmptSpecCharRelMapper cfCmptSpecCharRelMapper;
+
+    @Autowired
+    protected CfCmptSpecCharValueMapper cfCmptSpecCharValueMapper;
+
+    @Autowired
+    protected CfCmptSpecMapper cfCmptSpecMapper;
+
+    @Autowired
+    protected CfCmptSpecRelMapper cfCmptSpecRelMapper;
+
+    @Autowired
+    protected CfComponentMapper cfComponentMapper;
+
+    @Autowired
+    protected WfModuleCatalogMapper wfModuleCatalogMapper;
+
+    @Autowired
+    protected WfModuleMapper wfModuleMapper;
+
+    @Autowired
+    protected WfModulePortMapper wfModulePortMapper;
 }
