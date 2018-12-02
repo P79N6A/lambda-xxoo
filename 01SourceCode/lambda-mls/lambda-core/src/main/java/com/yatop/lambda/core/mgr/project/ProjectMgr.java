@@ -76,6 +76,7 @@ public class ProjectMgr extends BaseMgr {
      *   更新项目信息（代码、名称、临时数据过期天数、描述）
      *
      * */
+/*
     public int updateProject(PrProject prProject, String OperId) throws ProjectMgntException {
         if( DataUtil.isNull(prProject) ||
                 DataUtil.isEmpty(prProject.getProjectCode()) ||
@@ -99,6 +100,7 @@ public class ProjectMgr extends BaseMgr {
             throw new ProjectMgntException("Update project info failed.", e);
         }
     }
+*/
 
     public PrProject queryProjectById(Long projectId) throws ProjectMgntException {
         if(projectId == null)

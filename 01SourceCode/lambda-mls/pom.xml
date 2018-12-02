@@ -77,6 +77,7 @@
         <module>lambda-component</module>
         <module>lambda-open</module>
         <module>lambda-decision</module>
+        <module>lambda-mybatis-generator</module>
     </modules>
     
     <dependencies>
