@@ -27,6 +27,11 @@
             <artifactId>lambda-framework</artifactId>
             <version>${yatop.lambda.framework}</version>
         </dependency>
+        <dependency>
+            <groupId>com.yatop.lambda</groupId>
+            <artifactId>lambda-tools</artifactId>
+            <version>${yatop.lambda.tools}</version>
+        </dependency>
 
         <!-- =========================================spring================= -->
         <dependency>

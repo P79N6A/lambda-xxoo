@@ -14,6 +14,7 @@ public class LambdaException extends RuntimeException {
 	 *   H0000 ~ H9999：开放服务错误
 	 *   I0000 ~ I9999：预测服务错误
 	 *   J0000 ~ J9999：系统内部错误
+	 *   Y0000 ~ Y9999：服务请求错误（参数错误、认证失败）
 	 *   Z9999：未知错误
 	 * */
 	private String errorCode;
@@ -32,7 +33,7 @@ public class LambdaException extends RuntimeException {
     }
 
 	protected LambdaException(String errorCode, String errorMessage, String errorHint) {
-		super(errorCode + "@{" + errorHint + "}:" + errorMessage);
+		super(( errorMessage == errorHint ? (errorCode + "#" + errorMessage) : (errorCode + "#" + errorHint + "#" + errorMessage)));
 		this.errorCode = errorCode;
 		this.errorHint = errorHint;
 	}
@@ -46,7 +47,7 @@ public class LambdaException extends RuntimeException {
     }
 
     protected LambdaException(String errorCode, String errorMessage, String errorHint, Throwable e) {
-        super(errorCode + "@{" + errorHint + "}:" + errorMessage, e);
+		super(( errorMessage == errorHint ? (errorCode + "#" + errorMessage) : (errorCode + "#" + errorHint + "#" + errorMessage)), e);
 		this.errorCode = errorCode;
 		this.errorHint = errorHint;
 	}

@@ -36,7 +36,6 @@ public class MyBatisConfig {
 */
 
     @Bean("coreJdbcTemplate")
-    @Autowired
     public JdbcTemplate coreJdbcTemplate(@Qualifier("frameworkDataSource") DataSource frameworkDataSource) {
         return new JdbcTemplate(frameworkDataSource);
     }
@@ -47,7 +46,6 @@ public class MyBatisConfig {
     }
 
     @Bean("coreSqlSessionFactory")
-    @Autowired
     public SqlSessionFactory coreSqlSessionFactory(@Qualifier("frameworkDataSource") DataSource coreDataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(coreDataSource);

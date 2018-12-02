@@ -1,21 +1,22 @@
 package com.yatop.lambda.core.pagehelper;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.yatop.lambda.base.mapper.CfComponentMapper;
 import com.yatop.lambda.base.model.CfComponent;
 import com.yatop.lambda.base.model.CfComponentExample;
-import com.yatop.lambda.Application;
+import com.yatop.lambda.FramewrokApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = FramewrokApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@AutoConfigureMockMvc
 public class PageHelperTest {
 
@@ -27,6 +28,11 @@ public class PageHelperTest {
 
         PageHelper.startPage(1, 10, false);
         List<CfComponent> components =  cfComponentMapper.selectByExample(new CfComponentExample());
-        System.out.println("components: " + JSON.toJSON(components).toString());
+        System.out.println("components: " + JSON.toJSONString(JSON.toJSON(components), SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat));
+
+
+        Page page = PageHelper.startPage(2, 10, true);
+        components =  cfComponentMapper.selectByExample(new CfComponentExample());
+        System.out.println("total component count: " + page.getTotal());
     }
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-11-29 03:33:13
+Date: 2018-12-02 21:27:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -939,7 +939,7 @@ CREATE TABLE `dw_data_table` (
   PRIMARY KEY (`TABLE_ID`),
   KEY `Index_1` (`OWNER_DW_ID`,`TABLE_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_DW_ID`,`TABLE_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
 
 -- ----------------------------
 -- Records of dw_data_table
@@ -998,7 +998,7 @@ CREATE TABLE `em_experiment` (
   KEY `Index_1` (`OWNER_PROJECT_ID`,`EXPERIMENT_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`MAIN_EXPERIMENT_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='实验表，实验是工作流的外壳主体\r\n\r\n逻辑删除，主实验正常状态的预测实验唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='实验表，实验是工作流的外壳主体\r\n\r\n逻辑删除，主实验正常状态的预测实验唯一';
 
 -- ----------------------------
 -- Records of em_experiment
@@ -1023,7 +1023,7 @@ CREATE TABLE `em_experiment_template` (
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`TEMPLATE_ID`),
   KEY `Index_1` (`SEQUENCE`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='实验模版表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='实验模版表';
 
 -- ----------------------------
 -- Records of em_experiment_template
@@ -1059,7 +1059,7 @@ CREATE TABLE `mw_model` (
   PRIMARY KEY (`MODEL_ID`),
   KEY `Index_1` (`OWNER_MW_ID`,`MODEL_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_MW_ID`,`MODEL_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除，同一库下正常状态的名称唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除，同一库下正常状态的名称唯一';
 
 -- ----------------------------
 -- Records of mw_model
@@ -1087,7 +1087,7 @@ CREATE TABLE `mw_model_warehouse` (
   UNIQUE KEY `Index_1` (`MW_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`MW_TYPE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`MW_CODE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8 COMMENT='模型库表，对模型做分组，辅助项目权限隔离\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型库表，对模型做分组，辅助项目权限隔离\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
 
 -- ----------------------------
 -- Records of mw_model_warehouse
@@ -1113,7 +1113,7 @@ CREATE TABLE `pr_project` (
   PRIMARY KEY (`PROJECT_ID`),
   UNIQUE KEY `Index_1` (`PROJECT_CODE`,`STATUS`,`CREATE_TIME`),
   UNIQUE KEY `Index_2` (`PROJECT_NAME`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8 COMMENT='项目表\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目表\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
 
 -- ----------------------------
 -- Records of pr_project
@@ -1160,14 +1160,15 @@ CREATE TABLE `sys_parameter` (
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`PARAM_ID`),
   UNIQUE KEY `Index_1` (`PARAM_CODE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=100052 DEFAULT CHARSET=utf8 COMMENT='系统参数表\r\n\r\n逻辑删除，正常状态的代码唯一';
+) ENGINE=InnoDB AUTO_INCREMENT=7018 DEFAULT CHARSET=utf8 COMMENT='系统参数表\r\n\r\n逻辑删除，正常状态的代码唯一';
 
 -- ----------------------------
 -- Records of sys_parameter
 -- ----------------------------
-INSERT INTO `sys_parameter` VALUES ('6001', 'WK_FLOW_MAX_NODES', '工作流引擎 | 工作流正常节点最大数量', '7', '-1', '512', '超过上限，限制新增节点', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
-INSERT INTO `sys_parameter` VALUES ('6002', 'WK_FLOW_SCHEMA_MAX_FIELDS', '工作流引擎 | 数据输出端口最大字段数量', '7', '-1', '512', '超过上限，中断schema分析', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
-INSERT INTO `sys_parameter` VALUES ('7001', 'CF_HDFS_SITE_defaultFS', '计算集群 | HDFS默认文件系统', '7', '-1', 'hdfs://10.10.100.200:9000', 'namenode单点部署设为hdfs://IP:PORT，HA部署设为hdfs://CLUSTER_NAME', '0', '2017-05-19 15:09:42', 'admin', '2017-05-19 15:09:42', 'admin');
+INSERT INTO `sys_parameter` VALUES ('2001', 'PR_CACHE_DATA_EXPIRE_DAYS', '项目管理 | 临时缓存数据表过期天数', '2', '-1', '21', '系统级默认过期天数配置，不做自动清理可配置为-1', '0', '2017-05-19 15:09:42', 'admin', '2017-05-19 15:09:42', 'admin');
+INSERT INTO `sys_parameter` VALUES ('6001', 'WK_FLOW_MAX_NODES', '工作流引擎 | 工作流正常节点最大数量', '6', '-1', '512', '超过上限，限制新增节点', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
+INSERT INTO `sys_parameter` VALUES ('6002', 'WK_FLOW_SCHEMA_MAX_FIELDS', '工作流引擎 | 数据输出端口最大字段数量', '6', '-1', null, '超过上限，中断schema分析', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
+INSERT INTO `sys_parameter` VALUES ('7001', 'CF_HDFS_SITE_defaultFS', '计算集群 | HDFS默认文件系统', '7', '-1', null, 'namenode单点部署设为hdfs://IP:PORT，HA部署设为hdfs://CLUSTER_NAME', '0', '2017-05-19 15:09:42', 'admin', '2017-05-19 15:09:42', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7002', 'CF_HDFS_WORK_ROOT', '计算集群 | HDFS工作根目录', '7', '-1', '/user/lambda_mls', '根据hdfs用户名调整，完整拼接路径 e.g. ${HDFS_SITE}/user/lambda_mls', '0', '2017-05-19 15:26:23', 'admin', '2017-05-19 15:26:23', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7003', 'CF_LOCAL_WORK_ROOT', '计算集群 | 本地工作根目录', '7', '-1', '/var/lambda_mls', '根据实际磁盘挂载调整', '0', '2017-05-19 15:26:23', 'admin', '2017-05-19 15:26:23', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7004', 'CF_JOB_FILE_DIR_NAME', '计算集群 | 作业文件存放目录名', '7', '-1', 'proc', '切勿随意调整，完整拼接路径e.g. ${WORK_ROOT}/proc', '0', '2017-05-19 15:42:06', 'admin', '2017-05-19 15:42:06', 'admin');
@@ -1176,7 +1177,7 @@ INSERT INTO `sys_parameter` VALUES ('7006', 'CF_MODEL_FILE_DIR_NAME', '计算集
 INSERT INTO `sys_parameter` VALUES ('7007', 'CF_EXP_FILE_DIR_NAME', '计算集群 | 实验文件存放目录名', '7', '-1', 'exp_data', '切勿随意调整，完整拼接路径e.g. ${WORK_ROOT}/exp_data，目前仅本地', '0', '2017-05-19 15:46:12', 'admin', '2017-05-19 15:46:12', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7008', 'CF_LIB_FILE_DIR_NAME', '计算集群 | 库文件存放目录名', '7', '-1', 'lib', '切勿随意调整，完整拼接路径e.g. ${WORK_ROOT}/lib，启动时自动同步本地到hdfs上，先清理再上传', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7010', 'CF_HDFS_COMPONENT_JAR_DIR', '计算集群 | hdfs scala组件jar包目录', '7', '-1', '/user/lambda_mls/lib/spark', '根据hdfs用户名调整，完整拼接路径 e.g. ${HDFS_SITE}/user/lambda/lib/scala', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
-INSERT INTO `sys_parameter` VALUES ('7011', 'CF_HDFS_COMPONENTT_JAR_FILE', '计算集群 | hdfs scala组件jar包文件名', '7', '-1', 'lambda-component-scala-1.0.0.jar', 'scala组件暂时只打成一个jar包，后续有需要再拆分', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
+INSERT INTO `sys_parameter` VALUES ('7011', 'CF_HDFS_COMPONENTT_JAR_FILE', '计算集群 | hdfs scala组件jar包文件名', '7', '-1', 'lambda-component-1.0.0.jar', 'scala组件暂时只打成一个jar包，后续有需要再拆分', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7012', 'CF_SPARK_EXECUTOR_NUMBER', '计算集群 | spark executor数量', '7', '-1', '2', '灵活调整组件规格默认配置，覆盖组件特征上的默认值', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7013', 'CF_SPARK_EXECUTOR_CORES', '计算集群 | spark executor线程数量', '7', '-1', '8', '灵活调整组件规格默认配置，覆盖组件特征上的默认值', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7014', 'CF_SPARK_EXECUTOR_MEMORY', '计算集群 | spark executor内存大小', '7', '-1', '2048', '灵活调整组件规格默认配置，覆盖组件特征上的默认值', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
@@ -1209,7 +1210,7 @@ CREATE TABLE `wf_code_script` (
   PRIMARY KEY (`SCRIPT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`SCRIPT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
 
 -- ----------------------------
 -- Records of wf_code_script
@@ -1244,7 +1245,7 @@ CREATE TABLE `wf_execution_job` (
   PRIMARY KEY (`JOB_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
 
 -- ----------------------------
 -- Records of wf_execution_job
@@ -1305,7 +1306,7 @@ CREATE TABLE `wf_execution_task` (
   UNIQUE KEY `Index_1` (`OWNER_JOB_ID`,`REL_NODE_ID`),
   KEY `Index_2` (`OWNER_JOB_ID`,`SEQUENCE`),
   KEY `Index_3` (`OWNER_JOB_ID`,`TASK_STATE`,`SEQUENCE`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
 
 -- ----------------------------
 -- Records of wf_execution_task
@@ -1362,7 +1363,7 @@ CREATE TABLE `wf_flow` (
   UNIQUE KEY `Index_1` (`OWNER_EXPERIMENT_ID`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_PROJECT_ID`,`STATUS`,`FLOW_STATE`,`LAST_UPDATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流表，记录当前的实验状态，由一系列子表记录实验画布上节点和边的图形信息，以及节点参数内容和输出内容\r\n\r\n                            ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流表，记录当前的实验状态，由一系列子表记录实验画布上节点和边的图形信息，以及节点参数内容和输出内容\r\n\r\n                            ';
 
 -- ----------------------------
 -- Records of wf_flow
@@ -1389,7 +1390,7 @@ CREATE TABLE `wf_flow_global_parameter` (
   KEY `Index_1` (`REL_NODE_ID`,`REL_CHAR_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`REL_FLOW_ID`,`GLOBAL_PARAM_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流全局参数表，用于定时调度任务和开放服务API，指定哪些参数可以暴露到外部，从而调用方可以根据作业需要动态设置工作流';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流全局参数表，用于定时调度任务和开放服务API，指定哪些参数可以暴露到外部，从而调用方可以根据作业需要动态设置工作流';
 
 -- ----------------------------
 -- Records of wf_flow_global_parameter
@@ -1421,7 +1422,7 @@ CREATE TABLE `wf_flow_node` (
   KEY `Index_1` (`OWNER_FLOW_ID`,`REF_MODULE_ID`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`REF_MODULE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
 
 -- ----------------------------
 -- Records of wf_flow_node
@@ -1466,7 +1467,7 @@ CREATE TABLE `wf_flow_node_link` (
   KEY `Index_1` (`SRC_PORT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`DST_PORT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点链接表\r\n\r\n逻辑删除，同一节点流入端口下正常状态的普通组件流出节点端口唯一和web服务组';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点链接表\r\n\r\n逻辑删除，同一节点流入端口下正常状态的普通组件流出节点端口唯一和web服务组';
 
 -- ----------------------------
 -- Records of wf_flow_node_link
@@ -1516,7 +1517,7 @@ CREATE TABLE `wf_flow_node_port` (
   PRIMARY KEY (`NODE_PORT_ID`),
   UNIQUE KEY `Index_1` (`OWNER_NODE_ID`,`REF_PORT_ID`),
   KEY `Index_2` (`OWNER_NODE_ID`,`REF_CHAR_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点端口表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点端口表';
 
 -- ----------------------------
 -- Records of wf_flow_node_port
@@ -1571,7 +1572,7 @@ CREATE TABLE `wf_json_object` (
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`OBJECT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
 
 -- ----------------------------
 -- Records of wf_json_object
@@ -1763,7 +1764,7 @@ CREATE TABLE `wf_snapshot` (
   PRIMARY KEY (`SNAPSHOT_ID`),
   KEY `Index_1` (`OWNER_FLOW_ID`,`SHAPSHOT_SRC`,`SNAPSHOT_VERSION`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流快照表，在实验工作台创建副本和运行实验都会触发快照创建，由此实现类似checkpoint功能\r\n\r\n                                -&';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流快照表，在实验工作台创建副本和运行实验都会触发快照创建，由此实现类似checkpoint功能\r\n\r\n                                -&';
 
 -- ----------------------------
 -- Records of wf_snapshot

@@ -10,14 +10,18 @@ import java.util.Date;
 @Component
 public class SystemTimeUtil {
 
-    @Autowired
-    private DatabaseTimeMapper databaseTimeMapper;
+    static private DatabaseTimeMapper databaseTimeMapper;
 
-    public Timestamp getCurrentTimeMillis() {
+    @Autowired
+    public void setDatabaseTimeMapper(DatabaseTimeMapper databaseTimeMapper) {
+        SystemTimeUtil.databaseTimeMapper = databaseTimeMapper;
+    }
+
+    static public Timestamp getCurrentTimeMillis() {
         return databaseTimeMapper.getCurrentTimestamp();
     }
 
-    public Date getCurrentTime() {
+    static public Date getCurrentTime() {
         return databaseTimeMapper.getCurrentTime();
     }
 }
