@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-02 21:27:17
+Date: 2018-12-03 03:56:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1103,7 +1103,7 @@ CREATE TABLE `pr_project` (
   `PROJECT_NAME` varchar(200) NOT NULL COMMENT '项目名称',
   `DW_ID` bigint(20) NOT NULL COMMENT '项目数据库ID',
   `MW_ID` bigint(20) NOT NULL COMMENT '项目模型库ID',
-  `CACHE_EXIPRE_DAYS` int(11) NOT NULL DEFAULT '14' COMMENT '临时数据表过期天数，每天2点扫描清理，另外提供主动清理接口',
+  `CACHE_EXIPRE_DAYS` int(11) NOT NULL DEFAULT '14' COMMENT '临时数据表过期天数，每天2点扫描清理，另外提供主动清理接口，不做自动清理可配置为-1',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -1111,9 +1111,9 @@ CREATE TABLE `pr_project` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`PROJECT_ID`),
-  UNIQUE KEY `Index_1` (`PROJECT_CODE`,`STATUS`,`CREATE_TIME`),
-  UNIQUE KEY `Index_2` (`PROJECT_NAME`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目表\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
+  KEY `Index_1` (`PROJECT_CODE`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`PROJECT_NAME`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=10004 DEFAULT CHARSET=utf8 COMMENT='项目表\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
 
 -- ----------------------------
 -- Records of pr_project
@@ -1167,7 +1167,7 @@ CREATE TABLE `sys_parameter` (
 -- ----------------------------
 INSERT INTO `sys_parameter` VALUES ('2001', 'PR_CACHE_DATA_EXPIRE_DAYS', '项目管理 | 临时缓存数据表过期天数', '2', '-1', '21', '系统级默认过期天数配置，不做自动清理可配置为-1', '0', '2017-05-19 15:09:42', 'admin', '2017-05-19 15:09:42', 'admin');
 INSERT INTO `sys_parameter` VALUES ('6001', 'WK_FLOW_MAX_NODES', '工作流引擎 | 工作流正常节点最大数量', '6', '-1', '512', '超过上限，限制新增节点', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
-INSERT INTO `sys_parameter` VALUES ('6002', 'WK_FLOW_SCHEMA_MAX_FIELDS', '工作流引擎 | 数据输出端口最大字段数量', '6', '-1', null, '超过上限，中断schema分析', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
+INSERT INTO `sys_parameter` VALUES ('6002', 'WK_FLOW_SCHEMA_MAX_FIELDS', '工作流引擎 | 数据输出端口最大字段数量', '6', '-1', '512', '超过上限，中断schema分析', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7001', 'CF_HDFS_SITE_defaultFS', '计算集群 | HDFS默认文件系统', '7', '-1', null, 'namenode单点部署设为hdfs://IP:PORT，HA部署设为hdfs://CLUSTER_NAME', '0', '2017-05-19 15:09:42', 'admin', '2017-05-19 15:09:42', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7002', 'CF_HDFS_WORK_ROOT', '计算集群 | HDFS工作根目录', '7', '-1', '/user/lambda_mls', '根据hdfs用户名调整，完整拼接路径 e.g. ${HDFS_SITE}/user/lambda_mls', '0', '2017-05-19 15:26:23', 'admin', '2017-05-19 15:26:23', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7003', 'CF_LOCAL_WORK_ROOT', '计算集群 | 本地工作根目录', '7', '-1', '/var/lambda_mls', '根据实际磁盘挂载调整', '0', '2017-05-19 15:26:23', 'admin', '2017-05-19 15:26:23', 'admin');
