@@ -1,7 +1,6 @@
 package com.yatop.lambda.manager.exception;
 
 import com.yatop.lambda.core.exception.LambdaException;
-import com.yatop.lambda.core.exception.RequestServiceException;
 import com.yatop.lambda.manager.api.response.JsonResponse;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -72,7 +71,7 @@ public class GlobalControllerExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public Object requestParamErrorHandler(HttpServletRequest req, BindException exception) throws Exception {
-        LambdaException lambdaException = new RequestServiceException("请求参数错误", "请求参数错误", exception);
+        LambdaException lambdaException = new LambdaException("请求参数错误", "请求参数错误", exception);
         logger.warn("请求参数错误", lambdaException);
         return JsonResponse.build(lambdaException);
     }
@@ -85,11 +84,11 @@ public class GlobalControllerExceptionHandler {
         return JsonResponse.build(lambdaException);
     }
 
-    @ExceptionHandler({UnauthorizedException.class})
+/*    @ExceptionHandler({UnauthorizedException.class})
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Object processUnauthorizedException(HttpServletRequest req, UnauthorizedException exception) {
-        LambdaException lambdaException = new RequestServiceException("用户无访问权限", "用户无访问权限，请联系管理员", exception);
+        LambdaException lambdaException = new LambdaException("用户无访问权限", "用户无访问权限，请联系管理员", exception);
         logger.info("用户无访问权限", lambdaException);
         return JsonResponse.build(lambdaException);
     }
@@ -98,8 +97,8 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ResponseBody
     public Object processUnauthenticatedException(HttpServletRequest req, UnauthenticatedException exception) {
-        LambdaException lambdaException = new RequestServiceException("用户未认证或已过期", "用户认证失败，请重新登陆", exception);
+        LambdaException lambdaException = new LambdaException("用户未认证或已过期", "用户认证失败，请重新登陆", exception);
         logger.info("用户未认证或已过期", lambdaException);
         return JsonResponse.build(lambdaException);
-    }
+    }*/
 }

@@ -1,5 +1,8 @@
 package com.yatop.lambda.core.exception;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LambdaException extends RuntimeException {
 
 	/*
@@ -24,41 +27,50 @@ public class LambdaException extends RuntimeException {
 	* */
 	private String errorHint;
 
-    public LambdaException(String errorMessage) {
-        this("Z9999", errorMessage, errorMessage);
-    }
+	/*
+	 * 	错误消息链
+	 * */
+	private List<String> errorMsgChain;
 
 	public LambdaException(String errorMessage, String errorHint) {
 		this("Z9999", errorMessage, errorHint);
     }
 
-	protected LambdaException(String errorCode, String errorMessage, String errorHint) {
-		super(( errorMessage == errorHint ? (errorCode + "#" + errorMessage) : (errorCode + "#" + errorHint + "#" + errorMessage)));
+    public LambdaException(String errorCode, String errorMessage, String errorHint) {
+		super(errorCode + "#" + errorHint + "#" + errorMessage);
 		this.errorCode = errorCode;
 		this.errorHint = errorHint;
-	}
-
-	public LambdaException(String errorMessage, Throwable e) {
-		this("Z9999", errorMessage, errorMessage, e);
+		this.errorMsgChain = new ArrayList();
+		errorMsgChain.add(errorMessage);
 	}
 
     public LambdaException(String errorMessage, String errorHint, Throwable e) {
         this("Z9999", errorMessage, errorHint, e);
     }
 
-    protected LambdaException(String errorCode, String errorMessage, String errorHint, Throwable e) {
-		super(( errorMessage == errorHint ? (errorCode + "#" + errorMessage) : (errorCode + "#" + errorHint + "#" + errorMessage)), e);
-		this.errorCode = errorCode;
-		this.errorHint = errorHint;
+    public LambdaException(String errorCode, String errorMessage, String errorHint, Throwable e) {
+		this(errorCode, errorMessage, errorHint);
+		this.initCause(e);
 	}
+
+    public LambdaException(String errorMessage, String errorHint, LambdaException e) {
+        this("Z9999", errorMessage, errorHint, e);
+    }
+
+    public LambdaException(String errorCode, String errorMessage, String errorHint, LambdaException e) {
+        super(errorCode + "#" + errorHint + "#" + errorMessage);
+        this.errorCode = errorCode;
+        this.errorHint = errorHint;
+        this.errorMsgChain = e.getErrorMsgChain();
+        errorMsgChain.add(errorMessage);
+        this.initCause(e);
+    }
 
     public String getErrorCode() {
         return errorCode;
     }
 
-    public String getErrorMsg() {
-        return super.getMessage();
-    }
+    public List<String> getErrorMsgChain() { return errorMsgChain; }
 
     public String getErrorHint() {
         return errorHint;

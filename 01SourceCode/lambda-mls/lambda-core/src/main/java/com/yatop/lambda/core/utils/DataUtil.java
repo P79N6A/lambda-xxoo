@@ -9,7 +9,9 @@ import com.yatop.lambda.base.utils.LambdaRootModel;
 import com.yatop.lambda.core.exception.LambdaException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.context.annotation.Bean;
 
+import javax.xml.crypto.Data;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -51,6 +53,10 @@ public class DataUtil {
         return StringUtils.trim(str);
     }
 
+    public static String trimToNull(String str) {
+        return StringUtils.trimToNull(str);
+    }
+
     public static boolean isNumberic(String str) {
         return NumberUtils.isDigits(str);
     }
@@ -67,8 +73,12 @@ public class DataUtil {
         return !NumberUtils.isDigits(str);
     }
 
-    public static String prettyFormat(Object json) {
+    public static String prettyFormat(JSON json) {
         return JSON.toJSONString(json, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
+    }
+
+    public static String prettyFormat(List<? extends LambdaRootModel> models) {
+        return JSON.toJSONString(DataUtil.toJSONArray(models), SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
     }
 
     public static JSONArray toJSONArray(List<? extends LambdaRootModel> models) {
@@ -80,5 +90,13 @@ public class DataUtil {
             jsonArray.add(model.toJSON());
         }
         return jsonArray;
+    }
+
+    public static boolean isEmpty(List<? extends Object> list) {
+        return (DataUtil.isNotNull(list)  ? list.size() == 0 : true);
+    }
+
+    public static boolean isNotEmpty(List<? extends Object> list) {
+        return !DataUtil.isEmpty(list);
     }
 }

@@ -109,9 +109,9 @@ public class LambdaEnhancedPlugin extends PluginAdapter {
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setName("copyProperties");
         method.addParameter(new Parameter(FullyQualifiedJavaType.getObjectInstance(), "that"));
-/*        if (introspectedTable.isJava5Targeted()) {
+        if (introspectedTable.isJava5Targeted()) {
             method.addAnnotation("@Override"); //$NON-NLS-1$
-        }*/
+        }
 
         context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
@@ -188,9 +188,9 @@ public class LambdaEnhancedPlugin extends PluginAdapter {
         topLevelClass.addImportedType(FullyQualifiedJavaType.getNewHashMapInstance());
         topLevelClass.addImportedType("com.alibaba.fastjson.JSON");
         topLevelClass.addImportedType("com.alibaba.fastjson.JSONObject");
-/*        if (introspectedTable.isJava5Targeted()) {
+        if (introspectedTable.isJava5Targeted()) {
             method.addAnnotation("@Override"); //$NON-NLS-1$
-        }*/
+        }
 
         context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
         method.addBodyLine("HashMap<String, Object> hashMap = new HashMap();");
