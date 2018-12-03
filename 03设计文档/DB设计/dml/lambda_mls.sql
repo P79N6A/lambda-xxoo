@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-03 03:56:43
+Date: 2018-12-03 09:06:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1113,7 +1113,7 @@ CREATE TABLE `pr_project` (
   PRIMARY KEY (`PROJECT_ID`),
   KEY `Index_1` (`PROJECT_CODE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`PROJECT_NAME`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=10004 DEFAULT CHARSET=utf8 COMMENT='项目表\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='项目表\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
 
 -- ----------------------------
 -- Records of pr_project
