@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.yatop.lambda.base.utils.LambdaRootModel;
+import com.yatop.lambda.core.exception.LambdaException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -67,5 +69,16 @@ public class DataUtil {
 
     public static String prettyFormat(Object json) {
         return JSON.toJSONString(json, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
+    }
+
+    public static JSONArray toJSONArray(List<? extends LambdaRootModel> models) {
+        if(DataUtil.isNull(models))
+            return null;
+
+        JSONArray jsonArray = new JSONArray();
+        for(LambdaRootModel model : models) {
+            jsonArray.add(model.toJSON());
+        }
+        return jsonArray;
     }
 }

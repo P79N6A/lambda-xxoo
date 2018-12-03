@@ -29,7 +29,7 @@ public class PageHelperTest {
 
         PageHelper.startPage(1, 10, false);
         List<CfComponent> components =  cfComponentMapper.selectByExample(new CfComponentExample());
-        System.out.println("components: " + DataUtil.prettyFormat(JSON.toJSON(components)));
+        System.out.println("components: " + DataUtil.prettyFormat(DataUtil.toJSONArray(components)));
 
 
 
