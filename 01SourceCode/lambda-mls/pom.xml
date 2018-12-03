@@ -62,6 +62,7 @@
     </properties>
 
     <modules>
+        <module>lambda-mybatis-generator</module>
         <module>lambda-framework</module>
         <module>lambda-base</module>
         <module>lambda-core</module>
@@ -77,7 +78,6 @@
         <module>lambda-component</module>
         <module>lambda-open</module>
         <module>lambda-decision</module>
-        <module>lambda-mybatis-generator</module>
     </modules>
     
     <dependencies>

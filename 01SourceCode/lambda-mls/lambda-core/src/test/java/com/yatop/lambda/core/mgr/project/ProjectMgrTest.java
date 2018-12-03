@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.yatop.lambda.FramewrokApplication;
 import com.yatop.lambda.base.model.PrProject;
+import com.yatop.lambda.core.utils.DataUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Date;
 
 
 @RunWith(SpringRunner.class)
@@ -32,6 +35,6 @@ public class ProjectMgrTest {
         project.setMwId(999L);
 
         project = projectMgr.insertProject(project, "admin");
-        System.out.println("project: " + JSON.toJSONString(JSON.toJSON(project), SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat));
+        System.out.println("project: " + DataUtil.prettyFormat(project.toJSON()));
     }
 }

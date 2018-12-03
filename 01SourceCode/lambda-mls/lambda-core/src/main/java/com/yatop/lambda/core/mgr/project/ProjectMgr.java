@@ -140,9 +140,8 @@ public class ProjectMgr extends BaseMgr {
             return false;
 
         try {
-            Long existCount = -1L;
+            Long existCount;
             PrProjectExample example = new PrProjectExample();
-
             if(DataUtil.isNotEmpty(projectCode)) {
                 example.createCriteria().andProjectCodeEqualTo(projectCode).andStatusEqualTo(DataStatus.STATUS_NORMAL);
                 existCount = prProjectMapper.countByExample(example);
@@ -150,9 +149,7 @@ public class ProjectMgr extends BaseMgr {
                     return true;
             }
 
-            existCount = -1L;
             example.clear();
-
             if(DataUtil.isNotEmpty(projectCode)) {
                 example.createCriteria().andProjectNameEqualTo(projectName).andStatusEqualTo(DataStatus.STATUS_NORMAL);
                 existCount = prProjectMapper.countByExample(example);

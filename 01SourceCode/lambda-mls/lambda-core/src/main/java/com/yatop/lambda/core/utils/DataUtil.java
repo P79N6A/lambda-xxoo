@@ -1,8 +1,15 @@
 package com.yatop.lambda.core.utils;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+
+import java.lang.reflect.Method;
+import java.util.List;
 
 public class DataUtil {
 
@@ -56,5 +63,9 @@ public class DataUtil {
 
     public static boolean isNotDigits(String str) {
         return !NumberUtils.isDigits(str);
+    }
+
+    public static String prettyFormat(Object json) {
+        return JSON.toJSONString(json, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
     }
 }

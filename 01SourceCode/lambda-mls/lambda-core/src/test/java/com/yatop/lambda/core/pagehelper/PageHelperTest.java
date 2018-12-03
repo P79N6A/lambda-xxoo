@@ -8,6 +8,7 @@ import com.yatop.lambda.base.mapper.CfComponentMapper;
 import com.yatop.lambda.base.model.CfComponent;
 import com.yatop.lambda.base.model.CfComponentExample;
 import com.yatop.lambda.FramewrokApplication;
+import com.yatop.lambda.core.utils.DataUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,8 @@ public class PageHelperTest {
 
         PageHelper.startPage(1, 10, false);
         List<CfComponent> components =  cfComponentMapper.selectByExample(new CfComponentExample());
-        System.out.println("components: " + JSON.toJSONString(JSON.toJSON(components), SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat));
+        System.out.println("components: " + DataUtil.prettyFormat(JSON.toJSON(components)));
+
 
 
         Page page = PageHelper.startPage(2, 10, true);
