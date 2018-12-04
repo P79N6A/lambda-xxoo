@@ -17,7 +17,7 @@ public class SystemParameterUtil {
 
     @Autowired
     public void setSystemParameterBoard(SystemParameterMgr systemParameterMgr) {
-        systemParameterBoard = new ConcurrentHashMap();
+        systemParameterBoard = new ConcurrentHashMap<String, SysParameter>();
         List<SysParameter> sysParameters = systemParameterMgr.queryAll();
         if(sysParameters != null) {
             for (SysParameter sysParameter : sysParameters) {

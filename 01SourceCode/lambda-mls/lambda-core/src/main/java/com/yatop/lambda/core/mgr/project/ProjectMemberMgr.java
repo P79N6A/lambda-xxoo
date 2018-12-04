@@ -1,7 +1,5 @@
 package com.yatop.lambda.core.mgr.project;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.yatop.lambda.base.model.PrProjectMember;
 import com.yatop.lambda.base.model.PrProjectMemberExample;
 import com.yatop.lambda.core.enums.DataStatusEnum;
@@ -28,23 +26,27 @@ public class ProjectMemberMgr extends BaseMgr {
      *   返回插入记录
      *
      * */
-    public PrProjectMember insertProjectMember(PrProjectMember prMember, String operId) {
-        if( DataUtil.isNull(prMember) ||
-                !prMember.isProjectIdColoured() ||
-                !prMember.isProjectRoleColoured() ||
-                !prMember.isMemberUserColoured() ||
+    public PrProjectMember insertProjectMember(PrProjectMember member, String operId) {
+        if( DataUtil.isNull(member) ||
+                !member.isProjectIdColoured() ||
+                !member.isProjectRoleColoured() ||
+                !member.isMemberUserColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException("Insert project member failed -- invalid insert data.", "无效插入数据");
         }
 
-        if(prMember.getProjectRole() == ProjectRoleEnum.PROJECT_OWNER.getRole() && existsProjectOwner(prMember.getProjectId())) {
+        if(existsProjectMember(member.getProjectId(), member.getMemberUser())) {
+            throw new LambdaException("Insert project member failed -- project member existed.", "项目成员记录已存在");
+        }
+
+        if(member.getProjectRole() == ProjectRoleEnum.PROJECT_OWNER.getRole() && existsProjectOwner(member.getProjectId())) {
             throw new LambdaException("Insert project member failed -- project owner existed.", "已存在项目所有者");
         }
 
         PrProjectMember insertMember = new PrProjectMember();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(prMember, insertMember);
+            BeanUtils.copyProperties(member, insertMember);
             insertMember.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertMember.setLastUpdateTime(dtCurrentTime);
             insertMember.setLastUpdateOper(operId);
@@ -148,6 +150,25 @@ public class ProjectMemberMgr extends BaseMgr {
 
     /*
      *
+     *   查询项目成员记录（所有）
+     *   返回结果集
+     *
+     * */
+    public List<PrProjectMember> queryProjectMember(PagerUtil pager) {
+        try {
+            PagerUtil.startPage(pager);
+            PrProjectMemberExample example = new PrProjectMemberExample();
+            example.createCriteria().andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.setOrderByClause("CREATE_TIME ASC");
+            return prProjectMemberMapper.selectByExample(example);
+        } catch (Throwable e) {
+            PagerUtil.clearPage(pager);
+            throw new LambdaException("Query project member failed.", "查询项目成员记录失败", e);
+        }
+    }
+
+    /*
+     *
      *   查询项目成员记录（按项目ID）
      *   返回结果集
      *
@@ -170,23 +191,15 @@ public class ProjectMemberMgr extends BaseMgr {
         }
 
         try {
-            Page pageInfo = null;
-            if(DataUtil.isNotNull(pager) && pager.isNeedPage()) {
-                pageInfo = PageHelper.startPage(pager.getPageNo(), pager.getPageSize(), pager.isNeedTotalCount());
-            }
-
+            PagerUtil.startPage(pager);
             PrProjectMemberExample example = new  PrProjectMemberExample();
             PrProjectMemberExample.Criteria cond = example.createCriteria().andProjectIdEqualTo(projectId);
             if(DataUtil.isNotEmpty(memberUsers))
                 cond.andMemberUserIn(memberUsers);
             cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            List<PrProjectMember> resultList = prProjectMemberMapper.selectByExample(example);
-
-            if(DataUtil.isNotNull(pager) && pager.isNeedTotalCount()) {
-                pager.setTotalCount(pageInfo.getTotal());
-            }
-            return resultList;
+            return prProjectMemberMapper.selectByExample(example);
         } catch (Throwable e) {
+            PagerUtil.clearPage(pager);
             throw new LambdaException("Query project member failed.", "查询项目成员记录失败", e);
         }
     }
@@ -194,6 +207,7 @@ public class ProjectMemberMgr extends BaseMgr {
     /*
      *
      *   查询项目成员记录（按角色）
+     *   返回结果集
      *
      * */
     public List<PrProjectMember> queryProjectMember(Long projectId, ProjectRoleEnum role, PagerUtil pager) {
@@ -202,21 +216,13 @@ public class ProjectMemberMgr extends BaseMgr {
         }
 
         try {
-            Page pageInfo = null;
-            if(DataUtil.isNotNull(pager) && pager.isNeedPage()) {
-                pageInfo = PageHelper.startPage(pager.getPageNo(), pager.getPageSize(), pager.isNeedTotalCount());
-            }
-
+            PagerUtil.startPage(pager);
             PrProjectMemberExample example = new  PrProjectMemberExample();
             example.createCriteria().andProjectIdEqualTo(projectId).andProjectRoleEqualTo(role.getRole())
                     .andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            List<PrProjectMember> resultList = prProjectMemberMapper.selectByExample(example);
-
-            if(DataUtil.isNotNull(pager) && pager.isNeedTotalCount()) {
-                pager.setTotalCount(pageInfo.getTotal());
-            }
-            return resultList;
+            return prProjectMemberMapper.selectByExample(example);
         } catch (Throwable e) {
+            PagerUtil.clearPage(pager);
             throw new LambdaException("Query project member failed.", "查询项目成员记录失败", e);
         }
     }
@@ -224,6 +230,7 @@ public class ProjectMemberMgr extends BaseMgr {
     /*
      *
      *   查询项目所有者记录
+     *   返回记录
      *
      * */
     public PrProjectMember queryProjectOwner(Long projectId) {

@@ -4,17 +4,19 @@ public enum ModelWarehouseTypeEnum {
     /**
      * 公共模型库
      */
-    PUBLIC(0),
+    PUBLIC(0, "Public"),
 
     /**
      * 项目模型库
      */
-    PROJECT(1);
+    PROJECT(1, "Project");
 
     private int type;
+    private String name;
 
-    ModelWarehouseTypeEnum(int type) {
+    ModelWarehouseTypeEnum(int type, String name) {
         this.type = type;
+        this.name = name;
     }
 
     public int getType() {
@@ -23,5 +25,13 @@ public enum ModelWarehouseTypeEnum {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

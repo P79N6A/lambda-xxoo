@@ -43,7 +43,7 @@ public class ProjectMgrTest {
     @Transactional
     @Rollback(true)
     public void testUpdateProject() {
-        PrProject project = new PrProject();
+/*        PrProject project = new PrProject();
         project.setProjectId(100091L);
         project.setProjectCode("XXOO71");
         project.setProjectName("Alpha71");
@@ -53,27 +53,27 @@ public class ProjectMgrTest {
 
         int affectRows = projectMgr.updateProjectById(project, "admin");
         List<PrProject> list = projectMgr.queryProject(new ArrayList(Arrays.asList(100091L)));
-        System.out.println("project: " + DataUtil.prettyFormat(list));
+        System.out.println("project: " + DataUtil.prettyFormat(list));*/
     }
 
     @Test
     @Transactional
     @Rollback(true)
     public void testQueryProject() {
-        List<Long>  list = new ArrayList<Long>(Arrays.asList(10007L,10008L,10009L,100021L,100031L,100041L,100051L,100061L,100071L));
+/*        List<Long>  list = new ArrayList<Long>(Arrays.asList(10007L,10008L,10009L,100021L,100031L,100041L,100051L,100061L,100071L));
 
         List<PrProject> prList = projectMgr.queryProjectByIds(list);
-        System.out.println("project: " + DataUtil.prettyFormat(prList));
+        System.out.println("project: " + DataUtil.prettyFormat(prList));*/
     }
 
     @Test
     @Transactional
     @Rollback(true)
     public void testDeleteProject() {
-        List<Long>  list = new ArrayList<Long>(Arrays.asList(10007L,10008L,10009L,100021L,100031L,100041L,100051L,100061L,100071L));
+/*        List<Long>  list = new ArrayList<Long>(Arrays.asList(10007L,10008L,10009L,100021L,100031L,100041L,100051L,100061L,100071L));
 
         int affectRows = projectMgr.deleteProject(list, "admin");
-        System.out.println("list: " + list.size() + ", affect rows: " + affectRows);
+        System.out.println("list: " + list.size() + ", affect rows: " + affectRows);*/
     }
 
 /*    @Test
@@ -91,9 +91,9 @@ public class ProjectMgrTest {
     @Rollback(true)
     public void testQueryProjectMixed() {
 
-        PagerUtil page = new PagerUtil(1, 5);
+/*        PagerUtil page = new PagerUtil(1, 5);
         List<PrProject> prList= projectMgr.queryProjectMixed("", "admin", page);
         System.out.println("project: " + DataUtil.prettyFormat(prList));
-        System.out.println("total count: " + page.getTotalCount());
+        System.out.println("total count: " + page.getTotalCount());*/
     }
 }
