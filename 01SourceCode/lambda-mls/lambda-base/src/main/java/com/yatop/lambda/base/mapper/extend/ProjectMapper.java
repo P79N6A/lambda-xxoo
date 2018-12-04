@@ -25,13 +25,13 @@ public interface ProjectMapper {
               "         PR_PROJECT x,                                                                                  " +
               "         PR_PROJECT_MEMBER y                                                                            " +
               "     WHERE                                                                                              " +
-              "           y.MEMBER_USER = #{operId}                                                                    " +
+              "           y.MEMBER_USER = #{user}                                                                      " +
             "         AND y.`STATUS` = #{status}                                                                       " +
             "         AND x.PROJECT_ID = y.PROJECT_ID                                                                  " +
-            "         AND (#{status} = 2 OR x.`STATUS` = #{status})")
-    List<PrProject> getProject4OperId(@Param("operId") String operId, @Param("status") Integer status);
+            "         AND x.`STATUS` = #{status}")
+    List<PrProject> getProject4User(@Param("user") String operId, @Param("status") Integer status);
 
-    @Select(  "     SELECT                                                                                             " +
+    @Select(  "     SELECT                                                                                           " +
             "         x.`PROJECT_ID` as projectId,                                                                   " +
             "         x.`PROJECT_CODE` as projectCode,                                                               " +
             "         x.`PROJECT_NAME` as projectName,                                                               " +
@@ -48,10 +48,10 @@ public interface ProjectMapper {
             "         PR_PROJECT x,                                                                                  " +
             "         PR_PROJECT_MEMBER y                                                                            " +
             "     WHERE                                                                                              " +
-            "           y.MEMBER_USER = #{operId}                                                                    " +
-            "         AND y.`STATUS` = #{status}                                                                       " +
-            "         AND x.PROJECT_ID = y.PROJECT_ID                                                                  " +
-            "         AND (#{status} = 2 OR x.`STATUS` = #{status})                                                    " +
-            "         AND (x.PROJECT_CODE LIKE CONCAT('%',#{keyword},'%') or x.PROJECT_NAME LIKE CONCAT('%',#{keyword},'%')   ")
-    List<PrProject> getProjectMixed4Keyword(@Param("keyword") String keyword, @Param("operId") String operId, @Param("status") Integer status);
+            "           y.MEMBER_USER = #{user}                                                                      " +
+            "         AND y.`STATUS` = #{status}                                                                     " +
+            "         AND x.PROJECT_ID = y.PROJECT_ID                                                                " +
+            "         AND x.`STATUS` = #{status}                                                                     " +
+            "         AND (x.PROJECT_CODE LIKE #{keyword} or x.PROJECT_NAME LIKE #{keyword})")
+    List<PrProject> getProjectMixed4Keyword(@Param("keyword") String keyword, @Param("user") String operId, @Param("status") Integer status);
 }

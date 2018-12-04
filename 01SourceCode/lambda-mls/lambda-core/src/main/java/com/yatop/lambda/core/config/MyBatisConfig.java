@@ -29,7 +29,7 @@ public class MyBatisConfig {
     }
 
     @Bean("orignalCoreDataSource")
-    @ConfigurationProperties(prefix = "lambda.mls.jdbc")
+    @ConfigurationProperties(prefix = "lambda.mls.datasource")
     public DataSource orignalCoreDataSource(){
         return DataSourceBuilder.create().type(DruidDataSource.class).build();
     }

@@ -35,7 +35,7 @@ public class MybatisConfig {
     }
 
     @Bean("orignalFrameworkDataSource")
-    @ConfigurationProperties(prefix = "lambda.mls.jdbc")
+    @ConfigurationProperties(prefix = "lambda.mls.datasource")
     public DataSource orignalFrameworkDataSource(){
         return DataSourceBuilder.create().type(DruidDataSource.class).build();
     }

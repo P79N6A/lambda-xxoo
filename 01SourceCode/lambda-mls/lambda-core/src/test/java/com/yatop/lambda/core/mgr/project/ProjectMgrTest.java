@@ -52,14 +52,14 @@ public class ProjectMgrTest {
         project.setDescription("hohoho,agagaga");
 
         int affectRows = projectMgr.updateProjectById(project, "admin");
-        List<PrProject> list = projectMgr.queryProjectByIds(new ArrayList(Arrays.asList(100091L)));
+        List<PrProject> list = projectMgr.queryProject(new ArrayList(Arrays.asList(100091L)));
         System.out.println("project: " + DataUtil.prettyFormat(list));
     }
 
     @Test
     @Transactional
     @Rollback(true)
-    public void testQueryProjectByIds() {
+    public void testQueryProject() {
         List<Long>  list = new ArrayList<Long>(Arrays.asList(10007L,10008L,10009L,100021L,100031L,100041L,100051L,100061L,100071L));
 
         List<PrProject> prList = projectMgr.queryProjectByIds(list);
@@ -72,7 +72,7 @@ public class ProjectMgrTest {
     public void testDeleteProject() {
         List<Long>  list = new ArrayList<Long>(Arrays.asList(10007L,10008L,10009L,100021L,100031L,100041L,100051L,100061L,100071L));
 
-        int affectRows = projectMgr.deleteProjectByIds(list, "admin");
+        int affectRows = projectMgr.deleteProject(list, "admin");
         System.out.println("list: " + list.size() + ", affect rows: " + affectRows);
     }
 
@@ -82,7 +82,7 @@ public class ProjectMgrTest {
     public void testPhysicalDeleteProject() {
         List<Long>  list = new ArrayList<Long>(Arrays.asList(10007L,10008L,10009L,100021L,100031L,100041L,100051L,100061L,100071L));
 
-        int affectRows = projectMgr.physicalDeleteProjectByIds(list);
+        int affectRows = projectMgr.physicalDeleteProject(list);
         System.out.println("list: " + list.size() + ", affect rows: " + affectRows);
     }*/
 
@@ -91,7 +91,7 @@ public class ProjectMgrTest {
     @Rollback(true)
     public void testQueryProjectMixed() {
 
-        PagerUtil page = new PagerUtil(1, 1);
+        PagerUtil page = new PagerUtil(1, 5);
         List<PrProject> prList= projectMgr.queryProjectMixed("", "admin", page);
         System.out.println("project: " + DataUtil.prettyFormat(prList));
         System.out.println("total count: " + page.getTotalCount());

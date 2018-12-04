@@ -46,7 +46,7 @@
 							 type="XMLMAPPER">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
-		<!--<table tableName="%" >
+		<table tableName="%" >
 			<property name="ignoreQualifiersAtRuntime" value="true" />
 		</table>
 		<table tableName="DW_DATA_TABLE" >
@@ -124,6 +124,6 @@
 		<table tableName="WF_SNAPSHOT" >
 			<property name="ignoreQualifiersAtRuntime" value="true" />
 			<generatedKey column="SNAPSHOT_ID" sqlStatement="Mysql" identity="true"/>
-		</table>-->
+		</table>
 	</context>
 </generatorConfiguration>
