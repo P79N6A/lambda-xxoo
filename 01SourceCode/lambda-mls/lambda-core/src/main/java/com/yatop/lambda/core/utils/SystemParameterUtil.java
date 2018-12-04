@@ -1,7 +1,7 @@
 package com.yatop.lambda.core.utils;
 
 import com.yatop.lambda.base.model.SysParameter;
-import com.yatop.lambda.core.enums.DataStatus;
+import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.SystemParameterEnum;
 import com.yatop.lambda.core.mgr.system.SystemParameterMgr;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class SystemParameterUtil {
         List<SysParameter> sysParameters = systemParameterMgr.queryAll();
         if(sysParameters != null) {
             for (SysParameter sysParameter : sysParameters) {
-                if(DataUtil.isBlank(sysParameter.getParamValue()) || sysParameter.getStatus() == DataStatus.STATUS_INVALID)
+                if(DataUtil.isBlank(sysParameter.getParamValue()) || sysParameter.getStatus() == DataStatusEnum.INVALID.getStatus())
                     continue;
 
                 systemParameterBoard.put(sysParameter.getParamCode(), sysParameter);

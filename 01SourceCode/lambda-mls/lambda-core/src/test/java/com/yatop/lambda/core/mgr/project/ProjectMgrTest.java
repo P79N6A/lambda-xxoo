@@ -76,7 +76,7 @@ public class ProjectMgrTest {
         System.out.println("list: " + list.size() + ", affect rows: " + affectRows);
     }
 
-    @Test
+/*    @Test
     @Transactional
     @Rollback(true)
     public void testPhysicalDeleteProject() {
@@ -84,7 +84,7 @@ public class ProjectMgrTest {
 
         int affectRows = projectMgr.physicalDeleteProjectByIds(list);
         System.out.println("list: " + list.size() + ", affect rows: " + affectRows);
-    }
+    }*/
 
     @Test
     @Transactional

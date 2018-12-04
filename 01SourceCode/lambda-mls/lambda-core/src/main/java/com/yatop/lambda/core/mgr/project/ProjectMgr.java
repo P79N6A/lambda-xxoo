@@ -5,7 +5,8 @@ import com.github.pagehelper.PageHelper;
 import com.yatop.lambda.base.mapper.extend.ProjectMapper;
 import com.yatop.lambda.base.model.PrProject;
 import com.yatop.lambda.base.model.PrProjectExample;
-import com.yatop.lambda.core.enums.DataStatus;
+import com.yatop.lambda.core.enums.DataStatusCondEnum;
+import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.SystemParameterEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
@@ -30,15 +31,16 @@ public class ProjectMgr extends BaseMgr {
     /*
     *
     *   插入新项目信息（代码、名称、数据库ID、模型库ID、描述）
+    *   返回插入记录
     *
     * */
-    public PrProject insertProject(PrProject prProject, String OperId) {
+    public PrProject insertProject(PrProject prProject, String operId) {
         if( DataUtil.isNull(prProject) ||
                 !prProject.isProjectCodeColoured() ||
                 !prProject.isProjectNameColoured() ||
                 !prProject.isDwIdColoured() ||
                 !prProject.isMwIdColoured() ||
-                DataUtil.isEmpty(OperId) ) {
+                DataUtil.isEmpty(operId) ) {
             throw new LambdaException("Insert project info failed -- invalid insert data.", "无效插入内容");
         }
 
@@ -59,11 +61,11 @@ public class ProjectMgr extends BaseMgr {
             insertProject.setProjectIdColoured(false);
             if(!insertProject.isCacheExpireDaysColoured())
                 insertProject.setCacheExpireDays(SystemParameterUtil.find4Integer(SystemParameterEnum.PR_CACHE_DATA_EXPIRE_DAYS, -1));
-            insertProject.setStatus(DataStatus.STATUS_NORMAL);
+            insertProject.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertProject.setLastUpdateTime(dtCurrentTime);
-            insertProject.setLastUpdateOper(OperId);
+            insertProject.setLastUpdateOper(operId);
             insertProject.setCreateTime(dtCurrentTime);
-            insertProject.setCreateOper(OperId);
+            insertProject.setCreateOper(operId);
 
             prProjectMapper.insertSelective(insertProject);
         } catch (Throwable e) {
@@ -73,14 +75,14 @@ public class ProjectMgr extends BaseMgr {
         return insertProject;
     }
 
-
     /*
      *
      *   逻辑删除项目信息
+     *   返回删除数量
      *
      * */
-    public int deleteProjectByIds(List<Long> projectIds, String OperId) {
-        if(DataUtil.isEmpty(projectIds) || DataUtil.isEmpty(OperId)){
+    public int deleteProjectByIds(List<Long> projectIds, String operId) {
+        if(DataUtil.isEmpty(projectIds) || DataUtil.isEmpty(operId)){
             throw new LambdaException("Delete project info failed -- invalid query condition.", "无效删除条件");
         }
 
@@ -89,9 +91,9 @@ public class ProjectMgr extends BaseMgr {
             for(Long id : projectIds) {
                 PrProject project = new PrProject();
                 project.setProjectId(id);
-                project.setStatus(DataStatus.STATUS_INVALID);
+                project.setStatus(DataStatusEnum.INVALID.getStatus());
                 project.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
-                project.setLastUpdateOper(OperId);
+                project.setLastUpdateOper(operId);
                 affectRows += prProjectMapper.updateByPrimaryKeySelective(project);
             }
 
@@ -101,13 +103,13 @@ public class ProjectMgr extends BaseMgr {
         }
     }
 
-
     /*
      *
      *   物理删除项目信息
+     *   返回删除数量
      *
      * */
-    public int physicalDeleteProjectByIds(List<Long> projectIds) {
+/*    public int physicalDeleteProjectByIds(List<Long> projectIds) {
         if(DataUtil.isEmpty(projectIds)){
             throw new LambdaException("Physical delete project info failed -- invalid query condition.", "无效物理删除条件");
         }
@@ -122,8 +124,14 @@ public class ProjectMgr extends BaseMgr {
         } catch (Throwable e) {
             throw new LambdaException("Physical delete project info failed.", "物理删除项目信息失败", e);
         }
-    }
+    }*/
 
+    /*
+     *
+     *   更新项目信息（代码、名称、缓存数据过期天数、描述）
+     *   返回更新数量
+     *
+     * */
     public int updateProjectById(PrProject prProject, String operId) {
         if( DataUtil.isNull(prProject) || !prProject.isProjectIdColoured() || DataUtil.isEmpty(operId)) {
             throw new LambdaException("Update project info failed -- invalid update condition.", "无效更新条件");
@@ -167,7 +175,23 @@ public class ProjectMgr extends BaseMgr {
         }
     }
 
+    /*
+     *
+     *   查询正常状态项目信息（按ID）
+     *   返回结果集
+     *
+     * */
     public List<PrProject> queryProjectByIds(List<Long> projectIds) {
+        return queryProjectByIds(projectIds, DataStatusCondEnum.NORMAL_STATUS);
+    }
+
+    /*
+     *
+     *   查询项目信息（按ID、数据状态）
+     *   返回结果集
+     *
+     * */
+    private List<PrProject> queryProjectByIds(List<Long> projectIds, DataStatusCondEnum dataStatusCond) {
         if(DataUtil.isEmpty(projectIds)){
             throw new LambdaException("Query project info failed -- invalid query condition.", "无效查询条件");
         }
@@ -176,7 +200,7 @@ public class ProjectMgr extends BaseMgr {
             List<PrProject> resultList = new ArrayList();
             for(Long id : projectIds) {
                 PrProject project = prProjectMapper.selectByPrimaryKey(id);
-                if(DataUtil.isNotNull(project) && project.getStatus() == DataStatus.STATUS_NORMAL)
+                if(DataUtil.isNotNull(project) && (dataStatusCond.isAllStatus() || project.getStatus() == dataStatusCond.getCondition()))
                     resultList.add(project);
             }
             return resultList;
@@ -187,88 +211,97 @@ public class ProjectMgr extends BaseMgr {
 
     /*
      *
-     *   查询项目信息
+     *   查询正常状态项目信息
      *   1.查询所有记录（关键字和用户都为null）
-     *   2.按关键字查询
-     *   3.按用户查询
+     *   2.按关键字查询（用户为null）
+     *   3.按用户查询（关键字为null）
      *   4.关键字和用户混合查询
+     *   返回结果集
      *
      * */
-   public List<PrProject> queryProjectMixed(String keyword, String operId, PagerUtil pager) {
+    public List<PrProject> queryProjectMixed(String keyword, String operId, PagerUtil pager) {
+        return queryProjectMixed(keyword, operId, pager, DataStatusCondEnum.NORMAL_STATUS);
+    }
+
+    /*
+     *
+     *   查询项目信息（带数据状态）
+     *   1.查询所有记录（关键字和用户都为null）
+     *   2.按关键字查询（用户为null）
+     *   3.按用户查询（关键字为null）
+     *   4.关键字和用户混合查询
+     *   返回结果集
+     *
+     * */
+    private List<PrProject> queryProjectMixed(String keyword, String operId, PagerUtil pager, DataStatusCondEnum dataStatusCond) {
 
         try {
+            Page pageInfo = null;
+            if(DataUtil.isNotNull(pager) && pager.isNeedPage()) {
+                pageInfo = PageHelper.startPage(pager.getPageNo(), pager.getPageSize(), pager.isNeedTotalCount());
+            }
+            List<PrProject> list = null;
+
             //查询所有
             if(DataUtil.isEmpty(keyword) && DataUtil.isEmpty(operId)) {
-                Page pageInfo = null;
-                if(pager.isNeedPage()) {
-                    pageInfo = PageHelper.startPage(pager.getPageNo(), pager.getPageSize(), pager.isNeedTotalCount());
-                }
                 PrProjectExample example = new PrProjectExample();
-                example.createCriteria().andStatusEqualTo(DataStatus.STATUS_NORMAL);
-                List<PrProject> list =  prProjectMapper.selectByExample(example);
-                if(pager.isNeedTotalCount()) {
-                    pager.setTotalCount(pageInfo.getTotal());
-                }
-                return list;
+                if(!dataStatusCond.isAllStatus())
+                    example.createCriteria().andStatusEqualTo(dataStatusCond.getCondition());
+                list =  prProjectMapper.selectByExample(example);
             }
 
             //按关键字查询
             if(DataUtil.isNotEmpty(keyword) && DataUtil.isEmpty(operId)) {
                 PrProjectExample example = new PrProjectExample();
-                example.createCriteria().andProjectCodeLike(keyword).andStatusEqualTo(DataStatus.STATUS_NORMAL);
-                example.or(example.createCriteria().andProjectNameLike(keyword).andStatusEqualTo(DataStatus.STATUS_NORMAL));
-                example.setOrderByClause("CREATE_TIME ASC");
+                PrProjectExample.Criteria cond1 = example.createCriteria().andProjectCodeLike(keyword);
+                if(!dataStatusCond.isAllStatus())
+                    cond1.andStatusEqualTo(dataStatusCond.getCondition());
 
-                Page pageInfo = null;
-                if(pager.isNeedPage()) {
-                    pageInfo = PageHelper.startPage(pager.getPageNo(), pager.getPageSize(), pager.isNeedTotalCount());
-                }
-                List<PrProject> list = prProjectMapper.selectByExample(example);
-                if(pager.isNeedTotalCount()) {
-                    pager.setTotalCount(pageInfo.getTotal());
-                }
-                return list;
+
+                PrProjectExample.Criteria cond2 = example.or().andProjectNameLike(keyword);
+                if(!dataStatusCond.isAllStatus())
+                    cond2.andStatusEqualTo(dataStatusCond.getCondition());
+
+                example.setOrderByClause("CREATE_TIME ASC");
+                list = prProjectMapper.selectByExample(example);
             }
 
             //按用户查询
             if(DataUtil.isEmpty(keyword)) {
-                Page pageInfo = null;
-                if(pager.isNeedPage()) {
-                    pageInfo = PageHelper.startPage(pager.getPageNo(), pager.getPageSize(), pager.isNeedTotalCount());
-                }
-                List<PrProject> list = projectMapper.getProjectMixed4OperId(DataUtil.trimToNull(operId), DataStatus.STATUS_NORMAL);
-                if(pager.isNeedTotalCount()) {
-                    pager.setTotalCount(pageInfo.getTotal());
-                }
-                return list;
+                list = projectMapper.getProject4OperId(DataUtil.trimToNull(operId), dataStatusCond.getCondition());
 
              //关键字和用户混合查询
             } else {
-                Page pageInfo = null;
-                if(pager.isNeedPage()) {
-                    pageInfo = PageHelper.startPage(pager.getPageNo(), pager.getPageSize(), pager.isNeedTotalCount());
-                }
-                List<PrProject> list = projectMapper.getProjectMixed4Keyword(keyword, operId, DataStatus.STATUS_NORMAL);
-                if(pager.isNeedTotalCount()) {
-                    pager.setTotalCount(pageInfo.getTotal());
-                }
-                return list;
+                list = projectMapper.getProjectMixed4Keyword(keyword, operId, dataStatusCond.getCondition());
             }
 
+            if(DataUtil.isNotNull(pager) && pager.isNeedTotalCount()) {
+                pager.setTotalCount(pageInfo.getTotal());
+            }
+            return list;
         } catch (Throwable e) {
+            if(DataUtil.isNotNull(pager) && pager.isNeedPage()) {
+                PageHelper.clearPage();
+            }
             throw new LambdaException("Query project info failed.", "查询项目信息失败", e);
         }
     }
 
+    /*
+     *
+     *   检查相同项目代码或名称是否已存在（可排除原ID）
+     *   返回是否存在
+     *
+     * */
     public boolean existsProject(String projectCode, String projectName, Long originalProjectId)  {
-        if(DataUtil.isEmpty(projectCode) || DataUtil.isEmpty(projectCode))
+        if(DataUtil.isEmpty(projectCode) && DataUtil.isEmpty(projectCode))
             return false;
 
         try {
             Long existCount;
             PrProjectExample example = new PrProjectExample();
             if(DataUtil.isNotEmpty(projectCode)) {
-                PrProjectExample.Criteria criteria = example.createCriteria().andProjectCodeEqualTo(projectCode).andStatusEqualTo(DataStatus.STATUS_NORMAL);
+                PrProjectExample.Criteria criteria = example.createCriteria().andProjectCodeEqualTo(projectCode).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
                 if(DataUtil.isNotNull(originalProjectId))
                     criteria.andProjectIdNotEqualTo(originalProjectId);
                 existCount = prProjectMapper.countByExample(example);
@@ -277,8 +310,8 @@ public class ProjectMgr extends BaseMgr {
             }
 
             example.clear();
-            if(DataUtil.isNotEmpty(projectCode)) {
-                PrProjectExample.Criteria criteria = example.createCriteria().andProjectNameEqualTo(projectName).andStatusEqualTo(DataStatus.STATUS_NORMAL);
+            if(DataUtil.isNotEmpty(projectName)) {
+                PrProjectExample.Criteria criteria = example.createCriteria().andProjectNameEqualTo(projectName).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
                 if(DataUtil.isNotNull(originalProjectId))
                     criteria.andProjectIdNotEqualTo(originalProjectId);
                 existCount = prProjectMapper.countByExample(example);

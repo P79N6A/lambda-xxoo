@@ -28,8 +28,8 @@ public interface ProjectMapper {
               "           y.MEMBER_USER = #{operId}                                                                    " +
             "         AND y.`STATUS` = #{status}                                                                       " +
             "         AND x.PROJECT_ID = y.PROJECT_ID                                                                  " +
-            "         AND x.`STATUS` = #{status}")
-    List<PrProject> getProjectMixed4OperId(@Param("operId") String operId, @Param("status") Integer status);
+            "         AND (#{status} = 2 OR x.`STATUS` = #{status})")
+    List<PrProject> getProject4OperId(@Param("operId") String operId, @Param("status") Integer status);
 
     @Select(  "     SELECT                                                                                             " +
             "         x.`PROJECT_ID` as projectId,                                                                   " +
@@ -51,7 +51,7 @@ public interface ProjectMapper {
             "           y.MEMBER_USER = #{operId}                                                                    " +
             "         AND y.`STATUS` = #{status}                                                                       " +
             "         AND x.PROJECT_ID = y.PROJECT_ID                                                                  " +
-            "         AND x.`STATUS` = #{status}                                                                       " +
+            "         AND (#{status} = 2 OR x.`STATUS` = #{status})                                                    " +
             "         AND (x.PROJECT_CODE LIKE CONCAT('%',#{keyword},'%') or x.PROJECT_NAME LIKE CONCAT('%',#{keyword},'%')   ")
     List<PrProject> getProjectMixed4Keyword(@Param("keyword") String keyword, @Param("operId") String operId, @Param("status") Integer status);
 }
