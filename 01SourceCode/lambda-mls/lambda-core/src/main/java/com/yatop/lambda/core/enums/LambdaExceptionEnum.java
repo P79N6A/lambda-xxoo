@@ -19,7 +19,7 @@ public enum LambdaExceptionEnum {
      *   Z9999：默认错误
      * */
 
-    WF_MGNT_WORKFLOW_EXPIRE_ERROR(      "G0000",    "工作流引擎",       "工作流过期"),
+    WF_MGNT_WORKFLOW_EXPIRE_ERROR(      "F0000",    "工作流管理",       "工作流过期"),
     ZZ_DEFAULT_ERROR(                   "Z9999",    "系统默认",         "默认错误");
 
     private String errorCode;

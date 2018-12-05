@@ -153,7 +153,7 @@ public class ModelWarehouseMgr extends BaseMgr {
     /*
      *
      *   查询模型仓库信息（所有）
-     *   返回结果
+     *   返回结果集
      *
      * */
     public List<MwModelWarehouse> queryDataWarehouse(PagerUtil pager) {

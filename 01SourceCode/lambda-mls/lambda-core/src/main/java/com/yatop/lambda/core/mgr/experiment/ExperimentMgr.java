@@ -17,7 +17,6 @@ import java.util.List;
 
 public class ExperimentMgr extends BaseMgr {
 
-
     /*
      *
      *   插入新实验信息（名称、类型、所属项目ID）
@@ -154,7 +153,7 @@ public class ExperimentMgr extends BaseMgr {
     /*
      *
      *   查询实验信息（仅主实验类型）
-     *   返回结果
+     *   返回结果集
      *
      * */
     public List<EmExperiment> queryExperiment(Long projectId, PagerUtil pager) {

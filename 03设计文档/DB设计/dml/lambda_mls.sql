@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-05 03:01:07
+Date: 2018-12-05 20:24:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -915,19 +915,19 @@ INSERT INTO `cf_component` VALUES ('WS@COM-0003', 'WS@Output-ModelFile', 'Web服
 DROP TABLE IF EXISTS `dw_data_table`;
 CREATE TABLE `dw_data_table` (
   `TABLE_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '数据表ID',
-  `TABLE_NAME` varchar(200) NOT NULL COMMENT '数据表名\r\n            \r\n            普通表：由英文字符、数字和下划线组成，起始字符不能为下划线\r\n            临时数据表：tmp$<node_id>_<node_port_id>_<job_id>',
+  `TABLE_NAME` varchar(200) NOT NULL COMMENT '数据表名\r\n            \r\n            普通数据表：由英文字符、数字和下划线组成，起始字符不能为下划线\r\n            临时数据表：tmp$<node_id>_<node_port_id>_<job_id>',
   `TABLE_TYPE` int(11) NOT NULL COMMENT '数据表类型\r\n            0：普通数据表\r\n            1：临时数据表\r\n            2：外部数据表，由在线服务的数据文件输入组件产生，DATA_FILE关联完整文件路径，作业完成时被立即清理',
   `OWNER_DW_ID` bigint(20) NOT NULL COMMENT '所属数据库ID',
-  `REL_EXPERIMENT_ID` bigint(20) NOT NULL COMMENT '关联实验ID，无关联实验设为-1',
+  `REL_EXPERIMENT_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联实验ID，无关联实验设为-1',
   `REL_JOB_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联作业ID，无关联则设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建数据表的工作流节点，无关联则设为-1',
   `REL_CHAR_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建数据表的工作流节点输出特征，无关联则设为-1',
   `TABLE_COLUMNS` bigint(20) DEFAULT NULL COMMENT '列数',
   `TABLE_ROWS` bigint(20) DEFAULT NULL COMMENT '行数',
-  `DATA_FILE_TYPE` int(11) NOT NULL DEFAULT '0' COMMENT '数据文件类型\r\n            1：Parquet文件格式 ',
+  `DATA_FILE_TYPE` int(11) NOT NULL DEFAULT '1' COMMENT '数据文件类型\r\n            1：Parquet文件格式 ',
   `DATA_FILE_SIZE` bigint(20) DEFAULT NULL COMMENT '文件大小，单位为字节',
-  `DATA_FILE` varchar(800) DEFAULT NULL COMMENT '数据文件名，普通数据表存放于数据目录下，临时数据表存放于作业目录下\r\n            \r\n            普通和动态数据表：${DATA_DIR}/table_<table_id>.parquet\r\n            临时数据表：${JOB_DIR}/table_<task_id>_<table_id>.parquet',
-  `DATA_SUMMARY_FILE` varchar(800) DEFAULT NULL COMMENT '数据概要文件名，普通数据表存放于数据目录下，临时数据表存放于作业目录下\r\n            \r\n            普通和动态数据表：${DATA_DIR}/table_summary_<table_id>.parquet\r\n            临时数据表：${JOB_DIR}/table_summary_<task_id>_<table_id>.parquet',
+  `DATA_FILE` varchar(800) DEFAULT NULL COMMENT '数据文件名，普通数据表存放于数据目录下，临时数据表存放于作业目录下\r\n            \r\n            普通数据表：${DATA_DIR}/table_<table_id>.parquet\r\n            临时数据表：${JOB_DIR}/table_<task_id>_<table_id>.parquet',
+  `DATA_SUMMARY_FILE` varchar(800) DEFAULT NULL COMMENT '数据概要文件名，普通数据表存放于数据目录下，临时数据表存放于作业目录下\r\n            \r\n            普通数据表：${DATA_DIR}/table_summary_<table_id>.parquet\r\n            临时数据表：${JOB_DIR}/table_summary_<task_id>_<table_id>.parquet',
   `TABLE_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '数据表状态\r\n            0：空表\r\n            1：正常\r\n            2：仅概要文件',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -938,7 +938,7 @@ CREATE TABLE `dw_data_table` (
   PRIMARY KEY (`TABLE_ID`),
   KEY `Index_1` (`OWNER_DW_ID`,`TABLE_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_DW_ID`,`TABLE_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
 
 -- ----------------------------
 -- Records of dw_data_table
@@ -993,10 +993,10 @@ CREATE TABLE `em_experiment` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`EXPERIMENT_ID`),
-  KEY `Index_3` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`MAIN_EXPERIMENT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`EXPERIMENT_NAME`,`STATUS`,`CREATE_TIME`),
-  KEY `Index_2` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='实验表，实验是工作流的外壳主体\r\n\r\n逻辑删除，主实验正常状态的预测实验唯一';
+  KEY `Index_2` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_3` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`MAIN_EXPERIMENT_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='实验表，实验是工作流的外壳主体\r\n\r\n逻辑删除，主实验正常状态的预测实验唯一';
 
 -- ----------------------------
 -- Records of em_experiment
@@ -1020,8 +1020,9 @@ CREATE TABLE `em_experiment_template` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`TEMPLATE_ID`),
-  KEY `Index_1` (`SEQUENCE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='实验模版表';
+  KEY `Index_1` (`SEQUENCE`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`TEMPLATE_NAME`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='实验模版表';
 
 -- ----------------------------
 -- Records of em_experiment_template
@@ -1033,17 +1034,17 @@ CREATE TABLE `em_experiment_template` (
 DROP TABLE IF EXISTS `mw_model`;
 CREATE TABLE `mw_model` (
   `MODEL_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '模型ID',
-  `MODEL_NAME` varchar(200) NOT NULL COMMENT '模型名称\r\n            \r\n            普通和动态模型：由字符和数字组成，无特殊字符\r\n            临时模型：组件名称 - 同组件节点序号 - Model [ - 评估指标 - 排名序号] - 作业ID',
-  `MODEL_TYPE` int(11) NOT NULL COMMENT '模型类型\r\n            0：普通模型\r\n            1：临时模型\r\n            \r\n             禁止做需要动态模型的组件设计和功能设计',
+  `MODEL_NAME` varchar(200) NOT NULL COMMENT '模型名称\r\n            \r\n            普通模型：由字符和数字组成，无特殊字符\r\n            临时模型：组件名称 - 同组件节点序号 - Model [ - 评估指标 - 排名序号] - 作业ID',
+  `MODEL_TYPE` int(11) NOT NULL COMMENT '模型类型\r\n            0：普通模型\r\n            1：临时模型\r\n            2：外部模型（预留）',
   `OWNER_MW_ID` bigint(20) NOT NULL COMMENT '所属模型库ID',
-  `REL_EXPERIMENT_ID` bigint(20) NOT NULL COMMENT '关联实验ID，无关联实验设为-1',
+  `REL_EXPERIMENT_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联实验ID，无关联实验设为-1',
   `REL_JOB_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联作业ID，无关联则设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建模型的工作流节点，无关联则设为-1',
   `REL_CHAR_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建模型的工作流节点输出特征，无关联则设为-1',
   `REF_ALGORITHM_ID` bigint(20) NOT NULL COMMENT '引用算法ID',
   `MODEL_FILE_SIZE` bigint(20) DEFAULT NULL COMMENT '模型文件大小，单位为字节',
-  `MODEL_FILE` varchar(800) DEFAULT NULL COMMENT '模型文件名，普通模型存放于模型目录下，临时模型存放于作业目录下\r\n            \r\n            普通模型和动态：${MODEL_DIR}/model_<model_id>.mdl\r\n            临时模型：${JOB_DIR}/model_<task_id>_<model_id>.mdl',
-  `MODEL_SUMMARY_FILE` varchar(800) DEFAULT NULL COMMENT '模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息\r\n            \r\n            普通和动态模型：${MODEL_DIR}/model_summary_<model_id>.json\r\n            临时模型：${JOB_DIR}/model_summary_<task_id>_<model_id>.json',
+  `MODEL_FILE` varchar(800) DEFAULT NULL COMMENT '模型文件名，普通模型存放于模型目录下，临时模型存放于作业目录下\r\n            \r\n            普通模型：${MODEL_DIR}/model_<model_id>.mdl\r\n            临时模型：${JOB_DIR}/model_<task_id>_<model_id>.mdl',
+  `MODEL_SUMMARY_FILE` varchar(800) DEFAULT NULL COMMENT '模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息\r\n            \r\n            普通模型：${MODEL_DIR}/model_summary_<model_id>.json\r\n            临时模型：${JOB_DIR}/model_summary_<task_id>_<model_id>.json',
   `MODEL_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '模型状态\r\n            0：空模型\r\n            1：正常',
   `TRAIN_TABLE_ID` bigint(20) DEFAULT NULL COMMENT '训练集数据表ID（关联训练集是否需要另外拷贝一份全量数据，待定）',
   `TRAIN_COST_TIME` bigint(20) DEFAULT NULL COMMENT '训练运行时间，单位毫秒',
@@ -1056,7 +1057,7 @@ CREATE TABLE `mw_model` (
   PRIMARY KEY (`MODEL_ID`),
   KEY `Index_1` (`OWNER_MW_ID`,`MODEL_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_MW_ID`,`MODEL_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除，同一库下正常状态的名称唯一';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除，同一库下正常状态的名称唯一';
 
 -- ----------------------------
 -- Records of mw_model
@@ -1084,7 +1085,7 @@ CREATE TABLE `mw_model_warehouse` (
   UNIQUE KEY `Index_1` (`MW_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`MW_TYPE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`MW_CODE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型库表，对模型做分组，辅助项目权限隔离\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
+) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8 COMMENT='模型库表，对模型做分组，辅助项目权限隔离\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
 
 -- ----------------------------
 -- Records of mw_model_warehouse
@@ -1117,7 +1118,7 @@ CREATE TABLE `pr_project` (
 -- Records of pr_project
 -- ----------------------------
 INSERT INTO `pr_project` VALUES ('10002', 'XXOO', 'Alpha', '999', '999', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('10003', 'XXOO1', 'Alpha1', '9991', '9991', '21', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project` VALUES ('10003', 'XXOO1', 'Alpha1', '9992', '9991', '21', 'lock', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
 INSERT INTO `pr_project` VALUES ('10004', 'XXOO2', 'Alpha2', '9992', '9992', '21', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
 INSERT INTO `pr_project` VALUES ('10005', 'XXOO3', 'Alpha3', '9993', '9993', '21', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
 INSERT INTO `pr_project` VALUES ('10006', 'XXOO4', 'Alpha4', '999', '999', '21', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
@@ -1155,6 +1156,22 @@ CREATE TABLE `pr_project_member` (
 -- ----------------------------
 -- Records of pr_project_member
 -- ----------------------------
+INSERT INTO `pr_project_member` VALUES ('10002', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('10003', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('10004', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('10005', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('10006', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('10007', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('10008', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('10009', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('100021', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('100031', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('100041', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('100051', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('100061', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('100071', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('100081', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('100091', '0', 'admin', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
 
 -- ----------------------------
 -- Table structure for sys_parameter
@@ -1175,7 +1192,7 @@ CREATE TABLE `sys_parameter` (
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`PARAM_ID`),
   UNIQUE KEY `Index_1` (`PARAM_CODE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=7018 DEFAULT CHARSET=utf8 COMMENT='系统参数表\r\n\r\n逻辑删除，正常状态的代码唯一';
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='系统参数表\r\n\r\n逻辑删除，正常状态的代码唯一';
 
 -- ----------------------------
 -- Records of sys_parameter
@@ -1225,7 +1242,7 @@ CREATE TABLE `wf_code_script` (
   PRIMARY KEY (`SCRIPT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`SCRIPT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
 
 -- ----------------------------
 -- Records of wf_code_script
@@ -1260,7 +1277,7 @@ CREATE TABLE `wf_execution_job` (
   PRIMARY KEY (`JOB_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
 
 -- ----------------------------
 -- Records of wf_execution_job
@@ -1321,7 +1338,7 @@ CREATE TABLE `wf_execution_task` (
   UNIQUE KEY `Index_1` (`OWNER_JOB_ID`,`REL_NODE_ID`),
   KEY `Index_2` (`OWNER_JOB_ID`,`SEQUENCE`),
   KEY `Index_3` (`OWNER_JOB_ID`,`TASK_STATE`,`SEQUENCE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
 
 -- ----------------------------
 -- Records of wf_execution_task
@@ -1354,8 +1371,8 @@ CREATE TABLE `wf_execution_task_output` (
 -- ----------------------------
 DROP TABLE IF EXISTS `wf_flow`;
 CREATE TABLE `wf_flow` (
-  `FLOW_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '流程图ID',
-  `FLOW_NAME` varchar(200) NOT NULL COMMENT '流程图名称，自动生成',
+  `FLOW_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '工作流ID',
+  `FLOW_NAME` varchar(200) NOT NULL COMMENT '工作流名称，自动生成',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `OWNER_EXPERIMENT_ID` bigint(20) NOT NULL COMMENT '所属实验ID',
   `LOCK_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '加锁状态，实验运行和快照期间加锁，可读不可写\r\n            \r\n            0：未加锁\r\n            1：已加锁',
@@ -1373,12 +1390,12 @@ CREATE TABLE `wf_flow` (
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  `VERSION` bigint(20) NOT NULL DEFAULT '1' COMMENT '版本号',
+  `VERSION` bigint(20) NOT NULL DEFAULT '1' COMMENT '版本号，解决同一实验多用户编辑问题',
   PRIMARY KEY (`FLOW_ID`),
   UNIQUE KEY `Index_1` (`OWNER_EXPERIMENT_ID`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_PROJECT_ID`,`STATUS`,`FLOW_STATE`,`LAST_UPDATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流表，记录当前的实验状态，由一系列子表记录实验画布上节点和边的图形信息，以及节点参数内容和输出内容\r\n\r\n                            ';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流表，记录当前的实验状态，由一系列子表记录实验画布上节点和边的图形信息，以及节点参数内容和输出内容\r\n\r\n                            ';
 
 -- ----------------------------
 -- Records of wf_flow
@@ -1405,7 +1422,7 @@ CREATE TABLE `wf_flow_global_parameter` (
   KEY `Index_1` (`REL_NODE_ID`,`REL_CHAR_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`REL_FLOW_ID`,`GLOBAL_PARAM_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流全局参数表，用于定时调度任务和开放服务API，指定哪些参数可以暴露到外部，从而调用方可以根据作业需要动态设置工作流';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流全局参数表，用于定时调度任务和开放服务API，指定哪些参数可以暴露到外部，从而调用方可以根据作业需要动态设置工作流';
 
 -- ----------------------------
 -- Records of wf_flow_global_parameter
@@ -1437,7 +1454,7 @@ CREATE TABLE `wf_flow_node` (
   KEY `Index_1` (`OWNER_FLOW_ID`,`REF_MODULE_ID`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`REF_MODULE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
 
 -- ----------------------------
 -- Records of wf_flow_node
@@ -1482,7 +1499,7 @@ CREATE TABLE `wf_flow_node_link` (
   KEY `Index_1` (`SRC_PORT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`DST_PORT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点链接表\r\n\r\n逻辑删除，同一节点流入端口下正常状态的普通组件流出节点端口唯一和web服务组';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点链接表\r\n\r\n逻辑删除，同一节点流入端口下正常状态的普通组件流出节点端口唯一和web服务组';
 
 -- ----------------------------
 -- Records of wf_flow_node_link
@@ -1532,7 +1549,7 @@ CREATE TABLE `wf_flow_node_port` (
   PRIMARY KEY (`NODE_PORT_ID`),
   UNIQUE KEY `Index_1` (`OWNER_NODE_ID`,`REF_PORT_ID`),
   KEY `Index_2` (`OWNER_NODE_ID`,`REF_CHAR_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点端口表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点端口表';
 
 -- ----------------------------
 -- Records of wf_flow_node_port
@@ -1587,7 +1604,7 @@ CREATE TABLE `wf_json_object` (
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`OBJECT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
 
 -- ----------------------------
 -- Records of wf_json_object
@@ -1779,7 +1796,7 @@ CREATE TABLE `wf_snapshot` (
   PRIMARY KEY (`SNAPSHOT_ID`),
   KEY `Index_1` (`OWNER_FLOW_ID`,`SHAPSHOT_SRC`,`SNAPSHOT_VERSION`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流快照表，在实验工作台创建副本和运行实验都会触发快照创建，由此实现类似checkpoint功能\r\n\r\n                                -&';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流快照表，在实验工作台创建副本和运行实验都会触发快照创建，由此实现类似checkpoint功能\r\n\r\n                                -&';
 
 -- ----------------------------
 -- Records of wf_snapshot

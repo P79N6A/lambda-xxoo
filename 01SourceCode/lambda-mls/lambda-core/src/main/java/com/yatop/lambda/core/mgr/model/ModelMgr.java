@@ -150,7 +150,7 @@ public class ModelMgr extends BaseMgr {
     /*
      *
      *   查询模型信息
-     *   返回结果
+     *   返回结果集
      *
      * */
     public List<MwModel> queryModel(Long warehouseId, PagerUtil pager) {

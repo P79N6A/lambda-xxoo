@@ -160,8 +160,28 @@ public class DataTableMgr extends BaseMgr {
 
     /*
      *
-     *   查询数据表信息
+     *   查询数据表信息（按表名）
      *   返回结果
+     *
+     * */
+    public DwDataTable queryDataTable(Long warehouseId, String tableName)  {
+        if(DataUtil.isNull(warehouseId) && DataUtil.isEmpty(tableName))
+            throw new LambdaException("Check data table exists failed -- invalid query condition.", "无效查询条件");
+
+        try {
+            DwDataTableExample example = new DwDataTableExample();
+            DwDataTableExample.Criteria criteria = example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableNameEqualTo(tableName).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            List<DwDataTable> resultList = dwDataTableMapper.selectByExample(example);
+            return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
+        } catch (Throwable e) {
+            throw new LambdaException("Query data table info failed.", "查询数据表信息失败", e);
+        }
+    }
+
+    /*
+     *
+     *   查询数据表信息
+     *   返回结果集
      *
      * */
     public List<DwDataTable> queryDataTable(Long warehouseId, PagerUtil pager) {

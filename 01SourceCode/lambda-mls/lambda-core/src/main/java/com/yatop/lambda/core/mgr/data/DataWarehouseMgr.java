@@ -154,7 +154,7 @@ public class DataWarehouseMgr extends BaseMgr {
     /*
      *
      *   查询数据仓库信息（所有）
-     *   返回结果
+     *   返回结果集
      *
      * */
     public List<DwDataWarehouse> queryDataWarehouse(PagerUtil pager) {

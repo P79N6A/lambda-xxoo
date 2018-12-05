@@ -91,9 +91,9 @@ public class ProjectMgrTest {
     @Rollback(true)
     public void testQueryProjectMixed() {
 
-/*        PagerUtil page = new PagerUtil(1, 5);
-        List<PrProject> prList= projectMgr.queryProjectMixed("", "admin", page);
+        PagerUtil page = new PagerUtil(1, 20);
+        List<PrProject> prList= projectMgr.queryProjectExt("O", "", page);
         System.out.println("project: " + DataUtil.prettyFormat(prList));
-        System.out.println("total count: " + page.getTotalCount());*/
+        System.out.println("total count: " + page.getTotalCount());
     }
 }
