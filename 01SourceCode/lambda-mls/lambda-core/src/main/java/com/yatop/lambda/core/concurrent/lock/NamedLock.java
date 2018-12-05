@@ -89,7 +89,7 @@ public abstract class NamedLock implements DisposableBean, Runnable {
             while (iterator.hasNext()) {
                 Map.Entry<Long, ArrayList<LockRequest>> entry = iterator.next();
                 if(entry.getKey() <= System.currentTimeMillis()) {
-                    for(LockRequest cacheRequest :entry.getValue() ) {
+                    for(LockRequest cacheRequest : entry.getValue() ) {
                         cacheRequest.setHold(false);
                         namedLockHashMap.remove(cacheRequest.getName());
                     }
