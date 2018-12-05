@@ -11,10 +11,12 @@ import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class ExperimentTemplateMgr extends BaseMgr {
 
     @Autowired

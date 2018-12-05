@@ -7,17 +7,18 @@ import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.WorkflowLockStateEnum;
 import com.yatop.lambda.core.enums.WorkflowStateEnum;
 import com.yatop.lambda.core.exception.LambdaException;
-import com.yatop.lambda.core.exception.WorkFlowExpireException;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class WorkflowMgr extends BaseMgr {
 
     @Autowired
@@ -129,122 +130,109 @@ public class WorkflowMgr extends BaseMgr {
      *   返回更新数量
      *
      * */
-    public int updateWorkflow4Snapshot(WfFlow workflow, String operId) {
+    public int updateWorkflowSnapshot(WfFlow workflow, String operId) {
         if( DataUtil.isNull(workflow) || !workflow.isFlowIdColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update workflow info for snapshot failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(!workflow.isLastSnapshotIdColoured()) {
-            throw new LambdaException("Update workflow info for snapshot failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException("Update workflow info failed -- invalid update data.", "无效更新内容");
         }
 
-        WfFlow updateWorkflow = new WfFlow();
         try {
-            return workflowMapper.updateWorkflow4Snapshot(workflow.getFlowId(), workflow.getLastSnapshotId(), SystemTimeUtil.getCurrentTime(), operId);
+            return workflowMapper.updateWorkflowSnapshot(workflow.getFlowId(), workflow.getLastSnapshotId(), SystemTimeUtil.getCurrentTime(), operId);
         } catch (Throwable e) {
-            throw new LambdaException("Update workflow info for snapshot failed.", "更新工作流信息失败", e);
+            throw new LambdaException("Update workflow info failed.", "更新工作流信息失败", e);
         }
     }
 
     /*
      *
-     *   更新工作流信息（运行信息，必须在加锁和解锁中间进行，适用于实验副本和实验运行的快照信息更新）
+     *   更新工作流信息（运行信息）
      *   返回更新数量
      *
      * */
-    public int updateWorkflow4Execution(WfFlow workflow, String operId) {
+    public int updateWorkflowExecution(WfFlow workflow, String operId) {
         if( DataUtil.isNull(workflow) || !workflow.isFlowIdColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update workflow info for snapshot failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(!workflow.isLastSnapshotIdColoured()) {
-            throw new LambdaException("Update workflow info for snapshot failed -- invalid update data.", "无效更新内容");
+        if(!workflow.isLastJobIdColoured()) {
+            throw new LambdaException("Update workflow info failed -- invalid update data.", "无效更新内容");
         }
 
-        WfFlow updateWorkflow = new WfFlow();
+
         try {
-            return workflowMapper.updateWorkflowWithVersion4Snapshot(workflow.getFlowId(), workflow.getLastSnapshotId(), SystemTimeUtil.getCurrentTime(), operId);
+            WfFlow updateWorkflow = new WfFlow();
+            updateWorkflow.setFlowId(workflow.getFlowId());
+            updateWorkflow.setLastJobId(workflow.getLastJobId());
+            return wfFlowMapper.updateByPrimaryKeySelective(updateWorkflow);
         } catch (Throwable e) {
-            throw new LambdaException("Update workflow info for snapshot failed.", "更新工作流信息失败", e);
+            throw new LambdaException("Update workflow info failed.", "更新工作流信息失败", e);
         }
     }
 
     /*
      *
-     *   加锁工作流
-     *   返回记录
+     *   更新工作流信息（运行加解锁）
+     *   返回更新数量
      *
      * */
-    public WfFlow lockWorkflowWithVersion(WfFlow workflow, String operId) {
-        if(DataUtil.isNull(workflow) || DataUtil.isNull(workflow.getFlowId()) || DataUtil.isNull(workflow.getVersion()) || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Lock workflow -- invalid query condition.", "无效加锁条件");
+    private int updateWorkflowLockExt(WfFlow workflow, String operId, WorkflowLockStateEnum lockStateEnum) {
+        if(DataUtil.isNull(workflow) || DataUtil.isNull(workflow.getFlowId()) || DataUtil.isEmpty(operId)){
+            throw new LambdaException("Lock workflow -- invalid query condition.", "无效加解锁条件");
         }
 
-        if(checkWorkflowLocked(workflow.getFlowId())) {
-            throw new LambdaException("Lock workflow -- workflow locked.", "工作流已加锁");
-        }
-
-        int affectRows;
         try {
             WfFlow lockWorkflow = new WfFlow();
-            lockWorkflow.setLockState(WorkflowLockStateEnum.LOCKED.getState());
+            lockWorkflow.setFlowId(workflow.getFlowId());
+            lockWorkflow.setLockState(lockStateEnum.getState());
             if(lockWorkflow.isLockMsgColoured())
                 lockWorkflow.setLockMsg(workflow.getLockMsg());
             lockWorkflow.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             lockWorkflow.setLastUpdateOper(operId);
-            lockWorkflow.setVersion(workflow.getVersion() + 1);
-            WfFlowExample example = new WfFlowExample();
-            example.createCriteria().andFlowIdEqualTo(workflow.getFlowId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus()).andLockStateEqualTo(WorkflowLockStateEnum.UNLOCKED.getState())
-                    .andVersionEqualTo(workflow.getVersion());
-            affectRows = wfFlowMapper.updateByExampleSelective(lockWorkflow, example);
+            return wfFlowMapper.updateByPrimaryKeySelective(lockWorkflow);
         } catch (Throwable e) {
-            throw new LambdaException("Lock workflow with version failed.", "加锁工作流失败", e);
+            throw new LambdaException("Lock workflow with version failed.", "加解锁工作流失败", e);
         }
-
-        if(affectRows < 1) {
-            throw new WorkFlowExpireException("Lock workflow -- affect rows is zero.", "加锁工作流失败");
-        }
-
-        return queryWorkflow(workflow.getFlowId());
     }
 
     /*
      *
-     *   解锁工作流
+     *   更新工作流信息（运行加锁）
+     *   返回更新数量
+     *
+     * */
+    public int updateWorkflowLock(WfFlow workflow, String operId) {
+        return updateWorkflowLockExt(workflow, operId, WorkflowLockStateEnum.LOCKED);
+    }
+
+    /*
+     *
+     *   更新工作流信息（运行解锁）
+     *   返回更新数量
+     *
+     * */
+    public int updateWorkflowUnlock(WfFlow workflow, String operId) {
+        return updateWorkflowLockExt(workflow, operId, WorkflowLockStateEnum.UNLOCKED);
+    }
+
+    /*
+     *
+     *   更新工作流版本号
      *   返回记录
      *
      * */
-    public WfFlow unlockWorkflowWithVersion(WfFlow workflow, String operId) {
-        if(DataUtil.isNull(workflow) || DataUtil.isNull(workflow.getFlowId()) || DataUtil.isNull(workflow.getVersion()) || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Unlock workflow -- invalid query condition.", "无效解锁条件");
+    private WfFlow updateWorkflowVersion(WfFlow workflow, String operId) {
+        if(DataUtil.isNull(workflow) || DataUtil.isNull(workflow.getFlowId()) || DataUtil.isEmpty(operId)){
+            throw new LambdaException("Lock workflow -- invalid query condition.", "无效加解锁条件");
         }
 
-        if(!checkWorkflowLocked(workflow.getFlowId())) {
-            throw new LambdaException("Unlock workflow -- workflow locked.", "工作流已解锁");
-        }
-
-        int affectRows;
         try {
-            WfFlow lockWorkflow = new WfFlow();
-            lockWorkflow.setLockState(WorkflowLockStateEnum.UNLOCKED.getState());
-            if(lockWorkflow.isLockMsgColoured())
-                lockWorkflow.setLockMsg(workflow.getLockMsg());
-            lockWorkflow.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
-            lockWorkflow.setLastUpdateOper(operId);
-            lockWorkflow.setVersion(workflow.getVersion() + 1);
-            WfFlowExample example = new WfFlowExample();
-            example.createCriteria().andFlowIdEqualTo(workflow.getFlowId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus()).andLockStateEqualTo(WorkflowLockStateEnum.LOCKED.getState())
-                    .andVersionEqualTo(workflow.getVersion());
-            affectRows = wfFlowMapper.updateByExampleSelective(lockWorkflow, example);
+            workflowMapper.updateWorkflowVersion(workflow.getFlowId(), SystemTimeUtil.getCurrentTime(), operId);
         } catch (Throwable e) {
-            throw new LambdaException("Unlock workflow with version failed.", "解锁工作流失败", e);
+            throw new LambdaException("Lock workflow with version failed.", "加解锁工作流失败", e);
         }
-
-        if(affectRows < 1) {
-            throw new WorkFlowExpireException("Unlock workflow -- affect rows is zero.", "解锁工作流失败");
-        }
-
-        //解锁失败属于不可能出现的情况，是否采取强制解锁待定
 
         return queryWorkflow(workflow.getFlowId());
     }
@@ -319,26 +307,6 @@ public class WorkflowMgr extends BaseMgr {
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException("Query workflow info failed.", "查询工作流信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   检查相工作流是否加锁
-     *   返回是否存在
-     *
-     * */
-    public boolean checkWorkflowLocked(Long id)  {
-        if(DataUtil.isNull(id))
-            throw new LambdaException("Check workflow locked failed -- invalid check condition.", "无效检查条件");
-
-        try {
-            WfFlowExample example = new WfFlowExample();
-            example.createCriteria().andFlowIdEqualTo(id).andLockStateEqualTo(WorkflowLockStateEnum.LOCKED.getState())
-                    .andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            return wfFlowMapper.countByExample(example) > 0 ? true : false;
-        } catch (Throwable e) {
-            throw new LambdaException("Check workflow locked failed.", "检查工作流是否加锁失败", e);
         }
     }
 }

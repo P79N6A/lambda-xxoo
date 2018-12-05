@@ -11,10 +11,12 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class DataTableMgr extends BaseMgr {
 
     /*
