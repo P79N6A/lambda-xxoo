@@ -140,15 +140,18 @@ public class DataWarehouseMgr extends BaseMgr {
             throw new LambdaException("Query data warehouse info failed -- invalid query condition.", "无效查询条件");
         }
 
-        try {
-            DwDataWarehouse warehouse = dwDataWarehouseMapper.selectByPrimaryKey(id);
-            if(DataUtil.isNull(warehouse) || (warehouse.getStatus() == DataStatusEnum.INVALID.getStatus()))
-                return null;
+        DwDataWarehouse warehouse;
 
-            return warehouse;
+        try {
+            warehouse = dwDataWarehouseMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query data warehouse info failed.", "查询数据库信息失败", e);
         }
+
+        if(DataUtil.isNull(warehouse) || (warehouse.getStatus() == DataStatusEnum.INVALID.getStatus()))
+            throw new LambdaException("Query data warehouse info failed -- invalid status or not found.", "已删除或未查找到");
+
+        return warehouse;
     }
 
     /*

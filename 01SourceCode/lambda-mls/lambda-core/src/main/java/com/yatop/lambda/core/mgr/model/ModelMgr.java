@@ -136,15 +136,17 @@ public class ModelMgr extends BaseMgr {
             throw new LambdaException("Query model info failed -- invalid query condition.", "无效查询条件");
         }
 
+        MwModel model;
         try {
-            MwModel model = mwModelMapper.selectByPrimaryKey(modelId);
-            if(DataUtil.isNull(model) || (model.getStatus() == DataStatusEnum.INVALID.getStatus()))
-                return null;
-
-            return model;
+            model = mwModelMapper.selectByPrimaryKey(modelId);
         } catch (Throwable e) {
             throw new LambdaException("Query model info failed.", "查询模型信息失败", e);
         }
+
+        if(DataUtil.isNull(model) || (model.getStatus() == DataStatusEnum.INVALID.getStatus()))
+            throw new LambdaException("Query model info failed -- invalid status or not found.", "已删除或未查找到");
+
+        return model;
     }
 
     /*

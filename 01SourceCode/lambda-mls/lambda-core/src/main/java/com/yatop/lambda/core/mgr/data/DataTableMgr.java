@@ -147,15 +147,17 @@ public class DataTableMgr extends BaseMgr {
             throw new LambdaException("Query data table info failed -- invalid query condition.", "无效查询条件");
         }
 
+        DwDataTable table;
         try {
-            DwDataTable table = dwDataTableMapper.selectByPrimaryKey(tableId);
-            if(DataUtil.isNull(table) || (table.getStatus() == DataStatusEnum.INVALID.getStatus()))
-                return null;
-
-            return table;
+            table = dwDataTableMapper.selectByPrimaryKey(tableId);
         } catch (Throwable e) {
             throw new LambdaException("Query data table info failed.", "查询数据表信息失败", e);
         }
+
+        if(DataUtil.isNull(table) || (table.getStatus() == DataStatusEnum.INVALID.getStatus()))
+            throw new LambdaException("Query data table info failed -- invalid status or not found.", "已删除或未查找到");
+
+        return table;
     }
 
     /*

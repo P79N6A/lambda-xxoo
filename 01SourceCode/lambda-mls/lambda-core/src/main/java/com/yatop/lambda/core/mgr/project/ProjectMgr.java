@@ -140,15 +140,17 @@ public class ProjectMgr extends BaseMgr {
             throw new LambdaException("Query project info failed -- invalid query condition.", "无效查询条件");
         }
 
+        PrProject project;
         try {
-            PrProject project = prProjectMapper.selectByPrimaryKey(id);
-            if(DataUtil.isNull(project) || (project.getStatus() == DataStatusEnum.INVALID.getStatus()))
-                return null;
-
-            return project;
+            project = prProjectMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query project info failed.", "查询项目信息失败", e);
         }
+
+        if(DataUtil.isNull(project) || (project.getStatus() == DataStatusEnum.INVALID.getStatus()))
+            throw new LambdaException("Query project info failed -- invalid status or not found.", "已删除或未查找到");
+
+        return project;
     }
 
     /*

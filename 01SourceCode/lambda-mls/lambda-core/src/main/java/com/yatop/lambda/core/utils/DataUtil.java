@@ -3,17 +3,12 @@ package com.yatop.lambda.core.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.yatop.lambda.base.utils.LambdaRootModel;
-import com.yatop.lambda.core.exception.LambdaException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.context.annotation.Bean;
 
-import javax.xml.crypto.Data;
-import java.lang.reflect.Method;
-import java.util.List;
+import java.util.Collection;
 
 public class DataUtil {
 
@@ -77,11 +72,11 @@ public class DataUtil {
         return JSON.toJSONString(json, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
     }
 
-    public static String prettyFormat(List<? extends LambdaRootModel> models) {
+    public static String prettyFormat(Collection<? extends LambdaRootModel> models) {
         return JSON.toJSONString(DataUtil.toJSONArray(models), SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
     }
 
-    public static JSONArray toJSONArray(List<? extends LambdaRootModel> models) {
+    public static JSONArray toJSONArray(Collection<? extends LambdaRootModel> models) {
         if(DataUtil.isNull(models))
             return null;
 
@@ -92,11 +87,11 @@ public class DataUtil {
         return jsonArray;
     }
 
-    public static boolean isEmpty(List<? extends Object> list) {
-        return (DataUtil.isNotNull(list)  ? list.size() == 0 : true);
+    public static boolean isEmpty(Collection<? extends Object> list) {
+        return (DataUtil.isNotNull(list)  ? list.isEmpty() : true);
     }
 
-    public static boolean isNotEmpty(List<? extends Object> list) {
+    public static boolean isNotEmpty(Collection<? extends Object> list) {
         return !DataUtil.isEmpty(list);
     }
 }

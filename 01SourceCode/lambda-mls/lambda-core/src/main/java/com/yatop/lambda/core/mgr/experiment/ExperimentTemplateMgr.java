@@ -130,15 +130,17 @@ public class ExperimentTemplateMgr extends BaseMgr {
             throw new LambdaException("Query experiment template info failed -- invalid query condition.", "无效查询条件");
         }
 
+        EmExperimentTemplate template;
         try {
-            EmExperimentTemplate template = emExperimentTemplateMapper.selectByPrimaryKey(templateId);
-            if(DataUtil.isNull(template) || (template.getStatus() == DataStatusEnum.INVALID.getStatus()))
-                return null;
-
-            return template;
+            template = emExperimentTemplateMapper.selectByPrimaryKey(templateId);
         } catch (Throwable e) {
             throw new LambdaException("Query experiment template info failed.", "查询实验模版信息失败", e);
         }
+
+        if(DataUtil.isNull(template) || (template.getStatus() == DataStatusEnum.INVALID.getStatus()))
+            throw new LambdaException("Query experiment template info failed -- invalid status or not found.", "已删除或未查找到");
+
+        return template;
     }
 
     /*

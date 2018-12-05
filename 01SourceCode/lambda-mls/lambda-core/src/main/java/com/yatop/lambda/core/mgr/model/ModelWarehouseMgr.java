@@ -139,15 +139,18 @@ public class ModelWarehouseMgr extends BaseMgr {
             throw new LambdaException("Query model warehouse info failed -- invalid query condition.", "无效查询条件");
         }
 
-        try {
-            MwModelWarehouse warehouse = mwModelWarehouseMapper.selectByPrimaryKey(id);
-            if(DataUtil.isNull(warehouse) || (warehouse.getStatus() == DataStatusEnum.INVALID.getStatus()))
-                return null;
+        MwModelWarehouse warehouse;
 
-            return warehouse;
+        try {
+            warehouse = mwModelWarehouseMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query model warehouse info failed.", "查询模型库信息失败", e);
         }
+
+        if(DataUtil.isNull(warehouse) || (warehouse.getStatus() == DataStatusEnum.INVALID.getStatus()))
+            throw new LambdaException("Query model warehouse info failed -- invalid status or not found.", "已删除或未查找到");
+
+        return warehouse;
     }
 
     /*

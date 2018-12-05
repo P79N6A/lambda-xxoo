@@ -25,7 +25,7 @@ public class JsonResponse implements Serializable{
     private JsonResponse(LambdaException e) {
         this.success = false;
         this.errorCode = e.getErrorCode();
-        this.errorMsg = e.getErrorMsg();
+        this.errorMsg = e.getErrorMsgChain().get(0);
         this.errorHint = e.getErrorHint();
     }
 
