@@ -1,7 +1,10 @@
 package com.yatop.lambda.core.concurrent.lock;
 
 import com.yatop.lambda.core.utils.DataUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -10,6 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class NamedLock {
+
+    public static Logger logger = LoggerFactory.getLogger(NamedLock.class);
 
     //加锁资源ID, 加锁请求
     private ConcurrentHashMap<Long, LockRequest> namedLockHashMap = new ConcurrentHashMap<Long, LockRequest>();
@@ -50,14 +55,15 @@ public abstract class NamedLock {
         ConcurrentLinkedQueue<LockRequest> chainList = this.threadChainHashMap.get(requestLock.getThread().getId());
         if(DataUtil.isNotNull(chainList)) {
             chainList = this.threadChainHashMap.remove(Thread.currentThread().getId());
-
-            Long curThreadId = requestLock.getThread().getId();
-            for(LockRequest holdRequest : chainList) {
-                if(this.namedLockHashMap.get(holdRequest.getName()).getThread().getId() == curThreadId)
-                    this.namedLockHashMap.remove(holdRequest.getName());
-                holdRequest.setHold(false);
+            if(DataUtil.isNotNull(chainList)) {
+                Long curThreadId = requestLock.getThread().getId();
+                for (LockRequest holdRequest : chainList) {
+                    if (this.namedLockHashMap.get(holdRequest.getName()).getThread().getId() == curThreadId)
+                        this.namedLockHashMap.remove(holdRequest.getName());
+                    holdRequest.setHold(false);
+                }
+                chainList.clear();
             }
-            chainList.clear();
         }
     }
 
@@ -105,6 +111,9 @@ public abstract class NamedLock {
                                 holdRequest.setHold(false);
                                 if(this.namedLockHashMap.get(holdRequest.getName()).getThread().getId() == curThreadId)
                                     this.namedLockHashMap.remove(holdRequest.getName());
+
+                                logger.error("警告!!! 移除过期名称锁[NamedLock:{}, 资源ID{}, 线程ID{}, 过期时间{}, 移除时间{}]",
+                                        holdRequest.namedLockId(), holdRequest.getName(), holdRequest.getThread().getId(), new Timestamp(holdRequest.getExpire()), new Timestamp(System.currentTimeMillis()));
                             } else {
                                 ArrayList<LockRequest> cacheList = this.clearExpireCacheMap.get(holdRequest.getExpire());
                                 if(DataUtil.isNotNull(cacheList))
