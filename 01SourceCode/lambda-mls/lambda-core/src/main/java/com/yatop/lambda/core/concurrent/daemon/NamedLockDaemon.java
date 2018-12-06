@@ -1,8 +1,11 @@
 package com.yatop.lambda.core.concurrent.daemon;
 
-import com.yatop.lambda.core.concurrent.lock.NamedLock;
-import com.yatop.lambda.core.concurrent.lock.NamedLock.LockRequest;
+import com.yatop.lambda.core.concurrent.event.LambdaEvent;
+import com.yatop.lambda.core.concurrent.lock.NamedLockBaseService;
+import com.yatop.lambda.core.concurrent.lock.NamedLockBaseService.LockRequest;
 import com.yatop.lambda.core.utils.DataUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Service;
 
@@ -10,32 +13,37 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class NamedLockDaemon implements DisposableBean, Runnable {
+
+    public static Logger logger = LoggerFactory.getLogger(NamedLockDaemon.class);
+
     //负责完成串行加锁和过期锁清理
-    private Thread thread;
-    private ConcurrentLinkedQueue<LockRequest> lockQueue;
-    private ConcurrentLinkedQueue<LockRequest> unlockQueue;
-    private TreeMap<String, NamedLock> registedNamedLockMap = new TreeMap<String, NamedLock>();
-    private long counter;
-    private volatile boolean exit;
+    private Thread daemonThread;
+    private ConcurrentLinkedQueue<LockRequest> lockRequestQueue = new ConcurrentLinkedQueue<LockRequest>();
+    private TreeMap<String, NamedLockBaseService> registeredNamedLockMap = new TreeMap<String, NamedLockBaseService>();
+    private LambdaEvent queueEvent = new LambdaEvent();
+    private long counter = 0;
+    private volatile boolean exit = false;
 
     NamedLockDaemon(){
-        this.exit = false;
-        this.thread = new Thread(this);
-        this.thread.start();
+        this.daemonThread = new Thread(this);
+        this.daemonThread.start();
     }
 
     @Override
     public void run(){
-        this.counter = 0;
         while(!exit){
             try {
-                this.wait(8 * 1000);
+                this.queueEvent.waitEvent(997, TimeUnit.NANOSECONDS);
                 dealQueueRequest();
-            }catch (Throwable e) {
+                this.queueEvent.resetEvent();
+            } catch (InterruptedException e) {
                 continue;
+            } catch (Throwable e) {
+                logger.error("Named-Lock-Daemon线程未知错误", e);
             }
         }
         clearQueueRequest();
@@ -44,60 +52,44 @@ public class NamedLockDaemon implements DisposableBean, Runnable {
     @Override
     public void destroy(){
         this.exit = true;
-        this.thread.interrupt();
+        this.daemonThread.interrupt();
     }
 
     private void dealQueueRequest() {
 
-        while(!this.unlockQueue.isEmpty()) {
-            LockRequest unlockRequest = this.unlockQueue.poll();
-            if(DataUtil.isNotNull(unlockRequest)) {
-                unlockRequest.unlock();
-            }
-        }
-
-        while(!this.lockQueue.isEmpty()) {
+        while(!this.lockRequestQueue.isEmpty()) {
             ++this.counter;
 
-            while(!this.unlockQueue.isEmpty()) {
-                LockRequest unlockRequest = this.unlockQueue.poll();
-                if(DataUtil.isNotNull(unlockRequest)) {
-                    unlockRequest.unlock();
-                }
-            }
-
-            LockRequest lockRequest = this.lockQueue.poll();
+            LockRequest lockRequest = this.lockRequestQueue.poll();
             if(DataUtil.isNotNull(lockRequest)) {
                 registerNamedLock(lockRequest);
-                lockRequest.lock();
-                lockRequest.notify();
+                lockRequest.lockResource();
+                lockRequest.getEvent().notifyEvent();
             }
             clearExpireLock();
         }
-        clearExpireLock();
     }
 
     private void registerNamedLock(LockRequest lockRequest) {
-        if(DataUtil.isNull(this.registedNamedLockMap.get(lockRequest.namedLockId())))
-            this.registedNamedLockMap.put(lockRequest.namedLockId(), lockRequest.getNamedLock());
+        if(DataUtil.isNull(this.registeredNamedLockMap.get(lockRequest.namedLockServiceId())))
+            this.registeredNamedLockMap.put(lockRequest.namedLockServiceId(), lockRequest.getNamedLockService());
     }
 
     private void clearQueueRequest() {
-        while (!this.lockQueue.isEmpty()) {
-            LockRequest lockRequest = this.lockQueue.poll();
+        while (!this.lockRequestQueue.isEmpty()) {
+            LockRequest lockRequest = this.lockRequestQueue.poll();
             if (DataUtil.isNotNull(lockRequest)) {
-                lockRequest.notify();
+                lockRequest.getEvent().notifyEvent();
             }
         }
-        this.unlockQueue.clear();
     }
 
     private void clearExpireLock() {
-        if(this.counter > 997) {
-            if(!this.registedNamedLockMap.isEmpty()) {
-                Iterator<Map.Entry<String, NamedLock>> iterator = this.registedNamedLockMap.entrySet().iterator();
+        if(this.counter > 69) {
+            if(!this.registeredNamedLockMap.isEmpty()) {
+                Iterator<Map.Entry<String, NamedLockBaseService>> iterator = this.registeredNamedLockMap.entrySet().iterator();
                 while (iterator.hasNext()) {
-                    Map.Entry<String, NamedLock> entry = iterator.next();
+                    Map.Entry<String, NamedLockBaseService> entry = iterator.next();
                     entry.getValue().clearExpireLock();
                 }
             }
@@ -105,25 +97,29 @@ public class NamedLockDaemon implements DisposableBean, Runnable {
         }
     }
 
-    public LockRequest requestLock(LockRequest lockRequest) {
+    public boolean requestLock(LockRequest lockRequest) {
         if(DataUtil.isNotNull(lockRequest)) {
-            if (lockRequest.isIdle()) {
-                try {
-                    this.lockQueue.offer(lockRequest);
-                    this.notify();
-                    lockRequest.wait(8 * 1000);
-                } catch (Throwable e) {
+            if(lockRequest.isNotHold()) {
+                if (lockRequest.isIdle()) {
+                    this.lockRequestQueue.offer(lockRequest);
+                    this.queueEvent.notifyEvent();
+
+                    try {
+                        lockRequest.getEvent().resetEvent();
+                        lockRequest.getEvent().waitEvent(8, TimeUnit.SECONDS);
+                    } catch (InterruptedException e) {
+                        //TODO
+                    } catch (Throwable e) {
+                        logger.error("Named-Lock-Request线程未知错误", e);
+                    }
                 }
+                return lockRequest.isHold();
             }
+            return true;
         }
-        return lockRequest;
+        return false;
     }
 
-    public LockRequest requestUnlock(LockRequest unlockRequest) {
-        if(DataUtil.isNotNull(unlockRequest)) {
-            this.unlockQueue.offer(unlockRequest);
-            this.notify();
-        }
-        return unlockRequest;
+    public void requestUnlock(LockRequest unlockRequest) {
     }
 }

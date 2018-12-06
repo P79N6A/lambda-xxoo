@@ -39,6 +39,7 @@ lambda.mls:
 #### 日志级别配置
 ##############################################################
 logging.file: logs/lambda-mls.log
+logging.level.com.yatop.lambda.base: DEBUG
 logging.level.org.apache.hadoop.yarn.client.RMProxy: WARN
 logging.level.cn.com.bsfit.portal.mapper: INFO
 logging.level.com.atomikos: INFO

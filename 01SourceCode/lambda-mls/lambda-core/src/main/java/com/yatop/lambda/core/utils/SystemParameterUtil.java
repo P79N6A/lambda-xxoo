@@ -18,8 +18,8 @@ public class SystemParameterUtil {
     @Autowired
     public void setSystemParameterBoard(SystemParameterMgr systemParameterMgr) {
         systemParameterBoard = new ConcurrentHashMap<String, SysParameter>();
-        List<SysParameter> sysParameters = systemParameterMgr.queryAll();
-        if(sysParameters != null) {
+        List<SysParameter> sysParameters = systemParameterMgr.querySystemParameter();
+        if(DataUtil.isNotEmpty(sysParameters)) {
             for (SysParameter sysParameter : sysParameters) {
                 if(DataUtil.isBlank(sysParameter.getParamValue()) || sysParameter.getStatus() == DataStatusEnum.INVALID.getStatus())
                     continue;
