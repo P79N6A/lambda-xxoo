@@ -28,9 +28,9 @@ public class ProjectMemberMgr extends BaseMgr {
      * */
     public PrProjectMember insertProjectMember(PrProjectMember member, String operId) {
         if( DataUtil.isNull(member) ||
-                !member.isProjectIdColoured() ||
-                !member.isProjectRoleColoured() ||
-                !member.isMemberUserColoured() ||
+                member.isProjectIdNotColoured() ||
+                member.isProjectRoleNotColoured() ||
+                member.isMemberUserNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException("Insert project member failed -- invalid insert data.", "无效插入数据");
         }
@@ -65,17 +65,17 @@ public class ProjectMemberMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteProjectMember(Long projectId, String memberUser, String operId)  {
-        if(DataUtil.isNull(projectId) || DataUtil.isEmpty(memberUser) || DataUtil.isEmpty(operId)){
+    public int deleteProjectMember(PrProjectMember member, String operId)  {
+        if(DataUtil.isNull(member) || member.isProjectIdNotColoured() || member.isMemberUserNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException("Delete project member failed -- invalid query condition.", "无效删除条件");
         }
 
-        if(!existsProjectMember(projectId, memberUser)) {
+        if(!existsProjectMember(member.getProjectId(), member.getMemberUser())) {
             throw new LambdaException("Delete project member failed -- project member not found.", "项目成员记录未找到");
         }
 
-        PrProjectMember ownerMember = queryProjectOwner(projectId);
-        long allCount = countProjectMember(projectId);
+        PrProjectMember ownerMember = queryProjectOwner(member.getProjectId());
+        long allCount = countProjectMember(member.getProjectId());
         if(ownerMember.getProjectRole() == ProjectRoleEnum.PROJECT_OWNER.getRole() && allCount > 1) {
             throw new LambdaException("Delete project member failed -- owner should transfer before delete.", "项目转出后再操作删除");
         }
@@ -87,7 +87,7 @@ public class ProjectMemberMgr extends BaseMgr {
             deleteMember.setLastUpdateOper(operId);
 
             PrProjectMemberExample example = new PrProjectMemberExample();
-            example.createCriteria().andProjectIdEqualTo(projectId).andMemberUserEqualTo(memberUser).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andProjectIdEqualTo(member.getProjectId()).andMemberUserEqualTo(member.getMemberUser()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return prProjectMemberMapper.updateByExampleSelective(deleteMember, example);
         } catch (Throwable e) {
             throw new LambdaException("Delete project member exists failed.", "删除项目成员记录失败", e);

@@ -30,11 +30,11 @@ public class ExperimentTemplateMgr extends BaseMgr {
      * */
     public EmExperimentTemplate insertExperimentTemplate(EmExperimentTemplate template, String operId) {
         if( DataUtil.isNull(template) ||
-                !template.isTemplateNameColoured() ||
-                !template.isSequenceColoured() ||
-                !template.isTemplateContentColoured() ||
-                !template.isSummaryColoured() ||
-                !template.isDescriptionColoured() ||
+                template.isTemplateNameNotColoured() ||
+                template.isSequenceNotColoured() ||
+                template.isTemplateContentNotColoured() ||
+                template.isSummaryNotColoured() ||
+                template.isDescriptionNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException("Insert experiment template info failed -- invalid insert data.", "无效插入数据");
         }
@@ -63,14 +63,14 @@ public class ExperimentTemplateMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteDataTemplate(Long id, String operId) {
-        if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
+    public int deleteDataTemplate(EmExperimentTemplate template, String operId) {
+        if(DataUtil.isNull(template) || template.isTemplateIdNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException("Delete experiment template info failed -- invalid query condition.", "无效删除条件");
         }
 
         try {
             EmExperimentTemplate deleteTemplate = new EmExperimentTemplate();
-            deleteTemplate.setTemplateId(id);
+            deleteTemplate.setTemplateId(template.getTemplateId());
             deleteTemplate.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteTemplate.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteTemplate.setLastUpdateOper(operId);
@@ -87,15 +87,15 @@ public class ExperimentTemplateMgr extends BaseMgr {
      *
      * */
     public int updateDataTemplate(EmExperimentTemplate template, String operId) {
-        if( DataUtil.isNull(template) || !template.isTemplateIdColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(template) || template.isTemplateIdNotColoured() || DataUtil.isEmpty(operId)) {
             throw new LambdaException("Update experiment template info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(!template.isTemplateNameColoured() &&
-                !template.isSequenceColoured() &&
-                !template.isTemplateContentColoured() &&
-                !template.isSummaryColoured() &&
-                !template.isDescriptionColoured()) {
+        if(template.isTemplateNameNotColoured() &&
+                template.isSequenceNotColoured() &&
+                template.isTemplateContentNotColoured() &&
+                template.isSummaryNotColoured() &&
+                template.isDescriptionNotColoured()) {
             throw new LambdaException("Update experiment template info failed -- invalid update data.", "无效更新内容");
         }
 
@@ -171,11 +171,11 @@ public class ExperimentTemplateMgr extends BaseMgr {
 
     /*
      *
-     *   实验模版计数加一
+     *   增长实验模版计数
      *   返回更新数量
      *
      * */
-    public int templateCountPlusOne(Long id, String operId) {
+    public int increTemplateCount(Long id, String operId) {
         if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
             throw new LambdaException("Experiment template count plus one -- invalid plus condition.", "无效计数条件");
         }

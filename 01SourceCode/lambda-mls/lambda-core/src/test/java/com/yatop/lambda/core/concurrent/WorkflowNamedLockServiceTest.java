@@ -66,12 +66,12 @@ public class WorkflowNamedLockServiceTest implements Runnable {
     @Test
     public void testWorkflowNamedLock(){
         try {
-            for(int i = 0; i < 1; i++) {
+            for(int i = 0; i < 20; i++) {
                 Thread thread = new Thread(this);
                 thread.start();
             }
             synchronized (this) {
-                this.wait(2000 * 1000);
+                this.wait(10 * 1000);
             }
         } catch (Throwable e) {
 

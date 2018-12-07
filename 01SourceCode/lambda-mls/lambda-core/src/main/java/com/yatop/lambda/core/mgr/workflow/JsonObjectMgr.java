@@ -4,5 +4,5 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WorkflowUserFavoriteModuleMgr extends BaseMgr {
+public class JsonObjectMgr extends BaseMgr {
 }

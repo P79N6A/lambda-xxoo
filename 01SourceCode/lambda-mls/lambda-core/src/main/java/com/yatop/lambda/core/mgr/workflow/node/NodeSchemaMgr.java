@@ -4,5 +4,5 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WorkflowNodeDeleteQueueMgr extends BaseMgr {
+public class NodeSchemaMgr extends BaseMgr {
 }

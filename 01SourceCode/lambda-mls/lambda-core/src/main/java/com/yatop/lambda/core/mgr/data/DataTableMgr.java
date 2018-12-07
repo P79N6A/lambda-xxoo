@@ -27,11 +27,11 @@ public class DataTableMgr extends BaseMgr {
      * */
     public DwDataTable insertDataTable(DwDataTable table, String operId) {
         if( DataUtil.isNull(table) ||
-                !table.isTableNameColoured() ||
-                !table.isTableTypeColoured() ||
-                !table.isOwnerDwIdColoured() ||
-                !table.isDataFileTypeColoured() ||
-                !table.isTableStateColoured() ||
+                table.isTableNameNotColoured() ||
+                table.isTableTypeNotColoured() ||
+                table.isOwnerDwIdNotColoured() ||
+                table.isDataFileTypeNotColoured() ||
+                table.isTableStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException("Insert data table info failed -- invalid insert data.", "无效插入数据");
         }
@@ -67,14 +67,14 @@ public class DataTableMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteDataTable(Long id, String operId) {
-        if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
+    public int deleteDataTable(DwDataTable table, String operId) {
+        if(DataUtil.isNull(table) || table.isTableIdNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException("Delete data table info failed -- invalid query condition.", "无效删除条件");
         }
 
         try {
             DwDataTable deleteTable = new DwDataTable();
-            deleteTable.setTableId(id);
+            deleteTable.setTableId(table.getTableId());
             deleteTable.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteTable.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteTable.setLastUpdateOper(operId);
@@ -86,23 +86,55 @@ public class DataTableMgr extends BaseMgr {
 
     /*
      *
-     *   更新数据表信息（表名、列数、行数、数据文件大小、数据文件名、数据概要文件名、数据表状态、描述）
+     *   更新数据表名
+     *   返回更新数量
+     *
+     * */
+    public int updateDataTableName(DwDataTable table, String operId) {
+        if( DataUtil.isNull(table) || table.isTableIdNotColoured() || DataUtil.isEmpty(operId)) {
+            throw new LambdaException("Update data table name failed -- invalid update condition.", "无效更新条件");
+        }
+
+        if(table.isTableNameNotColoured()) {
+            throw new LambdaException("Update data table name failed -- invalid update data.", "无效更新内容");
+        }
+
+        if(existsDataTable(table.getOwnerDwId(), table.getTableName(), table.getTableId())) {
+            throw new LambdaException("Update data table name failed -- name conflict.", "名称冲突");
+        }
+
+        DwDataTable updateTable = new DwDataTable();
+        try {
+            updateTable.setTableId(table.getTableId());
+            if(table.isTableNameColoured())
+                updateTable.setTableName(table.getTableName());
+
+            updateTable.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            updateTable.setLastUpdateOper((operId));
+            return dwDataTableMapper.updateByPrimaryKeySelective(updateTable);
+        } catch (Throwable e) {
+            throw new LambdaException("Update data table name failed.", "更新数据表名失败", e);
+        }
+    }
+
+    /*
+     *
+     *   更新数据表信息（列数、行数、数据文件大小、数据文件名、数据概要文件名、数据表状态、描述）
      *   返回更新数量
      *
      * */
     public int updateDataTable(DwDataTable table, String operId) {
-        if( DataUtil.isNull(table) || !table.isTableIdColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(table) || table.isTableIdNotColoured() || DataUtil.isEmpty(operId)) {
             throw new LambdaException("Update data table info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(!table.isTableNameColoured() &&
-                !table.isTableColumnsColoured() &&
-                !table.isTableRowsColoured() &&
-                !table.isDataFileSizeColoured() &&
-                !table.isDataFileColoured() &&
-                !table.isDataSummaryFileColoured() &&
-                !table.isTableStateColoured() &&
-                !table.isDescriptionColoured()) {
+        if(table.isTableColumnsNotColoured() &&
+                table.isTableRowsNotColoured() &&
+                table.isDataFileSizeNotColoured() &&
+                table.isDataFileNotColoured() &&
+                table.isDataSummaryFileNotColoured() &&
+                table.isTableStateNotColoured() &&
+                table.isDescriptionNotColoured()) {
             throw new LambdaException("Update data table info failed -- invalid update data.", "无效更新内容");
         }
 
@@ -113,8 +145,6 @@ public class DataTableMgr extends BaseMgr {
         DwDataTable updateTable = new DwDataTable();
         try {
             updateTable.setTableId(table.getTableId());
-            if(table.isTableNameColoured())
-                updateTable.setTableName(table.getTableName());
             if(table.isTableColumnsColoured())
                 updateTable.setTableColumns(table.getTableColumns());
             if(table.isTableRowsColoured())

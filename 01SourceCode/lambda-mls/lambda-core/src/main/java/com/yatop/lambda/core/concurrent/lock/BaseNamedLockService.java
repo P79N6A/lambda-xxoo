@@ -13,9 +13,9 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public abstract class NamedLockBaseService {
+public abstract class BaseNamedLockService {
 
-    public static Logger logger = LoggerFactory.getLogger(NamedLockBaseService.class);
+    public static Logger logger = LoggerFactory.getLogger(BaseNamedLockService.class);
 
     //加锁线程ID, 默认加锁请求（请求多个资源时，需另外new LockRequest）
     private ConcurrentHashMap<Long, LockRequest> defaultLockRequestHashMap = new ConcurrentHashMap<Long, LockRequest>();
@@ -178,14 +178,14 @@ public abstract class NamedLockBaseService {
     protected abstract String namedLockServiceId();
 
     public static class LockRequest {
-        private NamedLockBaseService namedLockService;
+        private BaseNamedLockService namedLockService;
         private LambdaEvent event;
         private Long name;
         private Thread thread;
         private volatile Long expire;
         private volatile boolean hold;
 
-        private LockRequest(NamedLockBaseService namedLockService, Long name) {
+        private LockRequest(BaseNamedLockService namedLockService, Long name) {
             this.namedLockService = namedLockService;
             this.event = new LambdaEvent();
             this.name = name;
@@ -239,7 +239,7 @@ public abstract class NamedLockBaseService {
             return this.expire;
         }
 
-        public NamedLockBaseService getNamedLockService() {
+        public BaseNamedLockService getNamedLockService() {
             return this.namedLockService;
         }
 

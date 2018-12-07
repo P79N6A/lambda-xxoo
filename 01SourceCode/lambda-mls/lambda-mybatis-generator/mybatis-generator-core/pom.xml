@@ -40,9 +40,9 @@
         </configuration>
       </plugin>
       <!-- create the Source JAR and JavaDoc a bit earlier so it is ready for the assembly -->
-      <plugin>
+<!--      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
+        <artifactId>maven-state-plugin</artifactId>
         <executions>
           <execution>
             <phase>prepare-package</phase>
@@ -51,7 +51,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>

@@ -1,8 +1,8 @@
-package com.yatop.lambda.core.mgr.workflow.node;
+package com.yatop.lambda.core.mgr.workflow;
 
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WorkflowNodeMgr extends BaseMgr {
+public class UserFavoriteModuleMgr extends BaseMgr {
 }

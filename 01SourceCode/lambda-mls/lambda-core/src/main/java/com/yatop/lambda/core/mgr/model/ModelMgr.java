@@ -26,11 +26,11 @@ public class ModelMgr extends BaseMgr {
      * */
     public MwModel insertModel(MwModel model, String operId) {
         if( DataUtil.isNull(model) ||
-                !model.isModelNameColoured() ||
-                !model.isModelTypeColoured() ||
-                !model.isOwnerMwIdColoured() ||
-                !model.isRefAlgorithmIdColoured() ||
-                !model.isModelStateColoured() ||
+                model.isModelNameNotColoured() ||
+                model.isModelTypeNotColoured() ||
+                model.isOwnerMwIdNotColoured() ||
+                model.isRefAlgorithmIdNotColoured() ||
+                model.isModelStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException("Insert model info failed -- invalid insert data.", "无效插入数据");
         }
@@ -62,14 +62,14 @@ public class ModelMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteModel(Long id, String operId) {
-        if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
+    public int deleteModel(MwModel model, String operId) {
+        if(DataUtil.isNull(model) || model.isModelIdNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException("Delete model info failed -- invalid query condition.", "无效删除条件");
         }
 
         try {
             MwModel deleteModel = new MwModel();
-            deleteModel.setModelId(id);
+            deleteModel.setModelId(model.getModelId());
             deleteModel.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteModel.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteModel.setLastUpdateOper(operId);
@@ -81,26 +81,21 @@ public class ModelMgr extends BaseMgr {
 
     /*
      *
-     *   更新模型信息（模型名称、模型文件大小、模型文件名、模型概要文件名、模型状态、描述）
+     *   更新模型名称
      *   返回更新数量
      *
      * */
-    public int updateModel(MwModel model, String operId) {
-        if( DataUtil.isNull(model) || !model.isModelIdColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update model info failed -- invalid update condition.", "无效更新条件");
+    public int updateModelName(MwModel model, String operId) {
+        if( DataUtil.isNull(model) || model.isModelIdNotColoured() || DataUtil.isEmpty(operId)) {
+            throw new LambdaException("Update model name failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(!model.isModelNameColoured() &&
-                !model.isModelFileSizeColoured() &&
-                !model.isModelFileColoured() &&
-                !model.isModelSummaryFileColoured() &&
-                !model.isModelStateColoured() &&
-                !model.isDescriptionColoured()) {
-            throw new LambdaException("Update model info failed -- invalid update data.", "无效更新内容");
+        if(model.isModelNameNotColoured()) {
+            throw new LambdaException("Update model name failed -- invalid update data.", "无效更新内容");
         }
 
-        if(model.isModelNameColoured() && existsModel(model.getOwnerMwId(), model.getModelName(), model.getModelId())) {
-            throw new LambdaException("Update model info failed -- name conflict.", "名称冲突");
+        if(existsModel(model.getOwnerMwId(), model.getModelName(), model.getModelId())) {
+            throw new LambdaException("Update model name failed -- name conflict.", "名称冲突");
         }
 
         MwModel updateModel = new MwModel();
@@ -108,6 +103,37 @@ public class ModelMgr extends BaseMgr {
             updateModel.setModelId(model.getModelId());
             if(model.isModelNameColoured())
                 updateModel.setModelName(model.getModelName());
+
+            updateModel.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            updateModel.setLastUpdateOper((operId));
+            return mwModelMapper.updateByPrimaryKeySelective(updateModel);
+        } catch (Throwable e) {
+            throw new LambdaException("Update model name failed.", "更新模型名称失败", e);
+        }
+    }
+
+    /*
+     *
+     *   更新模型信息（模型文件大小、模型文件名、模型概要文件名、模型状态、描述）
+     *   返回更新数量
+     *
+     * */
+    public int updateModel(MwModel model, String operId) {
+        if( DataUtil.isNull(model) || model.isModelIdNotColoured() || DataUtil.isEmpty(operId)) {
+            throw new LambdaException("Update model info failed -- invalid update condition.", "无效更新条件");
+        }
+
+        if(model.isModelFileSizeNotColoured() &&
+                model.isModelFileNotColoured() &&
+                model.isModelSummaryFileNotColoured() &&
+                model.isModelStateNotColoured() &&
+                model.isDescriptionNotColoured()) {
+            throw new LambdaException("Update model info failed -- invalid update data.", "无效更新内容");
+        }
+
+        MwModel updateModel = new MwModel();
+        try {
+            updateModel.setModelId(model.getModelId());
             if(model.isModelFileSizeColoured())
                 updateModel.setModelFileSize(model.getModelFileSize());
             if(model.isModelFileColoured())

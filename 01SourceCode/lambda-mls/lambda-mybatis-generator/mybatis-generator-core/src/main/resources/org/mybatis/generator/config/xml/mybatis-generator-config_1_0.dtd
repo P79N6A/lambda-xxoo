@@ -47,7 +47,7 @@
   url CDATA #IMPLIED>
   
 <!--
-  The context element is used to describe a context for generating files, and the source
+  The context element is used to describe a context for generating files, and the state
   tables.
 -->
 <!ELEMENT context (property*, plugin*, commentGenerator?, (connectionFactory | jdbcConnection), javaTypeResolver?,
@@ -147,7 +147,7 @@
   implementationPackage CDATA #IMPLIED>
 
 <!--
-  The table element is used to specify a database table that will be the source information
+  The table element is used to specify a database table that will be the state information
   for a set of generated objects.
 -->
 <!ELEMENT table (property*, generatedKey?, columnRenamingRule?, (columnOverride | ignoreColumn | ignoreColumnsByRegex)*) >

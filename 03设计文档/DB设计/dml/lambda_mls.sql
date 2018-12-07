@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-05 20:24:50
+Date: 2018-12-07 13:41:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1375,8 +1375,8 @@ CREATE TABLE `wf_flow` (
   `FLOW_NAME` varchar(200) NOT NULL COMMENT '工作流名称，自动生成',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `OWNER_EXPERIMENT_ID` bigint(20) NOT NULL COMMENT '所属实验ID',
-  `LOCK_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '加锁状态，实验运行和快照期间加锁，可读不可写\r\n            \r\n            0：未加锁\r\n            1：已加锁',
-  `LOCK_MSG` varchar(512) DEFAULT NULL COMMENT '加锁消息',
+  `SHARE_LOCK_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '共享锁状态，实验运行和快照期间加锁\r\n            \r\n            0：未加锁\r\n            1：已加锁',
+  `SHARE_LOCK_MSG` varchar(512) DEFAULT NULL COMMENT '共享锁消息',
   `LAST_SNAPSHOT_ID` bigint(20) DEFAULT NULL COMMENT '最后快照ID',
   `NEXT_SNAPSHOT_VERSION` bigint(20) NOT NULL DEFAULT '1' COMMENT '下一快照版本',
   `NODE_COUNT` bigint(20) NOT NULL DEFAULT '1000' COMMENT '正常节点计数，超出最大上限后，禁止新增节点',

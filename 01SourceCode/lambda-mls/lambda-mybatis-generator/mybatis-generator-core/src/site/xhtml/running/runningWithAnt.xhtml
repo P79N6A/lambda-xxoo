@@ -30,7 +30,7 @@
   build.xml file:</p>
 <pre>
    &lt;project default="genfiles" basedir="."&gt;
-     &lt;property name="generated.source.dir" value="${basedir}" /&gt;
+     &lt;property name="generated.state.dir" value="${basedir}" /&gt;
 
      &lt;target name="genfiles" description="Generate the files"&gt;
        &lt;taskdef name="mbgenerator"
@@ -38,7 +38,7 @@
                 classpath="mybatis-generator-core-x.x.x.jar" /&gt;
        &lt;mbgenerator overwrite="true" configfile="generatorConfig.xml" verbose="false" &gt;
          &lt;propertyset&gt;
-           &lt;propertyref name="generated.source.dir"/&gt;
+           &lt;propertyref name="generated.state.dir"/&gt;
          &lt;/propertyset&gt;
        &lt;/mbgenerator&gt;
      &lt;/target&gt;
@@ -104,9 +104,9 @@
    <li>The task supports an optional nested <code>&lt;propertyset&gt;</code> element which
        is the standard Ant property set type.  This can be used to pass parameters into
        a configuration file.  For example, the above property
-       <code>generated.source.dir</code> can be
+       <code>generated.state.dir</code> can be
        accessed in the configuration file with the escape sequence
-       <code>${generated.source.dir}</code>
+       <code>${generated.state.dir}</code>
    </li>
    <li>If a property is specified in the configuration file and is not resolved,
        then the escaped property string will be passed "as is" into the generated code.

@@ -33,9 +33,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jdk.tool.version>1.7</jdk.tool.version>
-        <jar.source>1.7</jar.source>
+        <jar.state>1.7</jar.state>
         <jar.target>1.7</jar.target>
-        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.state>1.7</maven.compiler.state>
         <maven.compiler.target>1.7</maven.compiler.target>
         <maven.compiler.plugin.version>3.6.2</maven.compiler.plugin.version>
 

@@ -26,12 +26,12 @@ public class DataWarehouseMgr extends BaseMgr {
      * */
     public DwDataWarehouse insertDataWarehouse(DwDataWarehouse warehouse, String operId) {
         if( DataUtil.isNull(warehouse) ||
-                !warehouse.isDwCodeColoured() ||
-                !warehouse.isDwNameColoured() ||
-                !warehouse.isDwTypeColoured() ||
-                !warehouse.isOwnerProjectIdColoured() ||
-                !warehouse.isDataDfsDirColoured() ||
-                !warehouse.isDataLocalDirColoured() ||
+                warehouse.isDwCodeNotColoured() ||
+                warehouse.isDwNameNotColoured() ||
+                warehouse.isDwTypeNotColoured() ||
+                warehouse.isOwnerProjectIdNotColoured() ||
+                warehouse.isDataDfsDirNotColoured() ||
+                warehouse.isDataLocalDirNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException("Insert data warehouse info failed -- invalid insert data.", "无效插入数据");
         }
@@ -67,14 +67,14 @@ public class DataWarehouseMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteDataWarehouse(Long id, String operId) {
-        if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
+    public int deleteDataWarehouse(DwDataWarehouse warehouse, String operId) {
+        if(DataUtil.isNull(warehouse) || warehouse.isDwIdNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException("Delete data warehouse info failed -- invalid query condition.", "无效删除条件");
         }
 
         try {
             DwDataWarehouse deleteWarehouse = new DwDataWarehouse();
-            deleteWarehouse.setDwId(id);
+            deleteWarehouse.setDwId(warehouse.getDwId());
             deleteWarehouse.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteWarehouse.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteWarehouse.setLastUpdateOper(operId);
@@ -91,15 +91,15 @@ public class DataWarehouseMgr extends BaseMgr {
      *
      * */
     public int updateDataWarehouse(DwDataWarehouse warehouse, String operId) {
-        if( DataUtil.isNull(warehouse) || !warehouse.isDwIdColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(warehouse) || warehouse.isDwIdNotColoured() || DataUtil.isEmpty(operId)) {
             throw new LambdaException("Update data warehouse info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(!warehouse.isDwCodeColoured() &&
-                !warehouse.isDwNameColoured() &&
-                !warehouse.isDataDfsDirColoured() &&
-                !warehouse.isDataLocalDirColoured() &&
-                !warehouse.isDescriptionColoured()) {
+        if(warehouse.isDwCodeNotColoured() &&
+                warehouse.isDwNameNotColoured() &&
+                warehouse.isDataDfsDirNotColoured() &&
+                warehouse.isDataLocalDirNotColoured() &&
+                warehouse.isDescriptionNotColoured()) {
             throw new LambdaException("Update data warehouse info failed -- invalid update data.", "无效更新内容");
         }
 

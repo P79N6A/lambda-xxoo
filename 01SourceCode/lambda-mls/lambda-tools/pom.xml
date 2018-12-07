@@ -19,12 +19,12 @@
 
     <dependencies>
 		    <!-- https://mvnrepository.com/artifact/net.alchim31.maven/scala-maven-plugin -->
-<!--        <dependency>
+        <dependency>
             <groupId>org.scala-lang.modules</groupId>
             <artifactId>scala-xml_2.11</artifactId>
             <version>1.0.6</version>
-        </dependency>-->
-<!--		<dependency>
+        </dependency>
+		<dependency>
 		    <groupId>net.alchim31.maven</groupId>
 		    <artifactId>scala-maven-plugin</artifactId>
 		    <version>3.2.2</version>
@@ -34,7 +34,7 @@
                     <groupId>org.sonatype.sisu</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>-->
+        </dependency>
     
         <!-- <dependency>
             <groupId>org.jpmml</groupId>
@@ -147,25 +147,16 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>net.alchim31.maven</groupId>
-					<artifactId>scala-maven-plugin</artifactId>
-					<version>3.2.2</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>scala-maven-plugin</artifactId>
+                <version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>scala-compile-first</id>
 						<phase>process-resources</phase>
 						<goals>
-							<goal>add-source</goal>
 							<goal>compile</goal>
 						</goals>
 					</execution>

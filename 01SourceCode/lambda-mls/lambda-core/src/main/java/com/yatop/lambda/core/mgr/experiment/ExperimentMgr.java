@@ -26,14 +26,17 @@ public class ExperimentMgr extends BaseMgr {
      * */
     public EmExperiment insertExperiment(EmExperiment experiment, String operId) {
         if( DataUtil.isNull(experiment) ||
-                !experiment.isExperimentNameColoured() ||
-                !experiment.isExperimentTypeColoured() ||
-                !experiment.isOwnerProjectIdColoured() ||
+                experiment.isExperimentNameNotColoured() ||
+                experiment.isExperimentTypeNotColoured() ||
+                experiment.isOwnerProjectIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException("Insert experiment info failed -- invalid insert data.", "无效插入数据");
         }
 
         if(experiment.getExperimentType() == ExperimentTypeEnum.PREDICTION.getType()) {
+            if(experiment.isMainExperimentIdNotColoured())
+                throw new LambdaException("Insert experiment info failed -- missing main-experiment-id.", "主实验ID缺失");
+
             if(experiment.isMainExperimentIdColoured() && existsPredictionExperiment(experiment.getOwnerProjectId(), experiment.getMainExperimentId())) {
                 throw new LambdaException("Insert experiment info failed -- prediction experiment existed.", "预测实验已存在");
             } else if(experiment.isMainExperimentIdColoured() && !existsProjectMember(experiment.getMainExperimentId())) {
@@ -71,14 +74,14 @@ public class ExperimentMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteExperiment(Long id, String operId) {
-        if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
+    public int deleteExperiment(EmExperiment experiment, String operId) {
+        if(DataUtil.isNull(experiment) || experiment.isExperimentIdNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException("Delete experiment info failed -- invalid query condition.", "无效删除条件");
         }
 
         try {
             EmExperiment deleteExperiment = new EmExperiment();
-            deleteExperiment.setExperimentId(id);
+            deleteExperiment.setExperimentId(experiment.getExperimentId());
             deleteExperiment.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteExperiment.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteExperiment.setLastUpdateOper(operId);
@@ -95,15 +98,15 @@ public class ExperimentMgr extends BaseMgr {
      *
      * */
     public int updateExperiment(EmExperiment experiment, String operId) {
-        if( DataUtil.isNull(experiment) || !experiment.isExperimentIdColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(experiment) || experiment.isExperimentIdNotColoured() || DataUtil.isEmpty(operId)) {
             throw new LambdaException("Update experiment info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(!experiment.isExperimentNameColoured() &&
-                !experiment.isExperimentDfsDirColoured() &&
-                !experiment.isExperimentLocalDirColoured() &&
-                !experiment.isSummaryColoured() &&
-                !experiment.isDescriptionColoured()) {
+        if(experiment.isExperimentNameNotColoured() &&
+                experiment.isExperimentDfsDirNotColoured() &&
+                experiment.isExperimentLocalDirNotColoured() &&
+                experiment.isSummaryNotColoured() &&
+                experiment.isDescriptionNotColoured()) {
             throw new LambdaException("Update experiment info failed -- invalid update data.", "无效更新内容");
         }
 

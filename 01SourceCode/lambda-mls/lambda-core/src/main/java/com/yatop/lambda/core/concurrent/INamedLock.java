@@ -1,4 +1,4 @@
-package com.yatop.lambda.core.concurrent.lock;
+package com.yatop.lambda.core.concurrent;
 
 public interface INamedLock {
     boolean requestResource(Long resourceId);

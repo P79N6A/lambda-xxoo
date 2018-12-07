@@ -127,6 +127,7 @@ public class BaseRecordGenerator extends AbstractJavaGenerator {
 
             Method method = getJavaBeansGetter(introspectedColumn, context, introspectedTable);
             Method methodColour = getJavaBeansGetter(introspectedColumnColour, context, introspectedTable);     //add for column colour, by lidd 20181203
+            Method methodNotColour = getJavaBeansGetter(introspectedColumnColour, context, introspectedTable);
             if (plugins.modelGetterMethodGenerated(method, topLevelClass,
                     introspectedColumn, introspectedTable,
                     Plugin.ModelClassType.BASE_RECORD)) {
@@ -134,6 +135,16 @@ public class BaseRecordGenerator extends AbstractJavaGenerator {
 
                 //add for column colour, by lidd 20181203
                 topLevelClass.addMethod(methodColour);
+
+                methodNotColour.setName(methodColour.getName().substring(0, methodColour.getName().length() - "Coloured".length()) + "NotColoured");
+                StringBuilder sb = new StringBuilder();
+                sb.append("return !"); //$NON-NLS-1$
+                sb.append(introspectedColumnColour.getJavaProperty());
+                sb.append(';');
+                List<String> bodylines = methodNotColour.getBodyLines();
+                bodylines.clear();
+                bodylines.add(sb.toString());
+                topLevelClass.addMethod(methodNotColour);
             }
 
             if (!introspectedTable.isImmutable()) {

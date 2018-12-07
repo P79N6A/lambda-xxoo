@@ -1,6 +1,7 @@
 package com.yatop.lambda.core.mgr.workflow;
 
 import com.yatop.lambda.base.mapper.extend.WorkflowMapper;
+import com.yatop.lambda.base.model.EmExperiment;
 import com.yatop.lambda.base.model.WfFlow;
 import com.yatop.lambda.base.model.WfFlowExample;
 import com.yatop.lambda.core.enums.DataStatusEnum;
@@ -32,9 +33,9 @@ public class WorkflowMgr extends BaseMgr {
      * */
     public WfFlow insertWorkflow(WfFlow workflow, String operId) {
         if( DataUtil.isNull(workflow) ||
-                !workflow.isFlowNameColoured() ||
-                !workflow.isOwnerProjectIdColoured() ||
-                !workflow.isOwnerExperimentIdColoured() ||
+                workflow.isFlowNameNotColoured() ||
+                workflow.isOwnerProjectIdNotColoured() ||
+                workflow.isOwnerExperimentIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException("Insert workflow info failed -- invalid insert data.", "无效插入数据");
         }
@@ -44,8 +45,8 @@ public class WorkflowMgr extends BaseMgr {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             BeanUtils.copyProperties(workflow, insertWorkflow);
             insertWorkflow.setFlowIdColoured(false);
-            insertWorkflow.setLockState(WorkflowLockStateEnum.UNLOCKED.getState());
-            insertWorkflow.setLockMsgColoured(false);
+            insertWorkflow.setShareLockState(WorkflowLockStateEnum.UNLOCKED.getState());
+            insertWorkflow.setShareLockMsgColoured(false);
             insertWorkflow.setLastSnapshotIdColoured(false);
             insertWorkflow.setNextSnapshotVersion(1L);
             insertWorkflow.setNodeCount(0L);
@@ -72,7 +73,7 @@ public class WorkflowMgr extends BaseMgr {
      *
      * */
     public int deleteWorkflow(WfFlow workflow, String operId) {
-        if(DataUtil.isNull(workflow) || DataUtil.isNull(workflow.getFlowId()) || DataUtil.isEmpty(operId)){
+        if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException("Delete workflow info -- invalid query condition.", "无效删除条件");
         }
 
@@ -96,14 +97,35 @@ public class WorkflowMgr extends BaseMgr {
      *
      * */
     public int updateWorkflow(WfFlow workflow, String operId) {
-        if( DataUtil.isNull(workflow) || !workflow.isFlowIdColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)) {
             throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(!workflow.isFlowNameColoured() &&
-                !workflow.isSummaryColoured() &&
-                !workflow.isDescriptionColoured()) {
+        if(workflow.isFlowNameNotColoured() &&
+                workflow.isSummaryNotColoured() &&
+                workflow.isDescriptionNotColoured()) {
             throw new LambdaException("Update workflow info failed -- invalid update data.", "无效更新内容");
+        }
+
+        if(workflow.isSummaryColoured() && workflow.isDescriptionColoured()) {
+            WfFlow thisFLow = queryWorkflow(workflow.getFlowId());
+            if(DataUtil.isNull(thisFLow))
+                throw new LambdaException("Update workflow info failed -- workflow not existed.", "工作流不存在");
+
+            try {
+                EmExperiment ownerExperiment = new EmExperiment();
+                ownerExperiment.setExperimentId(thisFLow.getOwnerExperimentId());
+                if(workflow.isSummaryColoured())
+                    ownerExperiment.setSummary(workflow.getSummary());
+                if(workflow.isDescriptionColoured())
+                    ownerExperiment.setDescription(workflow.getDescription());
+                ownerExperiment.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+                ownerExperiment.setLastUpdateOper((operId));
+                emExperimentMapper.updateByPrimaryKey(ownerExperiment);
+            }
+            catch (Throwable e) {
+                throw new LambdaException("Update workflow info failed -- synchronize experiment failed.", "同步实验失败");
+            }
         }
 
         WfFlow updateWorkflow = new WfFlow();
@@ -131,11 +153,11 @@ public class WorkflowMgr extends BaseMgr {
      *
      * */
     public int updateWorkflowSnapshot(WfFlow workflow, String operId) {
-        if( DataUtil.isNull(workflow) || !workflow.isFlowIdColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)) {
             throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(!workflow.isLastSnapshotIdColoured()) {
+        if(workflow.isLastSnapshotIdNotColoured()) {
             throw new LambdaException("Update workflow info failed -- invalid update data.", "无效更新内容");
         }
 
@@ -153,11 +175,11 @@ public class WorkflowMgr extends BaseMgr {
      *
      * */
     public int updateWorkflowExecution(WfFlow workflow, String operId) {
-        if( DataUtil.isNull(workflow) || !workflow.isFlowIdColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)) {
             throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(!workflow.isLastJobIdColoured()) {
+        if(workflow.isLastJobIdNotColoured()) {
             throw new LambdaException("Update workflow info failed -- invalid update data.", "无效更新内容");
         }
 
@@ -174,21 +196,47 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   更新工作流信息（运行加解锁）
+     *   更新工作流信息（状态）
      *   返回更新数量
      *
      * */
-    private int updateWorkflowLockExt(WfFlow workflow, String operId, WorkflowLockStateEnum lockStateEnum) {
-        if(DataUtil.isNull(workflow) || DataUtil.isNull(workflow.getFlowId()) || DataUtil.isEmpty(operId)){
+    public int updateWorkflowState(WfFlow workflow, String operId) {
+        if( DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)) {
+            throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
+        }
+
+        if(workflow.isFlowStateNotColoured()) {
+            throw new LambdaException("Update workflow info failed -- invalid update data.", "无效更新内容");
+        }
+
+
+        try {
+            WfFlow updateWorkflow = new WfFlow();
+            updateWorkflow.setFlowId(workflow.getFlowId());
+            updateWorkflow.setFlowState(workflow.getFlowState());
+            return wfFlowMapper.updateByPrimaryKeySelective(updateWorkflow);
+        } catch (Throwable e) {
+            throw new LambdaException("Update workflow info failed.", "更新工作流信息失败", e);
+        }
+    }
+
+    /*
+     *
+     *   工作流共享锁（加解锁）
+     *   返回更新数量
+     *
+     * */
+    private int lockWorkflowShareStateExt(WfFlow workflow, String operId, WorkflowLockStateEnum lockStateEnum) {
+        if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException("Lock workflow -- invalid query condition.", "无效加解锁条件");
         }
 
         try {
             WfFlow lockWorkflow = new WfFlow();
             lockWorkflow.setFlowId(workflow.getFlowId());
-            lockWorkflow.setLockState(lockStateEnum.getState());
-            if(lockWorkflow.isLockMsgColoured())
-                lockWorkflow.setLockMsg(workflow.getLockMsg());
+            lockWorkflow.setShareLockState(lockStateEnum.getState());
+            if(lockWorkflow.isShareLockMsgColoured())
+                lockWorkflow.setShareLockMsg(workflow.getShareLockMsg());
             lockWorkflow.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             lockWorkflow.setLastUpdateOper(operId);
             return wfFlowMapper.updateByPrimaryKeySelective(lockWorkflow);
@@ -199,32 +247,32 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   更新工作流信息（运行加锁）
-     *   返回更新数量
+     *   工作流共享锁（加锁）
+     *   返回是否成功
      *
      * */
-    public int updateWorkflowLock(WfFlow workflow, String operId) {
-        return updateWorkflowLockExt(workflow, operId, WorkflowLockStateEnum.LOCKED);
+    public boolean lockWorkflowShareState(WfFlow workflow, String operId) {
+        return (lockWorkflowShareStateExt(workflow, operId, WorkflowLockStateEnum.LOCKED) == 1 ? true : false);
     }
 
     /*
      *
-     *   更新工作流信息（运行解锁）
-     *   返回更新数量
+     *   工作流共享锁（解锁）
+     *   返回是否成功
      *
      * */
-    public int updateWorkflowUnlock(WfFlow workflow, String operId) {
-        return updateWorkflowLockExt(workflow, operId, WorkflowLockStateEnum.UNLOCKED);
+    public boolean unlockWorkflowShareStat(WfFlow workflow, String operId) {
+        return (lockWorkflowShareStateExt(workflow, operId, WorkflowLockStateEnum.UNLOCKED) == 1 ? true : false);
     }
 
     /*
      *
-     *   更新工作流版本号
+     *   增长工作流版本号
      *   返回记录
      *
      * */
-    private WfFlow updateWorkflowVersion(WfFlow workflow, String operId) {
-        if(DataUtil.isNull(workflow) || DataUtil.isNull(workflow.getFlowId()) || DataUtil.isEmpty(operId)){
+    private WfFlow increWorkflowVersion(WfFlow workflow, String operId) {
+        if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException("Lock workflow -- invalid query condition.", "无效加解锁条件");
         }
 

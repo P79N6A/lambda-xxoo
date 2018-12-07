@@ -165,7 +165,7 @@
 						<id>scala-compile-first</id>
 						<phase>process-resources</phase>
 						<goals>
-							<goal>add-source</goal>
+							<goal>add-state</goal>
 							<goal>compile</goal>
 						</goals>
 					</execution>

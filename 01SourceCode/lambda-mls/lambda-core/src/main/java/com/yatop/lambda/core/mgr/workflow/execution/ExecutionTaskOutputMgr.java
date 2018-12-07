@@ -4,5 +4,5 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WorkflowExecutionQueueMgr extends BaseMgr {
+public class ExecutionTaskOutputMgr extends BaseMgr {
 }

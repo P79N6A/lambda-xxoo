@@ -32,10 +32,10 @@ public class ProjectMgr extends BaseMgr {
     * */
     public PrProject insertProject(PrProject project, String operId) {
         if( DataUtil.isNull(project) ||
-                !project.isProjectCodeColoured() ||
-                !project.isProjectNameColoured() ||
-                !project.isDwIdColoured() ||
-                !project.isMwIdColoured() ||
+                project.isProjectCodeNotColoured() ||
+                project.isProjectNameNotColoured() ||
+                project.isDwIdNotColoured() ||
+                project.isMwIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException("Insert project info failed -- invalid insert data.", "无效插入数据");
         }
@@ -49,7 +49,7 @@ public class ProjectMgr extends BaseMgr {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             BeanUtils.copyProperties(project, insertProject);
             insertProject.setProjectIdColoured(false);
-            if(!insertProject.isCacheExpireDaysColoured())
+            if(insertProject.isCacheExpireDaysNotColoured())
                 insertProject.setCacheExpireDays(SystemParameterUtil.find4Integer(SystemParameterEnum.PR_CACHE_DATA_EXPIRE_DAYS, -1));
             insertProject.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertProject.setLastUpdateTime(dtCurrentTime);
@@ -69,14 +69,14 @@ public class ProjectMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteProject(Long id, String operId) {
-        if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
+    public int deleteProject(PrProject project, String operId) {
+        if(DataUtil.isNull(project) || project.isProjectIdNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException("Delete project info failed -- invalid query condition.", "无效删除条件");
         }
 
         try {
             PrProject deleteProject = new PrProject();
-            deleteProject.setProjectId(id);
+            deleteProject.setProjectId(project.getProjectId());
             deleteProject.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteProject.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteProject.setLastUpdateOper(operId);
@@ -93,14 +93,14 @@ public class ProjectMgr extends BaseMgr {
      *
      * */
     public int updateProject(PrProject project, String operId) {
-        if( DataUtil.isNull(project) || !project.isProjectIdColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(project) || project.isProjectIdNotColoured() || DataUtil.isEmpty(operId)) {
             throw new LambdaException("Update project info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(!project.isProjectCodeColoured() &&
-            !project.isProjectNameColoured() &&
-            !project.isCacheExpireDaysColoured() &&
-            !project.isDescriptionColoured()) {
+        if(project.isProjectCodeNotColoured() &&
+            project.isProjectNameNotColoured() &&
+            project.isCacheExpireDaysNotColoured() &&
+            project.isDescriptionNotColoured()) {
             throw new LambdaException("Update project info failed -- invalid update data.", "无效更新数据");
         }
 

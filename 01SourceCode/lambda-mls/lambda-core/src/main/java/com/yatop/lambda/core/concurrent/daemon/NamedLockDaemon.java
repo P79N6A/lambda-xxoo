@@ -1,8 +1,8 @@
 package com.yatop.lambda.core.concurrent.daemon;
 
 import com.yatop.lambda.core.concurrent.event.LambdaEvent;
-import com.yatop.lambda.core.concurrent.lock.NamedLockBaseService;
-import com.yatop.lambda.core.concurrent.lock.NamedLockBaseService.LockRequest;
+import com.yatop.lambda.core.concurrent.lock.BaseNamedLockService;
+import com.yatop.lambda.core.concurrent.lock.BaseNamedLockService.LockRequest;
 import com.yatop.lambda.core.utils.DataUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ public class NamedLockDaemon implements DisposableBean, Runnable {
     //负责完成串行加锁和过期锁清理
     private Thread daemonThread;
     private ConcurrentLinkedQueue<LockRequest> lockRequestQueue = new ConcurrentLinkedQueue<LockRequest>();
-    private TreeMap<String, NamedLockBaseService> registeredNamedLockMap = new TreeMap<String, NamedLockBaseService>();
+    private TreeMap<String, BaseNamedLockService> registeredNamedLockMap = new TreeMap<String, BaseNamedLockService>();
     private LambdaEvent queueEvent = new LambdaEvent();
     private long counter = 0;
     private volatile boolean exit = false;
@@ -87,9 +87,9 @@ public class NamedLockDaemon implements DisposableBean, Runnable {
     private void clearExpireLock() {
         if(this.counter > 69) {
             if(!this.registeredNamedLockMap.isEmpty()) {
-                Iterator<Map.Entry<String, NamedLockBaseService>> iterator = this.registeredNamedLockMap.entrySet().iterator();
+                Iterator<Map.Entry<String, BaseNamedLockService>> iterator = this.registeredNamedLockMap.entrySet().iterator();
                 while (iterator.hasNext()) {
-                    Map.Entry<String, NamedLockBaseService> entry = iterator.next();
+                    Map.Entry<String, BaseNamedLockService> entry = iterator.next();
                     entry.getValue().clearExpireLock();
                 }
             }

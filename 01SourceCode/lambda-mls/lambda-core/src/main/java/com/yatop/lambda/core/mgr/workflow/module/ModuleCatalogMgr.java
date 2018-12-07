@@ -8,7 +8,7 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 
 import java.util.List;
 
-public class WorkflowModuleCatalogMgr extends BaseMgr {
+public class ModuleCatalogMgr extends BaseMgr {
 
     /*
      *
