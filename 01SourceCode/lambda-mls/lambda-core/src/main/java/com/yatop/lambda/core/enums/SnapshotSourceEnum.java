@@ -1,6 +1,7 @@
 package com.yatop.lambda.core.enums;
 
 public enum SnapshotSourceEnum {
+
     /**
      * 工作流运行
      */
@@ -9,7 +10,7 @@ public enum SnapshotSourceEnum {
     /**
      * 工作流副本
      */
-    COPY(1, "COPY");
+    COPY(1, "Copy");
 
     private int source;
     private String name;

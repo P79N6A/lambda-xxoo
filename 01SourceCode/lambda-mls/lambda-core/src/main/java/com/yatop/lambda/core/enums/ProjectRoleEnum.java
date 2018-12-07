@@ -1,6 +1,7 @@
 package com.yatop.lambda.core.enums;
 
 public enum ProjectRoleEnum {
+
     /**
      * 一般成员
      */

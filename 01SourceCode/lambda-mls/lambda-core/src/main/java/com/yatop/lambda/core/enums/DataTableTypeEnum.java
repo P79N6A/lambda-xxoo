@@ -1,6 +1,7 @@
 package com.yatop.lambda.core.enums;
 
 public enum DataTableTypeEnum {
+
     /**
      * 普通数据表
      */

@@ -1,6 +1,7 @@
 package com.yatop.lambda.core.enums;
 
 public enum SnapshotStateEnum {
+
     /**
      * 快照生成中
      */

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-07 13:41:37
+Date: 2018-12-08 02:40:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1226,6 +1226,7 @@ CREATE TABLE `wf_code_script` (
   `SCRIPT_NAME` varchar(200) NOT NULL COMMENT '脚本名称\r\n            \r\n            由工作流创建：<module_code>_<node_id>_<char_id>_<snapshot_version>',
   `SCRIPT_TYPE` int(11) NOT NULL COMMENT '脚本类型\r\n            1：SQL脚本\r\n            2：Python脚本（预留）\r\n            3：R脚本（预留）\r\n            4：特征抽取脚本（预留）',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
+  `REL_EXPERIMENT_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联实验ID，无关联实验设为-1',
   `REL_FLOW_ID` bigint(20) NOT NULL COMMENT '关联工作流ID，无关联工作流设为-1',
   `REL_SNAPSHOT_VERSION` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照版本，取FLOW表的NEXT_SNAPSHOT_VERSION值，无关联则设为-1',
   `REL_JOB_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联作业ID，无关联则设为-1',
@@ -1412,6 +1413,7 @@ CREATE TABLE `wf_flow_global_parameter` (
   `REL_NODE_ID` bigint(20) NOT NULL COMMENT '关联节点ID',
   `REL_CHAR_ID` bigint(20) NOT NULL COMMENT '关联组件特征ID',
   `DEFAULT_VALUE` varchar(2000) NOT NULL COMMENT '默认值',
+  `WARNING_MSG` varchar(256) DEFAULT NULL COMMENT '警告消息',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -1584,9 +1586,10 @@ DROP TABLE IF EXISTS `wf_json_object`;
 CREATE TABLE `wf_json_object` (
   `OBJECT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '对象ID',
   `OBJECT_NAME` varchar(200) NOT NULL COMMENT '对象名称\r\n            \r\n            普通对象：object_<node_id>_<char_id>_<snapshot_version> \r\n            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>\r\n            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>\r\n            统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>\r\n            自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>\r\n            生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>\r\n            输出端口schema：outport_schema_<node_id>_<char_id>',
-  `OBJECTY_TYPE` int(11) NOT NULL COMMENT '对象类型\r\n            0：JsonObject&JsonArray（组件参数，仅存放于OBJECT_DATA）\r\n            1：算法参数（输出内容，仅存放于OBJECT_DATA）\r\n            2：模型评估报告（输出内容，存放于文件系统）\r\n            3：统计分析报告（输出内容，存放于文件系统）\r\n            4：自动调参报告（输出内容，存放于文件系统）\r\n            5：生成规则报告（输出内容，存放于文件系统）\r\n            99：输出端口schema（端口信息，仅存放于OBJECT_DATA）',
+  `OBJECT_TYPE` int(11) NOT NULL COMMENT '对象类型\r\n            0：JsonObject&JsonArray（组件参数，仅存放于OBJECT_DATA）\r\n            1：算法参数（输出内容，仅存放于OBJECT_DATA）\r\n            2：模型评估报告（输出内容，存放于文件系统）\r\n            3：交叉验证报告（输出内容，存放于文件系统）\r\n            4：统计分析报告（输出内容，存放于文件系统）\r\n            5：自动调参报告（输出内容，存放于文件系统）\r\n            6：生成规则报告（输出内容，存放于文件系统）\r\n            99：输出端口schema（端口信息，仅存放于OBJECT_DATA）',
   `OBJECT_SRC` int(11) NOT NULL DEFAULT '0' COMMENT '对象来源\r\n            0：作业运行\r\n            1：实验编辑',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
+  `REL_EXPERIMENT_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联实验ID，无关联实验设为-1',
   `REL_FLOW_ID` bigint(20) NOT NULL COMMENT '关联工作流ID，无关联工作流设为-1',
   `REL_SNAPSHOT_VERSION` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照版本，取FLOW表的NEXT_SNAPSHOT_VERSION值，无关联则设为-1',
   `REL_JOB_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联作业ID，无关联则设为-1',
@@ -1603,7 +1606,8 @@ CREATE TABLE `wf_json_object` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`OBJECT_ID`),
-  KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`)
+  KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`OWNER_PROJECT_ID`,`OBJECT_TYPE`,`STATUS`,`CREATE_TIME`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
 
 -- ----------------------------
@@ -1781,7 +1785,7 @@ DROP TABLE IF EXISTS `wf_snapshot`;
 CREATE TABLE `wf_snapshot` (
   `SNAPSHOT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '快照ID',
   `SNAPSHOT_NAME` varchar(200) NOT NULL COMMENT '快照名称',
-  `SHAPSHOT_SRC` int(11) NOT NULL COMMENT '快照来源\r\n            0：工作流运行\r\n            1：工作流副本',
+  `SNAPSHOT_SRC` int(11) NOT NULL COMMENT '快照来源\r\n            0：工作流运行\r\n            1：工作流副本',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `OWNER_FLOW_ID` bigint(20) NOT NULL COMMENT '所属流程图ID',
   `SNAPSHOT_CONTENT` mediumtext COMMENT '快照内容',
@@ -1794,7 +1798,7 @@ CREATE TABLE `wf_snapshot` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`SNAPSHOT_ID`),
-  KEY `Index_1` (`OWNER_FLOW_ID`,`SHAPSHOT_SRC`,`SNAPSHOT_VERSION`),
+  KEY `Index_1` (`OWNER_PROJECT_ID`,`OWNER_FLOW_ID`,`SNAPSHOT_SRC`,`SNAPSHOT_VERSION`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流快照表，在实验工作台创建副本和运行实验都会触发快照创建，由此实现类似checkpoint功能\r\n\r\n                                -&';
 
@@ -1816,7 +1820,8 @@ CREATE TABLE `wf_user_favorite_module` (
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  KEY `Index_1` (`PROJECT_ID`,`OPER_ID`,`MODULE_ID`,`STATUS`,`CREATE_TIME`)
+  KEY `Index_1` (`PROJECT_ID`,`OPER_ID`,`MODULE_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`PROJECT_ID`,`OPER_ID`,`STATUS`,`CREATE_TIME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户收藏组件\r\n\r\n逻辑删除，同一项目和用户下正常状态的组件唯一';
 
 -- ----------------------------
@@ -1837,7 +1842,8 @@ CREATE TABLE `wf_user_favorite_table` (
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  KEY `Index_1` (`PROJECT_ID`,`OPER_ID`,`TABLE_ID`,`STATUS`,`CREATE_TIME`)
+  KEY `Index_1` (`PROJECT_ID`,`OPER_ID`,`TABLE_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`PROJECT_ID`,`OPER_ID`,`STATUS`,`CREATE_TIME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户收藏数据表\r\n\r\n逻辑删除，同一项目和用户下正常状态的数据表唯一';
 
 -- ----------------------------

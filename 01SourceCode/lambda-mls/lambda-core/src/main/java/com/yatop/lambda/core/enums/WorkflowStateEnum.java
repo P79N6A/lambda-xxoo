@@ -1,6 +1,7 @@
 package com.yatop.lambda.core.enums;
 
 public enum WorkflowStateEnum {
+
     /**
      * 草稿
      */

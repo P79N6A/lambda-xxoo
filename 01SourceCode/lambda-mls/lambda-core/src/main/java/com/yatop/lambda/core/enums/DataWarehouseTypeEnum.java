@@ -1,6 +1,7 @@
 package com.yatop.lambda.core.enums;
 
 public enum DataWarehouseTypeEnum {
+
     /**
      * 公共数据库
      */
