@@ -3,14 +3,14 @@ package com.yatop.lambda.core.enums;
 public enum JsonObjectStateEnum {
 
     /**
-     * 正常
-     */
-    NORMAL(0, "Normal"),
-
-    /**
      * 空对象
      */
-    EMPTY(1, "Empty");
+    NORMAL(0, "Empty"),
+
+    /**
+     * 正常
+     */
+    EMPTY(1, "Normal");
 
     private int state;
     private String name;

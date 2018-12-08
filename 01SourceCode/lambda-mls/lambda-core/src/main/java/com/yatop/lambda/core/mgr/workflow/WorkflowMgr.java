@@ -189,6 +189,8 @@ public class WorkflowMgr extends BaseMgr {
             WfFlow updateWorkflow = new WfFlow();
             updateWorkflow.setFlowId(workflow.getFlowId());
             updateWorkflow.setLastJobId(workflow.getLastJobId());
+            updateWorkflow.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            updateWorkflow.setLastUpdateOper((operId));
             return wfFlowMapper.updateByPrimaryKeySelective(updateWorkflow);
         } catch (Throwable e) {
             throw new LambdaException("Update workflow info failed.", "更新工作流信息失败", e);
@@ -215,6 +217,8 @@ public class WorkflowMgr extends BaseMgr {
             WfFlow updateWorkflow = new WfFlow();
             updateWorkflow.setFlowId(workflow.getFlowId());
             updateWorkflow.setFlowState(workflow.getFlowState());
+            updateWorkflow.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            updateWorkflow.setLastUpdateOper((operId));
             return wfFlowMapper.updateByPrimaryKeySelective(updateWorkflow);
         } catch (Throwable e) {
             throw new LambdaException("Update workflow info failed.", "更新工作流信息失败", e);
