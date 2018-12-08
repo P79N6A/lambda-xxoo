@@ -10,7 +10,6 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -21,7 +20,7 @@ public class SnapshotMgr extends BaseMgr {
 
     /*
      *
-     *   插入新快照信息（名称、所属项目ID、所属实验ID、快照状态）
+     *   插入新快照信息（名称、快照来源、所属项目ID、所属工作流ID、快照内容、快照版本号 ...）
      *   返回插入记录
      *
      * */
@@ -40,7 +39,7 @@ public class SnapshotMgr extends BaseMgr {
         WfSnapshot insertSnapshot = new WfSnapshot();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(snapshot, insertSnapshot);
+            insertSnapshot.copyProperties(snapshot);
             insertSnapshot.setSnapshotIdColoured(false);
             insertSnapshot.setSnapshotState(SnapshotStateEnum.FINISHED.getState());
             insertSnapshot.setStatus(DataStatusEnum.NORMAL.getStatus());
@@ -63,7 +62,7 @@ public class SnapshotMgr extends BaseMgr {
      * */
     public int deleteSnapshot(WfSnapshot snapshot, String operId) {
         if(DataUtil.isNull(snapshot) || snapshot.isSnapshotIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete snapshot info -- invalid query condition.", "无效删除条件");
+            throw new LambdaException("Delete snapshot info -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -114,11 +113,11 @@ public class SnapshotMgr extends BaseMgr {
 
     /*
      *
-     *   完成快照
+     *   完成快照（快照内容、描述）
      *   返回更新数量
      *
      * */
-    public int finishSnapshot(WfSnapshot snapshot, String operId) {
+/*    public int finishSnapshot(WfSnapshot snapshot, String operId) {
         if( DataUtil.isNull(snapshot) || snapshot.isSnapshotIdNotColoured() || DataUtil.isEmpty(operId)) {
             throw new LambdaException("Finish snapshot failed -- invalid update condition.", "无效完成条件");
         }
@@ -144,7 +143,7 @@ public class SnapshotMgr extends BaseMgr {
         } catch (Throwable e) {
             throw new LambdaException("Finish snapshot failed.", "完成快照失败", e);
         }
-    }
+    }*/
 
     /*
      *

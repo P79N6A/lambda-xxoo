@@ -9,7 +9,6 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,7 +19,7 @@ public class ExperimentMgr extends BaseMgr {
 
     /*
      *
-     *   插入新实验信息（名称、类型、所属项目ID）
+     *   插入新实验信息（名称、类型、所属项目ID ...）
      *   返回插入记录
      *
      * */
@@ -47,7 +46,7 @@ public class ExperimentMgr extends BaseMgr {
         EmExperiment insertExperiment = new EmExperiment();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(experiment, insertExperiment);
+            insertExperiment.copyProperties(experiment);
             insertExperiment.setExperimentIdColoured(false);
             insertExperiment.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertExperiment.setLastUpdateTime(dtCurrentTime);
@@ -76,7 +75,7 @@ public class ExperimentMgr extends BaseMgr {
      * */
     public int deleteExperiment(EmExperiment experiment, String operId) {
         if(DataUtil.isNull(experiment) || experiment.isExperimentIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete experiment info failed -- invalid query condition.", "无效删除条件");
+            throw new LambdaException("Delete experiment info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -93,7 +92,7 @@ public class ExperimentMgr extends BaseMgr {
 
     /*
      *
-     *   更新实验信息（实验名称、DFS实验目录、本地实验目录、概要、描述）
+     *   更新实验信息（实验名称、DFS实验目录、本地实验目录）
      *   返回更新数量
      *
      * */
@@ -106,7 +105,7 @@ public class ExperimentMgr extends BaseMgr {
                 experiment.isExperimentDfsDirNotColoured() &&
                 experiment.isExperimentLocalDirNotColoured() &&
                 experiment.isSummaryNotColoured() &&
-                experiment.isDescriptionNotColoured()) {
+                experiment.isDescriptionNotColoured() ) {
             throw new LambdaException("Update experiment info failed -- invalid update data.", "无效更新内容");
         }
 

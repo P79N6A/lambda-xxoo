@@ -12,5 +12,5 @@ public interface ExperimentTemplateMapper {
             "       LAST_UPDAT_TIME = #{time},          " +
             "       LAST_UPDATE_OPER = #{oper}          " +
             "       WHERE TEMPLATE_ID = #{id}")
-    int templateCountPlusOne(@Param("id") Long id, @Param("time") Date time, @Param("oper") String oper);
+    int increaseTemplateCount(@Param("id") Long id, @Param("time") Date time, @Param("oper") String oper);
 }

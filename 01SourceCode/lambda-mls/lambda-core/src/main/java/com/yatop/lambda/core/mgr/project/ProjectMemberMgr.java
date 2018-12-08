@@ -9,7 +9,6 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class ProjectMemberMgr extends BaseMgr {
 
     /*
      *
-     *   插入项目成员记录（项目ID、是否为所有者、用户名、描述）
+     *   插入项目成员记录（项目ID、是否为所有者、用户名 ...）
      *   返回插入记录
      *
      * */
@@ -46,7 +45,7 @@ public class ProjectMemberMgr extends BaseMgr {
         PrProjectMember insertMember = new PrProjectMember();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(member, insertMember);
+            insertMember.copyProperties(insertMember);
             insertMember.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertMember.setLastUpdateTime(dtCurrentTime);
             insertMember.setLastUpdateOper(operId);
@@ -67,7 +66,7 @@ public class ProjectMemberMgr extends BaseMgr {
      * */
     public int deleteProjectMember(PrProjectMember member, String operId)  {
         if(DataUtil.isNull(member) || member.isProjectIdNotColoured() || member.isMemberUserNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete project member failed -- invalid query condition.", "无效删除条件");
+            throw new LambdaException("Delete project member failed -- invalid delete condition.", "无效删除条件");
         }
 
         if(!existsProjectMember(member.getProjectId(), member.getMemberUser())) {

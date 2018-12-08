@@ -11,7 +11,6 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemParameterUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ public class ProjectMgr extends BaseMgr {
 
     /*
     *
-    *   插入新项目信息（代码、名称、数据库ID、模型库ID、描述）
+    *   插入新项目信息（代码、名称、数据库ID、模型库ID ...）
     *   返回插入记录
     *
     * */
@@ -47,7 +46,7 @@ public class ProjectMgr extends BaseMgr {
         PrProject insertProject = new PrProject();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(project, insertProject);
+            insertProject.copyProperties(project);
             insertProject.setProjectIdColoured(false);
             if(insertProject.isCacheExpireDaysNotColoured())
                 insertProject.setCacheExpireDays(SystemParameterUtil.find4Integer(SystemParameterEnum.PR_CACHE_DATA_EXPIRE_DAYS, -1));
@@ -71,7 +70,7 @@ public class ProjectMgr extends BaseMgr {
      * */
     public int deleteProject(PrProject project, String operId) {
         if(DataUtil.isNull(project) || project.isProjectIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete project info failed -- invalid query condition.", "无效删除条件");
+            throw new LambdaException("Delete project info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {

@@ -16,9 +16,32 @@ public interface WorkflowMapper {
     int updateWorkflowSnapshot(@Param("id") Long id, @Param("snapshot") Long snapshot, @Param("time") Date time, @Param("oper") String oper);
 
     @Update(  "     UPDATE WF_FLOW                      " +
+            "       SET NODE_COUNT = NODE_COUNT + 1,    " +
+            "       LAST_UPDAT_TIME = #{time},          " +
+            "       LAST_UPDATE_OPER = #{oper}          " +
+            "       WHERE FLOW_ID = #{id}")
+    int increaseWorkflowNode(@Param("id") Long id, @Param("time") Date time, @Param("oper") String oper);
+
+    @Update(  "     UPDATE WF_FLOW                      " +
+            "       SET NODE_COUNT = NODE_COUNT - #{count},    " +
+            "       NEXT_DELETE_SEQUENCE = MOD(NEXT_DELETE_SEQUENCE + 1, 32),          " +
+            "       LAST_UPDAT_TIME = #{time},          " +
+            "       LAST_UPDATE_OPER = #{oper}          " +
+            "       WHERE FLOW_ID = #{id}")
+    int deleteWorkflowNode(@Param("id") Long id, @Param("count") Long count, @Param("time") Date time, @Param("oper") String oper);
+
+    @Update(  "     UPDATE WF_FLOW                      " +
+            "       SET NODE_COUNT = NODE_COUNT - #{count},    " +
+            "       NEXT_DELETE_SEQUENCE = MOD(NEXT_DELETE_SEQUENCE - 1, 32),          " +
+            "       LAST_UPDAT_TIME = #{time},          " +
+            "       LAST_UPDATE_OPER = #{oper}          " +
+            "       WHERE FLOW_ID = #{id}")
+    int undoDeleteWorkflowNode(@Param("id") Long id, @Param("count") Long count, @Param("time") Date time, @Param("oper") String oper);
+
+    @Update(  "     UPDATE WF_FLOW                      " +
             "       SET VERSION = VERSION + 1,          " +
             "       LAST_UPDAT_TIME = #{time},          " +
             "       LAST_UPDATE_OPER = #{oper}          " +
             "       WHERE FLOW_ID = #{id}")
-    int updateWorkflowVersion(@Param("id") Long id, @Param("time") Date time, @Param("oper") String oper);
+    int increaseWorkflowVersion(@Param("id") Long id, @Param("time") Date time, @Param("oper") String oper);
 }

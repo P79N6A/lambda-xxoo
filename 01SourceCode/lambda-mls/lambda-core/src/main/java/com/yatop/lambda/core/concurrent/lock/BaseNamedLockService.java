@@ -108,17 +108,17 @@ public abstract class BaseNamedLockService {
         }
     }
 
-    public LockRequest prepareDoLock(Long resourceId) {
+    public final LockRequest prepareDoLock(Long resourceId) {
         return prepareRequestLock(resourceId);
     }
 
-    public LockRequest prepareDoUnlock() {
+    public final LockRequest prepareDoUnlock() {
         ConcurrentLinkedQueue<LockRequest> chainList = threadChainHashMap.get(Thread.currentThread().getId());
         return unlock(DataUtil.isNotNull(chainList) ? chainList.peek() : null);
     }
 
     //定期过期检测防止内存泄漏
-    public void clearExpireLock() {
+    public final void clearExpireLock() {
         {
             if(!this.clearExpireCacheMap.isEmpty()) {
                 Iterator<Map.Entry<Long, ArrayList<LockRequest>>> iterator = this.clearExpireCacheMap.entrySet().iterator();

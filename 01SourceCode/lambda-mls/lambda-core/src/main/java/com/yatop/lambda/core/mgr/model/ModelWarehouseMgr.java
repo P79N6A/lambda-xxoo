@@ -9,7 +9,6 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,7 +19,7 @@ public class ModelWarehouseMgr extends BaseMgr {
     
     /*
      *
-     *   插入新模型仓库信息（代码、名称、类型、所属项目ID、DFS数据目录、本地数据目录）
+     *   插入新模型仓库信息（代码、名称、类型、所属项目ID、DFS数据目录、本地数据目录 ...）
      *   返回插入记录
      *
      * */
@@ -47,7 +46,7 @@ public class ModelWarehouseMgr extends BaseMgr {
         MwModelWarehouse insertWarehouse = new MwModelWarehouse();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(warehouse, insertWarehouse);
+            insertWarehouse.copyProperties(warehouse);
             insertWarehouse.setMwIdColoured(false);
             insertWarehouse.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertWarehouse.setLastUpdateTime(dtCurrentTime);
@@ -69,7 +68,7 @@ public class ModelWarehouseMgr extends BaseMgr {
      * */
     public int deleteDataWarehouse(MwModelWarehouse warehouse, String operId) {
         if(DataUtil.isNull(warehouse) || warehouse.isMwIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete model warehouse info failed -- invalid query condition.", "无效删除条件");
+            throw new LambdaException("Delete model warehouse info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -86,7 +85,7 @@ public class ModelWarehouseMgr extends BaseMgr {
 
     /*
      *
-     *   更新模型仓库信息（代码、名称、缓存数据过期天数、描述）
+     *   更新模型仓库信息（代码、名称、DFS数据目录、本地数据目录、描述）
      *   返回更新数量
      *
      * */

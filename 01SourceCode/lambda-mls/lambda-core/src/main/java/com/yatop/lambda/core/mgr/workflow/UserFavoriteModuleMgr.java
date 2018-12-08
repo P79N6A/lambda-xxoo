@@ -8,7 +8,6 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class UserFavoriteModuleMgr extends BaseMgr {
 
     /*
      *
-     *   插入用户收藏记录（项目ID、是否为所有者、用户名、描述）
+     *   插入用户收藏记录（项目ID、用户ID、工作流模块ID ...）
      *   返回插入记录
      *
      * */
@@ -41,7 +40,7 @@ public class UserFavoriteModuleMgr extends BaseMgr {
         WfUserFavoriteModule insertFavorite = new WfUserFavoriteModule();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(favorite, insertFavorite);
+            insertFavorite.copyProperties(favorite);
             insertFavorite.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertFavorite.setLastUpdateTime(dtCurrentTime);
             insertFavorite.setLastUpdateOper(operId);
@@ -66,7 +65,7 @@ public class UserFavoriteModuleMgr extends BaseMgr {
                 favorite.isOperIdNotColoured() ||
                 favorite.isModuleIdNotColoured() ||
                 DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete user favorite module failed -- invalid query condition.", "无效删除条件");
+            throw new LambdaException("Delete user favorite module failed -- invalid delete condition.", "无效删除条件");
         }
 
         if(!existsUserFavoriteModule(favorite.getProjectId(), favorite.getOperId(), favorite.getModuleId())) {

@@ -2,13 +2,16 @@ package com.yatop.lambda.core.mgr.workflow;
 
 import com.yatop.lambda.base.model.WfFlowGlobalParameter;
 import com.yatop.lambda.base.model.WfFlowGlobalParameterExample;
+import com.yatop.lambda.base.model.WfFlowNodeParameter;
 import com.yatop.lambda.core.enums.DataStatusEnum;
+import com.yatop.lambda.core.enums.IsGlobalParameterEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
+import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,9 +20,12 @@ import java.util.List;
 @Service
 public class GlobalParameterMgr extends BaseMgr {
 
+    @Autowired
+    NodeParameterMgr nodeParameterMgr;
+
     /*
      *
-     *   插入新全局变量（名称、所属项目ID、所属实验ID、快照状态）
+     *   插入新全局参数（名称、关联工作流ID、关联节点ID、关联特征ID、特征默认值 ...）
      *   返回插入记录
      *
      * */
@@ -34,10 +40,25 @@ public class GlobalParameterMgr extends BaseMgr {
             throw new LambdaException("Insert global parameter failed -- invalid insert data.", "无效插入数据");
         }
 
+        if(existsGlobalParameter(globalParameter.getRelNodeId(), globalParameter.getRelCharId())) {
+            throw new LambdaException("Insert global parameter failed -- global parameter existed.", "全局参数已存在");
+        }
+
+        try {
+            WfFlowNodeParameter refNodeParameter = new WfFlowNodeParameter();
+            refNodeParameter.setNodeId(globalParameter.getRelNodeId());
+            refNodeParameter.setCharId(globalParameter.getRelCharId());
+            refNodeParameter.setIsGlobalParameter(IsGlobalParameterEnum.YES.getMark());
+            nodeParameterMgr.updateNodeParameter(refNodeParameter, operId);
+        } catch (LambdaException e) {
+            throw new LambdaException("Insert global parameter failed -- synchronize node parameter failed.", "同步节点参数失败", e);
+        }
+
+
         WfFlowGlobalParameter insertGlobalParameter = new WfFlowGlobalParameter();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(globalParameter, insertGlobalParameter);
+            insertGlobalParameter.copyProperties(globalParameter);
             insertGlobalParameter.setGlobalParamIdColoured(false);
             insertGlobalParameter.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertGlobalParameter.setLastUpdateTime(dtCurrentTime);
@@ -47,19 +68,30 @@ public class GlobalParameterMgr extends BaseMgr {
             wfFlowGlobalParameterMapper.insertSelective(insertGlobalParameter);
             return insertGlobalParameter;
         } catch (Throwable e) {
-            throw new LambdaException("Insert global parameter failed.", "插入全局变量失败", e);
+            throw new LambdaException("Insert global parameter failed.", "插入全局参数失败", e);
         }
     }
 
     /*
      *
-     *   逻辑删除全局变量
+     *   逻辑删除全局参数
      *   返回删除数量
      *
      * */
     public int deleteGlobalParameter(WfFlowGlobalParameter globalParameter, String operId) {
         if(DataUtil.isNull(globalParameter) || globalParameter.isGlobalParamIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete global parameter -- invalid query condition.", "无效删除条件");
+            throw new LambdaException("Delete global parameter -- invalid delete condition.", "无效删除条件");
+        }
+
+        try {
+            WfFlowGlobalParameter thisGlobalParameter = queryGlobalParameter(globalParameter.getGlobalParamId());
+            WfFlowNodeParameter refNodeParameter = new WfFlowNodeParameter();
+            refNodeParameter.setNodeId(thisGlobalParameter.getRelNodeId());
+            refNodeParameter.setCharId(thisGlobalParameter.getRelCharId());
+            refNodeParameter.setIsGlobalParameter(IsGlobalParameterEnum.NO.getMark());
+            nodeParameterMgr.updateNodeParameter(refNodeParameter, operId);
+        } catch (LambdaException e) {
+            throw new LambdaException("Insert global parameter failed -- synchronize node parameter failed.", "同步节点参数失败", e);
         }
 
         try {
@@ -71,13 +103,13 @@ public class GlobalParameterMgr extends BaseMgr {
             example.createCriteria().andGlobalParamIdEqualTo(globalParameter.getGlobalParamId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfFlowGlobalParameterMapper.updateByExampleSelective(deleteGlobalParameter, example);
         } catch (Throwable e) {
-            throw new LambdaException("Delete global parameter failed.", "删除全局变量失败", e);
+            throw new LambdaException("Delete global parameter failed.", "删除全局参数失败", e);
         }
     }
 
     /*
      *
-     *   更新全局变量（名称、默认值、警告消息、描述）
+     *   更新全局参数（名称、特征默认值、警告消息、描述）
      *   返回更新数量
      *
      * */
@@ -109,13 +141,13 @@ public class GlobalParameterMgr extends BaseMgr {
             updateGlobalParameter.setLastUpdateOper((operId));
             return wfFlowGlobalParameterMapper.updateByPrimaryKeySelective(updateGlobalParameter);
         } catch (Throwable e) {
-            throw new LambdaException("Update global parameter failed.", "更新全局变量失败", e);
+            throw new LambdaException("Update global parameter failed.", "更新全局参数失败", e);
         }
     }
 
     /*
      *
-     *   查询全局变量（按ID）
+     *   查询全局参数（按ID）
      *   返回结果
      *
      * */
@@ -128,7 +160,7 @@ public class GlobalParameterMgr extends BaseMgr {
         try {
             globalParameter = wfFlowGlobalParameterMapper.selectByPrimaryKey(globalParameterId);
         } catch (Throwable e) {
-            throw new LambdaException("Query global parameter failed.", "查询全局变量失败", e);
+            throw new LambdaException("Query global parameter failed.", "查询全局参数失败", e);
         }
 
         if(DataUtil.isNull(globalParameter) || (globalParameter.getStatus() == DataStatusEnum.INVALID.getStatus()))
@@ -139,7 +171,7 @@ public class GlobalParameterMgr extends BaseMgr {
 
     /*
      *
-     *   查询全局变量（按工作流ID）
+     *   查询全局参数（按工作流ID）
      *   返回结果集
      *
      * */
@@ -156,8 +188,27 @@ public class GlobalParameterMgr extends BaseMgr {
             return wfFlowGlobalParameterMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query global parameter failed.", "查询全局变量失败", e);
+            throw new LambdaException("Query global parameter failed.", "查询全局参数失败", e);
         }
     }
 
+    /*
+     *
+     *   是否已存在全局参数
+     *   返回结果集
+     *
+     * */
+    public boolean existsGlobalParameter(Long nodeId, String charId) {
+        if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(charId)){
+            throw new LambdaException("Check global parameter exists failed -- invalid check condition.", "无效检查条件");
+        }
+
+        try {
+            WfFlowGlobalParameterExample example = new WfFlowGlobalParameterExample();
+            example.createCriteria().andRelNodeIdEqualTo(nodeId).andRelCharIdEqualTo(charId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            return wfFlowGlobalParameterMapper.countByExample(example) > 0 ? true : false;
+        } catch (Throwable e) {
+            throw new LambdaException("Check global parameter exists failed.", "检查全局参数是否已存在失败", e);
+        }
+    }
 }

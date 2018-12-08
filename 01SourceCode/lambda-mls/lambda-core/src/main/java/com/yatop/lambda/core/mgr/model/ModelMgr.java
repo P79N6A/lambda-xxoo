@@ -9,7 +9,6 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,7 +19,7 @@ public class ModelMgr extends BaseMgr {
 
     /*
      *
-     *   插入新模型信息（表名、类型、所属模型仓库ID、引用算法ID、模型状态）
+     *   插入新模型信息（表名、类型、所属模型仓库ID、引用算法ID、模型状态 ...）
      *   返回插入记录
      *
      * */
@@ -42,7 +41,7 @@ public class ModelMgr extends BaseMgr {
         MwModel insertModel = new MwModel();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(model, insertModel);
+            insertModel.copyProperties(model);
             insertModel.setModelIdColoured(false);
             insertModel.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertModel.setLastUpdateTime(dtCurrentTime);
@@ -64,7 +63,7 @@ public class ModelMgr extends BaseMgr {
      * */
     public int deleteModel(MwModel model, String operId) {
         if(DataUtil.isNull(model) || model.isModelIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete model info failed -- invalid query condition.", "无效删除条件");
+            throw new LambdaException("Delete model info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {

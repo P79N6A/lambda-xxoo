@@ -10,7 +10,6 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -21,7 +20,7 @@ public class DataTableMgr extends BaseMgr {
 
     /*
      *
-     *   插入新数据表信息（表名、类型、所属数据仓库ID、数据文件类型、数据表状态）
+     *   插入新数据表信息（表名、类型、所属数据仓库ID、数据文件类型、数据表状态 ...）
      *   返回插入记录
      *
      * */
@@ -47,7 +46,7 @@ public class DataTableMgr extends BaseMgr {
         DwDataTable insertTable = new DwDataTable();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(table, insertTable);
+            insertTable.copyProperties(table);
             insertTable.setTableIdColoured(false);
             insertTable.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertTable.setLastUpdateTime(dtCurrentTime);
@@ -69,7 +68,7 @@ public class DataTableMgr extends BaseMgr {
      * */
     public int deleteDataTable(DwDataTable table, String operId) {
         if(DataUtil.isNull(table) || table.isTableIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete data table info failed -- invalid query condition.", "无效删除条件");
+            throw new LambdaException("Delete data table info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {

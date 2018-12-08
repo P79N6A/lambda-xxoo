@@ -35,7 +35,7 @@ public enum JsonObjectTypeEnum {
     /**
      * 生成规则报告
      */
-    GENERATE_RULES_REPORT(5, "Generate Rules Report");
+    GENERATE_RULES_REPORT(6, "Generate Rules Report");
 
     private int type;
     private String name;

@@ -1,7 +1,7 @@
 package com.yatop.lambda.core.concurrent;
 
 import com.yatop.lambda.FramewrokApplication;
-import com.yatop.lambda.core.concurrent.lock.WorkflowNamedLockService;
+import com.yatop.lambda.core.concurrent.lock.WorkflowNamedLockServiceService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.Date;
 public class WorkflowNamedLockServiceTest implements Runnable {
 
     @Autowired
-    WorkflowNamedLockService workflowNamedLock;
+    WorkflowNamedLockServiceService workflowNamedLock;
 
     private int generator = 0;
 
@@ -49,7 +49,7 @@ public class WorkflowNamedLockServiceTest implements Runnable {
                 //System.out.println("Request " + resource + " -- " +  (workflowNamedLock.requestResource(resource) ? "success" : "failed"));
 
                 //this.wait(188);
-                //workflowNamedLock.releaseResource();
+                workflowNamedLock.releaseResource();
             }catch (Throwable e) {
                 e.printStackTrace();
                 System.exit(-1);

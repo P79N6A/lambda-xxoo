@@ -1,31 +1,41 @@
 package com.yatop.lambda.core.enums;
 
-public enum WorkflowStateEnum {
+public enum NodeStateEnum {
 
     /**
-     * 草稿
+     * 未就绪
      */
-    DRAFT(0, "Draft"),
+    NOT_READY(0, "Not Ready"),
+
+    /**
+     * 已就绪
+     */
+    READY(1, "Ready"),
 
     /**
      * 准备中
      */
-    PREPARING(1, "Preparing"),
+    PREPARING(2, "Preparing"),
 
     /**
      * 运行中
      */
-    RUNNING(2, "Running"),
+    RUNNING(3, "Running"),
 
     /**
-     * 运行结束
+     * 运行成功
      */
-    FINISHED_RUNNING(3, "Finished Running");
+    SUCCESS(4, "Success"),
+
+    /**
+     * 运行出错
+     */
+    ERROR(4, "Error");
 
     private int state;
     private String name;
 
-    WorkflowStateEnum(int state, String name) {
+    NodeStateEnum(int state, String name) {
         this.state = state;
         this.name = name;
     }

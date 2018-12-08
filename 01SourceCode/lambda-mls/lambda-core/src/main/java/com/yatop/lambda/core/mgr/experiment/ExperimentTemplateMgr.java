@@ -9,7 +9,6 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +41,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
         EmExperimentTemplate insertTemplate = new EmExperimentTemplate();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(template, insertTemplate);
+            insertTemplate.copyProperties(template);
             insertTemplate.setTemplateIdColoured(false);
             insertTemplate.setTemplateCount(0L);
             insertTemplate.setStatus(DataStatusEnum.NORMAL.getStatus());
@@ -65,7 +64,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
      * */
     public int deleteDataTemplate(EmExperimentTemplate template, String operId) {
         if(DataUtil.isNull(template) || template.isTemplateIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete experiment template info failed -- invalid query condition.", "无效删除条件");
+            throw new LambdaException("Delete experiment template info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -171,17 +170,17 @@ public class ExperimentTemplateMgr extends BaseMgr {
 
     /*
      *
-     *   增长实验模版计数
+     *   实验模版计数增加
      *   返回更新数量
      *
      * */
-    public int increTemplateCount(Long id, String operId) {
+    public int increaseTemplateCount(Long id, String operId) {
         if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
             throw new LambdaException("Experiment template count plus one -- invalid plus condition.", "无效计数条件");
         }
 
         try {
-           return experimentTemplateMapper.templateCountPlusOne(id, SystemTimeUtil.getCurrentTime(), operId);
+           return experimentTemplateMapper.increaseTemplateCount(id, SystemTimeUtil.getCurrentTime(), operId);
         } catch (Throwable e) {
             throw new LambdaException("Experiment template count plus one.", "实验模版计数加一失败", e);
         }

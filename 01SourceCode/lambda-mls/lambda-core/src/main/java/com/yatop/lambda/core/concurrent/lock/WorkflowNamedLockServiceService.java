@@ -1,12 +1,11 @@
 package com.yatop.lambda.core.concurrent.lock;
 
-import com.yatop.lambda.core.concurrent.INamedLock;
 import com.yatop.lambda.core.concurrent.daemon.NamedLockDaemon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WorkflowNamedLockService extends BaseNamedLockService implements INamedLock {
+public class WorkflowNamedLockServiceService extends BaseNamedLockService implements INamedLockService {
 
     @Autowired
     NamedLockDaemon namedLockDaemon;

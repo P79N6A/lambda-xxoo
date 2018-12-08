@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-08 02:40:03
+Date: 2018-12-08 18:46:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -938,7 +938,7 @@ CREATE TABLE `dw_data_table` (
   PRIMARY KEY (`TABLE_ID`),
   KEY `Index_1` (`OWNER_DW_ID`,`TABLE_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_DW_ID`,`TABLE_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
 
 -- ----------------------------
 -- Records of dw_data_table
@@ -996,7 +996,7 @@ CREATE TABLE `em_experiment` (
   KEY `Index_1` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`EXPERIMENT_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`MAIN_EXPERIMENT_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='实验表，实验是工作流的外壳主体\r\n\r\n逻辑删除，主实验正常状态的预测实验唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='实验表，实验是工作流的外壳主体\r\n\r\n逻辑删除，主实验正常状态的预测实验唯一';
 
 -- ----------------------------
 -- Records of em_experiment
@@ -1022,7 +1022,7 @@ CREATE TABLE `em_experiment_template` (
   PRIMARY KEY (`TEMPLATE_ID`),
   KEY `Index_1` (`SEQUENCE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`TEMPLATE_NAME`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='实验模版表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='实验模版表';
 
 -- ----------------------------
 -- Records of em_experiment_template
@@ -1057,7 +1057,7 @@ CREATE TABLE `mw_model` (
   PRIMARY KEY (`MODEL_ID`),
   KEY `Index_1` (`OWNER_MW_ID`,`MODEL_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_MW_ID`,`MODEL_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除，同一库下正常状态的名称唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除，同一库下正常状态的名称唯一';
 
 -- ----------------------------
 -- Records of mw_model
@@ -1085,7 +1085,7 @@ CREATE TABLE `mw_model_warehouse` (
   UNIQUE KEY `Index_1` (`MW_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`MW_TYPE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`MW_CODE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=10001 DEFAULT CHARSET=utf8 COMMENT='模型库表，对模型做分组，辅助项目权限隔离\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型库表，对模型做分组，辅助项目权限隔离\r\n\r\n逻辑删除，正常状态的代码唯一和名称唯一';
 
 -- ----------------------------
 -- Records of mw_model_warehouse
@@ -1192,7 +1192,7 @@ CREATE TABLE `sys_parameter` (
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`PARAM_ID`),
   UNIQUE KEY `Index_1` (`PARAM_CODE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='系统参数表\r\n\r\n逻辑删除，正常状态的代码唯一';
+) ENGINE=InnoDB AUTO_INCREMENT=7018 DEFAULT CHARSET=utf8 COMMENT='系统参数表\r\n\r\n逻辑删除，正常状态的代码唯一';
 
 -- ----------------------------
 -- Records of sys_parameter
@@ -1243,7 +1243,7 @@ CREATE TABLE `wf_code_script` (
   PRIMARY KEY (`SCRIPT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`SCRIPT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
 
 -- ----------------------------
 -- Records of wf_code_script
@@ -1278,7 +1278,7 @@ CREATE TABLE `wf_execution_job` (
   PRIMARY KEY (`JOB_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
 
 -- ----------------------------
 -- Records of wf_execution_job
@@ -1299,7 +1299,7 @@ CREATE TABLE `wf_execution_queue` (
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`JOB_ID`),
+  UNIQUE KEY `Index_3` (`JOB_ID`),
   KEY `Index_1` (`JOB_STATE`,`JOB_SIGNAL`,`JOB_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_STATE`,`CREATE_TIME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行队列表，结束运行后移除';
@@ -1339,7 +1339,7 @@ CREATE TABLE `wf_execution_task` (
   UNIQUE KEY `Index_1` (`OWNER_JOB_ID`,`REL_NODE_ID`),
   KEY `Index_2` (`OWNER_JOB_ID`,`SEQUENCE`),
   KEY `Index_3` (`OWNER_JOB_ID`,`TASK_STATE`,`SEQUENCE`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
 
 -- ----------------------------
 -- Records of wf_execution_task
@@ -1396,7 +1396,7 @@ CREATE TABLE `wf_flow` (
   UNIQUE KEY `Index_1` (`OWNER_EXPERIMENT_ID`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_PROJECT_ID`,`STATUS`,`FLOW_STATE`,`LAST_UPDATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流表，记录当前的实验状态，由一系列子表记录实验画布上节点和边的图形信息，以及节点参数内容和输出内容\r\n\r\n                            ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流表，记录当前的实验状态，由一系列子表记录实验画布上节点和边的图形信息，以及节点参数内容和输出内容\r\n\r\n                            ';
 
 -- ----------------------------
 -- Records of wf_flow
@@ -1411,7 +1411,7 @@ CREATE TABLE `wf_flow_global_parameter` (
   `GLOBAL_PARAM_NAME` varchar(200) NOT NULL COMMENT '全局参数名',
   `REL_FLOW_ID` bigint(20) NOT NULL COMMENT '关联工作流ID',
   `REL_NODE_ID` bigint(20) NOT NULL COMMENT '关联节点ID',
-  `REL_CHAR_ID` bigint(20) NOT NULL COMMENT '关联组件特征ID',
+  `REL_CHAR_ID` varchar(64) NOT NULL COMMENT '关联组件特征ID',
   `DEFAULT_VALUE` varchar(2000) NOT NULL COMMENT '默认值',
   `WARNING_MSG` varchar(256) DEFAULT NULL COMMENT '警告消息',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
@@ -1445,7 +1445,8 @@ CREATE TABLE `wf_flow_node` (
   `LAST_TASK_ID` bigint(20) DEFAULT NULL COMMENT '最后任务ID',
   `WARNING_MSG` varchar(256) DEFAULT NULL COMMENT '警告消息',
   `NODE_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '节点状态\r\n            0：not ready，未就绪\r\n            1：ready，已就绪\r\n            2：preparing，准备中\r\n            3：running，运行中\r\n            4：success，运行成功\r\n            5：error，运行出错',
-  `SUMMARY` varchar(256) DEFAULT NULL COMMENT '概要，自动生成或者人工编辑',
+  `COMMENT` varchar(800) DEFAULT NULL COMMENT '备注，人工编辑',
+  `SUMMARY` varchar(800) DEFAULT NULL COMMENT '概要，自动生成',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -1453,7 +1454,7 @@ CREATE TABLE `wf_flow_node` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`NODE_ID`),
-  KEY `Index_1` (`OWNER_FLOW_ID`,`REF_MODULE_ID`),
+  KEY `Index_1` (`OWNER_FLOW_ID`,`REF_MODULE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`REF_MODULE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
@@ -1469,11 +1470,11 @@ DROP TABLE IF EXISTS `wf_flow_node_delete_queue`;
 CREATE TABLE `wf_flow_node_delete_queue` (
   `FLOW_ID` bigint(20) NOT NULL COMMENT '工作流ID',
   `NODE_ID` bigint(20) NOT NULL COMMENT '节点ID',
-  `SEQUENCE` int(11) NOT NULL COMMENT '删除序号',
+  `SEQUENCE` bigint(20) NOT NULL COMMENT '删除序号',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`FLOW_ID`,`NODE_ID`),
+  UNIQUE KEY `Index_2` (`FLOW_ID`,`NODE_ID`),
   KEY `Index_1` (`FLOW_ID`,`SEQUENCE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点删除队列表，一次删除序号可以有多个删除节点，撤销后从队列移除\r\n\r\n每个工作流的删除队列大';
 
@@ -1487,6 +1488,7 @@ CREATE TABLE `wf_flow_node_delete_queue` (
 DROP TABLE IF EXISTS `wf_flow_node_link`;
 CREATE TABLE `wf_flow_node_link` (
   `LINK_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '链接ID',
+  `LINK_NAME` varchar(400) NOT NULL COMMENT '节点名称，自动生成，可编辑',
   `OWNER_FLOW_ID` bigint(20) NOT NULL COMMENT '所属工作流ID',
   `IS_WEB_LINK` int(11) NOT NULL DEFAULT '0' COMMENT '是否为web组件的流出链接\r\n            0：否\r\n            1：是',
   `SRC_PORT_ID` bigint(20) NOT NULL COMMENT '流出节点端口ID',
@@ -1514,7 +1516,7 @@ DROP TABLE IF EXISTS `wf_flow_node_parameter`;
 CREATE TABLE `wf_flow_node_parameter` (
   `NODE_ID` bigint(20) NOT NULL COMMENT '节点ID',
   `SPEC_TYPE` int(11) NOT NULL COMMENT '规格类型，说明参考CF_CMPT_SPEC.SPEC_TYPE\r\n            节点上只设置组件参数和调优执行',
-  `CHAR_ID` bigint(20) NOT NULL COMMENT '组件特征ID',
+  `CHAR_ID` varchar(64) NOT NULL COMMENT '组件特征ID',
   `CHAR_VALUE` varchar(2000) DEFAULT NULL COMMENT '特征值',
   `IS_GLOBAL_PARAMETER` int(11) NOT NULL DEFAULT '0' COMMENT '是否为全局参数\r\n            0：否\r\n            1：是',
   `IS_DUPLICATED` int(11) NOT NULL DEFAULT '0' COMMENT '是否被复制\r\n            0：否\r\n            1：是\r\n            \r\n            创建快照和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型特征值发生更新时，判断是否创建新对象来保存新值',
@@ -1525,8 +1527,8 @@ CREATE TABLE `wf_flow_node_parameter` (
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`NODE_ID`,`SPEC_TYPE`,`CHAR_ID`),
-  KEY `Index_1` (`SPEC_TYPE`,`CHAR_ID`,`STATUS`,`CREATE_TIME`)
+  KEY `Index_1` (`NODE_ID`,`CHAR_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`NODE_ID`,`STATUS`,`CREATE_TIME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点设置特征值表，记录组件参数和调优参数的特征值';
 
 -- ----------------------------
@@ -1539,6 +1541,7 @@ CREATE TABLE `wf_flow_node_parameter` (
 DROP TABLE IF EXISTS `wf_flow_node_port`;
 CREATE TABLE `wf_flow_node_port` (
   `NODE_PORT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '节点端口ID',
+  `NODE_PORT_NAME` varchar(200) NOT NULL COMMENT '节点名称，自动生成，可编辑',
   `OWNER_NODE_ID` bigint(20) NOT NULL COMMENT '所属节点ID',
   `REF_PORT_ID` bigint(20) NOT NULL COMMENT '引用组件端口ID',
   `REF_CHAR_ID` varchar(64) NOT NULL COMMENT '引用计算组件输入输出特征ID',
@@ -1549,8 +1552,9 @@ CREATE TABLE `wf_flow_node_port` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`NODE_PORT_ID`),
-  UNIQUE KEY `Index_1` (`OWNER_NODE_ID`,`REF_PORT_ID`),
-  KEY `Index_2` (`OWNER_NODE_ID`,`REF_CHAR_ID`)
+  UNIQUE KEY `Index_1` (`OWNER_NODE_ID`,`REF_PORT_ID`,`STATUS`,`CREATE_TIME`),
+  UNIQUE KEY `Index_2` (`OWNER_NODE_ID`,`REF_CHAR_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_3` (`OWNER_NODE_ID`,`STATUS`,`CREATE_TIME`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点端口表';
 
 -- ----------------------------
@@ -1608,7 +1612,7 @@ CREATE TABLE `wf_json_object` (
   PRIMARY KEY (`OBJECT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`OBJECT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
 
 -- ----------------------------
 -- Records of wf_json_object
@@ -1800,7 +1804,7 @@ CREATE TABLE `wf_snapshot` (
   PRIMARY KEY (`SNAPSHOT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`OWNER_FLOW_ID`,`SNAPSHOT_SRC`,`SNAPSHOT_VERSION`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流快照表，在实验工作台创建副本和运行实验都会触发快照创建，由此实现类似checkpoint功能\r\n\r\n                                -&';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流快照表，在实验工作台创建副本和运行实验都会触发快照创建，由此实现类似checkpoint功能\r\n\r\n                                -&';
 
 -- ----------------------------
 -- Records of wf_snapshot

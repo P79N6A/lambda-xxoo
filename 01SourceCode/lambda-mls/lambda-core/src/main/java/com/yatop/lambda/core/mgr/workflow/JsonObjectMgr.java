@@ -9,7 +9,6 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,7 +19,7 @@ public class JsonObjectMgr extends BaseMgr {
 
     /*
      *
-     *   插入新Json对象（名称、所属项目ID、所属实验ID、工作流状态）
+     *   插入新Json对象（名称、对象类型、所属项目ID、关联实验ID、关联工作流ID、关联快照版本号、关联运行作业ID、关联节点ID、关联特征ID、存储位置、对象状态 ...）
      *   返回插入记录
      *
      * */
@@ -44,7 +43,7 @@ public class JsonObjectMgr extends BaseMgr {
         WfJsonObject insertJsonObject = new WfJsonObject();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(jsonObject, insertJsonObject);
+            insertJsonObject.copyProperties(jsonObject);
             insertJsonObject.setObjectIdColoured(false);
             insertJsonObject.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertJsonObject.setLastUpdateTime(dtCurrentTime);
@@ -66,7 +65,7 @@ public class JsonObjectMgr extends BaseMgr {
      * */
     public int deleteJsonObject(WfJsonObject jsonObject, String operId) {
         if(DataUtil.isNull(jsonObject) || jsonObject.isObjectIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete json object -- invalid query condition.", "无效删除条件");
+            throw new LambdaException("Delete json object -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -84,7 +83,7 @@ public class JsonObjectMgr extends BaseMgr {
 
     /*
      *
-     *   更新Json对象（名称、对象内容、对象状态、描述）
+     *   更新Json对象（名称、对象数据、对象状态、描述）
      *   返回更新数量
      *
      * */

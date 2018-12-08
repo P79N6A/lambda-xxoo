@@ -9,10 +9,10 @@ import com.yatop.lambda.core.enums.WorkflowLockStateEnum;
 import com.yatop.lambda.core.enums.WorkflowStateEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
+import com.yatop.lambda.core.mgr.experiment.ExperimentMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +25,12 @@ public class WorkflowMgr extends BaseMgr {
     @Autowired
     WorkflowMapper workflowMapper;
 
+    @Autowired
+    ExperimentMgr experimentMgr;
+
     /*
      *
-     *   插入新工作流信息（名称、所属项目ID、所属实验ID、工作流状态）
+     *   插入新工作流信息（名称、所属项目ID、所属实验ID ...）
      *   返回插入记录
      *
      * */
@@ -43,7 +46,7 @@ public class WorkflowMgr extends BaseMgr {
         WfFlow insertWorkflow = new WfFlow();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            BeanUtils.copyProperties(workflow, insertWorkflow);
+            insertWorkflow.copyProperties(workflow);
             insertWorkflow.setFlowIdColoured(false);
             insertWorkflow.setShareLockState(WorkflowLockStateEnum.UNLOCKED.getState());
             insertWorkflow.setShareLockMsgColoured(false);
@@ -74,7 +77,7 @@ public class WorkflowMgr extends BaseMgr {
      * */
     public int deleteWorkflow(WfFlow workflow, String operId) {
         if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete workflow info -- invalid query condition.", "无效删除条件");
+            throw new LambdaException("Delete workflow info -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -119,12 +122,10 @@ public class WorkflowMgr extends BaseMgr {
                     ownerExperiment.setSummary(workflow.getSummary());
                 if(workflow.isDescriptionColoured())
                     ownerExperiment.setDescription(workflow.getDescription());
-                ownerExperiment.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
-                ownerExperiment.setLastUpdateOper((operId));
-                emExperimentMapper.updateByPrimaryKey(ownerExperiment);
+                experimentMgr.updateExperiment(ownerExperiment, operId);
             }
-            catch (Throwable e) {
-                throw new LambdaException("Update workflow info failed -- synchronize experiment failed.", "同步实验失败");
+            catch (LambdaException e) {
+                throw new LambdaException("Update workflow info failed -- synchronize experiment failed.", "同步实验失败", e);
             }
         }
 
@@ -267,22 +268,84 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   增长工作流版本号
-     *   返回记录
+     *   工作流节点增加
+     *   返回更新数量
      *
      * */
-    private WfFlow increWorkflowVersion(WfFlow workflow, String operId) {
+    public int increaseWorkflowNode(WfFlow workflow, String operId) {
         if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Lock workflow -- invalid query condition.", "无效加解锁条件");
+            throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
         }
 
         try {
-            workflowMapper.updateWorkflowVersion(workflow.getFlowId(), SystemTimeUtil.getCurrentTime(), operId);
+            return workflowMapper.increaseWorkflowNode(workflow.getFlowId(), SystemTimeUtil.getCurrentTime(), operId);
         } catch (Throwable e) {
-            throw new LambdaException("Lock workflow with version failed.", "加解锁工作流失败", e);
+            throw new LambdaException("Update workflow info failed.", "更新工作流信息失败", e);
+        }
+    }
+
+    /*
+     *
+     *   工作流节点删除
+     *   返回更新数量
+     *
+     * */
+    public int deleteWorkflowNode(WfFlow workflow, Long deleteCount, String operId) {
+        if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isNull(deleteCount) || DataUtil.isEmpty(operId)){
+            throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
         }
 
-        return queryWorkflow(workflow.getFlowId());
+        try {
+            return workflowMapper.deleteWorkflowNode(workflow.getFlowId(), deleteCount, SystemTimeUtil.getCurrentTime(), operId);
+        } catch (Throwable e) {
+            throw new LambdaException("Update workflow info failed.", "更新工作流信息失败", e);
+        }
+    }
+
+    /*
+     *
+     *   工作流节点删除撤销
+     *   返回更新数量
+     *
+     * */
+    public int undoDeleteWorkflowNode(WfFlow workflow, Long deleteCount, String operId) {
+        if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isNull(deleteCount) || DataUtil.isEmpty(operId)){
+            throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
+        }
+
+        try {
+            return workflowMapper.undoDeleteWorkflowNode(workflow.getFlowId(), deleteCount, SystemTimeUtil.getCurrentTime(), operId);
+        } catch (Throwable e) {
+            throw new LambdaException("Update workflow info failed.", "更新工作流信息失败", e);
+        }
+    }
+
+    /*
+     *
+     *   工作流节点前一删除批次
+     *   返回更新数量
+     *
+     * */
+    public long previousDeleteSequence(long nextDeleteSequence) {
+        return Math.abs( (nextDeleteSequence - 1) % 32 );
+    }
+
+    /*
+     *
+     *   工作流版本号增加
+     *   返回更新数量
+     *
+     * */
+    public int increaseWorkflowVersion(WfFlow workflow, String operId) {
+        if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)){
+            throw new LambdaException("update workflow version failed -- invalid update condition.", "无效更新条件");
+        }
+
+        try {
+            return workflowMapper.increaseWorkflowVersion(workflow.getFlowId(), SystemTimeUtil.getCurrentTime(), operId);
+        } catch (Throwable e) {
+            throw new LambdaException("update workflow version failed.", "更新工作流版本失败", e);
+        }
     }
 
     /*
@@ -337,7 +400,7 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   查询工作流信息
+     *   查询工作流信息（按项目ID）
      *   返回结果集
      *
      * */
