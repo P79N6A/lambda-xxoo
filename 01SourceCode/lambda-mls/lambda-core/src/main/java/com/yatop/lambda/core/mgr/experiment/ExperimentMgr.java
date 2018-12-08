@@ -137,14 +137,14 @@ public class ExperimentMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public EmExperiment queryExperiment(Long experimentId) {
-        if(DataUtil.isNull(experimentId)){
+    public EmExperiment queryExperiment(Long id) {
+        if(DataUtil.isNull(id)){
             throw new LambdaException("Query experiment info failed -- invalid query condition.", "无效查询条件");
         }
 
         EmExperiment experiment;
         try {
-            experiment = emExperimentMapper.selectByPrimaryKey(experimentId);
+            experiment = emExperimentMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query experiment info failed.", "查询实验信息失败", e);
         }

@@ -76,6 +76,30 @@ public class NodeParameterMgr extends BaseMgr {
 
     /*
      *
+     *   恢复节点参数（按节点恢复）
+     *   返回删除数量
+     *
+     * */
+    public int recoverNodeParameter(WfFlowNode node, String operId) {
+        if(DataUtil.isNull(node) || node.isNodeIdColoured() || DataUtil.isEmpty(operId)){
+            throw new LambdaException("Recover node parameter -- invalid recover condition.", "无效恢复条件");
+        }
+
+        try {
+            WfFlowNodeParameter recoverNodeParameter = new WfFlowNodeParameter();
+            recoverNodeParameter.setStatus(DataStatusEnum.NORMAL.getStatus());
+            recoverNodeParameter.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            recoverNodeParameter.setLastUpdateOper(operId);
+            WfFlowNodeParameterExample example = new WfFlowNodeParameterExample();
+            example.createCriteria().andNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.INVALID.getStatus());
+            return wfFlowNodeParameterMapper.updateByExampleSelective(recoverNodeParameter, example);
+        } catch (Throwable e) {
+            throw new LambdaException("Recover node parameter failed.", "恢复节点参数失败", e);
+        }
+    }
+
+    /*
+     *
      *   更新节点参数（特征值、是否为全局参数、是否被复制、警告消息、描述）
      *   返回更新数量
      *
@@ -87,6 +111,7 @@ public class NodeParameterMgr extends BaseMgr {
 
         if(nodeParameter.isCharValueNotColoured() &&
                 nodeParameter.isIsGlobalParameterNotColoured() &&
+                nodeParameter.isLastGlobalParameterIdNotColoured() &&
                 nodeParameter.isIsDuplicatedNotColoured() &&
                 nodeParameter.isWarningMsgNotColoured() &&
                 nodeParameter.isDescriptionNotColoured()) {
@@ -99,6 +124,8 @@ public class NodeParameterMgr extends BaseMgr {
                 updateNodeParameter.setCharValue(nodeParameter.getCharValue());
             if(nodeParameter.isIsGlobalParameterColoured())
                 updateNodeParameter.setIsGlobalParameter(nodeParameter.getIsGlobalParameter());
+            if(nodeParameter.isLastGlobalParameterIdColoured())
+                updateNodeParameter.setLastGlobalParameterId(nodeParameter.getLastGlobalParameterId());
             if(nodeParameter.isIsDuplicatedColoured())
                 updateNodeParameter.setIsDuplicated(nodeParameter.getIsDuplicated());
             if(nodeParameter.isWarningMsgColoured())

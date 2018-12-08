@@ -67,12 +67,11 @@ public class SnapshotMgr extends BaseMgr {
 
         try {
             WfSnapshot deleteSnapshot = new WfSnapshot();
+            deleteSnapshot.setSnapshotId(snapshot.getSnapshotId());
             deleteSnapshot.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteSnapshot.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteSnapshot.setLastUpdateOper(operId);
-            WfSnapshotExample example = new WfSnapshotExample();
-            example.createCriteria().andSnapshotIdEqualTo(snapshot.getSnapshotId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            return wfSnapshotMapper.updateByExampleSelective(deleteSnapshot, example);
+            return wfSnapshotMapper.updateByPrimaryKeySelective(deleteSnapshot);
         } catch (Throwable e) {
             throw new LambdaException("Delete snapshot info failed.", "删除快照信息失败", e);
         }
@@ -151,14 +150,14 @@ public class SnapshotMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public WfSnapshot querySnapshot(Long snapshotId) {
-        if(DataUtil.isNull(snapshotId)){
+    public WfSnapshot querySnapshot(Long id) {
+        if(DataUtil.isNull(id)){
             throw new LambdaException("Query snapshot info failed -- invalid query condition.", "无效查询条件");
         }
 
         WfSnapshot snapshot;
         try {
-            snapshot = wfSnapshotMapper.selectByPrimaryKey(snapshotId);
+            snapshot = wfSnapshotMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query snapshot info failed.", "查询快照信息失败", e);
         }

@@ -70,14 +70,36 @@ public class JsonObjectMgr extends BaseMgr {
 
         try {
             WfJsonObject deleteJsonObject = new WfJsonObject();
+            deleteJsonObject.setObjectId(jsonObject.getObjectId());
             deleteJsonObject.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteJsonObject.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteJsonObject.setLastUpdateOper(operId);
-            WfJsonObjectExample example = new WfJsonObjectExample();
-            example.createCriteria().andObjectIdEqualTo(jsonObject.getObjectId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            return wfJsonObjectMapper.updateByExampleSelective(deleteJsonObject, example);
+            return wfJsonObjectMapper.updateByPrimaryKeySelective(deleteJsonObject);
         } catch (Throwable e) {
             throw new LambdaException("Delete json object failed.", "删除Json对象失败", e);
+        }
+    }
+
+    /*
+     *
+     *   恢复Json对象
+     *   返回恢复数量
+     *
+     * */
+    public int recoverJsonObject4NodeRecover(WfJsonObject jsonObject, String operId) {
+        if(DataUtil.isNull(jsonObject) || jsonObject.isObjectIdNotColoured() || DataUtil.isEmpty(operId)){
+            throw new LambdaException("Recover json object -- invalid recover condition.", "无效恢复条件");
+        }
+
+        try {
+            WfJsonObject recoverJsonObject = new WfJsonObject();
+            recoverJsonObject.setObjectId(jsonObject.getObjectId());
+            recoverJsonObject.setStatus(DataStatusEnum.NORMAL.getStatus());
+            recoverJsonObject.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            recoverJsonObject.setLastUpdateOper(operId);
+            return wfJsonObjectMapper.updateByPrimaryKeySelective(recoverJsonObject);
+        } catch (Throwable e) {
+            throw new LambdaException("Recover json object failed.", "恢复Json对象失败", e);
         }
     }
 
@@ -125,14 +147,14 @@ public class JsonObjectMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public WfJsonObject queryJsonObject(Long jsonObjectId) {
-        if(DataUtil.isNull(jsonObjectId)){
+    public WfJsonObject queryJsonObject(Long id) {
+        if(DataUtil.isNull(id)){
             throw new LambdaException("Query json object failed -- invalid query condition.", "无效查询条件");
         }
 
         WfJsonObject jsonObject;
         try {
-            jsonObject = wfJsonObjectMapper.selectByPrimaryKey(jsonObjectId);
+            jsonObject = wfJsonObjectMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query json object failed.", "查询Json对象失败", e);
         }

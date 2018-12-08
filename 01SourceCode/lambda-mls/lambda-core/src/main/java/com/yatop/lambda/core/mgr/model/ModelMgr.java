@@ -158,14 +158,14 @@ public class ModelMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public MwModel queryModel(Long modelId) {
-        if(DataUtil.isNull(modelId)){
+    public MwModel queryModel(Long id) {
+        if(DataUtil.isNull(id)){
             throw new LambdaException("Query model info failed -- invalid query condition.", "无效查询条件");
         }
 
         MwModel model;
         try {
-            model = mwModelMapper.selectByPrimaryKey(modelId);
+            model = mwModelMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query model info failed.", "查询模型信息失败", e);
         }

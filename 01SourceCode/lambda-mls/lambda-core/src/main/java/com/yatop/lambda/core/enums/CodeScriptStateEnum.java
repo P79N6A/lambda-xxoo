@@ -10,7 +10,7 @@ public enum CodeScriptStateEnum {
     /**
      * 空脚本
      */
-    Empty(1, "Empty");
+    EMPTY(1, "Empty");
 
     private int state;
     private String name;

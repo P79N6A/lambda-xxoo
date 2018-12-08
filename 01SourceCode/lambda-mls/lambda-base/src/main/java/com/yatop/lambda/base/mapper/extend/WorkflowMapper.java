@@ -28,7 +28,7 @@ public interface WorkflowMapper {
             "       LAST_UPDAT_TIME = #{time},          " +
             "       LAST_UPDATE_OPER = #{oper}          " +
             "       WHERE FLOW_ID = #{id}")
-    int deleteWorkflowNode(@Param("id") Long id, @Param("count") Long count, @Param("time") Date time, @Param("oper") String oper);
+    int updateWorkflowNodeCount4Delete(@Param("id") Long id, @Param("count") Long count, @Param("time") Date time, @Param("oper") String oper);
 
     @Update(  "     UPDATE WF_FLOW                      " +
             "       SET NODE_COUNT = NODE_COUNT - #{count},    " +
@@ -36,7 +36,7 @@ public interface WorkflowMapper {
             "       LAST_UPDAT_TIME = #{time},          " +
             "       LAST_UPDATE_OPER = #{oper}          " +
             "       WHERE FLOW_ID = #{id}")
-    int undoDeleteWorkflowNode(@Param("id") Long id, @Param("count") Long count, @Param("time") Date time, @Param("oper") String oper);
+    int updateWorkflowNodeCount4Recover(@Param("id") Long id, @Param("count") Long count, @Param("time") Date time, @Param("oper") String oper);
 
     @Update(  "     UPDATE WF_FLOW                      " +
             "       SET VERSION = VERSION + 1,          " +

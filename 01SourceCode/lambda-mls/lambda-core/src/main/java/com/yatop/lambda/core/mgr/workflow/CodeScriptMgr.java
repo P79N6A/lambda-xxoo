@@ -70,14 +70,36 @@ public class CodeScriptMgr extends BaseMgr {
 
         try {
             WfCodeScript deleteCodeScript = new WfCodeScript();
+            deleteCodeScript.setScriptId(codeScript.getScriptId());
             deleteCodeScript.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteCodeScript.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteCodeScript.setLastUpdateOper(operId);
-            WfCodeScriptExample example = new WfCodeScriptExample();
-            example.createCriteria().andScriptIdEqualTo(codeScript.getScriptId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            return wfCodeScriptMapper.updateByExampleSelective(deleteCodeScript, example);
+            return wfCodeScriptMapper.updateByPrimaryKeySelective(deleteCodeScript);
         } catch (Throwable e) {
             throw new LambdaException("Delete code script failed.", "删除代码脚本失败", e);
+        }
+    }
+
+    /*
+     *
+     *   恢复代码脚本
+     *   返回恢复数量
+     *
+     * */
+    public int recoverCodeScript(WfCodeScript codeScript, String operId) {
+        if(DataUtil.isNull(codeScript) || codeScript.isScriptIdNotColoured() || DataUtil.isEmpty(operId)){
+            throw new LambdaException("Recover code script -- invalid recover condition.", "无效恢复条件");
+        }
+
+        try {
+            WfCodeScript recoverCodeScript = new WfCodeScript();
+            recoverCodeScript.setScriptId(codeScript.getScriptId());
+            recoverCodeScript.setStatus(DataStatusEnum.NORMAL.getStatus());
+            recoverCodeScript.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            recoverCodeScript.setLastUpdateOper(operId);
+            return wfCodeScriptMapper.updateByPrimaryKeySelective(recoverCodeScript);
+        } catch (Throwable e) {
+            throw new LambdaException("Recover code script failed.", "恢复代码脚本失败", e);
         }
     }
 
@@ -125,14 +147,14 @@ public class CodeScriptMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public WfCodeScript queryCodeScript(Long codeScriptId) {
-        if(DataUtil.isNull(codeScriptId)){
+    public WfCodeScript queryCodeScript(Long id) {
+        if(DataUtil.isNull(id)){
             throw new LambdaException("Query code script failed -- invalid query condition.", "无效查询条件");
         }
 
         WfCodeScript codeScript;
         try {
-            codeScript = wfCodeScriptMapper.selectByPrimaryKey(codeScriptId);
+            codeScript = wfCodeScriptMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query code script failed.", "查询代码脚本失败", e);
         }

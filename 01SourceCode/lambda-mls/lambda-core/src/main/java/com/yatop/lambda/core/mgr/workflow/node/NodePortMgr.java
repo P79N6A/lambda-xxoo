@@ -51,7 +51,7 @@ public class NodePortMgr extends BaseMgr {
 
     /*
      *
-     *   逻辑删除节点端口
+     *   逻辑删除节点端口（按节点）
      *   返回删除数量
      *
      * */
@@ -75,18 +75,42 @@ public class NodePortMgr extends BaseMgr {
 
     /*
      *
+     *   恢复节点端口（按节点）
+     *   返回恢复数量
+     *
+     * */
+    public int recoverNodePort(WfFlowNode node, String operId) {
+        if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
+            throw new LambdaException("Recover node port -- invalid recover condition.", "无效恢复条件");
+        }
+
+        try {
+            WfFlowNodePort recoverNodePort = new WfFlowNodePort();
+            recoverNodePort.setStatus(DataStatusEnum.NORMAL.getStatus());
+            recoverNodePort.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            recoverNodePort.setLastUpdateOper(operId);
+            WfFlowNodePortExample example = new WfFlowNodePortExample();
+            example.createCriteria().andOwnerNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.INVALID.getStatus());
+            return wfFlowNodePortMapper.updateByExampleSelective(recoverNodePort, example);
+        } catch (Throwable e) {
+            throw new LambdaException("Recover node port failed.", "恢复节点端口失败", e);
+        }
+    }
+
+    /*
+     *
      *   查询节点端口（按ID）
      *   返回结果
      *
      * */
-    public WfFlowNodePort queryNodePort(Long nodePortId) {
-        if(DataUtil.isNull(nodePortId)){
+    public WfFlowNodePort queryNodePort(Long id) {
+        if(DataUtil.isNull(id)){
             throw new LambdaException("Query node port failed -- invalid query condition.", "无效查询条件");
         }
 
         WfFlowNodePort nodePort;
         try {
-            nodePort = wfFlowNodePortMapper.selectByPrimaryKey(nodePortId);
+            nodePort = wfFlowNodePortMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query node port failed.", "查询节点端口失败", e);
         }

@@ -83,27 +83,52 @@ public class GlobalParameterMgr extends BaseMgr {
             throw new LambdaException("Delete global parameter -- invalid delete condition.", "无效删除条件");
         }
 
-        try {
-            WfFlowGlobalParameter thisGlobalParameter = queryGlobalParameter(globalParameter.getGlobalParamId());
-            WfFlowNodeParameter refNodeParameter = new WfFlowNodeParameter();
-            refNodeParameter.setNodeId(thisGlobalParameter.getRelNodeId());
-            refNodeParameter.setCharId(thisGlobalParameter.getRelCharId());
-            refNodeParameter.setIsGlobalParameter(IsGlobalParameterEnum.NO.getMark());
-            nodeParameterMgr.updateNodeParameter(refNodeParameter, operId);
-        } catch (LambdaException e) {
-            throw new LambdaException("Insert global parameter failed -- synchronize node parameter failed.", "同步节点参数失败", e);
-        }
+        /*
+        if(!isNodeDelete) {
+            try {
+                WfFlowGlobalParameter thisGlobalParameter = queryGlobalParameter(globalParameter.getGlobalParamId());
+                WfFlowNodeParameter refNodeParameter = new WfFlowNodeParameter();
+                refNodeParameter.setNodeId(thisGlobalParameter.getRelNodeId());
+                refNodeParameter.setCharId(thisGlobalParameter.getRelCharId());
+                refNodeParameter.setIsGlobalParameter(IsGlobalParameterEnum.NO.getMark());
+                nodeParameterMgr.updateNodeParameter(refNodeParameter, operId);
+            } catch (LambdaException e) {
+                throw new LambdaException("Insert global parameter failed -- synchronize node parameter failed.", "同步节点参数失败", e);
+            }
+        }*/
 
         try {
             WfFlowGlobalParameter deleteGlobalParameter = new WfFlowGlobalParameter();
+            deleteGlobalParameter.setGlobalParamId(globalParameter.getGlobalParamId());
             deleteGlobalParameter.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteGlobalParameter.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteGlobalParameter.setLastUpdateOper(operId);
-            WfFlowGlobalParameterExample example = new WfFlowGlobalParameterExample();
-            example.createCriteria().andGlobalParamIdEqualTo(globalParameter.getGlobalParamId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            return wfFlowGlobalParameterMapper.updateByExampleSelective(deleteGlobalParameter, example);
+            return wfFlowGlobalParameterMapper.updateByPrimaryKeySelective(deleteGlobalParameter);
         } catch (Throwable e) {
             throw new LambdaException("Delete global parameter failed.", "删除全局参数失败", e);
+        }
+    }
+
+    /*
+     *
+     *   恢复全局参数
+     *   返回恢复数量
+     *
+     * */
+    public int recoverGlobalParameter4RecoverNode(WfFlowGlobalParameter globalParameter, String operId) {
+        if(DataUtil.isNull(globalParameter) || globalParameter.isGlobalParamIdNotColoured() || DataUtil.isEmpty(operId)){
+            throw new LambdaException("Recover global parameter -- invalid recover condition.", "无效恢复条件");
+        }
+
+        try {
+            WfFlowGlobalParameter recoverGlobalParameter = new WfFlowGlobalParameter();
+            recoverGlobalParameter.setGlobalParamId(globalParameter.getGlobalParamId());
+            recoverGlobalParameter.setStatus(DataStatusEnum.NORMAL.getStatus());
+            recoverGlobalParameter.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            recoverGlobalParameter.setLastUpdateOper(operId);
+            return wfFlowGlobalParameterMapper.updateByPrimaryKeySelective(recoverGlobalParameter);
+        } catch (Throwable e) {
+            throw new LambdaException("Recover global parameter failed.", "恢复全局参数失败", e);
         }
     }
 
@@ -151,14 +176,14 @@ public class GlobalParameterMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public WfFlowGlobalParameter queryGlobalParameter(Long globalParameterId) {
-        if(DataUtil.isNull(globalParameterId)){
+    public WfFlowGlobalParameter queryGlobalParameter(Long id) {
+        if(DataUtil.isNull(id)){
             throw new LambdaException("Query global parameter failed -- invalid query condition.", "无效查询条件");
         }
 
         WfFlowGlobalParameter globalParameter;
         try {
-            globalParameter = wfFlowGlobalParameterMapper.selectByPrimaryKey(globalParameterId);
+            globalParameter = wfFlowGlobalParameterMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query global parameter failed.", "查询全局参数失败", e);
         }
@@ -175,7 +200,7 @@ public class GlobalParameterMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public List<WfFlowGlobalParameter> queryGlobalParameter(Long flowId, PagerUtil pager) {
+    public List<WfFlowGlobalParameter> queryGlobalParameterByFlowId(Long flowId, PagerUtil pager) {
         if(DataUtil.isNull(flowId)){
             throw new LambdaException("Query global parameter failed -- invalid query condition.", "无效查询条件");
         }

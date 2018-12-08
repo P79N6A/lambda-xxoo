@@ -82,12 +82,12 @@ public class WorkflowMgr extends BaseMgr {
 
         try {
             WfFlow deleteWorkflow = new WfFlow();
+            deleteWorkflow.setFlowId(workflow.getFlowId());
             deleteWorkflow.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteWorkflow.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteWorkflow.setLastUpdateOper(operId);
             WfFlowExample example = new WfFlowExample();
-            example.createCriteria().andFlowIdEqualTo(workflow.getFlowId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            return wfFlowMapper.updateByExampleSelective(deleteWorkflow, example);
+            return wfFlowMapper.updateByPrimaryKeySelective(deleteWorkflow);
         } catch (Throwable e) {
             throw new LambdaException("Delete workflow info failed.", "删除工作流信息失败", e);
         }
@@ -286,17 +286,17 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   工作流节点删除
+     *   更新工作流节点数量（删除）
      *   返回更新数量
      *
      * */
-    public int deleteWorkflowNode(WfFlow workflow, Long deleteCount, String operId) {
+    public int updateWorkflowNodeCount4Delete(WfFlow workflow, Long deleteCount, String operId) {
         if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isNull(deleteCount) || DataUtil.isEmpty(operId)){
             throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
         }
 
         try {
-            return workflowMapper.deleteWorkflowNode(workflow.getFlowId(), deleteCount, SystemTimeUtil.getCurrentTime(), operId);
+            return workflowMapper.updateWorkflowNodeCount4Delete(workflow.getFlowId(), deleteCount, SystemTimeUtil.getCurrentTime(), operId);
         } catch (Throwable e) {
             throw new LambdaException("Update workflow info failed.", "更新工作流信息失败", e);
         }
@@ -304,17 +304,17 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   工作流节点删除撤销
+     *   更新工作流节点数量（恢复）
      *   返回更新数量
      *
      * */
-    public int undoDeleteWorkflowNode(WfFlow workflow, Long deleteCount, String operId) {
+    public int updateWorkflowNodeCount4Recover(WfFlow workflow, Long deleteCount, String operId) {
         if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isNull(deleteCount) || DataUtil.isEmpty(operId)){
             throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
         }
 
         try {
-            return workflowMapper.undoDeleteWorkflowNode(workflow.getFlowId(), deleteCount, SystemTimeUtil.getCurrentTime(), operId);
+            return workflowMapper.updateWorkflowNodeCount4Recover(workflow.getFlowId(), deleteCount, SystemTimeUtil.getCurrentTime(), operId);
         } catch (Throwable e) {
             throw new LambdaException("Update workflow info failed.", "更新工作流信息失败", e);
         }
@@ -380,14 +380,14 @@ public class WorkflowMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public WfFlow queryWorkflow(Long workflowId) {
-        if(DataUtil.isNull(workflowId)){
+    public WfFlow queryWorkflow(Long id) {
+        if(DataUtil.isNull(id)){
             throw new LambdaException("Query workflow info failed -- invalid query condition.", "无效查询条件");
         }
 
         WfFlow workflow;
         try {
-            workflow = wfFlowMapper.selectByPrimaryKey(workflowId);
+            workflow = wfFlowMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query workflow info failed.", "查询工作流信息失败", e);
         }

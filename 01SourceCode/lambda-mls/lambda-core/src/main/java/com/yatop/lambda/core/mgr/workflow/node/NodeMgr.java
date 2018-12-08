@@ -65,14 +65,36 @@ public class NodeMgr extends BaseMgr {
 
         try {
             WfFlowNode deleteNode = new WfFlowNode();
+            deleteNode.setNodeId(node.getNodeId());
             deleteNode.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteNode.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteNode.setLastUpdateOper(operId);
-            WfFlowNodeExample example = new WfFlowNodeExample();
-            example.createCriteria().andNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            return wfFlowNodeMapper.updateByExampleSelective(deleteNode, example);
+            return wfFlowNodeMapper.updateByPrimaryKeySelective(deleteNode);
         } catch (Throwable e) {
             throw new LambdaException("Delete node info failed.", "删除节点信息失败", e);
+        }
+    }
+
+    /*
+     *
+     *   恢复节点信息
+     *   返回删除数量
+     *
+     * */
+    public int recoverNode(WfFlowNode node, String operId) {
+        if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
+            throw new LambdaException("Recover node info -- invalid recover condition.", "无效恢复条件");
+        }
+
+        try {
+            WfFlowNode recoverNode = new WfFlowNode();
+            recoverNode.setNodeId(node.getNodeId());
+            recoverNode.setStatus(DataStatusEnum.NORMAL.getStatus());
+            recoverNode.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            recoverNode.setLastUpdateOper(operId);
+            return wfFlowNodeMapper.updateByPrimaryKeySelective(recoverNode);
+        } catch (Throwable e) {
+            throw new LambdaException("Recover node info failed.", "恢复节点信息失败", e);
         }
     }
 
@@ -130,14 +152,14 @@ public class NodeMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public WfFlowNode queryNode(Long nodeId) {
-        if(DataUtil.isNull(nodeId)){
+    public WfFlowNode queryNode(Long id) {
+        if(DataUtil.isNull(id)){
             throw new LambdaException("Query node info failed -- invalid query condition.", "无效查询条件");
         }
 
         WfFlowNode node;
         try {
-            node = wfFlowNodeMapper.selectByPrimaryKey(nodeId);
+            node = wfFlowNodeMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query node info failed.", "查询节点信息失败", e);
         }

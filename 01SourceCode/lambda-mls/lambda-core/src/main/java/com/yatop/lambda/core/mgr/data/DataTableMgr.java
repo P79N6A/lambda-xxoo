@@ -173,14 +173,14 @@ public class DataTableMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public DwDataTable queryDataTable(Long tableId) {
-        if(DataUtil.isNull(tableId)){
+    public DwDataTable queryDataTable(Long id) {
+        if(DataUtil.isNull(id)){
             throw new LambdaException("Query data table info failed -- invalid query condition.", "无效查询条件");
         }
 
         DwDataTable table;
         try {
-            table = dwDataTableMapper.selectByPrimaryKey(tableId);
+            table = dwDataTableMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query data table info failed.", "查询数据表信息失败", e);
         }

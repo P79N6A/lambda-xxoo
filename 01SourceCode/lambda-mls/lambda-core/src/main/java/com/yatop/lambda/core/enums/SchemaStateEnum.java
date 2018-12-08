@@ -1,21 +1,31 @@
 package com.yatop.lambda.core.enums;
 
-public enum JsonObjectStateEnum {
+public enum SchemaStateEnum {
+
+    /**
+     * 空schema
+     */
+    EMPTY(0, "Empty"),
 
     /**
      * 正常
      */
-    NORMAL(0, "Normal"),
+    NORMAL(1, "Normal"),
 
     /**
-     * 空对象
+     * 不支持
      */
-    EMPTY(1, "Empty");
+    NOT_SUPPORT(2, "Not Support"),
+
+    /**
+     * 超限中断
+     */
+    OVERLOAD_INTERRUPT(3, "Overload Interrupt");
 
     private int state;
     private String name;
 
-    JsonObjectStateEnum(int state, String name) {
+    SchemaStateEnum(int state, String name) {
         this.state = state;
         this.name = name;
     }

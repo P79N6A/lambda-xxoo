@@ -126,14 +126,14 @@ public class ExperimentTemplateMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public EmExperimentTemplate queryDataTemplate(Long templateId) {
-        if(DataUtil.isNull(templateId)){
+    public EmExperimentTemplate queryDataTemplate(Long id) {
+        if(DataUtil.isNull(id)){
             throw new LambdaException("Query experiment template info failed -- invalid query condition.", "无效查询条件");
         }
 
         EmExperimentTemplate template;
         try {
-            template = emExperimentTemplateMapper.selectByPrimaryKey(templateId);
+            template = emExperimentTemplateMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
             throw new LambdaException("Query experiment template info failed.", "查询实验模版信息失败", e);
         }
