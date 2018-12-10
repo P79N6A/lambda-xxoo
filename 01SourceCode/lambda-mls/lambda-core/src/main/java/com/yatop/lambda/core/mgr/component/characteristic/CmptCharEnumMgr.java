@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CmptCharTypeEnumMgr extends BaseMgr {
+public class CmptCharEnumMgr extends BaseMgr {
 
     /*
      *

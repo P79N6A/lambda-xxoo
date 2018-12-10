@@ -1,7 +1,7 @@
 package com.yatop.lambda.core.concurrent;
 
 import com.yatop.lambda.FramewrokApplication;
-import com.yatop.lambda.core.concurrent.lock.WorkflowNamedLockServiceService;
+import com.yatop.lambda.core.concurrent.workflow.WorkflowNamedLockServiceService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

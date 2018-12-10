@@ -1,8 +1,10 @@
-package com.yatop.lambda.workflow.core.model;
+package com.yatop.lambda.workflow.core.config;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yatop.lambda.workflow.core.model.IRichModel;
 
-public class TaskExecutionContext implements IRichModel {
+public class ComponentConfigContext implements IRichModel {
+
 
     @Override
     public JSONObject toJson() {
