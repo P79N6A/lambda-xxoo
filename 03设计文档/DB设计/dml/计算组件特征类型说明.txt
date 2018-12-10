@@ -1,17 +1,6 @@
 
 
 
-特征类型基类
-
-public class CharTypeBoard {
-	//在所有CharType类init里注册singleton bean object
-	
-	//ModuleMapper<module-class-path, module-bean-object>
-	static final HashMap<String, ICharType> mapper = new HashMap<String, ICharType>();
-	
-	//获取组件class-path to object映射器 
-	static Mapper getMapper();
-}
 
 public class CharValue implements IRichModel {
 	String cmptChar;

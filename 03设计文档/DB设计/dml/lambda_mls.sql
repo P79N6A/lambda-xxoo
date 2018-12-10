@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-09 01:24:35
+Date: 2018-12-10 18:08:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -328,9 +328,9 @@ INSERT INTO `cf_cmpt_char_type` VALUES ('9', 'Datetime', '日期时间', '0', '2
 INSERT INTO `cf_cmpt_char_type` VALUES ('103', 'Tuning-Parameter<Integer>', '32位整数调参类型', '0', '16', 'unkown', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"100\",\r\n  \"tune_range\": {\r\n    \"start\": \"20\",\r\n    \"end\": \"1000\"\r\n  },\r\n  \"tune_udps\": [10, 80, 200, 600, 1000]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
 INSERT INTO `cf_cmpt_char_type` VALUES ('104', 'Tuning-Parameter<Long>', '64位整数调参类型', '0', '16', 'unkown', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"100\",\r\n  \"tune_range\": {\r\n    \"start\": \"20\",\r\n    \"end\": \"1000\"\r\n  },\r\n  \"tune_udps\": [10, 80, 200, 600, 1000]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
 INSERT INTO `cf_cmpt_char_type` VALUES ('105', 'Tuning-Parameter<Float>', '单精度浮点数调参类型', '0', '16', 'unkown', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"0.01\",\r\n  \"tune_range\": {\r\n    \"start\": \"0.00001\",\r\n    \"end\": \"0.1\"\r\n  },\r\n  \"tune_udps\": [0.00001, 0.001, 0.01, 0.1]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('106', 'Tuning-Parameter<Double>', '双精度浮点数调参类型', '0', '16', 'unkown', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"0.01\",\r\n  \"tune_range\": {\r\n    \"start\": \"0.00001\",\r\n    \"end\": \"0.1\"\r\n  },\r\n  \"tune_udps\": [0.00001, 0.001, 0.01, 0.1]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
 INSERT INTO `cf_cmpt_char_type` VALUES ('1000', 'Data Table<?>', '通配泛型数据表', '0', '3', 'unkown', '特征值为数据表ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_cmpt_char_type` VALUES ('1001', 'Data Table<Parquet>', 'Parquet数据表（预留）', '0', '3', 'unkown', '特征值为数据表ID字符串，暂时不使用', '-1', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('1056', 'Tuning-Parameter<Double>', '双精度浮点数调参类型', '0', '16', 'unkown', '特征值格式示例（用户自定义参数不超过10个）：\r\n{\r\n  \"value\": \"0.01\",\r\n  \"tune_range\": {\r\n    \"start\": \"0.00001\",\r\n    \"end\": \"0.1\"\r\n  },\r\n  \"tune_udps\": [0.00001, 0.001, 0.01, 0.1]\r\n}', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
 INSERT INTO `cf_cmpt_char_type` VALUES ('2000', 'Trained Model<?>', '通配泛型模型', '1', '3', 'unkown', '特征值为模型ID字符串，用于模型写入、模型文件输出', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_cmpt_char_type` VALUES ('2001', 'Trained Model<OneClass-Classification>', '单分类模型', '0', '3', 'unkown', '特征值为模型ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_cmpt_char_type` VALUES ('2002', 'Trained Model<TwoClass-Classification>', '二分类模型', '0', '3', 'unkown', '特征值为模型ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
@@ -1181,7 +1181,7 @@ CREATE TABLE `sys_parameter` (
   `PARAM_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '参数ID',
   `PARAM_CODE` varchar(200) NOT NULL COMMENT '参数代码',
   `PARAM_NAME` varchar(200) NOT NULL COMMENT '参数名称',
-  `PARAM_CLASS` int(11) NOT NULL COMMENT '参数类别，按系统模块划分\r\n            \r\n            1：系统管理\r\n            2：项目管理\r\n            3：实验管理\r\n            4：数据管理\r\n            5：模型管理\r\n            6：工作流引擎\r\n            7：计算集群\r\n            8：开放服务\r\n            9：预测服务',
+  `PARAM_CLASS` int(11) NOT NULL COMMENT '参数类别，按系统模块划分\r\n            \r\n            1：系统管理\r\n            2：项目管理\r\n            3：实验管理\r\n            4：数据管理\r\n            5：模型管理\r\n            6：工作流管理\r\n            7：工作流引擎\r\n            8：计算框架\r\n            9：开放服务\r\n            10：预测服务\r\n            6：工作流引擎\r\n            7：计算集群\r\n            8：开放服务\r\n            9：预测服务',
   `PARAM_SUB_CLASS` int(11) NOT NULL COMMENT '参数子类别（预留），按系统模块下的功能模块划分',
   `PARAM_VALUE` varchar(2000) DEFAULT NULL COMMENT '参数值',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
@@ -1570,6 +1570,7 @@ DROP TABLE IF EXISTS `wf_flow_node_schema`;
 CREATE TABLE `wf_flow_node_schema` (
   `NODE_PORT_ID` bigint(20) NOT NULL COMMENT '节点输出端口ID',
   `SCHEMA_NAME` varchar(200) NOT NULL COMMENT 'Schema名称，自动生成',
+  `OWNER_NODE_ID` bigint(20) NOT NULL COMMENT '所属节点ID',
   `OBJECT_ID` bigint(20) DEFAULT NULL COMMENT 'json对象ID',
   `SCHEMA_STATE` int(11) NOT NULL DEFAULT '0' COMMENT 'schema状态\r\n            0：空schema\r\n            1：正常\r\n            2：不支持\r\n            3：超限中断',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
@@ -1579,7 +1580,7 @@ CREATE TABLE `wf_flow_node_schema` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`NODE_PORT_ID`),
-  KEY `Index_1` (`STATUS`,`CREATE_TIME`)
+  KEY `Index_1` (`OWNER_NODE_ID`,`STATUS`,`CREATE_TIME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点schema表，缓存节点输出端口内容为数据表的字段结构';
 
 -- ----------------------------

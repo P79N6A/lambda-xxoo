@@ -1,13 +1,4 @@
 
-1：系统管理
-2：项目管理
-3：实验管理
-4：数据管理
-5：模型管理
-6：工作流引擎
-7：计算框架
-8：开放服务
-9：预测服务
 
 系统管控
 （1）临时数据缓存清理，每个项目可以配置过期天数自动清理，以及提供主动清理接口，实验工作台运行、实验离线调度运行、实验在线调度运行，仅缓存最后一次运行的数据输出
@@ -66,8 +57,9 @@ Support Canvas Node & Snapshot Node
 	 ${Engine Loop(Cur & Downstream Node Schema Analyze)} --> Update Script End
 
 Support Canvas Node & Snapshot Node
-（8）Execute Task Begin --> ${Engine Fetch Task Context} --> ${Engine Query Node} --> CharType.onQueryValue<Execution, Optimzation Execution, Input> --> CharType.onCreateValue<Output> -->
-	 ${Engine Complete Task Context(Output)} --> Module.onTaskExecution --> ${Engine Submit Task} --> ${Engine Monitor Task Return} --> CharType.onUpdateValue<Output> --> ${Engine Accept Return(Task|Node)} -->
+（8）Execute Task Begin --> ${Engine Fetch Task Context} --> ${Engine Query Node} --> CharType.onQueryValue<Execution, Optimzation Execution, Input> --> ${Engine Complete Task Context(Output)} -->
+	 Module.onTaskExecution --> CharType.onCreateValue<Output> -->
+	 ${Engine Complete Task Context(Output)} --> ${Engine Submit Task} --> ${Engine Monitor Task Return} --> CharType.onUpdateValue<Output> --> ${Engine Accept Return(Task|Node)} -->
 	 Execute Task End
 
 Support Canvas Node & Snapshot Node
@@ -86,15 +78,7 @@ Support Canvas Node & Snapshot Node
 
 组件基类（在组件参数特征类型捕获事件通过基础上，对组件的特定业务逻辑做进一步校验判断，Module类不捕获执行调优参数事件，仅CharType类捕获执行调优参数事件）
 
-public class ModuleBoard {
-	//在所有Module类init里注册singleton bean object
-	
-	//ModuleMapper<module-class-path, module-bean-object>
-	static final HashMap<String, IModule> mapper = new HashMap<String, IModule>();
-	
-	//获取组件class-path to object映射器 
-	static Mapper getMapper();
-}
+
 
 public IRichModel {
 	JsonObject toJson4Engine();
@@ -102,7 +86,7 @@ public IRichModel {
 //NodeContentDto = WfNodeDto implements IRichModel extends WfNode
 
 @service
-public interface IModule {
+public interface IModule extends InitializingBean {
 	//出现严重错误会导致逻辑崩溃抛出moduleException，组件类实现该接口，适当封装一些中间abstract组件类以便复用
 	
 	

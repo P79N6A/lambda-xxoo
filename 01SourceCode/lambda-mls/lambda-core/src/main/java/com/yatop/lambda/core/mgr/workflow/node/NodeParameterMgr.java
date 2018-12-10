@@ -145,6 +145,16 @@ public class NodeParameterMgr extends BaseMgr {
 
     /*
      *
+     *   查询节点参数（按节点ID）
+     *   返回结果
+     *
+     * */
+    public List<WfFlowNodeParameter> queryNodeParameter(Long nodeId) {
+        return queryNodeParameter(nodeId, null);
+    }
+
+    /*
+     *
      *   查询节点参数（按节点ID + [特征ID]）
      *   返回结果
      *
