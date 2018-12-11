@@ -8,12 +8,12 @@ public class CmptCharType implements IRichModel {
     CfCmptCharType type;
 
     @Override
-    public JSONObject toJson() {
+    public JSONObject toJSON() {
         return null;
     }
 
     @Override
-    public void parseJson(String jsonStr) {
+    public void clear() {
 
     }
 }

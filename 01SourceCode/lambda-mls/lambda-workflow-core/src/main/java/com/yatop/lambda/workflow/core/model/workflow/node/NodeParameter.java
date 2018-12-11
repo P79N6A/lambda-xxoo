@@ -8,12 +8,12 @@ public class NodeParameter implements IRichModel {
     WfFlowNodeParameter parameter;
 
     @Override
-    public JSONObject toJson() {
+    public JSONObject toJSON() {
         return null;
     }
 
     @Override
-    public void parseJson(String jsonStr) {
+    public void clear() {
 
     }
 }

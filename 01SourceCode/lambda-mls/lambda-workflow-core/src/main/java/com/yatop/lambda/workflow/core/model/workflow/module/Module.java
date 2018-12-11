@@ -8,12 +8,12 @@ public class Module implements IRichModel {
     WfModule module;
 
     @Override
-    public JSONObject toJson() {
+    public JSONObject toJSON() {
         return null;
     }
 
     @Override
-    public void parseJson(String jsonStr) {
+    public void clear() {
 
     }
 }

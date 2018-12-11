@@ -8,12 +8,12 @@ public class ExecutionTask implements IRichModel {
     WfExecutionTask task;
 
     @Override
-    public JSONObject toJson() {
+    public JSONObject toJSON() {
         return null;
     }
 
     @Override
-    public void parseJson(String jsonStr) {
+    public void clear() {
 
     }
 }

@@ -6,12 +6,12 @@ import com.yatop.lambda.workflow.core.model.IRichModel;
 public class JobExecutionContext implements IRichModel {
 
     @Override
-    public JSONObject toJson() {
+    public JSONObject toJSON() {
         return null;
     }
 
     @Override
-    public void parseJson(String jsonStr) {
+    public void clear() {
 
     }
 }

@@ -8,12 +8,12 @@ public class CmptSpecCharRel implements IRichModel {
     CfCmptSpecCharRel relation;
 
     @Override
-    public JSONObject toJson() {
+    public JSONObject toJSON() {
         return null;
     }
 
     @Override
-    public void parseJson(String jsonStr) {
+    public void clear() {
 
     }
 }

@@ -8,12 +8,12 @@ public class NodePort implements IRichModel {
     WfFlowNodePort port;
 
     @Override
-    public JSONObject toJson() {
+    public JSONObject toJSON() {
         return null;
     }
 
     @Override
-    public void parseJson(String jsonStr) {
+    public void clear() {
 
     }
 }

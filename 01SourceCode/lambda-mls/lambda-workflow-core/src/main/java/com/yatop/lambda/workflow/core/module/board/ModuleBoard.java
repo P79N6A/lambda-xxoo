@@ -11,7 +11,7 @@ public class ModuleBoard {
     //<class-path, bean-object>
     public static final HashMap<String, IModule> MODULE_MAPPER = new HashMap<String, IModule>();
 
-    public IModule getModule(String classpath) {
+    public IModule searchModule(String classpath) {
         return ModuleBoard.MODULE_MAPPER.get(classpath);
     }
 }

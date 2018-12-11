@@ -11,7 +11,7 @@ public class CharTyeBoard {
     //<class-path, bean-object>
     public static final HashMap<String, ICharType> CHAR_TYPE_MAPPER = new HashMap<String, ICharType>();
 
-    public ICharType getCharType(String classpath) {
+    public ICharType searchCharType(String classpath) {
         return CharTyeBoard.CHAR_TYPE_MAPPER.get(classpath);
     }
 }

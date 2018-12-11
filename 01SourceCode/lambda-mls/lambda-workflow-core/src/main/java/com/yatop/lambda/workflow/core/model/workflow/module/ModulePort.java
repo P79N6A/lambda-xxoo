@@ -8,12 +8,12 @@ public class ModulePort implements IRichModel {
     WfModulePort port;
 
     @Override
-    public JSONObject toJson() {
+    public JSONObject toJSON() {
         return null;
     }
 
     @Override
-    public void parseJson(String jsonStr) {
+    public void clear() {
 
     }
 }

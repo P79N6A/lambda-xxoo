@@ -8,12 +8,12 @@ public class CmptCharValue implements IRichModel {
     CfCmptCharValue value;
 
     @Override
-    public JSONObject toJson() {
+    public JSONObject toJSON() {
         return null;
     }
 
     @Override
-    public void parseJson(String jsonStr) {
+    public void clear() {
 
     }
 }

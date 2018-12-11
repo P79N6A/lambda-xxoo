@@ -8,12 +8,12 @@ public class GlobalParameter implements IRichModel {
     WfFlowGlobalParameter parameter;
 
     @Override
-    public JSONObject toJson() {
+    public JSONObject toJSON() {
         return null;
     }
 
     @Override
-    public void parseJson(String jsonStr) {
+    public void clear() {
 
     }
 }
