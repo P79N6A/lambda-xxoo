@@ -7,17 +7,17 @@ import com.yatop.lambda.core.mgr.system.SystemParameterMgr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class SystemParameterUtil {
 
-    private static ConcurrentHashMap<String, SysParameter> systemParameterBoard;
+    private static HashMap<String, SysParameter> systemParameterBoard;
 
     @Autowired
     public void setSystemParameterBoard(SystemParameterMgr systemParameterMgr) {
-        systemParameterBoard = new ConcurrentHashMap<String, SysParameter>();
+        systemParameterBoard = new HashMap<String, SysParameter>();
         List<SysParameter> sysParameters = systemParameterMgr.querySystemParameter();
         if(DataUtil.isNotEmpty(sysParameters)) {
             for (SysParameter sysParameter : sysParameters) {

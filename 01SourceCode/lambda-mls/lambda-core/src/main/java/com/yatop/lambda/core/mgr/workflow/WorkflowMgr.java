@@ -95,38 +95,18 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   更新工作流信息（名称、概要、描述）
+     *   更新工作流信息（名称、描述）
      *   返回更新数量
      *
      * */
     public int updateWorkflow(WfFlow workflow, String operId) {
-        if( DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(workflow)  || DataUtil.isEmpty(operId)) {
             throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(workflow.isFlowNameNotColoured() &&
-                workflow.isSummaryNotColoured() &&
                 workflow.isDescriptionNotColoured()) {
             throw new LambdaException("Update workflow info failed -- invalid update data.", "无效更新内容");
-        }
-
-        if(workflow.isSummaryColoured() && workflow.isDescriptionColoured()) {
-            WfFlow thisFLow = queryWorkflow(workflow.getFlowId());
-            if(DataUtil.isNull(thisFLow))
-                throw new LambdaException("Update workflow info failed -- workflow not existed.", "工作流不存在");
-
-            try {
-                EmExperiment ownerExperiment = new EmExperiment();
-                ownerExperiment.setExperimentId(thisFLow.getOwnerExperimentId());
-                if(workflow.isSummaryColoured())
-                    ownerExperiment.setSummary(workflow.getSummary());
-                if(workflow.isDescriptionColoured())
-                    ownerExperiment.setDescription(workflow.getDescription());
-                experimentMgr.updateExperiment(ownerExperiment, operId);
-            }
-            catch (LambdaException e) {
-                throw new LambdaException("Update workflow info failed -- synchronize experiment failed.", "同步实验失败", e);
-            }
         }
 
         WfFlow updateWorkflow = new WfFlow();
@@ -134,8 +114,6 @@ public class WorkflowMgr extends BaseMgr {
             updateWorkflow.setFlowId(workflow.getFlowId());
             if(workflow.isFlowNameColoured())
                 updateWorkflow.setFlowName(workflow.getFlowName());
-            if(workflow.isSummaryColoured())
-                updateWorkflow.setSummary(workflow.getSummary());
             if(workflow.isDescriptionColoured())
                 updateWorkflow.setDescription(workflow.getDescription());
 
