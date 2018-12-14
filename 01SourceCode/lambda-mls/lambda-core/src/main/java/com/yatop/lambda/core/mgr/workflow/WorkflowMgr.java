@@ -1,15 +1,13 @@
 package com.yatop.lambda.core.mgr.workflow;
 
 import com.yatop.lambda.base.mapper.extend.WorkflowMapper;
-import com.yatop.lambda.base.model.EmExperiment;
 import com.yatop.lambda.base.model.WfFlow;
 import com.yatop.lambda.base.model.WfFlowExample;
+import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.WorkflowLockStateEnum;
 import com.yatop.lambda.core.enums.WorkflowStateEnum;
 import com.yatop.lambda.core.exception.LambdaException;
-import com.yatop.lambda.core.mgr.base.BaseMgr;
-import com.yatop.lambda.core.mgr.experiment.ExperimentMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
@@ -24,9 +22,6 @@ public class WorkflowMgr extends BaseMgr {
 
     @Autowired
     WorkflowMapper workflowMapper;
-
-    @Autowired
-    ExperimentMgr experimentMgr;
 
     /*
      *
@@ -50,7 +45,6 @@ public class WorkflowMgr extends BaseMgr {
             insertWorkflow.setFlowIdColoured(false);
             insertWorkflow.setShareLockState(WorkflowLockStateEnum.UNLOCKED.getState());
             insertWorkflow.setShareLockMsgColoured(false);
-            insertWorkflow.setLastSnapshotIdColoured(false);
             insertWorkflow.setNextSnapshotVersion(1L);
             insertWorkflow.setNodeCount(0L);
             insertWorkflow.setNextDeleteSequence(1L);
@@ -127,21 +121,17 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   更新工作流信息（快照信息）
+     *   工作流快照版本号增加
      *   返回更新数量
      *
      * */
-    public int updateWorkflowSnapshot(WfFlow workflow, String operId) {
+    public int increaseWorkflowSnapshotVersion(WfFlow workflow, String operId) {
         if( DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)) {
             throw new LambdaException("Update workflow info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(workflow.isLastSnapshotIdNotColoured()) {
-            throw new LambdaException("Update workflow info failed -- invalid update data.", "无效更新内容");
-        }
-
         try {
-            return workflowMapper.updateWorkflowSnapshot(workflow.getFlowId(), workflow.getLastSnapshotId(), SystemTimeUtil.getCurrentTime(), operId);
+            return workflowMapper.updateWorkflowSnapshot(workflow.getFlowId(), SystemTimeUtil.getCurrentTime(), operId);
         } catch (Throwable e) {
             throw new LambdaException("Update workflow info failed.", "更新工作流信息失败", e);
         }

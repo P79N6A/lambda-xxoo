@@ -1,17 +1,6 @@
 package com.yatop.lambda.workflow.core.context;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yatop.lambda.workflow.core.model.data.DataTable;
-import com.yatop.lambda.workflow.core.model.data.DataWarehouse;
-import com.yatop.lambda.workflow.core.model.experiment.Experiment;
-import com.yatop.lambda.workflow.core.model.model.Model;
-import com.yatop.lambda.workflow.core.model.model.ModelWarehouse;
-import com.yatop.lambda.workflow.core.model.project.Project;
-import com.yatop.lambda.workflow.core.model.workflow.Workflow;
-import com.yatop.lambda.workflow.core.model.workflow.node.Node;
-import com.yatop.lambda.workflow.core.model.workflow.node.NodeLink;
-
-import java.util.TreeMap;
 
 public class JobExecutionContext {
 

@@ -2,8 +2,6 @@ package com.yatop.lambda.manager.exception;
 
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.manager.api.response.JsonResponse;
-import org.apache.shiro.authz.UnauthenticatedException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

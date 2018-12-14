@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-13 17:10:36
+Date: 2018-12-14 18:28:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1379,12 +1379,12 @@ CREATE TABLE `wf_flow` (
   `OWNER_EXPERIMENT_ID` bigint(20) NOT NULL COMMENT '所属实验ID',
   `SHARE_LOCK_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '共享锁状态，实验运行和快照期间加锁\r\n            \r\n            0：未加锁\r\n            1：已加锁',
   `SHARE_LOCK_MSG` varchar(512) DEFAULT NULL COMMENT '共享锁消息',
-  `LAST_SNAPSHOT_ID` bigint(20) DEFAULT NULL COMMENT '最后快照ID',
   `NEXT_SNAPSHOT_VERSION` bigint(20) NOT NULL DEFAULT '1' COMMENT '下一快照版本',
   `NODE_COUNT` bigint(20) NOT NULL DEFAULT '1000' COMMENT '正常节点计数，超出最大上限后，禁止新增节点',
   `NEXT_DELETE_SEQUENCE` bigint(20) NOT NULL DEFAULT '0' COMMENT '下一删除序号，在0到31之间循环，删除前进，撤销删除后退',
   `LAST_JOB_ID` bigint(20) DEFAULT NULL COMMENT '最后作业ID',
   `FLOW_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '工作流状态\r\n            0：draft，草稿\r\n            1：preparing，准备中\r\n            2：running，运行中\r\n            3：finished running，运行结束',
+  `SUMMARY` varchar(256) DEFAULT NULL COMMENT '摘要，实验摘要信息',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',

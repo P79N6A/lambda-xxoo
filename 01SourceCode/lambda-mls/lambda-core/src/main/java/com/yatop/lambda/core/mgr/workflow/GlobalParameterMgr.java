@@ -3,14 +3,14 @@ package com.yatop.lambda.core.mgr.workflow;
 import com.yatop.lambda.base.model.WfFlowGlobalParameter;
 import com.yatop.lambda.base.model.WfFlowGlobalParameterExample;
 import com.yatop.lambda.base.model.WfFlowNodeParameter;
+import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.IsGlobalParameterEnum;
 import com.yatop.lambda.core.exception.LambdaException;
-import com.yatop.lambda.core.mgr.base.BaseMgr;
-import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
+import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

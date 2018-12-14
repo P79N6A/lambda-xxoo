@@ -108,23 +108,24 @@ public class LambdaEnhancedPlugin extends PluginAdapter {
         Method method = new Method();
         method.setVisibility(JavaVisibility.PUBLIC);
         method.setName("copyProperties");
-        method.addParameter(new Parameter(FullyQualifiedJavaType.getObjectInstance(), "that"));
-        if (introspectedTable.isJava5Targeted()) {
+        method.addParameter(new Parameter(topLevelClass.getType(), "that"));
+/*        if (introspectedTable.isJava5Targeted()) {
             method.addAnnotation("@Override"); //$NON-NLS-1$
-        }
+        }*/
 
         context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
 
-        method.addBodyLine("if (this == that || that == null || this.getClass() != that.getClass() ) {"); //$NON-NLS-1$
+        //method.addBodyLine("if (this == that || that == null || this.getClass() != that.getClass() ) {"); //$NON-NLS-1$
+        method.addBodyLine("if (this == that || that == null) {"); //$NON-NLS-1$
         method.addBodyLine("return;"); //$NON-NLS-1$
         method.addBodyLine("}"); //$NON-NLS-1$
 
         StringBuilder sb = new StringBuilder();
-        sb.append(topLevelClass.getType().getShortName());
+/*        sb.append(topLevelClass.getType().getShortName());
         sb.append(" other = ("); //$NON-NLS-1$
         sb.append(topLevelClass.getType().getShortName());
         sb.append(") that;"); //$NON-NLS-1$
-        method.addBodyLine(sb.toString());
+        method.addBodyLine(sb.toString());*/
 
         /*if (useEqualsHashCodeFromRoot && topLevelClass.getSuperClass() != null) {
             method.addBodyLine("if (!super.equals(other)) {"); //$NON-NLS-1$
@@ -159,8 +160,10 @@ public class LambdaEnhancedPlugin extends PluginAdapter {
             String getterMethodColoured = getGetterMethodName(introspectedColumnColour.getJavaProperty(), introspectedColumnColour.getFullyQualifiedJavaType());
 
             sb.setLength(0);
-            sb.append("if(other.").append(getterMethodColoured).append("() )");
-            sb.append(" {this.").append(setterMethod).append("(").append("other.").append(getterMethod).append("() );}");
+            //sb.append("if(other.").append(getterMethodColoured).append("() )");
+            //sb.append(" {this.").append(setterMethod).append("(").append("other.").append(getterMethod).append("() );}");
+            sb.append("if(that.").append(getterMethodColoured).append("() )");
+            sb.append(" {this.").append(setterMethod).append("(").append("that.").append(getterMethod).append("() );}");
             method.addBodyLine(sb.toString());
         }
 

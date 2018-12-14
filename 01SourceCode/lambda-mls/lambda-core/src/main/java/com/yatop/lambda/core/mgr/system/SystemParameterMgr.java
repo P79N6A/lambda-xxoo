@@ -2,9 +2,9 @@ package com.yatop.lambda.core.mgr.system;
 
 import com.yatop.lambda.base.model.SysParameter;
 import com.yatop.lambda.base.model.SysParameterExample;
+import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.exception.LambdaException;
-import com.yatop.lambda.core.mgr.base.BaseMgr;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

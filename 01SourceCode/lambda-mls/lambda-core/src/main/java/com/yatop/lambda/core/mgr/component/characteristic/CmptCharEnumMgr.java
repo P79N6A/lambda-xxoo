@@ -2,10 +2,9 @@ package com.yatop.lambda.core.mgr.component.characteristic;
 
 import com.yatop.lambda.base.model.CfCmptCharEnum;
 import com.yatop.lambda.base.model.CfCmptCharEnumExample;
-import com.yatop.lambda.base.model.CfCmptCharTypeWildExample;
+import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.exception.LambdaException;
-import com.yatop.lambda.core.mgr.base.BaseMgr;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

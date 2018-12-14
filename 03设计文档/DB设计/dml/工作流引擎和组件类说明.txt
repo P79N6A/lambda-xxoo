@@ -8,7 +8,7 @@
 
 实验管理 & 工作流引擎
 （1）组件参数更新，先校验新老参数值是否发生变化，脚本更新走脚本接口内部再调用关联组件的参数校验方法
-（2）组件数据输出端口schema更新失败时，自动对所有下游节点的schema做重置
+（2）组件数据输出端口schema更新失败时，自动对所有下游节点的schema做状态重置
 （3）读数据组件的数据查看走viewDataTableByName，其他组件输出数据查看走viewDataTableByID
 （4）通过ModuleBoard.getMapper().find("class_path")方法查找组件类bean对象
 （5）任一输入端口schema状态非正常，停止动态分析，并将该状态传递到下游
