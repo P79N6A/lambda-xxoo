@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-14 18:28:22
+Date: 2018-12-14 23:54:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,10 +23,9 @@ CREATE TABLE `cf_cmpt_algorithm` (
   `ALGORITHM_ID` bigint(20) NOT NULL COMMENT '算法ID',
   `ALGORITHM_CODE` varchar(200) NOT NULL COMMENT '算法代码',
   `ALGORITHM_NAME` varchar(200) NOT NULL COMMENT '算法名称',
-  `ALGORITHM_TYPE` int(11) NOT NULL COMMENT '算法类型\r\n1：One Class Classfication(Anomaly Detection)，异常检测算法\r\n2：Binary Class Classification，二分类算法\r\n3：Multiple Class Classification，多分类算法\r\n4：Clustering，聚类算法\r\n5：Regression，回归算法\r\n6：Association Rules，关联规则算法\r\n7：Collaborative filtering，协同过滤算法\r\n\r\n//更多算法类型在后续组件开发中确定',
+  `ALGORITHM_TYPE` int(11) NOT NULL COMMENT '算法类型\r\n            1：One Class Classfication(Anomaly Detection)，异常检测算法\r\n            2：Two Class Classification，二分类算法\r\n            3：Multiple Class Classification，多分类算法\r\n            4：Clustering，聚类算法\r\n            5：Regression，回归算法\r\n            6：Association Rules，关联规则算法\r\n            7：Collaborative filtering，协同过滤算法\r\n            \r\n            //更多算法类型在后续组件开发中确定',
   `ALGORITHM_LABELS` varchar(800) DEFAULT NULL COMMENT '算法标签列表（预留），标签之间用‘|’符号分隔',
   `LEARNING_MODE` int(11) NOT NULL COMMENT '算法学习方式（预留）\r\n            1：Supervised Learning，有监督学习\r\n            2：Unsupervised Learning，无监督学习\r\n            3：Semi-Supervised Learning，半监督学习',
-  `OPTIMIZE_METHOD` int(11) NOT NULL COMMENT '算法最优化方法（预留）\r\n0：unknown\r\n1：批量梯度下降法\r\n2：随机梯度下降法\r\n3：mini-batch梯度下降法\r\n4：牛顿法\r\n5：拟牛顿法\r\n6：共轭梯度法\r\n7：启发式优化方法\r\n8：拉格朗日乘数法',
   `IS_TUNABLE` int(11) NOT NULL COMMENT '是否可调参\r\n            0：否\r\n            1：是',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -41,25 +40,25 @@ CREATE TABLE `cf_cmpt_algorithm` (
 -- ----------------------------
 -- Records of cf_cmpt_algorithm
 -- ----------------------------
-INSERT INTO `cf_cmpt_algorithm` VALUES ('1001', 'OneClass-SVM', '单分类支持向量机', '1', null, '2', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('1002', 'PCA-Based-AnomalyDetection', '基于PCA异常检测', '1', null, '2', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('2001', 'LR-TwoClassClassification', '逻辑回归二分类', '2', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('2002', 'RF-TwoClassClassification', '随机森林二分类', '2', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('2003', 'GBDT-TwoClassClassification', 'GBDT二分类', '2', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('2004', 'LinearSVM-TwoClassClassification', '线性支持向量机二分类', '2', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('2005', 'XGBoost-TwoClassClassification', 'XGBoost二分类', '2', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('3001', 'LR-MultipleClassClassification', '逻辑回归多分类', '3', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('3002', 'RF-MultipleClassClassification', '随机森林多分类', '3', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('3003', 'XGBoost-MultipleClassClassification', 'XGBoost多分类', '3', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('3004', 'NaiveBayesian-MultipleClassClassification', '朴素贝叶斯多分类', '3', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('3005', 'KNN-MultipleClassClassification', 'K近邻多分类', '3', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('4001', 'KMeans-Clustering', 'K均值聚类', '4', null, '2', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('5001', 'Linear-Regression', '线性回归', '5', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('5002', 'GBDT-Regression', 'GBDT回归', '5', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('5003', 'XGBoost-Regression', 'XGBoost回归', '5', null, '1', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('6001', 'Apriori-AssociationRules', 'Apriori关联规则', '6', null, '2', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('6002', 'FPG-AssociationRules', 'FP-Growth关联规则', '6', null, '2', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
-INSERT INTO `cf_cmpt_algorithm` VALUES ('7001', 'ALS-CollaborativeFiltering', 'ALS协同过滤', '7', null, '2', '0', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('1001', 'OneClass-SVM', '单分类支持向量机', '1', null, '2', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('1002', 'PCA-Based-AnomalyDetection', '基于PCA异常检测', '1', null, '2', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('2001', 'LR-TwoClassClassification', '逻辑回归二分类', '2', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('2002', 'RF-TwoClassClassification', '随机森林二分类', '2', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('2003', 'GBDT-TwoClassClassification', 'GBDT二分类', '2', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('2004', 'LinearSVM-TwoClassClassification', '线性支持向量机二分类', '2', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('2005', 'XGBoost-TwoClassClassification', 'XGBoost二分类', '2', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('3001', 'LR-MultipleClassClassification', '逻辑回归多分类', '3', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('3002', 'RF-MultipleClassClassification', '随机森林多分类', '3', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('3003', 'XGBoost-MultipleClassClassification', 'XGBoost多分类', '3', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('3004', 'NaiveBayesian-MultipleClassClassification', '朴素贝叶斯多分类', '3', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('3005', 'KNN-MultipleClassClassification', 'K近邻多分类', '3', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('4001', 'KMeans-Clustering', 'K均值聚类', '4', null, '2', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('5001', 'Linear-Regression', '线性回归', '5', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('5002', 'GBDT-Regression', 'GBDT回归', '5', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('5003', 'XGBoost-Regression', 'XGBoost回归', '5', null, '1', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('6001', 'Apriori-AssociationRules', 'Apriori关联规则', '6', null, '2', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('6002', 'FPG-AssociationRules', 'FP-Growth关联规则', '6', null, '2', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
+INSERT INTO `cf_cmpt_algorithm` VALUES ('7001', 'ALS-CollaborativeFiltering', 'ALS协同过滤', '7', null, '2', '0', null, '0', '2017-05-12 14:56:52', 'admin', '2017-05-12 14:56:52', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_cmpt_char
@@ -73,7 +72,7 @@ CREATE TABLE `cf_cmpt_char` (
   `SPEC_TYPE` int(11) NOT NULL COMMENT '适用规格类型',
   `CHAR_TYPE` int(11) NOT NULL COMMENT '特征类型ID',
   `SRC_LEVEL` int(11) NOT NULL COMMENT '特征值来源级别\r\n1：计算组件规格\r\n2：计算组件\r\n3：工作流节点（仅限组件参数、执行调优、输入输出）\r\n\r\n注意，仅限在小于来源级别的地方做特征值设置有效，否则无效\r\n说明，特征值选用次序工作流节点 > 计算组件 > 计算组件规格 > 特征默认值',
-  `ALLOW_GLOBAL` int(11) NOT NULL DEFAULT '0' COMMENT '允许设置为全局变量\r\n            0：否\r\n            1：是',
+  `IS_ALLOW_GLOBAL` int(11) NOT NULL DEFAULT '0' COMMENT '允许设置为全局变量\r\n            0：否\r\n            1：是',
   `IS_REQUIRED` int(11) NOT NULL COMMENT '特征值是否必须设置\r\n            0：否\r\n            1：是',
   `IS_LIMITED` int(11) NOT NULL COMMENT '特征值是否受限定\r\n0：否\r\n1：开区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n2：闭区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n3：左开右闭方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n4：左闭右开方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n5：枚举方式限定',
   `MAX_LENGTH` int(11) DEFAULT NULL COMMENT '最大长度\r\n            \r\n            字符串类型：限制字符串最大长度\r\n            JSON列表类型：限制列表最大长度\r\n            调参类型，限制自定义用户列表最大长度',
@@ -301,7 +300,7 @@ CREATE TABLE `cf_cmpt_char_type` (
   `CHAR_TYPE_CODE` varchar(200) NOT NULL COMMENT '特征类型代码',
   `CHAR_TYPE_NAME` varchar(200) NOT NULL COMMENT '特征类型名称',
   `IS_WILDTYPE` int(11) NOT NULL DEFAULT '0' COMMENT '是否为通配类型\r\n0：否\r\n1：是',
-  `SPEC_TYPE_MASK` int(11) NOT NULL DEFAULT '0' COMMENT '适用规格类型二进制掩码（预留）\r\n\r\n0：不支持作为对应规格的特征类型使用\r\n1：支持作为对应规格的特征类型使用\r\n\r\n第一位，输入内容规格，开关位0x01：数据表、模型、算法参数\r\n第二位，输出内容规格，开关位0x02：数据表、模型、算法参数\r\n第三位，调用执行规格，开关位0x04：基本类型\r\n第四位，执行调优规格，开关位0x08：基本类型\r\n第五位，组件参数规格，开关位0x10：基本类型、调参类型、代码脚本、Json Object、Json Array\r\n',
+  `SPEC_MASK` int(11) NOT NULL DEFAULT '0' COMMENT '适用规格二进制掩码（预留）\r\n\r\n0：不支持作为对应规格的特征类型使用\r\n1：支持作为对应规格的特征类型使用\r\n\r\n第一位，输入内容规格，开关位0x01：数据表、模型、算法参数\r\n第二位，输出内容规格，开关位0x02：数据表、模型、算法参数、报告\r\n第三位，调用执行规格，开关位0x04：基本类型\r\n第四位，执行调优规格，开关位0x08：基本类型\r\n第五位，组件参数规格，开关位0x10：基本类型、调参类型、代码脚本、Json Object、Json Array\r\n\r\n',
   `CLASS_PATH` varchar(200) NOT NULL DEFAULT 'unkown' COMMENT '特征类型java类class path',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -366,14 +365,14 @@ INSERT INTO `cf_cmpt_char_type` VALUES ('9001', 'Json Array', 'json数组', '0',
 DROP TABLE IF EXISTS `cf_cmpt_char_type_wild`;
 CREATE TABLE `cf_cmpt_char_type_wild` (
   `WILD_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '通配特征类型ID',
-  `UNIT_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '单元特征类型ID',
+  `MATCH_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '单元特征类型ID',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`WILD_CHAR_TYPE_ID`,`UNIT_CHAR_TYPE_ID`)
+  PRIMARY KEY (`WILD_CHAR_TYPE_ID`,`MATCH_CHAR_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征类型通配表（仅查询用），配置通配类型和成员类型的关系';
 
 -- ----------------------------
@@ -897,7 +896,7 @@ INSERT INTO `cf_component` VALUES ('ML@COM-9004', 'ML@Clustering-Evaluation', '�
 INSERT INTO `cf_component` VALUES ('ML@COM-9005', 'ML@Regression-Evaluation', '机器学习 | 回归模型评估', '5', '-1', null, '0', '2017-05-17 13:43:11', 'admin', '2017-05-17 13:43:11', 'admin');
 INSERT INTO `cf_component` VALUES ('ML@COM-9006', 'ML@CollaborativeFiltering-Evaluation', '机器学习 | 协同过滤模型评估（待定）', '5', '-1', null, '-1', '2017-05-17 13:45:07', 'admin', '2017-05-17 13:45:07', 'admin');
 INSERT INTO `cf_component` VALUES ('NA@COM-0000', 'NA@#NetworkAnalysis', '网络分析 | #网络分析', '8', '-1', null, '-1', '2017-05-27 17:47:34', 'admin', '2017-05-27 17:47:34', 'admin');
-INSERT INTO `cf_component` VALUES ('SA@COM-0000', 'SA@#StatisticalAnalysis', '统计分析 | #统计分析', '4', '-1', null, '-1', '2017-05-27 16:29:34', 'admin', '2017-05-27 16:29:34', 'admin');
+INSERT INTO `cf_component` VALUES ('SA@COM-0000', 'SA@#StatisticAnalysis', '统计分析 | #统计分析', '4', '-1', null, '-1', '2017-05-27 16:29:34', 'admin', '2017-05-27 16:29:34', 'admin');
 INSERT INTO `cf_component` VALUES ('ST@COM-0000', 'ST@#ScriptTools', '脚本工具 | #脚本工具', '1', '-1', null, '-1', '2017-05-16 17:57:49', 'admin', '2017-05-16 17:57:49', 'admin');
 INSERT INTO `cf_component` VALUES ('ST@COM-0001', 'ST@Sql-Script', '脚本工具 | SQL脚本', '1', '-1', null, '0', '2017-05-16 17:57:49', 'admin', '2017-05-16 17:57:49', 'admin');
 INSERT INTO `cf_component` VALUES ('ST@COM-0002', 'ST@Python-Script', '脚本工具 | Python脚本（待定）', '1', '-1', null, '-1', '2017-05-16 17:57:49', 'admin', '2017-05-16 17:57:49', 'admin');

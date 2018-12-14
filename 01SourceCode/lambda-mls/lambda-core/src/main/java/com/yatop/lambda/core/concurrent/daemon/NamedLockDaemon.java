@@ -23,6 +23,7 @@ public class NamedLockDaemon implements DisposableBean, Runnable {
     //负责完成串行加锁和过期锁清理
     private Thread daemonThread;
     private ConcurrentLinkedQueue<LockRequest> lockRequestQueue = new ConcurrentLinkedQueue<LockRequest>();
+    private ConcurrentLinkedQueue<LockRequest> unlockRequestQueue = new ConcurrentLinkedQueue<LockRequest>();
     private TreeMap<String, BaseNamedLockService> registeredNamedLockMap = new TreeMap<String, BaseNamedLockService>();
     private LambdaEvent queueEvent = new LambdaEvent();
     private long counter = 0;
@@ -57,11 +58,19 @@ public class NamedLockDaemon implements DisposableBean, Runnable {
 
     private void dealQueueRequest() {
 
-        while(!this.lockRequestQueue.isEmpty()) {
-            ++this.counter;
+        while(!this.unlockRequestQueue.isEmpty() || !this.lockRequestQueue.isEmpty()) {
+
+            while(!this.unlockRequestQueue.isEmpty()) {
+                LockRequest unlockRequest = this.unlockRequestQueue.poll();
+                if(DataUtil.isNotNull(unlockRequest)) {
+                    unlockRequest.unlockResource();
+                    unlockRequest.getEvent().notifyEvent();
+                }
+            }
 
             LockRequest lockRequest = this.lockRequestQueue.poll();
             if(DataUtil.isNotNull(lockRequest)) {
+                ++this.counter;
                 registerNamedLock(lockRequest);
                 lockRequest.lockResource();
                 lockRequest.getEvent().notifyEvent();
@@ -77,6 +86,12 @@ public class NamedLockDaemon implements DisposableBean, Runnable {
 
     private void clearQueueRequest() {
         while (!this.lockRequestQueue.isEmpty()) {
+            LockRequest lockRequest = this.lockRequestQueue.poll();
+            if (DataUtil.isNotNull(lockRequest)) {
+                lockRequest.getEvent().notifyEvent();
+            }
+        }
+        while (!this.unlockRequestQueue.isEmpty()) {
             LockRequest lockRequest = this.lockRequestQueue.poll();
             if (DataUtil.isNotNull(lockRequest)) {
                 lockRequest.getEvent().notifyEvent();
@@ -110,7 +125,7 @@ public class NamedLockDaemon implements DisposableBean, Runnable {
                     } catch (InterruptedException e) {
                         //TODO
                     } catch (Throwable e) {
-                        logger.error("Named-Lock-Request线程未知错误", e);
+                        logger.error("Named-Lock-Request[request lock]发生未知错误", e);
                     }
                 }
                 return lockRequest.isHold();
@@ -121,5 +136,18 @@ public class NamedLockDaemon implements DisposableBean, Runnable {
     }
 
     public void requestUnlock(LockRequest unlockRequest) {
+        if(DataUtil.isNotNull(unlockRequest)) {
+            this.unlockRequestQueue.offer(unlockRequest);
+            this.queueEvent.notifyEvent();
+
+            try {
+                unlockRequest.getEvent().resetEvent();
+                unlockRequest.getEvent().waitEvent(8, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                //TODO
+            } catch (Throwable e) {
+                logger.error("Named-Lock-Request[request unlock]发生未知错误", e);
+            }
+        }
     }
 }

@@ -1,36 +1,21 @@
 package com.yatop.lambda.core.enums;
 
-public enum SpecificationTypeEnum {
+public enum PortTypeEnum {
 
     /**
-     * 输入
+     * 输入端口
      */
-    INPUT(1, "Input"),
+    INPUT_PORT(1, "Input Port"),
 
     /**
-     * 输出
+     * 输出端口
      */
-    OUTPUT(2, "Output"),
-
-    /**
-     * 调用执行
-     */
-    EXECUTION(3, "Execution"),
-
-    /**
-     * 执行调优
-     */
-    OPTIMIZE_EXECUTION(4, "Optimize Execution"),
-
-    /**
-     * 组件参数
-     */
-    PARAMETER(5, "Parameter");
+    OUTPUT_PORT(2, "Output Port");
 
     private int type;
     private String name;
 
-    SpecificationTypeEnum(int type, String name) {
+    PortTypeEnum(int type, String name) {
         this.type = type;
         this.name = name;
     }

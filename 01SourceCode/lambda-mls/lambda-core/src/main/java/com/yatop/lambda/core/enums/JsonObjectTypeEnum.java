@@ -35,7 +35,12 @@ public enum JsonObjectTypeEnum {
     /**
      * 生成规则报告
      */
-    GENERATE_RULES_REPORT(6, "Generate Rules Report");
+    GENERATE_RULES_REPORT(6, "Generate Rules Report"),
+
+    /**
+     * 输出端口Schema
+     */
+    OUTPUT_SCHEMA(99, "Output Port Schema");
 
     private int type;
     private String name;

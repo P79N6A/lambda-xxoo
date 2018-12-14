@@ -50,13 +50,19 @@ public abstract class BaseNamedLockService {
         }
     }
 
+    private void unlockResource(LockRequest unlockRequest) {
+        unlockRequest.setHold(false);
+        LockRequest holdRequest = this.namedLockHashMap.get(unlockRequest.getName());
+        if(holdRequest.getThread().getId() == unlockRequest.getThread().getId())
+            this.namedLockHashMap.remove(unlockRequest.getName());
+    }
+
     private LockRequest lock(LockRequest lockRequest) {
         if(DataUtil.isNotNull(lockRequest)) {
             if (lockRequest.getExpire() < System.currentTimeMillis())
                 return null;
 
             LockRequest holdRequest = this.namedLockHashMap.get(lockRequest.getName());
-            //相同线程对同一资源请求
             if (DataUtil.isNull(holdRequest)) {
                 lockResource(lockRequest);
             } else if (holdRequest.isNotHold()) {
@@ -70,11 +76,13 @@ public abstract class BaseNamedLockService {
     //解锁清理当前线程该类资源的所有占有
     private LockRequest unlock(LockRequest unlockRequest) {
         if(DataUtil.isNotNull(unlockRequest)) {
-            ConcurrentLinkedQueue<LockRequest> chainList = this.threadChainHashMap.get(unlockRequest.getThread().getId());
+            Long unlockThreadId = unlockRequest.getThread().getId();
+            ConcurrentLinkedQueue<LockRequest> chainList = this.threadChainHashMap.remove(unlockThreadId);
             if(DataUtil.isNotNull(chainList)) {
-                for (LockRequest holdRequest : chainList) {
-                    holdRequest.setHold(false);
+                for (LockRequest lockedRequest : chainList) {
+                    unlockResource(lockedRequest);
                 }
+                chainList.clear();
             }
         }
         return unlockRequest;
@@ -114,7 +122,7 @@ public abstract class BaseNamedLockService {
 
     public final LockRequest prepareDoUnlock() {
         ConcurrentLinkedQueue<LockRequest> chainList = threadChainHashMap.get(Thread.currentThread().getId());
-        return unlock(DataUtil.isNotNull(chainList) ? chainList.peek() : null);
+        return DataUtil.isNotNull(chainList) ? chainList.peek() : null;
     }
 
     //定期过期检测防止内存泄漏
@@ -169,6 +177,7 @@ public abstract class BaseNamedLockService {
                                 }
                             }
                         }
+                        chainList.clear();
                     }
                 }
             }
@@ -223,9 +232,9 @@ public abstract class BaseNamedLockService {
             this.namedLockService.lock(this);
         }
 
-/*        public void unlockResource() {
+        public void unlockResource() {
             this.namedLockService.unlock(this);
-        }*/
+        }
 
         public Long getName() {
             return this.name;
