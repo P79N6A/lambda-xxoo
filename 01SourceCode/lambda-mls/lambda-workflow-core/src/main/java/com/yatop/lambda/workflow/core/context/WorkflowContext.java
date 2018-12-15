@@ -24,7 +24,7 @@ public class WorkflowContext {
     private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联的模型仓库
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();      //操作关联的节点
     private TreeMap<Long, NodeLink> links = new TreeMap<Long, NodeLink>();  //操作关联的节点链接
-    private TreeMap<Long, NodeParameter> parameters = new TreeMap<Long, NodeParameter>();  //操作关联的节点参数
+    private TreeMap<String, NodeParameter> parameters = new TreeMap<String, NodeParameter>();  //操作关联的节点参数
     private TreeMap<Long, NodePort> ports = new TreeMap<Long, NodePort>();  //操作关联的节点参数
     private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联的节点参数
 
@@ -62,8 +62,8 @@ public class WorkflowContext {
         return links.get(id);
     }
 
-    public NodeParameter getParameter(Long id) {
-        return parameters.get(id);
+    public NodeParameter getParameter(Long id, String charId) {
+        return parameters.get(id + "#" + charId);
     }
 
     public NodePort getPort(Long id) {
@@ -90,8 +90,8 @@ public class WorkflowContext {
         MapUtil.put(links, id, link);
     }
 
-    public void setParameter(Long id, NodeParameter parameter) {
-        MapUtil.put(parameters, id, parameter);
+    public void setParameter(Long id, String charId, NodeParameter parameter) {
+        MapUtil.put(parameters, id + "#" + charId, parameter);
     }
 
     public void setPort(Long id, NodePort port) {

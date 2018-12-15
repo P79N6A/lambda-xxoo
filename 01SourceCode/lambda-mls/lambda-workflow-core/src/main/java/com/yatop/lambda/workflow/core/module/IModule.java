@@ -59,67 +59,16 @@ public interface IModule extends InitializingBean {
 
     }*/
 
-    //////////////////////////////节点增删查和参数更改事件相关//////////////////////////////////
+    //////////////////////////////节点参数校验事件相关//////////////////////////////////
 
-    //是否捕获节点新增事件
+    //是否捕获参数校验事件
     //返回false，否
     //返回true，是
-    boolean catchCreateNode();
+    //boolean catchCheckParameter();
 
-    //发生节点新增时，例如：数据表读取组件需要校验表名对应的数据表是否正常，存在情况下，设置节点状态为ready，否则为not ready
-    //返回更新部分的node-content，NULL代表无更新（仅限节点信息、组件参数）
-    //NodeContentDto onCreateNode(NodeContentDto<node, parameter, inputPorts, outputPorts>);
-
-    //是否捕获节点删除事件
-    //返回false，否
-    //返回true，是
-    boolean catchDeleteNode();
-
-    //发生节点删除时，例如：暂无
-    //返回更新部分的node-content，NULL代表无更新（仅限节点信息、组件参数）
-    //NodeContentDto onDeleteNode(NodeContentDto<node, parameter, inputPorts, outputPorts>);
-
-    //是否捕获节点查询事件
-    //返回false，否
-    //返回true，是
-    boolean catchQueryNode();
-
-    //发生节点查询时，例如：数据表读取组件需要校验对应的数据表是否正常，存在情况下，设置节点状态为ready，否则为not ready
-    //返回更新部分的node-content，NULL代表无更新（仅限节点信息，仅查询节点接口不做实验Flow乐观锁加锁）
-    //NodeContentDto onQueryNode(NodeContentDto<node, parameter, inputPorts, outputPorts>);
-
-    //是否捕获参数更改事件
-    //返回false，否
-    //返回true，是
-    boolean catchUpdateParameter();
-
-    //发生参数更改时，例如：参数在业务逻辑上的合法校验，不通过时设置节点状态为not ready
-    //返回更新部分的node-content，NULL代表无更新（仅限节点信息、组件参数）
-    //NodeContentDto onUpdateParameter(NodeContentDto<node, parameter, inputPorts, outputPorts>, updateParameterList);
-
-
-    ///////////////////////////////////节点链接事件相关/////////////////////////////////////////
-    //该类事件目前不开放，如无必要，后期也不建议开放，对框架入侵太大，代码复杂度加大
-
-
-    //是否捕获入站链接事件（待定）
-    //返回false，否
-    //返回true，是
-    //boolean catchInboundLink();
-
-    //发生入站链接时（待定），例如：暂无
-    //返回更新部分的node-content，NULL代表无更新（仅限节点信息、组件参数）
-    //NodeContentDto onInboundLink(NodeContentDto<node, parameter, inputPorts, outputPorts>, OutputPortDto);
-
-    //是否捕获出站链接事件（待定）
-    //返回false，否
-    //返回true，是
-    //boolean catchOutboundLink();
-
-    //发生出站链接时（待定），例如：暂无
-    //返回更新部分的node-content，NULL代表无更新（仅限节点信息、组件参数）
-    //NodeContentDto onOutboundLink(NodeContentDto<node, parameter, inputPorts, outputPorts>, InputPortDto);
-
+    //校验参数处理，例如：数据表读取组件需要校验对应的数据表是否正常，存在情况下，设置节点状态为ready，否则为not ready
+    //返回更新部分的node-content，NULL代表无更新（仅限节点信息）
+    //NodeContentDto onCheckParameter(NodeContentDto<node, parameter, inputPorts, outputPorts>, updateParameterList);
 
     ///////////////////////////////////任务执行事件相关/////////////////////////////////////////
 

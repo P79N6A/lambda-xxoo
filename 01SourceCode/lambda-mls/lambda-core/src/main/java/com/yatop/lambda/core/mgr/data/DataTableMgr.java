@@ -4,6 +4,7 @@ import com.yatop.lambda.base.model.DwDataTable;
 import com.yatop.lambda.base.model.DwDataTableExample;
 import com.yatop.lambda.core.enums.DataFileTypeEnum;
 import com.yatop.lambda.core.enums.DataStatusEnum;
+import com.yatop.lambda.core.enums.DataTableStateEnum;
 import com.yatop.lambda.core.enums.DataTableTypeEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
@@ -203,7 +204,8 @@ public class DataTableMgr extends BaseMgr {
 
         try {
             DwDataTableExample example = new DwDataTableExample();
-            DwDataTableExample.Criteria criteria = example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableNameEqualTo(tableName).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            DwDataTableExample.Criteria criteria = example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableTypeEqualTo(DataTableTypeEnum.GENERAL.getType())
+                    .andTableNameEqualTo(tableName).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             List<DwDataTable> resultList = dwDataTableMapper.selectByExample(example);
             return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
         } catch (Throwable e) {
@@ -225,7 +227,7 @@ public class DataTableMgr extends BaseMgr {
         try {
             PagerUtil.startPage(pager);
             DwDataTableExample example = new DwDataTableExample();
-            example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableTypeEqualTo(DataTableTypeEnum.GENERAL.getType()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return dwDataTableMapper.selectByExample(example);
         } catch (Throwable e) {
@@ -249,7 +251,8 @@ public class DataTableMgr extends BaseMgr {
             PagerUtil.startPage(pager);
             String keywordLike = "%" + keyword + "%";
             DwDataTableExample example = new DwDataTableExample();
-            example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableNameLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableTypeEqualTo(DataTableTypeEnum.GENERAL.getType())
+                    .andTableNameLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return dwDataTableMapper.selectByExample(example);
         } catch (Throwable e) {
@@ -264,15 +267,16 @@ public class DataTableMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public List<DwDataTable> queryDataTable(Long warehouseId, DataTableTypeEnum type, PagerUtil pager) {
-        if(DataUtil.isNull(warehouseId) || DataUtil.isNull(type)){
+    public List<DwDataTable> queryDataTable(Long warehouseId, DataTableTypeEnum typeEnum, DataTableStateEnum stateEnum, PagerUtil pager) {
+        if(DataUtil.isNull(warehouseId) || DataUtil.isNull(typeEnum) || DataUtil.isNull(stateEnum)){
             throw new LambdaException("Query data table info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
             PagerUtil.startPage(pager);
             DwDataTableExample example = new DwDataTableExample();
-            example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableTypeEqualTo(type.getType()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableTypeEqualTo(typeEnum.getType()).andTableStateEqualTo(stateEnum.getState())
+                    .andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             List<DwDataTable> resultList = dwDataTableMapper.selectByExample(example);
             return resultList;

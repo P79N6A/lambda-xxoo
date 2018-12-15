@@ -6,6 +6,8 @@ import com.yatop.lambda.workflow.core.richmodel.component.Component;
 
 public class Module extends WfModule implements Comparable<Module>, IRichModel {
     private Component component;
+    private ModulePort inputPorts;
+    private ModulePort outputPorts;
 
     public Module() {}
 

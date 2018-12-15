@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-14 23:54:24
+Date: 2018-12-15 16:20:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -995,7 +995,7 @@ CREATE TABLE `em_experiment` (
   KEY `Index_1` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`EXPERIMENT_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`MAIN_EXPERIMENT_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='实验表，实验是工作流的外壳主体\r\n\r\n逻辑删除，主实验正常状态的预测实验唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='实验表，实验是工作流的外壳主体\r\n\r\n逻辑删除，主实验正常状态的预测实验唯一';
 
 -- ----------------------------
 -- Records of em_experiment
@@ -1198,7 +1198,7 @@ CREATE TABLE `sys_parameter` (
 -- ----------------------------
 INSERT INTO `sys_parameter` VALUES ('2001', 'PR_CACHE_DATA_EXPIRE_DAYS', '项目管理 | 临时缓存数据表过期天数', '2', '-1', '21', '系统级默认过期天数配置，不做自动清理可配置为-1', '0', '2017-05-19 15:09:42', 'admin', '2017-05-19 15:09:42', 'admin');
 INSERT INTO `sys_parameter` VALUES ('6001', 'WK_FLOW_MAX_NODES', '工作流引擎 | 工作流正常节点最大数量', '6', '-1', '512', '超过上限，限制新增节点', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
-INSERT INTO `sys_parameter` VALUES ('6002', 'WK_FLOW_SCHEMA_MAX_FIELDS', '工作流引擎 | 数据输出端口最大字段数量', '6', '-1', '512', '超过上限，中断schema分析', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
+INSERT INTO `sys_parameter` VALUES ('6002', 'WK_FLOW_MAX_TABLE_FIELDS', '工作流引擎 | 数据表最大字段数量', '6', '-1', '1024', '超过上限，中断schema分析', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7001', 'CF_HDFS_SITE_defaultFS', '计算集群 | HDFS默认文件系统', '7', '-1', null, 'namenode单点部署设为hdfs://IP:PORT，HA部署设为hdfs://CLUSTER_NAME', '0', '2017-05-19 15:09:42', 'admin', '2017-05-19 15:09:42', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7002', 'CF_HDFS_WORK_ROOT', '计算集群 | HDFS工作根目录', '7', '-1', '/user/lambda_mls', '根据hdfs用户名调整，完整拼接路径 e.g. ${HDFS_SITE}/user/lambda_mls', '0', '2017-05-19 15:26:23', 'admin', '2017-05-19 15:26:23', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7003', 'CF_LOCAL_WORK_ROOT', '计算集群 | 本地工作根目录', '7', '-1', '/var/lambda_mls', '根据实际磁盘挂载调整', '0', '2017-05-19 15:26:23', 'admin', '2017-05-19 15:26:23', 'admin');
@@ -1395,7 +1395,7 @@ CREATE TABLE `wf_flow` (
   UNIQUE KEY `Index_1` (`OWNER_EXPERIMENT_ID`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_PROJECT_ID`,`STATUS`,`FLOW_STATE`,`LAST_UPDATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流表，记录当前的实验状态，由一系列子表记录实验画布上节点和边的图形信息，以及节点参数内容和输出内容\r\n\r\n                            ';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流表，记录当前的实验状态，由一系列子表记录实验画布上节点和边的图形信息，以及节点参数内容和输出内容\r\n\r\n                            ';
 
 -- ----------------------------
 -- Records of wf_flow
@@ -1442,7 +1442,7 @@ CREATE TABLE `wf_flow_node` (
   `POSITION_X` bigint(20) NOT NULL DEFAULT '0' COMMENT '流程图节点X轴坐标',
   `POSITION_Y` bigint(20) NOT NULL DEFAULT '0' COMMENT '流程图节点Y轴坐标',
   `LAST_TASK_ID` bigint(20) DEFAULT NULL COMMENT '最后任务ID',
-  `WARNING_MSG` varchar(256) DEFAULT NULL COMMENT '警告消息',
+  `WARNING_MSG` varchar(512) DEFAULT NULL COMMENT '警告消息',
   `NODE_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '节点状态\r\n            0：not ready，未就绪\r\n            1：ready，已就绪\r\n            2：preparing，准备中\r\n            3：running，运行中\r\n            4：success，运行成功\r\n            5：error，运行出错',
   `COMMENT` varchar(800) DEFAULT NULL COMMENT '备注，人工编辑',
   `SUMMARY` varchar(800) DEFAULT NULL COMMENT '概要，自动生成',
@@ -1456,7 +1456,7 @@ CREATE TABLE `wf_flow_node` (
   KEY `Index_1` (`OWNER_FLOW_ID`,`REF_MODULE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`REF_MODULE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
 
 -- ----------------------------
 -- Records of wf_flow_node
@@ -1520,7 +1520,7 @@ CREATE TABLE `wf_flow_node_parameter` (
   `IS_GLOBAL_PARAMETER` int(11) NOT NULL DEFAULT '0' COMMENT '是否为全局参数\r\n            0：否\r\n            1：是',
   `LAST_GLOBAL_PARAMETER_ID` bigint(20) DEFAULT NULL COMMENT '最后全局参数ID',
   `IS_DUPLICATED` int(11) NOT NULL DEFAULT '0' COMMENT '是否被复制\r\n            0：否\r\n            1：是\r\n            \r\n            创建快照和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型特征值发生更新时，判断是否创建新对象来保存新值',
-  `WARNING_MSG` varchar(256) DEFAULT NULL COMMENT '警告消息',
+  `WARNING_MSG` varchar(512) DEFAULT NULL COMMENT '警告消息',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',

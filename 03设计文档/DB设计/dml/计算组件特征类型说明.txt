@@ -1,19 +1,28 @@
 
 
+仅完成特征值校验和对应事件处理，不做任何逻辑判断，告警消息用于返回到外部
 
+public class CharValue {
+	String charValue;	//特征值
+	Interger isDuplicated;
+	String inText;		//传入文本内容，所有非基础特征类型以文本内容方式传入
+	String outText;		//传出文本内容，代码脚本、普通JSON对象、算法参数等以文本内容方式进行传出
+	IRichModel outObject;	//传出对象内容，outText之外的非基础特征类型以对象内容方式进行传出
+} 
 
-public class CharValue implements IRichModel {
-	String cmptChar;
-	String rawValue;
-	JsonObject ObjValue;
+public class CharValueContext implements IRichModel {
+	WorkflowContxt workflowContext;
+	CmptChar cmptChar;
+	CharDefaultValue defaultValue;
+	CharValue charValue;
 	String warningMsg;
 }
 
-//CharValueContentDto = CharValue
+
 
 @service
 public interface ICharType {
-	//方法失败或异常抛出moduleException，组件类实现该接口，适当封装一些中间abstract组件类以便复用
+	//方法失败或异常抛出CharValueException，组件CharType类实现该接口，对CharValue事件捕获，适当封装一些中间abstract类加以复用
 	
 	
 	////////////////////////////////////组件bean初始化//////////////////////////////////////////
@@ -27,42 +36,56 @@ public interface ICharType {
 	
 	//////////////////////////////节点增删查和参数更改事件相关//////////////////////////////////
 	
-	//是否捕获特征值新增事件
-	//返回false，否
-	//返回true，是
-	boolean catchCreateValue();
+    //是否捕获特征值新增事件
+    //返回false，否
+    //返回true，是
+    boolean catchCreateValue();
 
-	//发生特征值新增时（创建对象，设置对象内容）
-	void onCreateValue(CharValueContentDto<char, charValue>);
-	
-	//是否捕获特征值删除事件
-	//返回false，否
-	//返回true，是
-	boolean catchDeleteValue();
-	
-	//发生特征值删除时（删除对象）
-	void onDeleteValue(CharValueContentDto<char, charValue>);
-	
-	//是否捕获特征值查询事件
-	//返回false，否
-	//返回true，是
-	boolean catchQueryValue();
-	
-	//发生特征值查询时（展开对象，设置对象内容）
-	void onQueryValue(CharValueContentDto<char, charValue>);
-	
-	//是否捕获特征值更改事件
-	//返回false，否
-	//返回true，是
-	boolean catchUpdateValue();
+    //发生特征值新增时（创建对象，设置对象内容）
+    void onCreateValue(CharValueContentDto<char, charValue>);
 
-	//发生特征值更改时（更新对象，设置对象内容，updateCharValue传入对象修改内容）
-	void onUpdateValue(CharValueContentDto<char, charValue>, updateCharValue);
+    //是否捕获特征值删除事件
+    //返回false，否
+    //返回true，是
+    boolean catchDeleteValue();
+
+    //发生特征值删除时（删除对象）
+    void onDeleteValue(CharValueContentDto<char, charValue>);
+
+    //是否捕获特征值恢复事件
+    //返回false，否
+    //返回true，是
+    boolean catchRecoverValue();
+
+    //发生特征值恢复时（恢复对象）
+    void onRecoverValue(CharValueContentDto<char, charValue>);
+
+    //是否捕获特征值查询事件
+    //返回false，否
+    //返回true，是
+    boolean catchQueryValue();
+
+    //发生特征值查询时（展开对象，设置对象内容）
+    //void onQueryValue(CharValueContentDto<char, charValue>);
+
+    //是否捕获特征值更改事件
+    //返回false，否
+    //返回true，是
+    boolean catchUpdateValue();
+
+    //发生特征值更改时（更新对象，设置对象内容，updateCharValue传入对象修改内容）
+    void onUpdateValue(CharValueContentDto<char, charValue>, updateCharValue);
 	
-	//必须，校验特征值正确性和合法性
-	//返回false，不通过
-	//返回true，通过
-	boolean validateValue(CharValueContentDto<char, charValue>);
+
+    //是否捕获特征值校验事件
+    //返回false，否
+    //返回true，是
+    boolean catchCheckValue();
+
+    //必须，校验特征值正确性和合法性（直接打回）
+    //返回false，不通过
+    //返回true，通过
+    boolean onCheckValue(CharValueContentDto<char, charValue>);
 }
 
 
