@@ -1,5 +1,6 @@
 package com.yatop.lambda.manager.exception;
 
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.manager.api.response.JsonResponse;
 import org.slf4j.Logger;
@@ -60,7 +61,7 @@ public class GlobalControllerExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public Object requestParamErrorHandler(HttpServletRequest req, Exception exception) throws Exception {
-        LambdaException lambdaException = new LambdaException("未捕获异常", "系统发生错误，请联系技术人员", exception);
+        LambdaException lambdaException = new LambdaException(LambdaExceptionEnum.Y_INTERNAL_DEFAULT_ERROR, "未捕获异常", "发生未知错误，请联系技术人员", exception);
         logger.error("未捕获异常", lambdaException);
         return JsonResponse.build(lambdaException);
     }
@@ -69,8 +70,8 @@ public class GlobalControllerExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public Object requestParamErrorHandler(HttpServletRequest req, BindException exception) throws Exception {
-        LambdaException lambdaException = new LambdaException("请求参数错误", "请求参数错误", exception);
-        logger.warn("请求参数错误", lambdaException);
+        LambdaException lambdaException = new LambdaException(LambdaExceptionEnum.Z_SERVICE_DEFAULT_ERROR, "请求参数错误", "请求参数错误", exception);
+        logger.info("请求参数错误", lambdaException);
         return JsonResponse.build(lambdaException);
     }
 
@@ -78,7 +79,7 @@ public class GlobalControllerExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public Object requestParamErrorHandler(HttpServletRequest req, LambdaException lambdaException) throws Exception {
-        logger.warn("业务处理错误", lambdaException);
+        logger.info("业务异常错误", lambdaException);
         return JsonResponse.build(lambdaException);
     }
 

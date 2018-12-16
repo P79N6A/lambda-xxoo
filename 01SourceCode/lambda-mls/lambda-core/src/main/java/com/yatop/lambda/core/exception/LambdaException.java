@@ -7,73 +7,89 @@ import java.util.List;
 
 public class LambdaException extends RuntimeException {
 
-	/*
-	 * 	错误枚举
-	 * */
-	private LambdaExceptionEnum errorEnum;
+    /*
+     * 	异常代码
+     * */
+    private String code;
 
 	/*
-	* 	错误提示
+	* 	异常线索
 	* */
-	private String errorHint;
+	private String hint;
+
+    /*
+     * 	异常消息
+     * */
+    private String message;
 
 	/*
-	 * 	错误消息链
+	 * 	异常消息链
 	 * */
-	private List<String> errorMsgChain;
+	private List<String> messageChain;
 
-	public LambdaException(String errorMessage, String errorHint) {
-		this(LambdaExceptionEnum.ZZ_DEFAULT_ERROR, errorMessage, errorHint);
-    }
-
-    public LambdaException(LambdaExceptionEnum errorEnum, String errorMessage, String errorHint) {
-		super(errorEnum.getErrorCode() + "#" + errorHint + "#" + errorMessage);
-		this.errorEnum = errorEnum;
-		this.errorHint = errorHint;
-		this.errorMsgChain = new ArrayList<String>();
-		errorMsgChain.add(errorMessage);
+	//抛出异常
+	public LambdaException(LambdaExceptionEnum exceptionEnum, String message) {
+		this(exceptionEnum, message, exceptionEnum.getHint());
 	}
 
-    public LambdaException(String errorMessage, String errorHint, Throwable e) {
-        this(LambdaExceptionEnum.ZZ_DEFAULT_ERROR, errorMessage, errorHint, e);
-    }
-
-    public LambdaException(LambdaExceptionEnum errorEnum, String errorMessage, String errorHint, Throwable e) {
-		this(errorEnum, errorMessage, errorHint);
-		this.initCause(e);
+	//抛出异常，自定义错误提示
+    public LambdaException(LambdaExceptionEnum exceptionEnum, String message, String hint) {
+		super(message);
+		this.code = exceptionEnum.getCode();
+		this.hint = hint;
+		this.message = buildDetailMessage(exceptionEnum.getCode(), message, hint);
+		this.messageChain = new ArrayList<String>();
+        messageChain.add(this.message);
 	}
 
-	//返回捕获错误代码
-    public LambdaException(String errorMessage, String errorHint, LambdaException e) {
-		super(e.getErrorCode() + "#" + errorHint + "#" + errorMessage);
-		this.errorEnum = e.getErrorEnum();
-		this.errorHint = errorHint;
-		this.errorMsgChain = e.getErrorMsgChain();
-		this.initCause(e);
-		errorMsgChain.add(errorMessage);
-    }
-
-    //返回当前错误代码
-	public LambdaException(LambdaExceptionEnum errorEnum, String errorMessage, String errorHint, LambdaException e) {
-		super(errorEnum.getErrorCode() + "#" + errorHint + "#" + errorMessage);
-		this.errorEnum = errorEnum;
-		this.errorHint = errorHint;
-		this.errorMsgChain = e.getErrorMsgChain();
-		this.initCause(e);
-		errorMsgChain.add(errorMessage);
+	//捕获到一般异常
+	public LambdaException(LambdaExceptionEnum exceptionEnum, String message, Throwable e) {
+		this(exceptionEnum, message, exceptionEnum.getHint(), e);
 	}
 
-	public LambdaExceptionEnum getErrorEnum() {
-		return errorEnum;
+	//捕获到一般异常，自定义错误提示
+    public LambdaException(LambdaExceptionEnum exceptionEnum, String message, String hint, Throwable e) {
+        super(message, e);
+        this.code = exceptionEnum.getCode();
+        this.hint = hint;
+        this.message = buildDetailMessage(exceptionEnum.getCode(), message, hint);
+        this.messageChain = new ArrayList<String>();
+        messageChain.add(this.message);
 	}
 
-    public String getErrorCode() {
-        return errorEnum.getErrorCode();
+	//捕获到业务异常
+    public LambdaException(LambdaExceptionEnum exceptionEnum, String message, LambdaException e) {
+        this(exceptionEnum, message, exceptionEnum.getHint(), e);
     }
 
-    public List<String> getErrorMsgChain() { return errorMsgChain; }
+    //捕获到业务异常，自定义错误提示
+	public LambdaException(LambdaExceptionEnum exceptionEnum, String message, String hint, LambdaException e) {
+        super(message, e);
+		this.code = exceptionEnum.getCode();
+		this.hint = hint;
+        this.message = buildDetailMessage(exceptionEnum.getCode(), message, hint);
+		this.messageChain = e.getMessageChain();
+        messageChain.add(this.message);
+	}
 
-    public String getErrorHint() {
-        return errorHint;
+    private static String buildDetailMessage(String code, String message, String hint) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(code).append(": ").append(hint).append(", ").append(message);
+        return sb.toString();
     }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getHint() {
+        return hint;
+    }
+
+    @Override
+    public String getMessage() {
+	    return message;
+    }
+
+    public List<String> getMessageChain() { return messageChain; }
 }

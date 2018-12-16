@@ -45,8 +45,8 @@ CharType类&Module类节点事件流处理说明：
 	 ${Engine Loop(Downstream Node Schema Clean<Empty Schema>)} --> Delete Node End
 
 Support Canvas Node & Snapshot Node
-（3）Query Node Begin --> ${Engine Fetch Node Content} --> ${Engine Global Parameter Override(From Scheduler Execution)} --> CharType.onQueryValue --> [Module.onCheckParameter - skip if execution ???] --> 
-	 [${Engine Accept Change} - skip if execution ???] --> Query Node End
+（3）Query Node Begin --> ${Engine Fetch Node Content} --> ${Engine Global Parameter Override(From Scheduler Execution)} --> CharType.onQueryValue --> Module.onCheckParameter --> 
+	 ${Engine Accept Change} --> Query Node End
 
 （4）Update Parameter Begin --> CharType.validateValue --> ${Engine Fetch Node Content} --> CharType.onUpdateValue --> CharType.onQueryValue --> Module.onCheckParameter --> ${Engine Accept Change} -->
 	 ${Engine Loop(Cur & Downstream Node Schema Analyze)} --> Update Parameter End

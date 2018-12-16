@@ -13,7 +13,7 @@ public class JsonResponse implements Serializable{
 
 	private String errorCode;
 
-    private String errorMsg;
+    private String errorMessage;
 
     private String errorHint;
 
@@ -24,9 +24,9 @@ public class JsonResponse implements Serializable{
 
     private JsonResponse(LambdaException e) {
         this.success = false;
-        this.errorCode = e.getErrorCode();
-        this.errorMsg = e.getErrorMsgChain().get(0);
-        this.errorHint = e.getErrorHint();
+        this.errorCode = e.getCode();
+        this.errorMessage = e.getMessage();
+        this.errorHint = e.getHint();
     }
 
     public Boolean getSuccess() {
@@ -53,12 +53,12 @@ public class JsonResponse implements Serializable{
         this.errorCode = errorCode;
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     public String getErrorHint() {
