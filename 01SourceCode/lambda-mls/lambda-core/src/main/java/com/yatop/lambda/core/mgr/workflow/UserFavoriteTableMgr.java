@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.workflow;
 
 import com.yatop.lambda.base.model.WfUserFavoriteTable;
 import com.yatop.lambda.base.model.WfUserFavoriteTableExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.exception.LambdaException;
@@ -28,11 +29,11 @@ public class UserFavoriteTableMgr extends BaseMgr {
                 favorite.isOperIdNotColoured() ||
                 favorite.isTableIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert user favorite table failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert user favorite table failed -- invalid insert data.", "无效插入数据");
         }
 
         if(existsUserFavoriteTable(favorite.getProjectId(), favorite.getOperId(), favorite.getTableId())) {
-            throw new LambdaException("Insert user favorite table failed -- user favorite table existed.", "用户收藏记录已存在");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert user favorite table failed -- user favorite table existed.", "用户收藏记录已存在");
         }
 
         WfUserFavoriteTable insertFavorite = new WfUserFavoriteTable();
@@ -47,7 +48,7 @@ public class UserFavoriteTableMgr extends BaseMgr {
             wfUserFavoriteTableMapper.insertSelective(insertFavorite);
             return insertFavorite;
         } catch (Throwable e) {
-            throw new LambdaException("Insert user favorite table failed.", "插入用户收藏记录失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert user favorite table failed.", "插入用户收藏记录失败", e);
         }
     }
 
@@ -63,11 +64,11 @@ public class UserFavoriteTableMgr extends BaseMgr {
                 favorite.isOperIdNotColoured() ||
                 favorite.isTableIdNotColoured() ||
                 DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete user favorite table failed -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete user favorite table failed -- invalid delete condition.", "无效删除条件");
         }
 
         if(!existsUserFavoriteTable(favorite.getProjectId(), favorite.getOperId(), favorite.getTableId())) {
-            throw new LambdaException("Delete user favorite table failed -- user favorite table not found.", "用户收藏记录未找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete user favorite table failed -- user favorite table not found.", "用户收藏记录未找到");
         }
 
         try {
@@ -81,7 +82,7 @@ public class UserFavoriteTableMgr extends BaseMgr {
                     .andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfUserFavoriteTableMapper.updateByExampleSelective(deleteFavorite, example);
         } catch (Throwable e) {
-            throw new LambdaException("Delete user favorite table exists failed.", "删除用户收藏记录失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete user favorite table exists failed.", "删除用户收藏记录失败", e);
         }
     }
 
@@ -93,7 +94,7 @@ public class UserFavoriteTableMgr extends BaseMgr {
      * */
     public List<WfUserFavoriteTable> queryUserFavoriteTable(Long projectId, String operId, PagerUtil pager) {
         if(DataUtil.isNull(projectId) || DataUtil.isNull(operId)){
-            throw new LambdaException("Query user favorite table failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query user favorite table failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -103,7 +104,7 @@ public class UserFavoriteTableMgr extends BaseMgr {
             return wfUserFavoriteTableMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query user favorite table failed.", "查询用户收藏记录失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query user favorite table failed.", "查询用户收藏记录失败", e);
         }
     }
 
@@ -115,14 +116,14 @@ public class UserFavoriteTableMgr extends BaseMgr {
      * */
     public boolean existsUserFavoriteTable(Long projectId, String OperId, Long tableId)  {
         if(DataUtil.isNull(projectId) || DataUtil.isEmpty(OperId) || DataUtil.isNull(tableId))
-            throw new LambdaException("Check user favorite table exists failed -- invalid check condition.", "无效检查条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check user favorite table exists failed -- invalid check condition.", "无效检查条件");
 
         try {
             WfUserFavoriteTableExample example = new WfUserFavoriteTableExample();
             example.createCriteria().andProjectIdEqualTo(projectId).andOperIdEqualTo(OperId).andTableIdEqualTo(tableId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfUserFavoriteTableMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
-            throw new LambdaException("Check user favorite table exists failed.", "检查用户收藏是否已存在失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check user favorite table exists failed.", "检查用户收藏是否已存在失败", e);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.experiment;
 
 import com.yatop.lambda.base.model.EmExperiment;
 import com.yatop.lambda.base.model.EmExperimentExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.ExperimentTypeEnum;
@@ -29,17 +30,17 @@ public class ExperimentMgr extends BaseMgr {
                 experiment.isExperimentTypeNotColoured() ||
                 experiment.isOwnerProjectIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert experiment info failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Insert experiment info failed -- invalid insert data.", "无效插入数据");
         }
 
         if(experiment.getExperimentType() == ExperimentTypeEnum.PREDICTION.getType()) {
             if(experiment.isMainExperimentIdNotColoured())
-                throw new LambdaException("Insert experiment info failed -- missing main-experiment-id.", "主实验ID缺失");
+                throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Insert experiment info failed -- missing main-experiment-id.", "主实验ID缺失");
 
             if(experiment.isMainExperimentIdColoured() && existsPredictionExperiment(experiment.getOwnerProjectId(), experiment.getMainExperimentId())) {
-                throw new LambdaException("Insert experiment info failed -- prediction experiment existed.", "预测实验已存在");
+                throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Insert experiment info failed -- prediction experiment existed.", "预测实验已存在");
             } else if(experiment.isMainExperimentIdColoured() && !existsProjectMember(experiment.getMainExperimentId())) {
-                throw new LambdaException("Insert experiment info failed -- main experiment not exists.", "主实验信息不存在");
+                throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Insert experiment info failed -- main experiment not exists.", "主实验信息不存在");
             }
         }
 
@@ -63,7 +64,7 @@ public class ExperimentMgr extends BaseMgr {
             }
             return insertExperiment;
         } catch (Throwable e) {
-            throw new LambdaException("Insert experiment info failed.", "插入实验信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Insert experiment info failed.", "插入实验信息失败", e);
         }
     }
 
@@ -75,7 +76,7 @@ public class ExperimentMgr extends BaseMgr {
      * */
     public int deleteExperiment(EmExperiment experiment, String operId) {
         if(DataUtil.isNull(experiment) || experiment.isExperimentIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete experiment info failed -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Delete experiment info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -86,7 +87,7 @@ public class ExperimentMgr extends BaseMgr {
             deleteExperiment.setLastUpdateOper(operId);
             return emExperimentMapper.updateByPrimaryKeySelective(deleteExperiment);
         } catch (Throwable e) {
-            throw new LambdaException("Delete experiment info failed.", "删除实验信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Delete experiment info failed.", "删除实验信息失败", e);
         }
     }
 
@@ -98,7 +99,7 @@ public class ExperimentMgr extends BaseMgr {
      * */
     public int updateExperiment(EmExperiment experiment, String operId) {
         if( DataUtil.isNull(experiment) || experiment.isExperimentIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update experiment info failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Update experiment info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(experiment.isExperimentNameNotColoured() &&
@@ -106,7 +107,7 @@ public class ExperimentMgr extends BaseMgr {
                 experiment.isExperimentLocalDirNotColoured() &&
                 experiment.isSummaryNotColoured() &&
                 experiment.isDescriptionNotColoured() ) {
-            throw new LambdaException("Update experiment info failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Update experiment info failed -- invalid update data.", "无效更新内容");
         }
 
         EmExperiment updateExperiment = new EmExperiment();
@@ -127,7 +128,7 @@ public class ExperimentMgr extends BaseMgr {
             updateExperiment.setLastUpdateOper((operId));
             return emExperimentMapper.updateByPrimaryKeySelective(updateExperiment);
         } catch (Throwable e) {
-            throw new LambdaException("Update experiment info failed.", "更新实验信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Update experiment info failed.", "更新实验信息失败", e);
         }
     }
 
@@ -139,18 +140,18 @@ public class ExperimentMgr extends BaseMgr {
      * */
     public EmExperiment queryExperiment(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query experiment info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed -- invalid query condition.", "无效查询条件");
         }
 
         EmExperiment experiment;
         try {
             experiment = emExperimentMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query experiment info failed.", "查询实验信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed.", "查询实验信息失败", e);
         }
 
         if(DataUtil.isNull(experiment) || (experiment.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query experiment info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed -- invalid status or not found.", "已删除或未查找到");
 
         return experiment;
     }
@@ -163,7 +164,7 @@ public class ExperimentMgr extends BaseMgr {
      * */
     public List<EmExperiment> queryExperiment(Long projectId, PagerUtil pager) {
         if(DataUtil.isNull(projectId)){
-            throw new LambdaException("Query experiment info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -174,7 +175,7 @@ public class ExperimentMgr extends BaseMgr {
             return emExperimentMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query experiment info failed.", "查询实验信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed.", "查询实验信息失败", e);
         }
     }
 
@@ -186,7 +187,7 @@ public class ExperimentMgr extends BaseMgr {
      * */
     public List<EmExperiment> queryExperiment(Long projectId, String keyword, PagerUtil pager) {
         if(DataUtil.isNull(projectId) || DataUtil.isEmpty(keyword)){
-            throw new LambdaException("Query experiment info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -198,7 +199,7 @@ public class ExperimentMgr extends BaseMgr {
             return emExperimentMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query experiment info failed.", "查询实验信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed.", "查询实验信息失败", e);
         }
     }
 
@@ -210,7 +211,7 @@ public class ExperimentMgr extends BaseMgr {
      * */
     public EmExperiment queryPredictionExperiment(Long projectId, Long mainExperimentId) {
         if(DataUtil.isNull(projectId) || DataUtil.isNull(mainExperimentId)){
-            throw new LambdaException("Query prediction experiment info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query prediction experiment info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -219,7 +220,7 @@ public class ExperimentMgr extends BaseMgr {
             List<EmExperiment> resultList = emExperimentMapper.selectByExample(example);
             return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
         } catch (Throwable e) {
-            throw new LambdaException("Query prediction experiment info failed.", "查询预测实验信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query prediction experiment info failed.", "查询预测实验信息失败", e);
         }
     }
 
@@ -231,14 +232,14 @@ public class ExperimentMgr extends BaseMgr {
      * */
     public boolean existsProjectMember(Long ExperimentId)  {
         if(DataUtil.isNull(ExperimentId))
-            throw new LambdaException("Check experiment exists failed -- invalid check condition.", "无效检查条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Check experiment exists failed -- invalid check condition.", "无效检查条件");
 
         try {
             EmExperimentExample example = new EmExperimentExample();
             example.createCriteria().andExperimentIdEqualTo(ExperimentId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return emExperimentMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
-            throw new LambdaException("Check experiment exists failed.", "检查已存在实验失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Check experiment exists failed.", "检查已存在实验失败", e);
         }
     }
 
@@ -250,7 +251,7 @@ public class ExperimentMgr extends BaseMgr {
      * */
     public boolean existsPredictionExperiment(Long projectId, Long mainExperimentId)  {
         if(DataUtil.isNull(projectId) && DataUtil.isNull(mainExperimentId))
-            throw new LambdaException("Check prediction experiment exists failed -- invalid check condition.", "无效检查条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Check prediction experiment exists failed -- invalid check condition.", "无效检查条件");
 
         try {
             EmExperimentExample example = new EmExperimentExample();
@@ -258,7 +259,7 @@ public class ExperimentMgr extends BaseMgr {
                     .andMainExperimentIdEqualTo(mainExperimentId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return emExperimentMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
-            throw new LambdaException("Check prediction experiment exists failed.", "检查已存在预测实验失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Check prediction experiment exists failed.", "检查已存在预测实验失败", e);
         }
     }
 }

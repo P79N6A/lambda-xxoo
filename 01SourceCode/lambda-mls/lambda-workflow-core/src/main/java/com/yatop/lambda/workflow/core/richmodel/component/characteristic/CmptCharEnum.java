@@ -6,13 +6,12 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
 public class CmptCharEnum extends CfCmptCharEnum implements IRichModel {
 
-    @Override
-    public JSONObject toJSON() {
-        return null;
-    }
+    public CmptCharEnum() {}
+
+    public CmptCharEnum(CfCmptCharEnum data) {super.copyProperties(data);}
 
     @Override
     public void clear() {
-
+        super.clear();
     }
 }

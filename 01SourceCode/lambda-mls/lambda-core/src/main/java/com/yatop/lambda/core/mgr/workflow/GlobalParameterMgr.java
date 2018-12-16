@@ -3,6 +3,7 @@ package com.yatop.lambda.core.mgr.workflow;
 import com.yatop.lambda.base.model.WfFlowGlobalParameter;
 import com.yatop.lambda.base.model.WfFlowGlobalParameterExample;
 import com.yatop.lambda.base.model.WfFlowNodeParameter;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.IsGlobalParameterEnum;
@@ -37,11 +38,11 @@ public class GlobalParameterMgr extends BaseMgr {
                 globalParameter.isRelCharIdNotColoured() ||
                 globalParameter.isDefaultValueNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert global parameter failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert global parameter failed -- invalid insert data.", "无效插入数据");
         }
 
         if(existsGlobalParameter(globalParameter.getRelNodeId(), globalParameter.getRelCharId())) {
-            throw new LambdaException("Insert global parameter failed -- global parameter existed.", "全局参数已存在");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert global parameter failed -- global parameter existed.", "全局参数已存在");
         }
 
         try {
@@ -51,7 +52,7 @@ public class GlobalParameterMgr extends BaseMgr {
             refNodeParameter.setIsGlobalParameter(IsGlobalParameterEnum.YES.getMark());
             nodeParameterMgr.updateNodeParameter(refNodeParameter, operId);
         } catch (LambdaException e) {
-            throw new LambdaException("Insert global parameter failed -- synchronize node parameter failed.", "同步节点参数失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert global parameter failed -- synchronize node parameter failed.", "同步节点参数失败", e);
         }
 
 
@@ -68,7 +69,7 @@ public class GlobalParameterMgr extends BaseMgr {
             wfFlowGlobalParameterMapper.insertSelective(insertGlobalParameter);
             return insertGlobalParameter;
         } catch (Throwable e) {
-            throw new LambdaException("Insert global parameter failed.", "插入全局参数失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert global parameter failed.", "插入全局参数失败", e);
         }
     }
 
@@ -80,7 +81,7 @@ public class GlobalParameterMgr extends BaseMgr {
      * */
     public int deleteGlobalParameter(WfFlowGlobalParameter globalParameter, String operId) {
         if(DataUtil.isNull(globalParameter) || globalParameter.isGlobalParamIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete global parameter -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete global parameter -- invalid delete condition.", "无效删除条件");
         }
 
         /*
@@ -93,7 +94,7 @@ public class GlobalParameterMgr extends BaseMgr {
                 refNodeParameter.setIsGlobalParameter(IsGlobalParameterEnum.NO.getMark());
                 nodeParameterMgr.updateNodeParameter(refNodeParameter, operId);
             } catch (LambdaException e) {
-                throw new LambdaException("Insert global parameter failed -- synchronize node parameter failed.", "同步节点参数失败", e);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert global parameter failed -- synchronize node parameter failed.", "同步节点参数失败", e);
             }
         }*/
 
@@ -105,7 +106,7 @@ public class GlobalParameterMgr extends BaseMgr {
             deleteGlobalParameter.setLastUpdateOper(operId);
             return wfFlowGlobalParameterMapper.updateByPrimaryKeySelective(deleteGlobalParameter);
         } catch (Throwable e) {
-            throw new LambdaException("Delete global parameter failed.", "删除全局参数失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete global parameter failed.", "删除全局参数失败", e);
         }
     }
 
@@ -117,7 +118,7 @@ public class GlobalParameterMgr extends BaseMgr {
      * */
     public int recoverGlobalParameter4RecoverNode(WfFlowGlobalParameter globalParameter, String operId) {
         if(DataUtil.isNull(globalParameter) || globalParameter.isGlobalParamIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Recover global parameter -- invalid recover condition.", "无效恢复条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover global parameter -- invalid recover condition.", "无效恢复条件");
         }
 
         try {
@@ -128,7 +129,7 @@ public class GlobalParameterMgr extends BaseMgr {
             recoverGlobalParameter.setLastUpdateOper(operId);
             return wfFlowGlobalParameterMapper.updateByPrimaryKeySelective(recoverGlobalParameter);
         } catch (Throwable e) {
-            throw new LambdaException("Recover global parameter failed.", "恢复全局参数失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover global parameter failed.", "恢复全局参数失败", e);
         }
     }
 
@@ -140,14 +141,14 @@ public class GlobalParameterMgr extends BaseMgr {
      * */
     public int updateGlobalParameter(WfFlowGlobalParameter globalParameter, String operId) {
         if( DataUtil.isNull(globalParameter) || globalParameter.isGlobalParamIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update global parameter failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update global parameter failed -- invalid update condition.", "无效更新条件");
         }
 
         if(globalParameter.isGlobalParamNameNotColoured() &&
                 globalParameter.isDefaultValueNotColoured() &&
                 globalParameter.isWarningMsgNotColoured() &&
                 globalParameter.isDescriptionNotColoured()) {
-            throw new LambdaException("Update global parameter failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update global parameter failed -- invalid update data.", "无效更新内容");
         }
 
         WfFlowGlobalParameter updateGlobalParameter = new WfFlowGlobalParameter();
@@ -166,7 +167,7 @@ public class GlobalParameterMgr extends BaseMgr {
             updateGlobalParameter.setLastUpdateOper((operId));
             return wfFlowGlobalParameterMapper.updateByPrimaryKeySelective(updateGlobalParameter);
         } catch (Throwable e) {
-            throw new LambdaException("Update global parameter failed.", "更新全局参数失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update global parameter failed.", "更新全局参数失败", e);
         }
     }
 
@@ -178,18 +179,18 @@ public class GlobalParameterMgr extends BaseMgr {
      * */
     public WfFlowGlobalParameter queryGlobalParameter(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query global parameter failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query global parameter failed -- invalid query condition.", "无效查询条件");
         }
 
         WfFlowGlobalParameter globalParameter;
         try {
             globalParameter = wfFlowGlobalParameterMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query global parameter failed.", "查询全局参数失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query global parameter failed.", "查询全局参数失败", e);
         }
 
         if(DataUtil.isNull(globalParameter) || (globalParameter.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query global parameter failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query global parameter failed -- invalid status or not found.", "已删除或未查找到");
 
         return globalParameter;
     }
@@ -202,7 +203,7 @@ public class GlobalParameterMgr extends BaseMgr {
      * */
     public List<WfFlowGlobalParameter> queryGlobalParameterByFlowId(Long flowId, PagerUtil pager) {
         if(DataUtil.isNull(flowId)){
-            throw new LambdaException("Query global parameter failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query global parameter failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -213,7 +214,7 @@ public class GlobalParameterMgr extends BaseMgr {
             return wfFlowGlobalParameterMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query global parameter failed.", "查询全局参数失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query global parameter failed.", "查询全局参数失败", e);
         }
     }
 
@@ -225,7 +226,7 @@ public class GlobalParameterMgr extends BaseMgr {
      * */
     public boolean existsGlobalParameter(Long nodeId, String charId) {
         if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(charId)){
-            throw new LambdaException("Check global parameter exists failed -- invalid check condition.", "无效检查条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check global parameter exists failed -- invalid check condition.", "无效检查条件");
         }
 
         try {
@@ -233,7 +234,7 @@ public class GlobalParameterMgr extends BaseMgr {
             example.createCriteria().andRelNodeIdEqualTo(nodeId).andRelCharIdEqualTo(charId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfFlowGlobalParameterMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
-            throw new LambdaException("Check global parameter exists failed.", "检查全局参数是否已存在失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check global parameter exists failed.", "检查全局参数是否已存在失败", e);
         }
     }
 }

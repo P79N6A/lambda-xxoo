@@ -3,6 +3,7 @@ package com.yatop.lambda.core.mgr.workflow.execution;
 import com.yatop.lambda.base.model.WfExecutionJob;
 import com.yatop.lambda.base.model.WfExecutionTask;
 import com.yatop.lambda.base.model.WfExecutionTaskExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.TaskStateEnum;
@@ -36,7 +37,7 @@ public class ExecutionTaskMgr extends BaseMgr {
                 task.isReturnFileNotColoured() ||
                 task.isLogFileNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert task info failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert task info failed -- invalid insert data.", "无效插入数据");
         }
 
         WfExecutionTask insertTask = new WfExecutionTask();
@@ -58,7 +59,7 @@ public class ExecutionTaskMgr extends BaseMgr {
             wfExecutionTaskMapper.insertSelective(insertTask);
             return insertTask;
         } catch (Throwable e) {
-            throw new LambdaException("Insert task info failed.", "插入任务信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert task info failed.", "插入任务信息失败", e);
         }
     }
 
@@ -70,7 +71,7 @@ public class ExecutionTaskMgr extends BaseMgr {
      * */
     public int deleteTask(WfExecutionJob job, String operId) {
         if(DataUtil.isNull(job) || job.isJobIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete task info -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete task info -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -82,7 +83,7 @@ public class ExecutionTaskMgr extends BaseMgr {
             example.createCriteria().andOwnerJobIdEqualTo(job.getJobId());
             return wfExecutionTaskMapper.updateByExampleSelective(deleteTask, example);
         } catch (Throwable e) {
-            throw new LambdaException("Delete task info failed.", "删除任务信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete task info failed.", "删除任务信息失败", e);
         }
     }
 
@@ -94,7 +95,7 @@ public class ExecutionTaskMgr extends BaseMgr {
      * */
     public int updateTask(WfExecutionTask task, String operId) {
         if( DataUtil.isNull(task) || task.isTaskIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update task info failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update task info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(task.isExternalIdNotColoured() &&
@@ -104,7 +105,7 @@ public class ExecutionTaskMgr extends BaseMgr {
                 task.isTaskProgressNotColoured() &&
                 task.isTaskStateNotColoured() &&
                 task.isDescriptionNotColoured()) {
-            throw new LambdaException("Update task info failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update task info failed -- invalid update data.", "无效更新内容");
         }
 
         WfExecutionTask updateTask = new WfExecutionTask();
@@ -129,7 +130,7 @@ public class ExecutionTaskMgr extends BaseMgr {
             updateTask.setLastUpdateOper((operId));
             return wfExecutionTaskMapper.updateByPrimaryKeySelective(updateTask);
         } catch (Throwable e) {
-            throw new LambdaException("Update task info failed.", "更新任务信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update task info failed.", "更新任务信息失败", e);
         }
     }
 
@@ -141,18 +142,18 @@ public class ExecutionTaskMgr extends BaseMgr {
      * */
     public WfExecutionTask queryTask(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query task info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed -- invalid query condition.", "无效查询条件");
         }
 
         WfExecutionTask task;
         try {
             task = wfExecutionTaskMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query task info failed.", "查询任务信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed.", "查询任务信息失败", e);
         }
 
         if(DataUtil.isNull(task) || (task.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query task info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed -- invalid status or not found.", "已删除或未查找到");
 
         return task;
     }
@@ -165,7 +166,7 @@ public class ExecutionTaskMgr extends BaseMgr {
      * */
     public List<WfExecutionTask> queryTask(Long jobId, Long nodeId) {
         if(DataUtil.isNull(jobId) || DataUtil.isNull(nodeId)){
-            throw new LambdaException("Query task info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -174,7 +175,7 @@ public class ExecutionTaskMgr extends BaseMgr {
             example.setOrderByClause("CREATE_TIME ASC");
             return wfExecutionTaskMapper.selectByExample(example);
         } catch (Throwable e) {
-            throw new LambdaException("Query task info failed.", "查询任务信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed.", "查询任务信息失败", e);
         }
     }
 
@@ -186,7 +187,7 @@ public class ExecutionTaskMgr extends BaseMgr {
      * */
     public List<WfExecutionTask> queryTask(Long jobId, TaskStateEnum stateEnum, PagerUtil pager) {
         if(DataUtil.isNull(jobId) || DataUtil.isNull(stateEnum)){
-            throw new LambdaException("Query task info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -197,7 +198,7 @@ public class ExecutionTaskMgr extends BaseMgr {
             return wfExecutionTaskMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query task info failed.", "查询任务信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed.", "查询任务信息失败", e);
         }
     }
 
@@ -209,7 +210,7 @@ public class ExecutionTaskMgr extends BaseMgr {
      * */
     public List<WfExecutionTask> queryTaskByJobId(Long jobId, PagerUtil pager) {
         if(DataUtil.isNull(jobId)){
-            throw new LambdaException("Query task info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -220,7 +221,7 @@ public class ExecutionTaskMgr extends BaseMgr {
             return wfExecutionTaskMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query task info failed.", "查询任务信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed.", "查询任务信息失败", e);
         }
     }
 }

@@ -3,14 +3,14 @@ package com.yatop.lambda.workflow.core.context;
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.workflow.core.richmodel.data.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.model.ModelWarehouse;
-import com.yatop.lambda.workflow.core.utils.MapUtil;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
+import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;
 import com.yatop.lambda.workflow.core.richmodel.workflow.GlobalParameter;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePort;
 
 import java.util.TreeMap;
@@ -24,8 +24,8 @@ public class WorkflowContext {
     private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联的模型仓库
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();      //操作关联的节点
     private TreeMap<Long, NodeLink> links = new TreeMap<Long, NodeLink>();  //操作关联的节点链接
-    private TreeMap<String, NodeParameter> parameters = new TreeMap<String, NodeParameter>();  //操作关联的节点参数
-    private TreeMap<Long, NodePort> ports = new TreeMap<Long, NodePort>();  //操作关联的节点参数
+    private TreeMap<Long, NodePort> ports = new TreeMap<Long, NodePort>();  //操作关联的节点端口
+    private TreeMap<Long, NodeSchema> schemas = new TreeMap<Long, NodeSchema>();  //操作关联的节点端口
     private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联的节点参数
 
     public WorkflowContext(Project project, Experiment experiment, Workflow workflow) {
@@ -46,60 +46,60 @@ public class WorkflowContext {
         return workflow;
     }
 
-    public DataWarehouse getDataWarehouse(Long id) {
-        return dataWarehouses.get(id);
+    public DataWarehouse getDataWarehouse(Long dataWarehouseId) {
+        return dataWarehouses.get(dataWarehouseId);
     }
 
-    public ModelWarehouse getModelWarehouse(Long id) {
-        return modelWarehouses.get(id);
+    public ModelWarehouse getModelWarehouse(Long modelWarehouseId) {
+        return modelWarehouses.get(modelWarehouseId);
     }
 
-    public Node getNode(Long id) {
-        return nodes.get(id);
+    public Node getNode(Long nodeId) {
+        return nodes.get(nodeId);
     }
 
-    public NodeLink getLink(Long id) {
-        return links.get(id);
+    public NodeLink getLink(Long linkId) {
+        return links.get(linkId);
     }
 
-    public NodeParameter getParameter(Long id, String charId) {
-        return parameters.get(id + "#" + charId);
+    public NodePort getPort(Long portId) {
+        return ports.get(portId);
     }
 
-    public NodePort getPort(Long id) {
-        return ports.get(id);
+    public NodeSchema getSchema(Long schemaId) {
+        return schemas.get(schemaId);
     }
 
-    public GlobalParameter getGlobalParameter(Long id) {
-        return globalParameters.get(id);
+    public GlobalParameter getGlobalParameter(Long globalParameterId) {
+        return globalParameters.get(globalParameterId);
     }
 
-    public void setDataWarehouse(Long id, DataWarehouse warehouse) {
-        MapUtil.put(dataWarehouses, id, warehouse);
+    public void setDataWarehouse(Long dataWarehouseId, DataWarehouse warehouse) {
+        CollectionUtil.put(dataWarehouses, dataWarehouseId, warehouse);
     }
 
-    public void setModelWarehouse(Long id, ModelWarehouse warehouse) {
-        MapUtil.put(modelWarehouses, id, warehouse);
+    public void setModelWarehouse(Long modelWarehouseId, ModelWarehouse warehouse) {
+        CollectionUtil.put(modelWarehouses, modelWarehouseId, warehouse);
     }
 
-    public void setNode(Long id, Node node) {
-        MapUtil.put(nodes, id, node);
+    public void setNode(Long nodeId, Node node) {
+        CollectionUtil.put(nodes, nodeId, node);
     }
 
-    public void setLink(Long id, NodeLink link) {
-        MapUtil.put(links, id, link);
+    public void setLink(Long linkId, NodeLink link) {
+        CollectionUtil.put(links, linkId, link);
     }
 
-    public void setParameter(Long id, String charId, NodeParameter parameter) {
-        MapUtil.put(parameters, id + "#" + charId, parameter);
+    public void setPort(Long portId, NodePort port) {
+        CollectionUtil.put(ports, portId, port);
     }
 
-    public void setPort(Long id, NodePort port) {
-        MapUtil.put(ports, id, port);
+    public void setSchema(Long schemaId, NodeSchema schema) {
+        CollectionUtil.put(schemas, schemaId, schema);
     }
 
-    public void getGlobalParameter(Long id, GlobalParameter globalParameter) {
-        MapUtil.put(globalParameters, id, globalParameter);
+    public void getGlobalParameter(Long globalParameterId, GlobalParameter globalParameter) {
+        CollectionUtil.put(globalParameters, globalParameterId, globalParameter);
     }
 
     public JSONObject toJSON() {
@@ -111,12 +111,12 @@ public class WorkflowContext {
         experiment.clear();
         workflow.clear();
 
-        MapUtil.clear(dataWarehouses);
-        MapUtil.clear(modelWarehouses);
-        MapUtil.clear(nodes);
-        MapUtil.clear(links);
-        MapUtil.clear(parameters);
-        MapUtil.clear(ports);
-        MapUtil.clear(globalParameters);
+        CollectionUtil.clear(dataWarehouses);
+        CollectionUtil.clear(modelWarehouses);
+        CollectionUtil.clear(nodes);
+        CollectionUtil.clear(links);
+        CollectionUtil.clear(ports);
+        CollectionUtil.clear(schemas);
+        CollectionUtil.clear(globalParameters);
     }
 }

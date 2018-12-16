@@ -3,6 +3,7 @@ package com.yatop.lambda.core.mgr.workflow.node;
 import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.base.model.WfFlowNodePort;
 import com.yatop.lambda.base.model.WfFlowNodePortExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.exception.LambdaException;
@@ -29,7 +30,7 @@ public class NodePortMgr extends BaseMgr {
                 nodePort.isRefPortIdNotColoured() ||
                 nodePort.isRefCharIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert node port failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node port failed -- invalid insert data.", "无效插入数据");
         }
 
         WfFlowNodePort insertNodePort = new WfFlowNodePort();
@@ -45,7 +46,7 @@ public class NodePortMgr extends BaseMgr {
             wfFlowNodePortMapper.insertSelective(insertNodePort);
             return insertNodePort;
         } catch (Throwable e) {
-            throw new LambdaException("Insert node port failed.", "插入节点端口失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node port failed.", "插入节点端口失败", e);
         }
     }
 
@@ -57,7 +58,7 @@ public class NodePortMgr extends BaseMgr {
      * */
     public int deleteNodePort(WfFlowNode node, String operId) {
         if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete node port -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node port -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -69,7 +70,7 @@ public class NodePortMgr extends BaseMgr {
             example.createCriteria().andOwnerNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfFlowNodePortMapper.updateByExampleSelective(deleteNodePort, example);
         } catch (Throwable e) {
-            throw new LambdaException("Delete node port failed.", "删除节点端口失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node port failed.", "删除节点端口失败", e);
         }
     }
 
@@ -81,7 +82,7 @@ public class NodePortMgr extends BaseMgr {
      * */
     public int recoverNodePort(WfFlowNode node, String operId) {
         if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Recover node port -- invalid recover condition.", "无效恢复条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node port -- invalid recover condition.", "无效恢复条件");
         }
 
         try {
@@ -93,7 +94,7 @@ public class NodePortMgr extends BaseMgr {
             example.createCriteria().andOwnerNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.INVALID.getStatus());
             return wfFlowNodePortMapper.updateByExampleSelective(recoverNodePort, example);
         } catch (Throwable e) {
-            throw new LambdaException("Recover node port failed.", "恢复节点端口失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node port failed.", "恢复节点端口失败", e);
         }
     }
 
@@ -105,18 +106,18 @@ public class NodePortMgr extends BaseMgr {
      * */
     public WfFlowNodePort queryNodePort(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query node port failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- invalid query condition.", "无效查询条件");
         }
 
         WfFlowNodePort nodePort;
         try {
             nodePort = wfFlowNodePortMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query node port failed.", "查询节点端口失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed.", "查询节点端口失败", e);
         }
 
         if(DataUtil.isNull(nodePort) || (nodePort.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query node port failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- invalid status or not found.", "已删除或未查找到");
 
         return nodePort;
     }
@@ -129,7 +130,7 @@ public class NodePortMgr extends BaseMgr {
      * */
     public List<WfFlowNodePort> queryNodePortByNodeId(Long nodeId) {
         if(DataUtil.isNull(nodeId)){
-            throw new LambdaException("Query node port failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -138,7 +139,7 @@ public class NodePortMgr extends BaseMgr {
             example.setOrderByClause("CREATE_TIME ASC");
             return wfFlowNodePortMapper.selectByExample(example);
         } catch (Throwable e) {
-            throw new LambdaException("Query node port failed.", "查询节点端口失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed.", "查询节点端口失败", e);
         }
     }
 }

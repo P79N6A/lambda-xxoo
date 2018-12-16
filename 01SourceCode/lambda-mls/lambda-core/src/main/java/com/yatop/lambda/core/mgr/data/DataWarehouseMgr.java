@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.data;
 
 import com.yatop.lambda.base.model.DwDataWarehouse;
 import com.yatop.lambda.base.model.DwDataWarehouseExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.DataWarehouseTypeEnum;
@@ -32,15 +33,15 @@ public class DataWarehouseMgr extends BaseMgr {
                 warehouse.isDataDfsDirNotColoured() ||
                 warehouse.isDataLocalDirNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert data warehouse info failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Insert data warehouse info failed -- invalid insert data.", "无效插入数据");
         }
 
         if(warehouse.getDwType() == DataWarehouseTypeEnum.PUBLIC.getType()) {
-            throw new LambdaException("Insert data warehouse info failed -- public data warehouse not support.", "不支持公共数据库");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Insert data warehouse info failed -- public data warehouse not support.", "不支持公共数据库");
         }
 
         if(existsDataWarehouse(warehouse.getDwCode(), warehouse.getDwName(), null)) {
-            throw new LambdaException("Insert data warehouse info failed -- code or name conflict.", "数据库代码或名称冲突");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Insert data warehouse info failed -- code or name conflict.", "数据库代码或名称冲突");
         }
 
         DwDataWarehouse insertWarehouse = new DwDataWarehouse();
@@ -56,7 +57,7 @@ public class DataWarehouseMgr extends BaseMgr {
             dwDataWarehouseMapper.insertSelective(insertWarehouse);
             return insertWarehouse;
         } catch (Throwable e) {
-            throw new LambdaException("Insert data warehouse info failed.", "插入数据库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Insert data warehouse info failed.", "插入数据库信息失败", e);
         }
     }
 
@@ -68,7 +69,7 @@ public class DataWarehouseMgr extends BaseMgr {
      * */
     public int deleteDataWarehouse(DwDataWarehouse warehouse, String operId) {
         if(DataUtil.isNull(warehouse) || warehouse.isDwIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete data warehouse info failed -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Delete data warehouse info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -79,7 +80,7 @@ public class DataWarehouseMgr extends BaseMgr {
             deleteWarehouse.setLastUpdateOper(operId);
             return dwDataWarehouseMapper.updateByPrimaryKeySelective(deleteWarehouse);
         } catch (Throwable e) {
-            throw new LambdaException("Delete data warehouse info failed.", "删除数据库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Delete data warehouse info failed.", "删除数据库信息失败", e);
         }
     }
 
@@ -91,7 +92,7 @@ public class DataWarehouseMgr extends BaseMgr {
      * */
     public int updateDataWarehouse(DwDataWarehouse warehouse, String operId) {
         if( DataUtil.isNull(warehouse) || warehouse.isDwIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update data warehouse info failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data warehouse info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(warehouse.isDwCodeNotColoured() &&
@@ -99,12 +100,12 @@ public class DataWarehouseMgr extends BaseMgr {
                 warehouse.isDataDfsDirNotColoured() &&
                 warehouse.isDataLocalDirNotColoured() &&
                 warehouse.isDescriptionNotColoured()) {
-            throw new LambdaException("Update data warehouse info failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data warehouse info failed -- invalid update data.", "无效更新内容");
         }
 
         if((warehouse.isDwCodeColoured() || warehouse.isDwNameColoured()) &&
                 existsDataWarehouse(warehouse.getDwCode(), warehouse.getDwName(), warehouse.getDwId())) {
-            throw new LambdaException("Update data warehouse info failed -- code or name conflict.", "代码或名称冲突");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data warehouse info failed -- code or name conflict.", "代码或名称冲突");
         }
 
         DwDataWarehouse updateWarehouse = new DwDataWarehouse();
@@ -126,7 +127,7 @@ public class DataWarehouseMgr extends BaseMgr {
 
             return dwDataWarehouseMapper.updateByPrimaryKeySelective(updateWarehouse);
         } catch (Throwable e) {
-            throw new LambdaException("Update data warehouse info failed.", "更新数据库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data warehouse info failed.", "更新数据库信息失败", e);
         }
     }
 
@@ -138,7 +139,7 @@ public class DataWarehouseMgr extends BaseMgr {
      * */
     public DwDataWarehouse queryDataWarehouse(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query data warehouse info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed -- invalid query condition.", "无效查询条件");
         }
 
         DwDataWarehouse warehouse;
@@ -146,11 +147,11 @@ public class DataWarehouseMgr extends BaseMgr {
         try {
             warehouse = dwDataWarehouseMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query data warehouse info failed.", "查询数据库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed.", "查询数据库信息失败", e);
         }
 
         if(DataUtil.isNull(warehouse) || (warehouse.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query data warehouse info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed -- invalid status or not found.", "已删除或未查找到");
 
         return warehouse;
     }
@@ -170,7 +171,7 @@ public class DataWarehouseMgr extends BaseMgr {
             return dwDataWarehouseMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query data warehouse info failed.", "查询数据库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed.", "查询数据库信息失败", e);
         }
     }
 
@@ -182,7 +183,7 @@ public class DataWarehouseMgr extends BaseMgr {
      * */
     public List<DwDataWarehouse> queryDataWarehouse(String keyword, PagerUtil pager) {
         if(DataUtil.isEmpty(keyword)){
-            throw new LambdaException("Query data warehouse info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -195,7 +196,7 @@ public class DataWarehouseMgr extends BaseMgr {
             return dwDataWarehouseMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query data warehouse info failed.", "查询数据库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed.", "查询数据库信息失败", e);
         }
     }
 
@@ -207,7 +208,7 @@ public class DataWarehouseMgr extends BaseMgr {
      * */
     public List<DwDataWarehouse> queryDataWarehouse(DataWarehouseTypeEnum type, PagerUtil pager) {
         if(DataUtil.isNull(type)){
-            throw new LambdaException("Query data warehouse info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -219,7 +220,7 @@ public class DataWarehouseMgr extends BaseMgr {
             return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query data warehouse info failed.", "查询数据库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed.", "查询数据库信息失败", e);
         }
     }
 
@@ -231,7 +232,7 @@ public class DataWarehouseMgr extends BaseMgr {
      * */
     public boolean existsDataWarehouse(String code, String name, Long originalId)  {
         if(DataUtil.isEmpty(code) && DataUtil.isEmpty(name))
-            throw new LambdaException("Check data warehouse exists failed -- invalid check condition.", "无效检查条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Check data warehouse exists failed -- invalid check condition.", "无效检查条件");
 
         try {
             DwDataWarehouseExample example = new DwDataWarehouseExample();
@@ -254,7 +255,7 @@ public class DataWarehouseMgr extends BaseMgr {
 
             return false;
         } catch (Throwable e) {
-            throw new LambdaException("Check data warehouse exists failed.", "检查已存在数据库失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Check data warehouse exists failed.", "检查已存在数据库失败", e);
         }
     }
 }

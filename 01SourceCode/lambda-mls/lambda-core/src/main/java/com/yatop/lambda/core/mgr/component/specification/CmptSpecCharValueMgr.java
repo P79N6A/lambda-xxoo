@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.component.specification;
 
 import com.yatop.lambda.base.model.CfCmptSpecCharValue;
 import com.yatop.lambda.base.model.CfCmptSpecCharValueExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.exception.LambdaException;
@@ -25,7 +26,7 @@ public class CmptSpecCharValueMgr extends BaseMgr {
             example.createCriteria().andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return  cfCmptSpecCharValueMapper.selectByExample(example);
         } catch (Throwable e) {
-            throw new LambdaException("Query specification characteristic value failed.", "查询规格特征值失败", e);
+            throw new LambdaException(LambdaExceptionEnum.G_COMPUTE_DEFAULT_ERROR, "Query specification characteristic value failed.", "查询规格特征值失败", e);
         }
     }
 }

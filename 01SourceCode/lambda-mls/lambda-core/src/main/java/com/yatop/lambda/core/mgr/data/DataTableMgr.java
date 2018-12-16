@@ -2,10 +2,7 @@ package com.yatop.lambda.core.mgr.data;
 
 import com.yatop.lambda.base.model.DwDataTable;
 import com.yatop.lambda.base.model.DwDataTableExample;
-import com.yatop.lambda.core.enums.DataFileTypeEnum;
-import com.yatop.lambda.core.enums.DataStatusEnum;
-import com.yatop.lambda.core.enums.DataTableStateEnum;
-import com.yatop.lambda.core.enums.DataTableTypeEnum;
+import com.yatop.lambda.core.enums.*;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
@@ -33,15 +30,15 @@ public class DataTableMgr extends BaseMgr {
                 table.isDataFileTypeNotColoured() ||
                 table.isTableStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert data table info failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Insert data table info failed -- invalid insert data.", "无效插入数据");
         }
 
         if(table.getDataFileType() != DataFileTypeEnum.PARQUET.getType()) {
-            throw new LambdaException("Insert data table info failed -- only support parquet data file type.", "仅支持parquet数据文件类型");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Insert data table info failed -- only support parquet data file type.", "仅支持parquet数据文件类型");
         }
 
         if(existsDataTable(table.getOwnerDwId(), table.getTableName(), null)) {
-            throw new LambdaException("Insert data table info failed -- name conflict.", "名称冲突");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Insert data table info failed -- name conflict.", "名称冲突");
         }
 
         DwDataTable insertTable = new DwDataTable();
@@ -57,7 +54,7 @@ public class DataTableMgr extends BaseMgr {
             dwDataTableMapper.insertSelective(insertTable);
             return insertTable;
         } catch (Throwable e) {
-            throw new LambdaException("Insert data table info failed.", "插入数据表信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Insert data table info failed.", "插入数据表信息失败", e);
         }
     }
 
@@ -69,7 +66,7 @@ public class DataTableMgr extends BaseMgr {
      * */
     public int deleteDataTable(DwDataTable table, String operId) {
         if(DataUtil.isNull(table) || table.isTableIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete data table info failed -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Delete data table info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -80,7 +77,7 @@ public class DataTableMgr extends BaseMgr {
             deleteTable.setLastUpdateOper(operId);
             return dwDataTableMapper.updateByPrimaryKeySelective(deleteTable);
         } catch (Throwable e) {
-            throw new LambdaException("Delete data table info failed.", "删除数据表信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Delete data table info failed.", "删除数据表信息失败", e);
         }
     }
 
@@ -92,15 +89,15 @@ public class DataTableMgr extends BaseMgr {
      * */
     public int updateDataTableName(DwDataTable table, String operId) {
         if( DataUtil.isNull(table) || table.isTableIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update data table name failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table name failed -- invalid update condition.", "无效更新条件");
         }
 
         if(table.isTableNameNotColoured()) {
-            throw new LambdaException("Update data table name failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table name failed -- invalid update data.", "无效更新内容");
         }
 
         if(existsDataTable(table.getOwnerDwId(), table.getTableName(), table.getTableId())) {
-            throw new LambdaException("Update data table name failed -- name conflict.", "名称冲突");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table name failed -- name conflict.", "名称冲突");
         }
 
         DwDataTable updateTable = new DwDataTable();
@@ -113,7 +110,7 @@ public class DataTableMgr extends BaseMgr {
             updateTable.setLastUpdateOper((operId));
             return dwDataTableMapper.updateByPrimaryKeySelective(updateTable);
         } catch (Throwable e) {
-            throw new LambdaException("Update data table name failed.", "更新数据表名失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table name failed.", "更新数据表名失败", e);
         }
     }
 
@@ -125,7 +122,7 @@ public class DataTableMgr extends BaseMgr {
      * */
     public int updateDataTable(DwDataTable table, String operId) {
         if( DataUtil.isNull(table) || table.isTableIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update data table info failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(table.isTableColumnsNotColoured() &&
@@ -135,11 +132,11 @@ public class DataTableMgr extends BaseMgr {
                 table.isDataSummaryFileNotColoured() &&
                 table.isTableStateNotColoured() &&
                 table.isDescriptionNotColoured()) {
-            throw new LambdaException("Update data table info failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table info failed -- invalid update data.", "无效更新内容");
         }
 
         if(table.isTableNameColoured() && existsDataTable(table.getOwnerDwId(), table.getTableName(), table.getTableId())) {
-            throw new LambdaException("Update data table info failed -- name conflict.", "名称冲突");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table info failed -- name conflict.", "名称冲突");
         }
 
         DwDataTable updateTable = new DwDataTable();
@@ -164,7 +161,7 @@ public class DataTableMgr extends BaseMgr {
             updateTable.setLastUpdateOper((operId));
             return dwDataTableMapper.updateByPrimaryKeySelective(updateTable);
         } catch (Throwable e) {
-            throw new LambdaException("Update data table info failed.", "更新数据表信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table info failed.", "更新数据表信息失败", e);
         }
     }
 
@@ -176,18 +173,18 @@ public class DataTableMgr extends BaseMgr {
      * */
     public DwDataTable queryDataTable(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query data table info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed -- invalid query condition.", "无效查询条件");
         }
 
         DwDataTable table;
         try {
             table = dwDataTableMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query data table info failed.", "查询数据表信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed.", "查询数据表信息失败", e);
         }
 
         if(DataUtil.isNull(table) || (table.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query data table info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed -- invalid status or not found.", "已删除或未查找到");
 
         return table;
     }
@@ -200,7 +197,7 @@ public class DataTableMgr extends BaseMgr {
      * */
     public DwDataTable queryDataTable(Long warehouseId, String tableName)  {
         if(DataUtil.isNull(warehouseId) && DataUtil.isEmpty(tableName))
-            throw new LambdaException("Check data table exists failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Check data table exists failed -- invalid query condition.", "无效查询条件");
 
         try {
             DwDataTableExample example = new DwDataTableExample();
@@ -209,7 +206,7 @@ public class DataTableMgr extends BaseMgr {
             List<DwDataTable> resultList = dwDataTableMapper.selectByExample(example);
             return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
         } catch (Throwable e) {
-            throw new LambdaException("Query data table info failed.", "查询数据表信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed.", "查询数据表信息失败", e);
         }
     }
 
@@ -221,7 +218,7 @@ public class DataTableMgr extends BaseMgr {
      * */
     public List<DwDataTable> queryDataTable(Long warehouseId, PagerUtil pager) {
         if(DataUtil.isNull(warehouseId)){
-            throw new LambdaException("Query data table info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -232,7 +229,7 @@ public class DataTableMgr extends BaseMgr {
             return dwDataTableMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query data table info failed.", "查询数据表信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed.", "查询数据表信息失败", e);
         }
     }
 
@@ -244,7 +241,7 @@ public class DataTableMgr extends BaseMgr {
      * */
     public List<DwDataTable> queryDataTable(Long warehouseId, String keyword, PagerUtil pager) {
         if(DataUtil.isNull(warehouseId) || DataUtil.isEmpty(keyword)){
-            throw new LambdaException("Query data table info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -257,7 +254,7 @@ public class DataTableMgr extends BaseMgr {
             return dwDataTableMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query data table info failed.", "查询数据表信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed.", "查询数据表信息失败", e);
         }
     }
 
@@ -269,7 +266,7 @@ public class DataTableMgr extends BaseMgr {
      * */
     public List<DwDataTable> queryDataTable(Long warehouseId, DataTableTypeEnum typeEnum, DataTableStateEnum stateEnum, PagerUtil pager) {
         if(DataUtil.isNull(warehouseId) || DataUtil.isNull(typeEnum) || DataUtil.isNull(stateEnum)){
-            throw new LambdaException("Query data table info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -282,7 +279,7 @@ public class DataTableMgr extends BaseMgr {
             return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query data table info failed.", "查询数据表信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed.", "查询数据表信息失败", e);
         }
     }
 
@@ -294,7 +291,7 @@ public class DataTableMgr extends BaseMgr {
      * */
     public boolean existsDataTable(Long warehouseId, String tableName, Long originalId)  {
         if(DataUtil.isNull(warehouseId) && DataUtil.isEmpty(tableName))
-            throw new LambdaException("Check data table exists failed -- invalid check condition.", "无效检查条件");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Check data table exists failed -- invalid check condition.", "无效检查条件");
 
         try {
             DwDataTableExample example = new DwDataTableExample();
@@ -304,7 +301,7 @@ public class DataTableMgr extends BaseMgr {
                 criteria.andTableIdNotEqualTo(originalId);
             return dwDataTableMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
-            throw new LambdaException("Check data table exists failed.", "检查已存在数据表失败", e);
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Check data table exists failed.", "检查已存在数据表失败", e);
         }
     }
 }

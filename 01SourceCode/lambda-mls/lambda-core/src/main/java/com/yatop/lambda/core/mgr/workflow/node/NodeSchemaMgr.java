@@ -3,6 +3,7 @@ package com.yatop.lambda.core.mgr.workflow.node;
 import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.base.model.WfFlowNodeSchema;
 import com.yatop.lambda.base.model.WfFlowNodeSchemaExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.exception.LambdaException;
@@ -29,7 +30,7 @@ public class NodeSchemaMgr extends BaseMgr {
                 schema.isOwnerNodeIdNotColoured() ||
                 schema.isSchemaStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert node schema failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node schema failed -- invalid insert data.", "无效插入数据");
         }
 
         WfFlowNodeSchema insertSchema = new WfFlowNodeSchema();
@@ -44,7 +45,7 @@ public class NodeSchemaMgr extends BaseMgr {
             wfFlowNodeSchemaMapper.insertSelective(insertSchema);
             return insertSchema;
         } catch (Throwable e) {
-            throw new LambdaException("Insert node schema failed.", "插入节点Schema失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node schema failed.", "插入节点Schema失败", e);
         }
     }
 
@@ -56,7 +57,7 @@ public class NodeSchemaMgr extends BaseMgr {
      * */
     public int deleteSchema(WfFlowNode node, String operId) {
         if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete node schema -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node schema -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -68,7 +69,7 @@ public class NodeSchemaMgr extends BaseMgr {
             example.createCriteria().andOwnerNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfFlowNodeSchemaMapper.updateByExampleSelective(deleteSchema, example);
         } catch (Throwable e) {
-            throw new LambdaException("Delete node schema failed.", "删除节点Schema失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node schema failed.", "删除节点Schema失败", e);
         }
     }
 
@@ -80,7 +81,7 @@ public class NodeSchemaMgr extends BaseMgr {
      * */
     public int recoverchema(WfFlowNode node, String operId) {
         if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Recover node schema -- invalid recover condition.", "无效恢复条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node schema -- invalid recover condition.", "无效恢复条件");
         }
 
         try {
@@ -92,7 +93,7 @@ public class NodeSchemaMgr extends BaseMgr {
             example.createCriteria().andOwnerNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.INVALID.getStatus());
             return wfFlowNodeSchemaMapper.updateByExampleSelective(recoverSchema, example);
         } catch (Throwable e) {
-            throw new LambdaException("Recover node schema failed.", "恢复节点Schema失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node schema failed.", "恢复节点Schema失败", e);
         }
     }
 
@@ -104,18 +105,18 @@ public class NodeSchemaMgr extends BaseMgr {
      * */
     public WfFlowNodeSchema querySchema(Long nodePortId) {
         if(DataUtil.isNull(nodePortId)){
-            throw new LambdaException("Query node schema failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed -- invalid query condition.", "无效查询条件");
         }
 
         WfFlowNodeSchema schema;
         try {
             schema = wfFlowNodeSchemaMapper.selectByPrimaryKey(nodePortId);
         } catch (Throwable e) {
-            throw new LambdaException("Query node schema failed.", "查询节点Schema失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed.", "查询节点Schema失败", e);
         }
 
         if(DataUtil.isNull(schema) || (schema.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query node schema failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed -- invalid status or not found.", "已删除或未查找到");
 
         return schema;
     }
@@ -128,7 +129,7 @@ public class NodeSchemaMgr extends BaseMgr {
      * */
     public List<WfFlowNodeSchema> querySchemaByDstPortId(Long nodeId) {
         if(DataUtil.isNull(nodeId)){
-            throw new LambdaException("Query node schema failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -137,7 +138,7 @@ public class NodeSchemaMgr extends BaseMgr {
             example.setOrderByClause("CREATE_TIME ASC");
             return wfFlowNodeSchemaMapper.selectByExample(example);
         } catch (Throwable e) {
-            throw new LambdaException("Query node schema failed.", "查询节点Schema失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed.", "查询节点Schema失败", e);
         }
     }
 }

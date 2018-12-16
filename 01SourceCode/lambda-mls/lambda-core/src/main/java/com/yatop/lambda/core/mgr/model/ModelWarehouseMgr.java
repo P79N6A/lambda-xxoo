@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.model;
 
 import com.yatop.lambda.base.model.MwModelWarehouse;
 import com.yatop.lambda.base.model.MwModelWarehouseExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.ModelWarehouseTypeEnum;
@@ -32,15 +33,15 @@ public class ModelWarehouseMgr extends BaseMgr {
                 warehouse.isModelDfsDirNotColoured() ||
                 warehouse.isModelLocalDirNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert model warehouse info failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Insert model warehouse info failed -- invalid insert data.", "无效插入数据");
         }
 
         if(warehouse.getMwType() == ModelWarehouseTypeEnum.PUBLIC.getType()) {
-            throw new LambdaException("Insert model warehouse info failed -- public model warehouse not support.", "不支持公共模型库");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Insert model warehouse info failed -- public model warehouse not support.", "不支持公共模型库");
         }
 
         if(existsDataWarehouse(warehouse.getMwCode(), warehouse.getMwName(), null)) {
-            throw new LambdaException("Insert model warehouse info failed -- code or name conflict.", "模型库代码或名称冲突");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Insert model warehouse info failed -- code or name conflict.", "模型库代码或名称冲突");
         }
 
         MwModelWarehouse insertWarehouse = new MwModelWarehouse();
@@ -56,7 +57,7 @@ public class ModelWarehouseMgr extends BaseMgr {
             mwModelWarehouseMapper.insertSelective(insertWarehouse);
             return insertWarehouse;
         } catch (Throwable e) {
-            throw new LambdaException("Insert model warehouse info failed.", "插入模型库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Insert model warehouse info failed.", "插入模型库信息失败", e);
         }
     }
 
@@ -68,7 +69,7 @@ public class ModelWarehouseMgr extends BaseMgr {
      * */
     public int deleteDataWarehouse(MwModelWarehouse warehouse, String operId) {
         if(DataUtil.isNull(warehouse) || warehouse.isMwIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete model warehouse info failed -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Delete model warehouse info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -79,7 +80,7 @@ public class ModelWarehouseMgr extends BaseMgr {
             deleteWarehouse.setLastUpdateOper(operId);
             return mwModelWarehouseMapper.updateByPrimaryKeySelective(deleteWarehouse);
         } catch (Throwable e) {
-            throw new LambdaException("Delete model warehouse info failed.", "删除模型库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Delete model warehouse info failed.", "删除模型库信息失败", e);
         }
     }
 
@@ -91,7 +92,7 @@ public class ModelWarehouseMgr extends BaseMgr {
      * */
     public int updateDataWarehouse(MwModelWarehouse warehouse, String operId) {
         if( DataUtil.isNull(warehouse) || warehouse.isMwIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update model warehouse info failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model warehouse info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(warehouse.isMwCodeNotColoured() &&
@@ -99,12 +100,12 @@ public class ModelWarehouseMgr extends BaseMgr {
                 warehouse.isModelDfsDirNotColoured() &&
                 warehouse.isModelLocalDirNotColoured() &&
                 warehouse.isDescriptionNotColoured()) {
-            throw new LambdaException("Update model warehouse info failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model warehouse info failed -- invalid update data.", "无效更新内容");
         }
 
         if((warehouse.isMwCodeColoured() || warehouse.isMwNameColoured()) &&
                 existsDataWarehouse(warehouse.getMwCode(), warehouse.getMwName(), warehouse.getMwId())) {
-            throw new LambdaException("Update model warehouse info failed -- code or name conflict.", "代码或名称冲突");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model warehouse info failed -- code or name conflict.", "代码或名称冲突");
         }
 
         MwModelWarehouse updateWarehouse = new MwModelWarehouse();
@@ -125,7 +126,7 @@ public class ModelWarehouseMgr extends BaseMgr {
             updateWarehouse.setLastUpdateOper((operId));
             return mwModelWarehouseMapper.updateByPrimaryKeySelective(updateWarehouse);
         } catch (Throwable e) {
-            throw new LambdaException("Update model warehouse info failed.", "更新模型库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model warehouse info failed.", "更新模型库信息失败", e);
         }
     }
 
@@ -137,7 +138,7 @@ public class ModelWarehouseMgr extends BaseMgr {
      * */
     public MwModelWarehouse queryDataWarehouse(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query model warehouse info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed -- invalid query condition.", "无效查询条件");
         }
 
         MwModelWarehouse warehouse;
@@ -145,11 +146,11 @@ public class ModelWarehouseMgr extends BaseMgr {
         try {
             warehouse = mwModelWarehouseMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query model warehouse info failed.", "查询模型库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed.", "查询模型库信息失败", e);
         }
 
         if(DataUtil.isNull(warehouse) || (warehouse.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query model warehouse info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed -- invalid status or not found.", "已删除或未查找到");
 
         return warehouse;
     }
@@ -169,7 +170,7 @@ public class ModelWarehouseMgr extends BaseMgr {
             return mwModelWarehouseMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query model warehouse info failed.", "查询模型库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed.", "查询模型库信息失败", e);
         }
     }
 
@@ -181,7 +182,7 @@ public class ModelWarehouseMgr extends BaseMgr {
      * */
     public List<MwModelWarehouse> queryDataWarehouse(String keyword, PagerUtil pager) {
         if(DataUtil.isEmpty(keyword)){
-            throw new LambdaException("Query model warehouse info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -194,7 +195,7 @@ public class ModelWarehouseMgr extends BaseMgr {
             return mwModelWarehouseMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query model warehouse info failed.", "查询模型库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed.", "查询模型库信息失败", e);
         }
     }
 
@@ -206,7 +207,7 @@ public class ModelWarehouseMgr extends BaseMgr {
      * */
     public List<MwModelWarehouse> queryDataWarehouse(ModelWarehouseTypeEnum type, PagerUtil pager) {
         if(DataUtil.isNull(type)){
-            throw new LambdaException("Query model warehouse info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -218,7 +219,7 @@ public class ModelWarehouseMgr extends BaseMgr {
             return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query model warehouse info failed.", "查询模型库信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed.", "查询模型库信息失败", e);
         }
     }
 
@@ -230,7 +231,7 @@ public class ModelWarehouseMgr extends BaseMgr {
      * */
     public boolean existsDataWarehouse(String code, String name, Long originalId)  {
         if(DataUtil.isEmpty(code) && DataUtil.isEmpty(name))
-            throw new LambdaException("Check model warehouse exists failed -- invalid check condition.", "无效检查条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Check model warehouse exists failed -- invalid check condition.", "无效检查条件");
 
         try {
             MwModelWarehouseExample example = new MwModelWarehouseExample();
@@ -253,7 +254,7 @@ public class ModelWarehouseMgr extends BaseMgr {
 
             return false;
         } catch (Throwable e) {
-            throw new LambdaException("Check model warehouse exists failed.", "检查已存在模型库失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Check model warehouse exists failed.", "检查已存在模型库失败", e);
         }
     }
 }

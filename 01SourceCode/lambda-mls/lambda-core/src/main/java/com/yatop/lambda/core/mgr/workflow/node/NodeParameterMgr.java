@@ -3,6 +3,7 @@ package com.yatop.lambda.core.mgr.workflow.node;
 import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.base.model.WfFlowNodeParameter;
 import com.yatop.lambda.base.model.WfFlowNodeParameterExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.IsDuplicatedEnum;
@@ -30,7 +31,7 @@ public class NodeParameterMgr extends BaseMgr {
                 nodeParameter.isCharIdNotColoured() ||
                 nodeParameter.isIsGlobalParameterNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert node parameter failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node parameter failed -- invalid insert data.", "无效插入数据");
         }
 
         WfFlowNodeParameter insertNodeParameter = new WfFlowNodeParameter();
@@ -46,7 +47,7 @@ public class NodeParameterMgr extends BaseMgr {
             wfFlowNodeParameterMapper.insertSelective(insertNodeParameter);
             return insertNodeParameter;
         } catch (Throwable e) {
-            throw new LambdaException("Insert node parameter failed.", "插入节点参数失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node parameter failed.", "插入节点参数失败", e);
         }
     }
 
@@ -58,7 +59,7 @@ public class NodeParameterMgr extends BaseMgr {
      * */
     public int deleteNodeParameter(WfFlowNode node, String operId) {
         if(DataUtil.isNull(node) || node.isNodeIdColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete node parameter -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node parameter -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -70,7 +71,7 @@ public class NodeParameterMgr extends BaseMgr {
             example.createCriteria().andNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfFlowNodeParameterMapper.updateByExampleSelective(deleteNodeParameter, example);
         } catch (Throwable e) {
-            throw new LambdaException("Delete node parameter failed.", "删除节点参数失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node parameter failed.", "删除节点参数失败", e);
         }
     }
 
@@ -82,7 +83,7 @@ public class NodeParameterMgr extends BaseMgr {
      * */
     public int recoverNodeParameter(WfFlowNode node, String operId) {
         if(DataUtil.isNull(node) || node.isNodeIdColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Recover node parameter -- invalid recover condition.", "无效恢复条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node parameter -- invalid recover condition.", "无效恢复条件");
         }
 
         try {
@@ -94,7 +95,7 @@ public class NodeParameterMgr extends BaseMgr {
             example.createCriteria().andNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.INVALID.getStatus());
             return wfFlowNodeParameterMapper.updateByExampleSelective(recoverNodeParameter, example);
         } catch (Throwable e) {
-            throw new LambdaException("Recover node parameter failed.", "恢复节点参数失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node parameter failed.", "恢复节点参数失败", e);
         }
     }
 
@@ -106,7 +107,7 @@ public class NodeParameterMgr extends BaseMgr {
      * */
     public int updateNodeParameter(WfFlowNodeParameter nodeParameter, String operId) {
         if( DataUtil.isNull(nodeParameter) || nodeParameter.isNodeIdColoured() || nodeParameter.isCharIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update node parameter failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node parameter failed -- invalid update condition.", "无效更新条件");
         }
 
         if(nodeParameter.isCharValueNotColoured() &&
@@ -115,7 +116,7 @@ public class NodeParameterMgr extends BaseMgr {
                 nodeParameter.isIsDuplicatedNotColoured() &&
                 nodeParameter.isWarningMsgNotColoured() &&
                 nodeParameter.isDescriptionNotColoured()) {
-            throw new LambdaException("Update node parameter failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node parameter failed -- invalid update data.", "无效更新内容");
         }
 
         WfFlowNodeParameter updateNodeParameter = new WfFlowNodeParameter();
@@ -139,7 +140,7 @@ public class NodeParameterMgr extends BaseMgr {
             example.createCriteria().andNodeIdEqualTo(nodeParameter.getNodeId()).andCharIdEqualTo(nodeParameter.getCharId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfFlowNodeParameterMapper.updateByExampleSelective(updateNodeParameter, example);
         } catch (Throwable e) {
-            throw new LambdaException("Update node parameter failed.", "更新节点参数失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node parameter failed.", "更新节点参数失败", e);
         }
     }
 
@@ -161,7 +162,7 @@ public class NodeParameterMgr extends BaseMgr {
      * */
     public WfFlowNodeParameter queryNodeParameter(Long nodeId, String charId) {
         if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(charId)){
-            throw new LambdaException("Query node parameter failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node parameter failed -- invalid query condition.", "无效查询条件");
         }
 
         List<WfFlowNodeParameter> resultList = queryNodeParameterExt(nodeId, charId);
@@ -176,7 +177,7 @@ public class NodeParameterMgr extends BaseMgr {
      * */
     public List<WfFlowNodeParameter> queryNodeParameterExt(Long nodeId, String charId) {
         if(DataUtil.isNull(nodeId)){
-            throw new LambdaException("Query node parameter failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node parameter failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -188,7 +189,7 @@ public class NodeParameterMgr extends BaseMgr {
             example.setOrderByClause("CREATE_TIME ASC");
             return wfFlowNodeParameterMapper.selectByExample(example);
         } catch (Throwable e) {
-            throw new LambdaException("Query node parameter failed.", "查询节点参数失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node parameter failed.", "查询节点参数失败", e);
         }
     }
 
@@ -200,7 +201,7 @@ public class NodeParameterMgr extends BaseMgr {
      * */
     public boolean existsNodeParameter(Long nodeId, String charId) {
         if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(charId)){
-            throw new LambdaException("Check node parameter exists failed -- invalid check condition.", "无效检查条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter exists failed -- invalid check condition.", "无效检查条件");
         }
 
         try {
@@ -208,7 +209,7 @@ public class NodeParameterMgr extends BaseMgr {
             example.createCriteria().andNodeIdEqualTo(nodeId).andCharIdEqualTo(charId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfFlowNodeParameterMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
-            throw new LambdaException("Check node parameter exists failed.", "检查节点参数是否已存在失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter exists failed.", "检查节点参数是否已存在失败", e);
         }
     }
 }

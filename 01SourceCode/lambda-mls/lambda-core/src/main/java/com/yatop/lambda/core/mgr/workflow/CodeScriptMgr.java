@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.workflow;
 
 import com.yatop.lambda.base.model.WfCodeScript;
 import com.yatop.lambda.base.model.WfCodeScriptExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.CodeScriptTypeEnum;
 import com.yatop.lambda.core.enums.DataStatusEnum;
@@ -36,7 +37,7 @@ public class CodeScriptMgr extends BaseMgr {
                 codeScript.isRelCharIdNotColoured() ||
                 codeScript.isScriptStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert code script failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert code script failed -- invalid insert data.", "无效插入数据");
         }
 
         WfCodeScript insertCodeScript = new WfCodeScript();
@@ -52,7 +53,7 @@ public class CodeScriptMgr extends BaseMgr {
             wfCodeScriptMapper.insertSelective(insertCodeScript);
             return insertCodeScript;
         } catch (Throwable e) {
-            throw new LambdaException("Insert code script failed.", "插入代码脚本失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert code script failed.", "插入代码脚本失败", e);
         }
     }
 
@@ -64,7 +65,7 @@ public class CodeScriptMgr extends BaseMgr {
      * */
     public int deleteCodeScript(WfCodeScript codeScript, String operId) {
         if(DataUtil.isNull(codeScript) || codeScript.isScriptIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete code script -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete code script -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -75,7 +76,7 @@ public class CodeScriptMgr extends BaseMgr {
             deleteCodeScript.setLastUpdateOper(operId);
             return wfCodeScriptMapper.updateByPrimaryKeySelective(deleteCodeScript);
         } catch (Throwable e) {
-            throw new LambdaException("Delete code script failed.", "删除代码脚本失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete code script failed.", "删除代码脚本失败", e);
         }
     }
 
@@ -87,7 +88,7 @@ public class CodeScriptMgr extends BaseMgr {
      * */
     public int recoverCodeScript(WfCodeScript codeScript, String operId) {
         if(DataUtil.isNull(codeScript) || codeScript.isScriptIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Recover code script -- invalid recover condition.", "无效恢复条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover code script -- invalid recover condition.", "无效恢复条件");
         }
 
         try {
@@ -98,7 +99,7 @@ public class CodeScriptMgr extends BaseMgr {
             recoverCodeScript.setLastUpdateOper(operId);
             return wfCodeScriptMapper.updateByPrimaryKeySelective(recoverCodeScript);
         } catch (Throwable e) {
-            throw new LambdaException("Recover code script failed.", "恢复代码脚本失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover code script failed.", "恢复代码脚本失败", e);
         }
     }
 
@@ -110,14 +111,14 @@ public class CodeScriptMgr extends BaseMgr {
      * */
     public int updateCodeScript(WfCodeScript codeScript, String operId) {
         if( DataUtil.isNull(codeScript) || codeScript.isScriptIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update code script failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update code script failed -- invalid update condition.", "无效更新条件");
         }
 
         if(codeScript.isScriptNameNotColoured() &&
                 codeScript.isScriptContentNotColoured() &&
                 codeScript.isScriptStateNotColoured() &&
                 codeScript.isDescriptionNotColoured()) {
-            throw new LambdaException("Update code script failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update code script failed -- invalid update data.", "无效更新内容");
         }
 
         WfCodeScript updateCodeScript = new WfCodeScript();
@@ -136,7 +137,7 @@ public class CodeScriptMgr extends BaseMgr {
             updateCodeScript.setLastUpdateOper((operId));
             return wfCodeScriptMapper.updateByPrimaryKeySelective(updateCodeScript);
         } catch (Throwable e) {
-            throw new LambdaException("Update code script failed.", "更新代码脚本失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update code script failed.", "更新代码脚本失败", e);
         }
     }
 
@@ -148,18 +149,18 @@ public class CodeScriptMgr extends BaseMgr {
      * */
     public WfCodeScript queryCodeScript(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query code script failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query code script failed -- invalid query condition.", "无效查询条件");
         }
 
         WfCodeScript codeScript;
         try {
             codeScript = wfCodeScriptMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query code script failed.", "查询代码脚本失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query code script failed.", "查询代码脚本失败", e);
         }
 
         if(DataUtil.isNull(codeScript) || (codeScript.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query code script failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query code script failed -- invalid status or not found.", "已删除或未查找到");
 
         return codeScript;
     }
@@ -172,7 +173,7 @@ public class CodeScriptMgr extends BaseMgr {
      * */
     public List<WfCodeScript> queryCodeScript(Long projectId, CodeScriptTypeEnum typeEnum, PagerUtil pager) {
         if(DataUtil.isNull(projectId)){
-            throw new LambdaException("Query code script failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query code script failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -188,7 +189,7 @@ public class CodeScriptMgr extends BaseMgr {
             return wfCodeScriptMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query code script failed.", "查询代码脚本失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query code script failed.", "查询代码脚本失败", e);
         }
     }
 }

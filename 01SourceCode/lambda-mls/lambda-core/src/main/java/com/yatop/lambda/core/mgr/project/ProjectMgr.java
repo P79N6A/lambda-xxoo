@@ -3,6 +3,7 @@ package com.yatop.lambda.core.mgr.project;
 import com.yatop.lambda.base.mapper.extend.ProjectMapper;
 import com.yatop.lambda.base.model.PrProject;
 import com.yatop.lambda.base.model.PrProjectExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.SystemParameterEnum;
@@ -36,11 +37,11 @@ public class ProjectMgr extends BaseMgr {
                 project.isDwIdNotColoured() ||
                 project.isMwIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert project info failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Insert project info failed -- invalid insert data.", "无效插入数据");
         }
 
         if(existsProject(project.getProjectCode(), project.getProjectName(), null)) {
-            throw new LambdaException("Insert project info failed -- code or name conflict.", "代码或名称冲突");
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Insert project info failed -- code or name conflict.", "代码或名称冲突");
         }
 
         PrProject insertProject = new PrProject();
@@ -58,7 +59,7 @@ public class ProjectMgr extends BaseMgr {
             prProjectMapper.insertSelective(insertProject);
             return insertProject;
         } catch (Throwable e) {
-            throw new LambdaException("Insert project info failed.", "插入项目信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Insert project info failed.", "插入项目信息失败", e);
         }
     }
 
@@ -70,7 +71,7 @@ public class ProjectMgr extends BaseMgr {
      * */
     public int deleteProject(PrProject project, String operId) {
         if(DataUtil.isNull(project) || project.isProjectIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete project info failed -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Delete project info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -81,7 +82,7 @@ public class ProjectMgr extends BaseMgr {
             deleteProject.setLastUpdateOper(operId);
             return prProjectMapper.updateByPrimaryKeySelective(deleteProject);
         } catch (Throwable e) {
-            throw new LambdaException("Delete project info failed.", "删除项目信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Delete project info failed.", "删除项目信息失败", e);
         }
     }
 
@@ -93,19 +94,19 @@ public class ProjectMgr extends BaseMgr {
      * */
     public int updateProject(PrProject project, String operId) {
         if( DataUtil.isNull(project) || project.isProjectIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update project info failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Update project info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(project.isProjectCodeNotColoured() &&
             project.isProjectNameNotColoured() &&
             project.isCacheExpireDaysNotColoured() &&
             project.isDescriptionNotColoured()) {
-            throw new LambdaException("Update project info failed -- invalid update data.", "无效更新数据");
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Update project info failed -- invalid update data.", "无效更新数据");
         }
 
         if((project.isProjectCodeColoured() || project.isProjectNameColoured()) &&
                 existsProject(project.getProjectCode(), project.getProjectName(), project.getProjectId())) {
-            throw new LambdaException("Update project info failed -- code or name conflict.", "代码或名称冲突");
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Update project info failed -- code or name conflict.", "代码或名称冲突");
         }
 
         PrProject updateProject = new PrProject();
@@ -124,7 +125,7 @@ public class ProjectMgr extends BaseMgr {
             updateProject.setLastUpdateOper((operId));
             return prProjectMapper.updateByPrimaryKeySelective(updateProject);
         } catch (Throwable e) {
-            throw new LambdaException("Update project info failed.", "更新项目信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Update project info failed.", "更新项目信息失败", e);
         }
     }
 
@@ -136,18 +137,18 @@ public class ProjectMgr extends BaseMgr {
      * */
     public PrProject queryProject(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query project info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project info failed -- invalid query condition.", "无效查询条件");
         }
 
         PrProject project;
         try {
             project = prProjectMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query project info failed.", "查询项目信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project info failed.", "查询项目信息失败", e);
         }
 
         if(DataUtil.isNull(project) || (project.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query project info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project info failed -- invalid status or not found.", "已删除或未查找到");
 
         return project;
     }
@@ -167,7 +168,7 @@ public class ProjectMgr extends BaseMgr {
             return prProjectMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query project info failed.", "查询项目信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project info failed.", "查询项目信息失败", e);
         }
     }
 
@@ -179,7 +180,7 @@ public class ProjectMgr extends BaseMgr {
      * */
     public List<PrProject> queryProjectByUser(String user, PagerUtil pager) {
         if(DataUtil.isEmpty(user))
-            throw new LambdaException("Query project failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project failed -- invalid query condition.", "无效查询条件");
 
         return queryProjectExt(null, user, pager);
     }
@@ -192,7 +193,7 @@ public class ProjectMgr extends BaseMgr {
      * */
     public List<PrProject> queryProjectByKeyword(String keyword, PagerUtil pager) {
         if(DataUtil.isEmpty(keyword))
-            throw new LambdaException("Query project failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project failed -- invalid query condition.", "无效查询条件");
 
         return queryProjectExt(keyword, null, pager);
     }
@@ -239,7 +240,7 @@ public class ProjectMgr extends BaseMgr {
             }
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query project info failed.", "查询项目信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project info failed.", "查询项目信息失败", e);
         }
     }
 
@@ -251,7 +252,7 @@ public class ProjectMgr extends BaseMgr {
      * */
     public boolean existsProject(String code, String name, Long originalId)  {
         if(DataUtil.isEmpty(code) && DataUtil.isEmpty(code))
-            throw new LambdaException("Check project exists failed -- invalid check condition.", "无效检查条件");
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Check project exists failed -- invalid check condition.", "无效检查条件");
 
         try {
             PrProjectExample example = new PrProjectExample();
@@ -274,7 +275,7 @@ public class ProjectMgr extends BaseMgr {
 
             return false;
         } catch (Throwable e) {
-            throw new LambdaException("Check project exists failed.", "检查已存在项目失败", e);
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Check project exists failed.", "检查已存在项目失败", e);
         }
     }
 }

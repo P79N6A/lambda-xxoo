@@ -180,8 +180,7 @@ public class LambdaEnhancedPlugin extends PluginAdapter {
             IntrospectedColumn introspectedColumn = iter.next();
             String fieldName = introspectedColumn.getJavaProperty();
             sb.setLength(0);
-            sb.append("if(this.").append(fieldName).append("Coloured)");
-            sb.append(" {this.").append(fieldName).append(" = null; ").append("this.").append(fieldName).append("Coloured = false;}");
+            sb.append(" this.").append(fieldName).append(" = null; ").append("this.").append(fieldName).append("Coloured = false;");
             method.addBodyLine(sb.toString());
         }
 
@@ -212,7 +211,7 @@ public class LambdaEnhancedPlugin extends PluginAdapter {
         }
 
         context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
-        method.addBodyLine("JSONObject jsonObj = new JSONObject(16, true);");
+        method.addBodyLine("JSONObject jsonObj = new JSONObject(32, true);");
 
         StringBuilder sb = new StringBuilder();
         Iterator<IntrospectedColumn> iter = introspectedColumns.iterator();

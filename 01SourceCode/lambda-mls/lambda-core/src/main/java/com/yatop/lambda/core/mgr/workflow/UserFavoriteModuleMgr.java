@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.workflow;
 
 import com.yatop.lambda.base.model.WfUserFavoriteModule;
 import com.yatop.lambda.base.model.WfUserFavoriteModuleExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.exception.LambdaException;
@@ -28,11 +29,11 @@ public class UserFavoriteModuleMgr extends BaseMgr {
                 favorite.isOperIdNotColoured() ||
                 favorite.isModuleIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert user favorite module failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert user favorite module failed -- invalid insert data.", "无效插入数据");
         }
 
         if(existsUserFavoriteModule(favorite.getProjectId(), favorite.getOperId(), favorite.getModuleId())) {
-            throw new LambdaException("Insert user favorite module failed -- user favorite module existed.", "用户收藏记录已存在");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert user favorite module failed -- user favorite module existed.", "用户收藏记录已存在");
         }
 
         WfUserFavoriteModule insertFavorite = new WfUserFavoriteModule();
@@ -47,7 +48,7 @@ public class UserFavoriteModuleMgr extends BaseMgr {
             wfUserFavoriteModuleMapper.insertSelective(insertFavorite);
             return insertFavorite;
         } catch (Throwable e) {
-            throw new LambdaException("Insert user favorite module failed.", "插入用户收藏记录失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert user favorite module failed.", "插入用户收藏记录失败", e);
         }
     }
 
@@ -63,11 +64,11 @@ public class UserFavoriteModuleMgr extends BaseMgr {
                 favorite.isOperIdNotColoured() ||
                 favorite.isModuleIdNotColoured() ||
                 DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete user favorite module failed -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete user favorite module failed -- invalid delete condition.", "无效删除条件");
         }
 
         if(!existsUserFavoriteModule(favorite.getProjectId(), favorite.getOperId(), favorite.getModuleId())) {
-            throw new LambdaException("Delete user favorite module failed -- user favorite module not found.", "用户收藏记录未找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete user favorite module failed -- user favorite module not found.", "用户收藏记录未找到");
         }
 
         try {
@@ -81,7 +82,7 @@ public class UserFavoriteModuleMgr extends BaseMgr {
                     .andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfUserFavoriteModuleMapper.updateByExampleSelective(deleteFavorite, example);
         } catch (Throwable e) {
-            throw new LambdaException("Delete user favorite module exists failed.", "删除用户收藏记录失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete user favorite module exists failed.", "删除用户收藏记录失败", e);
         }
     }
 
@@ -93,7 +94,7 @@ public class UserFavoriteModuleMgr extends BaseMgr {
      * */
     public List<WfUserFavoriteModule> queryUserFavoriteModule(Long projectId, String operId, PagerUtil pager) {
         if(DataUtil.isNull(projectId) || DataUtil.isNull(operId)){
-            throw new LambdaException("Query user favorite module failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query user favorite module failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -103,7 +104,7 @@ public class UserFavoriteModuleMgr extends BaseMgr {
             return wfUserFavoriteModuleMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query user favorite module failed.", "查询用户收藏记录失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query user favorite module failed.", "查询用户收藏记录失败", e);
         }
     }
 
@@ -115,14 +116,14 @@ public class UserFavoriteModuleMgr extends BaseMgr {
      * */
     public boolean existsUserFavoriteModule(Long projectId, String OperId, Long moduleId)  {
         if(DataUtil.isNull(projectId) || DataUtil.isEmpty(OperId) || DataUtil.isNull(moduleId))
-            throw new LambdaException("Check user favorite module exists failed -- invalid check condition.", "无效检查条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check user favorite module exists failed -- invalid check condition.", "无效检查条件");
 
         try {
             WfUserFavoriteModuleExample example = new WfUserFavoriteModuleExample();
             example.createCriteria().andProjectIdEqualTo(projectId).andOperIdEqualTo(OperId).andModuleIdEqualTo(moduleId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfUserFavoriteModuleMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
-            throw new LambdaException("Check user favorite module exists failed.", "检查用户收藏是否已存在失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check user favorite module exists failed.", "检查用户收藏是否已存在失败", e);
         }
     }
 }

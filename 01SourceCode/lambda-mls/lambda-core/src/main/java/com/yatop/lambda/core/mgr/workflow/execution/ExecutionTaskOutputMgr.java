@@ -3,6 +3,7 @@ package com.yatop.lambda.core.mgr.workflow.execution;
 import com.yatop.lambda.base.model.WfExecutionTask;
 import com.yatop.lambda.base.model.WfExecutionTaskOutput;
 import com.yatop.lambda.base.model.WfExecutionTaskOutputExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.OutputStateEnum;
@@ -28,7 +29,7 @@ public class ExecutionTaskOutputMgr extends BaseMgr {
                 taskOutput.isTaskIdNotColoured() ||
                 taskOutput.isCharIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert task output failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert task output failed -- invalid insert data.", "无效插入数据");
         }
 
         WfExecutionTaskOutput insertTaskOutput = new WfExecutionTaskOutput();
@@ -44,7 +45,7 @@ public class ExecutionTaskOutputMgr extends BaseMgr {
             wfExecutionTaskOutputMapper.insertSelective(insertTaskOutput);
             return insertTaskOutput;
         } catch (Throwable e) {
-            throw new LambdaException("Insert task output failed.", "插入任务输出失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert task output failed.", "插入任务输出失败", e);
         }
     }
 
@@ -56,7 +57,7 @@ public class ExecutionTaskOutputMgr extends BaseMgr {
      * */
     public int deleteTaskOutput(WfExecutionTask task, String operId) {
         if(DataUtil.isNull(task) || task.isTaskIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete task output -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete task output -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -68,7 +69,7 @@ public class ExecutionTaskOutputMgr extends BaseMgr {
             example.createCriteria().andTaskIdEqualTo(task.getTaskId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfExecutionTaskOutputMapper.updateByExampleSelective(deleteTaskOutput, example);
         } catch (Throwable e) {
-            throw new LambdaException("Delete task output failed.", "删除任务输出失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete task output failed.", "删除任务输出失败", e);
         }
     }
 
@@ -80,13 +81,13 @@ public class ExecutionTaskOutputMgr extends BaseMgr {
      * */
     public int updateTaskOutput(WfExecutionTaskOutput taskOutput, String operId) {
         if( DataUtil.isNull(taskOutput) || taskOutput.isTaskIdNotColoured() || taskOutput.isCharIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update task output failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update task output failed -- invalid update condition.", "无效更新条件");
         }
 
         if(taskOutput.isCharValueNotColoured() &&
                 taskOutput.isOutputStateNotColoured() &&
                 taskOutput.isDescriptionNotColoured()) {
-            throw new LambdaException("Update task output failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update task output failed -- invalid update data.", "无效更新内容");
         }
 
         WfExecutionTaskOutput updateTaskOutput = new WfExecutionTaskOutput();
@@ -104,7 +105,7 @@ public class ExecutionTaskOutputMgr extends BaseMgr {
             example.createCriteria().andTaskIdEqualTo(taskOutput.getTaskId()).andCharIdEqualTo(taskOutput.getCharId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfExecutionTaskOutputMapper.updateByExampleSelective(updateTaskOutput, example);
         } catch (Throwable e) {
-            throw new LambdaException("Update task output failed.", "更新任务输出失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update task output failed.", "更新任务输出失败", e);
         }
     }
 
@@ -116,7 +117,7 @@ public class ExecutionTaskOutputMgr extends BaseMgr {
      * */
     public List<WfExecutionTaskOutput> queryTaskOutput(Long taskId, String charId) {
         if(DataUtil.isNull(taskId)){
-            throw new LambdaException("Query task output failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task output failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -128,7 +129,7 @@ public class ExecutionTaskOutputMgr extends BaseMgr {
             example.setOrderByClause("CREATE_TIME ASC");
             return wfExecutionTaskOutputMapper.selectByExample(example);
         } catch (Throwable e) {
-            throw new LambdaException("Query task output failed.", "查询任务输出失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task output failed.", "查询任务输出失败", e);
         }
     }
 
@@ -140,7 +141,7 @@ public class ExecutionTaskOutputMgr extends BaseMgr {
      * */
     public boolean existsTaskOutput(Long taskId, String charId) {
         if(DataUtil.isNull(taskId) || DataUtil.isEmpty(charId)){
-            throw new LambdaException("Check task output exists failed -- invalid check condition.", "无效检查条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check task output exists failed -- invalid check condition.", "无效检查条件");
         }
 
         try {
@@ -148,7 +149,7 @@ public class ExecutionTaskOutputMgr extends BaseMgr {
             example.createCriteria().andTaskIdEqualTo(taskId).andCharIdEqualTo(charId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfExecutionTaskOutputMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
-            throw new LambdaException("Check task output exists failed.", "检查任务输出是否已存在失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check task output exists failed.", "检查任务输出是否已存在失败", e);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.workflow;
 
 import com.yatop.lambda.base.model.WfJsonObject;
 import com.yatop.lambda.base.model.WfJsonObjectExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.JsonObjectTypeEnum;
@@ -37,7 +38,7 @@ public class JsonObjectMgr extends BaseMgr {
                 jsonObject.isStorageLocationNotColoured() ||
                 jsonObject.isObjectStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert json object failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert json object failed -- invalid insert data.", "无效插入数据");
         }
 
         WfJsonObject insertJsonObject = new WfJsonObject();
@@ -53,7 +54,7 @@ public class JsonObjectMgr extends BaseMgr {
             wfJsonObjectMapper.insertSelective(insertJsonObject);
             return insertJsonObject;
         } catch (Throwable e) {
-            throw new LambdaException("Insert json object failed.", "插入Json对象失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert json object failed.", "插入Json对象失败", e);
         }
     }
 
@@ -65,7 +66,7 @@ public class JsonObjectMgr extends BaseMgr {
      * */
     public int deleteJsonObject(WfJsonObject jsonObject, String operId) {
         if(DataUtil.isNull(jsonObject) || jsonObject.isObjectIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete json object -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete json object -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -76,7 +77,7 @@ public class JsonObjectMgr extends BaseMgr {
             deleteJsonObject.setLastUpdateOper(operId);
             return wfJsonObjectMapper.updateByPrimaryKeySelective(deleteJsonObject);
         } catch (Throwable e) {
-            throw new LambdaException("Delete json object failed.", "删除Json对象失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete json object failed.", "删除Json对象失败", e);
         }
     }
 
@@ -88,7 +89,7 @@ public class JsonObjectMgr extends BaseMgr {
      * */
     public int recoverJsonObject4NodeRecover(WfJsonObject jsonObject, String operId) {
         if(DataUtil.isNull(jsonObject) || jsonObject.isObjectIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Recover json object -- invalid recover condition.", "无效恢复条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover json object -- invalid recover condition.", "无效恢复条件");
         }
 
         try {
@@ -99,7 +100,7 @@ public class JsonObjectMgr extends BaseMgr {
             recoverJsonObject.setLastUpdateOper(operId);
             return wfJsonObjectMapper.updateByPrimaryKeySelective(recoverJsonObject);
         } catch (Throwable e) {
-            throw new LambdaException("Recover json object failed.", "恢复Json对象失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover json object failed.", "恢复Json对象失败", e);
         }
     }
 
@@ -111,14 +112,14 @@ public class JsonObjectMgr extends BaseMgr {
      * */
     public int updateJsonObject(WfJsonObject jsonObject, String operId) {
         if( DataUtil.isNull(jsonObject) || jsonObject.isObjectIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update json object failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update json object failed -- invalid update condition.", "无效更新条件");
         }
 
         if(jsonObject.isObjectNameNotColoured() &&
                 jsonObject.isObjectDataNotColoured() &&
                 jsonObject.isObjectStateNotColoured() &&
                 jsonObject.isDescriptionNotColoured()) {
-            throw new LambdaException("Update json object failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update json object failed -- invalid update data.", "无效更新内容");
         }
 
         WfJsonObject updateJsonObject = new WfJsonObject();
@@ -137,7 +138,7 @@ public class JsonObjectMgr extends BaseMgr {
             updateJsonObject.setLastUpdateOper((operId));
             return wfJsonObjectMapper.updateByPrimaryKeySelective(updateJsonObject);
         } catch (Throwable e) {
-            throw new LambdaException("Update json object failed.", "更新Json对象失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update json object failed.", "更新Json对象失败", e);
         }
     }
 
@@ -149,18 +150,18 @@ public class JsonObjectMgr extends BaseMgr {
      * */
     public WfJsonObject queryJsonObject(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query json object failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query json object failed -- invalid query condition.", "无效查询条件");
         }
 
         WfJsonObject jsonObject;
         try {
             jsonObject = wfJsonObjectMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query json object failed.", "查询Json对象失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query json object failed.", "查询Json对象失败", e);
         }
 
         if(DataUtil.isNull(jsonObject) || (jsonObject.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query json object failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query json object failed -- invalid status or not found.", "已删除或未查找到");
 
         return jsonObject;
     }
@@ -173,7 +174,7 @@ public class JsonObjectMgr extends BaseMgr {
      * */
     public List<WfJsonObject> queryJsonObject(Long projectId, JsonObjectTypeEnum typeEnum, PagerUtil pager) {
         if(DataUtil.isNull(projectId)){
-            throw new LambdaException("Query json object failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query json object failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -189,7 +190,7 @@ public class JsonObjectMgr extends BaseMgr {
             return wfJsonObjectMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query json object failed.", "查询Json对象失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query json object failed.", "查询Json对象失败", e);
         }
     }
 }

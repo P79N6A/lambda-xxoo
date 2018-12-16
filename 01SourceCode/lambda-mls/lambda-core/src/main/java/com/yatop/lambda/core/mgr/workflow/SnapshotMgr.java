@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.workflow;
 
 import com.yatop.lambda.base.model.WfSnapshot;
 import com.yatop.lambda.base.model.WfSnapshotExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.SnapshotSourceEnum;
@@ -33,7 +34,7 @@ public class SnapshotMgr extends BaseMgr {
                 snapshot.isSnapshotContentNotColoured() ||
                 snapshot.isSnapshotVersionNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert snapshot info failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert snapshot info failed -- invalid insert data.", "无效插入数据");
         }
 
         WfSnapshot insertSnapshot = new WfSnapshot();
@@ -50,7 +51,7 @@ public class SnapshotMgr extends BaseMgr {
             wfSnapshotMapper.insertSelective(insertSnapshot);
             return insertSnapshot;
         } catch (Throwable e) {
-            throw new LambdaException("Insert snapshot info failed.", "插入快照信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert snapshot info failed.", "插入快照信息失败", e);
         }
     }
 
@@ -62,7 +63,7 @@ public class SnapshotMgr extends BaseMgr {
      * */
     public int deleteSnapshot(WfSnapshot snapshot, String operId) {
         if(DataUtil.isNull(snapshot) || snapshot.isSnapshotIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete snapshot info -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete snapshot info -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -73,7 +74,7 @@ public class SnapshotMgr extends BaseMgr {
             deleteSnapshot.setLastUpdateOper(operId);
             return wfSnapshotMapper.updateByPrimaryKeySelective(deleteSnapshot);
         } catch (Throwable e) {
-            throw new LambdaException("Delete snapshot info failed.", "删除快照信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete snapshot info failed.", "删除快照信息失败", e);
         }
     }
 
@@ -85,12 +86,12 @@ public class SnapshotMgr extends BaseMgr {
      * */
     public int updateSnapshot(WfSnapshot snapshot, String operId) {
         if( DataUtil.isNull(snapshot) || snapshot.isSnapshotIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update snapshot info failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update snapshot info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(snapshot.isSnapshotNameColoured() &&
                 snapshot.isDescriptionNotColoured()) {
-            throw new LambdaException("Update snapshot info failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update snapshot info failed -- invalid update data.", "无效更新内容");
         }
 
         WfSnapshot updateSnapshot = new WfSnapshot();
@@ -106,7 +107,7 @@ public class SnapshotMgr extends BaseMgr {
             updateSnapshot.setLastUpdateOper((operId));
             return wfSnapshotMapper.updateByPrimaryKeySelective(updateSnapshot);
         } catch (Throwable e) {
-            throw new LambdaException("Update snapshot info failed.", "更新快照信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update snapshot info failed.", "更新快照信息失败", e);
         }
     }
 
@@ -118,12 +119,12 @@ public class SnapshotMgr extends BaseMgr {
      * */
 /*    public int finishSnapshot(WfSnapshot snapshot, String operId) {
         if( DataUtil.isNull(snapshot) || snapshot.isSnapshotIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Finish snapshot failed -- invalid update condition.", "无效完成条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Finish snapshot failed -- invalid update condition.", "无效完成条件");
         }
 
         if(snapshot.isSnapshotIdNotColoured() &&
                 snapshot.isDescriptionNotColoured()) {
-            throw new LambdaException("Finish snapshot failed -- invalid update data.", "无效完成内容");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Finish snapshot failed -- invalid update data.", "无效完成内容");
         }
 
         WfSnapshot updateSnapshot = new WfSnapshot();
@@ -140,7 +141,7 @@ public class SnapshotMgr extends BaseMgr {
             updateSnapshot.setLastUpdateOper((operId));
             return wfSnapshotMapper.updateByPrimaryKeySelective(updateSnapshot);
         } catch (Throwable e) {
-            throw new LambdaException("Finish snapshot failed.", "完成快照失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Finish snapshot failed.", "完成快照失败", e);
         }
     }*/
 
@@ -152,18 +153,18 @@ public class SnapshotMgr extends BaseMgr {
      * */
     public WfSnapshot querySnapshot(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query snapshot info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query snapshot info failed -- invalid query condition.", "无效查询条件");
         }
 
         WfSnapshot snapshot;
         try {
             snapshot = wfSnapshotMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query snapshot info failed.", "查询快照信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query snapshot info failed.", "查询快照信息失败", e);
         }
 
         if(DataUtil.isNull(snapshot) || (snapshot.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query snapshot info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query snapshot info failed -- invalid status or not found.", "已删除或未查找到");
 
         return snapshot;
     }
@@ -176,7 +177,7 @@ public class SnapshotMgr extends BaseMgr {
      * */
     public List<WfSnapshot> querySnapshot(Long projectId, Long flowId, SnapshotSourceEnum sourceEnum, SnapshotStateEnum stateEnum, PagerUtil pager) {
         if(DataUtil.isNull(projectId)){
-            throw new LambdaException("Query snapshot info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query snapshot info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -196,7 +197,7 @@ public class SnapshotMgr extends BaseMgr {
             return wfSnapshotMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query snapshot info failed.", "查询快照信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query snapshot info failed.", "查询快照信息失败", e);
         }
     }
 }

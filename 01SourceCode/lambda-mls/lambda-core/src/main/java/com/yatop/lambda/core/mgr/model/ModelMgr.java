@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.model;
 
 import com.yatop.lambda.base.model.MwModel;
 import com.yatop.lambda.base.model.MwModelExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.ModelTypeEnum;
@@ -31,11 +32,11 @@ public class ModelMgr extends BaseMgr {
                 model.isRefAlgorithmIdNotColoured() ||
                 model.isModelStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert model info failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Insert model info failed -- invalid insert data.", "无效插入数据");
         }
 
         if(existsModel(model.getOwnerMwId(), model.getModelName(), null)) {
-            throw new LambdaException("Insert model info failed -- name conflict.", "模型名称冲突");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Insert model info failed -- name conflict.", "模型名称冲突");
         }
 
         MwModel insertModel = new MwModel();
@@ -51,7 +52,7 @@ public class ModelMgr extends BaseMgr {
             mwModelMapper.insertSelective(insertModel);
             return insertModel;
         } catch (Throwable e) {
-            throw new LambdaException("Insert model info failed.", "插入模型信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Insert model info failed.", "插入模型信息失败", e);
         }
     }
 
@@ -63,7 +64,7 @@ public class ModelMgr extends BaseMgr {
      * */
     public int deleteModel(MwModel model, String operId) {
         if(DataUtil.isNull(model) || model.isModelIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete model info failed -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Delete model info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -74,7 +75,7 @@ public class ModelMgr extends BaseMgr {
             deleteModel.setLastUpdateOper(operId);
             return mwModelMapper.updateByPrimaryKeySelective(deleteModel);
         } catch (Throwable e) {
-            throw new LambdaException("Delete model info failed.", "删除模型信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Delete model info failed.", "删除模型信息失败", e);
         }
     }
 
@@ -86,15 +87,15 @@ public class ModelMgr extends BaseMgr {
      * */
     public int updateModelName(MwModel model, String operId) {
         if( DataUtil.isNull(model) || model.isModelIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update model name failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model name failed -- invalid update condition.", "无效更新条件");
         }
 
         if(model.isModelNameNotColoured()) {
-            throw new LambdaException("Update model name failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model name failed -- invalid update data.", "无效更新内容");
         }
 
         if(existsModel(model.getOwnerMwId(), model.getModelName(), model.getModelId())) {
-            throw new LambdaException("Update model name failed -- name conflict.", "名称冲突");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model name failed -- name conflict.", "名称冲突");
         }
 
         MwModel updateModel = new MwModel();
@@ -107,7 +108,7 @@ public class ModelMgr extends BaseMgr {
             updateModel.setLastUpdateOper((operId));
             return mwModelMapper.updateByPrimaryKeySelective(updateModel);
         } catch (Throwable e) {
-            throw new LambdaException("Update model name failed.", "更新模型名称失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model name failed.", "更新模型名称失败", e);
         }
     }
 
@@ -119,7 +120,7 @@ public class ModelMgr extends BaseMgr {
      * */
     public int updateModel(MwModel model, String operId) {
         if( DataUtil.isNull(model) || model.isModelIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update model info failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(model.isModelFileSizeNotColoured() &&
@@ -127,7 +128,7 @@ public class ModelMgr extends BaseMgr {
                 model.isModelSummaryFileNotColoured() &&
                 model.isModelStateNotColoured() &&
                 model.isDescriptionNotColoured()) {
-            throw new LambdaException("Update model info failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model info failed -- invalid update data.", "无效更新内容");
         }
 
         MwModel updateModel = new MwModel();
@@ -148,7 +149,7 @@ public class ModelMgr extends BaseMgr {
             updateModel.setLastUpdateOper((operId));
             return mwModelMapper.updateByPrimaryKeySelective(updateModel);
         } catch (Throwable e) {
-            throw new LambdaException("Update model info failed.", "更新模型信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model info failed.", "更新模型信息失败", e);
         }
     }
 
@@ -160,18 +161,18 @@ public class ModelMgr extends BaseMgr {
      * */
     public MwModel queryModel(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query model info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed -- invalid query condition.", "无效查询条件");
         }
 
         MwModel model;
         try {
             model = mwModelMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query model info failed.", "查询模型信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed.", "查询模型信息失败", e);
         }
 
         if(DataUtil.isNull(model) || (model.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query model info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed -- invalid status or not found.", "已删除或未查找到");
 
         return model;
     }
@@ -184,7 +185,7 @@ public class ModelMgr extends BaseMgr {
      * */
     public List<MwModel> queryModel(Long warehouseId, PagerUtil pager) {
         if(DataUtil.isNull(warehouseId)){
-            throw new LambdaException("Query model info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -195,7 +196,7 @@ public class ModelMgr extends BaseMgr {
             return mwModelMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query model info failed.", "查询模型信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed.", "查询模型信息失败", e);
         }
     }
 
@@ -207,7 +208,7 @@ public class ModelMgr extends BaseMgr {
      * */
     public List<MwModel> queryModel(Long warehouseId, String keyword, PagerUtil pager) {
         if(DataUtil.isNull(warehouseId) || DataUtil.isEmpty(keyword)){
-            throw new LambdaException("Query model info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -219,7 +220,7 @@ public class ModelMgr extends BaseMgr {
             return mwModelMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query model info failed.", "查询模型信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed.", "查询模型信息失败", e);
         }
     }
 
@@ -231,7 +232,7 @@ public class ModelMgr extends BaseMgr {
      * */
     public List<MwModel> queryModel(Long warehouseId, ModelTypeEnum type, PagerUtil pager) {
         if(DataUtil.isNull(warehouseId) || DataUtil.isNull(type)){
-            throw new LambdaException("Query model info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -243,7 +244,7 @@ public class ModelMgr extends BaseMgr {
             return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query model info failed.", "查询模型信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed.", "查询模型信息失败", e);
         }
     }
 
@@ -255,7 +256,7 @@ public class ModelMgr extends BaseMgr {
      * */
     public boolean existsModel(Long warehouseId, String modelName, Long originalId)  {
         if(DataUtil.isNull(warehouseId) && DataUtil.isEmpty(modelName))
-            throw new LambdaException("Check model exists failed -- invalid check condition.", "无效检查条件");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Check model exists failed -- invalid check condition.", "无效检查条件");
 
         try {
             MwModelExample example = new MwModelExample();
@@ -265,7 +266,7 @@ public class ModelMgr extends BaseMgr {
                 criteria.andModelIdNotEqualTo(originalId);
             return mwModelMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
-            throw new LambdaException("Check model exists failed.", "检查已存在模型失败", e);
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Check model exists failed.", "检查已存在模型失败", e);
         }
     }
 }

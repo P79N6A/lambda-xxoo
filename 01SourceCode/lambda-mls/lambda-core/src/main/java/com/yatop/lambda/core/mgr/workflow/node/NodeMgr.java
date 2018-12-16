@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.base.model.WfFlowNodeExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.NodeStateEnum;
@@ -30,7 +31,7 @@ public class NodeMgr extends BaseMgr {
                 node.isOwnerFlowIdNotColoured() ||
                 node.isRefModuleIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert node info failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node info failed -- invalid insert data.", "无效插入数据");
         }
 
         WfFlowNode insertNode = new WfFlowNode();
@@ -48,7 +49,7 @@ public class NodeMgr extends BaseMgr {
             wfFlowNodeMapper.insertSelective(insertNode);
             return insertNode;
         } catch (Throwable e) {
-            throw new LambdaException("Insert node info failed.", "插入节点信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node info failed.", "插入节点信息失败", e);
         }
     }
 
@@ -60,7 +61,7 @@ public class NodeMgr extends BaseMgr {
      * */
     public int deleteNode(WfFlowNode node, String operId) {
         if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete node info -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node info -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -71,7 +72,7 @@ public class NodeMgr extends BaseMgr {
             deleteNode.setLastUpdateOper(operId);
             return wfFlowNodeMapper.updateByPrimaryKeySelective(deleteNode);
         } catch (Throwable e) {
-            throw new LambdaException("Delete node info failed.", "删除节点信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node info failed.", "删除节点信息失败", e);
         }
     }
 
@@ -83,7 +84,7 @@ public class NodeMgr extends BaseMgr {
      * */
     public int recoverNode(WfFlowNode node, String operId) {
         if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Recover node info -- invalid recover condition.", "无效恢复条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node info -- invalid recover condition.", "无效恢复条件");
         }
 
         try {
@@ -94,7 +95,7 @@ public class NodeMgr extends BaseMgr {
             recoverNode.setLastUpdateOper(operId);
             return wfFlowNodeMapper.updateByPrimaryKeySelective(recoverNode);
         } catch (Throwable e) {
-            throw new LambdaException("Recover node info failed.", "恢复节点信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node info failed.", "恢复节点信息失败", e);
         }
     }
 
@@ -106,7 +107,7 @@ public class NodeMgr extends BaseMgr {
      * */
     public int updateNode(WfFlowNode node, String operId) {
         if( DataUtil.isNull(node) || node.isNodeNameNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update node info failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(node.isNodeNameNotColoured() &&
@@ -117,7 +118,7 @@ public class NodeMgr extends BaseMgr {
                 node.isCommentNotColoured() &&
                 node.isSummaryNotColoured() &&
                 node.isDescriptionNotColoured()) {
-            throw new LambdaException("Update node info failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node info failed -- invalid update data.", "无效更新内容");
         }
 
         WfFlowNode updateNode = new WfFlowNode();
@@ -142,7 +143,7 @@ public class NodeMgr extends BaseMgr {
             updateNode.setLastUpdateOper((operId));
             return wfFlowNodeMapper.updateByPrimaryKeySelective(updateNode);
         } catch (Throwable e) {
-            throw new LambdaException("Update node info failed.", "更新节点信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node info failed.", "更新节点信息失败", e);
         }
     }
 
@@ -154,18 +155,18 @@ public class NodeMgr extends BaseMgr {
      * */
     public WfFlowNode queryNode(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query node info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node info failed -- invalid query condition.", "无效查询条件");
         }
 
         WfFlowNode node;
         try {
             node = wfFlowNodeMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query node info failed.", "查询节点信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node info failed.", "查询节点信息失败", e);
         }
 
         if(DataUtil.isNull(node) || (node.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query node info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node info failed -- invalid status or not found.", "已删除或未查找到");
 
         return node;
     }
@@ -178,7 +179,7 @@ public class NodeMgr extends BaseMgr {
      * */
     public List<WfFlowNode> queryNode(Long flowId, PagerUtil pager) {
         if(DataUtil.isNull(flowId)){
-            throw new LambdaException("Query node info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -189,7 +190,7 @@ public class NodeMgr extends BaseMgr {
             return wfFlowNodeMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query node info failed.", "查询节点信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node info failed.", "查询节点信息失败", e);
         }
     }
 }

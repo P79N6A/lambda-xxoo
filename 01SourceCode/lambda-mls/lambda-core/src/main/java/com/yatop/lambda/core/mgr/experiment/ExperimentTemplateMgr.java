@@ -3,6 +3,7 @@ package com.yatop.lambda.core.mgr.experiment;
 import com.yatop.lambda.base.mapper.extend.ExperimentTemplateMapper;
 import com.yatop.lambda.base.model.EmExperimentTemplate;
 import com.yatop.lambda.base.model.EmExperimentTemplateExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.exception.LambdaException;
@@ -35,7 +36,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
                 template.isSummaryNotColoured() ||
                 template.isDescriptionNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert experiment template info failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Insert experiment template info failed -- invalid insert data.", "无效插入数据");
         }
 
         EmExperimentTemplate insertTemplate = new EmExperimentTemplate();
@@ -52,7 +53,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
             emExperimentTemplateMapper.insertSelective(insertTemplate);
             return insertTemplate;
         } catch (Throwable e) {
-            throw new LambdaException("Insert experiment template info failed.", "插入实验模版信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Insert experiment template info failed.", "插入实验模版信息失败", e);
         }
     }
 
@@ -64,7 +65,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
      * */
     public int deleteDataTemplate(EmExperimentTemplate template, String operId) {
         if(DataUtil.isNull(template) || template.isTemplateIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete experiment template info failed -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Delete experiment template info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -75,7 +76,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
             deleteTemplate.setLastUpdateOper(operId);
             return emExperimentTemplateMapper.updateByPrimaryKeySelective(deleteTemplate);
         } catch (Throwable e) {
-            throw new LambdaException("Delete experiment template info failed.", "删除实验模版信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Delete experiment template info failed.", "删除实验模版信息失败", e);
         }
     }
 
@@ -87,7 +88,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
      * */
     public int updateDataTemplate(EmExperimentTemplate template, String operId) {
         if( DataUtil.isNull(template) || template.isTemplateIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update experiment template info failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Update experiment template info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(template.isTemplateNameNotColoured() &&
@@ -95,7 +96,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
                 template.isTemplateContentNotColoured() &&
                 template.isSummaryNotColoured() &&
                 template.isDescriptionNotColoured()) {
-            throw new LambdaException("Update experiment template info failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Update experiment template info failed -- invalid update data.", "无效更新内容");
         }
 
         EmExperimentTemplate updateTemplate = new EmExperimentTemplate();
@@ -116,7 +117,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
             updateTemplate.setLastUpdateOper((operId));
             return emExperimentTemplateMapper.updateByPrimaryKeySelective(updateTemplate);
         } catch (Throwable e) {
-            throw new LambdaException("Update experiment template info failed.", "更新实验模版信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Update experiment template info failed.", "更新实验模版信息失败", e);
         }
     }
 
@@ -128,18 +129,18 @@ public class ExperimentTemplateMgr extends BaseMgr {
      * */
     public EmExperimentTemplate queryDataTemplate(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query experiment template info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment template info failed -- invalid query condition.", "无效查询条件");
         }
 
         EmExperimentTemplate template;
         try {
             template = emExperimentTemplateMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query experiment template info failed.", "查询实验模版信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment template info failed.", "查询实验模版信息失败", e);
         }
 
         if(DataUtil.isNull(template) || (template.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query experiment template info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment template info failed -- invalid status or not found.", "已删除或未查找到");
 
         return template;
     }
@@ -152,7 +153,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
      * */
     public List<EmExperimentTemplate> queryDataTemplate(String keyword, PagerUtil pager) {
         if(DataUtil.isEmpty(keyword)){
-            throw new LambdaException("Query experiment template info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment template info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -164,7 +165,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
             return emExperimentTemplateMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query experiment template info failed.", "查询实验模版信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment template info failed.", "查询实验模版信息失败", e);
         }
     }
 
@@ -176,13 +177,13 @@ public class ExperimentTemplateMgr extends BaseMgr {
      * */
     public int increaseTemplateCount(Long id, String operId) {
         if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Experiment template count plus one -- invalid plus condition.", "无效计数条件");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Experiment template count plus one -- invalid plus condition.", "无效计数条件");
         }
 
         try {
            return experimentTemplateMapper.increaseTemplateCount(id, SystemTimeUtil.getCurrentTime(), operId);
         } catch (Throwable e) {
-            throw new LambdaException("Experiment template count plus one.", "实验模版计数加一失败", e);
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Experiment template count plus one.", "实验模版计数加一失败", e);
         }
     }
 }

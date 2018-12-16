@@ -4,13 +4,13 @@ import com.google.common.collect.TreeMultimap;
 import com.yatop.lambda.base.model.WfModuleCatalog;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
-import com.yatop.lambda.workflow.core.utils.MapUtil;
+import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ModuleCatalog extends WfModuleCatalog implements Comparable<ModuleCatalog>, IRichModel {
+
+    private ModuleCatalog parentCatalog;
     private TreeMultimap<Integer, ModuleCatalog> childCatalogs = TreeMultimap.create();
     private TreeMultimap<Integer, Module> childModules = TreeMultimap.create();
 
@@ -19,7 +19,7 @@ public class ModuleCatalog extends WfModuleCatalog implements Comparable<ModuleC
     public ModuleCatalog(WfModuleCatalog data) {super.copyProperties(data);}
 
     public List<ModuleCatalog> getChildCatalogs() {
-        return MapUtil.toList(childCatalogs);
+        return CollectionUtil.toList(childCatalogs);
     }
 
     public void putChildCatalog(ModuleCatalog catalog) {
@@ -29,7 +29,7 @@ public class ModuleCatalog extends WfModuleCatalog implements Comparable<ModuleC
     }
 
     public List<Module> getChildModules() {
-        return MapUtil.toList(childModules);
+        return CollectionUtil.toList(childModules);
     }
 
     public void putChildModule(Module module) {
@@ -50,5 +50,13 @@ public class ModuleCatalog extends WfModuleCatalog implements Comparable<ModuleC
         childModules.clear();
         childModules = null;
         super.clear();
+    }
+
+    public ModuleCatalog getParentCatalog() {
+        return parentCatalog;
+    }
+
+    public void setParentCatalog(ModuleCatalog parentCatalog) {
+        this.parentCatalog = parentCatalog;
     }
 }

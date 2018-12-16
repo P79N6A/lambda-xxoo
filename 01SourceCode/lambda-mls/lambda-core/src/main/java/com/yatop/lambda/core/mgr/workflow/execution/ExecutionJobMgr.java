@@ -4,6 +4,7 @@ import com.yatop.lambda.base.mapper.extend.WorkflowJobMapper;
 import com.yatop.lambda.base.model.WfExecutionJob;
 import com.yatop.lambda.base.model.WfExecutionJobExample;
 import com.yatop.lambda.base.model.WfFlow;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.JobStateEnum;
@@ -41,7 +42,7 @@ public class ExecutionJobMgr extends BaseMgr {
                 job.isJobDfsDirNotColoured() ||
                 job.isJobLocalDirNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert job info failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert job info failed -- invalid insert data.", "无效插入数据");
         }
 
         WfExecutionJob insertJob = new WfExecutionJob();
@@ -62,7 +63,7 @@ public class ExecutionJobMgr extends BaseMgr {
             wfExecutionJobMapper.insertSelective(insertJob);
             return insertJob;
         } catch (Throwable e) {
-            throw new LambdaException("Insert job info failed.", "插入作业信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert job info failed.", "插入作业信息失败", e);
         }
     }
 
@@ -74,7 +75,7 @@ public class ExecutionJobMgr extends BaseMgr {
      * */
     public int deleteJob(WfFlow flow, String operId) {
         if(DataUtil.isNull(flow) || flow.isOwnerProjectIdNotColoured() || flow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete job info -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete job info -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -86,7 +87,7 @@ public class ExecutionJobMgr extends BaseMgr {
             example.createCriteria().andOwnerProjectIdEqualTo(flow.getOwnerProjectId()).andRelFlowIdEqualTo(flow.getFlowId());
             return wfExecutionJobMapper.updateByExampleSelective(deleteJob, example);
         } catch (Throwable e) {
-            throw new LambdaException("Delete job info failed.", "删除作业信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete job info failed.", "删除作业信息失败", e);
         }
     }
 
@@ -98,7 +99,7 @@ public class ExecutionJobMgr extends BaseMgr {
      * */
     public int updateJob(WfExecutionJob job, String operId) {
         if( DataUtil.isNull(job) || job.isJobIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update job info failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update job info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(job.isJobContextNotColoured() &&
@@ -107,7 +108,7 @@ public class ExecutionJobMgr extends BaseMgr {
                 job.isJobEndTimeNotColoured() &&
                 job.isJobStateNotColoured() &&
                 job.isDescriptionNotColoured()) {
-            throw new LambdaException("Update job info failed -- invalid update data.", "无效更新内容");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update job info failed -- invalid update data.", "无效更新内容");
         }
 
         WfExecutionJob updateJob = new WfExecutionJob();
@@ -130,7 +131,7 @@ public class ExecutionJobMgr extends BaseMgr {
             updateJob.setLastUpdateOper((operId));
             return wfExecutionJobMapper.updateByPrimaryKeySelective(updateJob);
         } catch (Throwable e) {
-            throw new LambdaException("Update job info failed.", "更新作业信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update job info failed.", "更新作业信息失败", e);
         }
     }
 
@@ -142,13 +143,13 @@ public class ExecutionJobMgr extends BaseMgr {
      * */
     public int increaseTaskSequence(WfExecutionJob job, String operId) {
         if( DataUtil.isNull(job) || job.isJobIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException("Update job info failed -- invalid update condition.", "无效更新条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update job info failed -- invalid update condition.", "无效更新条件");
         }
 
         try {
             return workflowJobMapper.increaseTaskSequence(job.getJobId(), SystemTimeUtil.getCurrentTime(), operId);
         } catch (Throwable e) {
-            throw new LambdaException("Update job info failed.", "更新作业信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update job info failed.", "更新作业信息失败", e);
         }
     }
 
@@ -160,18 +161,18 @@ public class ExecutionJobMgr extends BaseMgr {
      * */
     public WfExecutionJob queryJob(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query job info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed -- invalid query condition.", "无效查询条件");
         }
 
         WfExecutionJob job;
         try {
             job = wfExecutionJobMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query job info failed.", "查询作业信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed.", "查询作业信息失败", e);
         }
 
         if(DataUtil.isNull(job) || (job.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query job info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed -- invalid status or not found.", "已删除或未查找到");
 
         return job;
     }
@@ -184,7 +185,7 @@ public class ExecutionJobMgr extends BaseMgr {
      * */
     public List<WfExecutionJob> queryJob(Long projectId, Long flowId, PagerUtil pager) {
         if(DataUtil.isNull(projectId) || DataUtil.isNull(flowId)){
-            throw new LambdaException("Query job info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -195,7 +196,7 @@ public class ExecutionJobMgr extends BaseMgr {
             return wfExecutionJobMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query job info failed.", "查询作业信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed.", "查询作业信息失败", e);
         }
     }
 
@@ -207,7 +208,7 @@ public class ExecutionJobMgr extends BaseMgr {
      * */
     public List<WfExecutionJob> queryJob(Long projectId, JobTypeEnum typeEnum, PagerUtil pager) {
         if(DataUtil.isNull(projectId) || DataUtil.isNull(typeEnum)){
-            throw new LambdaException("Query job info failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -218,7 +219,7 @@ public class ExecutionJobMgr extends BaseMgr {
             return wfExecutionJobMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query job info failed.", "查询作业信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed.", "查询作业信息失败", e);
         }
     }
 }

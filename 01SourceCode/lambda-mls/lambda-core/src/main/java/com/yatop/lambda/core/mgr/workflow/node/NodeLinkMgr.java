@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNodeLink;
 import com.yatop.lambda.base.model.WfFlowNodeLinkExample;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.exception.LambdaException;
@@ -30,7 +31,7 @@ public class NodeLinkMgr extends BaseMgr {
                 link.isSrcPortIdNotColoured() ||
                 link.isDstPortIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
-            throw new LambdaException("Insert node link failed -- invalid insert data.", "无效插入数据");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node link failed -- invalid insert data.", "无效插入数据");
         }
 
         WfFlowNodeLink insertLink = new WfFlowNodeLink();
@@ -46,7 +47,7 @@ public class NodeLinkMgr extends BaseMgr {
             wfFlowNodeLinkMapper.insertSelective(insertLink);
             return insertLink;
         } catch (Throwable e) {
-            throw new LambdaException("Insert node link failed.", "插入节点链接失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node link failed.", "插入节点链接失败", e);
         }
     }
 
@@ -58,7 +59,7 @@ public class NodeLinkMgr extends BaseMgr {
      * */
     public int deleteLink(WfFlowNodeLink link, String operId) {
         if(DataUtil.isNull(link) || link.isLinkIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException("Delete node link -- invalid delete condition.", "无效删除条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node link -- invalid delete condition.", "无效删除条件");
         }
 
         try {
@@ -69,7 +70,7 @@ public class NodeLinkMgr extends BaseMgr {
             deleteLink.setLastUpdateOper(operId);
             return wfFlowNodeLinkMapper.updateByPrimaryKeySelective(deleteLink);
         } catch (Throwable e) {
-            throw new LambdaException("Delete node link failed.", "删除节点链接失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node link failed.", "删除节点链接失败", e);
         }
     }
 
@@ -81,18 +82,18 @@ public class NodeLinkMgr extends BaseMgr {
      * */
     public WfFlowNodeLink queryLink(Long id) {
         if(DataUtil.isNull(id)){
-            throw new LambdaException("Query node link failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- invalid query condition.", "无效查询条件");
         }
 
         WfFlowNodeLink link;
         try {
             link = wfFlowNodeLinkMapper.selectByPrimaryKey(id);
         } catch (Throwable e) {
-            throw new LambdaException("Query node link failed.", "查询节点链接失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed.", "查询节点链接失败", e);
         }
 
         if(DataUtil.isNull(link) || (link.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException("Query node link failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- invalid status or not found.", "已删除或未查找到");
 
         return link;
     }
@@ -105,7 +106,7 @@ public class NodeLinkMgr extends BaseMgr {
      * */
     public List<WfFlowNodeLink> queryLink(Long flowId, PagerUtil pager) {
         if(DataUtil.isNull(flowId)){
-            throw new LambdaException("Query node link failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -116,7 +117,7 @@ public class NodeLinkMgr extends BaseMgr {
             return wfFlowNodeLinkMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query node link failed.", "查询节点链接失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed.", "查询节点链接失败", e);
         }
     }
 
@@ -128,7 +129,7 @@ public class NodeLinkMgr extends BaseMgr {
      * */
     public List<WfFlowNodeLink> queryLinkBySrcPortId(Long nodePortId, PagerUtil pager) {
         if(DataUtil.isNull(nodePortId)){
-            throw new LambdaException("Query node link failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -139,7 +140,7 @@ public class NodeLinkMgr extends BaseMgr {
             return wfFlowNodeLinkMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query node link failed.", "查询节点链接失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed.", "查询节点链接失败", e);
         }
     }
 
@@ -151,7 +152,7 @@ public class NodeLinkMgr extends BaseMgr {
      * */
     public List<WfFlowNodeLink> queryLinkByDstPortId(Long nodePortId, PagerUtil pager) {
         if(DataUtil.isNull(nodePortId)){
-            throw new LambdaException("Query node link failed -- invalid query condition.", "无效查询条件");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
@@ -162,7 +163,7 @@ public class NodeLinkMgr extends BaseMgr {
             return wfFlowNodeLinkMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
-            throw new LambdaException("Query node link failed.", "查询节点链接失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed.", "查询节点链接失败", e);
         }
     }
 }
