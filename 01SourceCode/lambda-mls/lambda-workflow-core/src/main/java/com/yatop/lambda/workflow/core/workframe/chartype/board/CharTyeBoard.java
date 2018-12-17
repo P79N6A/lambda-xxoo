@@ -1,6 +1,6 @@
-package com.yatop.lambda.workflow.core.component.chartype.board;
+package com.yatop.lambda.workflow.core.workframe.chartype.board;
 
-import com.yatop.lambda.workflow.core.component.chartype.ICharType;
+import com.yatop.lambda.workflow.core.workframe.chartype.ICharType;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

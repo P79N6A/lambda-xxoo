@@ -1,6 +1,6 @@
-package com.yatop.lambda.workflow.core.module.board;
+package com.yatop.lambda.workflow.core.workframe.module.board;
 
-import com.yatop.lambda.workflow.core.module.IModule;
+import com.yatop.lambda.workflow.core.workframe.module.IModule;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

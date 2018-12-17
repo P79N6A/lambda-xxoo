@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.core.component.chartype;
+package com.yatop.lambda.workflow.core.workframe.chartype;
 
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
