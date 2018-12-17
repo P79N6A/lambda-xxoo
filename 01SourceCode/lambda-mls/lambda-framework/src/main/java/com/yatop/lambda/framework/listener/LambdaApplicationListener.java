@@ -9,8 +9,8 @@ import org.springframework.core.env.MutablePropertySources;
 
 import java.util.*;
 
-public class frameworkApplicationListener implements ApplicationListener<ApplicationPreparedEvent> {
-    public frameworkApplicationListener() {}
+public class LambdaApplicationListener implements ApplicationListener<ApplicationPreparedEvent> {
+    public LambdaApplicationListener() {}
 
 
     public void onApplicationEvent(ApplicationPreparedEvent event) {

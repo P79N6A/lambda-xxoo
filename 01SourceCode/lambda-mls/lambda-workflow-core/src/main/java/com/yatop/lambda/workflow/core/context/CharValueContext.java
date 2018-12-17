@@ -1,8 +1,8 @@
 package com.yatop.lambda.workflow.core.context;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yatop.lambda.workflow.core.workframe.chartype.CharDefaultValue;
-import com.yatop.lambda.workflow.core.workframe.chartype.CharValue;
+import com.yatop.lambda.workflow.core.framework.chartype.CharDefaultValue;
+import com.yatop.lambda.workflow.core.framework.chartype.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 
 public class CharValueContext {

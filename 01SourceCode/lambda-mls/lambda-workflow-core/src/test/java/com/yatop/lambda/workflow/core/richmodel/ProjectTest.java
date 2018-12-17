@@ -1,7 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel;
 
 import com.alibaba.fastjson.JSON;
-import com.yatop.lambda.FramewrokApplication;
+import com.yatop.lambda.LambdaApplication;
 import com.yatop.lambda.base.model.DwDataWarehouse;
 import com.yatop.lambda.base.model.PrProject;
 import com.yatop.lambda.core.mgr.data.DataWarehouseMgr;
@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = FramewrokApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = LambdaApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProjectTest {
 
     @Autowired
