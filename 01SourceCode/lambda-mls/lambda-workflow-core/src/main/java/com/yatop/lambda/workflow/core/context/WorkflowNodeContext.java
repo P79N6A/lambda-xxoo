@@ -11,7 +11,8 @@ import java.util.TreeMap;
 public class WorkflowNodeContext {
     private WorkflowContext workflowContext;
     private Node node;
-    private TreeMap<String, String> warningMsgs = new TreeMap<String, String>();    //charId, warningMsg
+    private String outputSummary;
+    private TreeMap<String, String> outputWarningMsgs = new TreeMap<String, String>();    //charId, warningMsg
 
     public JSONObject toJSON() {
         return null;

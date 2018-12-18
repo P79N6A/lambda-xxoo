@@ -17,6 +17,7 @@ import java.util.TreeMap;
 
 public class WorkflowContext {
 
+    private boolean isEmptyWorkflow;        //是否为空工作流（无关联实验和工作流，但有一个节点的特殊情况，比如用于对数据文件导入的包装）
     private Project project;                //操作关联的项目
     private Experiment experiment;          //操作关联的实验
     private Workflow workflow;              //操作关联的工作流
@@ -32,6 +33,12 @@ public class WorkflowContext {
         this.project = project;
         this.experiment = experiment;
         this.workflow = workflow;
+        this.isEmptyWorkflow = false;
+    }
+
+    public WorkflowContext(Project project) {
+        this.project = project;
+        this.isEmptyWorkflow = true;
     }
 
     public Project getProject() {

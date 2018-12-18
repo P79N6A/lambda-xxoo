@@ -9,7 +9,6 @@ import java.util.TreeMap;
 
 public class Module extends WfModule implements Comparable<Module>, IRichModel {
 
-    private ModuleCatalog catalog;
     private Component component;
     private TreeMap<Long, ModulePort> inputPorts = new TreeMap<Long, ModulePort>();
     private TreeMap<Long, ModulePort> outputPorts = new TreeMap<Long, ModulePort>();
@@ -25,7 +24,6 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
 
     @Override
     public void clear() {
-        catalog = null;
         component = null;
         inputPorts.clear();
         inputPorts = null;
@@ -40,14 +38,6 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
 
     public void setComponent(Component component) {
         this.component = component;
-    }
-
-    public ModuleCatalog getCatalog() {
-        return catalog;
-    }
-
-    public void setCatalog(ModuleCatalog catalog) {
-        this.catalog = catalog;
     }
 
     public ModulePort getInputPort(Long inputPortId) {

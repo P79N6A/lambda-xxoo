@@ -7,12 +7,7 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 public class ExecutionJob extends WfExecutionJob implements IRichModel {
 
     @Override
-    public JSONObject toJSON() {
-        return null;
-    }
-
-    @Override
     public void clear() {
-
+        super.clear();
     }
 }

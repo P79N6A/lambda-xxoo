@@ -27,6 +27,13 @@ public interface IModule extends InitializingBean {
     //校验参数处理，例如：数据表读取组件需要校验对应的数据表是否正常
     void onCheckParameter(WorkflowNodeContext context);
 
+    //是否支持生成摘要
+    //返回false，否
+    //返回true，是
+    boolean supportGenerateSummary();
+
+    //生成摘要内容
+    void generateSummary(WorkflowNodeContext context);
 
     //是否捕获任务执行事件
     //返回false，否

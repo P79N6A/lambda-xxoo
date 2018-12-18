@@ -10,7 +10,6 @@ import java.util.List;
 
 public class ModuleCatalog extends WfModuleCatalog implements Comparable<ModuleCatalog>, IRichModel {
 
-    private ModuleCatalog parentCatalog;
     private TreeMultimap<Integer, ModuleCatalog> childCatalogs = TreeMultimap.create();
     private TreeMultimap<Integer, Module> childModules = TreeMultimap.create();
 
@@ -50,13 +49,5 @@ public class ModuleCatalog extends WfModuleCatalog implements Comparable<ModuleC
         childModules.clear();
         childModules = null;
         super.clear();
-    }
-
-    public ModuleCatalog getParentCatalog() {
-        return parentCatalog;
-    }
-
-    public void setParentCatalog(ModuleCatalog parentCatalog) {
-        this.parentCatalog = parentCatalog;
     }
 }

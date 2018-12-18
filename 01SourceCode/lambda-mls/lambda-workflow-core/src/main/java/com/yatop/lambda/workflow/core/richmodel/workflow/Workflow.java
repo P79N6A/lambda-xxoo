@@ -4,10 +4,11 @@ import com.yatop.lambda.base.model.WfFlow;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;
+import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 
 public class Workflow extends WfFlow implements IRichModel {
-    private Project project;
-    private Experiment experiment;
+
+    ExecutionJob lastJob;
 
     public Workflow() {}
 
@@ -15,24 +16,15 @@ public class Workflow extends WfFlow implements IRichModel {
 
     @Override
     public void clear() {
-        this.project = null;
-        this.experiment = null;
+        lastJob = null;
         super.clear();
     }
 
-    public Project getProject() {
-        return this.project;
+    public ExecutionJob getLastJob() {
+        return lastJob;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    public Experiment getExperiment() {
-        return experiment;
-    }
-
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
+    public void setLastJob(ExecutionJob lastJob) {
+        this.lastJob = lastJob;
     }
 }

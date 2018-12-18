@@ -5,7 +5,6 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;
 
 public class ModelWarehouse extends MwModelWarehouse implements IRichModel {
-    private Project project;
 
     public ModelWarehouse() {}
 
@@ -13,15 +12,6 @@ public class ModelWarehouse extends MwModelWarehouse implements IRichModel {
 
     @Override
     public void clear() {
-        project = null;
         super.clear();
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
     }
 }
