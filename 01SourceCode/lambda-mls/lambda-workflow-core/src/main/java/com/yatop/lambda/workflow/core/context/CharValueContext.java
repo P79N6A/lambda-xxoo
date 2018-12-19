@@ -14,6 +14,50 @@ public class CharValueContext {
     private CharValue charValue;
 
     public void clear() {
+        workflowContext = null;
+        component = null;
+        cmptSpec = null;
+        cmptChar = null;
+        charValue.clear();
+    }
 
+    public WorkflowContext getWorkflowContext() {
+        return workflowContext;
+    }
+
+    public void setWorkflowContext(WorkflowContext workflowContext) {
+        this.workflowContext = workflowContext;
+    }
+
+    public Component getComponent() {
+        return component;
+    }
+
+    public void setComponent(Component component) {
+        this.component = component;
+    }
+
+    public CmptSpec getCmptSpec() {
+        return cmptSpec;
+    }
+
+    public void setCmptSpec(CmptSpec cmptSpec) {
+        this.cmptSpec = cmptSpec;
+    }
+
+    public CmptChar getCmptChar() {
+        return cmptChar;
+    }
+
+    public void setCmptChar(CmptChar cmptChar) {
+        this.cmptChar = cmptChar;
+    }
+
+    public CharValue getCharValue() {
+        return charValue;
+    }
+
+    public void setCharValue(CharValue charValue) {
+        this.charValue = charValue;
     }
 }

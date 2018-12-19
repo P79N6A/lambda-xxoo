@@ -1,8 +1,8 @@
-package com.yatop.lambda.workflow.core.context;
+package com.yatop.lambda.workflow.core.config;
 
 import com.alibaba.fastjson.JSONObject;
 
-public class ModuleConfigContext {
+public class ModuleConfig {
     //ExecutionJob job;
     //WorkflowContext workflowContext
 

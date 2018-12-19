@@ -13,11 +13,33 @@ public class WorkflowSchemaContext {
     private Node node;
     private List<NodeSchema> changeSchemas = new ArrayList<NodeSchema>();
 
-    public JSONObject toJSON() {
-        return null;
+    public void clear() {
+        workflowContext = null;
+        node = null;
+        changeSchemas.clear();
     }
 
-    public void clear() {
+    public WorkflowContext getWorkflowContext() {
+        return workflowContext;
+    }
 
+    public void setWorkflowContext(WorkflowContext workflowContext) {
+        this.workflowContext = workflowContext;
+    }
+
+    public Node getNode() {
+        return node;
+    }
+
+    public void setNode(Node node) {
+        this.node = node;
+    }
+
+    public List<NodeSchema> getChangeSchemas() {
+        return changeSchemas;
+    }
+
+    public void setChangeSchemas(List<NodeSchema> changeSchemas) {
+        this.changeSchemas = changeSchemas;
     }
 }

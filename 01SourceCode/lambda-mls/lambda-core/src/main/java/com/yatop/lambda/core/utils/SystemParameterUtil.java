@@ -13,18 +13,18 @@ import java.util.List;
 @Component
 public class SystemParameterUtil {
 
-    private static HashMap<String, SysParameter> systemParameterBoard;
+    private static HashMap<String, SysParameter> systemParameters;
 
     @Autowired
-    public void setSystemParameterBoard(SystemParameterMgr systemParameterMgr) {
-        systemParameterBoard = new HashMap<String, SysParameter>();
+    public void setSystemParameter(SystemParameterMgr systemParameterMgr) {
+        systemParameters = new HashMap<String, SysParameter>();
         List<SysParameter> sysParameters = systemParameterMgr.querySystemParameter();
         if(DataUtil.isNotEmpty(sysParameters)) {
             for (SysParameter sysParameter : sysParameters) {
                 if(DataUtil.isBlank(sysParameter.getParamValue()) || sysParameter.getStatus() == DataStatusEnum.INVALID.getStatus())
                     continue;
 
-                systemParameterBoard.put(sysParameter.getParamCode(), sysParameter);
+                systemParameters.put(sysParameter.getParamCode(), sysParameter);
             }
         }
     }
@@ -36,7 +36,7 @@ public class SystemParameterUtil {
         if(DataUtil.isBlank(paramEnum.getParamCode()))
             return DataUtil.trim(paramEnum.getParamDefaultValue());
 
-        SysParameter param = systemParameterBoard.get(paramEnum.getParamCode());
+        SysParameter param = systemParameters.get(paramEnum.getParamCode());
         if(DataUtil.isNull(param))
             return DataUtil.trim(paramEnum.getParamDefaultValue());
 

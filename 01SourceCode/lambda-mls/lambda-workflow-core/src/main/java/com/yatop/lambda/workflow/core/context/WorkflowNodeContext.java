@@ -2,10 +2,7 @@ package com.yatop.lambda.workflow.core.context;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeMap;
 
 public class WorkflowNodeContext {

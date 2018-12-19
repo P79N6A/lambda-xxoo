@@ -6,10 +6,6 @@ public class JobExecutionContext {
     //ExecutionJob job;
     //WorkflowContext workflowContext
 
-    public JSONObject toJSON() {
-        return null;
-    }
-
     public void clear() {
 
     }
