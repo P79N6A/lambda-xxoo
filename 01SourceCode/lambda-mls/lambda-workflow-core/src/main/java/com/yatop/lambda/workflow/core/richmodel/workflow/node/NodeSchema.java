@@ -1,6 +1,5 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.base.model.WfFlowNodeSchema;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.JsonObject;

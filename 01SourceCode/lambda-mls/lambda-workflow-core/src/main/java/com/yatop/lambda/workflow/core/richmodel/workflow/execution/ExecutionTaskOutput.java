@@ -9,6 +9,10 @@ public class ExecutionTaskOutput extends WfExecutionTaskOutput implements IRichM
 
     private CmptChar cmptChar;
 
+    public ExecutionTaskOutput() {}
+
+    public ExecutionTaskOutput(WfExecutionTaskOutput data) {super.copyProperties(data);}
+
     @Override
     public void clear() {
         cmptChar = null;

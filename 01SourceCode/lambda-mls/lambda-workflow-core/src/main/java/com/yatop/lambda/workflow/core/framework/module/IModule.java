@@ -19,6 +19,7 @@ Module类，负责工作流节点事件捕获，包括节点的参数逻辑校�
 public interface IModule extends InitializingBean {
     //方法失败或异常抛出Exception，Module类实现该接口，适当封装一些中间abstract组件类以便复用
 
+
     //是否捕获参数校验事件
     //返回false，否
     //返回true，是
@@ -27,6 +28,7 @@ public interface IModule extends InitializingBean {
     //校验参数处理，例如：数据表读取组件需要校验对应的数据表是否正常
     void onCheckParameter(WorkflowNodeContext context);
 
+
     //是否支持生成摘要
     //返回false，否
     //返回true，是
@@ -34,6 +36,7 @@ public interface IModule extends InitializingBean {
 
     //生成摘要内容
     void generateSummary(WorkflowNodeContext context);
+
 
     //是否捕获任务执行事件
     //返回false，否

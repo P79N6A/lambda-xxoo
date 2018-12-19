@@ -1,6 +1,5 @@
 package com.yatop.lambda.workflow.core.richmodel.component.characteristic;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.base.model.CfCmptCharEnum;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
