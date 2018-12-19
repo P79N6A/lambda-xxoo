@@ -2,7 +2,7 @@ package com.yatop.lambda.workflow.core.framework.module;
 
 import java.util.HashMap;
 
-public abstract class ModuleClazz implements IModule {
+public abstract class ModuleClazzBase implements IModule {
 
     //<class-path, bean-object>
     private static final HashMap<String, IModule> CLAZZ_BEANS = new HashMap<String, IModule>();
@@ -15,7 +15,7 @@ public abstract class ModuleClazz implements IModule {
         CLAZZ_BEANS.put(classpath, moduleBean);
     }
 
-    public ModuleClazz() {
-        ModuleClazz.putClazzBean(this.getClass().getName(), this);
+    public ModuleClazzBase() {
+        ModuleClazzBase.putClazzBean(this.getClass().getName(), this);
     }
 }

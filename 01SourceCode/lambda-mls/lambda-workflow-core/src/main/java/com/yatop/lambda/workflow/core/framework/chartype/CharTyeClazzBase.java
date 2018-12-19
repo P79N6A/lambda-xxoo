@@ -2,7 +2,7 @@ package com.yatop.lambda.workflow.core.framework.chartype;
 
 import java.util.HashMap;
 
-public abstract class CharTyeClazz implements ICharType {
+public abstract class CharTyeClazzBase implements ICharType {
 
     //<class-path, bean-object>
     private static final HashMap<String, ICharType> CLAZZ_BEANS = new HashMap<String, ICharType>();
@@ -15,7 +15,7 @@ public abstract class CharTyeClazz implements ICharType {
         CLAZZ_BEANS.put(clazzPath, charTypeBean);
     }
 
-    public CharTyeClazz() {
-        CharTyeClazz.putClazzBean(this.getClass().getName(), this);
+    public CharTyeClazzBase() {
+        CharTyeClazzBase.putClazzBean(this.getClass().getName(), this);
     }
 }
