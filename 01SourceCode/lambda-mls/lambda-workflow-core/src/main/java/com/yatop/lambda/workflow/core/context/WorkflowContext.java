@@ -15,30 +15,34 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePort;
 
 import java.util.TreeMap;
 
-public class WorkflowContext {
+public class WorkflowContext implements IWorkContext {
 
-    private boolean isEmptyWorkflow;        //是否为空工作流（无关联实验和工作流，但有一个节点的特殊情况，比如用于对数据文件导入的包装）
-    private Project project;                //操作关联的项目
-    private Experiment experiment;          //操作关联的实验
-    private Workflow workflow;              //操作关联的工作流
-    private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联的数据仓库
-    private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联的模型仓库
-    private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();      //操作关联的节点
-    private TreeMap<Long, NodeLink> links = new TreeMap<Long, NodeLink>();  //操作关联的节点链接
-    private TreeMap<Long, NodePort> ports = new TreeMap<Long, NodePort>();  //操作关联的节点端口
-    private TreeMap<Long, NodeSchema> schemas = new TreeMap<Long, NodeSchema>();  //操作关联的节点端口
-    private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联的节点参数
+    private boolean isNoWorkflow;           //是否为无工作流（无关联实验和工作流，但有一个节点的特殊情况，比如用于对数据文件导入的包装）
+    private Project project;                //操作关联项目
+    private Experiment experiment;          //操作关联实验
+    private Workflow workflow;              //操作关联工作流
+    private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库
+    private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联模型仓库
+    private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();      //操作关联节点
+    private TreeMap<Long, NodeLink> links = new TreeMap<Long, NodeLink>();  //操作关联节点链接
+    private TreeMap<Long, NodePort> ports = new TreeMap<Long, NodePort>();  //操作关联节点端口
+    private TreeMap<Long, NodeSchema> schemas = new TreeMap<Long, NodeSchema>();  //操作关联节点端口
+    private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联节点参数
 
     public WorkflowContext(Project project, Experiment experiment, Workflow workflow) {
         this.project = project;
         this.experiment = experiment;
         this.workflow = workflow;
-        this.isEmptyWorkflow = false;
+        this.isNoWorkflow = false;
     }
 
     public WorkflowContext(Project project) {
         this.project = project;
-        this.isEmptyWorkflow = true;
+        this.isNoWorkflow = true;
+    }
+
+    public boolean isNoWorkflow() {
+        return isNoWorkflow;
     }
 
     public Project getProject() {
@@ -109,10 +113,7 @@ public class WorkflowContext {
         CollectionUtil.put(globalParameters, globalParameterId, globalParameter);
     }
 
-    public JSONObject toJSON() {
-        return null;
-    }
-
+    @Override
     public void clear() {
         project.clear();
         experiment.clear();

@@ -90,6 +90,13 @@ public class CollectionUtil {
         set.add(key);
     }
 
+    public static <L extends List<V>, V> void add(L list, V value) {
+        if(DataUtil.isNull(list) || DataUtil.isNull(value))
+            return;
+
+        list.add(value);
+    }
+
     public static <S extends Set<K>, K> List<K> toList(S set) {
         if(DataUtil.isNull(set) || set.isEmpty())
             return null;

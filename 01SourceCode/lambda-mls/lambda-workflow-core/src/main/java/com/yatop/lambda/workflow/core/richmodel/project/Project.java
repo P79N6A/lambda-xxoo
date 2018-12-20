@@ -6,8 +6,8 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.model.ModelWarehouse;
 
 public class Project extends PrProject implements IRichModel {
-    private DataWarehouse dataWarehouse;
-    private ModelWarehouse modelWarehouse;
+    private DataWarehouse dataWarehouse;    //项目数据库
+    private ModelWarehouse modelWarehouse;  //项目模型库
 
     public Project() {}
 

@@ -5,7 +5,8 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 
 public class ModulePort extends WfModulePort implements IRichModel {
-    private CmptChar cmptChar;
+
+    private CmptChar cmptChar;  //关联计算组件特征
 
     public ModulePort() {}
 

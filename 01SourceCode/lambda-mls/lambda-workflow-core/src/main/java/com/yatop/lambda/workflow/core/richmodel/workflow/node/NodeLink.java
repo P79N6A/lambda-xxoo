@@ -5,8 +5,8 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
 public class NodeLink extends WfFlowNodeLink implements IRichModel {
 
-    private NodePort srcNodePort;
-    private NodePort dstNodePort;
+    private NodePort srcNodePort;   //流出节点端口
+    private NodePort dstNodePort;   //流入节点端口
 
     public NodeLink() {}
 

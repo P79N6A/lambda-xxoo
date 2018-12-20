@@ -1,18 +1,32 @@
 package com.yatop.lambda.workflow.core.context;
 
-import com.alibaba.fastjson.JSONObject;
-import com.yatop.lambda.workflow.core.framework.chartype.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
 
-public class CharValueContext {
-    private WorkflowContext workflowContext;
-    private Component component;
-    private CmptSpec cmptSpec;
-    private CmptChar cmptChar;
-    private CharValue charValue;
+public class CharValueContext implements IWorkContext {
 
+    private boolean isTaskReturn;   //是否为运行任务返回后的特征值操作
+    private WorkflowContext workflowContext;    //操作关联工作流
+    private Component component;    //操作关联组件
+    private CmptSpec cmptSpec;      //操作关联组件规格
+    private CmptChar cmptChar;      //操作关联组件特征
+    private CharValue charValue = new CharValue();  //特征值的传入传出
+
+    public CharValueContext(WorkflowContext workflowContext, Component component, CmptSpec cmptSpec, CmptChar cmptChar) {
+        this(workflowContext, component, cmptSpec, cmptChar, false);
+    }
+
+    public CharValueContext(WorkflowContext workflowContext, Component component, CmptSpec cmptSpec, CmptChar cmptChar, boolean isTaskReturn) {
+        this.isTaskReturn = isTaskReturn;
+        this.workflowContext = workflowContext;
+        this.component = component;
+        this.cmptSpec = cmptSpec;
+        this.cmptChar = cmptChar;
+    }
+
+    @Override
     public void clear() {
         workflowContext = null;
         component = null;
@@ -25,39 +39,19 @@ public class CharValueContext {
         return workflowContext;
     }
 
-    public void setWorkflowContext(WorkflowContext workflowContext) {
-        this.workflowContext = workflowContext;
-    }
-
     public Component getComponent() {
         return component;
-    }
-
-    public void setComponent(Component component) {
-        this.component = component;
     }
 
     public CmptSpec getCmptSpec() {
         return cmptSpec;
     }
 
-    public void setCmptSpec(CmptSpec cmptSpec) {
-        this.cmptSpec = cmptSpec;
-    }
-
     public CmptChar getCmptChar() {
         return cmptChar;
     }
 
-    public void setCmptChar(CmptChar cmptChar) {
-        this.cmptChar = cmptChar;
-    }
-
     public CharValue getCharValue() {
         return charValue;
-    }
-
-    public void setCharValue(CharValue charValue) {
-        this.charValue = charValue;
     }
 }

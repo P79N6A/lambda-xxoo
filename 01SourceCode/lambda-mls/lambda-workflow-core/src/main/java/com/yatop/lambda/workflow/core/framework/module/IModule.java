@@ -1,8 +1,7 @@
 package com.yatop.lambda.workflow.core.framework.module;
 
-import com.yatop.lambda.workflow.core.context.TaskExecutionContext;
+import com.yatop.lambda.workflow.core.context.TaskContext;
 import com.yatop.lambda.workflow.core.context.WorkflowNodeContext;
-import com.yatop.lambda.workflow.core.context.WorkflowSchemaContext;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.HashSet;
@@ -44,7 +43,7 @@ public interface IModule extends InitializingBean {
     boolean catchTaskExecution();
 
     //任务执行事件处理，例如：读数据表将输出内容"OUT@DataTable-t1<M>"特征值置为"CCP@TableName"特征值对应数据表的ID值
-    void onTaskExecution(TaskExecutionContext context);
+    void onTaskExecution(TaskContext context);
 
 
     //是否支持动态分析数据输出端口schema
@@ -64,5 +63,5 @@ public interface IModule extends InitializingBean {
     };*/
 
     //分析数据输出端口schema
-    void analyzeSchema(WorkflowSchemaContext context);
+    void analyzeSchema(WorkflowNodeContext context);
 }

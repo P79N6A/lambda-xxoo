@@ -10,11 +10,11 @@ import java.util.TreeMap;
 
 public class Module extends WfModule implements Comparable<Module>, IRichModel {
 
-    private Component component;
-    private TreeMap<Long, ModulePort> inputPorts = new TreeMap<Long, ModulePort>();
-    private TreeMap<Integer, ModulePort> inputPortsOrderBySequence = new TreeMap<Integer, ModulePort>();
-    private TreeMap<Long, ModulePort> outputPorts = new TreeMap<Long, ModulePort>();
-    private TreeMap<Integer, ModulePort> outputPortsOrderBySequence = new TreeMap<Integer, ModulePort>();
+    private Component component;    //关联计算组件
+    private TreeMap<Long, ModulePort> inputPorts = new TreeMap<Long, ModulePort>();     //工作流组件输入端口
+    private TreeMap<Integer, ModulePort> inputPortsOrderBySequence = new TreeMap<Integer, ModulePort>();    //工作流组件输入端口按序号排序
+    private TreeMap<Long, ModulePort> outputPorts = new TreeMap<Long, ModulePort>();    //工作流组件输出端口
+    private TreeMap<Integer, ModulePort> outputPortsOrderBySequence = new TreeMap<Integer, ModulePort>();   //工作流组件输出端口按序号排序
 
     public Module() {}
 

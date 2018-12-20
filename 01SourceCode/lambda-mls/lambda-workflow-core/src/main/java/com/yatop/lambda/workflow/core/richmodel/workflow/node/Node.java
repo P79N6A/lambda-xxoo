@@ -12,13 +12,12 @@ import java.util.TreeMap;
 public class Node extends WfFlowNode implements IRichModel {
 
     private Module module;
-    private ExecutionTask lastTask;
-    private TreeMap<String, NodeParameter> parameters = new TreeMap<String, NodeParameter>();           //组件参数
-    private TreeMap<String, NodeParameter> optimizePrameters = new TreeMap<String, NodeParameter>();    //优化参数
-    private TreeMap<String, NodePort> inputNodePorts = new TreeMap<String, NodePort>();
-    private TreeMap<Integer, NodePort> inputNodePortsOrderBySequence = new TreeMap<Integer, NodePort>();
-    private TreeMap<String, NodePort> outputNodePorts = new TreeMap<String, NodePort>();
-    private TreeMap<Integer, NodePort> outputNodePortsOrderBySequence = new TreeMap<Integer, NodePort>();
+    private TreeMap<String, NodeParameter> parameters = new TreeMap<String, NodeParameter>();                //组件参数
+    private TreeMap<String, NodeParameter> optimizePrameters = new TreeMap<String, NodeParameter>();         //执行调优参数
+    private TreeMap<String, NodePort> inputNodePorts = new TreeMap<String, NodePort>();                 //输入节点端口
+    private TreeMap<Integer, NodePort> inputNodePortsOrderBySequence = new TreeMap<Integer, NodePort>(); //输入节点端口按序号排序
+    private TreeMap<String, NodePort> outputNodePorts = new TreeMap<String, NodePort>();                //输出节点端口
+    private TreeMap<Integer, NodePort> outputNodePortsOrderBySequence = new TreeMap<Integer, NodePort>();//输出节点端口按序号排序
 
     public Node() {}
 
@@ -27,7 +26,6 @@ public class Node extends WfFlowNode implements IRichModel {
     @Override
     public void clear() {
         module = null;
-        lastTask = null;
         CollectionUtil.clear(parameters);
         parameters = null;
         CollectionUtil.clear(optimizePrameters);
@@ -49,14 +47,6 @@ public class Node extends WfFlowNode implements IRichModel {
 
     public void setModule(Module module) {
         this.module = module;
-    }
-
-    public ExecutionTask getLastTask() {
-        return lastTask;
-    }
-
-    public void setLastTask(ExecutionTask lastTask) {
-        this.lastTask = lastTask;
     }
 
     public NodeParameter getParameter(String charId) {

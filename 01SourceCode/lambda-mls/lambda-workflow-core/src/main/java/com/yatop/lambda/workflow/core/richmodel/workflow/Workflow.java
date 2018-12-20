@@ -8,23 +8,12 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 
 public class Workflow extends WfFlow implements IRichModel {
 
-    ExecutionJob lastJob;
-
     public Workflow() {}
 
     public Workflow(WfFlow data) {super.copyProperties(data);}
 
     @Override
     public void clear() {
-        lastJob = null;
         super.clear();
-    }
-
-    public ExecutionJob getLastJob() {
-        return lastJob;
-    }
-
-    public void setLastJob(ExecutionJob lastJob) {
-        this.lastJob = lastJob;
     }
 }

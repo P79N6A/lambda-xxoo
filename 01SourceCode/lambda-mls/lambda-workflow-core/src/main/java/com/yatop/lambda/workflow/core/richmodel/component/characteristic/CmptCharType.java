@@ -8,7 +8,7 @@ import java.util.*;
 
 public class CmptCharType extends CfCmptCharType implements IRichModel {
 
-    private TreeSet<Integer> matchTypes = new TreeSet<Integer>();
+    private TreeSet<Integer> matchTypes = new TreeSet<Integer>();   //适配特征类型，用于节点连线时的校验
 
     public CmptCharType() {}
 

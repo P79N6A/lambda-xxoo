@@ -9,9 +9,9 @@ import java.util.TreeMap;
 
 public class CmptChar extends CfCmptChar implements IRichModel {
 
-    private CmptCharType type;
-    private TreeMap<String, CmptCharEnum> enums = new TreeMap<String, CmptCharEnum>();
-    private TreeMap<Integer, CmptCharEnum> enumsOrderbySequence = new TreeMap<Integer, CmptCharEnum>();
+    private CmptCharType type;      //特征类型
+    private TreeMap<String, CmptCharEnum> enums = new TreeMap<String, CmptCharEnum>();  //特征枚举值
+    private TreeMap<Integer, CmptCharEnum> enumsOrderbySequence = new TreeMap<Integer, CmptCharEnum>();     //特征枚举值按序号排序
 
     public CmptChar() {}
 

@@ -9,13 +9,13 @@ import java.util.TreeMap;
 
 public class Component extends CfComponent implements IRichModel {
 
-    private CmptAlgorithm algorithm;
-    private CmptSpec input;
-    private CmptSpec output;
-    private CmptSpec execution;
-    private CmptSpec optimizeExecution;
-    private CmptSpec parameter;
-    private TreeMap<String, CmptCharValue> charValues = new TreeMap<String, CmptCharValue>();
+    private CmptAlgorithm algorithm;    //组件关联算法
+    private CmptSpec input;             //组件输入内容规格
+    private CmptSpec output;            //组件输出内容规格
+    private CmptSpec execution;         //组件调用执行规格
+    private CmptSpec optimizeExecution; //组件执行调优参数规格
+    private CmptSpec parameter;         //组件参数规格
+    private TreeMap<String, CmptCharValue> charValues = new TreeMap<String, CmptCharValue>();   //组件配置特征值
 
     public Component() {}
 

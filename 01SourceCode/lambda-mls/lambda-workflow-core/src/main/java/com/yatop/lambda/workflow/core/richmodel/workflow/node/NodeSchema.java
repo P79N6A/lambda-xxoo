@@ -6,7 +6,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.JsonObject;
 
 public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
 
-    private JsonObject jsonObject;
+    private JsonObject jsonObject;  //关联JSON对象
 
     public NodeSchema() {}
 

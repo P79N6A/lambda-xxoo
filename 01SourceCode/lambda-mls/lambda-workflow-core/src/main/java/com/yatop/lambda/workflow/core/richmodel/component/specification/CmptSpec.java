@@ -10,8 +10,8 @@ import java.util.TreeMap;
 
 public class CmptSpec extends CfCmptChar implements IRichModel {
 
-    private TreeMap<String, CmptChar> cmptChars = new TreeMap<String, CmptChar>();
-    private TreeMap<String, CmptSpecCharValue> charValues = new TreeMap<String, CmptSpecCharValue>();
+    private TreeMap<String, CmptChar> cmptChars = new TreeMap<String, CmptChar>();              //规格关联特征
+    private TreeMap<String, CmptSpecCharValue> charValues = new TreeMap<String, CmptSpecCharValue>();    //规格配置特征值
 
     public CmptSpec() {}
 

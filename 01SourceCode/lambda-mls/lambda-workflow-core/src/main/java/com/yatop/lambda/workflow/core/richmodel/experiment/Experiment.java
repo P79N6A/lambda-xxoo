@@ -5,7 +5,8 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
 
 public class Experiment extends EmExperiment implements IRichModel {
-    private Workflow workflow;
+
+    private Workflow workflow;  //实验工作流
 
     public Experiment() {}
 

@@ -7,8 +7,8 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 
 public class GlobalParameter extends WfFlowGlobalParameter implements IRichModel {
 
-    private Node node;
-    private CmptChar cmptChar;
+    private Node node;          //关联节点
+    private CmptChar cmptChar;  //关联计算组件特征
 
     public GlobalParameter() {}
 

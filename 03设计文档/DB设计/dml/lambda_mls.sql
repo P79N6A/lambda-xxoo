@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-19 19:00:47
+Date: 2018-12-20 11:36:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1261,7 +1261,7 @@ CREATE TABLE `wf_execution_job` (
   `REL_FLOW_ID` bigint(20) NOT NULL COMMENT '关联工作流ID，无关联工作流设为-1',
   `REL_SNAPSHOT_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照ID，无关联则设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL COMMENT '关联节点ID，填写与触发运行相关的节点ID，无关联则设为-1',
-  `JOB_CONTEXT` mediumtext COMMENT '作业上下文',
+  `JOB_CONTENT` mediumtext COMMENT '作业内容',
   `JOB_DFS_DIR` varchar(800) NOT NULL COMMENT 'DFS作业目录\r\n            \r\n            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>\r\n            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc<project_id>/other/<job_id>',
   `JOB_LOCAL_DIR` varchar(800) NOT NULL COMMENT '本地作业目录（预留）\r\n            \r\n            实验作业：${LOCAL_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>\r\n            其他作业：${LOCAL_WORK_ROOT}/proc/<project_id>/other/<job_id>',
   `NEXT_TASK_SEQUENCE` bigint(20) NOT NULL DEFAULT '1' COMMENT '下一任务序号',
@@ -1278,7 +1278,7 @@ CREATE TABLE `wf_execution_job` (
   PRIMARY KEY (`JOB_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
 
 -- ----------------------------
 -- Records of wf_execution_job
@@ -1321,7 +1321,7 @@ CREATE TABLE `wf_execution_task` (
   `REL_NODE_ID` bigint(20) NOT NULL COMMENT '关联节点ID',
   `ENGINE_TYPE` varchar(200) NOT NULL DEFAULT 'unknown' COMMENT '计算引擎',
   `EXTERNAL_ID` varchar(800) DEFAULT NULL COMMENT '外部任务ID，比如yarn的application id',
-  `TASK_CONTEXT` mediumtext COMMENT '任务上下文',
+  `TASK_CONTENT` mediumtext COMMENT '任务内容',
   `SUBMIT_FILE` varchar(800) NOT NULL COMMENT '提交文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/submit_<task_id>_<module_code>.json',
   `RETURN_FILE` varchar(800) NOT NULL COMMENT '返回文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/return_<task_id>_<module_code>.json',
   `LOG_FILE` varchar(800) NOT NULL COMMENT '日志文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/log_<task_id>_<module_code>.log',
@@ -1340,7 +1340,7 @@ CREATE TABLE `wf_execution_task` (
   UNIQUE KEY `Index_1` (`OWNER_JOB_ID`,`REL_NODE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_JOB_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_JOB_ID`,`TASK_STATE`,`SEQUENCE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
 
 -- ----------------------------
 -- Records of wf_execution_task
