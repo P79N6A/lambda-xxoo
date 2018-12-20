@@ -55,7 +55,7 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
         return CollectionUtil.toList(inputPortsOrderBySequence);
     }
 
-    public void setInputPort(ModulePort inputPort) {
+    public void putInputPort(ModulePort inputPort) {
         CollectionUtil.put(inputPorts, inputPort.getPortId(), inputPort);
         CollectionUtil.put(inputPortsOrderBySequence, inputPort.getSequence(), inputPort);
     }
@@ -68,7 +68,7 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
         return CollectionUtil.toList(outputPortsOrderBySequence);
     }
 
-    public void setOutputPort(ModulePort outputPort) {
+    public void putOutputPort(ModulePort outputPort) {
         CollectionUtil.put(outputPorts, outputPort.getPortId(), outputPort);
         CollectionUtil.put(outputPortsOrderBySequence, outputPort.getSequence(), outputPort);
     }

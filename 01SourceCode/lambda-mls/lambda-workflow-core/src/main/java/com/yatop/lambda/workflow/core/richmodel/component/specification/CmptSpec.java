@@ -1,6 +1,6 @@
 package com.yatop.lambda.workflow.core.richmodel.component.specification;
 
-import com.yatop.lambda.base.model.CfCmptChar;
+import com.yatop.lambda.base.model.CfCmptSpec;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
@@ -8,14 +8,14 @@ import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import java.util.List;
 import java.util.TreeMap;
 
-public class CmptSpec extends CfCmptChar implements IRichModel {
+public class CmptSpec extends CfCmptSpec implements IRichModel {
 
     private TreeMap<String, CmptChar> cmptChars = new TreeMap<String, CmptChar>();              //规格关联特征
     private TreeMap<String, CmptSpecCharValue> charValues = new TreeMap<String, CmptSpecCharValue>();    //规格配置特征值
 
     public CmptSpec() {}
 
-    public CmptSpec(CfCmptChar data) {super.copyProperties(data);}
+    public CmptSpec(CfCmptSpec data) {super.copyProperties(data);}
 
     @Override
     public void clear() {
@@ -34,7 +34,7 @@ public class CmptSpec extends CfCmptChar implements IRichModel {
         return CollectionUtil.toList(cmptChars);
     }
 
-    public void putCharChar(CmptChar cmptChar) {
+    public void putCmptChar(CmptChar cmptChar) {
         CollectionUtil.put(cmptChars, cmptChar.getCharId(), cmptChar);
     }
 
@@ -42,7 +42,7 @@ public class CmptSpec extends CfCmptChar implements IRichModel {
         return CollectionUtil.get(charValues, charId);
     }
 
-    public void setCharValue(CmptSpecCharValue charValue) {
+    public void putCharValue(CmptSpecCharValue charValue) {
         CollectionUtil.put(charValues, charValue.getCharId(), charValue);
     }
 }

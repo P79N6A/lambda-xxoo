@@ -65,4 +65,18 @@ public enum JsonObjectTypeEnum {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static JsonObjectTypeEnum valueOf(int type) {
+        switch (type) {
+            case 0: return GERNERAL;
+            case 1: return ALGORITHM_PARAMTERS;
+            case 2: return MODEL_EVALUATION_REPORT;
+            case 3: return CROSS_VALIDATION_REPORT;
+            case 4: return STATISTICS_ANALYSIS_REPORT;
+            case 5: return TUNE_PARAMETERS_REPORT;
+            case 6: return GENERATE_RULES_REPORT;
+            case 99: return OUTPUT_SCHEMA;
+            default: return null;
+        }
+    }
 }

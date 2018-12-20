@@ -80,4 +80,21 @@ public enum JobTypeEnum {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static JobTypeEnum valueOf(int type) {
+        switch (type) {
+            case 0: return RUN_ALL;
+            case 1: return RUN_START_HERE;
+            case 2: return RUN_END_HERE;
+            case 3: return RUN_THIS_NODE;
+//            case 10: return TRIAL_RUN_ALL;
+//            case 11: return TRIAL_RUN_START_HERE;
+//            case 12: return TRIAL_RUN_END_HERE;
+//            case 13: return TRIAL_RUN_THIS_NODE;
+            case 100: return RUN_OFFLINE_SCHEDULE;
+            case 101: return RUN_ONLINE_SCHEDULE;
+            case 102: return RUN_DATAFILE_IMPORT;
+            default: return null;
+        }
+    }
 }

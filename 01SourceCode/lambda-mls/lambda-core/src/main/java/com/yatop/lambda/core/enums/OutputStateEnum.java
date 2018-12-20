@@ -35,4 +35,12 @@ public enum OutputStateEnum {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static OutputStateEnum valueOf(int state) {
+        switch (state) {
+            case 0: return NORMAL;
+            case 1: return EMPTY;
+            default: return null;
+        }
+    }
 }

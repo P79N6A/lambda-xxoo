@@ -35,4 +35,12 @@ public enum SnapshotSourceEnum {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static SnapshotSourceEnum valueOf(int source) {
+        switch (source) {
+            case 0: return EXECUTION;
+            case 1: return COPY;
+            default: return null;
+        }
+    }
 }

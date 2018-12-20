@@ -35,4 +35,12 @@ public enum PortTypeEnum {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static PortTypeEnum valueOf(int type) {
+        switch (type) {
+            case 0: return INPUT_PORT;
+            case 1: return OUTPUT_PORT;
+            default: return null;
+        }
+    }
 }

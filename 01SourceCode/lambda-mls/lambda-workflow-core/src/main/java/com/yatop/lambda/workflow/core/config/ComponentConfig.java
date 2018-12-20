@@ -1,10 +1,8 @@
 package com.yatop.lambda.workflow.core.config;
 
-import com.yatop.lambda.base.model.CfCmptChar;
-import com.yatop.lambda.base.model.CfCmptCharEnum;
-import com.yatop.lambda.base.model.CfCmptCharType;
-import com.yatop.lambda.base.model.CfCmptCharTypeWild;
-import com.yatop.lambda.core.enums.IsLimitedEnum;
+import com.yatop.lambda.base.model.*;
+import com.yatop.lambda.core.enums.*;
+import com.yatop.lambda.core.mgr.component.CmptAlgorithmMgr;
 import com.yatop.lambda.core.mgr.component.CmptCharValueMgr;
 import com.yatop.lambda.core.mgr.component.CmptSpecRelMgr;
 import com.yatop.lambda.core.mgr.component.ComponentMgr;
@@ -17,11 +15,13 @@ import com.yatop.lambda.core.mgr.component.specification.CmptSpecCharValueMgr;
 import com.yatop.lambda.core.mgr.component.specification.CmptSpecMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.component.CmptAlgorithm;
+import com.yatop.lambda.workflow.core.richmodel.component.CmptCharValue;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCharEnum;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCharType;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
+import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpecCharValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -37,42 +37,73 @@ public class ComponentConfig implements InitializingBean {
     public static Logger logger = LoggerFactory.getLogger(ComponentConfig.class);
 
     @Autowired
-    ComponentMgr componentMgr;
+    private ComponentMgr componentMgr;
 
     @Autowired
-    CmptAlgorithm cmptAlgorithm;
+    private CmptAlgorithmMgr cmptAlgorithmMgr;
 
     @Autowired
-    CmptSpecRelMgr cmptSpecRelMgr;
+    private CmptSpecRelMgr cmptSpecRelMgr;
 
     @Autowired
-    CmptCharValueMgr cmptCharValueMgr;
+    private CmptCharValueMgr cmptCharValueMgr;
 
     @Autowired
-    CmptSpecMgr cmptSpecMgr;
+    private CmptSpecMgr cmptSpecMgr;
 
     @Autowired
-    CmptSpecCharRelMgr cmptSpecCharRelMgr;
+    private CmptSpecCharRelMgr cmptSpecCharRelMgr;
 
     @Autowired
-    CmptSpecCharValueMgr cmptSpecCharValueMgr;
+    private CmptSpecCharValueMgr cmptSpecCharValueMgr;
 
     @Autowired
-    CmptCharMgr cmptCharMgr;
+    private CmptCharMgr cmptCharMgr;
 
     @Autowired
-    CmptCharEnumMgr cmptCharEnumMgr;
+    private CmptCharEnumMgr cmptCharEnumMgr;
 
     @Autowired
-    CmptCharTypeMgr cmptCharTypeMgr;
+    private CmptCharTypeMgr cmptCharTypeMgr;
 
     @Autowired
-    CmptCharTypeWildMgr cmptCharTypeWildMgr;
+    private CmptCharTypeWildMgr cmptCharTypeWildMgr;
 
+    private static HashMap<Long, CmptAlgorithm> ALL_ALGORITHMS = new HashMap<Long, CmptAlgorithm>();   //计算组件算法
     private static HashMap<String, Component> ALL_COMPONENTS = new HashMap<String, Component>();    //计算组件
     private static HashMap<String, CmptSpec> ALL_SPECIFICATIONS = new HashMap<String, CmptSpec>();  //计算组件规格
     private static HashMap<String, CmptChar> ALL_CHARACTERISTICS = new HashMap<String, CmptChar>(); //计算组件特征
     private static HashMap<Integer, CmptCharType> ALL_CHARACTERISTIC_TYPES = new HashMap<Integer, CmptCharType>(); //计算组件特征类型
+
+    public static CmptAlgorithm getAlgorithm(Long algorithmId) {
+        if(DataUtil.isNull(algorithmId))
+            return null;
+        return ALL_ALGORITHMS.get(algorithmId);
+    }
+
+    public static Component getComponent(String cmptId) {
+        if(DataUtil.isEmpty(cmptId))
+            return null;
+        return ALL_COMPONENTS.get(cmptId);
+    }
+
+    public static CmptSpec getSpecification(String specId) {
+        if(DataUtil.isEmpty(specId))
+            return null;
+        return ALL_SPECIFICATIONS.get(specId);
+    }
+
+    public static CmptChar getCharacteristic(String charId) {
+        if(DataUtil.isEmpty(charId))
+            return null;
+        return ALL_CHARACTERISTICS.get(charId);
+    }
+
+    public static CmptCharType getCharacteristicType(Integer typeId) {
+        if(DataUtil.isNull(typeId))
+            return null;
+        return ALL_CHARACTERISTIC_TYPES.get(typeId);
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -81,73 +112,325 @@ public class ComponentConfig implements InitializingBean {
 
     private void loadComponentConfiguration() {
 
+        HashMap<Integer, Long> sourceLevelCounter = new HashMap<Integer, Long>();
+
         //特征类型相关
-        {
-            List<CfCmptCharType> typeList = cmptCharTypeMgr.queryCharType();
-            if(DataUtil.isEmpty(typeList)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic type configuration."));
-                System.exit(-1);
-            }
-
-            for(CfCmptCharType type : typeList) {
-                CmptCharType richType = new CmptCharType(type);
-                ALL_CHARACTERISTIC_TYPES.put(richType.getCharTypeId(), richType);
-            }
-
-
-            List<CfCmptCharTypeWild> matchList = cmptCharTypeWildMgr.queryCharTypeWild();
-            if(DataUtil.isEmpty(matchList)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic type wild match configuration."));
-                System.exit(-1);
-            }
-
-            for(CfCmptCharTypeWild match : matchList) {
-                CmptCharType charType = ALL_CHARACTERISTIC_TYPES.get(match.getWildCharTypeId());
-                if(DataUtil.isNotNull(charType)) {
-                    charType.addMatchType(match.getMatchCharTypeId());
-                } else {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Owner characteristic type not found:\n%s.", DataUtil.prettyFormat(match.toJSON())));
-                    System.exit(-1);
-                }
-            }
-
-        }
+        loadCmptCharTypeConfig();
 
         //特征相关
-        {
-            long enumCharCounter = 0L;
+        loadCmptCharConfig(sourceLevelCounter);
 
-            List<CfCmptChar> cmptCharList = cmptCharMgr.queryCharacteristic();
-            if(DataUtil.isEmpty(cmptCharList)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic configuration."));
+        //规格相关
+        loadCmptSpecConfig(sourceLevelCounter);
+
+        //组件相关
+        loadComponentConfig(sourceLevelCounter);
+    }
+
+    private void loadCmptCharTypeConfig() {
+        List<CfCmptCharType> typeList = cmptCharTypeMgr.queryCharType();
+        if(DataUtil.isEmpty(typeList)) {
+            logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic type configuration."));
+            System.exit(-1);
+        }
+
+        for(CfCmptCharType type : typeList) {
+            CmptCharType richType = new CmptCharType(type);
+
+            if(DataUtil.isNull(IsWildTypeEnum.valueOf(richType.getIsWildtype()))) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Error Is-WildType:\n%s.", DataUtil.prettyFormat(type.toJSON())));
                 System.exit(-1);
             }
 
-            for(CfCmptChar cmptChar : cmptCharList) {
-                CmptChar richCmptChar = new CmptChar(cmptChar);
-                ALL_CHARACTERISTICS.put(richCmptChar.getCharId(), richCmptChar);
-
-                if(cmptChar.getIsLimited() == IsLimitedEnum.ENUMERATION.getMark())
-                    enumCharCounter++;
+            if(!SpecMaskEnum.isCorrectMask(richType.getSpecMask())) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Error Spec-Mask:\n%s.", DataUtil.prettyFormat(type.toJSON())));
+                System.exit(-1);
             }
 
-            if(enumCharCounter > 0) {
-                List<CfCmptCharEnum> cmptCharEnum = cmptCharEnumMgr.queryCharEnum();
-                if(DataUtil.isEmpty(cmptCharList)) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic enumeration configuration."));
+            ALL_CHARACTERISTIC_TYPES.put(richType.getCharTypeId(), richType);
+        }
+        typeList.clear();
+
+        List<CfCmptCharTypeWild> matchList = cmptCharTypeWildMgr.queryCharTypeWild();
+        if(DataUtil.isEmpty(matchList)) {
+            logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic type wild match configuration."));
+            System.exit(-1);
+        }
+
+        for(CfCmptCharTypeWild match : matchList) {
+            CmptCharType charType = ALL_CHARACTERISTIC_TYPES.get(match.getWildCharTypeId());
+            if(DataUtil.isNotNull(charType)) {
+                charType.addMatchType(match.getMatchCharTypeId());
+            } else {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Owner characteristic type not found:\n%s.", DataUtil.prettyFormat(match.toJSON())));
+                System.exit(-1);
+            }
+        }
+        matchList.clear();
+    }
+
+    private void loadCmptCharConfig(HashMap<Integer, Long> sourceLevelCounter) {
+        long sourceSpecCounter = 0L;
+        long sourceCmptCounter = 0L;
+        long enumCharCounter = 0L;
+
+        List<CfCmptChar> charList = cmptCharMgr.queryCharacteristic();
+        if(DataUtil.isEmpty(charList)) {
+            logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic configuration."));
+            System.exit(-1);
+        }
+
+        for(CfCmptChar cmptChar : charList) {
+            CmptChar richChar = new CmptChar(cmptChar);
+            ALL_CHARACTERISTICS.put(richChar.getCharId(), richChar);
+
+            CmptCharType charType =  ALL_CHARACTERISTIC_TYPES.get(richChar.getCharType());
+            if(DataUtil.isNull(charType)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic type not found:\n%s.", DataUtil.prettyFormat(cmptChar.toJSON())));
+                System.exit(-1);
+            }
+
+            SpecTypeEnum typeEnum = SpecTypeEnum.valueOf(richChar.getSpecType());
+            if(DataUtil.isNull(typeEnum)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Spec-Type:\n%s.", DataUtil.prettyFormat(cmptChar.toJSON())));
+                System.exit(-1);
+            }
+
+            if(!SpecMaskEnum.isCorrectFitSpecType(charType.getSpecMask(), typeEnum)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Incorrect Spec-Type:\n%s.", DataUtil.prettyFormat(cmptChar.toJSON())));
+                System.exit(-1);
+            }
+
+            if(DataUtil.isNull(SourceLevelEnum.valueOf(richChar.getSrcLevel()))) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Src-Level:\n%s.", DataUtil.prettyFormat(cmptChar.toJSON())));
+                System.exit(-1);
+            }
+
+            if(DataUtil.isNull(IsAllowGlobalEnum.valueOf(richChar.getIsAllowGlobal()))) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-Allow-Global:\n%s.", DataUtil.prettyFormat(cmptChar.toJSON())));
+                System.exit(-1);
+            }
+
+            if(DataUtil.isNull(IsRequiredEnum.valueOf(richChar.getIsRequired()))) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-Required:\n%s.", DataUtil.prettyFormat(cmptChar.toJSON())));
+                System.exit(-1);
+            }
+
+            if(DataUtil.isNull(IsLimitedEnum.valueOf(richChar.getIsLimited()))) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-Limited:\n%s.", DataUtil.prettyFormat(cmptChar.toJSON())));
+                System.exit(-1);
+            }
+
+            if(cmptChar.getIsLimited() == IsLimitedEnum.ENUMERATION.getMark())
+                enumCharCounter++;
+
+            if(cmptChar.getSrcLevel() == SourceLevelEnum.SPECIFICATION.getSource())
+                sourceSpecCounter++;
+            else if(cmptChar.getSrcLevel() == SourceLevelEnum.COMPONENT.getSource())
+                sourceCmptCounter++;
+        }
+        charList.clear();
+        sourceLevelCounter.put(SourceLevelEnum.SPECIFICATION.getSource(), sourceSpecCounter);
+        sourceLevelCounter.put(SourceLevelEnum.COMPONENT.getSource(), sourceCmptCounter);
+
+        if(enumCharCounter > 0) {
+            List<CfCmptCharEnum> enumList = cmptCharEnumMgr.queryCharEnum();
+            if(DataUtil.isEmpty(enumList)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic enumeration configuration."));
+                System.exit(-1);
+            }
+
+            for(CfCmptCharEnum charEnum : enumList) {
+                CmptCharEnum richCharEnum = new CmptCharEnum(charEnum);
+                CmptChar cmptChar = ALL_CHARACTERISTICS.get(richCharEnum.getCharId());
+                if(DataUtil.isNotNull(cmptChar)) {
+                    cmptChar.putEnum(richCharEnum);
+                } else {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Owner characteristic not found:\n%s.", DataUtil.prettyFormat(charEnum.toJSON())));
+                    System.exit(-1);
+                }
+            }
+            enumList.clear();
+        }
+    }
+
+    private void loadCmptSpecConfig(HashMap<Integer, Long> sourceLevelCounter) {
+        List<CfCmptSpec> specList = cmptSpecMgr.querySpecification();
+        if(DataUtil.isEmpty(specList)) {
+            logger.error(String.format("Loading component configuration occurs fatal error -- Empty specification configuration."));
+            System.exit(-1);
+        }
+
+        for(CfCmptSpec cmptSpec : specList) {
+            CmptSpec richSpec = new CmptSpec(cmptSpec);
+            if(DataUtil.isNull(SpecTypeEnum.valueOf(richSpec.getSpecType()))) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Spec-Type:\n%s.", DataUtil.prettyFormat(cmptSpec.toJSON())));
+                System.exit(-1);
+            }
+
+            ALL_SPECIFICATIONS.put(richSpec.getSpecId(), richSpec);
+        }
+        specList.clear();
+
+        List<CfCmptSpecCharRel> specCharList = cmptSpecCharRelMgr.querySpecCharRel();
+        if(DataUtil.isEmpty(specList)) {
+            logger.error(String.format("Loading component configuration occurs fatal error -- Empty Spec-Char-Rel configuration."));
+            System.exit(-1);
+        }
+
+        for(CfCmptSpecCharRel rel : specCharList) {
+            CmptSpec cmptSpec = ALL_SPECIFICATIONS.get(rel.getSpecId());
+            if(DataUtil.isNull(cmptSpec)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.prettyFormat(rel.toJSON())));
+                System.exit(-1);
+            }
+            CmptChar cmptChar = ALL_CHARACTERISTICS.get(rel.getCharId());
+            if(DataUtil.isNull(cmptChar)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.prettyFormat(rel.toJSON())));
+                System.exit(-1);
+            }
+
+            cmptSpec.putCmptChar(cmptChar);
+        }
+        specCharList.clear();
+
+        if(sourceLevelCounter.get(SourceLevelEnum.SPECIFICATION.getSource()) > 0) {
+            List<CfCmptSpecCharValue> charValueList = cmptSpecCharValueMgr.querySpecCharValue();
+            if (DataUtil.isEmpty(charValueList)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Empty Spec-Char-Value configuration."));
+                System.exit(-1);
+            }
+
+            for (CfCmptSpecCharValue value : charValueList) {
+                CmptSpec cmptSpec = ALL_SPECIFICATIONS.get(value.getSpecId());
+                if (DataUtil.isNull(cmptSpec)) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.prettyFormat(value.toJSON())));
+                    System.exit(-1);
+                }
+                CmptChar cmptChar = cmptSpec.getCmptChar(value.getCharId());
+                if (DataUtil.isNull(cmptChar)) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Spec-Char-Rel not found:\n%s.", DataUtil.prettyFormat(value.toJSON())));
+                    System.exit(-1);
+                }
+                if (DataUtil.isNull(IsSystemParamEnum.valueOf(value.getIsSystemParam()))) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-System-Param:\n%s.", DataUtil.prettyFormat(value.toJSON())));
                     System.exit(-1);
                 }
 
-                for(CfCmptCharEnum cmpCharEnum : cmptCharEnum) {
-                    CmptCharEnum richCmptCharEnum = new CmptCharEnum(cmpCharEnum);
-                    //ALL_CHARACTERISTICS.put(richCmptChar.getCharId(), richCmptChar);
-                }
+                cmptSpec.putCharValue(new CmptSpecCharValue(value));
             }
+        }
+    }
 
+    private void loadComponentConfig(HashMap<Integer, Long> sourceLevelCounter) {
+        List<CfCmptAlgorithm> algorithmList = cmptAlgorithmMgr.queryAlgorithm();
+        if(DataUtil.isEmpty(algorithmList)) {
+            logger.error(String.format("Loading component configuration occurs fatal error -- Empty algorithm configuration."));
+            System.exit(-1);
         }
 
-        //规格相关
+        for(CfCmptAlgorithm algorithm : algorithmList) {
+            CmptAlgorithm richAlgorithm = new CmptAlgorithm(algorithm);
+            if (DataUtil.isNull(AlgorithmTypeEnum.valueOf(richAlgorithm.getAlgorithmType()))) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Algorithm-Type:\n%s.", DataUtil.prettyFormat(algorithm.toJSON())));
+                System.exit(-1);
+            }
+            if (DataUtil.isNull(IsTunableEnum.valueOf(richAlgorithm.getIsTunable()))) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-Tunable:\n%s.", DataUtil.prettyFormat(algorithm.toJSON())));
+                System.exit(-1);
+            }
+            ALL_ALGORITHMS.put(richAlgorithm.getAlgorithmId(), richAlgorithm);
+        }
+        algorithmList.clear();
 
-        //组件相关
+        List<CfComponent> componentList = componentMgr.queryComponent();
+        if(DataUtil.isEmpty(componentList)) {
+            logger.error(String.format("Loading component configuration occurs fatal error -- Empty component configuration."));
+            System.exit(-1);
+        }
+
+        for(CfComponent component : componentList) {
+            Component richComponent = new Component(component);
+            if (DataUtil.isNull(CmptTypeEnum.valueOf(richComponent.getCmptType()))) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Cmpt-Type:\n%s.", DataUtil.prettyFormat(component.toJSON())));
+                System.exit(-1);
+            }
+
+            if(richComponent.getRelAlgorithmId() > 0) {
+                CmptAlgorithm algorithm = ALL_ALGORITHMS.get(richComponent.getRelAlgorithmId());
+                if (DataUtil.isNull(algorithm)) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Algorithm not found:\n%s.", DataUtil.prettyFormat(component.toJSON())));
+                    System.exit(-1);
+                }
+                richComponent.setAlgorithm(algorithm);
+            }
+            ALL_COMPONENTS.put(richComponent.getCmptId(), richComponent);
+        }
+        componentList.clear();
+
+        List<CfCmptSpecRel> cmptSpecList = cmptSpecRelMgr.queryCmptSpecRel();
+        if(DataUtil.isEmpty(cmptSpecList)) {
+            logger.error(String.format("Loading component configuration occurs fatal error -- Empty Cmpt-Spec-Rel configuration."));
+            System.exit(-1);
+        }
+
+        for(CfCmptSpecRel rel : cmptSpecList) {
+            Component component = ALL_COMPONENTS.get(rel.getCmptId());
+            if(DataUtil.isNull(component)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Component not found:\n%s.", DataUtil.prettyFormat(rel.toJSON())));
+                System.exit(-1);
+            }
+            CmptSpec cmptSpec = ALL_SPECIFICATIONS.get(rel.getSpecId());
+            if(DataUtil.isNull(cmptSpec)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.prettyFormat(rel.toJSON())));
+                System.exit(-1);
+            }
+
+            if(DataUtil.isNull(SpecTypeEnum.valueOf(rel.getSpecType()))) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Spec-Type:\n%s.", DataUtil.prettyFormat(rel.toJSON())));
+                System.exit(-1);
+            }
+
+            if(rel.getSpecType() != cmptSpec.getSpecType()) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Error Spec-Type:\n%s.", DataUtil.prettyFormat(rel.toJSON())));
+                System.exit(-1);
+            }
+
+            component.setCmptSpec(cmptSpec);
+        }
+        cmptSpecList.clear();
+
+        if(sourceLevelCounter.get(SourceLevelEnum.COMPONENT.getSource()) > 0) {
+            List<CfCmptCharValue> charValueList = cmptCharValueMgr.queryCmptCharValue();
+            if (DataUtil.isEmpty(charValueList)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Empty Cmpt-Char-Value configuration."));
+                System.exit(-1);
+            }
+
+            for (CfCmptCharValue value : charValueList) {
+                Component component = ALL_COMPONENTS.get(value.getCmptId());
+                if (DataUtil.isNull(component)) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Component not found:\n%s.", DataUtil.prettyFormat(value.toJSON())));
+                    System.exit(-1);
+                }
+                CmptChar cmptChar = ALL_CHARACTERISTICS.get(value.getCharId());
+                if (DataUtil.isNull(cmptChar)) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.prettyFormat(value.toJSON())));
+                    System.exit(-1);
+                }
+                CmptSpec cmptSpec = component.getCmptSpec(SpecTypeEnum.valueOf(cmptChar.getSpecType()));
+                if (DataUtil.isNull(cmptSpec)) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Spec-Char-Rel not found:\n%s.", DataUtil.prettyFormat(value.toJSON())));
+                    System.exit(-1);
+                }
+
+                if (DataUtil.isNull(IsSystemParamEnum.valueOf(value.getIsSystemParam()))) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-System-Param:\n%s.", DataUtil.prettyFormat(value.toJSON())));
+                    System.exit(-1);
+                }
+
+                component.putCharValue(new CmptCharValue(value));
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel.component;
 
 import com.yatop.lambda.base.model.CfComponent;
+import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
@@ -46,7 +47,7 @@ public class Component extends CfComponent implements IRichModel {
         return input;
     }
 
-    public void setInput(CmptSpec input) {
+    private void setInput(CmptSpec input) {
         this.input = input;
     }
 
@@ -54,7 +55,7 @@ public class Component extends CfComponent implements IRichModel {
         return output;
     }
 
-    public void setOutput(CmptSpec output) {
+    private void setOutput(CmptSpec output) {
         this.output = output;
     }
 
@@ -62,7 +63,7 @@ public class Component extends CfComponent implements IRichModel {
         return execution;
     }
 
-    public void setExecution(CmptSpec execution) {
+    private void setExecution(CmptSpec execution) {
         this.execution = execution;
     }
 
@@ -70,7 +71,7 @@ public class Component extends CfComponent implements IRichModel {
         return optimizeExecution;
     }
 
-    public void setOptimizeExecution(CmptSpec optimizeExecution) {
+    private void setOptimizeExecution(CmptSpec optimizeExecution) {
         this.optimizeExecution = optimizeExecution;
     }
 
@@ -78,7 +79,7 @@ public class Component extends CfComponent implements IRichModel {
         return parameter;
     }
 
-    public void setParameter(CmptSpec parameter) {
+    private void setParameter(CmptSpec parameter) {
         this.parameter = parameter;
     }
 
@@ -86,7 +87,43 @@ public class Component extends CfComponent implements IRichModel {
         return CollectionUtil.get(charValues, charId);
     }
 
-    public void setCharValue(CmptCharValue charValue) {
+    public void putCharValue(CmptCharValue charValue) {
         CollectionUtil.put(charValues, charValue.getCharId(), charValue);
+    }
+
+    public void setCmptSpec(CmptSpec cmptSpec) {
+        switch (SpecTypeEnum.valueOf(cmptSpec.getSpecType())) {
+            case INPUT:
+                this.setInput(cmptSpec);
+                break;
+            case OUTPUT:
+                this.setOutput(cmptSpec);
+                break;
+            case EXECUTION:
+                this.setExecution(cmptSpec);
+                break;
+            case OPTIMIZE_EXECUTION:
+                this.setOptimizeExecution(cmptSpec);
+                break;
+            case PARAMETER:
+                this.setParameter(cmptSpec);
+                break;
+        }
+    }
+
+    public CmptSpec getCmptSpec(SpecTypeEnum typeEnum) {
+        switch (typeEnum) {
+            case INPUT:
+                return this.getInput();
+            case OUTPUT:
+                return this.getOutput();
+            case EXECUTION:
+                return this.getExecution();
+            case OPTIMIZE_EXECUTION:
+                return this.getOptimizeExecution();
+            case PARAMETER:
+                return this.getParameter();
+        }
+        return null;
     }
 }

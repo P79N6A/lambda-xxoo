@@ -35,4 +35,12 @@ public enum JsonObjectSourceEnum {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static JsonObjectSourceEnum valueOf(int source) {
+        switch (source) {
+            case 0: return EXECUTION;
+            case 1: return EDIT;
+            default: return null;
+        }
+    }
 }

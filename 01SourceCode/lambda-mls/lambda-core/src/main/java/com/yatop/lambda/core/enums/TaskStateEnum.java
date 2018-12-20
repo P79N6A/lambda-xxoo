@@ -50,4 +50,15 @@ public enum TaskStateEnum {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static TaskStateEnum valueOf(int state) {
+        switch (state) {
+            case 0: return READY;
+            case 1: return RUNNING;
+            case 2: return FINISHED;
+            case 3: return ERROR_TERMINATED;
+            case 4: return USER_TERMINATED;
+            default: return null;
+        }
+    }
 }

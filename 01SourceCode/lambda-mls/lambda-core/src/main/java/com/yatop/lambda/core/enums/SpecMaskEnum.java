@@ -50,4 +50,33 @@ public enum SpecMaskEnum {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static boolean isCorrectMask(int mask) {
+        return !((mask & 0x1F) > 0);
+        //return !((mask & (INPUT.getBit() | OUTPUT.getBit() | EXECUTION.getBit() | OPTIMIZE_EXECUTION.getBit() | PARAMETER.getBit())) > 0);
+    }
+
+    public static boolean isCorrectFitSpecType(int mask, SpecTypeEnum typeEnum) {
+        return (((0x01 << (typeEnum.getType() - 1)) & mask) > 0);
+    }
+
+    public static boolean matchInput(int mask) {
+        return (mask & INPUT.getBit()) > 0;
+    }
+
+    public static boolean matchOutput(int mask) {
+        return (mask & OUTPUT.getBit()) > 0;
+    }
+
+    public static boolean matchExecution(int mask) {
+        return (mask & EXECUTION.getBit()) > 0;
+    }
+
+    public static boolean matchOptimizeExecution(int mask) {
+        return (mask & OPTIMIZE_EXECUTION.getBit()) > 0;
+    }
+
+    public static boolean matchParameter(int mask) {
+        return (mask & PARAMETER.getBit()) > 0;
+    }
 }

@@ -35,4 +35,12 @@ public enum WorkflowLockStateEnum {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static WorkflowLockStateEnum valueOf(int state) {
+        switch (state) {
+            case 0: return UNLOCKED;
+            case 1: return LOCKED;
+            default: return null;
+        }
+    }
 }

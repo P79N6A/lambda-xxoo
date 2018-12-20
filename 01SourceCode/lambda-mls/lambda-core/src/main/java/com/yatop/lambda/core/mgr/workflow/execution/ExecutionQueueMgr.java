@@ -147,7 +147,7 @@ public class ExecutionQueueMgr extends BaseMgr {
             WfExecutionQueueExample example = new WfExecutionQueueExample();
             WfExecutionQueueExample.Criteria cond = example.createCriteria().andJobStateEqualTo(stateEnum.getState());
             if(DataUtil.isNotNull(signalEnum))
-                cond.andJobSignalEqualTo(signalEnum.getType());
+                cond.andJobSignalEqualTo(signalEnum.getSignal());
             example.setOrderByClause("JOB_TIME ASC");
             return wfExecutionQueueMapper.selectByExample(example);
         } catch (Throwable e) {
