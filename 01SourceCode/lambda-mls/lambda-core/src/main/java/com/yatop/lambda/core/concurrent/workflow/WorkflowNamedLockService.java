@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WorkflowNamedLockServiceService extends BaseNamedLockService implements INamedLockService {
+public class WorkflowNamedLockService extends BaseNamedLockService implements INamedLockService {
 
     @Autowired
     NamedLockDaemon namedLockDaemon;

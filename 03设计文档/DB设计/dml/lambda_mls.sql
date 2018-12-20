@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-20 11:36:47
+Date: 2018-12-20 15:39:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1726,7 +1726,7 @@ CREATE TABLE `wf_module_port` (
   `PORT_NAME` varchar(200) NOT NULL COMMENT '端口名称',
   `PORT_TYPE` int(11) NOT NULL COMMENT '端口类型\r\n            1：输入端口\r\n            2：输出端口',
   `OWNER_MODULE_ID` bigint(20) NOT NULL COMMENT '所属工作流组件ID',
-  `BIND_CHAR_ID` varchar(64) NOT NULL COMMENT '绑定计算组件输入输出特征ID，SPEC_TYPE in （0, 1）',
+  `BIND_CHAR_ID` varchar(64) NOT NULL COMMENT '绑定计算组件输入输出特征ID',
   `SEQUENCE` int(11) NOT NULL COMMENT '端口序号',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '端口状态\r\n            0：正常\r\n            1：失效',

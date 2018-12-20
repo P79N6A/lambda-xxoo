@@ -4,6 +4,7 @@ import com.yatop.lambda.base.model.SysParameter;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.SystemParameterEnum;
 import com.yatop.lambda.core.mgr.system.SystemParameterMgr;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,20 +12,27 @@ import java.util.HashMap;
 import java.util.List;
 
 @Component
-public class SystemParameterUtil {
-
-    private static HashMap<String, SysParameter> systemParameters;
+public class SystemParameterUtil implements InitializingBean {
 
     @Autowired
-    public void setSystemParameter(SystemParameterMgr systemParameterMgr) {
-        systemParameters = new HashMap<String, SysParameter>();
+    SystemParameterMgr systemParameterMgr;
+
+    private static HashMap<String, SysParameter> ALL_SYSTEM_PARAMETERS = new HashMap<String, SysParameter>();
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        loadSystemParameter();
+    }
+
+    private void loadSystemParameter() {
+        ALL_SYSTEM_PARAMETERS.clear();
         List<SysParameter> sysParameters = systemParameterMgr.querySystemParameter();
         if(DataUtil.isNotEmpty(sysParameters)) {
             for (SysParameter sysParameter : sysParameters) {
                 if(DataUtil.isBlank(sysParameter.getParamValue()) || sysParameter.getStatus() == DataStatusEnum.INVALID.getStatus())
                     continue;
 
-                systemParameters.put(sysParameter.getParamCode(), sysParameter);
+                ALL_SYSTEM_PARAMETERS.put(sysParameter.getParamCode(), sysParameter);
             }
         }
     }
@@ -36,7 +44,7 @@ public class SystemParameterUtil {
         if(DataUtil.isBlank(paramEnum.getParamCode()))
             return DataUtil.trim(paramEnum.getParamDefaultValue());
 
-        SysParameter param = systemParameters.get(paramEnum.getParamCode());
+        SysParameter param = ALL_SYSTEM_PARAMETERS.get(paramEnum.getParamCode());
         if(DataUtil.isNull(param))
             return DataUtil.trim(paramEnum.getParamDefaultValue());
 
