@@ -1,6 +1,5 @@
 package com.yatop.lambda.workflow.core.context;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.workflow.core.richmodel.data.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.model.ModelWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
@@ -13,6 +12,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePort;
 
+import java.util.List;
 import java.util.TreeMap;
 
 public class WorkflowContext implements IWorkContext {
@@ -61,55 +61,83 @@ public class WorkflowContext implements IWorkContext {
         return dataWarehouses.get(dataWarehouseId);
     }
 
+    public List<DataWarehouse> getDataWarehouses() {
+        return CollectionUtil.toList(dataWarehouses);
+    }
+
     public ModelWarehouse getModelWarehouse(Long modelWarehouseId) {
         return modelWarehouses.get(modelWarehouseId);
+    }
+
+    public List<ModelWarehouse> getModelWarehouses() {
+        return CollectionUtil.toList(modelWarehouses);
     }
 
     public Node getNode(Long nodeId) {
         return nodes.get(nodeId);
     }
 
+    public List<Node> getNodes() {
+        return CollectionUtil.toList(nodes);
+    }
+
     public NodeLink getLink(Long linkId) {
         return links.get(linkId);
+    }
+
+    public List<NodeLink> getLinks() {
+        return CollectionUtil.toList(links);
     }
 
     public NodePort getPort(Long portId) {
         return ports.get(portId);
     }
 
+    public List<NodePort> getPorts() {
+        return CollectionUtil.toList(ports);
+    }
+
     public NodeSchema getSchema(Long schemaId) {
         return schemas.get(schemaId);
+    }
+
+    public List<NodeSchema> getSchemas() {
+        return CollectionUtil.toList(schemas);
     }
 
     public GlobalParameter getGlobalParameter(Long globalParameterId) {
         return globalParameters.get(globalParameterId);
     }
 
-    public void setDataWarehouse(Long dataWarehouseId, DataWarehouse warehouse) {
+    public List<GlobalParameter> getGlobalParameters() {
+        return CollectionUtil.toList(globalParameters);
+    }
+
+    public void putDataWarehouse(Long dataWarehouseId, DataWarehouse warehouse) {
         CollectionUtil.put(dataWarehouses, dataWarehouseId, warehouse);
     }
 
-    public void setModelWarehouse(Long modelWarehouseId, ModelWarehouse warehouse) {
+    public void putModelWarehouse(Long modelWarehouseId, ModelWarehouse warehouse) {
         CollectionUtil.put(modelWarehouses, modelWarehouseId, warehouse);
     }
 
-    public void setNode(Long nodeId, Node node) {
+    public void putNode(Long nodeId, Node node) {
         CollectionUtil.put(nodes, nodeId, node);
     }
 
-    public void setLink(Long linkId, NodeLink link) {
+    public void putLink(Long linkId, NodeLink link) {
         CollectionUtil.put(links, linkId, link);
     }
 
-    public void setPort(Long portId, NodePort port) {
+    public void putPort(Long portId, NodePort port) {
         CollectionUtil.put(ports, portId, port);
     }
 
-    public void setSchema(Long schemaId, NodeSchema schema) {
+    public void putSchema(Long schemaId, NodeSchema schema) {
         CollectionUtil.put(schemas, schemaId, schema);
     }
 
-    public void getGlobalParameter(Long globalParameterId, GlobalParameter globalParameter) {
+    public void putGlobalParameter(Long globalParameterId, GlobalParameter globalParameter) {
         CollectionUtil.put(globalParameters, globalParameterId, globalParameter);
     }
 

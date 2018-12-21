@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-20 15:39:35
+Date: 2018-12-22 01:19:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -73,7 +73,7 @@ CREATE TABLE `cf_cmpt_char` (
   `SPEC_TYPE` int(11) NOT NULL COMMENT '适用规格类型',
   `CHAR_TYPE` int(11) NOT NULL COMMENT '特征类型ID',
   `SRC_LEVEL` int(11) NOT NULL COMMENT '特征值来源级别\r\n1：计算组件规格\r\n2：计算组件\r\n3：工作流节点（仅限组件参数、执行调优、输入输出）\r\n\r\n注意，仅限在小于来源级别的地方做特征值设置有效，否则无效\r\n说明，特征值选用次序工作流节点 > 计算组件 > 计算组件规格 > 特征默认值',
-  `ALLOW_GLOBAL` int(11) NOT NULL DEFAULT '0' COMMENT '允许设置为全局变量\r\n            0：否\r\n            1：是',
+  `IS_ALLOW_GLOBAL` int(11) NOT NULL DEFAULT '0' COMMENT '允许设置为全局变量\r\n            0：否\r\n            1：是',
   `IS_REQUIRED` int(11) NOT NULL COMMENT '特征值是否必须设置\r\n            0：否\r\n            1：是',
   `IS_LIMITED` int(11) NOT NULL COMMENT '特征值是否受限定\r\n0：否\r\n1：开区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n2：闭区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n3：左开右闭方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n4：左闭右开方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n5：枚举方式限定',
   `MAX_LENGTH` int(11) DEFAULT NULL COMMENT '最大长度\r\n            \r\n            字符串类型：限制字符串最大长度\r\n            JSON列表类型：限制列表最大长度\r\n            调参类型，限制自定义用户列表最大长度',
@@ -301,7 +301,7 @@ CREATE TABLE `cf_cmpt_char_type` (
   `CHAR_TYPE_CODE` varchar(200) NOT NULL COMMENT '特征类型代码',
   `CHAR_TYPE_NAME` varchar(200) NOT NULL COMMENT '特征类型名称',
   `IS_WILDTYPE` int(11) NOT NULL DEFAULT '0' COMMENT '是否为通配类型\r\n0：否\r\n1：是',
-  `SPEC_TYPE_MASK` int(11) NOT NULL DEFAULT '0' COMMENT '适用规格类型二进制掩码（预留）\r\n\r\n0：不支持作为对应规格的特征类型使用\r\n1：支持作为对应规格的特征类型使用\r\n\r\n第一位，输入内容规格，开关位0x01：数据表、模型、算法参数\r\n第二位，输出内容规格，开关位0x02：数据表、模型、算法参数\r\n第三位，调用执行规格，开关位0x04：基本类型\r\n第四位，执行调优规格，开关位0x08：基本类型\r\n第五位，组件参数规格，开关位0x10：基本类型、调参类型、代码脚本、Json Object、Json Array\r\n',
+  `SPEC_MASK` int(11) NOT NULL DEFAULT '0' COMMENT '适用规格类型二进制掩码（预留）\r\n\r\n0：不支持作为对应规格的特征类型使用\r\n1：支持作为对应规格的特征类型使用\r\n\r\n第一位，输入内容规格，开关位0x01：数据表、模型、算法参数\r\n第二位，输出内容规格，开关位0x02：数据表、模型、算法参数\r\n第三位，调用执行规格，开关位0x04：基本类型\r\n第四位，执行调优规格，开关位0x08：基本类型\r\n第五位，组件参数规格，开关位0x10：基本类型、调参类型、代码脚本、Json Object、Json Array\r\n',
   `CLASS_PATH` varchar(200) NOT NULL DEFAULT 'unkown' COMMENT '特征类型java类class path',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -366,14 +366,14 @@ INSERT INTO `cf_cmpt_char_type` VALUES ('9001', 'Json Array', 'json数组', '0',
 DROP TABLE IF EXISTS `cf_cmpt_char_type_wild`;
 CREATE TABLE `cf_cmpt_char_type_wild` (
   `WILD_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '通配特征类型ID',
-  `UNIT_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '单元特征类型ID',
+  `MATCH_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '单元特征类型ID',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`WILD_CHAR_TYPE_ID`,`UNIT_CHAR_TYPE_ID`)
+  PRIMARY KEY (`WILD_CHAR_TYPE_ID`,`MATCH_CHAR_TYPE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征类型通配表（仅查询用），配置通配类型和成员类型的关系';
 
 -- ----------------------------
@@ -1262,8 +1262,8 @@ CREATE TABLE `wf_execution_job` (
   `REL_SNAPSHOT_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照ID，无关联则设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL COMMENT '关联节点ID，填写与触发运行相关的节点ID，无关联则设为-1',
   `JOB_CONTENT` mediumtext COMMENT '作业内容',
-  `JOB_DFS_DIR` varchar(800) NOT NULL COMMENT 'DFS作业目录\r\n            \r\n            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>\r\n            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc<project_id>/other/<job_id>',
-  `JOB_LOCAL_DIR` varchar(800) NOT NULL COMMENT '本地作业目录（预留）\r\n            \r\n            实验作业：${LOCAL_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>\r\n            其他作业：${LOCAL_WORK_ROOT}/proc/<project_id>/other/<job_id>',
+  `JOB_DFS_DIR` varchar(800) DEFAULT NULL COMMENT 'DFS作业目录\r\n            \r\n            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>\r\n            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc<project_id>/other/<job_id>',
+  `JOB_LOCAL_DIR` varchar(800) DEFAULT NULL COMMENT '本地作业目录（预留）\r\n            \r\n            实验作业：${LOCAL_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>\r\n            其他作业：${LOCAL_WORK_ROOT}/proc/<project_id>/other/<job_id>',
   `NEXT_TASK_SEQUENCE` bigint(20) NOT NULL DEFAULT '1' COMMENT '下一任务序号',
   `JOB_SUBMIT_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业提交时间（提交队列）',
   `JOB_START_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业开始时间',
@@ -1319,17 +1319,17 @@ CREATE TABLE `wf_execution_task` (
   `OWNER_JOB_ID` bigint(20) NOT NULL COMMENT '所属作业ID',
   `SEQUENCE` int(11) NOT NULL DEFAULT '0' COMMENT '作业中任务序号',
   `REL_NODE_ID` bigint(20) NOT NULL COMMENT '关联节点ID',
-  `ENGINE_TYPE` varchar(200) NOT NULL DEFAULT 'unknown' COMMENT '计算引擎',
+  `ENGINE_TYPE` varchar(200) DEFAULT 'unknown' COMMENT '计算引擎',
   `EXTERNAL_ID` varchar(800) DEFAULT NULL COMMENT '外部任务ID，比如yarn的application id',
   `TASK_CONTENT` mediumtext COMMENT '任务内容',
-  `SUBMIT_FILE` varchar(800) NOT NULL COMMENT '提交文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/submit_<task_id>_<module_code>.json',
-  `RETURN_FILE` varchar(800) NOT NULL COMMENT '返回文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/return_<task_id>_<module_code>.json',
-  `LOG_FILE` varchar(800) NOT NULL COMMENT '日志文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/log_<task_id>_<module_code>.log',
+  `SUBMIT_FILE` varchar(800) DEFAULT NULL COMMENT '提交文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/submit_<task_id>_<module_code>.json',
+  `RETURN_FILE` varchar(800) DEFAULT NULL COMMENT '返回文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/return_<task_id>_<module_code>.json',
+  `LOG_FILE` varchar(800) DEFAULT NULL COMMENT '日志文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/log_<task_id>_<module_code>.log',
   `COST_TIME` bigint(20) DEFAULT NULL COMMENT '运行耗时，单位毫秒',
   `TASK_START_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '任务开始时间',
   `TASK_END_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '任务结束时间',
   `TASK_PROGRESS` int(11) NOT NULL DEFAULT '0' COMMENT '任务进度，百分比数值0到100',
-  `TASK_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '任务状态\r\n            0：ready，已就绪\r\n            1：running，运行中\r\n            2：finished，运行完成\r\n            3：error terminated，出错终止\r\n            4：user terminated，用户终止',
+  `TASK_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '任务状态\r\n            0：preparing，准备中\r\n            1：ready，已就绪\r\n            2：running，运行中\r\n            3：finished，运行完成\r\n            4：error terminated，出错终止\r\n            5：user terminated，用户终止',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',

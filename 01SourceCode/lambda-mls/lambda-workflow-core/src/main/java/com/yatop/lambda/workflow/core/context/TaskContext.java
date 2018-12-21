@@ -1,12 +1,17 @@
 package com.yatop.lambda.workflow.core.context;
 
+import com.yatop.lambda.core.enums.CmptTypeEnum;
+import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
+import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
 import com.yatop.lambda.workflow.core.richmodel.workflow.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
+import java.util.List;
 import java.util.TreeMap;
 
 public class TaskContext implements IWorkContext {
@@ -22,6 +27,14 @@ public class TaskContext implements IWorkContext {
     private TreeMap<String, CharValue> optimizeCharValues = new TreeMap<String, CharValue>();      //节点执行调优参数特征值
     private TreeMap<String, CharValue> parameterCharValues = new TreeMap<String, CharValue>();     //节点组件参数特征值
     private String warningMsg;
+
+    public TaskContext(ExecutionJob job, ExecutionTask task, WorkflowContext workflowContext, Node node, Component component) {
+        this.job = job;
+        this.task = task;
+        this.workflowContext = workflowContext;
+        this.node = node;
+        this.component = component;
+    }
 
     @Override
     public void clear() {
@@ -41,5 +54,80 @@ public class TaskContext implements IWorkContext {
         CollectionUtil.clear(parameterCharValues);
         parameterCharValues = null;
         warningMsg = null;
+    }
+
+    public ExecutionJob getJob() {
+        return job;
+    }
+
+    public ExecutionTask getTask() {
+        return task;
+    }
+
+    public WorkflowContext getWorkflowContext() {
+        return workflowContext;
+    }
+
+    public Node getNode() {
+        return node;
+    }
+
+    public Component getComponent() {
+        return component;
+    }
+
+    public String getWarningMsg() {
+        return warningMsg;
+    }
+
+    public void setWarningMsg(String warningMsg) {
+        this.warningMsg = warningMsg;
+    }
+
+    public CharValue getCharValue(SpecTypeEnum specType, String charId) {
+        switch (specType) {
+            case INPUT:
+                return inputCharValues.get(charId);
+            case OUTPUT:
+                return outputCharValues.get(charId);
+            case EXECUTION:
+                return execCharValues.get(charId);
+            case OPTIMIZE_EXECUTION:
+                return optimizeCharValues.get(charId);
+            case PARAMETER:
+                return parameterCharValues.get(charId);
+        }
+        return null;
+    }
+
+    public List<CharValue> getCharValues(SpecTypeEnum specType) {
+        switch (specType) {
+            case INPUT:
+                return CollectionUtil.toList(inputCharValues);
+            case OUTPUT:
+                return CollectionUtil.toList(outputCharValues);
+            case EXECUTION:
+                return CollectionUtil.toList(execCharValues);
+            case OPTIMIZE_EXECUTION:
+                return CollectionUtil.toList(optimizeCharValues);
+            case PARAMETER:
+                return CollectionUtil.toList(parameterCharValues);
+        }
+        return null;
+    }
+
+    public void putCharValue(CmptSpec cmptSpec, CmptChar cmptChar, CharValue charValue) {
+        switch (SpecTypeEnum.valueOf(cmptSpec.getSpecType())) {
+            case INPUT:
+                CollectionUtil.put(inputCharValues, cmptChar.getCharId(), charValue);
+            case OUTPUT:
+                CollectionUtil.put(outputCharValues, cmptChar.getCharId(), charValue);
+            case EXECUTION:
+                CollectionUtil.put(execCharValues, cmptChar.getCharId(), charValue);
+            case OPTIMIZE_EXECUTION:
+                CollectionUtil.put(optimizeCharValues, cmptChar.getCharId(), charValue);
+            case PARAMETER:
+                CollectionUtil.put(parameterCharValues, cmptChar.getCharId(), charValue);
+        }
     }
 }

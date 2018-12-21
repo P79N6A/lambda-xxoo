@@ -27,7 +27,7 @@ public class ExecutionJobMgr extends BaseMgr {
 
     /*
      *
-     *   插入新作业信息（名称、作业类型、所属项目ID、关联工作流ID、关联快照ID、关联节点ID、DFS作业目录、本地作业目录 ...）
+     *   插入新作业信息（名称、作业类型、所属项目ID、关联工作流ID、关联快照ID、关联节点ID ...）
      *   返回插入记录
      *
      * */
@@ -39,8 +39,6 @@ public class ExecutionJobMgr extends BaseMgr {
                 job.isRelFlowIdNotColoured() ||
                 job.isRelSnapshotIdNotColoured() ||
                 job.isRelNodeIdNotColoured() ||
-                job.isJobDfsDirNotColoured() ||
-                job.isJobLocalDirNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert job info failed -- invalid insert data.", "无效插入数据");
         }
@@ -50,6 +48,8 @@ public class ExecutionJobMgr extends BaseMgr {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertJob.copyProperties(job);
             insertJob.setJobIdColoured(false);
+            insertJob.setJobDfsDirColoured(false);
+            insertJob.setJobLocalDirColoured(false);
             insertJob.setNextTaskSequence(1L);
             insertJob.setJobSubmitTimeColoured(false);
             insertJob.setJobStartTimeColoured(false);
@@ -93,7 +93,7 @@ public class ExecutionJobMgr extends BaseMgr {
 
     /*
      *
-     *   更新作业信息（作业上下文、作业提交时间、作业开始时间、作业结束时间、作业状态、描述）
+     *   更新作业信息（作业上下文、DFS作业目录、本地作业目录、作业提交时间、作业开始时间、作业结束时间、作业状态、描述）
      *   返回更新数量
      *
      * */
@@ -102,7 +102,9 @@ public class ExecutionJobMgr extends BaseMgr {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update job info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(job.isJobContextNotColoured() &&
+        if(job.isJobContentNotColoured() &&
+                job.isJobDfsDirNotColoured() &&
+                job.isJobLocalDirNotColoured() &&
                 job.isJobSubmitTimeNotColoured() &&
                 job.isJobStartTimeNotColoured() &&
                 job.isJobEndTimeNotColoured() &&
@@ -114,8 +116,12 @@ public class ExecutionJobMgr extends BaseMgr {
         WfExecutionJob updateJob = new WfExecutionJob();
         try {
             updateJob.setJobId(job.getJobId());
-            if(job.isJobContextColoured())
-                updateJob.setJobContext(job.getJobContext());
+            if(job.isJobContentColoured())
+                updateJob.setJobContent(job.getJobContent());
+            if(job.isJobDfsDirColoured())
+                updateJob.setJobDfsDir(job.getJobDfsDir());
+            if(job.isJobLocalDirColoured())
+                updateJob.setJobLocalDir(job.getJobLocalDir());
             if(job.isJobSubmitTimeColoured())
                 updateJob.setJobSubmitTime(job.getJobSubmitTime());
             if(job.isJobStartTimeColoured())
