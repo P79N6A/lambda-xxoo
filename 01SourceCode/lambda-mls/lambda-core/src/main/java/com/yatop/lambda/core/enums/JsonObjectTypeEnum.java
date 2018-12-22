@@ -25,7 +25,7 @@ public enum JsonObjectTypeEnum {
     /**
      * 统计分析报告
      */
-    STATISTICS_ANALYSIS_REPORT(4, "Statistics Analysis Report"),
+    STATISTICAL_ANALYSIS_REPORT(4, "Statistics Analysis Report"),
 
     /**
      * 自动调参报告
@@ -72,7 +72,7 @@ public enum JsonObjectTypeEnum {
             case 1: return ALGORITHM_PARAMTERS;
             case 2: return MODEL_EVALUATION_REPORT;
             case 3: return CROSS_VALIDATION_REPORT;
-            case 4: return STATISTICS_ANALYSIS_REPORT;
+            case 4: return STATISTICAL_ANALYSIS_REPORT;
             case 5: return TUNE_PARAMETERS_REPORT;
             case 6: return GENERATE_RULES_REPORT;
             case 99: return OUTPUT_SCHEMA;
