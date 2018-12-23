@@ -12,7 +12,7 @@ public class CharValueContext implements IWorkContext {
     private Component component;    //操作关联组件
     private CmptSpec cmptSpec;      //操作关联组件规格
     private CmptChar cmptChar;      //操作关联组件特征
-    private CharValue charValue;  //特征值的传入传出
+    private CharValue charValue;    //特征值的传入传出
 
     public CharValueContext(WorkflowContext workflowContext, Component component, CmptSpec cmptSpec, CmptChar cmptChar) {
         this(workflowContext, component, cmptSpec, cmptChar, false);
@@ -24,7 +24,6 @@ public class CharValueContext implements IWorkContext {
         this.component = component;
         this.cmptSpec = cmptSpec;
         this.cmptChar = cmptChar;
-        this.charValue = new CharValue(this.cmptChar);
     }
 
     @Override
@@ -34,7 +33,7 @@ public class CharValueContext implements IWorkContext {
         component = null;
         cmptSpec = null;
         cmptChar = null;
-        charValue.clear();
+        charValue = null;
     }
 
     public boolean isTaskReturn() {
@@ -59,5 +58,9 @@ public class CharValueContext implements IWorkContext {
 
     public CharValue getCharValue() {
         return charValue;
+    }
+
+    public void setCharValue(CharValue charValue) {
+        this.charValue = charValue;
     }
 }

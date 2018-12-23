@@ -8,8 +8,6 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 
 public class Workflow extends WfFlow implements IRichModel {
 
-    public Workflow() {}
-
     public Workflow(WfFlow data) {super.copyProperties(data);}
 
     @Override

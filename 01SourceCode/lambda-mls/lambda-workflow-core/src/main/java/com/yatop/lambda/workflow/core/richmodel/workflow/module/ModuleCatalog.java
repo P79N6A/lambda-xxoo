@@ -13,8 +13,6 @@ public class ModuleCatalog extends WfModuleCatalog implements Comparable<ModuleC
     private TreeMultimap<Integer, ModuleCatalog> childCatalogs = TreeMultimap.create();     //下级目录按序号排序
     private TreeMultimap<Integer, Module> childModules = TreeMultimap.create();     //工作流组件按序号排序
 
-    public ModuleCatalog() {}
-
     public ModuleCatalog(WfModuleCatalog data) {super.copyProperties(data);}
 
     public List<ModuleCatalog> getChildCatalogs() {

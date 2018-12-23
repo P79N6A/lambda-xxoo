@@ -50,6 +50,8 @@ public class WorkflowMgr extends BaseMgr {
             insertWorkflow.setNodeCount(0L);
             insertWorkflow.setNextDeleteSequence(1L);
             insertWorkflow.setLastJobIdColoured(false);
+            insertWorkflow.setFlowDfsDirColoured(false);
+            insertWorkflow.setFlowLocalDirColoured(false);
             insertWorkflow.setFlowState(WorkflowStateEnum.DRAFT.getState());
             insertWorkflow.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertWorkflow.setLastUpdateTime(dtCurrentTime);
@@ -100,6 +102,8 @@ public class WorkflowMgr extends BaseMgr {
         }
 
         if(workflow.isFlowNameNotColoured() &&
+                workflow.isFlowDfsDirNotColoured() &&
+                workflow.isFlowLocalDirNotColoured() &&
                 workflow.isDescriptionNotColoured()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed -- invalid update data.", "无效更新内容");
         }
@@ -109,6 +113,10 @@ public class WorkflowMgr extends BaseMgr {
             updateWorkflow.setFlowId(workflow.getFlowId());
             if(workflow.isFlowNameColoured())
                 updateWorkflow.setFlowName(workflow.getFlowName());
+            if(workflow.isFlowDfsDirColoured())
+                updateWorkflow.setFlowDfsDir(workflow.getFlowDfsDir());
+            if(workflow.isFlowLocalDirColoured())
+                updateWorkflow.setFlowLocalDir(workflow.getFlowLocalDir());
             if(workflow.isDescriptionColoured())
                 updateWorkflow.setDescription(workflow.getDescription());
 

@@ -103,8 +103,6 @@ public class ExperimentMgr extends BaseMgr {
         }
 
         if(experiment.isExperimentNameNotColoured() &&
-                experiment.isExperimentDfsDirNotColoured() &&
-                experiment.isExperimentLocalDirNotColoured() &&
                 experiment.isSummaryNotColoured() &&
                 experiment.isDescriptionNotColoured() ) {
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Update experiment info failed -- invalid update data.", "无效更新内容");
@@ -115,10 +113,6 @@ public class ExperimentMgr extends BaseMgr {
             updateExperiment.setExperimentId(experiment.getExperimentId());
             if(experiment.isExperimentNameColoured())
                 updateExperiment.setExperimentName(experiment.getExperimentName());
-            if(experiment.isExperimentDfsDirColoured())
-                updateExperiment.setExperimentDfsDir(experiment.getExperimentDfsDir());
-            if(experiment.isExperimentLocalDirColoured())
-                updateExperiment.setExperimentLocalDir(experiment.getExperimentLocalDir());
             if(experiment.isSummaryColoured())
                 updateExperiment.setSummary(experiment.getSummary());
             if(experiment.isDescriptionColoured())

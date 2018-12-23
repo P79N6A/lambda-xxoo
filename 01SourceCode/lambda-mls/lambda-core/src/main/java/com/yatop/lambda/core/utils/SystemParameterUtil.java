@@ -37,18 +37,21 @@ public class SystemParameterUtil implements InitializingBean {
         }
     }
 
+    public static String find(String paramCode) {
+        if(DataUtil.isNotBlank(paramCode)) {
+            SysParameter param = ALL_SYSTEM_PARAMETERS.get(paramCode);
+            if(DataUtil.isNotNull(param))
+                return DataUtil.trim(param.getParamValue());
+        }
+        return null;
+    }
+
     private static String find(SystemParameterEnum paramEnum) {
         if(DataUtil.isNull(paramEnum))
             return null;
 
-        if(DataUtil.isBlank(paramEnum.getParamCode()))
-            return DataUtil.trim(paramEnum.getParamDefaultValue());
-
-        SysParameter param = ALL_SYSTEM_PARAMETERS.get(paramEnum.getParamCode());
-        if(DataUtil.isNull(param))
-            return DataUtil.trim(paramEnum.getParamDefaultValue());
-
-        return DataUtil.trim(param.getParamValue());
+        String paramValue = find(paramEnum.getParamCode());
+        return DataUtil.isNotEmpty(paramValue) ? paramValue : DataUtil.trim(paramEnum.getParamDefaultValue());
     }
 
     public static String find4String(SystemParameterEnum paramEnum) {

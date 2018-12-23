@@ -9,9 +9,11 @@ public class Project extends PrProject implements IRichModel {
     private DataWarehouse dataWarehouse;    //项目数据库
     private ModelWarehouse modelWarehouse;  //项目模型库
 
-    public Project() {}
-
-    public Project(PrProject data) {super.copyProperties(data);}
+    public Project(PrProject data, DataWarehouse dataWarehouse, ModelWarehouse modelWarehouse) {
+        super.copyProperties(data);
+        this.dataWarehouse = dataWarehouse;
+        this.modelWarehouse = modelWarehouse;
+    }
 
     @Override
     public void clear() {
@@ -24,15 +26,7 @@ public class Project extends PrProject implements IRichModel {
         return dataWarehouse;
     }
 
-    public void setDataWarehouse(DataWarehouse dataWarehouse) {
-        this.dataWarehouse = dataWarehouse;
-    }
-
     public ModelWarehouse getModelWarehouse() {
         return modelWarehouse;
-    }
-
-    public void setModelWarehouse(ModelWarehouse modelWarehouse) {
-        this.modelWarehouse = modelWarehouse;
     }
 }

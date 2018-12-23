@@ -13,9 +13,10 @@ public class CmptChar extends CfCmptChar implements IRichModel {
     private TreeMap<String, CmptCharEnum> enums = new TreeMap<String, CmptCharEnum>();  //特征枚举值
     private TreeMap<Integer, CmptCharEnum> enumsOrderbySequence = new TreeMap<Integer, CmptCharEnum>();     //特征枚举值按序号排序
 
-    public CmptChar() {}
-
-    public CmptChar(CfCmptChar data) {super.copyProperties(data);}
+    public CmptChar(CfCmptChar data, CmptCharType type) {
+        super.copyProperties(data);
+        this.type = type;
+    }
 
     @Override
     public void clear() {
@@ -29,10 +30,6 @@ public class CmptChar extends CfCmptChar implements IRichModel {
 
     public CmptCharType getType() {
         return type;
-    }
-
-    public void setType(CmptCharType type) {
-        this.type = type;
     }
 
     public boolean containsEnum(String value) {

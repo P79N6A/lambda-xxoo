@@ -8,8 +8,6 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
 
     private JsonObject jsonObject;  //关联JSON对象
 
-    public NodeSchema() {}
-
     public NodeSchema(WfFlowNodeSchema data) {super.copyProperties(data);}
 
     @Override

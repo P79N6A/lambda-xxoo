@@ -15,7 +15,7 @@ Module类，负责工作流节点事件捕获，包括节点的参数逻辑校�
 
 //Module类不捕获执行调优参数事件，仅CharType类捕获执行调优参数事件
 
-public interface IModule extends InitializingBean {
+public interface IModuleClazz extends InitializingBean {
     //方法失败或异常抛出Exception，Module类实现该接口，适当封装一些中间abstract组件类以便复用
 
 
@@ -36,6 +36,7 @@ public interface IModule extends InitializingBean {
     //生成摘要内容
     void generateSummary(WorkflowNodeContext context);
 
+    //////////////////////////////////////////////////////
 
     //是否捕获任务执行事件
     //返回false，否
@@ -45,6 +46,15 @@ public interface IModule extends InitializingBean {
     //任务执行事件处理，例如：读数据表将输出内容"OUT@DataTable-t1<M>"特征值置为"CCP@TableName"特征值对应数据表的ID值
     void onTaskExecution(TaskContext context);
 
+    //是否捕获任务执行终止
+    //返回false，否
+    //返回true，是
+    boolean catchTaskTerminate();
+
+    //任务终止事件处理，例如：
+    void onTaskTerminate(TaskContext context);
+
+    //////////////////////////////////////////////////////
 
     //是否支持动态分析数据输出端口schema
     //返回false，不支持

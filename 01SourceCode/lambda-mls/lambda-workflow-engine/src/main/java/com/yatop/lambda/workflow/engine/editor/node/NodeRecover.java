@@ -1,4 +1,4 @@
 package com.yatop.lambda.workflow.engine.editor.node;
 
-public class NodeCopy {
+public class NodeRecover {
 }

@@ -6,8 +6,6 @@ import com.yatop.lambda.workflow.core.richmodel.project.Project;
 
 public class CodeScript extends WfCodeScript implements IRichModel {
 
-    public CodeScript() {}
-
     public CodeScript(WfCodeScript data) {super.copyProperties(data);}
 
     @Override

@@ -8,9 +8,10 @@ public class ModulePort extends WfModulePort implements IRichModel {
 
     private CmptChar cmptChar;  //关联计算组件特征
 
-    public ModulePort() {}
-
-    public ModulePort(WfModulePort data) {super.copyProperties(data);}
+    public ModulePort(WfModulePort data, CmptChar cmptChar) {
+        super.copyProperties(data);
+        this.cmptChar = cmptChar;
+    }
 
     @Override
     public void clear() {
@@ -20,9 +21,5 @@ public class ModulePort extends WfModulePort implements IRichModel {
 
     public CmptChar getCmptChar() {
         return cmptChar;
-    }
-
-    public void setCmptChar(CmptChar cmptChar) {
-        this.cmptChar = cmptChar;
     }
 }

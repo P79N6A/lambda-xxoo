@@ -9,9 +9,10 @@ public class NodePort extends WfFlowNodePort implements IRichModel {
     private ModulePort modulePort;
     private NodeSchema schema;
 
-    public NodePort() {}
-
-    public NodePort(WfFlowNodePort data) {super.copyProperties(data);}
+    public NodePort(WfFlowNodePort data, ModulePort modulePort) {
+        super.copyProperties(data);
+        this.modulePort = modulePort;
+    }
 
     @Override
     public void clear() {
@@ -22,10 +23,6 @@ public class NodePort extends WfFlowNodePort implements IRichModel {
 
     public ModulePort getModulePort() {
         return modulePort;
-    }
-
-    public void setModulePort(ModulePort modulePort) {
-        this.modulePort = modulePort;
     }
 
     public NodeSchema getSchema() {

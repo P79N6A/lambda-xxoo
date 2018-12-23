@@ -19,7 +19,6 @@ public class WorkflowContext implements IWorkContext {
 
     private boolean isNoWorkflow;           //是否为无工作流（无关联实验和工作流，但有一个节点的特殊情况，比如用于对数据文件导入的包装）
     private Project project;                //操作关联项目
-    private Experiment experiment;          //操作关联实验
     private Workflow workflow;              //操作关联工作流
     private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库
     private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联模型仓库
@@ -28,16 +27,18 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, NodePort> ports = new TreeMap<Long, NodePort>();  //操作关联节点端口
     private TreeMap<Long, NodeSchema> schemas = new TreeMap<Long, NodeSchema>();  //操作关联节点端口
     private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联节点参数
+    private String operId;
 
-    public WorkflowContext(Project project, Experiment experiment, Workflow workflow) {
+    public WorkflowContext(Project project, Workflow workflow, String operId) {
         this.project = project;
-        this.experiment = experiment;
         this.workflow = workflow;
+        this.operId = operId;
         this.isNoWorkflow = false;
     }
 
-    public WorkflowContext(Project project) {
+    public WorkflowContext(Project project, String operId) {
         this.project = project;
+        this.operId = operId;
         this.isNoWorkflow = true;
     }
 
@@ -47,10 +48,6 @@ public class WorkflowContext implements IWorkContext {
 
     public Project getProject() {
         return project;
-    }
-
-    public Experiment getExperiment() {
-        return experiment;
     }
 
     public Workflow getWorkflow() {
@@ -113,38 +110,41 @@ public class WorkflowContext implements IWorkContext {
         return CollectionUtil.toList(globalParameters);
     }
 
-    public void putDataWarehouse(Long dataWarehouseId, DataWarehouse warehouse) {
-        CollectionUtil.put(dataWarehouses, dataWarehouseId, warehouse);
+    public void putDataWarehouse(DataWarehouse warehouse) {
+        CollectionUtil.put(dataWarehouses, warehouse.getDwId(), warehouse);
     }
 
-    public void putModelWarehouse(Long modelWarehouseId, ModelWarehouse warehouse) {
-        CollectionUtil.put(modelWarehouses, modelWarehouseId, warehouse);
+    public void putModelWarehouse(ModelWarehouse warehouse) {
+        CollectionUtil.put(modelWarehouses, warehouse.getMwId(), warehouse);
     }
 
-    public void putNode(Long nodeId, Node node) {
-        CollectionUtil.put(nodes, nodeId, node);
+    public void putNode(Node node) {
+        CollectionUtil.put(nodes, node.getNodeId(), node);
     }
 
-    public void putLink(Long linkId, NodeLink link) {
-        CollectionUtil.put(links, linkId, link);
+    public void putLink(NodeLink link) {
+        CollectionUtil.put(links, link.getLinkId(), link);
     }
 
-    public void putPort(Long portId, NodePort port) {
-        CollectionUtil.put(ports, portId, port);
+    public void putPort(NodePort port) {
+        CollectionUtil.put(ports, port.getNodePortId(), port);
     }
 
-    public void putSchema(Long schemaId, NodeSchema schema) {
-        CollectionUtil.put(schemas, schemaId, schema);
+    public void putSchema(NodeSchema schema) {
+        CollectionUtil.put(schemas, schema.getNodePortId(), schema);
     }
 
-    public void putGlobalParameter(Long globalParameterId, GlobalParameter globalParameter) {
-        CollectionUtil.put(globalParameters, globalParameterId, globalParameter);
+    public void putGlobalParameter(GlobalParameter globalParameter) {
+        CollectionUtil.put(globalParameters, globalParameter.getGlobalParamId(), globalParameter);
+    }
+
+    public String getOperId() {
+        return operId;
     }
 
     @Override
     public void clear() {
         project.clear();
-        experiment.clear();
         workflow.clear();
 
         CollectionUtil.clear(dataWarehouses);

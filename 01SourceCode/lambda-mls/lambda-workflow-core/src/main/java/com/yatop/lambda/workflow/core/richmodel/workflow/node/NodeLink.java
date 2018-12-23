@@ -8,9 +8,11 @@ public class NodeLink extends WfFlowNodeLink implements IRichModel {
     private NodePort srcNodePort;   //流出节点端口
     private NodePort dstNodePort;   //流入节点端口
 
-    public NodeLink() {}
-
-    public NodeLink(WfFlowNodeLink data) {super.copyProperties(data);}
+    public NodeLink(WfFlowNodeLink data, NodePort srcNodePort, NodePort dstNodePort) {
+        super.copyProperties(data);
+        this.srcNodePort = srcNodePort;
+        this.dstNodePort = dstNodePort;
+    }
 
     @Override
     public void clear() {
@@ -23,15 +25,7 @@ public class NodeLink extends WfFlowNodeLink implements IRichModel {
         return srcNodePort;
     }
 
-    public void setSrcNodePort(NodePort srcNodePort) {
-        this.srcNodePort = srcNodePort;
-    }
-
     public NodePort getDstNodePort() {
         return dstNodePort;
-    }
-
-    public void setDstNodePort(NodePort dstNodePort) {
-        this.dstNodePort = dstNodePort;
     }
 }

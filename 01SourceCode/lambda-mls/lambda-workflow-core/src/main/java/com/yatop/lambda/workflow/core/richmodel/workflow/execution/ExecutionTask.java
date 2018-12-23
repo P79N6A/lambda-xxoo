@@ -10,8 +10,6 @@ public class ExecutionTask extends WfExecutionTask implements IRichModel {
 
     private TreeMap<String, ExecutionTaskOutput> taskOutputs;   //任务输出内容
 
-    public ExecutionTask() {}
-
     public ExecutionTask(WfExecutionTask data) {super.copyProperties(data);}
 
     @Override

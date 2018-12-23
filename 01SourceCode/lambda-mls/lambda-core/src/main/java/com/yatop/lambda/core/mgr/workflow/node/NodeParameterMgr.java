@@ -3,6 +3,7 @@ package com.yatop.lambda.core.mgr.workflow.node;
 import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.base.model.WfFlowNodeParameter;
 import com.yatop.lambda.base.model.WfFlowNodeParameterExample;
+import com.yatop.lambda.core.enums.IsGlobalParameterEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
@@ -29,7 +30,6 @@ public class NodeParameterMgr extends BaseMgr {
                 nodeParameter.isNodeIdNotColoured() ||
                 nodeParameter.isSpecTypeNotColoured() ||
                 nodeParameter.isCharIdNotColoured() ||
-                nodeParameter.isIsGlobalParameterNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node parameter failed -- invalid insert data.", "无效插入数据");
         }
@@ -38,6 +38,7 @@ public class NodeParameterMgr extends BaseMgr {
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertNodeParameter.copyProperties(nodeParameter);
+            insertNodeParameter.setIsGlobalParameter(IsGlobalParameterEnum.NO.getMark());
             insertNodeParameter.setIsDuplicated(IsDuplicatedEnum.NO.getMark());
             insertNodeParameter.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertNodeParameter.setLastUpdateTime(dtCurrentTime);

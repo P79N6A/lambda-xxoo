@@ -16,9 +16,10 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
     private TreeMap<Long, ModulePort> outputPorts = new TreeMap<Long, ModulePort>();    //工作流组件输出端口
     private TreeMap<Integer, ModulePort> outputPortsOrderBySequence = new TreeMap<Integer, ModulePort>();   //工作流组件输出端口按序号排序
 
-    public Module() {}
-
-    public Module(WfModule data) {super.copyProperties(data);}
+    public Module(WfModule data, Component component) {
+        super.copyProperties(data);
+        this.component = component;
+    }
 
     @Override
     public int compareTo(Module o) {
@@ -41,10 +42,6 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
 
     public Component getComponent() {
         return component;
-    }
-
-    public void setComponent(Component component) {
-        this.component = component;
     }
 
     public ModulePort getInputPort(Long inputPortId) {

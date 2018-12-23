@@ -5,8 +5,6 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
 public class CmptCharEnum extends CfCmptCharEnum implements IRichModel {
 
-    public CmptCharEnum() {}
-
     public CmptCharEnum(CfCmptCharEnum data) {super.copyProperties(data);}
 
     @Override

@@ -5,8 +5,6 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
 public class CmptSpecCharValue extends CfCmptSpecCharValue implements IRichModel {
 
-    public CmptSpecCharValue() {}
-
     public CmptSpecCharValue(CfCmptSpecCharValue data) {super.copyProperties(data);}
 
     @Override

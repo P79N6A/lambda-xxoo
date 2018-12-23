@@ -19,9 +19,10 @@ public class Node extends WfFlowNode implements IRichModel {
     private TreeMap<String, NodePort> outputNodePorts = new TreeMap<String, NodePort>();                //输出节点端口
     private TreeMap<Integer, NodePort> outputNodePortsOrderBySequence = new TreeMap<Integer, NodePort>();//输出节点端口按序号排序
 
-    public Node() {}
-
-    public Node(WfFlowNode data) {super.copyProperties(data);}
+    public Node(WfFlowNode data, Module module) {
+        super.copyProperties(data);
+        this.module = module;
+    }
 
     @Override
     public void clear() {
@@ -43,10 +44,6 @@ public class Node extends WfFlowNode implements IRichModel {
 
     public Module getModule() {
         return module;
-    }
-
-    public void setModule(Module module) {
-        this.module = module;
     }
 
     public NodeParameter getParameter(String charId) {

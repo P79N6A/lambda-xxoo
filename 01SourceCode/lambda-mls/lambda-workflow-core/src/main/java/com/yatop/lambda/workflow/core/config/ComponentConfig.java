@@ -181,14 +181,15 @@ public class ComponentConfig implements InitializingBean {
         }
 
         for(CfCmptChar cmptChar : charList) {
-            CmptChar richChar = new CmptChar(cmptChar);
-            ALL_CHARACTERISTICS.put(richChar.getCharId(), richChar);
 
-            CmptCharType charType =  ALL_CHARACTERISTIC_TYPES.get(richChar.getCharType());
+            CmptCharType charType =  ALL_CHARACTERISTIC_TYPES.get(cmptChar.getCharType());
             if(DataUtil.isNull(charType)) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic type not found:\n%s.", DataUtil.prettyFormat(cmptChar.toJSON())));
                 System.exit(-1);
             }
+
+            CmptChar richChar = new CmptChar(cmptChar, charType);
+            ALL_CHARACTERISTICS.put(richChar.getCharId(), richChar);
 
             SpecTypeEnum typeEnum = SpecTypeEnum.valueOf(richChar.getSpecType());
             if(DataUtil.isNull(typeEnum)) {
@@ -203,6 +204,17 @@ public class ComponentConfig implements InitializingBean {
 
             if(DataUtil.isNull(SourceLevelEnum.valueOf(richChar.getSrcLevel()))) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Src-Level:\n%s.", DataUtil.prettyFormat(cmptChar.toJSON())));
+                System.exit(-1);
+            }
+
+            if((typeEnum.getType() == SpecTypeEnum.INPUT.getType() || typeEnum.getType() == SpecTypeEnum.OUTPUT.getType())
+                    && richChar.getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Error Src-Level(input & output must be workflow-source-level):\n%s.", DataUtil.prettyFormat(cmptChar.toJSON())));
+                System.exit(-1);
+            }
+
+            if(typeEnum.getType() == SpecTypeEnum.EXECUTION.getType() && richChar.getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Error Src-Level(forbid execution to be workflow-source-level):\n%s.", DataUtil.prettyFormat(cmptChar.toJSON())));
                 System.exit(-1);
             }
 
@@ -289,6 +301,10 @@ public class ComponentConfig implements InitializingBean {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.prettyFormat(rel.toJSON())));
                 System.exit(-1);
             }
+            if(cmptChar.getSpecType() != cmptChar.getSpecType()) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Error Spec-Char-Rel:\n%s.", DataUtil.prettyFormat(rel.toJSON())));
+                System.exit(-1);
+            }
 
             cmptSpec.putCmptChar(cmptChar);
         }
@@ -307,6 +323,12 @@ public class ComponentConfig implements InitializingBean {
                     logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.prettyFormat(value.toJSON())));
                     System.exit(-1);
                 }
+
+                if(cmptSpec.getSpecType() == SpecTypeEnum.INPUT.getType() || cmptSpec.getSpecType() == SpecTypeEnum.OUTPUT.getType()) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Spec-Char-Value error(forbid input & output value):\n%s.", DataUtil.prettyFormat(value.toJSON())));
+                    System.exit(-1);
+                }
+
                 CmptChar cmptChar = cmptSpec.getCmptChar(value.getCharId());
                 if (DataUtil.isNull(cmptChar)) {
                     logger.error(String.format("Loading component configuration occurs fatal error -- Spec-Char-Rel not found:\n%s.", DataUtil.prettyFormat(value.toJSON())));
@@ -421,6 +443,11 @@ public class ComponentConfig implements InitializingBean {
                 CmptSpec cmptSpec = component.getCmptSpec(SpecTypeEnum.valueOf(cmptChar.getSpecType()));
                 if (DataUtil.isNull(cmptSpec)) {
                     logger.error(String.format("Loading component configuration occurs fatal error -- Spec-Char-Rel not found:\n%s.", DataUtil.prettyFormat(value.toJSON())));
+                    System.exit(-1);
+                }
+
+                if(cmptSpec.getSpecType() == SpecTypeEnum.INPUT.getType() || cmptSpec.getSpecType() == SpecTypeEnum.OUTPUT.getType()) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Cmpt-Char-Value error(forbid input & output value):\n%s.", DataUtil.prettyFormat(value.toJSON())));
                     System.exit(-1);
                 }
 

@@ -5,8 +5,6 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
 public class CmptAlgorithm extends CfCmptAlgorithm implements IRichModel {
 
-    public CmptAlgorithm() {}
-
     public CmptAlgorithm(CfCmptAlgorithm data) {super.copyProperties(data);}
 
     @Override

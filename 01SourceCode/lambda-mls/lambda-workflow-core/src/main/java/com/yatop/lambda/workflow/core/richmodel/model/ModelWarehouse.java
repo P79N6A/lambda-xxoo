@@ -5,8 +5,6 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
 public class ModelWarehouse extends MwModelWarehouse implements IRichModel {
 
-    public ModelWarehouse() {}
-
     public ModelWarehouse(MwModelWarehouse data) {super.copyProperties(data);}
 
     @Override

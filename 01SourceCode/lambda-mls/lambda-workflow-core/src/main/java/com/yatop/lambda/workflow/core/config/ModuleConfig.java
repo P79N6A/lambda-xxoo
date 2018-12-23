@@ -112,14 +112,13 @@ public class ModuleConfig implements InitializingBean {
             }
 
             for (WfModule module : moduleList) {
-                Module richModule = new Module(module);
-
-                Component component =  componentConfig.getComponent(richModule.getPkgCmptId());
+                Component component =  componentConfig.getComponent(module.getPkgCmptId());
                 if(DataUtil.isNull(component)) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Component not found:\n%s.", DataUtil.prettyFormat(module.toJSON())));
                     System.exit(-1);
                 }
-                richModule.setComponent(component);
+
+                Module richModule = new Module(module, component);
                 ALL_MODULES.put(richModule.getModuleId(), richModule);
 
                 if(richModule.getCatalogId() > 0) {
@@ -143,23 +142,22 @@ public class ModuleConfig implements InitializingBean {
             }
 
             for (WfModulePort port : portList) {
-                ModulePort richPort = new ModulePort(port);
-                if(DataUtil.isNull(PortTypeEnum.valueOf(richPort.getPortType()))) {
+                if(DataUtil.isNull(PortTypeEnum.valueOf(port.getPortType()))) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Error Port-Type:\n%s.", DataUtil.prettyFormat(port.toJSON())));
                     System.exit(-1);
                 }
-                Module module =  ALL_MODULES.get(richPort.getOwnerModuleId());
-                if(DataUtil.isNull(module)) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Module not found:\n%s.", DataUtil.prettyFormat(port.toJSON())));
-                    System.exit(-1);
-                }
-                CmptChar cmptChar =  componentConfig.getCharacteristic(richPort.getBindCharId());
+                CmptChar cmptChar =  componentConfig.getCharacteristic(port.getBindCharId());
                 if(DataUtil.isNull(cmptChar)) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.prettyFormat(port.toJSON())));
                     System.exit(-1);
                 }
+                Module module =  ALL_MODULES.get(port.getOwnerModuleId());
+                if(DataUtil.isNull(module)) {
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Module not found:\n%s.", DataUtil.prettyFormat(port.toJSON())));
+                    System.exit(-1);
+                }
 
-                richPort.setCmptChar(cmptChar);
+                ModulePort richPort = new ModulePort(port, cmptChar);
                 ALL_MODULE_PORTS.put(port.getPortId(), richPort);
 
                 switch (PortTypeEnum.valueOf(richPort.getPortType())) {

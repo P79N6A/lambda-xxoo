@@ -5,7 +5,7 @@ import com.yatop.lambda.base.model.WfSnapshotExample;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
-import com.yatop.lambda.core.enums.SnapshotSourceEnum;
+import com.yatop.lambda.core.enums.SnapshotTypeEnum;
 import com.yatop.lambda.core.enums.SnapshotStateEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
@@ -28,7 +28,7 @@ public class SnapshotMgr extends BaseMgr {
     public WfSnapshot insertSnapshot(WfSnapshot snapshot, String operId) {
         if( DataUtil.isNull(snapshot) ||
                 snapshot.isSnapshotNameNotColoured() ||
-                snapshot.isSnapshotSrcNotColoured() ||
+                snapshot.isSnapshotTypeNotColoured() ||
                 snapshot.isOwnerProjectIdNotColoured() ||
                 snapshot.isOwnerFlowIdNotColoured() ||
                 snapshot.isSnapshotContentNotColoured() ||
@@ -171,11 +171,11 @@ public class SnapshotMgr extends BaseMgr {
 
     /*
      *
-     *   查询快照信息（按项目ID + [工作流ID] + [快照来源] + [快照状态]）
+     *   查询快照信息（按项目ID + [工作流ID] + [快照类型] + [快照状态]）
      *   返回结果集
      *
      * */
-    public List<WfSnapshot> querySnapshot(Long projectId, Long flowId, SnapshotSourceEnum sourceEnum, SnapshotStateEnum stateEnum, PagerUtil pager) {
+    public List<WfSnapshot> querySnapshot(Long projectId, Long flowId, SnapshotTypeEnum typeEnum, SnapshotStateEnum stateEnum, PagerUtil pager) {
         if(DataUtil.isNull(projectId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query snapshot info failed -- invalid query condition.", "无效查询条件");
         }
@@ -187,8 +187,8 @@ public class SnapshotMgr extends BaseMgr {
 
             if(DataUtil.isNotNull(flowId))
                 cond.andOwnerFlowIdEqualTo(flowId);
-            if(DataUtil.isNotNull(sourceEnum))
-                cond.andSnapshotSrcEqualTo(sourceEnum.getSource());
+            if(DataUtil.isNotNull(typeEnum))
+                cond.andSnapshotTypeEqualTo(typeEnum.getType());
             if(DataUtil.isNotNull(stateEnum))
                 cond.andSnapshotStateEqualTo(stateEnum.getState());
 
