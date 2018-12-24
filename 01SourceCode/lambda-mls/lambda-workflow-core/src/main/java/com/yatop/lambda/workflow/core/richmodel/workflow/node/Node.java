@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
@@ -44,6 +45,10 @@ public class Node extends WfFlowNode implements IRichModel {
 
     public Module getModule() {
         return module;
+    }
+
+    public Component getComponent() {
+        return module.getComponent();
     }
 
     public NodeParameter getParameter(String charId) {

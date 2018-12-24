@@ -9,7 +9,7 @@ import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCha
 public class CharValue implements IRichModel {
     private CmptChar cmptChar;
     private String charValue;	    //特征值内容
-    private Integer isDuplicated;   //是否被复制
+    private IsDuplicatedEnum isDuplicated;   //是否被复制
     private String inText;		    //传入文本内容，基本类型，调参类型，代码脚本、普通JSON对象 & JSON数组、算法参数等以文本内容方式进行传入传出
     private String outText;		    //传出文本内容
     private IRichModel inObject;    //传入对象内容，inText/OutText之外的非基本类型（数据表、模型、报告）以对象内容方式进行传入传出
@@ -17,6 +17,19 @@ public class CharValue implements IRichModel {
 
     public CharValue(CmptChar cmptChar) {
         this.cmptChar = cmptChar;
+        this.isDuplicated = IsDuplicatedEnum.NO;
+    }
+
+    public CharValue(CmptChar cmptChar, String charValue) {
+        this.cmptChar = cmptChar;
+        this.charValue = charValue;
+        this.isDuplicated = IsDuplicatedEnum.NO;
+    }
+
+    public CharValue(CmptChar cmptChar, String charValue, IsDuplicatedEnum isDuplicated) {
+        this.cmptChar = cmptChar;
+        this.charValue = charValue;
+        this.isDuplicated = isDuplicated;
     }
 
     @Override
@@ -32,6 +45,10 @@ public class CharValue implements IRichModel {
         return cmptChar;
     }
 
+    public Integer getSpecType() {
+        return this.getCmptChar().getSpecType();
+    }
+
     public String getCharValue() {
         return charValue;
     }
@@ -41,10 +58,14 @@ public class CharValue implements IRichModel {
     }
 
     public boolean isDuplicated() {
-        return DataUtil.isNull(isDuplicated) ? false : (isDuplicated == IsDuplicatedEnum.YES.getMark());
+        return DataUtil.isNull(isDuplicated) ? false : (isDuplicated.getMark() == IsDuplicatedEnum.YES.getMark());
     }
 
-    public void setIsDuplicated(Integer isDuplicated) {
+    public IsDuplicatedEnum getIsDuplicated() {
+        return isDuplicated;
+    }
+
+    public void setIsDuplicated(IsDuplicatedEnum isDuplicated) {
         this.isDuplicated = isDuplicated;
     }
 

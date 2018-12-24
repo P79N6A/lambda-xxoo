@@ -30,18 +30,18 @@ public class NodeCreate {
     @Autowired
     private CharValueCreate charValueCreate;
 
-    private NodeParameter createNodeParameter(WorkflowContext workflowContext, Component component, CmptSpec cmptSpec, CmptChar cmptChar, Node node, String charValueText) {
+    private NodeParameter createNodeParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, String charValueText) {
 
-        CharValue charValue = null;
+        CharValue charValue = new CharValue(cmptChar, charValueText);
         if(cmptChar.getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
-            charValue = charValueCreate.createCharValue(workflowContext, component, cmptSpec, cmptChar, charValueText);
+            charValueCreate.createCharValue(workflowContext, node, charValue);
         } else {
             return null;
         }
 
         WfFlowNodeParameter parameter = new WfFlowNodeParameter();
         parameter.setNodeId(node.getNodeId());
-        parameter.setSpecType(cmptSpec.getSpecType());
+        parameter.setSpecType(charValue.getSpecType());
         parameter.setCharId(cmptChar.getCharId());
         if(DataUtil.isNotNull(charValue.getCharValue()))
             parameter.setCharValue(charValue.getCharValue());
@@ -71,14 +71,14 @@ public class NodeCreate {
         //组件参数
         CmptSpec paramSpec = component.getParameter();
         for (CmptChar cmptChar : paramSpec.getCmptChars()) {
-            NodeParameter richParameter = createNodeParameter(workflowContext, component, paramSpec, cmptChar, richNode, null);
+            NodeParameter richParameter = createNodeParameter(workflowContext, richNode, cmptChar, null);
             richNode.putParameter(richParameter);
         }
 
         //执行调优参数
         CmptSpec optimizeSpec = component.getOptimizeExecution();
         for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
-            NodeParameter richParameter = createNodeParameter(workflowContext, component, optimizeSpec, cmptChar, richNode, null);
+            NodeParameter richParameter = createNodeParameter(workflowContext, richNode, cmptChar, null);
             richNode.putOptimizeParameter(richParameter);
         }
 

@@ -1,4 +1,4 @@
 package com.yatop.lambda.workflow.core.framework.chartype.clazz.basic;
 
-public class CharTypeLong {
+public class CharTypeLong extends CharTypeBasicGeneric {
 }

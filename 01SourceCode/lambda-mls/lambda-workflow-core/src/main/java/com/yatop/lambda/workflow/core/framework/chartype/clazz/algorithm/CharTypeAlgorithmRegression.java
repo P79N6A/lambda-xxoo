@@ -1,4 +1,4 @@
 package com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm;
 
-public class CharTypeAlgorithmRegression {
+public class CharTypeAlgorithmRegression extends CharTypeAlgorithmGeneric {
 }

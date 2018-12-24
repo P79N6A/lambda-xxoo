@@ -1,4 +1,4 @@
 package com.yatop.lambda.workflow.core.framework.chartype.clazz.report;
 
-public class CharTypeTuneParameterReport {
+public class CharTypeTuneParameterReport extends CharTypeReportGeneric {
 }

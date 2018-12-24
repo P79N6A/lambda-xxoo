@@ -1,4 +1,4 @@
 package com.yatop.lambda.workflow.core.framework.chartype.clazz.tune;
 
-public class CharTypeTuneDouble {
+public class CharTypeTuneDouble extends CharTypeTuneGeneric {
 }

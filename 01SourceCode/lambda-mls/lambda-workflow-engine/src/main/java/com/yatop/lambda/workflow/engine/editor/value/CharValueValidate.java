@@ -1,25 +1,31 @@
 package com.yatop.lambda.workflow.engine.editor.value;
 
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.enums.SpecTypeEnum;
+import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
-import com.yatop.lambda.workflow.core.richmodel.component.Component;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
 import com.yatop.lambda.workflow.core.richmodel.workflow.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CharValueValidate {
 
-    public boolean validateCharValue(WorkflowContext workflowContext, Component component, CmptSpec cmptSpec, CmptChar cmptChar, CharValue charValue) {
+    //适用组件参数、执行调优参数、调用执行
+    // CharValue <[inText] ==>> no/yes>
+    public boolean validateCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
-        if(DataUtil.isNotNull(charValue.getInText())) {
-            ICharTypeClazz charTypeClazz = CharValueHelper.getCharTypeClazzBean(cmptChar.getType());
+        if(charValue.getSpecType() == SpecTypeEnum.INPUT.getType() || charValue.getSpecType() == SpecTypeEnum.OUTPUT.getType()) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Validate characteristic value failed -- forbid validate input & output char-value.", "不允许输入内容和输出内容的特征值校验");
+        }
+
+        if(DataUtil.isNotEmpty(charValue.getInText())) {
+            ICharTypeClazz charTypeClazz = CharValueHelper.getCharTypeClazzBean(charValue.getCmptChar().getType());
             if (charTypeClazz.catchValidateValue()) {
-                CharValueContext charValueContext = new CharValueContext(workflowContext, component, cmptSpec, cmptChar);
-                charValueContext.setCharValue(charValue);
+                CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
                 boolean isPassValidate = charTypeClazz.onValidateValue(charValueContext);
                 charValueContext.clear();
                 return isPassValidate;
