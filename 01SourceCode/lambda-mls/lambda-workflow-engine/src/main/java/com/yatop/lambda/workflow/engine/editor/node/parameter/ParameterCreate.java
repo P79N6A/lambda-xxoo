@@ -1,9 +1,6 @@
 package com.yatop.lambda.workflow.engine.editor.node.parameter;
 
 import com.yatop.lambda.base.model.WfFlowNodeParameter;
-import com.yatop.lambda.core.enums.DataStatusEnum;
-import com.yatop.lambda.core.enums.IsDuplicatedEnum;
-import com.yatop.lambda.core.enums.IsGlobalParameterEnum;
 import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
@@ -19,8 +16,6 @@ import com.yatop.lambda.workflow.engine.editor.node.value.CharValueQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 @Service
 public class ParameterCreate {
 
@@ -33,14 +28,15 @@ public class ParameterCreate {
     @Autowired
     private CharValueQuery charValueQuery;
 
-    private NodeParameter createParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar) {
+    protected NodeParameter createParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar) {
         return createParameter(workflowContext, node, cmptChar, null);
     }
 
-    private NodeParameter createParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, String charValueText) {
+    protected NodeParameter createParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, String charValueText) {
 
         if(cmptChar.getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
-            CharValue charValue = new CharValue(cmptChar, charValueText);
+            CharValue charValue = new CharValue(cmptChar);
+            charValue.setInText(charValueText);
             charValueCreate.createCharValue(workflowContext, node, charValue);
 
             WfFlowNodeParameter parameter = new WfFlowNodeParameter();

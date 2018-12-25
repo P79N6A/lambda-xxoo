@@ -15,11 +15,12 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
 import java.util.Date;
 
 public class ParameterHelper {
+
     public static NodeParameter simulateParameter(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
         CmptChar cmptChar = charValue.getCmptChar();
 
-        //模拟生成非workflow来源级别的节点参数
+        //模拟生成非workflow来源级别的节点参数，和workflow来源级别缺失的节点参数
         Date curTime = new Date();
         WfFlowNodeParameter parameter = new WfFlowNodeParameter();
         parameter.setNodeId(node.getNodeId());
@@ -30,11 +31,11 @@ public class ParameterHelper {
         parameter.setIsGlobalParameter(IsGlobalParameterEnum.NO.getMark());
         parameter.setIsDuplicated(IsDuplicatedEnum.NO.getMark());
         parameter.setStatus(DataStatusEnum.NORMAL.getStatus());
-        parameter.setDescription(SourceLevelEnum.valueOf(cmptChar.getSrcLevel()) + " Source Level");
+        parameter.setDescription(SourceLevelEnum.valueOf(cmptChar.getSrcLevel()) + " Source Level -- Simulate Parameter");
         parameter.setLastUpdateTime(curTime);
         parameter.setLastUpdateOper(workflowContext.getOperId());
         parameter.setCreateTime(curTime);
         parameter.setCreateOper(workflowContext.getOperId());
-        return new NodeParameter(parameter, cmptChar, charValue);
+        return new NodeParameter(parameter, cmptChar, charValue, true);
     }
 }

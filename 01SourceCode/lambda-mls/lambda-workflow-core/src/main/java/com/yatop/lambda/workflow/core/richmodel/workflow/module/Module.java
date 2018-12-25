@@ -23,7 +23,7 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
 
     @Override
     public int compareTo(Module o) {
-        return this.getModuleId() < o.getModuleId() ?  -1 : (this.getModuleId() == o.getModuleId() ? 0 : 1);
+        return this.getModuleId().compareTo(o.getModuleId());
     }
 
     @Override

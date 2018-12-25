@@ -113,22 +113,17 @@ public class ComponentConfig implements InitializingBean {
 
     private void loadComponentConfiguration() {
 
-        HashMap<SourceLevelEnum, Long> sourceLevelCounter = new HashMap<SourceLevelEnum, Long>();
-        sourceLevelCounter.put(SourceLevelEnum.SPECIFICATION, 0L);
-        sourceLevelCounter.put(SourceLevelEnum.COMPONENT, 0L);
-
         //特征类型相关
         loadCmptCharTypeConfig();
 
         //特征相关
-        loadCmptCharConfig(sourceLevelCounter);
+        loadCmptCharConfig();
 
         //规格相关
-        loadCmptSpecConfig(sourceLevelCounter);
+        loadCmptSpecConfig();
 
         //组件相关
-        loadComponentConfig(sourceLevelCounter);
-        sourceLevelCounter.clear();
+        loadComponentConfig();
 
         //校验相关
         checkConfiguration();
@@ -176,9 +171,7 @@ public class ComponentConfig implements InitializingBean {
         matchList.clear();
     }
 
-    private void loadCmptCharConfig(HashMap<SourceLevelEnum, Long> sourceLevelCounter) {
-        long sourceSpecCounter = 0L;
-        long sourceCmptCounter = 0L;
+    private void loadCmptCharConfig() {
         long enumCharCounter = 0L;
 
         List<CfCmptChar> charList = cmptCharMgr.queryCharacteristic();
@@ -242,15 +235,8 @@ public class ComponentConfig implements InitializingBean {
 
             if(cmptChar.getIsLimited() == IsLimitedEnum.ENUMERATION.getMark())
                 enumCharCounter++;
-
-            if(cmptChar.getSrcLevel() == SourceLevelEnum.SPECIFICATION.getSource())
-                sourceSpecCounter++;
-            else if(cmptChar.getSrcLevel() == SourceLevelEnum.COMPONENT.getSource())
-                sourceCmptCounter++;
         }
         charList.clear();
-        sourceLevelCounter.put(SourceLevelEnum.SPECIFICATION, sourceSpecCounter);
-        sourceLevelCounter.put(SourceLevelEnum.COMPONENT, sourceCmptCounter);
 
         if(enumCharCounter > 0) {
             List<CfCmptCharEnum> enumList = cmptCharEnumMgr.queryCharEnum();
@@ -273,7 +259,7 @@ public class ComponentConfig implements InitializingBean {
         }
     }
 
-    private void loadCmptSpecConfig(HashMap<SourceLevelEnum, Long> sourceLevelCounter) {
+    private void loadCmptSpecConfig() {
         List<CfCmptSpec> specList = cmptSpecMgr.querySpecification();
         if(DataUtil.isEmpty(specList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty specification configuration."));
@@ -292,7 +278,7 @@ public class ComponentConfig implements InitializingBean {
         specList.clear();
 
         List<CfCmptSpecCharRel> specCharList = cmptSpecCharRelMgr.querySpecCharRel();
-        if(DataUtil.isEmpty(specList)) {
+        if(DataUtil.isEmpty(specCharList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty Spec-Char-Rel configuration."));
             System.exit(-1);
         }
@@ -317,12 +303,8 @@ public class ComponentConfig implements InitializingBean {
         }
         specCharList.clear();
 
-        if(sourceLevelCounter.get(SourceLevelEnum.SPECIFICATION) > 0) {
-            List<CfCmptSpecCharValue> charValueList = cmptSpecCharValueMgr.querySpecCharValue();
-            if (DataUtil.isEmpty(charValueList)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Empty Spec-Char-Value configuration."));
-                System.exit(-1);
-            }
+        List<CfCmptSpecCharValue> charValueList = cmptSpecCharValueMgr.querySpecCharValue();
+        if (DataUtil.isNotEmpty(charValueList)) {
 
             for (CfCmptSpecCharValue value : charValueList) {
                 CmptSpec cmptSpec = ALL_SPECIFICATIONS.get(value.getSpecId());
@@ -351,7 +333,7 @@ public class ComponentConfig implements InitializingBean {
         }
     }
 
-    private void loadComponentConfig(HashMap<SourceLevelEnum, Long> sourceLevelCounter) {
+    private void loadComponentConfig() {
         List<CfCmptAlgorithm> algorithmList = cmptAlgorithmMgr.queryAlgorithm();
         if(DataUtil.isEmpty(algorithmList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty algorithm configuration."));
@@ -429,12 +411,8 @@ public class ComponentConfig implements InitializingBean {
         }
         cmptSpecList.clear();
 
-        if(sourceLevelCounter.get(SourceLevelEnum.COMPONENT) > 0) {
-            List<CfCmptCharValue> charValueList = cmptCharValueMgr.queryCmptCharValue();
-            if (DataUtil.isEmpty(charValueList)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Empty Cmpt-Char-Value configuration."));
-                System.exit(-1);
-            }
+        List<CfCmptCharValue> charValueList = cmptCharValueMgr.queryCmptCharValue();
+        if (DataUtil.isNotEmpty(charValueList)) {
 
             for (CfCmptCharValue value : charValueList) {
                 Component component = ALL_COMPONENTS.get(value.getCmptId());

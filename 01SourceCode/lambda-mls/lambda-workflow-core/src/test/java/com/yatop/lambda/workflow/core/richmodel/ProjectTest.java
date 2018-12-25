@@ -31,7 +31,7 @@ public class ProjectTest {
     @Transactional
     @Rollback(true)
     public void testInsertProject() {
-        PrProject project = projectMgr.queryProject(10002L);
+/*        PrProject project = projectMgr.queryProject(10002L);
         DwDataWarehouse dataWarehouse = dataWarehouseMgr.queryDataWarehouse(10000L);
 
         Project richProject = new Project(project);
@@ -42,6 +42,6 @@ public class ProjectTest {
         System.out.println("rich project: " + jsonStr);
 
         Project parseProject = JSON.parseObject(jsonStr, Project.class);
-        System.out.println("parse project: " + DataUtil.prettyFormat(parseProject.toJSON()));
+        System.out.println("parse project: " + DataUtil.prettyFormat(parseProject.toJSON()));*/
     }
 }

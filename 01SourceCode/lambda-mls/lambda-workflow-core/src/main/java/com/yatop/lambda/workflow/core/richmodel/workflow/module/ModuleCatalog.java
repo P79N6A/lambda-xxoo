@@ -37,7 +37,7 @@ public class ModuleCatalog extends WfModuleCatalog implements Comparable<ModuleC
 
     @Override
     public int compareTo(ModuleCatalog o) {
-        return this.getCatalogId() < o.getCatalogId() ?  -1 : (this.getCatalogId() == o.getCatalogId() ? 0 : 1);
+        return this.getCatalogId().compareTo(o.getCatalogId());
     }
 
     @Override
