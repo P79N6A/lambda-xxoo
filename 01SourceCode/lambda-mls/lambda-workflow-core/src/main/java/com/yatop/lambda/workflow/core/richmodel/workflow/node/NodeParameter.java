@@ -11,20 +11,18 @@ public class NodeParameter extends WfFlowNodeParameter implements IRichModel {
 
     private CmptChar cmptChar;
     private CharValue value;
-    private GlobalParameter lastGlobalParameter;
 
-    public NodeParameter(WfFlowNodeParameter data, CmptChar cmptChar) {
+    public NodeParameter(WfFlowNodeParameter data, CmptChar cmptChar, CharValue value) {
         super.copyProperties(data);
         this.cmptChar = cmptChar;
+        this.value = value;
     }
 
     @Override
     public void clear() {
         cmptChar = null;
-        if(DataUtil.isNotNull(value))
-            value.clear();
+        value.clear();
         value = null;
-        lastGlobalParameter = null;
         super.clear();
     }
 
@@ -35,17 +33,4 @@ public class NodeParameter extends WfFlowNodeParameter implements IRichModel {
     public CharValue getValue() {
         return value;
     }
-
-    public void setValue(CharValue value) {
-        this.value = value;
-    }
-
-    public GlobalParameter getLastGlobalParameter() {
-        return lastGlobalParameter;
-    }
-
-    public void setLastGlobalParameter(GlobalParameter lastGlobalParameter) {
-        this.lastGlobalParameter = lastGlobalParameter;
-    }
-
 }

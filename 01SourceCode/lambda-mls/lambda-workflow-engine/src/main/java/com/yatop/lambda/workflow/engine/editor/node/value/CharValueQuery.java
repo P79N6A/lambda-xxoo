@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.engine.editor.value;
+package com.yatop.lambda.workflow.engine.editor.node.value;
 
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
@@ -20,7 +20,7 @@ public class CharValueQuery {
 
         if(charValue.getSpecType() != SpecTypeEnum.INPUT.getType() && charValue.getSpecType() != SpecTypeEnum.OUTPUT.getType()) {
             if (DataUtil.isEmpty(charValue.getCharValue()))
-                charValue.setCharValue(node.getComponent().getCharValue(SpecTypeEnum.valueOf(charValue.getSpecType()), charValue.getCmptChar().getCharId()));
+                charValue.setCharValue(node.getComponent().getDefaultCharValue(charValue.getCmptChar()));
         }
 
         if(DataUtil.isEmpty(charValue.getCharValue())) {

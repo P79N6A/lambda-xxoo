@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.engine.editor.value;
+package com.yatop.lambda.workflow.engine.editor.node.value;
 
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SourceLevelEnum;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class CharValueUpdate {
 
     @Autowired
-    CharValueValidate charValueValidate;
+    private CharValueValidate charValueValidate;
 
     //适用组件参数、执行调优参数、输出内容
     // CharValue <[charValue, inText] ==>> charValue, [outText, outObject]>
@@ -41,8 +41,8 @@ public class CharValueUpdate {
                 return;
             }
         } else { //FOR OUTPUT
-            if(DataUtil.isEmpty(charValue.getCharValue())) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- output char-value missing.", "计算组件输出内容特征值缺失");
+            if(DataUtil.isEmpty(charValue.getCharValue()) || DataUtil.isNull(charValue.getInObject())) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- output char-value missing.", "计算组件输出内容特征值/更新内容缺失");
             }
         }
 

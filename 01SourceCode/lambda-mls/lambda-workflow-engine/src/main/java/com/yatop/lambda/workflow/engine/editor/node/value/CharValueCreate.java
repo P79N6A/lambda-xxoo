@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.engine.editor.value;
+package com.yatop.lambda.workflow.engine.editor.node.value;
 
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SourceLevelEnum;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class CharValueCreate {
 
     @Autowired
-    CharValueValidate charValueValidate;
+    private CharValueValidate charValueValidate;
 
     //适用组件参数、执行调优参数、输出内容
     // CharValue <[inText] ==>> charValue, [outText, outObject]>
@@ -33,7 +33,7 @@ public class CharValueCreate {
 
         if(charValue.getSpecType() != SpecTypeEnum.OUTPUT.getType()) {
             if (DataUtil.isEmpty(charValue.getInText()))
-                charValue.setInText(node.getComponent().getCharValue(SpecTypeEnum.valueOf(charValue.getSpecType()), charValue.getCmptChar().getCharId()));
+                charValue.setInText(node.getComponent().getDefaultCharValue(charValue.getCmptChar()));
 
             if (DataUtil.isNotNull(charValue.getInText()) && !charValueValidate.validateCharValue(workflowContext, node, charValue)){
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create characteristic value failed -- char-value validation failed.", "计算组件特征值验证失败");

@@ -52,8 +52,11 @@ public enum SpecMaskEnum {
     }
 
     public static boolean isCorrectMask(int mask) {
-        return !((mask & 0x1F) > 0);
-        //return !((mask & (INPUT.getBit() | OUTPUT.getBit() | EXECUTION.getBit() | OPTIMIZE_EXECUTION.getBit() | PARAMETER.getBit())) > 0);
+        boolean matchInputOrOutput = matchInput(mask) || matchOutput(mask);
+        boolean matchParameterOrExecution = matchParameter(mask) || matchExecution(mask) || matchOptimizeExecution(mask);
+
+        //适用[输入内容、输出内容] 和 适用[组件参数、调用执行、执行调优参数] 互斥
+        return (!matchInputOrOutput ? matchParameterOrExecution : !matchParameterOrExecution);
     }
 
     public static boolean isCorrectFitSpecType(int mask, SpecTypeEnum typeEnum) {

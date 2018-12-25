@@ -5,8 +5,6 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
 public class Snapshot extends WfFlow implements IRichModel {
 
-    public Snapshot() {}
-
     public Snapshot(WfFlow data) {super.copyProperties(data);}
 
     @Override

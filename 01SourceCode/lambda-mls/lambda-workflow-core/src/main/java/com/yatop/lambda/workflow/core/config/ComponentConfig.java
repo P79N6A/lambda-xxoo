@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ComponentConfig implements InitializingBean {
@@ -112,7 +113,9 @@ public class ComponentConfig implements InitializingBean {
 
     private void loadComponentConfiguration() {
 
-        HashMap<Integer, Long> sourceLevelCounter = new HashMap<Integer, Long>();
+        HashMap<SourceLevelEnum, Long> sourceLevelCounter = new HashMap<SourceLevelEnum, Long>();
+        sourceLevelCounter.put(SourceLevelEnum.SPECIFICATION, 0L);
+        sourceLevelCounter.put(SourceLevelEnum.COMPONENT, 0L);
 
         //特征类型相关
         loadCmptCharTypeConfig();
@@ -125,6 +128,7 @@ public class ComponentConfig implements InitializingBean {
 
         //组件相关
         loadComponentConfig(sourceLevelCounter);
+        sourceLevelCounter.clear();
     }
 
     private void loadCmptCharTypeConfig() {
@@ -169,7 +173,7 @@ public class ComponentConfig implements InitializingBean {
         matchList.clear();
     }
 
-    private void loadCmptCharConfig(HashMap<Integer, Long> sourceLevelCounter) {
+    private void loadCmptCharConfig(HashMap<SourceLevelEnum, Long> sourceLevelCounter) {
         long sourceSpecCounter = 0L;
         long sourceCmptCounter = 0L;
         long enumCharCounter = 0L;
@@ -242,8 +246,8 @@ public class ComponentConfig implements InitializingBean {
                 sourceCmptCounter++;
         }
         charList.clear();
-        sourceLevelCounter.put(SourceLevelEnum.SPECIFICATION.getSource(), sourceSpecCounter);
-        sourceLevelCounter.put(SourceLevelEnum.COMPONENT.getSource(), sourceCmptCounter);
+        sourceLevelCounter.put(SourceLevelEnum.SPECIFICATION, sourceSpecCounter);
+        sourceLevelCounter.put(SourceLevelEnum.COMPONENT, sourceCmptCounter);
 
         if(enumCharCounter > 0) {
             List<CfCmptCharEnum> enumList = cmptCharEnumMgr.queryCharEnum();
@@ -266,7 +270,7 @@ public class ComponentConfig implements InitializingBean {
         }
     }
 
-    private void loadCmptSpecConfig(HashMap<Integer, Long> sourceLevelCounter) {
+    private void loadCmptSpecConfig(HashMap<SourceLevelEnum, Long> sourceLevelCounter) {
         List<CfCmptSpec> specList = cmptSpecMgr.querySpecification();
         if(DataUtil.isEmpty(specList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty specification configuration."));
@@ -310,7 +314,7 @@ public class ComponentConfig implements InitializingBean {
         }
         specCharList.clear();
 
-        if(sourceLevelCounter.get(SourceLevelEnum.SPECIFICATION.getSource()) > 0) {
+        if(sourceLevelCounter.get(SourceLevelEnum.SPECIFICATION) > 0) {
             List<CfCmptSpecCharValue> charValueList = cmptSpecCharValueMgr.querySpecCharValue();
             if (DataUtil.isEmpty(charValueList)) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Empty Spec-Char-Value configuration."));
@@ -344,7 +348,7 @@ public class ComponentConfig implements InitializingBean {
         }
     }
 
-    private void loadComponentConfig(HashMap<Integer, Long> sourceLevelCounter) {
+    private void loadComponentConfig(HashMap<SourceLevelEnum, Long> sourceLevelCounter) {
         List<CfCmptAlgorithm> algorithmList = cmptAlgorithmMgr.queryAlgorithm();
         if(DataUtil.isEmpty(algorithmList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty algorithm configuration."));
@@ -422,7 +426,7 @@ public class ComponentConfig implements InitializingBean {
         }
         cmptSpecList.clear();
 
-        if(sourceLevelCounter.get(SourceLevelEnum.COMPONENT.getSource()) > 0) {
+        if(sourceLevelCounter.get(SourceLevelEnum.COMPONENT) > 0) {
             List<CfCmptCharValue> charValueList = cmptCharValueMgr.queryCmptCharValue();
             if (DataUtil.isEmpty(charValueList)) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Empty Cmpt-Char-Value configuration."));

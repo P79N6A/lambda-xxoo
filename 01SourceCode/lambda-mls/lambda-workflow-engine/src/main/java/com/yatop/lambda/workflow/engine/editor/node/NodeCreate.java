@@ -14,7 +14,8 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
-import com.yatop.lambda.workflow.engine.editor.value.CharValueCreate;
+import com.yatop.lambda.workflow.engine.editor.node.parameter.ParameterCreate;
+import com.yatop.lambda.workflow.engine.editor.node.value.CharValueCreate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,36 +26,29 @@ public class NodeCreate {
     private NodeMgr nodeMgr;
 
     @Autowired
-    NodeParameterMgr nodeParameterMgr;
-
-    @Autowired
-    private CharValueCreate charValueCreate;
-
-    private NodeParameter createNodeParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, String charValueText) {
-
-        CharValue charValue = new CharValue(cmptChar, charValueText);
-        if(cmptChar.getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
-            charValueCreate.createCharValue(workflowContext, node, charValue);
-        } else {
-            return null;
-        }
-
-        WfFlowNodeParameter parameter = new WfFlowNodeParameter();
-        parameter.setNodeId(node.getNodeId());
-        parameter.setSpecType(charValue.getSpecType());
-        parameter.setCharId(cmptChar.getCharId());
-        if(DataUtil.isNotNull(charValue.getCharValue()))
-            parameter.setCharValue(charValue.getCharValue());
-        nodeParameterMgr.insertNodeParameter(parameter, workflowContext.getOperId());
-
-        NodeParameter richParameter = new NodeParameter(parameter, cmptChar);
-        richParameter.copyProperties(nodeParameterMgr.queryNodeParameter(richParameter.getNodeId(), richParameter.getCharId()));
-        richParameter.setValue(charValue);
-        return richParameter;
-    }
+    private ParameterCreate parameterCreate;
 
     public Node createNode(WorkflowContext workflowContext, Module module, Long x, Long y) {
         WfFlowNode node = new WfFlowNode();
+        node.setNodeName(module.getModuleName());
+        node.setOwnerProjectId(workflowContext.getProject().getProjectId());
+        node.setOwnerFlowId(workflowContext.getWorkflow().getFlowId());
+        node.setRefModuleId(module.getModuleId());
+        node.setPositionX(x);
+        node.setPositionY(y);
+        nodeMgr.insertNode(node, workflowContext.getOperId());
+
+        Node richNode = new Node(node, module);
+        richNode.copyProperties(nodeMgr.queryNode(richNode.getNodeId()));
+        workflowContext.putNode(richNode);
+
+       /* */
+
+        return null;
+    }
+
+    public Node createNode(WorkflowContext workflowContext, Node otherNode, Long x, Long y) {
+/*        WfFlowNode node = new WfFlowNode();
         node.setNodeName(module.getModuleName());
         node.setOwnerProjectId(workflowContext.getProject().getProjectId());
         node.setOwnerFlowId(workflowContext.getWorkflow().getFlowId());
@@ -71,16 +65,16 @@ public class NodeCreate {
         //组件参数
         CmptSpec paramSpec = component.getParameter();
         for (CmptChar cmptChar : paramSpec.getCmptChars()) {
-            NodeParameter richParameter = createNodeParameter(workflowContext, richNode, cmptChar, null);
+            NodeParameter richParameter = parameterCreate.createParameter(workflowContext, richNode, cmptChar, null);
             richNode.putParameter(richParameter);
         }
 
         //执行调优参数
         CmptSpec optimizeSpec = component.getOptimizeExecution();
         for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
-            NodeParameter richParameter = createNodeParameter(workflowContext, richNode, cmptChar, null);
+            NodeParameter richParameter = parameterCreate.createParameter(workflowContext, richNode, cmptChar, null);
             richNode.putOptimizeParameter(richParameter);
-        }
+        }*/
 
         return null;
     }

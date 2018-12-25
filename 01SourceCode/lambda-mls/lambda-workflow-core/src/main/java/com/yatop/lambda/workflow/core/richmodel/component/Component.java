@@ -6,6 +6,7 @@ import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.SystemParameterUtil;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpecCharValue;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
@@ -91,51 +92,51 @@ public class Component extends CfComponent implements IRichModel {
         return CollectionUtil.get(charValues, charId);
     }
 
-    public String getCharValue(SpecTypeEnum typeEnum, String charId) {
+    public String getDefaultCharValue(CmptChar cmptChar) {
 
-        CmptCharValue cmptCharValue = this.getCharValue(charId);
+        CmptCharValue cmptCharValue = this.getCharValue(cmptChar.getCharId());
         if(DataUtil.isNotNull(cmptCharValue)) {
             if(cmptCharValue.getIsSystemParam() == IsSystemParamEnum.YES.getMark())
-                return SystemParameterUtil.find(cmptCharValue.getCharValue());
+                return DataUtil.trimToNull(SystemParameterUtil.find(cmptCharValue.getCharValue()));
             else
-                return cmptCharValue.getCharValue();
+                return DataUtil.trimToNull(cmptCharValue.getCharValue());
         }
 
         CmptSpecCharValue specCharValue = null;
-        switch (typeEnum) {
+        switch (SpecTypeEnum.valueOf(cmptChar.getSpecType())) {
             case INPUT:
                 if(DataUtil.isNotNull(input)) {
-                    specCharValue = this.input.getCharValue(charId);
+                    specCharValue = this.input.getCharValue(cmptChar.getCharId());
                 }
                 break;
             case OUTPUT:
                 if(DataUtil.isNotNull(output)) {
-                    specCharValue = this.output.getCharValue(charId);
+                    specCharValue = this.output.getCharValue(cmptChar.getCharId());
                 }
                 break;
             case EXECUTION:
                 if(DataUtil.isNotNull(execution)) {
-                    specCharValue = this.execution.getCharValue(charId);
+                    specCharValue = this.execution.getCharValue(cmptChar.getCharId());
                 }
                 break;
             case OPTIMIZE_EXECUTION:
                 if(DataUtil.isNotNull(optimizeExecution)) {
-                    specCharValue = this.optimizeExecution.getCharValue(charId);
+                    specCharValue = this.optimizeExecution.getCharValue(cmptChar.getCharId());
                 }
                 break;
             case PARAMETER:
                 if(DataUtil.isNotNull(parameter)) {
-                    specCharValue = this.parameter.getCharValue(charId);
+                    specCharValue = this.parameter.getCharValue(cmptChar.getCharId());
                 }
                 break;
         }
         if(DataUtil.isNotNull(specCharValue)) {
             if(specCharValue.getIsSystemParam() == IsSystemParamEnum.YES.getMark())
-                return SystemParameterUtil.find(specCharValue.getCharValue());
+                return DataUtil.trimToNull(SystemParameterUtil.find(specCharValue.getCharValue()));
             else
-                return specCharValue.getCharValue();
+                return DataUtil.trimToNull(specCharValue.getCharValue());
         }
-        return null;
+        return DataUtil.trimToNull(cmptChar.getDefaultValue());
     }
 
     public void putCharValue(CmptCharValue charValue) {
@@ -176,5 +177,21 @@ public class Component extends CfComponent implements IRichModel {
                 return this.getParameter();
         }
         return null;
+    }
+
+    public boolean existsCmptChar(CmptChar cmptChar) {
+        switch (SpecTypeEnum.valueOf(cmptChar.getSpecType())) {
+            case INPUT:
+                return DataUtil.isNotNull(this.getInput().getCmptChar(cmptChar.getCharId()));
+            case OUTPUT:
+                return DataUtil.isNotNull(this.getOutput().getCmptChar(cmptChar.getCharId()));
+            case EXECUTION:
+                return DataUtil.isNotNull(this.getExecution().getCmptChar(cmptChar.getCharId()));
+            case OPTIMIZE_EXECUTION:
+                return DataUtil.isNotNull(this.getOptimizeExecution().getCmptChar(cmptChar.getCharId()));
+            case PARAMETER:
+                return DataUtil.isNotNull(this.getParameter().getCmptChar(cmptChar.getCharId()));
+        }
+        return false;
     }
 }
