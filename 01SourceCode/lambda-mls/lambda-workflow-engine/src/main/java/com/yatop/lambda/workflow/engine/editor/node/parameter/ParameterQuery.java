@@ -48,8 +48,8 @@ public class ParameterQuery {
         parameter.setNodeId(node.getNodeId());
         parameter.setSpecType(charValue.getSpecType());
         parameter.setCharId(cmptChar.getCharId());
-        if(DataUtil.isNotNull(charValue.getDefaultCharValue()))
-            parameter.setCharValue(charValue.getDefaultCharValue());
+        if(DataUtil.isNotNull(charValue.getConfigCharValue()))
+            parameter.setCharValue(charValue.getConfigCharValue());
 
         nodeParameterMgr.queryNodeParameterExt(parameter, workflowContext.getOperId());*/
 

@@ -42,6 +42,8 @@ public class NodeCreate {
         richNode.copyProperties(nodeMgr.queryNode(richNode.getNodeId()));
         workflowContext.putNode(richNode);
 
+        parameterCreate.createParameters(workflowContext, richNode);
+
        /* */
 
         return null;

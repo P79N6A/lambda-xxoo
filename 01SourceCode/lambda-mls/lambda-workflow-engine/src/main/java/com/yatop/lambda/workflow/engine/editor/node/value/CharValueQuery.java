@@ -20,7 +20,7 @@ public class CharValueQuery {
 
         if(charValue.getSpecType() != SpecTypeEnum.INPUT.getType() && charValue.getSpecType() != SpecTypeEnum.OUTPUT.getType()) {
             if (DataUtil.isEmpty(charValue.getCharValue()))
-                charValue.setCharValue(node.getComponent().getDefaultCharValue(charValue.getCmptChar()));
+                charValue.setCharValue(node.getComponent().getConfigCharValue(charValue.getCmptChar()));
         }
 
         if(DataUtil.isEmpty(charValue.getCharValue())) {

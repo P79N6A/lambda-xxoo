@@ -97,7 +97,7 @@ public class ModuleConfig implements InitializingBean {
                     if(DataUtil.isNotNull(parentCatalog)) {
                         parentCatalog.putChildCatalog(entry.getValue());
                     } else {
-                        logger.error(String.format("Loading module configuration occurs fatal error -- Parent module catalog not found:\n%s", DataUtil.prettyFormat(entry.getValue().toJSON())));
+                        logger.error(String.format("Loading module configuration occurs fatal error -- Parent module catalog not found:\n%s", DataUtil.prettyFormat(entry.getValue())));
                         System.exit(-1);
                     }
                 }
@@ -114,7 +114,7 @@ public class ModuleConfig implements InitializingBean {
             for (WfModule module : moduleList) {
                 Component component =  componentConfig.getComponent(module.getPkgCmptId());
                 if(DataUtil.isNull(component)) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Component not found:\n%s.", DataUtil.prettyFormat(module.toJSON())));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Component not found:\n%s.", DataUtil.prettyFormat(module)));
                     System.exit(-1);
                 }
 
@@ -126,7 +126,7 @@ public class ModuleConfig implements InitializingBean {
                     if(DataUtil.isNotNull(catalog)) {
                         catalog.putChildModule(richModule);
                     } else {
-                        logger.error(String.format("Loading module configuration occurs fatal error -- Owner module catalog not found:\n%s", DataUtil.prettyFormat(richModule.toJSON())));
+                        logger.error(String.format("Loading module configuration occurs fatal error -- Owner module catalog not found:\n%s", DataUtil.prettyFormat(richModule)));
                         System.exit(-1);
                     }
                 }
@@ -143,17 +143,17 @@ public class ModuleConfig implements InitializingBean {
 
             for (WfModulePort port : portList) {
                 if(DataUtil.isNull(PortTypeEnum.valueOf(port.getPortType()))) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Error Port-Type:\n%s.", DataUtil.prettyFormat(port.toJSON())));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Error Port-Type:\n%s.", DataUtil.prettyFormat(port)));
                     System.exit(-1);
                 }
                 CmptChar cmptChar =  componentConfig.getCharacteristic(port.getBindCharId());
                 if(DataUtil.isNull(cmptChar)) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.prettyFormat(port.toJSON())));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.prettyFormat(port)));
                     System.exit(-1);
                 }
                 Module module =  ALL_MODULES.get(port.getOwnerModuleId());
                 if(DataUtil.isNull(module)) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Module not found:\n%s.", DataUtil.prettyFormat(port.toJSON())));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Module not found:\n%s.", DataUtil.prettyFormat(port)));
                     System.exit(-1);
                 }
 

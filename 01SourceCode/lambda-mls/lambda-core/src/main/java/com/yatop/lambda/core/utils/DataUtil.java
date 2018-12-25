@@ -3,6 +3,7 @@ package com.yatop.lambda.core.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.yatop.lambda.base.utils.LambdaRootModel;
 import org.apache.commons.lang3.StringUtils;
@@ -72,8 +73,16 @@ public class DataUtil {
         return JSON.toJSONString(json, SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
     }
 
+    public static String prettyFormat(LambdaRootModel model) {
+        return JSON.toJSONString(DataUtil.toJSONObject(model), SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
+    }
+
     public static String prettyFormat(Collection<? extends LambdaRootModel> models) {
         return JSON.toJSONString(DataUtil.toJSONArray(models), SerializerFeature.PrettyFormat, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteDateUseDateFormat);
+    }
+
+    public static JSONObject toJSONObject(LambdaRootModel model) {
+        return DataUtil.isNotNull(model) ? model.toJSON() : null;
     }
 
     public static JSONArray toJSONArray(Collection<? extends LambdaRootModel> models) {

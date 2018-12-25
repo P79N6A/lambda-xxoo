@@ -57,24 +57,7 @@ public class ParameterCreate {
         } else {
             CharValue charValue = new CharValue(cmptChar);
             charValueQuery.queryCharValue(workflowContext, node, charValue);
-
-            //模拟生成非workflow来源级别的节点参数
-            Date curTime = new Date();
-            WfFlowNodeParameter parameter = new WfFlowNodeParameter();
-            parameter.setNodeId(node.getNodeId());
-            parameter.setSpecType(charValue.getSpecType());
-            parameter.setCharId(cmptChar.getCharId());
-            if(DataUtil.isNotNull(charValue.getCharValue()))
-                parameter.setCharValue(charValue.getCharValue());
-            parameter.setIsGlobalParameter(IsGlobalParameterEnum.NO.getMark());
-            parameter.setIsDuplicated(IsDuplicatedEnum.NO.getMark());
-            parameter.setStatus(DataStatusEnum.NORMAL.getStatus());
-            parameter.setDescription(SourceLevelEnum.valueOf(cmptChar.getSrcLevel()) + " Source Level");
-            parameter.setLastUpdateTime(curTime);
-            parameter.setLastUpdateOper(workflowContext.getOperId());
-            parameter.setCreateTime(curTime);
-            parameter.setCreateOper(workflowContext.getOperId());
-            return new NodeParameter(parameter, cmptChar, charValue);
+            return ParameterHelper.simulateParameter(workflowContext, node, charValue);
         }
     }
 
@@ -109,7 +92,7 @@ public class ParameterCreate {
         //执行调优参数
         CmptSpec optimizeSpec = component.getOptimizeExecution();
         for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
-            NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getParameter(cmptChar.getCharId()).getValue().getOutText());
+            NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getOptimizeParameter(cmptChar.getCharId()).getValue().getOutText());
             node.putOptimizeParameter(parameter);
         }
     }

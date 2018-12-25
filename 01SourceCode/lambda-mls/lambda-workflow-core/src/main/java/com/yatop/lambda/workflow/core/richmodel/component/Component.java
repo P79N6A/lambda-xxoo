@@ -1,7 +1,9 @@
 package com.yatop.lambda.workflow.core.richmodel.component;
 
 import com.yatop.lambda.base.model.CfComponent;
+import com.yatop.lambda.core.enums.IsRequiredEnum;
 import com.yatop.lambda.core.enums.IsSystemParamEnum;
+import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.SystemParameterUtil;
@@ -92,14 +94,16 @@ public class Component extends CfComponent implements IRichModel {
         return CollectionUtil.get(charValues, charId);
     }
 
-    public String getDefaultCharValue(CmptChar cmptChar) {
+    public String getConfigCharValue(CmptChar cmptChar) {
 
-        CmptCharValue cmptCharValue = this.getCharValue(cmptChar.getCharId());
-        if(DataUtil.isNotNull(cmptCharValue)) {
-            if(cmptCharValue.getIsSystemParam() == IsSystemParamEnum.YES.getMark())
-                return DataUtil.trimToNull(SystemParameterUtil.find(cmptCharValue.getCharValue()));
-            else
-                return DataUtil.trimToNull(cmptCharValue.getCharValue());
+        if(cmptChar.getSrcLevel() != SourceLevelEnum.SPECIFICATION.getSource()) {
+            CmptCharValue cmptCharValue = this.getCharValue(cmptChar.getCharId());
+            if (DataUtil.isNotNull(cmptCharValue)) {
+                if (cmptCharValue.getIsSystemParam() == IsSystemParamEnum.YES.getMark())
+                    return DataUtil.trimToNull(SystemParameterUtil.find(cmptCharValue.getCharValue()));
+                else
+                    return DataUtil.trimToNull(cmptCharValue.getCharValue());
+            }
         }
 
         CmptSpecCharValue specCharValue = null;
@@ -191,6 +195,17 @@ public class Component extends CfComponent implements IRichModel {
                 return DataUtil.isNotNull(this.getOptimizeExecution().getCmptChar(cmptChar.getCharId()));
             case PARAMETER:
                 return DataUtil.isNotNull(this.getParameter().getCmptChar(cmptChar.getCharId()));
+        }
+        return false;
+    }
+
+    public boolean missingConfigCharValue(CmptChar cmptChar) {
+        switch (SourceLevelEnum.valueOf(cmptChar.getSrcLevel())) {
+            case SPECIFICATION:
+            case COMPONENT:
+                if(cmptChar.getIsRequired() == IsRequiredEnum.YES.getMark() && DataUtil.isEmpty(this.getConfigCharValue(cmptChar)))
+                    return true;
+          //case WORKFLOW:
         }
         return false;
     }
