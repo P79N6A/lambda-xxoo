@@ -20,7 +20,7 @@ public class CodeScriptMgr extends BaseMgr {
     
     /*
      *
-     *   插入新代码脚本（名称、脚本类型、所属项目ID、关联实验ID、关联工作流ID、关联快照版本号、关联运行作业ID、关联节点ID、关联特征ID、脚本状态 ...）
+     *   插入新代码脚本（名称、脚本类型、来源、所属项目ID、关联实验ID、关联工作流ID、关联快照版本号、关联运行作业ID、关联节点ID、关联特征ID、脚本状态 ...）
      *   返回插入记录
      *
      * */
@@ -28,6 +28,7 @@ public class CodeScriptMgr extends BaseMgr {
         if( DataUtil.isNull(codeScript) ||
                 codeScript.isScriptNameNotColoured() ||
                 codeScript.isScriptTypeNotColoured() ||
+                codeScript.isScriptSrcNotColoured() ||
                 codeScript.isOwnerProjectIdNotColoured() ||
                 codeScript.isRelExperimentIdNotColoured() ||
                 codeScript.isRelFlowIdNotColoured() ||

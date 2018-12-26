@@ -20,7 +20,7 @@ public class ModelMgr extends BaseMgr {
 
     /*
      *
-     *   插入新模型信息（表名、类型、所属模型仓库ID、引用算法ID、模型状态 ...）
+     *   插入新模型信息（表名、类型、来源、所属模型仓库ID、引用算法ID、模型状态 ...）
      *   返回插入记录
      *
      * */
@@ -28,6 +28,7 @@ public class ModelMgr extends BaseMgr {
         if( DataUtil.isNull(model) ||
                 model.isModelNameNotColoured() ||
                 model.isModelTypeNotColoured() ||
+                model.isModelSrcNotColoured() ||
                 model.isOwnerMwIdNotColoured() ||
                 model.isRefAlgorithmIdNotColoured() ||
                 model.isModelStateNotColoured() ||

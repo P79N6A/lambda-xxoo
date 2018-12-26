@@ -19,7 +19,7 @@ import java.util.TreeSet;
 
 public class WorkflowContext implements IWorkContext {
 
-    private boolean isNoWorkflow;           //是否为无工作流（无关联实验和工作流，但有一个节点的特殊情况，比如用于对数据文件导入的包装）
+    private boolean simulateWorkflow;       //是否为模拟工作流（用于对数据文件导入作业任务，实际不存在workflow和node相关记录信息）
     private Project project;                //操作关联项目
     private Workflow workflow;              //操作关联工作流
     private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库，key=dwId
@@ -37,17 +37,17 @@ public class WorkflowContext implements IWorkContext {
         this.project = project;
         this.workflow = workflow;
         this.operId = operId;
-        this.isNoWorkflow = false;
+        this.simulateWorkflow = false;
     }
 
     public WorkflowContext(Project project, String operId) {
         this.project = project;
         this.operId = operId;
-        this.isNoWorkflow = true;
+        this.simulateWorkflow = true;
     }
 
-    public boolean isNoWorkflow() {
-        return isNoWorkflow;
+    public boolean isSimulateWorkflow() {
+        return simulateWorkflow;
     }
 
     public Project getProject() {

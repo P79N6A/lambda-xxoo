@@ -26,6 +26,7 @@ public class DataTableMgr extends BaseMgr {
         if( DataUtil.isNull(table) ||
                 table.isTableNameNotColoured() ||
                 table.isTableTypeNotColoured() ||
+                table.isTableSrcNotColoured() ||
                 table.isOwnerDwIdNotColoured() ||
                 table.isDataFileTypeNotColoured() ||
                 table.isTableStateNotColoured() ||
