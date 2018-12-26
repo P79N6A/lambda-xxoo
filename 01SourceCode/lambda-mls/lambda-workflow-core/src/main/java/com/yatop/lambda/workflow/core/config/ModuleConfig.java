@@ -5,6 +5,7 @@ import com.yatop.lambda.base.model.WfModule;
 import com.yatop.lambda.base.model.WfModuleCatalog;
 import com.yatop.lambda.base.model.WfModulePort;
 import com.yatop.lambda.core.enums.PortTypeEnum;
+import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.mgr.workflow.module.ModuleCatalogMgr;
 import com.yatop.lambda.core.mgr.workflow.module.ModuleMgr;
 import com.yatop.lambda.core.mgr.workflow.module.ModulePortMgr;
@@ -45,7 +46,7 @@ public class ModuleConfig implements InitializingBean {
     private static TreeMultimap<Integer, ModuleCatalog> FIRST_LEVEL_MODULE_CATALOGS = TreeMultimap.create();    //一级工作流组件目录按序号排序
     private static HashMap<Long, ModuleCatalog> ALL_MODULE_CATALOGS = new HashMap<Long, ModuleCatalog>();       //工作流组件目录
     private static HashMap<Long, Module> ALL_MODULES = new HashMap<Long, Module>();                             //工作流组件
-    private static HashMap<Long, ModulePort> ALL_MODULE_PORTS = new HashMap<Long, ModulePort>();                //工作流组件端口
+    private static HashMap<Long, ModulePort> ALL_MODULE_PORTS = new HashMap<Long, ModulePort>();         //工作流组件端口
 
     public static List<ModuleCatalog> getFirstLevelCatalogs() {
         return CollectionUtil.toList(FIRST_LEVEL_MODULE_CATALOGS);
@@ -142,13 +143,18 @@ public class ModuleConfig implements InitializingBean {
             }
 
             for (WfModulePort port : portList) {
-                if(DataUtil.isNull(PortTypeEnum.valueOf(port.getPortType()))) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Error Port-Type:\n%s.", DataUtil.prettyFormat(port)));
+                PortTypeEnum portTypeEnum = PortTypeEnum.valueOf(port.getPortType());
+                if(DataUtil.isNull(portTypeEnum)) {
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Error port type:\n%s.", DataUtil.prettyFormat(port)));
                     System.exit(-1);
                 }
                 CmptChar cmptChar =  componentConfig.getCharacteristic(port.getBindCharId());
                 if(DataUtil.isNull(cmptChar)) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.prettyFormat(port)));
+                    System.exit(-1);
+                }
+                if(!portTypeEnum.isCorrectPortType(SpecTypeEnum.valueOf(cmptChar.getSpecType()))) {
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Error port-type vs spec-type:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar)));
                     System.exit(-1);
                 }
                 Module module =  ALL_MODULES.get(port.getOwnerModuleId());
@@ -159,14 +165,15 @@ public class ModuleConfig implements InitializingBean {
 
                 ModulePort richPort = new ModulePort(port, cmptChar);
                 ALL_MODULE_PORTS.put(port.getPortId(), richPort);
-
-                switch (PortTypeEnum.valueOf(richPort.getPortType())) {
-                    case INPUT_PORT:
+                switch (portTypeEnum) {
+                    case INPUT_PORT: {
                         module.putInputPort(richPort);
                         break;
-                    case OUTPUT_PORT:
+                    }
+                    case OUTPUT_PORT: {
                         module.putOutputPort(richPort);
                         break;
+                    }
                 }
             }
             portList.clear();

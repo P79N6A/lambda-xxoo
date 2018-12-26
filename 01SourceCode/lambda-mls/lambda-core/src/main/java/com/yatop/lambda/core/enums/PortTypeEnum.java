@@ -36,6 +36,10 @@ public enum PortTypeEnum {
         this.name = name;
     }
 
+    public boolean isCorrectPortType(SpecTypeEnum specTypeEnum) {
+        return (specTypeEnum == SpecTypeEnum.INPUT ? this == INPUT_PORT : (specTypeEnum == SpecTypeEnum.OUTPUT ? this == OUTPUT_PORT : false));
+    }
+
     public static PortTypeEnum valueOf(int type) {
         switch (type) {
             case 0: return INPUT_PORT;

@@ -103,4 +103,11 @@ public class DataUtil {
     public static boolean isNotEmpty(Collection<? extends Object> list) {
         return !DataUtil.isEmpty(list);
     }
+
+    public static <D extends LambdaRootModel> void clear(D data) {
+        if(DataUtil.isNull(data))
+            return;
+
+        data.clear();
+    }
 }

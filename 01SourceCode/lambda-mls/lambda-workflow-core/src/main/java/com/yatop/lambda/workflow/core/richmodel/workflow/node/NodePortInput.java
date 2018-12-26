@@ -4,20 +4,20 @@ import com.yatop.lambda.base.model.WfFlowNodePort;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
 
-public class NodePort extends WfFlowNodePort implements IRichModel {
+public class NodePortInput extends WfFlowNodePort implements IRichModel {
 
     private ModulePort modulePort;
-    private NodeSchema schema;
+    private boolean deleted;
 
-    public NodePort(WfFlowNodePort data, ModulePort modulePort) {
+    public NodePortInput(WfFlowNodePort data, ModulePort modulePort) {
         super.copyProperties(data);
         this.modulePort = modulePort;
+        this.deleted = false;
     }
 
     @Override
     public void clear() {
         modulePort = null;
-        schema = null;
         super.clear();
     }
 
@@ -25,11 +25,11 @@ public class NodePort extends WfFlowNodePort implements IRichModel {
         return modulePort;
     }
 
-    public NodeSchema getSchema() {
-        return schema;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setSchema(NodeSchema schema) {
-        this.schema = schema;
+    public void markDeleted() {
+        this.deleted = true;
     }
 }

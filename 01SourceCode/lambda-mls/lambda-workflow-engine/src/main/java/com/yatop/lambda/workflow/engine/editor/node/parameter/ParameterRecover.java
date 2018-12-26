@@ -13,8 +13,8 @@ import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec
 import com.yatop.lambda.workflow.core.richmodel.workflow.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
-import com.yatop.lambda.workflow.engine.editor.node.value.CharValueQuery;
-import com.yatop.lambda.workflow.engine.editor.node.value.CharValueRecover;
+import com.yatop.lambda.workflow.engine.editor.value.CharValueQuery;
+import com.yatop.lambda.workflow.engine.editor.value.CharValueRecover;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

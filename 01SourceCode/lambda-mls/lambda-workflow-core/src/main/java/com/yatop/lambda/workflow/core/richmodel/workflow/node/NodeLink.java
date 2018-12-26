@@ -5,15 +5,17 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
 public class NodeLink extends WfFlowNodeLink implements IRichModel, Comparable<NodeLink> {
 
-    private NodePort srcNodePort;   //流出节点端口
-    private NodePort dstNodePort;   //流入节点端口
+    private NodePortInput srcNodePort;   //流出节点端口
+    private NodePortInput dstNodePort;   //流入节点端口
     private boolean override;       //用于作业执行时辅助解析工作流有效的任务内容
+    private boolean deleted;
 
-    public NodeLink(WfFlowNodeLink data, NodePort srcNodePort, NodePort dstNodePort) {
+    public NodeLink(WfFlowNodeLink data, NodePortInput srcNodePort, NodePortInput dstNodePort) {
         super.copyProperties(data);
         this.srcNodePort = srcNodePort;
         this.dstNodePort = dstNodePort;
         this.override = false;
+        this.deleted = false;
     }
 
     @Override
@@ -23,11 +25,11 @@ public class NodeLink extends WfFlowNodeLink implements IRichModel, Comparable<N
         super.clear();
     }
 
-    public NodePort getSrcNodePort() {
+    public NodePortInput getSrcNodePort() {
         return srcNodePort;
     }
 
-    public NodePort getDstNodePort() {
+    public NodePortInput getDstNodePort() {
         return dstNodePort;
     }
 
@@ -42,5 +44,13 @@ public class NodeLink extends WfFlowNodeLink implements IRichModel, Comparable<N
 
     public void setOverride(boolean override) {
         this.override = override;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void markDeleted() {
+        this.deleted = true;
     }
 }

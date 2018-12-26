@@ -3,7 +3,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
-import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
+import com.yatop.lambda.workflow.core.richmodel.workflow.GlobalParameter;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
@@ -13,33 +13,31 @@ import java.util.TreeMap;
 public class Node extends WfFlowNode implements IRichModel {
 
     private Module module;
-    private TreeMap<String, NodeParameter> parameters = new TreeMap<String, NodeParameter>();                //组件参数
-    private TreeMap<String, NodeParameter> optimizePrameters = new TreeMap<String, NodeParameter>();         //执行调优参数
-    private TreeMap<String, NodePort> inputNodePorts = new TreeMap<String, NodePort>();                 //输入节点端口
-    private TreeMap<Integer, NodePort> inputNodePortsOrderBySequence = new TreeMap<Integer, NodePort>(); //输入节点端口按序号排序
-    private TreeMap<String, NodePort> outputNodePorts = new TreeMap<String, NodePort>();                //输出节点端口
-    private TreeMap<Integer, NodePort> outputNodePortsOrderBySequence = new TreeMap<Integer, NodePort>();//输出节点端口按序号排序
+    private TreeMap<String, NodeParameter> parameters = new TreeMap<String, NodeParameter>();   //组件参数，key=charId
+    private TreeMap<String, NodeParameter> optimizeParameters = new TreeMap<String, NodeParameter>();         //执行调优参数，key=charId
+    private TreeMap<String, NodePortInput> inputNodePorts = new TreeMap<String, NodePortInput>();                 //输入节点端口，key=charId
+    private TreeMap<Integer, NodePortInput> inputNodePortsOrderBySequence = new TreeMap<Integer, NodePortInput>(); //输入节点端口按序号排序
+    private TreeMap<String, NodePortOutput> outputNodePorts = new TreeMap<String, NodePortOutput>();                //输出节点端口
+    private TreeMap<Integer, NodePortOutput> outputNodePortsOrderBySequence = new TreeMap<Integer, NodePortOutput>();//输出节点端口按序号排序
+    private TreeMap<String, GlobalParameter> globalParameters = new TreeMap<String, GlobalParameter>();  //操作关联节点参数，key=charId
+    private boolean deleted;
 
     public Node(WfFlowNode data, Module module) {
         super.copyProperties(data);
         this.module = module;
+        this.deleted = false;
     }
 
     @Override
     public void clear() {
         module = null;
         CollectionUtil.clear(parameters);
-        parameters = null;
-        CollectionUtil.clear(optimizePrameters);
-        optimizePrameters = null;
-        inputNodePorts.clear();
-        inputNodePorts = null;
+        CollectionUtil.clear(optimizeParameters);
+        CollectionUtil.clear(inputNodePorts);
         inputNodePortsOrderBySequence.clear();
-        inputNodePortsOrderBySequence = null;
-        outputNodePorts.clear();
-        outputNodePorts = null;
+        CollectionUtil.clear(outputNodePorts);
         outputNodePortsOrderBySequence.clear();
-        outputNodePortsOrderBySequence = null;
+        CollectionUtil.clear(globalParameters);
         super.clear();
     }
 
@@ -64,40 +62,70 @@ public class Node extends WfFlowNode implements IRichModel {
     }
 
     public NodeParameter getOptimizeParameter(String charId) {
-        return CollectionUtil.get(optimizePrameters, charId);
+        return CollectionUtil.get(optimizeParameters, charId);
     }
 
     public List<NodeParameter> getOptimizeParameters() {
-        return CollectionUtil.toList(optimizePrameters);
+        return CollectionUtil.toList(optimizeParameters);
     }
 
     public void putOptimizeParameter(NodeParameter parameter) {
-        CollectionUtil.put(optimizePrameters, parameter.getCharId(), parameter);
+        CollectionUtil.put(optimizeParameters, parameter.getCharId(), parameter);
     }
 
-    public NodePort getInputNodePort(String charId) {
+    public NodePortInput getInputNodePort(String charId) {
         return CollectionUtil.get(inputNodePorts, charId);
     }
 
-    public List<NodePort> getInputNodePorts() {
+    public List<NodePortInput> getInputNodePorts() {
         return CollectionUtil.toList(inputNodePortsOrderBySequence);
     }
 
-    public void putInputNodePort(NodePort inputNodePort) {
+    public void putInputNodePort(NodePortInput inputNodePort) {
         CollectionUtil.put(inputNodePorts, inputNodePort.getRefCharId(), inputNodePort);
         CollectionUtil.put(inputNodePortsOrderBySequence, inputNodePort.getModulePort().getSequence(), inputNodePort);
     }
 
-    public NodePort getOutputNodePort(String charId) {
+    public NodePortOutput getOutputNodePort(String charId) {
         return CollectionUtil.get(outputNodePorts, charId);
     }
 
-    public List<NodePort> getOutputNodePorts() {
+    public List<NodePortOutput> getOutputNodePorts() {
         return CollectionUtil.toList(outputNodePortsOrderBySequence);
     }
 
-    public void putOutputNodePort(NodePort outputNodePort) {
+    public void putOutputNodePort(NodePortOutput outputNodePort) {
         CollectionUtil.put(outputNodePorts, outputNodePort.getRefCharId(), outputNodePort);
-        CollectionUtil.put(outputNodePortsOrderBySequence, outputNodePort.getModulePort().getSequence(), outputNodePort);
+        CollectionUtil.put(outputNodePortsOrderBySequence, outputNodePort.getModulePortInput().getSequence(), outputNodePort);
+    }
+
+    public GlobalParameter getGlobalParameter(String charId) {
+        return globalParameters.get(charId);
+    }
+
+    public List<GlobalParameter> getGlobalParameters() {
+        return CollectionUtil.toList(globalParameters);
+    }
+
+    public void putGlobalParameter(GlobalParameter globalParameter) {
+        CollectionUtil.put(globalParameters, globalParameter.getRelCharId(), globalParameter);
+    }
+
+    public void removeGlobalParameter(String charId) {
+        CollectionUtil.remove(globalParameters, charId);
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void markDeleted() {
+        for(NodePortInput inputPort : this.getInputNodePorts()) {
+            inputPort.markDeleted();
+        }
+        for(NodePortOutput outputPort : this.getOutputNodePorts()) {
+            outputPort.markDeleted();
+        }
+        this.deleted = true;
     }
 }

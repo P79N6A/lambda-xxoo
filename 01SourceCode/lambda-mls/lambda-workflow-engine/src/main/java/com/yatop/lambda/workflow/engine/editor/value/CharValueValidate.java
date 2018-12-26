@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.engine.editor.node.value;
+package com.yatop.lambda.workflow.engine.editor.value;
 
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
@@ -9,6 +9,7 @@ import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.richmodel.workflow.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+import com.yatop.lambda.workflow.core.utils.ClazzHelper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +24,7 @@ public class CharValueValidate {
         }
 
         if(DataUtil.isNotEmpty(charValue.getInText())) {
-            ICharTypeClazz charTypeClazz = CharValueHelper.getCharTypeClazzBean(charValue.getCmptChar().getType());
+            ICharTypeClazz charTypeClazz = ClazzHelper.getCharTypeClazzBean(charValue.getCmptChar().getType());
             if (charTypeClazz.catchValidateValue()) {
                 CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
                 boolean isPassValidate = charTypeClazz.onValidateValue(charValueContext);

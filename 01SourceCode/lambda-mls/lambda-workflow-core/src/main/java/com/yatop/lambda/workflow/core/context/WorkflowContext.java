@@ -4,15 +4,16 @@ import com.yatop.lambda.core.enums.IsWebLinkEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.data.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.model.ModelWarehouse;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
+import com.yatop.lambda.workflow.core.richmodel.workflow.GlobalParameter;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;
-import com.yatop.lambda.workflow.core.richmodel.workflow.GlobalParameter;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePort;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -26,12 +27,15 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联模型仓库，key=mwId
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();      //操作关联节点，key=nodeId
     private TreeMap<Long, NodeLink> links = new TreeMap<Long, NodeLink>();  //操作关联节点链接，key=linkId
-    private TreeMap<Long, TreeSet<NodeLink>> inLinks = new TreeMap<Long, TreeSet<NodeLink>>();  //操作关联节点链接，key=dstPortId
-    private TreeMap<Long, TreeSet<NodeLink>> outLinks = new TreeMap<Long, TreeSet<NodeLink>>();  //操作关联节点链接，key=srcPortId
-    private TreeMap<Long, NodePort> ports = new TreeMap<Long, NodePort>();  //操作关联节点端口，key=portId
-    private TreeMap<Long, NodeSchema> schemas = new TreeMap<Long, NodeSchema>();  //操作关联节点端口，key=portId
-    private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联节点参数，key=globalParameterId
+    private TreeMap<Long, TreeSet<NodeLink>> inputLinks = new TreeMap<Long, TreeSet<NodeLink>>();  //操作关联节点链接，key=dstPortId
+    private TreeMap<Long, TreeSet<NodeLink>> outputLinks = new TreeMap<Long, TreeSet<NodeLink>>();  //操作关联节点链接，key=srcPortId
+    private TreeMap<Long, NodePortInput> inputPorts = new TreeMap<Long, NodePortInput>();  //操作关联节点输入端口，key=nodePortId
+    private TreeMap<Long, NodePortOutput> outputPorts = new TreeMap<Long, NodePortOutput>();  //操作关联节点输出端口，key=nodePortId
+    private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联节点全局参数，key=globalParameterId
     private String operId;
+
+    private LinkedHashMap<Long, Node> deleteNodes = new LinkedHashMap<Long, Node>();      //删除节点，key=nodeId
+    private LinkedHashMap<Long, NodeLink> deleteLinks = new LinkedHashMap<Long, NodeLink>();  //删除节点链接，key=linkId
 
     public WorkflowContext(Project project, Workflow workflow, String operId) {
         this.project = project;
@@ -87,7 +91,7 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public List<NodeLink> getInLinks(Long dstPortId) {
-        return CollectionUtil.toList(inLinks.get(dstPortId));
+        return CollectionUtil.toList(inputLinks.get(dstPortId));
     }
 
     public NodeLink getNonWebInLink(Long dstPortId) {
@@ -103,35 +107,27 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public List<NodeLink> getOutLinks(Long srcPortId) {
-        return CollectionUtil.toList(outLinks.get(srcPortId));
+        return CollectionUtil.toList(outputLinks.get(srcPortId));
     }
 
     public List<NodeLink> getLinks() {
         return CollectionUtil.toList(links);
     }
 
-    public NodePort getPort(Long portId) {
-        return ports.get(portId);
+    public NodePortInput getInputPort(Long portId) {
+        return inputPorts.get(portId);
     }
 
-    public List<NodePort> getPorts() {
-        return CollectionUtil.toList(ports);
+    public List<NodePortInput> getInputPorts() {
+        return CollectionUtil.toList(inputPorts);
     }
 
-    public NodeSchema getSchema(Long schemaId) {
-        return schemas.get(schemaId);
+    public NodePortOutput getOutPort(Long portId) {
+        return outputPorts.get(portId);
     }
 
-    public List<NodeSchema> getSchemas() {
-        return CollectionUtil.toList(schemas);
-    }
-
-    public GlobalParameter getGlobalParameter(Long globalParameterId) {
-        return globalParameters.get(globalParameterId);
-    }
-
-    public List<GlobalParameter> getGlobalParameters() {
-        return CollectionUtil.toList(globalParameters);
+    public List<NodePortOutput> getOutPorts() {
+        return CollectionUtil.toList(outputPorts);
     }
 
     public void putDataWarehouse(DataWarehouse warehouse) {
@@ -150,42 +146,60 @@ public class WorkflowContext implements IWorkContext {
         CollectionUtil.put(links, link.getLinkId(), link);
 
         {
-            TreeSet<NodeLink> inLinkSet = CollectionUtil.get(inLinks, link.getLinkId());
+            TreeSet<NodeLink> inLinkSet = CollectionUtil.get(inputLinks, link.getLinkId());
             if (DataUtil.isNotNull(inLinkSet))
                 CollectionUtil.add(inLinkSet, link);
             else {
                 inLinkSet = new TreeSet<NodeLink>();
                 CollectionUtil.add(inLinkSet, link);
-                CollectionUtil.put(inLinks, link.getDstPortId(), inLinkSet);
+                CollectionUtil.put(inputLinks, link.getDstPortId(), inLinkSet);
             }
         }
 
         {
-            TreeSet<NodeLink> outLinkSet = CollectionUtil.get(outLinks, link.getLinkId());
+            TreeSet<NodeLink> outLinkSet = CollectionUtil.get(outputLinks, link.getLinkId());
             if (DataUtil.isNotNull(outLinkSet))
                 CollectionUtil.add(outLinkSet, link);
             else {
                 outLinkSet = new TreeSet<NodeLink>();
                 CollectionUtil.add(outLinkSet, link);
-                CollectionUtil.put(outLinks, link.getSrcPortId(), outLinkSet);
+                CollectionUtil.put(outputLinks, link.getSrcPortId(), outLinkSet);
             }
         }
     }
 
-    public void putPort(NodePort port) {
-        CollectionUtil.put(ports, port.getNodePortId(), port);
+    public void putInputPort(NodePortInput inputPort) {
+        CollectionUtil.put(inputPorts, inputPort.getNodePortId(), inputPort);
     }
 
-    public void putSchema(NodeSchema schema) {
-        CollectionUtil.put(schemas, schema.getNodePortId(), schema);
+    public void putOutpuPort(NodePortOutput outputPort) {
+        CollectionUtil.put(outputPorts, outputPort.getNodePortId(), outputPort);
+    }
+
+    public GlobalParameter getGlobalParameter(Long globalParameterId) {
+        return globalParameters.get(globalParameterId);
+    }
+
+    public List<GlobalParameter> getGlobalParameters() {
+        return CollectionUtil.toList(globalParameters);
     }
 
     public void putGlobalParameter(GlobalParameter globalParameter) {
         CollectionUtil.put(globalParameters, globalParameter.getGlobalParamId(), globalParameter);
-    }
 
+    }
     public String getOperId() {
         return operId;
+    }
+
+    public void deleteNode(Node node) {
+        node.markDeleted();
+        deleteNodes.put(node.getNodeId(), node);
+    }
+
+    public void deleteLink(NodeLink link) {
+        link.markDeleted();
+        deleteLinks.put(link.getLinkId(), link);
     }
 
     @Override
@@ -197,8 +211,12 @@ public class WorkflowContext implements IWorkContext {
         CollectionUtil.clear(modelWarehouses);
         CollectionUtil.clear(nodes);
         CollectionUtil.clear(links);
-        CollectionUtil.clear(ports);
-        CollectionUtil.clear(schemas);
-        CollectionUtil.clear(globalParameters);
+        inputLinks.clear();
+        outputLinks.clear();
+        inputPorts.clear();
+        outputPorts.clear();
+        globalParameters.clear();
+        deleteNodes.clear();
+        deleteLinks.clear();
     }
 }

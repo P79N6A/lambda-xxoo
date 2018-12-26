@@ -30,6 +30,13 @@ public class CollectionUtil {
         map.put(key, value);
     }
 
+    public static <M extends Map<K, V>, K, V> V remove(M map, K key) {
+        if(DataUtil.isNull(map) || DataUtil.isNull(key))
+            return null;
+
+        return map.remove(key);
+    }
+
     public static <M extends Map<K, V>, K, V> List<V> toList(M map) {
         if(DataUtil.isNull(map) || map.isEmpty())
             return null;
@@ -88,6 +95,13 @@ public class CollectionUtil {
             return;
 
         set.add(key);
+    }
+
+    public static <S extends Set<K>, K> void remove(S set, K key) {
+        if(DataUtil.isNull(set) || DataUtil.isNull(key))
+            return;
+
+        set.remove(key);
     }
 
     public static <L extends List<V>, V> void add(L list, V value) {

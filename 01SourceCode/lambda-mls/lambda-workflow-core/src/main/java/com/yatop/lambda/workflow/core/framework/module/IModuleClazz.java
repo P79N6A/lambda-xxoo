@@ -46,14 +46,6 @@ public interface IModuleClazz extends InitializingBean {
     //任务执行事件处理，例如：读数据表将输出内容"OUT@DataTable-t1<M>"特征值置为"CCP@TableName"特征值对应数据表的ID值
     void onTaskExecution(TaskContext context);
 
-    //是否捕获任务执行终止
-    //返回false，否
-    //返回true，是
-    boolean catchTaskTerminate();
-
-    //任务终止事件处理，例如：
-    void onTaskTerminate(TaskContext context);
-
     //////////////////////////////////////////////////////
 
     //是否支持动态分析数据输出端口schema
