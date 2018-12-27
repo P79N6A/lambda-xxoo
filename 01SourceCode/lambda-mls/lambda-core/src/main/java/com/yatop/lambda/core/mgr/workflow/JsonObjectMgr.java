@@ -88,14 +88,14 @@ public class JsonObjectMgr extends BaseMgr {
      *   返回恢复数量
      *
      * */
-    public int recoverJsonObject4NodeRecover(WfJsonObject jsonObject, String operId) {
-        if(DataUtil.isNull(jsonObject) || jsonObject.isObjectIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int recoverJsonObject(Long id, String operId) {
+        if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover json object -- invalid recover condition.", "无效恢复条件");
         }
 
         try {
             WfJsonObject recoverJsonObject = new WfJsonObject();
-            recoverJsonObject.setObjectId(jsonObject.getObjectId());
+            recoverJsonObject.setObjectId(id);
             recoverJsonObject.setStatus(DataStatusEnum.NORMAL.getStatus());
             recoverJsonObject.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             recoverJsonObject.setLastUpdateOper(operId);

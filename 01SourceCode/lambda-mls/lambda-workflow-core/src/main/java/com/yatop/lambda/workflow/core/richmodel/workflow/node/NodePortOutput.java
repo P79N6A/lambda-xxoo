@@ -5,7 +5,7 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.chartype.clazz.data.CharTypeDataGeneric;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
-import com.yatop.lambda.workflow.core.utils.ClazzHelper;
+import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 
 public class NodePortOutput extends WfFlowNodePort implements IRichModel {
 
@@ -32,7 +32,7 @@ public class NodePortOutput extends WfFlowNodePort implements IRichModel {
     }
 
     public boolean isDataPort() {
-        return ClazzHelper.getCharTypeClazzBean(modulePortOutput.getCmptChar().getType()) instanceof CharTypeDataGeneric;
+        return ClazzHelperUtil.getCharTypeClazzBean(modulePortOutput.getCmptChar().getType()) instanceof CharTypeDataGeneric;
     }
 
     public NodeSchema getSchema() {

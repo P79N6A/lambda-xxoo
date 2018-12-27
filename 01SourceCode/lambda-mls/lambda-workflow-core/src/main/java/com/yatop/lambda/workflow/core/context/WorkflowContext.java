@@ -31,11 +31,11 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, TreeSet<NodeLink>> outputLinks = new TreeMap<Long, TreeSet<NodeLink>>();  //操作关联节点链接，key=srcPortId
     private TreeMap<Long, NodePortInput> inputPorts = new TreeMap<Long, NodePortInput>();  //操作关联节点输入端口，key=nodePortId
     private TreeMap<Long, NodePortOutput> outputPorts = new TreeMap<Long, NodePortOutput>();  //操作关联节点输出端口，key=nodePortId
-    private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联节点全局参数，key=globalParameterId
+    //private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联节点全局参数，key=globalParameterId
     private String operId;
 
-    private LinkedHashMap<Long, Node> deleteNodes = new LinkedHashMap<Long, Node>();      //删除节点，key=nodeId
-    private LinkedHashMap<Long, NodeLink> deleteLinks = new LinkedHashMap<Long, NodeLink>();  //删除节点链接，key=linkId
+    private TreeMap<Long, Node> deleteNodes = new TreeMap<Long, Node>();      //删除节点，key=nodeId
+    private TreeMap<Long, NodeLink> deleteLinks = new TreeMap<Long, NodeLink>();  //删除节点链接，key=linkId
 
     public WorkflowContext(Project project, Workflow workflow, String operId) {
         this.project = project;
@@ -176,7 +176,7 @@ public class WorkflowContext implements IWorkContext {
         CollectionUtil.put(outputPorts, outputPort.getNodePortId(), outputPort);
     }
 
-    public GlobalParameter getGlobalParameter(Long globalParameterId) {
+/*    public GlobalParameter getGlobalParameter(Long globalParameterId) {
         return globalParameters.get(globalParameterId);
     }
 
@@ -187,7 +187,7 @@ public class WorkflowContext implements IWorkContext {
     public void putGlobalParameter(GlobalParameter globalParameter) {
         CollectionUtil.put(globalParameters, globalParameter.getGlobalParamId(), globalParameter);
 
-    }
+    }*/
     public String getOperId() {
         return operId;
     }
@@ -200,6 +200,22 @@ public class WorkflowContext implements IWorkContext {
     public void deleteLink(NodeLink link) {
         link.markDeleted();
         deleteLinks.put(link.getLinkId(), link);
+    }
+
+    public List<Node> getDeletedNodes() {
+        return CollectionUtil.toList(deleteNodes);
+    }
+
+    public List<NodeLink> getDeletedLinks() {
+        return CollectionUtil.toList(deleteLinks);
+    }
+
+    public Node pollDeletedNode() {
+        return deleteNodes.pollFirstEntry().getValue();
+    }
+
+    public NodeLink pollDeletedLink() {
+        return deleteLinks.pollFirstEntry().getValue();
     }
 
     @Override
@@ -215,7 +231,7 @@ public class WorkflowContext implements IWorkContext {
         outputLinks.clear();
         inputPorts.clear();
         outputPorts.clear();
-        globalParameters.clear();
+        //globalParameters.clear();
         deleteNodes.clear();
         deleteLinks.clear();
     }

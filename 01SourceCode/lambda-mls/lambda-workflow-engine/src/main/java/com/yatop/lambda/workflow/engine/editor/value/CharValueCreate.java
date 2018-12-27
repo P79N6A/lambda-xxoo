@@ -10,7 +10,7 @@ import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.richmodel.workflow.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.utils.ClazzHelper;
+import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +41,7 @@ public class CharValueCreate {
             }
         }
 
-        ICharTypeClazz charTypeClazz = ClazzHelper.getCharTypeClazzBean(charValue.getCmptChar().getType());
+        ICharTypeClazz charTypeClazz = ClazzHelperUtil.getCharTypeClazzBean(charValue.getCmptChar().getType());
         if (charTypeClazz.catchCreateValue()) {
 
             try {

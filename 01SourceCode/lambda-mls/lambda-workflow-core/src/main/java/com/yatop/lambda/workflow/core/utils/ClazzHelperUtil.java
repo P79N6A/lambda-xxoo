@@ -10,7 +10,7 @@ import com.yatop.lambda.workflow.core.framework.module.ModuleClazzClazzBase;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCharType;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 
-public class ClazzHelper {
+public class ClazzHelperUtil {
 
     public static ICharTypeClazz getCharTypeClazzBean(CmptCharType cmptCharType) {
         ICharTypeClazz charTypeClazz = CharTyeClazzBaseClazz.getClazzBean(cmptCharType.getClassPath());

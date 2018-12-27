@@ -72,7 +72,7 @@ public class CollectionUtil {
         return vlist;
     }
 
-    public static <L extends List<IRichModel>> void clear(L list) {
+    public static <L extends List<V>, V extends IRichModel> void clear(L list) {
         if(DataUtil.isNull(list))
             return;
 

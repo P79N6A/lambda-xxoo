@@ -87,14 +87,14 @@ public class CodeScriptMgr extends BaseMgr {
      *   返回恢复数量
      *
      * */
-    public int recoverCodeScript(WfCodeScript codeScript, String operId) {
-        if(DataUtil.isNull(codeScript) || codeScript.isScriptIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int recoverCodeScript(Long id, String operId) {
+        if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover code script -- invalid recover condition.", "无效恢复条件");
         }
 
         try {
             WfCodeScript recoverCodeScript = new WfCodeScript();
-            recoverCodeScript.setScriptId(codeScript.getScriptId());
+            recoverCodeScript.setScriptId(id);
             recoverCodeScript.setStatus(DataStatusEnum.NORMAL.getStatus());
             recoverCodeScript.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             recoverCodeScript.setLastUpdateOper(operId);
