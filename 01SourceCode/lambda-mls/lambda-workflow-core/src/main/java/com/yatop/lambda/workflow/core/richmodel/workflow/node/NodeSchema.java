@@ -20,8 +20,12 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     private List<FieldAttribute> fieldAttributes;
 
     public NodeSchema(WfFlowNodeSchema data) {
+        this(data, null);
+    }
+
+    public NodeSchema(WfFlowNodeSchema data, JsonObject jsonObject) {
         super.copyProperties(data);
-        jsonObject = null;
+        jsonObject = jsonObject;
     }
 
     @Override
@@ -41,12 +45,25 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
         if(jsonObject.getObjectState() == JsonObjectStateEnum.EMPTY.getState())
             return null;
 
-        return DataUtil.isEmpty(fieldAttributes) ? fieldAttributes = JSONArray.parseArray(this.getJsonObject().getObjectData(), FieldAttribute.class) : fieldAttributes;
+        if(DataUtil.isEmpty(fieldAttributes)) {
+            if (getJsonObject().getObjectState() == JsonObjectStateEnum.NORMAL.getState()) {
+                return fieldAttributes = JSONArray.parseArray(this.getJsonObject().getObjectData(), FieldAttribute.class);
+            } else {
+                return null;
+            }
+        } else {
+            return fieldAttributes;
+        }
     }
 
     public void setFieldAttributes(List<FieldAttribute> fieldAttributes, String operId) {
         this.fieldAttributes = fieldAttributes;
-        this.getJsonObject().setObjectData(JSONArray.toJSONString(fieldAttributes));
+        if(DataUtil.isNotEmpty(fieldAttributes)) {
+            this.getJsonObject().setObjectData(JSONArray.toJSONString(fieldAttributes));
+        } else {
+            this.getJsonObject().setObjectData(null);
+        }
+
         NodeSchemaUtil.updateJsonObject(this.jsonObject, operId);
     }
 

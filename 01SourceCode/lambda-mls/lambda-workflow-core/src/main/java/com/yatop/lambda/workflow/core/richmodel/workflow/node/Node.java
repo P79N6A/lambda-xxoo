@@ -96,7 +96,7 @@ public class Node extends WfFlowNode implements IRichModel {
 
     public void putOutputNodePort(NodePortOutput outputNodePort) {
         CollectionUtil.put(outputNodePorts, outputNodePort.getRefCharId(), outputNodePort);
-        CollectionUtil.put(outputNodePortsOrderBySequence, outputNodePort.getModulePortInput().getSequence(), outputNodePort);
+        CollectionUtil.put(outputNodePortsOrderBySequence, outputNodePort.getModulePort().getSequence(), outputNodePort);
     }
 
     public GlobalParameter getGlobalParameter(String charId) {

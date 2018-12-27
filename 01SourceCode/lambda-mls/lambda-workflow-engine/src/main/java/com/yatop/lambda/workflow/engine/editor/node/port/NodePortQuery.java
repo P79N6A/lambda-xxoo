@@ -1,4 +1,4 @@
 package com.yatop.lambda.workflow.engine.editor.node.port;
 
-public class PortQuery {
+public class NodePortQuery {
 }

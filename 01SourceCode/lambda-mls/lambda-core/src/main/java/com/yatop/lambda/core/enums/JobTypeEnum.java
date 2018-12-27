@@ -55,7 +55,7 @@ public enum JobTypeEnum {
     /**
      * 数据文件上传
      */
-    RUN_DATAFILE_IMPORT(102, "Run Datafile Import");
+    RUN_DATAFILE_IMPORT(200, "Run Datafile Import");
 
     private int type;
     private String name;
@@ -93,7 +93,7 @@ public enum JobTypeEnum {
 //            case 13: return TRIAL_RUN_THIS_NODE;
             case 100: return RUN_OFFLINE_SCHEDULE;
             case 101: return RUN_ONLINE_SCHEDULE;
-            case 102: return RUN_DATAFILE_IMPORT;
+            case 200: return RUN_DATAFILE_IMPORT;
             default: return null;
         }
     }

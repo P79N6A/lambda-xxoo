@@ -12,8 +12,10 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
 
     private Component component;    //关联计算组件
     private TreeMap<Long, ModulePort> inputPorts = new TreeMap<Long, ModulePort>();     //工作流组件输入端口
+    private TreeMap<String, ModulePort> inputPortsOrderByCharId = new TreeMap<String, ModulePort>();     //工作流组件输入端口
     private TreeMap<Integer, ModulePort> inputPortsOrderBySequence = new TreeMap<Integer, ModulePort>();    //工作流组件输入端口按序号排序
     private TreeMap<Long, ModulePort> outputPorts = new TreeMap<Long, ModulePort>();    //工作流组件输出端口
+    private TreeMap<String, ModulePort> outputPortsOrderByCharId = new TreeMap<String, ModulePort>();     //工作流组件输出端口
     private TreeMap<Integer, ModulePort> outputPortsOrderBySequence = new TreeMap<Integer, ModulePort>();   //工作流组件输出端口按序号排序
 
     public Module(WfModule data, Component component) {
@@ -28,15 +30,12 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
 
     @Override
     public void clear() {
-        component = null;
         inputPorts.clear();
-        inputPorts = null;
+        inputPortsOrderByCharId.clear();
         inputPortsOrderBySequence.clear();
-        inputPortsOrderBySequence = null;
         outputPorts.clear();
-        outputPorts = null;
+        outputPortsOrderByCharId.clear();
         outputPortsOrderBySequence.clear();
-        outputPortsOrderBySequence = null;
         super.clear();
     }
 
@@ -46,6 +45,10 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
 
     public ModulePort getInputPort(Long inputPortId) {
         return CollectionUtil.get(inputPorts, inputPortId);
+    }
+
+    public ModulePort getInputPort(String inputCharId) {
+        return CollectionUtil.get(inputPortsOrderByCharId, inputCharId);
     }
 
     public List<ModulePort> getInputPorts() {
@@ -59,6 +62,10 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
 
     public ModulePort getOutputPort(Long outputPortId) {
         return CollectionUtil.get(outputPorts, outputPortId);
+    }
+
+    public ModulePort getOutputPort(String outputCharId) {
+        return CollectionUtil.get(outputPortsOrderByCharId, outputCharId);
     }
 
     public List<ModulePort> getOutputPorts() {

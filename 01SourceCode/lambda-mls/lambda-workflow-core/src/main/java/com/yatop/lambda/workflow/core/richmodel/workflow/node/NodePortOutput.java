@@ -9,30 +9,30 @@ import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 
 public class NodePortOutput extends WfFlowNodePort implements IRichModel {
 
-    private ModulePort modulePortOutput;
+    private ModulePort modulePort;
     private NodeSchema schema;
     private boolean deleted;
 
     public NodePortOutput(WfFlowNodePort data, ModulePort modulePortInput) {
         super.copyProperties(data);
-        this.modulePortOutput = modulePortInput;
+        this.modulePort = modulePortInput;
         this.deleted = false;
     }
 
     @Override
     public void clear() {
-        modulePortOutput = null;
+        modulePort = null;
         DataUtil.clear(schema);
         schema = null;
         super.clear();
     }
 
-    public ModulePort getModulePortInput() {
-        return modulePortOutput;
+    public ModulePort getModulePort() {
+        return modulePort;
     }
 
     public boolean isDataPort() {
-        return ClazzHelperUtil.getCharTypeClazzBean(modulePortOutput.getCmptChar().getType()) instanceof CharTypeDataGeneric;
+        return ClazzHelperUtil.getCharTypeClazzBean(modulePort.getCmptChar().getType()) instanceof CharTypeDataGeneric;
     }
 
     public NodeSchema getSchema() {

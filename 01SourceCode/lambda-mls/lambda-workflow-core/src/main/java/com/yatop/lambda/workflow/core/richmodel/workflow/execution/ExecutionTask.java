@@ -8,12 +8,13 @@ import java.util.TreeMap;
 
 public class ExecutionTask extends WfExecutionTask implements IRichModel {
 
-    private TreeMap<String, ExecutionTaskOutput> taskOutputs;   //任务输出内容
+    private TreeMap<String, ExecutionTaskOutput> taskOutputs = new TreeMap<String, ExecutionTaskOutput>();   //任务输出内容
 
     public ExecutionTask(WfExecutionTask data) {super.copyProperties(data);}
 
     @Override
     public void clear() {
+        taskOutputs.clear();
         super.clear();
     }
 

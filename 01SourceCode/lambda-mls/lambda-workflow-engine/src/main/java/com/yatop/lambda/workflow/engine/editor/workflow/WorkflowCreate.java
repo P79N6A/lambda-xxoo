@@ -15,13 +15,13 @@ public class WorkflowCreate {
     @Autowired
     private WorkflowMgr workflowMgr;
 
-    public Workflow createWorkflowWithBlank(Experiment experiment, String operId) {
+    public Workflow createWorkflow(Experiment experiment, String operId) {
 
         WfFlow flow = new WfFlow();
         flow.setFlowName(experiment.getExperimentId() + " - WorkFLow");
         flow.setOwnerProjectId(experiment.getOwnerProjectId());
         flow.setOwnerExperimentId(experiment.getExperimentId());
-        workflowMgr.insertWorkflow(flow, operId);
+        flow = workflowMgr.insertWorkflow(flow, operId);
 
         Workflow richWorkflow = new Workflow(flow);
         richWorkflow.setFlowDfsDir(WorkDirectoryUtil.getWorkFLowDfsDirectory(experiment.getOwnerProjectId(), richWorkflow.getFlowId()));
@@ -32,7 +32,7 @@ public class WorkflowCreate {
         return richWorkflow;
     }
 
-/*    public Workflow createWorkflowWithOther(Experiment experiment, WorkflowContext otherContext, String operId) {
+/*    public Workflow createWorkflow(Experiment experiment, WorkflowContext otherContext, String operId) {
         Workflow richWorkflow = createWorkflowWithBlank(experiment, operId);
 
         WorkflowContext workFlowContext = new WorkflowContext(experiment.getProject(), richWorkflow, operId);

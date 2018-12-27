@@ -44,15 +44,10 @@ public class TaskContext implements IWorkContext {
         node = null;
         component = null;
         CollectionUtil.clear(inputCharValues);
-        inputCharValues = null;
         CollectionUtil.clear(outputCharValues);
-        outputCharValues = null;
         CollectionUtil.clear(execCharValues);
-        execCharValues = null;
         CollectionUtil.clear(optimizeCharValues);
-        optimizeCharValues = null;
         CollectionUtil.clear(parameterCharValues);
-        parameterCharValues = null;
         warningMsg = null;
     }
 

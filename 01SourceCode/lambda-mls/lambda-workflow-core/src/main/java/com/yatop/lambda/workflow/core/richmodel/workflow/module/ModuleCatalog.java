@@ -43,9 +43,7 @@ public class ModuleCatalog extends WfModuleCatalog implements Comparable<ModuleC
     @Override
     public void clear() {
         childCatalogs.clear();
-        childCatalogs = null;
         childModules.clear();
-        childModules = null;
         super.clear();
     }
 }

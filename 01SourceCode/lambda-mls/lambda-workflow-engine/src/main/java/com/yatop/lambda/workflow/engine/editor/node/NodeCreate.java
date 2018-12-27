@@ -26,10 +26,10 @@ public class NodeCreate {
         node.setRefModuleId(module.getModuleId());
         node.setPositionX(x);
         node.setPositionY(y);
-        nodeMgr.insertNode(node, workflowContext.getOperId());
+        node = nodeMgr.insertNode(node, workflowContext.getOperId());
 
         Node richNode = new Node(node, module);
-        richNode.copyProperties(nodeMgr.queryNode(richNode.getNodeId()));
+        //richNode.copyProperties(nodeMgr.queryNode(richNode.getNodeId()));
         workflowContext.putNode(richNode);
 
         parameterCreate.createParameters(workflowContext, richNode);

@@ -4,6 +4,7 @@ import com.google.common.collect.TreeMultimap;
 import com.yatop.lambda.base.model.WfModule;
 import com.yatop.lambda.base.model.WfModuleCatalog;
 import com.yatop.lambda.base.model.WfModulePort;
+import com.yatop.lambda.core.enums.ModuleTypeEnum;
 import com.yatop.lambda.core.enums.PortTypeEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.mgr.workflow.module.ModuleCatalogMgr;
@@ -113,6 +114,18 @@ public class ModuleConfig implements InitializingBean {
             }
 
             for (WfModule module : moduleList) {
+
+                ModuleTypeEnum moduleTypeEnum = ModuleTypeEnum.valueOf(module.getModuleType());
+                if(DataUtil.isNull(moduleTypeEnum)) {
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Unknown module type:\n%s.", DataUtil.prettyFormat(module)));
+                    System.exit(-1);
+                }
+
+                if(moduleTypeEnum == ModuleTypeEnum.NON_WORKFLOW_MODULE || module.getCatalogId() > 0) {
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Error module-type vs catalog-id:\n%s.", DataUtil.prettyFormat(module)));
+                    System.exit(-1);
+                }
+
                 Component component =  componentConfig.getComponent(module.getPkgCmptId());
                 if(DataUtil.isNull(component)) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Component not found:\n%s.", DataUtil.prettyFormat(module)));
@@ -162,6 +175,10 @@ public class ModuleConfig implements InitializingBean {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Module not found:\n%s.", DataUtil.prettyFormat(port)));
                     System.exit(-1);
                 }
+                if(module.getModuleType() == ModuleTypeEnum.NON_WORKFLOW_MODULE.getType()) {
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Forbid non-workflow-module hold input/output port:\n%s.", DataUtil.prettyFormat(port)));
+                    System.exit(-1);
+                }
 
                 ModulePort richPort = new ModulePort(port, cmptChar);
                 ALL_MODULE_PORTS.put(port.getPortId(), richPort);
@@ -177,6 +194,18 @@ public class ModuleConfig implements InitializingBean {
                 }
             }
             portList.clear();
+        }
+
+        //工作流组件校验
+        {
+            for(Map.Entry<Long, Module> moduleEntry : ALL_MODULES.entrySet()) {
+                Module module = moduleEntry.getValue();
+                Component component = module.getComponent();
+                if(module.getInputPorts().size() != component.getInput().getCmptChars().size()) {
+                    logger.error(String.format("Check module configuration occurs fatal error -- Inconsistent number of input-port vs input-char:\n%s\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(module)));
+                    System.exit(-1);
+                }
+            }
         }
     }
 }

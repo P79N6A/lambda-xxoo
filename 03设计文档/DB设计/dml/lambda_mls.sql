@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-26 18:34:29
+Date: 2018-12-27 19:34:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1233,7 +1233,7 @@ CREATE TABLE `wf_code_script` (
   `REL_SNAPSHOT_VERSION` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照版本，取FLOW表的NEXT_SNAPSHOT_VERSION值，无关联则设为-1',
   `REL_JOB_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联作业ID，无关联则设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建脚本的工作流节点，无关联则设为-1',
-  `REL_CHAR_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建脚本的工作流节点输出特征，无关联则设为-1',
+  `REL_CHAR_ID` varchar(64) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建脚本的工作流节点输出特征，无关联则设为-1',
   `SCRIPT_CONTENT` mediumtext COMMENT '脚本内容',
   `SCRIPT_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '脚本状态\r\n            0：空脚本\r\n            1：正常',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
@@ -1258,7 +1258,7 @@ DROP TABLE IF EXISTS `wf_execution_job`;
 CREATE TABLE `wf_execution_job` (
   `JOB_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '作业ID',
   `JOB_NAME` varchar(200) NOT NULL COMMENT '作业名称，自动生成',
-  `JOB_TYPE` int(11) NOT NULL COMMENT '作业类型\r\n            0：全部运行\r\n            1：从此处开始运行\r\n            2：运行到此处\r\n            3：运行该节点\r\n            10：全部运行（小数据试运行）\r\n            11：从此处开始运行（小数据试运行）\r\n            12：运行到此处（小数据试运行）\r\n            13：运行该节点（小数据试运行）\r\n            100：定时调度运行\r\n            101：在线调度运行\r\n            102：数据文件导入',
+  `JOB_TYPE` int(11) NOT NULL COMMENT '作业类型\r\n            0：全部运行\r\n            1：从此处开始运行\r\n            2：运行到此处\r\n            3：运行该节点\r\n            10：全部运行（小数据试运行）\r\n            11：从此处开始运行（小数据试运行）\r\n            12：运行到此处（小数据试运行）\r\n            13：运行该节点（小数据试运行）\r\n            100：定时调度运行\r\n            101：在线调度运行\r\n            200：数据文件导入',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `REL_FLOW_ID` bigint(20) NOT NULL COMMENT '关联工作流ID，无关联工作流设为-1',
   `REL_SNAPSHOT_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照ID，无关联则设为-1',
@@ -1280,7 +1280,7 @@ CREATE TABLE `wf_execution_job` (
   PRIMARY KEY (`JOB_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
 
 -- ----------------------------
 -- Records of wf_execution_job
@@ -1427,7 +1427,7 @@ CREATE TABLE `wf_flow_global_parameter` (
   KEY `Index_1` (`REL_NODE_ID`,`REL_CHAR_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`REL_NODE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流全局参数表，用于定时调度任务和开放服务API，指定哪些参数可以暴露到外部，从而调用方可以根据作业需要动态设置工作流';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流全局参数表，用于定时调度任务和开放服务API，指定哪些参数可以暴露到外部，从而调用方可以根据作业需要动态设置工作流';
 
 -- ----------------------------
 -- Records of wf_flow_global_parameter
@@ -1595,7 +1595,7 @@ CREATE TABLE `wf_flow_node_schema` (
 DROP TABLE IF EXISTS `wf_json_object`;
 CREATE TABLE `wf_json_object` (
   `OBJECT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '对象ID',
-  `OBJECT_NAME` varchar(200) NOT NULL COMMENT '对象名称\r\n            \r\n            普通对象：object_<node_id>_<char_id>_<snapshot_version> \r\n            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>\r\n            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>\r\n            统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>\r\n            自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>\r\n            生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>\r\n            输出端口schema：outport_schema_<node_id>_<char_id>',
+  `OBJECT_NAME` varchar(200) NOT NULL COMMENT '对象名称\r\n            \r\n            普通对象：object_<node_id>_<char_id>_<snapshot_version> \r\n            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>\r\n            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>\r\n            统计分析报告：statisticsl_analysis_report_<node_id>_<char_id>_<job_id>\r\n            自动调参报告：tune_parameters_<node_id>_<char_id>_<job_id>\r\n            生成规则报告：generate_rules_<node_id>_<char_id>_<job_id>\r\n            输出端口schema：output_port_schema_<node_id>_<char_id>',
   `OBJECT_TYPE` int(11) NOT NULL COMMENT '对象类型\r\n            0：JsonObject&JsonArray（组件参数，仅存放于OBJECT_DATA）\r\n            1：算法参数（输出内容，仅存放于OBJECT_DATA）\r\n            2：模型评估报告（输出内容，存放于文件系统）\r\n            3：交叉验证报告（输出内容，存放于文件系统）\r\n            4：统计分析报告（输出内容，存放于文件系统）\r\n            5：自动调参报告（输出内容，存放于文件系统）\r\n            6：生成规则报告（输出内容，存放于文件系统）\r\n            99：输出端口schema（端口信息，仅存放于OBJECT_DATA）',
   `OBJECT_SRC` int(11) NOT NULL DEFAULT '0' COMMENT '对象来源\r\n            0：作业运行\r\n            1：实验编辑',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
@@ -1604,7 +1604,7 @@ CREATE TABLE `wf_json_object` (
   `REL_SNAPSHOT_VERSION` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照版本，取FLOW表的NEXT_SNAPSHOT_VERSION值，无关联则设为-1',
   `REL_JOB_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联作业ID，无关联则设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建脚本的工作流节点，无关联则设为-1',
-  `REL_CHAR_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建脚本的工作流节点输出特征，无关联则设为-1',
+  `REL_CHAR_ID` varchar(64) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建脚本的工作流节点输出特征，无关联则设为-1',
   `STORAGE_LOCATION` int(11) NOT NULL DEFAULT '0' COMMENT '存储位置\r\n            \r\n            0：OBJECT_DATA字段\r\n            1：文件系统',
   `OBJECT_DATA` mediumtext COMMENT 'JSON数据',
   `OBJECT_FILE` varchar(800) DEFAULT NULL COMMENT '对象文件名\r\n            \r\n            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json（预留）\r\n            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json\r\n            统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json\r\n            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json\r\n            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json\r\n            输出端口schema：${FLOW_DIR}/outport_schema_<json_id>.json（预留）',
@@ -1618,7 +1618,7 @@ CREATE TABLE `wf_json_object` (
   PRIMARY KEY (`OBJECT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`OBJECT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
 
 -- ----------------------------
 -- Records of wf_json_object
@@ -1632,7 +1632,8 @@ CREATE TABLE `wf_module` (
   `MODULE_ID` bigint(20) NOT NULL COMMENT '组件ID',
   `MODULE_CODE` varchar(200) NOT NULL COMMENT '组件代码',
   `MODULE_NAME` varchar(200) NOT NULL COMMENT '组件名称',
-  `CATALOG_ID` bigint(20) NOT NULL COMMENT '所属目录ID，不进目录设为-1',
+  `MODULE_TYPE` int(11) NOT NULL COMMENT '组件类型\r\n0：普通工作流组件（可拖拽到画布中）\r\n1：不进工作流组件（不可托到画布中，封装的计算组件无输入内容，无输出端口）',
+  `CATALOG_ID` bigint(20) NOT NULL DEFAULT '0' COMMENT '所属目录ID，不进目录设为-1',
   `SEQUENCE` int(11) NOT NULL COMMENT '排序序号',
   `CATEGORY` varchar(200) DEFAULT NULL COMMENT '组件类别（预留），自定义类别',
   `ICON_TYPE` int(11) NOT NULL COMMENT '图标类型',
@@ -1653,27 +1654,27 @@ CREATE TABLE `wf_module` (
 -- ----------------------------
 -- Records of wf_module
 -- ----------------------------
-INSERT INTO `wf_module` VALUES ('1', 'ReadDataTable', '读数据表', '1', '0', 'source', '0', 'ReadDataTable.class', '1', null, '0', '2017-05-27 16:11:04', 'admin', '2017-05-27 16:11:04', 'admin');
-INSERT INTO `wf_module` VALUES ('2', 'ReadModel', '读模型', '1', '1', 'source', '0', 'ReadModel.class', '2', null, '0', '2017-05-27 16:13:58', 'admin', '2017-05-27 16:13:58', 'admin');
-INSERT INTO `wf_module` VALUES ('3', 'WriteDataTable', '写数据表', '1', '2', 'destination', '0', 'WriteDataTable.class', '3', null, '0', '2017-05-27 16:11:04', 'admin', '2017-05-27 16:11:04', 'admin');
-INSERT INTO `wf_module` VALUES ('4', 'SqlScript', 'SQL脚本', '2', '0', 'user_code', '0', 'SqlScript.class', '1000', null, '0', '2017-05-27 16:18:13', 'admin', '2017-05-27 16:18:13', 'admin');
-INSERT INTO `wf_module` VALUES ('5', 'LogisticRegression_Binary', '逻辑回归二分类', '11', '0', 'training', '0', 'LogisticRegressionBinaryClassification.class', '5001', null, '0', '2017-05-27 16:43:05', 'admin', '2017-05-27 16:43:05', 'admin');
-INSERT INTO `wf_module` VALUES ('6', 'RandomForest_Binary', '随机森林二分类', '11', '1', 'training', '0', 'RandomForestClassification.class', '5003', null, '0', '2017-05-27 16:49:30', 'admin', '2017-05-27 16:49:30', 'admin');
-INSERT INTO `wf_module` VALUES ('7', 'GBDT_Binary', 'GBDT二分类', '11', '2', 'training', '0', 'GradientBoostingDecisionTreeBinaryClassification.class', '5004', null, '0', '2017-05-27 16:50:15', 'admin', '2017-05-27 16:50:15', 'admin');
-INSERT INTO `wf_module` VALUES ('8', 'LinearSVM', '线性支持向量机', '11', '3', 'training', '0', 'LinearSupportVectorMachineBinaryClassification.class', '5005', null, '0', '2017-05-27 16:51:14', 'admin', '2017-05-27 16:51:14', 'admin');
-INSERT INTO `wf_module` VALUES ('9', 'LogisticRegression_Multiple', '逻辑回归多分类', '12', '4', 'training', '0', 'LogisticRegressionMultipleClassification.class', '5002', null, '0', '2017-05-27 16:44:06', 'admin', '2017-05-27 16:44:06', 'admin');
-INSERT INTO `wf_module` VALUES ('10', 'RandomForest_Multiple', '随机森林多分类', '12', '1', 'training', '0', 'RandomForestClassification.class', '5003', null, '0', '2017-05-27 16:49:30', 'admin', '2017-05-27 16:49:30', 'admin');
-INSERT INTO `wf_module` VALUES ('11', 'NaiveBayesian', '朴素贝叶斯', '12', '2', 'training', '0', 'NaiveBayesianMultipleClassification.class', '5006', null, '0', '2017-05-27 16:52:06', 'admin', '2017-05-27 16:52:06', 'admin');
-INSERT INTO `wf_module` VALUES ('12', 'KNN', 'K近邻（无模型保存，直接预测）', '12', '3', 'training', '0', 'KNearestNeighborsMultipleClassification.class', '5007', null, '-1', '2017-05-27 16:53:28', 'admin', '2017-05-27 16:53:28', 'admin');
-INSERT INTO `wf_module` VALUES ('13', 'KMeans', 'K均值（输入输出项待定）', '13', '0', 'training', '0', 'KMeansClustering.class', '5100', null, '-1', '2017-05-27 17:25:18', 'admin', '2017-05-27 17:25:18', 'admin');
-INSERT INTO `wf_module` VALUES ('14', 'Linear_Regression', '线性回归', '14', '0', 'training', '0', 'LinearRegression.class', '5200', null, '0', '2017-05-27 17:26:08', 'admin', '2017-05-27 17:26:08', 'admin');
-INSERT INTO `wf_module` VALUES ('15', 'GBDT_Regression', 'GBDT回归', '14', '1', 'training', '0', 'GradientBoostingDecisionTreeRegression.class', '5201', null, '0', '2017-05-27 17:27:30', 'admin', '2017-05-27 17:27:30', 'admin');
-INSERT INTO `wf_module` VALUES ('16', 'BinaryClassificationEvaluation', '二分类评估', '17', '0', 'evaluation', '0', 'BinaryClassificationEvaluation', '5901', null, '0', '2017-05-27 17:38:00', 'admin', '2017-05-27 17:38:00', 'admin');
-INSERT INTO `wf_module` VALUES ('17', 'MultipleClassificationEvaluation', '多分类评估', '17', '1', 'evaluation', '0', 'MultipleClassificationEvaluation', '5902', null, '0', '2017-05-27 17:38:38', 'admin', '2017-05-27 17:38:38', 'admin');
-INSERT INTO `wf_module` VALUES ('18', 'ClusteringEvaluation', '聚类模型评估', '17', '2', 'evaluation', '0', 'ClusteringEvaluation', '5903', null, '0', '2017-05-27 17:39:13', 'admin', '2017-05-27 17:39:13', 'admin');
-INSERT INTO `wf_module` VALUES ('19', 'RegressionEvaluation', '回归模型评估', '17', '3', 'evaluation', '0', 'RegressionEvaluation', '5904', null, '0', '2017-05-27 17:39:48', 'admin', '2017-05-27 17:39:48', 'admin');
-INSERT INTO `wf_module` VALUES ('20', 'Prediction', '预测', '6', '0', 'prediction', '0', 'Prediction', '5900', null, '0', '2017-05-27 17:37:12', 'admin', '2017-05-27 17:37:12', 'admin');
-INSERT INTO `wf_module` VALUES ('21', 'SmartRules', '智能规则', '6', '1', '0', '0', 'SmartRules', '5999', null, '0', '2017-05-27 17:42:51', 'admin', '2017-05-27 17:42:51', 'admin');
+INSERT INTO `wf_module` VALUES ('1', 'ReadDataTable', '读数据表', '0', '1', '0', 'source', '0', 'ReadDataTable.class', '1', null, '0', '2017-05-27 16:11:04', 'admin', '2017-05-27 16:11:04', 'admin');
+INSERT INTO `wf_module` VALUES ('2', 'ReadModel', '读模型', '0', '1', '1', 'source', '0', 'ReadModel.class', '2', null, '0', '2017-05-27 16:13:58', 'admin', '2017-05-27 16:13:58', 'admin');
+INSERT INTO `wf_module` VALUES ('3', 'WriteDataTable', '写数据表', '0', '1', '2', 'destination', '0', 'WriteDataTable.class', '3', null, '0', '2017-05-27 16:11:04', 'admin', '2017-05-27 16:11:04', 'admin');
+INSERT INTO `wf_module` VALUES ('4', 'SqlScript', 'SQL脚本', '0', '2', '0', 'user_code', '0', 'SqlScript.class', '1000', null, '0', '2017-05-27 16:18:13', 'admin', '2017-05-27 16:18:13', 'admin');
+INSERT INTO `wf_module` VALUES ('5', 'LogisticRegression_Binary', '逻辑回归二分类', '0', '11', '0', 'training', '0', 'LogisticRegressionBinaryClassification.class', '5001', null, '0', '2017-05-27 16:43:05', 'admin', '2017-05-27 16:43:05', 'admin');
+INSERT INTO `wf_module` VALUES ('6', 'RandomForest_Binary', '随机森林二分类', '0', '11', '1', 'training', '0', 'RandomForestClassification.class', '5003', null, '0', '2017-05-27 16:49:30', 'admin', '2017-05-27 16:49:30', 'admin');
+INSERT INTO `wf_module` VALUES ('7', 'GBDT_Binary', 'GBDT二分类', '0', '11', '2', 'training', '0', 'GradientBoostingDecisionTreeBinaryClassification.class', '5004', null, '0', '2017-05-27 16:50:15', 'admin', '2017-05-27 16:50:15', 'admin');
+INSERT INTO `wf_module` VALUES ('8', 'LinearSVM', '线性支持向量机', '0', '11', '3', 'training', '0', 'LinearSupportVectorMachineBinaryClassification.class', '5005', null, '0', '2017-05-27 16:51:14', 'admin', '2017-05-27 16:51:14', 'admin');
+INSERT INTO `wf_module` VALUES ('9', 'LogisticRegression_Multiple', '逻辑回归多分类', '0', '12', '4', 'training', '0', 'LogisticRegressionMultipleClassification.class', '5002', null, '0', '2017-05-27 16:44:06', 'admin', '2017-05-27 16:44:06', 'admin');
+INSERT INTO `wf_module` VALUES ('10', 'RandomForest_Multiple', '随机森林多分类', '0', '12', '1', 'training', '0', 'RandomForestClassification.class', '5003', null, '0', '2017-05-27 16:49:30', 'admin', '2017-05-27 16:49:30', 'admin');
+INSERT INTO `wf_module` VALUES ('11', 'NaiveBayesian', '朴素贝叶斯', '0', '12', '2', 'training', '0', 'NaiveBayesianMultipleClassification.class', '5006', null, '0', '2017-05-27 16:52:06', 'admin', '2017-05-27 16:52:06', 'admin');
+INSERT INTO `wf_module` VALUES ('12', 'KNN', 'K近邻（无模型保存，直接预测）', '0', '12', '3', 'training', '0', 'KNearestNeighborsMultipleClassification.class', '5007', null, '-1', '2017-05-27 16:53:28', 'admin', '2017-05-27 16:53:28', 'admin');
+INSERT INTO `wf_module` VALUES ('13', 'KMeans', 'K均值（输入输出项待定）', '0', '13', '0', 'training', '0', 'KMeansClustering.class', '5100', null, '-1', '2017-05-27 17:25:18', 'admin', '2017-05-27 17:25:18', 'admin');
+INSERT INTO `wf_module` VALUES ('14', 'Linear_Regression', '线性回归', '0', '14', '0', 'training', '0', 'LinearRegression.class', '5200', null, '0', '2017-05-27 17:26:08', 'admin', '2017-05-27 17:26:08', 'admin');
+INSERT INTO `wf_module` VALUES ('15', 'GBDT_Regression', 'GBDT回归', '0', '14', '1', 'training', '0', 'GradientBoostingDecisionTreeRegression.class', '5201', null, '0', '2017-05-27 17:27:30', 'admin', '2017-05-27 17:27:30', 'admin');
+INSERT INTO `wf_module` VALUES ('16', 'BinaryClassificationEvaluation', '二分类评估', '0', '17', '0', 'evaluation', '0', 'BinaryClassificationEvaluation', '5901', null, '0', '2017-05-27 17:38:00', 'admin', '2017-05-27 17:38:00', 'admin');
+INSERT INTO `wf_module` VALUES ('17', 'MultipleClassificationEvaluation', '多分类评估', '0', '17', '1', 'evaluation', '0', 'MultipleClassificationEvaluation', '5902', null, '0', '2017-05-27 17:38:38', 'admin', '2017-05-27 17:38:38', 'admin');
+INSERT INTO `wf_module` VALUES ('18', 'ClusteringEvaluation', '聚类模型评估', '0', '17', '2', 'evaluation', '0', 'ClusteringEvaluation', '5903', null, '0', '2017-05-27 17:39:13', 'admin', '2017-05-27 17:39:13', 'admin');
+INSERT INTO `wf_module` VALUES ('19', 'RegressionEvaluation', '回归模型评估', '0', '17', '3', 'evaluation', '0', 'RegressionEvaluation', '5904', null, '0', '2017-05-27 17:39:48', 'admin', '2017-05-27 17:39:48', 'admin');
+INSERT INTO `wf_module` VALUES ('20', 'Prediction', '预测', '0', '6', '0', 'prediction', '0', 'Prediction', '5900', null, '0', '2017-05-27 17:37:12', 'admin', '2017-05-27 17:37:12', 'admin');
+INSERT INTO `wf_module` VALUES ('21', 'SmartRules', '智能规则', '0', '6', '1', '0', '0', 'SmartRules', '5999', null, '0', '2017-05-27 17:42:51', 'admin', '2017-05-27 17:42:51', 'admin');
 
 -- ----------------------------
 -- Table structure for wf_module_catalog

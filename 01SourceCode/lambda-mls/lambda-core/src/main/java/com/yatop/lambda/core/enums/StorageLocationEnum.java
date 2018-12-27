@@ -5,7 +5,7 @@ public enum StorageLocationEnum {
     /**
      * 表字段OBJECT_DATA
      */
-    TABLE(0, "Table.Object_Data"),
+    TABLE_FIELD(0, "Table Field<OBJECT_DATA>"),
 
     /**
      * 文件系统
@@ -38,7 +38,7 @@ public enum StorageLocationEnum {
 
     public static StorageLocationEnum valueOf(int location) {
         switch (location) {
-            case 0: return TABLE;
+            case 0: return TABLE_FIELD;
             case 1: return FILE_SYSTEM;
             default: return null;
         }

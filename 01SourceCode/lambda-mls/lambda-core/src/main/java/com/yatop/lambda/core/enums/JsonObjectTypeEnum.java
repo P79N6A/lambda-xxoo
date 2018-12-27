@@ -40,7 +40,7 @@ public enum JsonObjectTypeEnum {
     /**
      * 输出端口Schema
      */
-    OUTPUT_SCHEMA(99, "Output Port Schema");
+    OUTPUT_PORT_SCHEMA(99, "Output Port Schema");
 
     private int type;
     private String name;
@@ -75,7 +75,7 @@ public enum JsonObjectTypeEnum {
             case 4: return STATISTICAL_ANALYSIS_REPORT;
             case 5: return TUNE_PARAMETERS_REPORT;
             case 6: return GENERATE_RULES_REPORT;
-            case 99: return OUTPUT_SCHEMA;
+            case 99: return OUTPUT_PORT_SCHEMA;
             default: return null;
         }
     }

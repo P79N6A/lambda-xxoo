@@ -45,10 +45,10 @@ public class ParameterCreate {
             parameter.setCharId(cmptChar.getCharId());
             if(DataUtil.isNotNull(charValue.getCharValue()))
                 parameter.setCharValue(charValue.getCharValue());
-            nodeParameterMgr.insertNodeParameter(parameter, workflowContext.getOperId());
+            parameter = nodeParameterMgr.insertNodeParameter(parameter, workflowContext.getOperId());
 
             NodeParameter richParameter = new NodeParameter(parameter, cmptChar, charValue);
-            richParameter.copyProperties(nodeParameterMgr.queryNodeParameter(richParameter.getNodeId(), richParameter.getCharId()));
+            //richParameter.copyProperties(nodeParameterMgr.queryNodeParameter(richParameter.getNodeId(), richParameter.getCharId()));
             return richParameter;
         } else {
             CharValue charValue = new CharValue(cmptChar);
@@ -75,7 +75,7 @@ public class ParameterCreate {
         }
     }
 
-    private void copyParameters(WorkflowContext workflowContext, Node node, Node otherNode) {
+    private void createParameters(WorkflowContext workflowContext, Node node, Node otherNode) {
 
         Component component = node.getComponent();
         //组件参数
