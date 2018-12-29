@@ -110,4 +110,12 @@ public class DataUtil {
 
         data.clear();
     }
+
+    public static String format(String message, LambdaRootModel m1) {
+        return String.format("%s\n%s",message, DataUtil.prettyFormat(m1));
+    }
+
+    public static String format(String message, LambdaRootModel m1, LambdaRootModel m2) {
+        return String.format("%s\n%s\n%s",message, DataUtil.prettyFormat(m1), DataUtil.prettyFormat(m2));
+    }
 }

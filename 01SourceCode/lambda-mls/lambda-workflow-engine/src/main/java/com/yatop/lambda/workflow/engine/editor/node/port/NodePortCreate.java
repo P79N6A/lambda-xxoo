@@ -3,7 +3,6 @@ package com.yatop.lambda.workflow.engine.editor.node.port;
 import com.yatop.lambda.base.model.WfFlowNodePort;
 import com.yatop.lambda.core.mgr.workflow.node.NodePortMgr;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
@@ -64,6 +63,7 @@ public class NodePortCreate {
             for (ModulePort inputPort : inputPorts) {
                 NodePortInput inputNodePort = createInputPort(workflowContext, node, inputPort);
                 node.putInputNodePort(inputNodePort);
+                workflowContext.putInputPort(inputNodePort);
             }
         }
 
@@ -73,6 +73,7 @@ public class NodePortCreate {
             for (ModulePort outputPort : outputPorts) {
                 NodePortOutput outputNodePort = createOutputPort(workflowContext, node, outputPort);
                 node.putOutputNodePort(outputNodePort);
+                workflowContext.putOutputPort(outputNodePort);
             }
         }
     }

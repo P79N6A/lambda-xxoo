@@ -145,7 +145,7 @@ public class WorkflowContext implements IWorkContext {
         return CollectionUtil.toList(inputPorts);
     }*/
 
-    public NodePortOutput getOutPort(Long portId) {
+    public NodePortOutput getOutputPort(Long portId) {
         return outputPorts.get(portId);
     }
 
@@ -195,7 +195,7 @@ public class WorkflowContext implements IWorkContext {
         CollectionUtil.put(inputPorts, inputPort.getNodePortId(), inputPort);
     }
 
-    public void putOutpuPort(NodePortOutput outputPort) {
+    public void putOutputPort(NodePortOutput outputPort) {
         CollectionUtil.put(outputPorts, outputPort.getNodePortId(), outputPort);
     }
 

@@ -28,7 +28,7 @@ public class NodePortRecover {
     @Autowired
     private SchemaRecover schemaRecover;
 
-    public void recoverNodePort(WorkflowContext workflowContext, Node node) {
+    public void recoverNodePorts(WorkflowContext workflowContext, Node node) {
 
         Module module = node.getModule();
         if(module.inputPortCount() > 0 || module.outputPortCount() > 0) {
@@ -36,15 +36,14 @@ public class NodePortRecover {
 
             List<WfFlowNodePort> nodePortList = nodePortMgr.queryNodePortByNodeId(node.getNodeId());
             if (DataUtil.isNull(nodePortList)) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node port error -- node port list empty.", "节点端口信息缺失，请联系管理员");
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node port error -- node port list empty.", "节点端口信息缺失", node);
             }
 
             for(WfFlowNodePort nodePort : nodePortList) {
                 ModulePort modulePort = ModuleConfig.getModulePort(nodePort.getRefPortId());
                 if(DataUtil.isNull(modulePort)) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node port error -- module port not found.", "节点端口信息错误，请联系管理员");
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node port error -- module port not found.", "节点端口信息错误", nodePort);
                 }
-
                 switch(PortTypeEnum.valueOf(modulePort.getPortType())) {
                     case INPUT_PORT:
                         node.putInputNodePort(new NodePortInput(nodePort, modulePort));
@@ -54,7 +53,6 @@ public class NodePortRecover {
                         break;
                 }
             }
-
             schemaRecover.recoverSchemas(workflowContext, node);
         }
     }

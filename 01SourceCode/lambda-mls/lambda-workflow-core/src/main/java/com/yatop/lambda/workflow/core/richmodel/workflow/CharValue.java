@@ -2,12 +2,13 @@ package com.yatop.lambda.workflow.core.richmodel.workflow;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.base.model.WfFlowNodeParameter;
+import com.yatop.lambda.base.utils.LambdaRootModel;
 import com.yatop.lambda.core.enums.IsDuplicatedEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 
-public class CharValue implements IRichModel {
+public class CharValue extends LambdaRootModel implements IRichModel {
     private CmptChar cmptChar;
     private String charValue;	    //特征值内容
     private IsDuplicatedEnum isDuplicated;   //是否被复制
@@ -28,6 +29,15 @@ public class CharValue implements IRichModel {
         this.cmptChar = cmptChar;
         this.charValue = charValue;
         this.isDuplicated = isDuplicated;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        JSONObject jsonObject = cmptChar.toJSON();
+        jsonObject.put("charValue", charValue);
+        jsonObject.put("inText", inText);
+        jsonObject.put("inObject", inObject);
+        return jsonObject;
     }
 
     @Override

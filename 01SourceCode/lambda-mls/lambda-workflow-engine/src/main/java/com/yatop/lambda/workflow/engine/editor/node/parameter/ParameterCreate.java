@@ -79,7 +79,7 @@ public class ParameterCreate {
         }
     }
 
-    private void createParameters(WorkflowContext workflowContext, Node node, Node otherNode) {
+    public void createParameters(WorkflowContext workflowContext, Node node, Node otherNode) {
 
         Component component = node.getComponent();
         //组件参数

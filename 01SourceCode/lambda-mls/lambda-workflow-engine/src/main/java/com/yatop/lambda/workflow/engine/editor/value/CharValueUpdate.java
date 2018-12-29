@@ -25,17 +25,17 @@ public class CharValueUpdate {
     public void updateCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
         if(charValue.getCmptChar().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- forbid update non-workflow source level char-value", "不允许非工作流来源级别的特征值更新");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- forbid update non-workflow source level char-value", "不允许非工作流来源级别的特征值更新", charValue);
         }
 
         if(charValue.getSpecType() == SpecTypeEnum.INPUT.getType() || charValue.getSpecType() == SpecTypeEnum.EXECUTION.getType()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- forbid update input & execution char-value.", "不允许输入内容和调用执行的特征值更新");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- forbid update input & execution char-value.", "不允许输入内容和调用执行的特征值更新", charValue);
         }
 
         if(charValue.getSpecType() != SpecTypeEnum.OUTPUT.getType()) {
 
             if (DataUtil.isNotEmpty(charValue.getInText()) && !charValueValidate.validateCharValue(workflowContext, node, charValue)){
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-value validation failed.", "计算组件特征值验证失败");
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-value validation failed.", "计算组件特征值验证失败", charValue);
 
                 //原特征值和更新值都为空时
             } else if(DataUtil.isEmpty(charValue.getCharValue()) && DataUtil.isEmpty(charValue.getInText())) {
@@ -43,7 +43,7 @@ public class CharValueUpdate {
             }
         } else { //FOR OUTPUT
             if(DataUtil.isEmpty(charValue.getCharValue()) || DataUtil.isNull(charValue.getInObject())) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- output char-value missing.", "计算组件输出内容特征值/更新内容缺失");
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- output char-value missing.", "计算组件输出内容特征值/更新内容缺失", charValue);
             }
         }
 
@@ -56,10 +56,10 @@ public class CharValueUpdate {
                 charValueContext.clear();
                 return;
             } catch (Exception e) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-type-clazz occur error.", "计算组件特征值更新时发生错误", e);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-type-clazz occur error.", "计算组件特征值更新时发生错误", e, charValue);
             }
         } else if(charValue.getSpecType() == SpecTypeEnum.OUTPUT.getType()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-type-clazz uncaught output char-value update event.", "系统内部严重错误，请联系管理员");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-type-clazz uncaught output char-value update event.", "系统内部严重错误，请联系管理员", charValue);
         } else {
             //潜在CharValue由于配置错误导致内容过长
             charValue.setCharValue(charValue.getInText());

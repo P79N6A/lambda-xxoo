@@ -20,7 +20,7 @@ public class CharValueValidate {
     public boolean validateCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
         if(charValue.getSpecType() == SpecTypeEnum.INPUT.getType() || charValue.getSpecType() == SpecTypeEnum.OUTPUT.getType()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Validate characteristic value failed -- forbid validate input & output char-value.", "不允许输入内容和输出内容的特征值校验");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Validate characteristic value failed -- forbid validate input & output char-value.", "不允许输入内容和输出内容的特征值校验", charValue);
         }
 
         if(DataUtil.isNotEmpty(charValue.getInText())) {
