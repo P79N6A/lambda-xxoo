@@ -31,7 +31,7 @@ public class NodePortRecover {
     public void recoverNodePort(WorkflowContext workflowContext, Node node) {
 
         Module module = node.getModule();
-        if(node.inputNodePortCount() > 0 || node.outputNodePortCount() > 0) {
+        if(module.inputPortCount() > 0 || module.outputPortCount() > 0) {
             nodePortMgr.recoverNodePort(node, workflowContext.getOperId());
 
             List<WfFlowNodePort> nodePortList = nodePortMgr.queryNodePortByNodeId(node.getNodeId());
