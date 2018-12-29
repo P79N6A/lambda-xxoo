@@ -121,8 +121,8 @@ public class NodeMgr extends BaseMgr {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node info failed -- invalid update data.", "无效更新内容");
         }
 
-        WfFlowNode updateNode = new WfFlowNode();
         try {
+            WfFlowNode updateNode = new WfFlowNode();
             updateNode.setNodeId(node.getNodeId());
             if(node.isPositionXColoured())
                 updateNode.setPositionX(node.getPositionX());

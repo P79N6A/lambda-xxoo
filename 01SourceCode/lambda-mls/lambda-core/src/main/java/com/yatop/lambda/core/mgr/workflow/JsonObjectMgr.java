@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.workflow;
 
 import com.yatop.lambda.base.model.WfJsonObject;
 import com.yatop.lambda.base.model.WfJsonObjectExample;
+import com.yatop.lambda.core.enums.JsonObjectStateEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
@@ -59,13 +60,17 @@ public class JsonObjectMgr extends BaseMgr {
         }
     }
 
+    public int deleteJsonObject(WfJsonObject jsonObject, String operId) {
+        return deleteJsonObject(jsonObject, false, operId);
+    }
+
     /*
      *
      *   逻辑删除Json对象
      *   返回删除数量
      *
      * */
-    public int deleteJsonObject(WfJsonObject jsonObject, String operId) {
+    public int deleteJsonObject(WfJsonObject jsonObject, boolean clearData, String operId) {
         if(DataUtil.isNull(jsonObject) || jsonObject.isObjectIdNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete json object -- invalid delete condition.", "无效删除条件");
         }
@@ -73,6 +78,10 @@ public class JsonObjectMgr extends BaseMgr {
         try {
             WfJsonObject deleteJsonObject = new WfJsonObject();
             deleteJsonObject.setObjectId(jsonObject.getObjectId());
+            if(clearData) {
+                deleteJsonObject.setObjectData(null);
+                deleteJsonObject.setObjectState(JsonObjectStateEnum.EMPTY.getState());
+            }
             deleteJsonObject.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteJsonObject.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteJsonObject.setLastUpdateOper(operId);

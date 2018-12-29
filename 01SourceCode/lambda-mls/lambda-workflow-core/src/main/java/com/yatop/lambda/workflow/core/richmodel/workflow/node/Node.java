@@ -8,6 +8,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 public class Node extends WfFlowNode implements IRichModel {
@@ -103,6 +104,18 @@ public class Node extends WfFlowNode implements IRichModel {
 
     public List<NodePortOutput> getOutputNodePorts() {
         return CollectionUtil.toList(outputNodePortsOrderBySequence);
+    }
+
+    //key=charId
+    public TreeMap<String, NodeSchema> getOutputPortSchemas() {
+        TreeMap<String, NodeSchema> nodeSchemas = new TreeMap<String, NodeSchema>();
+        for(Map.Entry<Long, NodePortOutput> entry : outputNodePorts.entrySet()) {
+            if(entry.getValue().isDataPort()) {
+                NodeSchema schema = entry.getValue().getSchema();
+                nodeSchemas.put(entry.getValue().getRefCharId(), schema);
+            }
+        }
+        return nodeSchemas;
     }
 
     public void putOutputNodePort(NodePortOutput outputNodePort) {

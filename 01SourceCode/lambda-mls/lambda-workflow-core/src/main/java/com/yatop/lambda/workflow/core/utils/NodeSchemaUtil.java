@@ -39,7 +39,7 @@ public class NodeSchemaUtil {
     }
 
     static public void deleteJsonObject(JsonObject richJsonObject, String operId) {
-        JSON_OBJECT_MGR.deleteJsonObject(richJsonObject, operId);
+        JSON_OBJECT_MGR.deleteJsonObject(richJsonObject, true, operId);
     }
 
     static public JsonObject recoverJsonObject(Long jsonObjectId, String operId) {

@@ -79,7 +79,7 @@ public class NodeSchemaMgr extends BaseMgr {
      *   返回恢复数量
      *
      * */
-    public int recoverchema(WfFlowNode node, String operId) {
+    public int recoverSchema(WfFlowNode node, String operId) {
         if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node schema -- invalid recover condition.", "无效恢复条件");
         }
@@ -94,6 +94,39 @@ public class NodeSchemaMgr extends BaseMgr {
             return wfFlowNodeSchemaMapper.updateByExampleSelective(recoverSchema, example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node schema failed.", "恢复节点Schema失败", e);
+        }
+    }
+
+
+    /*
+     *
+     *   更新节点Schema（schema状态）
+     *   返回恢复数量
+     *
+     * */
+    public int updateSchema(WfFlowNodeSchema schema, String operId) {
+        if( DataUtil.isNull(schema) || schema.isNodePortIdNotColoured() || DataUtil.isEmpty(operId)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node schema failed -- invalid update condition.", "无效更新条件");
+        }
+
+        if(schema.isSchemaStateNotColoured() &&
+                schema.isDescriptionNotColoured()) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node schema failed -- invalid update data.", "无效更新内容");
+        }
+
+        try {
+            WfFlowNodeSchema updateSchema= new WfFlowNodeSchema();
+            updateSchema.setNodePortId(schema.getNodePortId());
+            if(schema.isSchemaStateColoured())
+                updateSchema.setSchemaState(schema.getSchemaState());
+            if(schema.isDescriptionColoured())
+                updateSchema.setDescription(schema.getDescription());
+
+            updateSchema.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            updateSchema.setLastUpdateOper((operId));
+            return wfFlowNodeSchemaMapper.updateByPrimaryKeySelective(updateSchema);
+        } catch (Throwable e) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node schema failed.", "更新节点Schema失败", e);
         }
     }
 

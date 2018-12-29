@@ -3,7 +3,9 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 import com.alibaba.fastjson.JSONArray;
 import com.yatop.lambda.base.model.WfFlowNodeSchema;
 import com.yatop.lambda.core.enums.JsonObjectStateEnum;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SchemaStateEnum;
+import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.data.field.FieldAttribute;
@@ -32,6 +34,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     @Override
     public void clear() {
         jsonObject = null;
+        CollectionUtil.clear(fieldAttributes);
         super.clear();
     }
 
@@ -48,24 +51,33 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
 
         if(DataUtil.isEmpty(fieldAttributes)) {
             if (getJsonObject().getObjectState() == JsonObjectStateEnum.NORMAL.getState()) {
-                return fieldAttributes = JSONArray.parseArray(this.getJsonObject().getObjectData(), FieldAttribute.class);
-            } else {
-                return null;
+                fieldAttributes = JSONArray.parseArray(this.getJsonObject().getObjectData(), FieldAttribute.class);
             }
-        } else {
-            return fieldAttributes;
+            if(DataUtil.isEmpty(fieldAttributes)){
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- field attribute list confused.", "节点数据输出端口schema信息错乱，请联系管理员");
+            }
         }
+        return fieldAttributes;
     }
 
-    public void setFieldAttributes(List<FieldAttribute> fieldAttributes, String operId) {
-        this.fieldAttributes = fieldAttributes;
-        if(DataUtil.isNotEmpty(fieldAttributes)) {
-            this.getJsonObject().setObjectData(JSONArray.toJSONString(fieldAttributes));
-        } else {
-            this.getJsonObject().setObjectData(null);
-        }
+    public void setFieldAttributes(SchemaStateEnum schemaStateEnum, List<FieldAttribute> fieldAttributes) {
+        if(schemaStateEnum.getState() == SchemaStateEnum.NORMAL.getState())
+            this.fieldAttributes = fieldAttributes;
+        else
+            this.fieldAttributes = null;
+        this.setSchemaState(schemaStateEnum.getState());
+    }
 
-        NodeSchemaUtil.updateJsonObject(this.jsonObject, operId);
+    public void flushFieldAttributes(String operId) {
+
+        if(this.getSchemaState() == SchemaStateEnum.NORMAL.getState()) {
+            if(DataUtil.isNotEmpty(fieldAttributes)) {
+                this.getJsonObject().setObjectData(JSONArray.toJSONString(fieldAttributes));
+                NodeSchemaUtil.updateJsonObject(this.jsonObject, operId);
+            }
+            else
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- empty field attribute list.", "节点数据输出端口schema信息为空，请联系管理员");
+        }
     }
 
     public void deleteFieldAttributes(String operId) {

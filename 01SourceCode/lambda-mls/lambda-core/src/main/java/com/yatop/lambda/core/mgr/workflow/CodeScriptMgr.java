@@ -2,6 +2,7 @@ package com.yatop.lambda.core.mgr.workflow;
 
 import com.yatop.lambda.base.model.WfCodeScript;
 import com.yatop.lambda.base.model.WfCodeScriptExample;
+import com.yatop.lambda.core.enums.CodeScriptStateEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.CodeScriptTypeEnum;
@@ -58,13 +59,17 @@ public class CodeScriptMgr extends BaseMgr {
         }
     }
 
+    public int deleteCodeScript(WfCodeScript codeScript, String operId) {
+        return deleteCodeScript(codeScript, false, operId);
+    }
+
     /*
      *
      *   逻辑删除代码脚本
      *   返回删除数量
      *
      * */
-    public int deleteCodeScript(WfCodeScript codeScript, String operId) {
+    public int deleteCodeScript(WfCodeScript codeScript, boolean clearData, String operId) {
         if(DataUtil.isNull(codeScript) || codeScript.isScriptIdNotColoured() || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete code script -- invalid delete condition.", "无效删除条件");
         }
@@ -72,6 +77,10 @@ public class CodeScriptMgr extends BaseMgr {
         try {
             WfCodeScript deleteCodeScript = new WfCodeScript();
             deleteCodeScript.setScriptId(codeScript.getScriptId());
+            if(clearData) {
+                deleteCodeScript.setScriptContent(null);
+                deleteCodeScript.setScriptState(CodeScriptStateEnum.EMPTY.getState());
+            }
             deleteCodeScript.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteCodeScript.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteCodeScript.setLastUpdateOper(operId);

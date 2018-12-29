@@ -25,27 +25,27 @@ public class ParameterUpdate {
     @Autowired
     private ParameterCreate parameterCreate;
 
-    private NodeParameter updateParameter(WorkflowContext workflowContext, Node node, NodeParameter targetParmeter, String charValueText, Class<ParameterUpdate> none) {
+    private NodeParameter updateParameter(WorkflowContext workflowContext, Node node, NodeParameter targetParameter, String charValueText, Class<ParameterUpdate> none) {
 
-        if(targetParmeter.getCmptChar().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
-            if(!targetParmeter.isSimulateParameter()) {
-                CharValue charValue = targetParmeter.getValue();
+        if(targetParameter.getCmptChar().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
+            if(!targetParameter.isSimulateParameter()) {
+                CharValue charValue = targetParameter.getValue();
                 charValue.setInText(charValueText);
                 charValueUpdate.updateCharValue(workflowContext, node, charValue);
 
                 WfFlowNodeParameter parameter = new WfFlowNodeParameter();
                 parameter.setNodeId(node.getNodeId());
-                parameter.setCharId(targetParmeter.getCmptChar().getCharId());
+                parameter.setCharId(targetParameter.getCmptChar().getCharId());
                 if (DataUtil.isNotNull(charValue.getCharValue()))
                     parameter.setCharValue(charValue.getCharValue());
                 else
                     parameter.setCharValue(null);
 
                 nodeParameterMgr.updateNodeParameter(parameter, workflowContext.getOperId());
-                targetParmeter.copyProperties(nodeParameterMgr.queryNodeParameter(parameter.getNodeId(), parameter.getCharId()));
-                return targetParmeter;
+                targetParameter.copyProperties(nodeParameterMgr.queryNodeParameter(parameter.getNodeId(), parameter.getCharId()));
+                return targetParameter;
             } else {
-                return parameterCreate.createParameter(workflowContext, node, targetParmeter.getCmptChar(), charValueText);
+                return parameterCreate.createParameter(workflowContext, node, targetParameter.getCmptChar(), charValueText);
             }
         } else {
             //TODO throw exception ???
@@ -53,16 +53,16 @@ public class ParameterUpdate {
         }
     }
 
-    public void updateParameter(WorkflowContext workflowContext, Node node, NodeParameter targetParmeter, String charValueText) {
+    public void updateParameter(WorkflowContext workflowContext, Node node, NodeParameter targetParameter, String charValueText) {
 
-        switch (SpecTypeEnum.valueOf(targetParmeter.getSpecType())) {
+        switch (SpecTypeEnum.valueOf(targetParameter.getSpecType())) {
             case PARAMETER: {
-                NodeParameter parameter = updateParameter(workflowContext, node, targetParmeter, charValueText, ParameterUpdate.class);
+                NodeParameter parameter = updateParameter(workflowContext, node, targetParameter, charValueText, ParameterUpdate.class);
                 node.putParameter(parameter);
                 break;
             }
             case OPTIMIZE_EXECUTION: {
-                NodeParameter parameter = updateParameter(workflowContext, node, targetParmeter, charValueText, ParameterUpdate.class);
+                NodeParameter parameter = updateParameter(workflowContext, node, targetParameter, charValueText, ParameterUpdate.class);
                 node.putOptimizeParameter(parameter);
                 break;
             }
