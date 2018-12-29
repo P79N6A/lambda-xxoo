@@ -82,14 +82,14 @@ public class NodeMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int recoverNode(WfFlowNode node, String operId) {
-        if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int recoverNode(Long nodeId, String operId) {
+        if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node info -- invalid recover condition.", "无效恢复条件");
         }
 
         try {
             WfFlowNode recoverNode = new WfFlowNode();
-            recoverNode.setNodeId(node.getNodeId());
+            recoverNode.setNodeId(nodeId);
             recoverNode.setStatus(DataStatusEnum.NORMAL.getStatus());
             recoverNode.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             recoverNode.setLastUpdateOper(operId);
@@ -101,7 +101,7 @@ public class NodeMgr extends BaseMgr {
 
     /*
      *
-     *   更新节点信息（名称、概要、描述）
+     *   更新节点信息（名称、X坐标、Y坐标、警告消息、节点状态、注释、概要、描述）
      *   返回更新数量
      *
      * */
@@ -124,6 +124,8 @@ public class NodeMgr extends BaseMgr {
         try {
             WfFlowNode updateNode = new WfFlowNode();
             updateNode.setNodeId(node.getNodeId());
+            if(node.isNodeNameColoured())
+                updateNode.setNodeName(node.getNodeName());
             if(node.isPositionXColoured())
                 updateNode.setPositionX(node.getPositionX());
             if(node.isPositionYColoured())

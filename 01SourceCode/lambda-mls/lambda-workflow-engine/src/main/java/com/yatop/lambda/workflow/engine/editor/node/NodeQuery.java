@@ -1,5 +1,6 @@
 package com.yatop.lambda.workflow.engine.editor.node;
 
+import com.yatop.lambda.base.model.WfFlow;
 import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
@@ -13,6 +14,8 @@ import com.yatop.lambda.workflow.engine.editor.node.parameter.ParameterQuery;
 import com.yatop.lambda.workflow.engine.editor.node.port.NodePortQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class NodeQuery {
@@ -39,13 +42,28 @@ public class NodeQuery {
         }
 
         Node richNode = new Node(node, module);
+        workflowContext.putNode(richNode);
         parameterQuery.queryParameters(workflowContext, richNode);
         nodePortQuery.queryNodePorts(workflowContext, richNode);
-        workflowContext.putNode(richNode);
         return richNode;
     }
 
     public void queryNodes(WorkflowContext workflowContext) {
+        List<WfFlowNode> nodeList = nodeMgr.queryNode(workflowContext.getWorkflow().getFlowId(), null);
+        if(DataUtil.isEmpty(nodeList)) {
+            return;
+        }
 
+        for(WfFlowNode node : nodeList) {
+            Module module = ModuleConfig.getModule(node.getNodeId());
+            if(DataUtil.isNull(module)) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node error -- module not found.", "节点信息错误", node);
+            }
+
+            Node richNode = new Node(node, module);
+            workflowContext.putNode(richNode);
+            parameterQuery.queryParameters(workflowContext, richNode);
+            nodePortQuery.queryNodePorts(workflowContext, richNode);
+        }
     }
 }

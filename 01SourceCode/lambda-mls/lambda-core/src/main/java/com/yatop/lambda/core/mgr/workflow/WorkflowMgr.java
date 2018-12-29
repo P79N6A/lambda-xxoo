@@ -303,16 +303,6 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   工作流节点前一删除批次
-     *   返回更新数量
-     *
-     * */
-    public long previousDeleteSequence(long nextDeleteSequence) {
-        return Math.abs( (nextDeleteSequence - 1) % 32 );
-    }
-
-    /*
-     *
      *   工作流版本号增加
      *   返回更新数量
      *

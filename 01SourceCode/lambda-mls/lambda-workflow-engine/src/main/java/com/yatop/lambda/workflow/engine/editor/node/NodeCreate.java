@@ -1,8 +1,10 @@
 package com.yatop.lambda.workflow.engine.editor.node;
 
 import com.yatop.lambda.base.model.WfFlowNode;
+import com.yatop.lambda.core.enums.SystemParameterEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeMgr;
 import com.yatop.lambda.core.utils.DataUtil;
+import com.yatop.lambda.core.utils.SystemParameterUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
@@ -24,6 +26,11 @@ public class NodeCreate {
     private NodePortCreate nodePortCreate;
 
     private Node createNode(WorkflowContext workflowContext, Module module, Node otherNode, Long x, Long y) {
+
+        if(workflowContext.getWorkflow().getNodeCount() + 1 > SystemParameterUtil.find4Long(SystemParameterEnum.WK_FLOW_MAX_NODES)) {
+            //TODO throw exception
+        }
+
         WfFlowNode node = new WfFlowNode();
         node.setNodeName(module.getModuleName());
         node.setOwnerProjectId(workflowContext.getProject().getProjectId());

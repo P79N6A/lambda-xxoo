@@ -10,6 +10,10 @@ public class Workflow extends WfFlow implements IRichModel {
 
     public Workflow(WfFlow data) {super.copyProperties(data);}
 
+    public long previousDeleteSequence() {
+        return Math.abs( (this.getNextDeleteSequence() - 1) % 32 );
+    }
+
     @Override
     public void clear() {
         super.clear();

@@ -97,6 +97,20 @@ public class SystemParameterUtil implements InitializingBean {
         return DataUtil.isNotNull(value) ? value : isNullDefaultValue;
     }
 
+    public static Long find4Long(SystemParameterEnum paramEnum) {
+        String value = SystemParameterUtil.find(paramEnum);
+
+        if(DataUtil.isNotDigits(value))
+            return null;
+
+        return Long.parseLong(value);
+    }
+
+    public static Long find4Long(SystemParameterEnum paramEnum, Long isNullDefaultValue) {
+        Long value = SystemParameterUtil.find4Long(paramEnum);
+        return DataUtil.isNotNull(value) ? value : isNullDefaultValue;
+    }
+
     public static Float find4Float(SystemParameterEnum paramEnum) {
         String value = SystemParameterUtil.find(paramEnum);
 
