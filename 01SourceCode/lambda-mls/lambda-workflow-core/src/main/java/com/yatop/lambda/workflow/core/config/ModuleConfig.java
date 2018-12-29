@@ -205,6 +205,15 @@ public class ModuleConfig implements InitializingBean {
                     logger.error(String.format("Check module configuration occurs fatal error -- Inconsistent number of input-port vs input-char:\n%s\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(module)));
                     System.exit(-1);
                 }
+
+                int sequence = 0;
+                for(ModulePort modulePort : module.getOutputPorts()) {
+                    if(modulePort.getSequence() != sequence) {
+                        logger.error(String.format("Check module configuration occurs fatal error -- Error sequence number:\n%s.", DataUtil.prettyFormat(modulePort)));
+                        System.exit(-1);
+                    }
+                    sequence++;
+                }
             }
         }
     }

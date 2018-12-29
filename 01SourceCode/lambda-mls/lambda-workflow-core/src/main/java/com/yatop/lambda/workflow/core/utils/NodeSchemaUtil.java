@@ -18,11 +18,11 @@ public class NodeSchemaUtil {
 
     @Autowired
     public void setNodeSchemaMgr(JsonObjectMgr josnObjectMgr) {
-        NodeSchemaUtil.JSON_OBJECT_MGR = josnObjectMgr;
+        JSON_OBJECT_MGR = josnObjectMgr;
     }
 
     static public JsonObject queryJsonObject(Long objectId) {
-        WfJsonObject jsonObject = NodeSchemaUtil.JSON_OBJECT_MGR.queryJsonObject(objectId);
+        WfJsonObject jsonObject = JSON_OBJECT_MGR.queryJsonObject(objectId);
         if(DataUtil.isNull(jsonObject)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data output port schema info failed -- json object data missing.", "节点数据输出端口schema信息丢失，请联系管理员");
         }
@@ -34,16 +34,16 @@ public class NodeSchemaUtil {
         jsonObject.setObjectId(richJsonObject.getObjectId());
         jsonObject.setObjectData(richJsonObject.getObjectData());
         jsonObject.setObjectState(DataUtil.isNotEmpty(richJsonObject.getObjectData()) ? JsonObjectStateEnum.NORMAL.getState() : JsonObjectStateEnum.EMPTY.getState());
-        NodeSchemaUtil.JSON_OBJECT_MGR.updateJsonObject(richJsonObject, operId);
+        JSON_OBJECT_MGR.updateJsonObject(richJsonObject, operId);
         richJsonObject.copyProperties(JSON_OBJECT_MGR.queryJsonObject(richJsonObject.getObjectId()));
     }
 
     static public void deleteJsonObject(JsonObject richJsonObject, String operId) {
-        NodeSchemaUtil.JSON_OBJECT_MGR.deleteJsonObject(richJsonObject, operId);
+        JSON_OBJECT_MGR.deleteJsonObject(richJsonObject, operId);
     }
 
     static public JsonObject recoverJsonObject(Long jsonObjectId, String operId) {
-        NodeSchemaUtil.JSON_OBJECT_MGR.recoverJsonObject(jsonObjectId, operId);
+        JSON_OBJECT_MGR.recoverJsonObject(jsonObjectId, operId);
         return queryJsonObject(jsonObjectId);
     }
 }

@@ -3,6 +3,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 import com.alibaba.fastjson.JSONArray;
 import com.yatop.lambda.base.model.WfFlowNodeSchema;
 import com.yatop.lambda.core.enums.JsonObjectStateEnum;
+import com.yatop.lambda.core.enums.SchemaStateEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.data.field.FieldAttribute;
@@ -25,7 +26,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
 
     public NodeSchema(WfFlowNodeSchema data, JsonObject jsonObject) {
         super.copyProperties(data);
-        jsonObject = jsonObject;
+        this.jsonObject = jsonObject;
     }
 
     @Override
@@ -42,7 +43,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     }
 
     public List<FieldAttribute> getFieldAttributes() {
-        if(jsonObject.getObjectState() == JsonObjectStateEnum.EMPTY.getState())
+        if(this.getSchemaState() != SchemaStateEnum.NORMAL.getState())
             return null;
 
         if(DataUtil.isEmpty(fieldAttributes)) {

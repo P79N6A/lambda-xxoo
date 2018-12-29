@@ -39,6 +39,7 @@ public class SchemaCreate {
         object.setObjectState(JsonObjectStateEnum.EMPTY.getState());
         object = jsonObjectMgr.insertJsonObject(object, workflowContext.getOperId());
         JsonObject richObject = new JsonObject(object);
+        //richObject.copyProperties(jsonObjectMgr.queryJsonObject(richObject.getObjectId()));
 
         WfFlowNodeSchema schema = new WfFlowNodeSchema();
         schema.setNodePortId(outputPort.getNodePortId());
@@ -48,6 +49,7 @@ public class SchemaCreate {
         schema.setSchemaState(SchemaStateEnum.EMPTY.getState());
         schema = nodeSchemaMgr.insertSchema(schema, workflowContext.getOperId());
         NodeSchema richSchema = new NodeSchema(schema, richObject);
+        //richSchema.copyProperties(nodeSchemaMgr.querySchema(richSchema.getNodePortId()));
         outputPort.setSchema(richSchema);
     }
 }

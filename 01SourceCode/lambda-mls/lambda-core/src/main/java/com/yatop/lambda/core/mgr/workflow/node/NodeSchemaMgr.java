@@ -127,7 +127,7 @@ public class NodeSchemaMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public List<WfFlowNodeSchema> querySchemaByDstPortId(Long nodeId) {
+    public List<WfFlowNodeSchema> querySchemaByNodeId(Long nodeId) {
         if(DataUtil.isNull(nodeId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed -- invalid query condition.", "无效查询条件");
         }
