@@ -22,27 +22,32 @@ public class SchemaRecover {
 
     public void recoverSchemas(WorkflowContext workflowContext, Node node) {
 
-        int counter = 0;
-        for(NodePortOutput port : node.getOutputNodePorts()) {
-            if(port.isDataPort()) {
-                counter++;
+        if(node.outputNodePortCount() > 0) {
+            int counter = 0;
+            for (NodePortOutput port : node.getOutputNodePorts()) {
+                if (port.isDataPort()) {
+                    counter++;
+                }
             }
-        }
 
-        if(counter > 0) {
-            nodeSchemaMgr.recoverSchema(node, workflowContext.getOperId());
-            List<WfFlowNodeSchema> schemas = nodeSchemaMgr.querySchemaByNodeId(node.getNodeId());
+            if (counter > 0) {
+                nodeSchemaMgr.recoverSchema(node, workflowContext.getOperId());
+                List<WfFlowNodeSchema> schemaList = nodeSchemaMgr.querySchemaByNodeId(node.getNodeId());
 
-            for(WfFlowNodeSchema schema : schemas) {
-                NodeSchema richSchema = new NodeSchema(schema);
-                NodePortOutput outputNodePort = node.getOutputNodePort(schema.getNodePortId());
-
-                if(DataUtil.isNull(outputNodePort)) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover data node output port schema error -- output node port not found.", "节点数据输出端口信息缺失，请联系管理员");
+                if (DataUtil.isEmpty(schemaList) || counter != schemaList.size()) {
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover data node output port schema error -- schema list size inconsistent.", "节点数据输出端口schema缺失，请联系管理员");
                 }
 
-                outputNodePort.setSchema(richSchema);
-                richSchema.recoverFieldAttributes(workflowContext.getOperId());
+                for (WfFlowNodeSchema schema : schemaList) {
+                    NodePortOutput outputNodePort = node.getOutputNodePort(schema.getNodePortId());
+
+                    if (DataUtil.isNull(outputNodePort)) {
+                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data node output port schema error -- output node port not found.", "节点数据输出端口信息缺失，请联系管理员");
+                    }
+
+                    outputNodePort.setSchema(new NodeSchema(schema));
+                    outputNodePort.getSchema().recoverFieldAttributes(workflowContext.getOperId());
+                }
             }
         }
     }

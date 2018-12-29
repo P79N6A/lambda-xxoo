@@ -23,6 +23,10 @@ public class CmptCharType extends CfCmptCharType implements IRichModel {
         return CollectionUtil.contains(matchTypes, charTypeId);
     }
 
+    public int matchTypeCount() {
+        return matchTypes.size();
+    }
+
     public List<Integer> getMatchTypes() {
         return CollectionUtil.toList(matchTypes);
     }

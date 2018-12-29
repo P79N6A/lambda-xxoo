@@ -18,6 +18,10 @@ public class ExecutionTask extends WfExecutionTask implements IRichModel {
         super.clear();
     }
 
+    public int taskOutputCount() {
+        return taskOutputs.size();
+    }
+
     public ExecutionTaskOutput getTaskOutput(String charId) {
         return CollectionUtil.get(taskOutputs, charId);
     }

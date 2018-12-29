@@ -88,7 +88,8 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     }
 
     public void recoverFieldAttributes(String operId) {
-        this.jsonObject = NodeSchemaUtil.recoverJsonObject(this.getObjectId(), operId);
+        NodeSchemaUtil.recoverJsonObject(this.getObjectId(), operId);
+        this.jsonObject = null;
         CollectionUtil.clear(this.fieldAttributes);
         this.fieldAttributes = null;
     }

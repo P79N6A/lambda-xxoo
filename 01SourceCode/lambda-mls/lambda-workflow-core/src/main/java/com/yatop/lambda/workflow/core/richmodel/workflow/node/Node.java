@@ -52,6 +52,10 @@ public class Node extends WfFlowNode implements IRichModel {
         return module.getComponent();
     }
 
+    public int parameterCount() {
+        return parameters.size();
+    }
+
     public NodeParameter getParameter(String charId) {
         return CollectionUtil.get(parameters, charId);
     }
@@ -64,6 +68,10 @@ public class Node extends WfFlowNode implements IRichModel {
         CollectionUtil.put(parameters, parameter.getCharId(), parameter);
     }
 
+    public int optimizeParameterCount() {
+        return optimizeParameters.size();
+    }
+
     public NodeParameter getOptimizeParameter(String charId) {
         return CollectionUtil.get(optimizeParameters, charId);
     }
@@ -74,6 +82,10 @@ public class Node extends WfFlowNode implements IRichModel {
 
     public void putOptimizeParameter(NodeParameter parameter) {
         CollectionUtil.put(optimizeParameters, parameter.getCharId(), parameter);
+    }
+
+    public int inputNodePortCount() {
+        return inputNodePorts.size();
     }
 
     public NodePortInput getInputNodePort(Long nodePortId) {
@@ -92,6 +104,10 @@ public class Node extends WfFlowNode implements IRichModel {
         CollectionUtil.put(inputNodePorts, inputNodePort.getNodePortId(), inputNodePort);
         CollectionUtil.put(inputNodePortsOrderByCharId, inputNodePort.getRefCharId(), inputNodePort);
         CollectionUtil.put(inputNodePortsOrderBySequence, inputNodePort.getModulePort().getSequence(), inputNodePort);
+    }
+
+    public int outputNodePortCount() {
+        return outputNodePorts.size();
     }
 
     public NodePortOutput getOutputNodePort(Long nodePortId) {
@@ -124,6 +140,10 @@ public class Node extends WfFlowNode implements IRichModel {
         CollectionUtil.put(outputNodePortsOrderBySequence, outputNodePort.getModulePort().getSequence(), outputNodePort);
     }
 
+    public int globalParameterCount() {
+        return globalParameters.size();
+    }
+
     public GlobalParameter getGlobalParameter(String charId) {
         return globalParameters.get(charId);
     }
@@ -145,11 +165,15 @@ public class Node extends WfFlowNode implements IRichModel {
     }
 
     public void markDeleted() {
-        for(NodePortInput inputPort : this.getInputNodePorts()) {
-            inputPort.markDeleted();
+        if(this.inputNodePortCount() > 0) {
+            for (NodePortInput inputPort : this.getInputNodePorts()) {
+                inputPort.markDeleted();
+            }
         }
-        for(NodePortOutput outputPort : this.getOutputNodePorts()) {
-            outputPort.markDeleted();
+        if(this.outputNodePortCount() > 0) {
+            for (NodePortOutput outputPort : this.getOutputNodePorts()) {
+                outputPort.markDeleted();
+            }
         }
         this.deleted = true;
     }

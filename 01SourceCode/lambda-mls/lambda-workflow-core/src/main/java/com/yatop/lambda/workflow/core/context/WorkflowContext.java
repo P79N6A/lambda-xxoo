@@ -13,10 +13,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 public class WorkflowContext implements IWorkContext {
 
@@ -78,12 +75,29 @@ public class WorkflowContext implements IWorkContext {
         return CollectionUtil.toList(modelWarehouses);
     }
 
+    public int nodeCount() {
+        return nodes.size() - deleteNodes.size();
+    }
+
     public Node getNode(Long nodeId) {
         return nodes.get(nodeId);
     }
 
     public List<Node> getNodes() {
-        return CollectionUtil.toList(nodes);
+        if(nodeCount() > 0) {
+            List<Node> nodeList = new ArrayList<Node>(nodeCount());
+            for (Map.Entry<Long, Node> entry : nodes.entrySet()) {
+                if (!entry.getValue().isDeleted()) {
+                    nodeList.add(entry.getValue());
+                }
+            }
+            return nodeList;
+        }
+        return null;
+    }
+
+    public int linkCount() {
+        return links.size() - deleteLinks.size();
     }
 
     public NodeLink getLink(Long linkId) {
@@ -111,24 +125,33 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public List<NodeLink> getLinks() {
-        return CollectionUtil.toList(links);
+        if(linkCount() > 0) {
+            List<NodeLink> linkList = new ArrayList<NodeLink>(linkCount());
+            for (Map.Entry<Long, NodeLink> entry : links.entrySet()) {
+                if (!entry.getValue().isDeleted()) {
+                    linkList.add(entry.getValue());
+                }
+            }
+            return linkList;
+        }
+        return null;
     }
 
     public NodePortInput getInputPort(Long portId) {
         return inputPorts.get(portId);
     }
 
-    public List<NodePortInput> getInputPorts() {
+/*    public List<NodePortInput> getInputPorts() {
         return CollectionUtil.toList(inputPorts);
-    }
+    }*/
 
     public NodePortOutput getOutPort(Long portId) {
         return outputPorts.get(portId);
     }
 
-    public List<NodePortOutput> getOutPorts() {
+/*    public List<NodePortOutput> getOutPorts() {
         return CollectionUtil.toList(outputPorts);
-    }
+    }*/
 
     public void putDataWarehouse(DataWarehouse warehouse) {
         CollectionUtil.put(dataWarehouses, warehouse.getDwId(), warehouse);

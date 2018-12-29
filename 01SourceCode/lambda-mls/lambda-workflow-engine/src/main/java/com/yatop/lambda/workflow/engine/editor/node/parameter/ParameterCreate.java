@@ -62,16 +62,20 @@ public class ParameterCreate {
         Component component = node.getComponent();
         //组件参数
         CmptSpec paramSpec = component.getParameter();
-        for (CmptChar cmptChar : paramSpec.getCmptChars()) {
-            NodeParameter parameter = createParameter(workflowContext, node, cmptChar);
-            node.putParameter(parameter);
+        if(paramSpec.cmptCharCount() > 0) {
+            for (CmptChar cmptChar : paramSpec.getCmptChars()) {
+                NodeParameter parameter = createParameter(workflowContext, node, cmptChar);
+                node.putParameter(parameter);
+            }
         }
 
         //执行调优参数
         CmptSpec optimizeSpec = component.getOptimizeExecution();
-        for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
-            NodeParameter parameter = createParameter(workflowContext, node, cmptChar);
-            node.putOptimizeParameter(parameter);
+        if(optimizeSpec.cmptCharCount() > 0) {
+            for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
+                NodeParameter parameter = createParameter(workflowContext, node, cmptChar);
+                node.putOptimizeParameter(parameter);
+            }
         }
     }
 
@@ -80,16 +84,20 @@ public class ParameterCreate {
         Component component = node.getComponent();
         //组件参数
         CmptSpec paramSpec = component.getParameter();
-        for (CmptChar cmptChar : paramSpec.getCmptChars()) {
-            NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getParameter(cmptChar.getCharId()).getValue().getOutText());
-            node.putParameter(parameter);
+        if(paramSpec.cmptCharCount() > 0) {
+            for (CmptChar cmptChar : paramSpec.getCmptChars()) {
+                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getParameter(cmptChar.getCharId()).getValue().getOutText());
+                node.putParameter(parameter);
+            }
         }
 
         //执行调优参数
         CmptSpec optimizeSpec = component.getOptimizeExecution();
-        for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
-            NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getOptimizeParameter(cmptChar.getCharId()).getValue().getOutText());
-            node.putOptimizeParameter(parameter);
+        if(optimizeSpec.cmptCharCount() > 0) {
+            for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
+                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getOptimizeParameter(cmptChar.getCharId()).getValue().getOutText());
+                node.putOptimizeParameter(parameter);
+            }
         }
     }
 }

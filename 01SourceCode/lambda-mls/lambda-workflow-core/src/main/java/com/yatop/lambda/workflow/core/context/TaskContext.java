@@ -79,6 +79,22 @@ public class TaskContext implements IWorkContext {
         this.warningMsg = warningMsg;
     }
 
+    public int inputCharValueCount() {
+        return inputCharValues.size();
+    }
+
+    public int outputCharValueCount() {
+        return outputCharValues.size();
+    }
+
+    public int optimizeCharValueCount() {
+        return optimizeCharValues.size();
+    }
+
+    public int parameterCharValueCount() {
+        return parameterCharValues.size();
+    }
+
     public CharValue getCharValue(SpecTypeEnum specType, String charId) {
         switch (specType) {
             case INPUT:

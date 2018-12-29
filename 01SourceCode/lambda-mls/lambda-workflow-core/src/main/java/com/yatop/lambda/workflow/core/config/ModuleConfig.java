@@ -59,14 +59,14 @@ public class ModuleConfig implements InitializingBean {
         return ALL_MODULE_CATALOGS.get(catalogId);
     }
 
-    public static Module getModule(String moduleId) {
-        if(DataUtil.isEmpty(moduleId))
+    public static Module getModule(Long moduleId) {
+        if(DataUtil.isNull(moduleId))
             return null;
         return ALL_MODULES.get(moduleId);
     }
 
-    public static ModulePort getModulePort(String portId) {
-        if(DataUtil.isEmpty(portId))
+    public static ModulePort getModulePort(Long portId) {
+        if(DataUtil.isNull(portId))
             return null;
         return ALL_MODULE_PORTS.get(portId);
     }
@@ -201,18 +201,22 @@ public class ModuleConfig implements InitializingBean {
             for(Map.Entry<Long, Module> moduleEntry : ALL_MODULES.entrySet()) {
                 Module module = moduleEntry.getValue();
                 Component component = module.getComponent();
-                if(module.getInputPorts().size() != component.getInput().getCmptChars().size()) {
-                    logger.error(String.format("Check module configuration occurs fatal error -- Inconsistent number of input-port vs input-char:\n%s\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(module)));
-                    System.exit(-1);
+                if(module.inputPortCount() > 0) {
+                    if (module.getInputPorts().size() != component.getInput().cmptCharCount()) {
+                        logger.error(String.format("Check module configuration occurs fatal error -- Inconsistent number of input-port vs input-char:\n%s\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(module)));
+                        System.exit(-1);
+                    }
                 }
 
                 int sequence = 0;
-                for(ModulePort modulePort : module.getOutputPorts()) {
-                    if(modulePort.getSequence() != sequence) {
-                        logger.error(String.format("Check module configuration occurs fatal error -- Error sequence number:\n%s.", DataUtil.prettyFormat(modulePort)));
-                        System.exit(-1);
+                if(module.outputPortCount() > 0) {
+                    for (ModulePort modulePort : module.getOutputPorts()) {
+                        if (modulePort.getSequence() != sequence) {
+                            logger.error(String.format("Check module configuration occurs fatal error -- Error sequence number:\n%s.", DataUtil.prettyFormat(modulePort)));
+                            System.exit(-1);
+                        }
+                        sequence++;
                     }
-                    sequence++;
                 }
             }
         }

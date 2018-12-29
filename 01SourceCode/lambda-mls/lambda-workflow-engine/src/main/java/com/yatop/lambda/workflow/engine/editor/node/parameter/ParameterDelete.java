@@ -29,15 +29,20 @@ public class ParameterDelete {
     public void deleteParameters(WorkflowContext workflowContext, Node node) {
 
         //组件参数
-        for (NodeParameter parameter : node.getParameters()) {
-            deleteParameter(workflowContext, node, parameter);
+        if(node.parameterCount() > 0) {
+            for (NodeParameter parameter : node.getParameters()) {
+                deleteParameter(workflowContext, node, parameter);
+            }
         }
 
         //执行调优参数
-        for (NodeParameter parameter : node.getOptimizeParameters()) {
-            deleteParameter(workflowContext, node, parameter);
+        if(node.optimizeParameterCount() > 0) {
+            for (NodeParameter parameter : node.getOptimizeParameters()) {
+                deleteParameter(workflowContext, node, parameter);
+            }
         }
 
-        nodeParameterMgr.deleteNodeParameter(node, workflowContext.getOperId());
+        if(node.parameterCount() > 0 && node.optimizeParameterCount() > 0)
+            nodeParameterMgr.deleteNodeParameter(node, workflowContext.getOperId());
     }
 }

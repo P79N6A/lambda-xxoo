@@ -37,6 +37,10 @@ public class WorkflowNodeContext implements IWorkContext {
         return node;
     }
 
+    public int outWarningMsgCount() {
+        return outSchemas.size();
+    }
+
     public String getOutSummary() {
         return outSummary;
     }
@@ -51,6 +55,10 @@ public class WorkflowNodeContext implements IWorkContext {
 
     public void putOutWarningMsg(String charId, String warningMsg) {
         CollectionUtil.put(outWarningMsgs, charId, warningMsg);
+    }
+
+    public int outSchemaCount() {
+        return outSchemas.size();
     }
 
     public List<NodeSchema> getOutSchemas() {

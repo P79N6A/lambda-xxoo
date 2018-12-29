@@ -90,6 +90,10 @@ public class Component extends CfComponent implements IRichModel {
         this.parameter = parameter;
     }
 
+    public int charValueCount() {
+        return charValues.size();
+    }
+
     public CmptCharValue getCharValue(String charId) {
         return CollectionUtil.get(charValues, charId);
     }

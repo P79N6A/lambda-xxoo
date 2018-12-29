@@ -452,26 +452,32 @@ public class ComponentConfig implements InitializingBean {
         for(Map.Entry<String, Component> cmptEntry : ALL_COMPONENTS.entrySet()) {
             Component component = cmptEntry.getValue();
             //execution
-            for(CmptChar cmptChar : component.getExecution().getCmptChars()) {
-                if(component.missingConfigCharValue(cmptChar)) {
-                    logger.error(String.format("Check execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(cmptChar)));
-                    System.exit(-1);
+            if(component.getExecution().cmptCharCount()> 0) {
+                for (CmptChar cmptChar : component.getExecution().getCmptChars()) {
+                    if (component.missingConfigCharValue(cmptChar)) {
+                        logger.error(String.format("Check execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(cmptChar)));
+                        System.exit(-1);
+                    }
                 }
             }
 
             //optimize execution
-            for(CmptChar cmptChar : component.getOptimizeExecution().getCmptChars()) {
-                if(component.missingConfigCharValue(cmptChar)) {
-                    logger.error(String.format("Check optimize execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(cmptChar)));
-                    System.exit(-1);
+            if(component.getOptimizeExecution().cmptCharCount()> 0) {
+                for (CmptChar cmptChar : component.getOptimizeExecution().getCmptChars()) {
+                    if (component.missingConfigCharValue(cmptChar)) {
+                        logger.error(String.format("Check optimize execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(cmptChar)));
+                        System.exit(-1);
+                    }
                 }
             }
 
             //parameter
-            for(CmptChar cmptChar : component.getParameter().getCmptChars()) {
-                if(component.missingConfigCharValue(cmptChar)) {
-                    logger.error(String.format("Check parameter config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(cmptChar)));
-                    System.exit(-1);
+            if(component.getParameter().cmptCharCount()> 0) {
+                for (CmptChar cmptChar : component.getParameter().getCmptChars()) {
+                    if (component.missingConfigCharValue(cmptChar)) {
+                        logger.error(String.format("Check parameter config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(cmptChar)));
+                        System.exit(-1);
+                    }
                 }
             }
         }

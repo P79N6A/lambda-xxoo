@@ -43,6 +43,10 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
         return component;
     }
 
+    public int inputPortCount() {
+        return inputPorts.size();
+    }
+
     public ModulePort getInputPort(Long inputPortId) {
         return CollectionUtil.get(inputPorts, inputPortId);
     }
@@ -58,6 +62,10 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
     public void putInputPort(ModulePort inputPort) {
         CollectionUtil.put(inputPorts, inputPort.getPortId(), inputPort);
         CollectionUtil.put(inputPortsOrderBySequence, inputPort.getSequence(), inputPort);
+    }
+
+    public int outputPortCount() {
+        return outputPorts.size();
     }
 
     public ModulePort getOutputPort(Long outputPortId) {

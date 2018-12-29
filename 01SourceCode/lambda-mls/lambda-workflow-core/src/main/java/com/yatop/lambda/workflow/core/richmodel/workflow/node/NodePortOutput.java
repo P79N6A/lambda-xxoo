@@ -13,9 +13,9 @@ public class NodePortOutput extends WfFlowNodePort implements IRichModel {
     private NodeSchema schema;
     private boolean deleted;
 
-    public NodePortOutput(WfFlowNodePort data, ModulePort modulePortInput) {
+    public NodePortOutput(WfFlowNodePort data, ModulePort modulePort) {
         super.copyProperties(data);
-        this.modulePort = modulePortInput;
+        this.modulePort = modulePort;
         this.deleted = false;
     }
 

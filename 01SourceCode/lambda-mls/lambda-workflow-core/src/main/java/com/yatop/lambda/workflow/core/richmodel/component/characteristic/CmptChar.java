@@ -36,6 +36,10 @@ public class CmptChar extends CfCmptChar implements IRichModel {
         return CollectionUtil.containsKey(enums, value);
     }
 
+    public int enumCount() {
+        return enums.size();
+    }
+
     public List<CmptCharEnum> getEnums() {
         return CollectionUtil.toList(enumsOrderbySequence);
     }

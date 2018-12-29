@@ -24,6 +24,10 @@ public class CmptSpec extends CfCmptSpec implements IRichModel {
         super.clear();
     }
 
+    public int cmptCharCount() {
+        return cmptChars.size();
+    }
+
     public CmptChar getCmptChar(String charId) {
         return CollectionUtil.get(cmptChars, charId);
     }
@@ -34,6 +38,10 @@ public class CmptSpec extends CfCmptSpec implements IRichModel {
 
     public void putCmptChar(CmptChar cmptChar) {
         CollectionUtil.put(cmptChars, cmptChar.getCharId(), cmptChar);
+    }
+
+    public int charValueCount() {
+        return charValues.size();
     }
 
     public CmptSpecCharValue getCharValue(String charId) {

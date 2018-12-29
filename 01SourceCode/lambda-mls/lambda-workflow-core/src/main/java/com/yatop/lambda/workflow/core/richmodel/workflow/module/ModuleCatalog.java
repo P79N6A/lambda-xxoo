@@ -15,6 +15,10 @@ public class ModuleCatalog extends WfModuleCatalog implements Comparable<ModuleC
 
     public ModuleCatalog(WfModuleCatalog data) {super.copyProperties(data);}
 
+    public int childCatalogCount() {
+        return childCatalogs.size();
+    }
+
     public List<ModuleCatalog> getChildCatalogs() {
         return CollectionUtil.toList(childCatalogs);
     }
@@ -23,6 +27,10 @@ public class ModuleCatalog extends WfModuleCatalog implements Comparable<ModuleC
         if(DataUtil.isNull(catalog))
             return;
         this.childCatalogs.put(catalog.getSequence(), catalog);
+    }
+
+    public int childModuleCount() {
+        return childModules.size();
     }
 
     public List<Module> getChildModules() {

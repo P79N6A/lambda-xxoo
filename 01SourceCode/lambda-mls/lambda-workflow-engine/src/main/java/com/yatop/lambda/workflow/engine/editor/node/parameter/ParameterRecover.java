@@ -72,16 +72,20 @@ public class ParameterRecover {
         Component component = node.getComponent();
         //组件参数
         CmptSpec paramSpec = component.getParameter();
-        for (CmptChar cmptChar : paramSpec.getCmptChars()) {
-            NodeParameter parameter = recoverParameter(workflowContext, node, cmptChar, parameterMap.get(cmptChar.getCharId()));
-            node.putParameter(parameter);
+        if(paramSpec.cmptCharCount() > 0) {
+            for (CmptChar cmptChar : paramSpec.getCmptChars()) {
+                NodeParameter parameter = recoverParameter(workflowContext, node, cmptChar, parameterMap.get(cmptChar.getCharId()));
+                node.putParameter(parameter);
+            }
         }
 
         //执行调优参数
         CmptSpec optimizeSpec = component.getOptimizeExecution();
-        for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
-            NodeParameter parameter = recoverParameter(workflowContext, node, cmptChar, optimizeMap.get(cmptChar.getCharId()));
-            node.putOptimizeParameter(parameter);
+        if(optimizeSpec.cmptCharCount() > 0) {
+            for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
+                NodeParameter parameter = recoverParameter(workflowContext, node, cmptChar, optimizeMap.get(cmptChar.getCharId()));
+                node.putOptimizeParameter(parameter);
+            }
         }
         parameterMap.clear();
         optimizeMap.clear();

@@ -59,17 +59,21 @@ public class NodePortCreate {
 
         Module module = node.getModule();
         //节点输入端口
-        List<ModulePort> inputPorts = module.getInputPorts();
-        for (ModulePort inputPort : inputPorts) {
-            NodePortInput inputNodePort = createInputPort(workflowContext, node, inputPort);
-            node.putInputNodePort(inputNodePort);
+        if(module.inputPortCount() > 0) {
+            List<ModulePort> inputPorts = module.getInputPorts();
+            for (ModulePort inputPort : inputPorts) {
+                NodePortInput inputNodePort = createInputPort(workflowContext, node, inputPort);
+                node.putInputNodePort(inputNodePort);
+            }
         }
 
         //节点输出端口
-        List<ModulePort> outputPorts = module.getOutputPorts();
-        for (ModulePort outputPort : outputPorts) {
-            NodePortOutput outputNodePort = createOutputPort(workflowContext, node, outputPort);
-            node.putOutputNodePort(outputNodePort);
+        if(module.outputPortCount() > 0) {
+            List<ModulePort> outputPorts = module.getOutputPorts();
+            for (ModulePort outputPort : outputPorts) {
+                NodePortOutput outputNodePort = createOutputPort(workflowContext, node, outputPort);
+                node.putOutputNodePort(outputNodePort);
+            }
         }
     }
 }

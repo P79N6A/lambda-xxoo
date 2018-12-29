@@ -16,16 +16,18 @@ public class SchemaDelete {
 
     public void deleteSchemas(WorkflowContext workflowContext, Node node) {
 
-        int counter = 0;
-        for(NodePortOutput port : node.getOutputNodePorts()) {
-            if(port.isDataPort()) {
-                NodeSchema schema = port.getSchema();
-                schema.deleteFieldAttributes(workflowContext.getOperId());
-                counter++;
+        if(node.outputNodePortCount() > 0) {
+            int counter = 0;
+            for (NodePortOutput port : node.getOutputNodePorts()) {
+                if (port.isDataPort()) {
+                    NodeSchema schema = port.getSchema();
+                    schema.deleteFieldAttributes(workflowContext.getOperId());
+                    counter++;
+                }
             }
-        }
 
-        if(counter > 0)
-            nodeSchemaMgr.deleteSchema(node, workflowContext.getOperId());
+            if(counter > 0)
+                nodeSchemaMgr.deleteSchema(node, workflowContext.getOperId());
+        }
     }
 }
