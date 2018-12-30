@@ -11,7 +11,7 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.data.field.FieldAttribute;
 import com.yatop.lambda.workflow.core.richmodel.workflow.JsonObject;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
-import com.yatop.lambda.workflow.core.mgr.editor.node.port.schema.SchemaHelper;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

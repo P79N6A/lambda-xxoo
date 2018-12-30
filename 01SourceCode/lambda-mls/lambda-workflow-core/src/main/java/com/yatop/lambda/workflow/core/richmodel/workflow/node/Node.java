@@ -45,6 +45,10 @@ public class Node extends WfFlowNode implements IRichModel {
         super.clear();
     }
 
+    public void flush() {
+
+    }
+
     public Module getModule() {
         return module;
     }

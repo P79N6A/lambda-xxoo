@@ -126,7 +126,6 @@ public class CodeScriptMgr extends BaseMgr {
 
         if(codeScript.isScriptNameNotColoured() &&
                 codeScript.isScriptContentNotColoured() &&
-                codeScript.isScriptStateNotColoured() &&
                 codeScript.isDescriptionNotColoured()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update code script failed -- invalid update data.", "无效更新内容");
         }
@@ -136,10 +135,15 @@ public class CodeScriptMgr extends BaseMgr {
             updateCodeScript.setScriptId(codeScript.getScriptId());
             if(codeScript.isScriptNameColoured())
                 updateCodeScript.setScriptName(codeScript.getScriptName());
-            if(codeScript.isScriptContentColoured())
-                updateCodeScript.setScriptContent(codeScript.getScriptName());
-            if(codeScript.isScriptStateColoured())
-                updateCodeScript.setScriptState(codeScript.getScriptState());
+            if(codeScript.isScriptContentColoured()) {
+                updateCodeScript.setScriptContent(codeScript.getScriptContent());
+                if (DataUtil.isEmpty(codeScript.getScriptContent()))
+                    updateCodeScript.setScriptState(CodeScriptStateEnum.EMPTY.getState());
+                else
+                    updateCodeScript.setScriptState(CodeScriptStateEnum.NORMAL.getState());
+
+                codeScript.setScriptState(updateCodeScript.getScriptState());
+            }
             if(codeScript.isDescriptionColoured())
                 updateCodeScript.setDescription(codeScript.getDescription());
 

@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.context;
 
 import com.yatop.lambda.core.enums.CmptTypeEnum;
+import com.yatop.lambda.core.enums.JobTypeEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
@@ -139,6 +140,18 @@ public class TaskContext implements IWorkContext {
                 CollectionUtil.put(optimizeCharValues, cmptChar.getCharId(), charValue);
             case PARAMETER:
                 CollectionUtil.put(parameterCharValues, cmptChar.getCharId(), charValue);
+        }
+    }
+
+    public boolean needSyncWorkflow() {
+        switch (JobTypeEnum.valueOf(job.getJobType())) {
+            case RUN_ALL:
+            case RUN_START_HERE:
+            case RUN_END_HERE:
+            case RUN_THIS_NODE:
+                return true;
+            default:
+                return false;
         }
     }
 }

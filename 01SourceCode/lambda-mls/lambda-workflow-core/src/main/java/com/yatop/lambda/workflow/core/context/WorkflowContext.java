@@ -61,6 +61,16 @@ public class WorkflowContext implements IWorkContext {
         this.simulateWorkflow = true;
     }
 
+    public void flush() {
+        if(onlyWorkflowGraph || simulateWorkflow)
+            return;
+
+        workflow.flush();
+        for(Node node : this.getNodes()) {
+            node.flush();
+        }
+    }
+
     public boolean isOnlyWorkflowGraph() {
         return onlyWorkflowGraph;
     }
