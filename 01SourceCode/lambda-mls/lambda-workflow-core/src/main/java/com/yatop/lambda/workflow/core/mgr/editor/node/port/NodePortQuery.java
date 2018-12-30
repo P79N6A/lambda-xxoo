@@ -35,13 +35,13 @@ public class NodePortQuery {
 
             List<WfFlowNodePort> nodePortList = nodePortMgr.queryNodePortByNodeId(node.getNodeId());
             if (DataUtil.isNull(nodePortList)) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port error -- node port list empty.", "节点端口信息缺失", node);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- node port list empty.", "节点端口信息缺失", node);
             }
 
             for(WfFlowNodePort nodePort : nodePortList) {
                 ModulePort modulePort = ModuleConfig.getModulePort(nodePort.getRefPortId());
-                if(DataUtil.isNull(modulePort)) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port error -- module port not found.", "节点端口信息错误", nodePort);
+                if(DataUtil.isNull(modulePort) || !module.existsModulePort(modulePort)) {
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module port not found.", "节点端口信息错误", nodePort);
                 }
 
                 switch(PortTypeEnum.valueOf(modulePort.getPortType())) {
@@ -58,6 +58,10 @@ public class NodePortQuery {
                 }
             }
 
+            if(module.inputPortCount() != node.inputNodePortCount() || module.outputPortCount() != node.outputNodePortCount()) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module-port vs node-port inconsistent.", "节点端口信息错误", node);
+            }
+
             schemaQuery.querySchemas(workflowContext, node);
         }
     }
@@ -66,12 +70,12 @@ public class NodePortQuery {
 
         WfFlowNodePort nodePort = nodePortMgr.queryNodePort(inputNodePortId);
         if(DataUtil.isNull(nodePort)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Query node port error -- node port not found, node-port-id:\n%d.", inputNodePortId), "节点端口信息缺失");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Query node port failed -- node port not found, node-port-id:\n%d.", inputNodePortId), "节点端口信息缺失");
         }
 
         ModulePort modulePort = ModuleConfig.getModulePort(nodePort.getRefPortId());
         if(DataUtil.isNull(modulePort) || PortTypeEnum.valueOf(modulePort.getPortType()) != PortTypeEnum.INPUT_PORT) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port error -- module port not found.", "节点端口信息错误", nodePort);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module port not found.", "节点端口信息错误", nodePort);
         }
 
         NodePortInput inputNodePort =  new NodePortInput(nodePort, modulePort);
@@ -83,12 +87,12 @@ public class NodePortQuery {
 
         WfFlowNodePort nodePort = nodePortMgr.queryNodePort(outputNodePortId);
         if(DataUtil.isNull(nodePort)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Query node port error -- node port not found, node-port-id:\n%d.", outputNodePortId), "节点端口信息缺失");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Query node port failed -- node port not found, node-port-id:\n%d.", outputNodePortId), "节点端口信息缺失");
         }
 
         ModulePort modulePort = ModuleConfig.getModulePort(nodePort.getRefPortId());
         if(DataUtil.isNull(modulePort) || PortTypeEnum.valueOf(modulePort.getPortType()) != PortTypeEnum.OUTPUT_PORT) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port error -- module port not found.", "节点端口信息错误", nodePort);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module port not found.", "节点端口信息错误", nodePort);
         }
 
         NodePortOutput outputNodeport = new NodePortOutput(nodePort, modulePort);

@@ -39,7 +39,7 @@ public class SchemaCreate {
         object.setObjectState(JsonObjectStateEnum.EMPTY.getState());
         object = jsonObjectMgr.insertJsonObject(object, workflowContext.getOperId());
         JsonObject richObject = new JsonObject(object);
-        //richObject.copyProperties(jsonObjectMgr.queryJsonObject(richObject.getObjectId()));
+        //richObject.copyProperties(jsonObjectMgr.queryFieldAttributes(richObject.getObjectId()));
 
         WfFlowNodeSchema schema = new WfFlowNodeSchema();
         schema.setNodePortId(outputPort.getNodePortId());

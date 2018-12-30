@@ -11,7 +11,7 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.data.field.FieldAttribute;
 import com.yatop.lambda.workflow.core.richmodel.workflow.JsonObject;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
-import com.yatop.lambda.workflow.core.utils.NodeSchemaUtil;
+import com.yatop.lambda.workflow.core.mgr.editor.node.port.schema.SchemaHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
 
     private JsonObject getJsonObject() {
         if(DataUtil.isNull(jsonObject)) {
-            jsonObject = NodeSchemaUtil.queryJsonObject(this.getObjectId());
+            jsonObject = SchemaHelper.queryFieldAttributes(this.getObjectId());
         }
         return jsonObject;
     }
@@ -73,7 +73,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
         if(this.getSchemaState() == SchemaStateEnum.NORMAL.getState()) {
             if(DataUtil.isNotEmpty(fieldAttributes)) {
                 this.getJsonObject().setObjectData(JSONArray.toJSONString(fieldAttributes));
-                NodeSchemaUtil.updateJsonObject(this.jsonObject, operId);
+                SchemaHelper.updateFieldAttributes(this.jsonObject, operId);
             }
             else
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- empty field attribute list.", "节点数据输出端口schema信息为空，请联系管理员");
@@ -81,14 +81,14 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     }
 
     public void deleteFieldAttributes(String operId) {
-        NodeSchemaUtil.deleteJsonObject(this.getJsonObject(), operId);
+        SchemaHelper.deleteFieldAttributes(this.getJsonObject(), operId);
         this.jsonObject = null;
         CollectionUtil.clear(this.fieldAttributes);
         this.fieldAttributes = null;
     }
 
     public void recoverFieldAttributes(String operId) {
-        NodeSchemaUtil.recoverJsonObject(this.getObjectId(), operId);
+        SchemaHelper.recoverFieldAttributes(this.getObjectId(), operId);
         this.jsonObject = null;
         CollectionUtil.clear(this.fieldAttributes);
         this.fieldAttributes = null;

@@ -45,12 +45,12 @@ public class NodeRecover {
         nodeMgr.recoverNode(nodeId, workflowContext.getOperId());
         WfFlowNode node = nodeMgr.queryNode(nodeId);
         if(DataUtil.isNull(node)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Recover node error -- node not found, node-id:%d.", nodeId), "节点信息缺失");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Recover node failed -- node not found, node-id:%d.", nodeId), "节点信息缺失");
         }
 
         Module module = ModuleConfig.getModule(node.getNodeId());
         if(DataUtil.isNull(module)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node error -- module not found.", "节点信息错误", node);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node failed -- module not found.", "节点信息错误", node);
         }
 
         Node richNode = new Node(node, module);
@@ -63,9 +63,9 @@ public class NodeRecover {
 
         Workflow workflow = workflowContext.getWorkflow();
         List<WfFlowNodeDeleteQueue> deleteQueues = nodeDeleteQueueMgr.queryNodeDelete(workflow.getFlowId(), workflow.previousDeleteSequence());
-
-        if(workflow.getNodeCount() + deleteQueues.size() > SystemParameterUtil.find4Long(SystemParameterEnum.WK_FLOW_MAX_NODES)) {
-            //TODO throw exception
+        Long flowMaxNodes = SystemParameterUtil.find4Long(SystemParameterEnum.WK_FLOW_MAX_NODES);
+        if(workflow.getNodeCount() + deleteQueues.size() > flowMaxNodes) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node failed -- number of nodes can't exceed more then WK_FLOW_MAX_NODES.", "画布节点数量不能超过" + flowMaxNodes, workflow);
         }
 
         nodeDeleteQueueMgr.removeNodeDelete(workflow.getFlowId(), workflow.previousDeleteSequence());

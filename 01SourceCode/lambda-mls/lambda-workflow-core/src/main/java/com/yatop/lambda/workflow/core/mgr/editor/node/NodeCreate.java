@@ -1,11 +1,14 @@
 package com.yatop.lambda.workflow.core.mgr.editor.node;
 
 import com.yatop.lambda.base.model.WfFlowNode;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SystemParameterEnum;
+import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.node.NodeMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.SystemParameterUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.mgr.editor.node.parameter.ParameterCreate;
@@ -27,14 +30,16 @@ public class NodeCreate {
 
     private Node createNode(WorkflowContext workflowContext, Module module, Node otherNode, Long x, Long y) {
 
-        if(workflowContext.getWorkflow().getNodeCount() + 1 > SystemParameterUtil.find4Long(SystemParameterEnum.WK_FLOW_MAX_NODES)) {
-            //TODO throw exception
+        Workflow workflow = workflowContext.getWorkflow();
+        Long flowMaxNodes = SystemParameterUtil.find4Long(SystemParameterEnum.WK_FLOW_MAX_NODES);
+        if(workflowContext.getWorkflow().getNodeCount() + 1 > flowMaxNodes) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node failed -- number of nodes can't exceed more then WK_FLOW_MAX_NODES.", "画布节点数量不能超过" + flowMaxNodes, workflow);
         }
 
         WfFlowNode node = new WfFlowNode();
         node.setNodeName(module.getModuleName());
-        node.setOwnerProjectId(workflowContext.getProject().getProjectId());
-        node.setOwnerFlowId(workflowContext.getWorkflow().getFlowId());
+        node.setOwnerProjectId(workflow.getOwnerProjectId());
+        node.setOwnerFlowId(workflow.getFlowId());
         node.setRefModuleId(module.getModuleId());
         node.setPositionX(x);
         node.setPositionY(y);

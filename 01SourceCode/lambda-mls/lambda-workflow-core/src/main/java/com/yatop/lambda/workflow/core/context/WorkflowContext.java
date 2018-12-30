@@ -4,7 +4,6 @@ import com.yatop.lambda.core.enums.IsWebLinkEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.data.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.model.ModelWarehouse;
-import com.yatop.lambda.workflow.core.richmodel.workflow.GlobalParameter;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;

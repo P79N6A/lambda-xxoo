@@ -1,14 +1,8 @@
 package com.yatop.lambda.workflow.core.richmodel;
 
-import com.alibaba.fastjson.JSON;
 import com.yatop.lambda.LambdaApplication;
-import com.yatop.lambda.base.model.DwDataWarehouse;
-import com.yatop.lambda.base.model.PrProject;
 import com.yatop.lambda.core.mgr.data.DataWarehouseMgr;
-import com.yatop.lambda.workflow.core.richmodel.data.DataWarehouse;
-import com.yatop.lambda.workflow.core.richmodel.project.Project;
 import com.yatop.lambda.core.mgr.project.ProjectMgr;
-import com.yatop.lambda.core.utils.DataUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

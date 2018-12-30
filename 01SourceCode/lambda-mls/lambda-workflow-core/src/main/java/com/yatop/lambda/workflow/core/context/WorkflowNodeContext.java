@@ -49,8 +49,8 @@ public class WorkflowNodeContext implements IWorkContext {
         this.outSummary = outSummary;
     }
 
-    public List<String> getOutWarningMsgs() {
-        return CollectionUtil.toList(outWarningMsgs);
+    public TreeMap<String, String> getOutWarningMsgs() {
+        return outWarningMsgs;
     }
 
     public void putOutWarningMsg(String charId, String warningMsg) {

@@ -32,12 +32,12 @@ public class NodeQuery {
 
         WfFlowNode node = nodeMgr.queryNode(nodeId);
         if(DataUtil.isNull(node)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Query node error -- node not found, node-id:%d.", nodeId), "节点信息缺失");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Query node failed -- node not found, node-id:%d.", nodeId), "节点信息缺失");
         }
 
         Module module = ModuleConfig.getModule(node.getNodeId());
         if(DataUtil.isNull(module)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node error -- module not found.", "节点信息错误", node);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node failed -- module not found.", "节点信息错误", node);
         }
 
         Node richNode = new Node(node, module);
@@ -56,7 +56,7 @@ public class NodeQuery {
         for(WfFlowNode node : nodeList) {
             Module module = ModuleConfig.getModule(node.getNodeId());
             if(DataUtil.isNull(module)) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node error -- module not found.", "节点信息错误", node);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node failed -- module not found.", "节点信息错误", node);
             }
 
             Node richNode = new Node(node, module);

@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.module;
 
 import com.yatop.lambda.base.model.WfModule;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
@@ -83,5 +84,9 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
     public void putOutputPort(ModulePort outputPort) {
         CollectionUtil.put(outputPorts, outputPort.getPortId(), outputPort);
         CollectionUtil.put(outputPortsOrderBySequence, outputPort.getSequence(), outputPort);
+    }
+
+    public boolean existsModulePort(ModulePort modulePort) {
+        return DataUtil.isNotNull(this.getInputPort(modulePort.getPortId())) || DataUtil.isNotNull(this.getOutputPort(modulePort.getPortId()));
     }
 }

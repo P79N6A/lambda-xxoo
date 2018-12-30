@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.core.utils;
+package com.yatop.lambda.workflow.core.mgr.editor.node.port.schema;
 
 import com.yatop.lambda.base.model.WfJsonObject;
 import com.yatop.lambda.core.enums.JsonObjectStateEnum;
@@ -12,16 +12,16 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class NodeSchemaUtil {
+public class SchemaHelper {
 
-    static private JsonObjectMgr JSON_OBJECT_MGR;
+    private static JsonObjectMgr JSON_OBJECT_MGR;
 
     @Autowired
     public void setNodeSchemaMgr(JsonObjectMgr josnObjectMgr) {
         JSON_OBJECT_MGR = josnObjectMgr;
     }
 
-    static public JsonObject queryJsonObject(Long objectId) {
+    static public JsonObject queryFieldAttributes(Long objectId) {
         WfJsonObject jsonObject = JSON_OBJECT_MGR.queryJsonObject(objectId);
         if(DataUtil.isNull(jsonObject)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data output port schema info failed -- json object data missing.", "节点数据输出端口schema信息丢失，请联系管理员");
@@ -29,7 +29,7 @@ public class NodeSchemaUtil {
         return new JsonObject(jsonObject);
     }
 
-    static public void updateJsonObject(JsonObject richJsonObject, String operId) {
+    static public void updateFieldAttributes(JsonObject richJsonObject, String operId) {
         WfJsonObject jsonObject = new WfJsonObject();
         jsonObject.setObjectId(richJsonObject.getObjectId());
         jsonObject.setObjectData(richJsonObject.getObjectData());
@@ -38,12 +38,12 @@ public class NodeSchemaUtil {
         richJsonObject.copyProperties(JSON_OBJECT_MGR.queryJsonObject(richJsonObject.getObjectId()));
     }
 
-    static public void deleteJsonObject(JsonObject richJsonObject, String operId) {
+    static public void deleteFieldAttributes(JsonObject richJsonObject, String operId) {
         JSON_OBJECT_MGR.deleteJsonObject(richJsonObject, true, operId);
     }
 
-    static public JsonObject recoverJsonObject(Long jsonObjectId, String operId) {
+    static public JsonObject recoverFieldAttributes(Long jsonObjectId, String operId) {
         JSON_OBJECT_MGR.recoverJsonObject(jsonObjectId, operId);
-        return queryJsonObject(jsonObjectId);
+        return queryFieldAttributes(jsonObjectId);
     }
 }

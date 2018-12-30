@@ -34,14 +34,14 @@ public class SchemaQuery {
                 List<WfFlowNodeSchema> schemaList = nodeSchemaMgr.querySchemaByNodeId(node.getNodeId());
 
                 if (DataUtil.isEmpty(schemaList) || counter != schemaList.size()) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data node output port schema error -- schema list size inconsistent.", "节点数据输出端口schema缺失", node);
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data node output port schema failed -- schema list size inconsistent.", "节点数据输出端口schema缺失", node);
                 }
 
                 for (WfFlowNodeSchema schema : schemaList) {
                     NodePortOutput outputNodePort = node.getOutputNodePort(schema.getNodePortId());
 
                     if (DataUtil.isNull(outputNodePort)) {
-                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data node output port schema error -- output node port not found.", "节点数据输出端口信息缺失", schema);
+                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data node output port schema failed -- output node port not found.", "节点数据输出端口信息缺失", schema);
                     }
 
                     outputNodePort.setSchema(new NodeSchema(schema));
@@ -56,7 +56,7 @@ public class SchemaQuery {
             WfFlowNodeSchema schema = nodeSchemaMgr.querySchema(nodePortOutput.getNodePortId());
             nodePortOutput.setSchema(new NodeSchema(schema));
         } else {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data node output port schema error -- non data port.", "非节点数据端口", nodePortOutput);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data node output port schema failed -- non data port.", "非节点数据端口", nodePortOutput);
         }
     }
 }

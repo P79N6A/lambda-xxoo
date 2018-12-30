@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.core.mgr.editor.value;
+package com.yatop.lambda.workflow.core.mgr.value;
 
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
