@@ -69,8 +69,8 @@ public class ExecutionTaskMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteTask(WfExecutionJob job, String operId) {
-        if(DataUtil.isNull(job) || job.isJobIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteTask(Long jobId, String operId) {
+        if(DataUtil.isNull(jobId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete task info -- invalid delete condition.", "无效删除条件");
         }
 
@@ -80,7 +80,7 @@ public class ExecutionTaskMgr extends BaseMgr {
             deleteTask.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteTask.setLastUpdateOper(operId);
             WfExecutionTaskExample example = new WfExecutionTaskExample();
-            example.createCriteria().andOwnerJobIdEqualTo(job.getJobId());
+            example.createCriteria().andOwnerJobIdEqualTo(jobId);
             return wfExecutionTaskMapper.updateByExampleSelective(deleteTask, example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete task info failed.", "删除任务信息失败", e);
@@ -141,6 +141,9 @@ public class ExecutionTaskMgr extends BaseMgr {
 
             updateTask.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateTask.setLastUpdateOper((operId));
+
+            task.setLastUpdateTime(updateTask.getLastUpdateTime());
+            task.setLastUpdateOper(updateTask.getLastUpdateOper());
             return wfExecutionTaskMapper.updateByPrimaryKeySelective(updateTask);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update task info failed.", "更新任务信息失败", e);

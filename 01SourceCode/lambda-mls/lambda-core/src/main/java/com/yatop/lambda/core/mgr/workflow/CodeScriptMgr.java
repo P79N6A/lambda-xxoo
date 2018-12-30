@@ -59,8 +59,8 @@ public class CodeScriptMgr extends BaseMgr {
         }
     }
 
-    public int deleteCodeScript(WfCodeScript codeScript, String operId) {
-        return deleteCodeScript(codeScript, false, operId);
+    public int deleteCodeScript(Long codeScriptId, String operId) {
+        return deleteCodeScript(codeScriptId, false, operId);
     }
 
     /*
@@ -69,14 +69,14 @@ public class CodeScriptMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteCodeScript(WfCodeScript codeScript, boolean clearData, String operId) {
-        if(DataUtil.isNull(codeScript) || codeScript.isScriptIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteCodeScript(Long codeScriptId, boolean clearData, String operId) {
+        if(DataUtil.isNull(codeScriptId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete code script -- invalid delete condition.", "无效删除条件");
         }
 
         try {
             WfCodeScript deleteCodeScript = new WfCodeScript();
-            deleteCodeScript.setScriptId(codeScript.getScriptId());
+            deleteCodeScript.setScriptId(codeScriptId);
             if(clearData) {
                 deleteCodeScript.setScriptContent(null);
                 deleteCodeScript.setScriptState(CodeScriptStateEnum.EMPTY.getState());
@@ -120,7 +120,7 @@ public class CodeScriptMgr extends BaseMgr {
      *
      * */
     public int updateCodeScript(WfCodeScript codeScript, String operId) {
-        if( DataUtil.isNull(codeScript) || codeScript.isScriptIdNotColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(codeScript) || DataUtil.isNull(codeScript.getScriptId()) || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update code script failed -- invalid update condition.", "无效更新条件");
         }
 
@@ -145,6 +145,9 @@ public class CodeScriptMgr extends BaseMgr {
 
             updateCodeScript.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateCodeScript.setLastUpdateOper((operId));
+
+            codeScript.setLastUpdateTime(updateCodeScript.getLastUpdateTime());
+            codeScript.setLastUpdateOper(updateCodeScript.getLastUpdateOper());
             return wfCodeScriptMapper.updateByPrimaryKeySelective(updateCodeScript);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update code script failed.", "更新代码脚本失败", e);

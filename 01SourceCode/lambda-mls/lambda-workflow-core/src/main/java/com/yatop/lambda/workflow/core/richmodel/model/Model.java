@@ -7,7 +7,10 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
 public class Model extends MwModel implements IRichModel {
 
-    public Model(MwModel data) {super.copyProperties(data);}
+    public Model(MwModel data) {
+        super.copyProperties(data);
+        this.clearColoured();
+    }
 
     @Override
     public JSONObject toJSON() {

@@ -65,14 +65,14 @@ public class DataTableMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteDataTable(DwDataTable table, String operId) {
-        if(DataUtil.isNull(table) || table.isTableIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteDataTable(Long tableId, String operId) {
+        if(DataUtil.isNull(tableId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Delete data table info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
             DwDataTable deleteTable = new DwDataTable();
-            deleteTable.setTableId(table.getTableId());
+            deleteTable.setTableId(tableId);
             deleteTable.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteTable.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteTable.setLastUpdateOper(operId);
@@ -84,49 +84,17 @@ public class DataTableMgr extends BaseMgr {
 
     /*
      *
-     *   更新数据表名
-     *   返回更新数量
-     *
-     * */
-    public int updateDataTableName(DwDataTable table, String operId) {
-        if( DataUtil.isNull(table) || table.isTableIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table name failed -- invalid update condition.", "无效更新条件");
-        }
-
-        if(table.isTableNameNotColoured()) {
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table name failed -- invalid update data.", "无效更新内容");
-        }
-
-        if(existsDataTable(table.getOwnerDwId(), table.getTableName(), table.getTableId())) {
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table name failed -- name conflict.", "名称冲突");
-        }
-
-        DwDataTable updateTable = new DwDataTable();
-        try {
-            updateTable.setTableId(table.getTableId());
-            if(table.isTableNameColoured())
-                updateTable.setTableName(table.getTableName());
-
-            updateTable.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
-            updateTable.setLastUpdateOper((operId));
-            return dwDataTableMapper.updateByPrimaryKeySelective(updateTable);
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table name failed.", "更新数据表名失败", e);
-        }
-    }
-
-    /*
-     *
-     *   更新数据表信息（列数、行数、数据文件大小、数据文件名、数据概要文件名、数据表状态、描述）
+     *   更新数据表信息（表名、列数、行数、数据文件大小、数据文件名、数据概要文件名、数据表状态、描述）
      *   返回更新数量
      *
      * */
     public int updateDataTable(DwDataTable table, String operId) {
-        if( DataUtil.isNull(table) || table.isTableIdNotColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(table) || DataUtil.isNull(table.getTableId()) || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(table.isTableColumnsNotColoured() &&
+        if(table.isTableNameNotColoured() &&
+                table.isTableColumnsNotColoured() &&
                 table.isTableRowsNotColoured() &&
                 table.isDataFileSizeNotColoured() &&
                 table.isDataFileNotColoured() &&
@@ -143,6 +111,8 @@ public class DataTableMgr extends BaseMgr {
         DwDataTable updateTable = new DwDataTable();
         try {
             updateTable.setTableId(table.getTableId());
+            if(table.isTableNameColoured())
+                updateTable.setTableName(table.getTableName());
             if(table.isTableColumnsColoured())
                 updateTable.setTableColumns(table.getTableColumns());
             if(table.isTableRowsColoured())
@@ -160,6 +130,9 @@ public class DataTableMgr extends BaseMgr {
 
             updateTable.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateTable.setLastUpdateOper((operId));
+
+            table.setLastUpdateTime(updateTable.getLastUpdateTime());
+            table.setLastUpdateOper(updateTable.getLastUpdateOper());
             return dwDataTableMapper.updateByPrimaryKeySelective(updateTable);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table info failed.", "更新数据表信息失败", e);

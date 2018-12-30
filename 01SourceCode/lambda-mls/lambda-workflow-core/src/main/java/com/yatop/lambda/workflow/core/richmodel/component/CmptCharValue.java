@@ -5,7 +5,10 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
 public class CmptCharValue extends CfCmptCharValue implements IRichModel {
 
-    public CmptCharValue(CfCmptCharValue data) {super.copyProperties(data);}
+    public CmptCharValue(CfCmptCharValue data) {
+        super.copyProperties(data);
+        this.clearColoured();
+    }
 
     @Override
     public void clear() {

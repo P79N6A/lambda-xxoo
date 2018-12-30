@@ -43,6 +43,6 @@ public class ParameterDelete {
         }
 
         if(node.parameterCount() > 0 && node.optimizeParameterCount() > 0)
-            nodeParameterMgr.deleteNodeParameter(node, workflowContext.getOperId());
+            nodeParameterMgr.deleteNodeParameter(node.getNodeId(), workflowContext.getOperId());
     }
 }

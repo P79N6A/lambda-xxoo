@@ -13,6 +13,7 @@ public class Project extends PrProject implements IRichModel {
         super.copyProperties(data);
         this.dataWarehouse = dataWarehouse;
         this.modelWarehouse = modelWarehouse;
+        this.clearColoured();
     }
 
     @Override

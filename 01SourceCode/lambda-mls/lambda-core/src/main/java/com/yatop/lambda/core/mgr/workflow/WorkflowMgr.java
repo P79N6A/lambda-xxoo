@@ -1,18 +1,16 @@
 package com.yatop.lambda.core.mgr.workflow;
 
-import com.yatop.lambda.base.mapper.extend.WorkflowMapper;
 import com.yatop.lambda.base.model.WfFlow;
 import com.yatop.lambda.base.model.WfFlowExample;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
-import com.yatop.lambda.core.enums.WorkflowLockStateEnum;
+import com.yatop.lambda.core.enums.ShareLockStateEnum;
 import com.yatop.lambda.core.enums.WorkflowStateEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,9 +18,6 @@ import java.util.List;
 
 @Service
 public class WorkflowMgr extends BaseMgr {
-
-    @Autowired
-    WorkflowMapper workflowMapper;
 
     /*
      *
@@ -44,11 +39,11 @@ public class WorkflowMgr extends BaseMgr {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertWorkflow.copyProperties(workflow);
             insertWorkflow.setFlowIdColoured(false);
-            insertWorkflow.setShareLockState(WorkflowLockStateEnum.UNLOCKED.getState());
+            insertWorkflow.setShareLockState(ShareLockStateEnum.UNLOCKED.getState());
             insertWorkflow.setShareLockMsgColoured(false);
             insertWorkflow.setNextSnapshotVersion(1L);
             insertWorkflow.setNodeCount(0L);
-            insertWorkflow.setNextDeleteSequence(1L);
+            insertWorkflow.setNextDeleteSequence(0L);
             insertWorkflow.setLastJobIdColoured(false);
             insertWorkflow.setFlowDfsDirColoured(false);
             insertWorkflow.setFlowLocalDirColoured(false);
@@ -72,14 +67,14 @@ public class WorkflowMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteWorkflow(WfFlow workflow, String operId) {
-        if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteWorkflow(Long workflowId, String operId) {
+        if(DataUtil.isNull(workflowId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete workflow info -- invalid delete condition.", "无效删除条件");
         }
 
         try {
             WfFlow deleteWorkflow = new WfFlow();
-            deleteWorkflow.setFlowId(workflow.getFlowId());
+            deleteWorkflow.setFlowId(workflowId);
             deleteWorkflow.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteWorkflow.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteWorkflow.setLastUpdateOper(operId);
@@ -92,19 +87,27 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   更新工作流信息（名称、描述）
+     *   更新工作流信息（名称、共享锁状态、共享锁消息、下一快照版本、节点数量、下一删除批次、最后作业ID、DFS工作流目录、本地工作流目录、
+     *                   工作流状态、描述、版本号）
      *   返回更新数量
      *
      * */
     public int updateWorkflow(WfFlow workflow, String operId) {
-        if( DataUtil.isNull(workflow)  || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(workflow)  || DataUtil.isNull(workflow.getFlowId()) || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(workflow.isFlowNameNotColoured() &&
+                workflow.isShareLockStateNotColoured() &&
+                workflow.isNextSnapshotVersionNotColoured() &&
+                workflow.isNodeCountNotColoured() &&
+                workflow.isNextDeleteSequenceNotColoured() &&
+                workflow.isLastJobIdNotColoured() &&
                 workflow.isFlowDfsDirNotColoured() &&
                 workflow.isFlowLocalDirNotColoured() &&
-                workflow.isDescriptionNotColoured()) {
+                workflow.isFlowStateNotColoured() &&
+                workflow.isDescriptionNotColoured() &&
+                workflow.isVersionNotColoured()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed -- invalid update data.", "无效更新内容");
         }
 
@@ -113,209 +116,35 @@ public class WorkflowMgr extends BaseMgr {
             updateWorkflow.setFlowId(workflow.getFlowId());
             if(workflow.isFlowNameColoured())
                 updateWorkflow.setFlowName(workflow.getFlowName());
+            if(workflow.isShareLockStateColoured())
+                updateWorkflow.setShareLockState(workflow.getShareLockState());
+            if(workflow.isShareLockMsgColoured())
+                updateWorkflow.setShareLockMsg(workflow.getShareLockMsg());
+            if(workflow.isNextSnapshotVersionColoured())
+                updateWorkflow.setNextSnapshotVersion(workflow.getNextSnapshotVersion());
+            if(workflow.isNodeCountColoured())
+                updateWorkflow.setNodeCount(workflow.getNodeCount());
+            if(workflow.isNextDeleteSequenceColoured())
+                updateWorkflow.setNextDeleteSequence(workflow.getNextDeleteSequence());
+            if(workflow.isLastJobIdColoured())
+                updateWorkflow.setLastJobId(workflow.getLastJobId());
             if(workflow.isFlowDfsDirColoured())
                 updateWorkflow.setFlowDfsDir(workflow.getFlowDfsDir());
             if(workflow.isFlowLocalDirColoured())
                 updateWorkflow.setFlowLocalDir(workflow.getFlowLocalDir());
             if(workflow.isDescriptionColoured())
                 updateWorkflow.setDescription(workflow.getDescription());
+            if(workflow.isVersionColoured())
+                updateWorkflow.setVersion(workflow.getVersion());
 
             updateWorkflow.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateWorkflow.setLastUpdateOper((operId));
+
+            workflow.setLastUpdateTime(updateWorkflow.getLastUpdateTime());
+            workflow.setLastUpdateOper(updateWorkflow.getLastUpdateOper());
             return wfFlowMapper.updateByPrimaryKeySelective(updateWorkflow);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed.", "更新工作流信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   工作流快照版本号增加
-     *   返回更新数量
-     *
-     * */
-    public int increaseWorkflowSnapshotVersion(WfFlow workflow, String operId) {
-        if( DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed -- invalid update condition.", "无效更新条件");
-        }
-
-        try {
-            return workflowMapper.updateWorkflowSnapshot(workflow.getFlowId(), SystemTimeUtil.getCurrentTime(), operId);
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed.", "更新工作流信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   更新工作流信息（运行信息）
-     *   返回更新数量
-     *
-     * */
-    public int updateWorkflowExecution(WfFlow workflow, String operId) {
-        if( DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed -- invalid update condition.", "无效更新条件");
-        }
-
-        if(workflow.isLastJobIdNotColoured()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed -- invalid update data.", "无效更新内容");
-        }
-
-
-        try {
-            WfFlow updateWorkflow = new WfFlow();
-            updateWorkflow.setFlowId(workflow.getFlowId());
-            updateWorkflow.setLastJobId(workflow.getLastJobId());
-            updateWorkflow.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
-            updateWorkflow.setLastUpdateOper((operId));
-            return wfFlowMapper.updateByPrimaryKeySelective(updateWorkflow);
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed.", "更新工作流信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   更新工作流信息（状态）
-     *   返回更新数量
-     *
-     * */
-    public int updateWorkflowState(WfFlow workflow, String operId) {
-        if( DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed -- invalid update condition.", "无效更新条件");
-        }
-
-        if(workflow.isFlowStateNotColoured()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed -- invalid update data.", "无效更新内容");
-        }
-
-
-        try {
-            WfFlow updateWorkflow = new WfFlow();
-            updateWorkflow.setFlowId(workflow.getFlowId());
-            updateWorkflow.setFlowState(workflow.getFlowState());
-            updateWorkflow.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
-            updateWorkflow.setLastUpdateOper((operId));
-            return wfFlowMapper.updateByPrimaryKeySelective(updateWorkflow);
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed.", "更新工作流信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   工作流共享锁（加解锁）
-     *   返回更新数量
-     *
-     * */
-    private int lockWorkflowShareStateExt(WfFlow workflow, String operId, WorkflowLockStateEnum lockStateEnum) {
-        if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Lock workflow -- invalid query condition.", "无效加解锁条件");
-        }
-
-        try {
-            WfFlow lockWorkflow = new WfFlow();
-            lockWorkflow.setFlowId(workflow.getFlowId());
-            lockWorkflow.setShareLockState(lockStateEnum.getState());
-            if(lockWorkflow.isShareLockMsgColoured())
-                lockWorkflow.setShareLockMsg(workflow.getShareLockMsg());
-            lockWorkflow.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
-            lockWorkflow.setLastUpdateOper(operId);
-            return wfFlowMapper.updateByPrimaryKeySelective(lockWorkflow);
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Lock workflow with version failed.", "加解锁工作流失败", e);
-        }
-    }
-
-    /*
-     *
-     *   工作流共享锁（加锁）
-     *   返回是否成功
-     *
-     * */
-    public boolean lockWorkflowShareState(WfFlow workflow, String operId) {
-        return (lockWorkflowShareStateExt(workflow, operId, WorkflowLockStateEnum.LOCKED) == 1 ? true : false);
-    }
-
-    /*
-     *
-     *   工作流共享锁（解锁）
-     *   返回是否成功
-     *
-     * */
-    public boolean unlockWorkflowShareStat(WfFlow workflow, String operId) {
-        return (lockWorkflowShareStateExt(workflow, operId, WorkflowLockStateEnum.UNLOCKED) == 1 ? true : false);
-    }
-
-    /*
-     *
-     *   工作流节点增加
-     *   返回更新数量
-     *
-     * */
-    public int increaseWorkflowNode(WfFlow workflow, String operId) {
-        if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed -- invalid update condition.", "无效更新条件");
-        }
-
-        try {
-            return workflowMapper.increaseWorkflowNode(workflow.getFlowId(), SystemTimeUtil.getCurrentTime(), operId);
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed.", "更新工作流信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   更新工作流节点数量（删除）
-     *   返回更新数量
-     *
-     * */
-    public int updateWorkflowNodeCount4Delete(WfFlow workflow, Long deleteCount, String operId) {
-        if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isNull(deleteCount) || DataUtil.isEmpty(operId)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed -- invalid update condition.", "无效更新条件");
-        }
-
-        try {
-            return workflowMapper.updateWorkflowNodeCount4Delete(workflow.getFlowId(), deleteCount, SystemTimeUtil.getCurrentTime(), operId);
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed.", "更新工作流信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   更新工作流节点数量（恢复）
-     *   返回更新数量
-     *
-     * */
-    public int updateWorkflowNodeCount4Recover(WfFlow workflow, Long deleteCount, String operId) {
-        if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isNull(deleteCount) || DataUtil.isEmpty(operId)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed -- invalid update condition.", "无效更新条件");
-        }
-
-        try {
-            return workflowMapper.updateWorkflowNodeCount4Recover(workflow.getFlowId(), deleteCount, SystemTimeUtil.getCurrentTime(), operId);
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update workflow info failed.", "更新工作流信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   工作流版本号增加
-     *   返回更新数量
-     *
-     * */
-    public int increaseWorkflowVersion(WfFlow workflow, String operId) {
-        if(DataUtil.isNull(workflow) || workflow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "update workflow version failed -- invalid update condition.", "无效更新条件");
-        }
-
-        try {
-            return workflowMapper.increaseWorkflowVersion(workflow.getFlowId(), SystemTimeUtil.getCurrentTime(), operId);
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "update workflow version failed.", "更新工作流版本失败", e);
         }
     }
 

@@ -21,7 +21,7 @@ public class SnapshotMgr extends BaseMgr {
 
     /*
      *
-     *   插入新快照信息（名称、快照来源、所属项目ID、所属工作流ID、快照内容、快照版本号 ...）
+     *   插入新快照信息（名称、快照来源、所属项目ID、所属工作流ID、快照版本号 ...）
      *   返回插入记录
      *
      * */
@@ -31,7 +31,6 @@ public class SnapshotMgr extends BaseMgr {
                 snapshot.isSnapshotTypeNotColoured() ||
                 snapshot.isOwnerProjectIdNotColoured() ||
                 snapshot.isOwnerFlowIdNotColoured() ||
-                snapshot.isSnapshotContentNotColoured() ||
                 snapshot.isSnapshotVersionNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert snapshot info failed -- invalid insert data.", "无效插入数据");
@@ -61,14 +60,14 @@ public class SnapshotMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteSnapshot(WfSnapshot snapshot, String operId) {
-        if(DataUtil.isNull(snapshot) || snapshot.isSnapshotIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteSnapshot(Long snapshotId, String operId) {
+        if(DataUtil.isNull(snapshotId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete snapshot info -- invalid delete condition.", "无效删除条件");
         }
 
         try {
             WfSnapshot deleteSnapshot = new WfSnapshot();
-            deleteSnapshot.setSnapshotId(snapshot.getSnapshotId());
+            deleteSnapshot.setSnapshotId(snapshotId);
             deleteSnapshot.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteSnapshot.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteSnapshot.setLastUpdateOper(operId);
@@ -80,16 +79,18 @@ public class SnapshotMgr extends BaseMgr {
 
     /*
      *
-     *   更新快照信息（名称、描述）
+     *   更新快照信息（名称、快照内容、快照状态、描述）
      *   返回更新数量
      *
      * */
     public int updateSnapshot(WfSnapshot snapshot, String operId) {
-        if( DataUtil.isNull(snapshot) || snapshot.isSnapshotIdNotColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(snapshot) || DataUtil.isNull(snapshot.getSnapshotId()) || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update snapshot info failed -- invalid update condition.", "无效更新条件");
         }
 
         if(snapshot.isSnapshotNameColoured() &&
+                snapshot.isSnapshotContentNotColoured() &&
+                snapshot.isSnapshotStateNotColoured() &&
                 snapshot.isDescriptionNotColoured()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update snapshot info failed -- invalid update data.", "无效更新内容");
         }
@@ -99,51 +100,23 @@ public class SnapshotMgr extends BaseMgr {
             updateSnapshot.setSnapshotId(snapshot.getSnapshotId());
             if(snapshot.isSnapshotNameColoured())
                 updateSnapshot.setSnapshotName(snapshot.getSnapshotName());
-            if(snapshot.isDescriptionColoured()) {
+            if(snapshot.isSnapshotContentColoured())
+                updateSnapshot.setSnapshotContent(snapshot.getSnapshotContent());
+            if(snapshot.isSnapshotStateColoured())
+                updateSnapshot.setSnapshotState(snapshot.getSnapshotState());
+            if(snapshot.isDescriptionColoured())
                 updateSnapshot.setDescription(snapshot.getDescription());
-            }
 
             updateSnapshot.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateSnapshot.setLastUpdateOper((operId));
+
+            snapshot.setLastUpdateTime(updateSnapshot.getLastUpdateTime());
+            snapshot.setLastUpdateOper(updateSnapshot.getLastUpdateOper());
             return wfSnapshotMapper.updateByPrimaryKeySelective(updateSnapshot);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update snapshot info failed.", "更新快照信息失败", e);
         }
     }
-
-    /*
-     *
-     *   完成快照（快照内容、描述）
-     *   返回更新数量
-     *
-     * */
-/*    public int finishSnapshot(WfSnapshot snapshot, String operId) {
-        if( DataUtil.isNull(snapshot) || snapshot.isSnapshotIdNotColoured() || DataUtil.isEmpty(operId)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Finish snapshot failed -- invalid update condition.", "无效完成条件");
-        }
-
-        if(snapshot.isSnapshotIdNotColoured() &&
-                snapshot.isDescriptionNotColoured()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Finish snapshot failed -- invalid update data.", "无效完成内容");
-        }
-
-        WfSnapshot updateSnapshot = new WfSnapshot();
-        try {
-            updateSnapshot.setSnapshotId(snapshot.getSnapshotId());
-            if(snapshot.isSnapshotContentColoured())
-                updateSnapshot.setSnapshotContent(snapshot.getSnapshotContent());
-            if(snapshot.isDescriptionColoured()) {
-                updateSnapshot.setDescription(snapshot.getDescription());
-            }
-
-            updateSnapshot.setSnapshotState(SnapshotStateEnum.FINISHED.getState());
-            updateSnapshot.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
-            updateSnapshot.setLastUpdateOper((operId));
-            return wfSnapshotMapper.updateByPrimaryKeySelective(updateSnapshot);
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Finish snapshot failed.", "完成快照失败", e);
-        }
-    }*/
 
     /*
      *

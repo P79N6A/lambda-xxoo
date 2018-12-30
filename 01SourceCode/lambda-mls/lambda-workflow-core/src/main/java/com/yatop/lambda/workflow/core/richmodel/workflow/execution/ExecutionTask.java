@@ -10,7 +10,10 @@ public class ExecutionTask extends WfExecutionTask implements IRichModel {
 
     private TreeMap<String, ExecutionTaskOutput> taskOutputs = new TreeMap<String, ExecutionTaskOutput>();   //任务输出内容
 
-    public ExecutionTask(WfExecutionTask data) {super.copyProperties(data);}
+    public ExecutionTask(WfExecutionTask data) {
+        super.copyProperties(data);
+        this.clearColoured();
+    }
 
     @Override
     public void clear() {

@@ -73,7 +73,7 @@ public class NodeParameterCheck {
 
             if(checkCounter > 0 || requiredCounter > 0) {
 
-                nodeMgr.updateNode()
+                //nodeMgr.updateNode()
             }
         }
     }

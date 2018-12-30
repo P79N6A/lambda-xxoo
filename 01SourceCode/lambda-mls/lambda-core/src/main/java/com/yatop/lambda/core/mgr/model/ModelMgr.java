@@ -63,14 +63,14 @@ public class ModelMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteModel(MwModel model, String operId) {
-        if(DataUtil.isNull(model) || model.isModelIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteModel(Long modelId, String operId) {
+        if(DataUtil.isNull(modelId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Delete model info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
             MwModel deleteModel = new MwModel();
-            deleteModel.setModelId(model.getModelId());
+            deleteModel.setModelId(modelId);
             deleteModel.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteModel.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteModel.setLastUpdateOper(operId);
@@ -87,7 +87,7 @@ public class ModelMgr extends BaseMgr {
      *
      * */
     public int updateModelName(MwModel model, String operId) {
-        if( DataUtil.isNull(model) || model.isModelIdNotColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(model) || DataUtil.isNull(model.getModelId()) || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model name failed -- invalid update condition.", "无效更新条件");
         }
 
@@ -107,6 +107,9 @@ public class ModelMgr extends BaseMgr {
 
             updateModel.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateModel.setLastUpdateOper((operId));
+
+            model.setLastUpdateTime(updateModel.getLastUpdateTime());
+            model.setLastUpdateOper(updateModel.getLastUpdateOper());
             return mwModelMapper.updateByPrimaryKeySelective(updateModel);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model name failed.", "更新模型名称失败", e);

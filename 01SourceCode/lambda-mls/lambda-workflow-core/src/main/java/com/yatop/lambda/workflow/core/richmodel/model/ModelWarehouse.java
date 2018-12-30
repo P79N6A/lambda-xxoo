@@ -5,7 +5,10 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
 public class ModelWarehouse extends MwModelWarehouse implements IRichModel {
 
-    public ModelWarehouse(MwModelWarehouse data) {super.copyProperties(data);}
+    public ModelWarehouse(MwModelWarehouse data) {
+        super.copyProperties(data);
+        this.clearColoured();
+    }
 
     @Override
     public void clear() {

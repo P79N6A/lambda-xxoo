@@ -29,6 +29,7 @@ public class Node extends WfFlowNode implements IRichModel {
         super.copyProperties(data);
         this.module = module;
         this.deleted = false;
+        this.clearColoured();
     }
 
     @Override

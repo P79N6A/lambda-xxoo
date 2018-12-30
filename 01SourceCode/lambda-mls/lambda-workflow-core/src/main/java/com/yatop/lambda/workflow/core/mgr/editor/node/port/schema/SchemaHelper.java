@@ -39,7 +39,7 @@ public class SchemaHelper {
     }
 
     static public void deleteFieldAttributes(JsonObject richJsonObject, String operId) {
-        JSON_OBJECT_MGR.deleteJsonObject(richJsonObject, true, operId);
+        JSON_OBJECT_MGR.deleteJsonObject(richJsonObject.getObjectId(), true, operId);
     }
 
     static public JsonObject recoverFieldAttributes(Long jsonObjectId, String operId) {

@@ -11,6 +11,7 @@ public class Experiment extends EmExperiment implements IRichModel {
     public Experiment(EmExperiment data, Project project) {
         super.copyProperties(data);
         this.project = project;
+        this.clearColoured();
     }
 
     @Override

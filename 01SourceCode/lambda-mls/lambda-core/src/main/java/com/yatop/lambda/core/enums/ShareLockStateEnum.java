@@ -1,6 +1,6 @@
 package com.yatop.lambda.core.enums;
 
-public enum WorkflowLockStateEnum {
+public enum ShareLockStateEnum {
 
     /**
      * 未加锁
@@ -15,7 +15,7 @@ public enum WorkflowLockStateEnum {
     private int state;
     private String name;
 
-    WorkflowLockStateEnum(int state, String name) {
+    ShareLockStateEnum(int state, String name) {
         this.state = state;
         this.name = name;
     }
@@ -36,7 +36,7 @@ public enum WorkflowLockStateEnum {
         this.name = name;
     }
 
-    public static WorkflowLockStateEnum valueOf(int state) {
+    public static ShareLockStateEnum valueOf(int state) {
         switch (state) {
             case 0: return UNLOCKED;
             case 1: return LOCKED;

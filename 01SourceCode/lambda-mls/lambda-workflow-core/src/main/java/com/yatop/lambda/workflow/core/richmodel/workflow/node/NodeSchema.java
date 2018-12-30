@@ -29,6 +29,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     public NodeSchema(WfFlowNodeSchema data, JsonObject jsonObject) {
         super.copyProperties(data);
         this.jsonObject = jsonObject;
+        this.clearColoured();
     }
 
     @Override

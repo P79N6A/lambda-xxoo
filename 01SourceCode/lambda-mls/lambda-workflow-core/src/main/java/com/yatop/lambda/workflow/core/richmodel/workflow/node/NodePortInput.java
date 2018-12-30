@@ -13,6 +13,7 @@ public class NodePortInput extends WfFlowNodePort implements IRichModel {
         super.copyProperties(data);
         this.modulePort = modulePort;
         this.deleted = false;
+        this.clearColoured();
     }
 
     @Override

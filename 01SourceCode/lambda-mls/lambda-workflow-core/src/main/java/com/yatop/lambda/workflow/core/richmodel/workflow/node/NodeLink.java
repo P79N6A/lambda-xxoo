@@ -16,6 +16,7 @@ public class NodeLink extends WfFlowNodeLink implements IRichModel, Comparable<N
         this.dstNodePort = dstNodePort;
         this.override = false;
         this.deleted = false;
+        this.clearColoured();
     }
 
     @Override

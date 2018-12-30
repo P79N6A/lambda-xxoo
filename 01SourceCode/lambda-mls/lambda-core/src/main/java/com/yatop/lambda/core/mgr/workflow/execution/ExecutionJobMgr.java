@@ -73,8 +73,8 @@ public class ExecutionJobMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteJob(WfFlow flow, String operId) {
-        if(DataUtil.isNull(flow) || flow.isOwnerProjectIdNotColoured() || flow.isFlowIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteJob(Long projectId, Long workflowId, String operId) {
+        if(DataUtil.isNull(projectId) || DataUtil.isNull(workflowId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete job info -- invalid delete condition.", "无效删除条件");
         }
 
@@ -84,7 +84,7 @@ public class ExecutionJobMgr extends BaseMgr {
             deleteJob.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteJob.setLastUpdateOper(operId);
             WfExecutionJobExample example = new WfExecutionJobExample();
-            example.createCriteria().andOwnerProjectIdEqualTo(flow.getOwnerProjectId()).andRelFlowIdEqualTo(flow.getFlowId());
+            example.createCriteria().andOwnerProjectIdEqualTo(projectId).andRelFlowIdEqualTo(workflowId);
             return wfExecutionJobMapper.updateByExampleSelective(deleteJob, example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete job info failed.", "删除作业信息失败", e);
@@ -135,6 +135,9 @@ public class ExecutionJobMgr extends BaseMgr {
 
             updateJob.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateJob.setLastUpdateOper((operId));
+
+            job.setLastUpdateTime(updateJob.getLastUpdateTime());
+            job.setLastUpdateOper(updateJob.getLastUpdateOper());
             return wfExecutionJobMapper.updateByPrimaryKeySelective(updateJob);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update job info failed.", "更新作业信息失败", e);

@@ -29,6 +29,7 @@ public class CharValue extends LambdaRootModel implements IRichModel {
         this.cmptChar = cmptChar;
         this.charValue = charValue;
         this.isDuplicated = isDuplicated;
+        this.clearColoured();
     }
 
     @Override
@@ -47,6 +48,11 @@ public class CharValue extends LambdaRootModel implements IRichModel {
         inText = null;
         outText = null;
         outObject = null;
+    }
+
+    @Override
+    public void clearColoured() {
+
     }
 
     public CmptChar getCmptChar() {

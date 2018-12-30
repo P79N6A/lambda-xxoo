@@ -22,6 +22,7 @@ public class NodeParameter extends WfFlowNodeParameter implements IRichModel {
         this.cmptChar = cmptChar;
         this.value = value;
         this.simulateParameter = simulateParameter;
+        this.clearColoured();
     }
 
     @Override

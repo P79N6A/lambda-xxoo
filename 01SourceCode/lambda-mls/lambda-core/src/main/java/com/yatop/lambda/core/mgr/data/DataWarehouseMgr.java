@@ -67,14 +67,14 @@ public class DataWarehouseMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteDataWarehouse(DwDataWarehouse warehouse, String operId) {
-        if(DataUtil.isNull(warehouse) || warehouse.isDwIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteDataWarehouse(Long warehouseId, String operId) {
+        if(DataUtil.isNull(warehouseId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Delete data warehouse info failed -- invalid delete condition.", "无效删除条件");
         }
 
         try {
             DwDataWarehouse deleteWarehouse = new DwDataWarehouse();
-            deleteWarehouse.setDwId(warehouse.getDwId());
+            deleteWarehouse.setDwId(warehouseId);
             deleteWarehouse.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteWarehouse.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteWarehouse.setLastUpdateOper(operId);
@@ -91,7 +91,7 @@ public class DataWarehouseMgr extends BaseMgr {
      *
      * */
     public int updateDataWarehouse(DwDataWarehouse warehouse, String operId) {
-        if( DataUtil.isNull(warehouse) || warehouse.isDwIdNotColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(warehouse) || DataUtil.isNull(warehouse.getDwId()) || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data warehouse info failed -- invalid update condition.", "无效更新条件");
         }
 
@@ -125,6 +125,8 @@ public class DataWarehouseMgr extends BaseMgr {
             updateWarehouse.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateWarehouse.setLastUpdateOper((operId));
 
+            warehouse.setLastUpdateTime(updateWarehouse.getLastUpdateTime());
+            warehouse.setLastUpdateOper(updateWarehouse.getLastUpdateOper());
             return dwDataWarehouseMapper.updateByPrimaryKeySelective(updateWarehouse);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data warehouse info failed.", "更新数据库信息失败", e);

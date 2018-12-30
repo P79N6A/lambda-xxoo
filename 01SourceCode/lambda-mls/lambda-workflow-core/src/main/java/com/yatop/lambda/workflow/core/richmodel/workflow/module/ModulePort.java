@@ -11,6 +11,7 @@ public class ModulePort extends WfModulePort implements IRichModel {
     public ModulePort(WfModulePort data, CmptChar cmptChar) {
         super.copyProperties(data);
         this.cmptChar = cmptChar;
+        this.clearColoured();
     }
 
     @Override

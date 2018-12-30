@@ -58,8 +58,8 @@ public class NodeParameterMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteNodeParameter(WfFlowNode node, String operId) {
-        if(DataUtil.isNull(node) || node.isNodeIdColoured() || DataUtil.isEmpty(operId)){
+    public int deleteNodeParameter(Long nodeId, String operId) {
+        if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node parameter -- invalid delete condition.", "无效删除条件");
         }
 
@@ -69,7 +69,7 @@ public class NodeParameterMgr extends BaseMgr {
             deleteNodeParameter.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteNodeParameter.setLastUpdateOper(operId);
             WfFlowNodeParameterExample example = new WfFlowNodeParameterExample();
-            example.createCriteria().andNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andNodeIdEqualTo(nodeId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfFlowNodeParameterMapper.updateByExampleSelective(deleteNodeParameter, example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node parameter failed.", "删除节点参数失败", e);
@@ -82,8 +82,8 @@ public class NodeParameterMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int recoverNodeParameter(WfFlowNode node, String operId) {
-        if(DataUtil.isNull(node) || node.isNodeIdColoured() || DataUtil.isEmpty(operId)){
+    public int recoverNodeParameter(Long nodeId, String operId) {
+        if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node parameter -- invalid recover condition.", "无效恢复条件");
         }
 
@@ -93,7 +93,7 @@ public class NodeParameterMgr extends BaseMgr {
             recoverNodeParameter.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             recoverNodeParameter.setLastUpdateOper(operId);
             WfFlowNodeParameterExample example = new WfFlowNodeParameterExample();
-            example.createCriteria().andNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.INVALID.getStatus());
+            example.createCriteria().andNodeIdEqualTo(nodeId).andStatusEqualTo(DataStatusEnum.INVALID.getStatus());
             return wfFlowNodeParameterMapper.updateByExampleSelective(recoverNodeParameter, example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node parameter failed.", "恢复节点参数失败", e);
@@ -136,6 +136,9 @@ public class NodeParameterMgr extends BaseMgr {
                 updateNodeParameter.setDescription(nodeParameter.getDescription());
             updateNodeParameter.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateNodeParameter.setLastUpdateOper((operId));
+
+            nodeParameter.setLastUpdateTime(updateNodeParameter.getLastUpdateTime());
+            nodeParameter.setLastUpdateOper(updateNodeParameter.getLastUpdateOper());
 
             WfFlowNodeParameterExample example = new WfFlowNodeParameterExample();
             example.createCriteria().andNodeIdEqualTo(nodeParameter.getNodeId()).andCharIdEqualTo(nodeParameter.getCharId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());

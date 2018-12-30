@@ -59,14 +59,14 @@ public class NodeMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteNode(WfFlowNode node, String operId) {
-        if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteNode(Long nodeId, String operId) {
+        if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node info -- invalid delete condition.", "无效删除条件");
         }
 
         try {
             WfFlowNode deleteNode = new WfFlowNode();
-            deleteNode.setNodeId(node.getNodeId());
+            deleteNode.setNodeId(nodeId);
             deleteNode.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteNode.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteNode.setLastUpdateOper(operId);
@@ -101,7 +101,7 @@ public class NodeMgr extends BaseMgr {
 
     /*
      *
-     *   更新节点信息（名称、X坐标、Y坐标、警告消息、节点状态、注释、概要、描述）
+     *   更新节点信息（名称、X坐标、Y坐标、最后任务ID、警告消息、节点状态、注释、概要、描述）
      *   返回更新数量
      *
      * */
@@ -113,6 +113,7 @@ public class NodeMgr extends BaseMgr {
         if(node.isNodeNameNotColoured() &&
                 node.isPositionXNotColoured() &&
                 node.isPositionYNotColoured() &&
+                node.isLastTaskIdNotColoured() &&
                 node.isWarningMsgNotColoured() &&
                 node.isNodeStateNotColoured() &&
                 node.isCommentNotColoured() &&
@@ -130,6 +131,8 @@ public class NodeMgr extends BaseMgr {
                 updateNode.setPositionX(node.getPositionX());
             if(node.isPositionYColoured())
                 updateNode.setPositionY(node.getPositionY());
+            if(node.isLastTaskIdColoured())
+                updateNode.setLastTaskId(node.getLastTaskId());
             if(node.isWarningMsgColoured())
                 updateNode.setWarningMsg(node.getWarningMsg());
             if(node.isNodeStateColoured())
@@ -142,7 +145,10 @@ public class NodeMgr extends BaseMgr {
                 updateNode.setDescription(node.getDescription());
 
             updateNode.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
-            updateNode.setLastUpdateOper((operId));
+            updateNode.setLastUpdateOper(operId);
+
+            node.setLastUpdateTime(updateNode.getLastUpdateTime());
+            node.setLastUpdateOper(updateNode.getLastUpdateOper());
             return wfFlowNodeMapper.updateByPrimaryKeySelective(updateNode);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node info failed.", "更新节点信息失败", e);

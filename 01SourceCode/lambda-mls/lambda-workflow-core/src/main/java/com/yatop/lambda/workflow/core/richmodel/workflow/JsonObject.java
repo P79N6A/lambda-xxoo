@@ -8,7 +8,10 @@ import com.yatop.lambda.workflow.core.richmodel.project.Project;
 
 public class JsonObject extends WfJsonObject implements IRichModel {
 
-    public JsonObject(WfJsonObject data) {super.copyProperties(data);}
+    public JsonObject(WfJsonObject data) {
+        super.copyProperties(data);
+        this.clearColoured();
+    }
 
     @Override
     public JSONObject toJSON() {

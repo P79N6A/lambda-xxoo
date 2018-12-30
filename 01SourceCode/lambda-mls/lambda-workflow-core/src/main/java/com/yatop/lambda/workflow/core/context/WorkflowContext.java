@@ -16,6 +16,7 @@ import java.util.*;
 
 public class WorkflowContext implements IWorkContext {
 
+    private boolean onlyWorkflowGraph;
     private boolean simulateWorkflow;       //是否为模拟工作流（用于对数据文件导入作业任务，实际不存在workflow和node相关记录信息）
     private Project project;                //操作关联项目
     private Workflow workflow;              //操作关联工作流
@@ -33,17 +34,35 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, Node> deleteNodes = new TreeMap<Long, Node>();      //删除节点，key=nodeId
     private TreeMap<Long, NodeLink> deleteLinks = new TreeMap<Long, NodeLink>();  //删除节点链接，key=linkId
 
-    public WorkflowContext(Project project, Workflow workflow, String operId) {
+    public static WorkflowContext BuildWorkflowContext(Project project, Workflow workflow, String operId) {
+        return new WorkflowContext(project, workflow, false, operId);
+    }
+
+    public static WorkflowContext BuildWorkflowContext4OnlyGraph(Project project, Workflow workflow, String operId) {
+        return new WorkflowContext(project, workflow, true, operId);
+    }
+
+    public static WorkflowContext BuildWorkflowContext4Simulate(Project project, String operId) {
+        return new WorkflowContext(project, operId);
+    }
+
+    private WorkflowContext(Project project, Workflow workflow, boolean onlyWorkflowGraph, String operId) {
         this.project = project;
         this.workflow = workflow;
         this.operId = operId;
+        this.onlyWorkflowGraph = onlyWorkflowGraph;
         this.simulateWorkflow = false;
     }
 
-    public WorkflowContext(Project project, String operId) {
+    private WorkflowContext(Project project, String operId) {
         this.project = project;
         this.operId = operId;
+        this.onlyWorkflowGraph = false;
         this.simulateWorkflow = true;
+    }
+
+    public boolean isOnlyWorkflowGraph() {
+        return onlyWorkflowGraph;
     }
 
     public boolean isSimulateWorkflow() {
@@ -214,12 +233,12 @@ public class WorkflowContext implements IWorkContext {
         return operId;
     }
 
-    public void deleteNode(Node node) {
+    public void markDeleted4Node(Node node) {
         node.markDeleted();
         deleteNodes.put(node.getNodeId(), node);
     }
 
-    public void deleteLink(NodeLink link) {
+    public void markDeleted4Link(NodeLink link) {
         link.markDeleted();
         deleteLinks.put(link.getLinkId(), link);
     }

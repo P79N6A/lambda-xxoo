@@ -16,6 +16,7 @@ public class CmptChar extends CfCmptChar implements IRichModel {
     public CmptChar(CfCmptChar data, CmptCharType type) {
         super.copyProperties(data);
         this.type = type;
+        this.clearColoured();
     }
 
     @Override

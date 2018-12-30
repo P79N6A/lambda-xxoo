@@ -12,6 +12,7 @@ public class GlobalParameter extends WfFlowGlobalParameter implements IRichModel
     public GlobalParameter(WfFlowGlobalParameter data, CmptChar cmptChar) {
         super.copyProperties(data);
         this.cmptChar = cmptChar;
+        this.clearColoured();
     }
 
     @Override

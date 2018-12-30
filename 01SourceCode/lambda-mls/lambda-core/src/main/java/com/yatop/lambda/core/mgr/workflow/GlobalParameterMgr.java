@@ -79,28 +79,14 @@ public class GlobalParameterMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteGlobalParameter(WfFlowGlobalParameter globalParameter, String operId) {
-        if(DataUtil.isNull(globalParameter) || globalParameter.isGlobalParamIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteGlobalParameter(Long globalParameterId, String operId) {
+        if(DataUtil.isNull(globalParameterId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete global parameter -- invalid delete condition.", "无效删除条件");
         }
 
-        /*
-        if(!isNodeDelete) {
-            try {
-                WfFlowGlobalParameter thisGlobalParameter = queryGlobalParameter(globalParameter.getGlobalParamId());
-                WfFlowNodeParameter refNodeParameter = new WfFlowNodeParameter();
-                refNodeParameter.setNodeId(thisGlobalParameter.getRelNodeId());
-                refNodeParameter.setCharId(thisGlobalParameter.getRelCharId());
-                refNodeParameter.setIsGlobalParameter(IsGlobalParameterEnum.NO.getMark());
-                nodeParameterMgr.updateNodeParameter(refNodeParameter, operId);
-            } catch (LambdaException e) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert global parameter failed -- synchronize node parameter failed.", "同步节点参数失败", e);
-            }
-        }*/
-
         try {
             WfFlowGlobalParameter deleteGlobalParameter = new WfFlowGlobalParameter();
-            deleteGlobalParameter.setGlobalParamId(globalParameter.getGlobalParamId());
+            deleteGlobalParameter.setGlobalParamId(globalParameterId);
             deleteGlobalParameter.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteGlobalParameter.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteGlobalParameter.setLastUpdateOper(operId);
@@ -116,14 +102,14 @@ public class GlobalParameterMgr extends BaseMgr {
      *   返回恢复数量
      *
      * */
-    public int recoverGlobalParameter4RecoverNode(WfFlowGlobalParameter globalParameter, String operId) {
-        if(DataUtil.isNull(globalParameter) || globalParameter.isGlobalParamIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int recoverGlobalParameter4RecoverNode(Long globalParameterId, String operId) {
+        if(DataUtil.isNull(globalParameterId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover global parameter -- invalid recover condition.", "无效恢复条件");
         }
 
         try {
             WfFlowGlobalParameter recoverGlobalParameter = new WfFlowGlobalParameter();
-            recoverGlobalParameter.setGlobalParamId(globalParameter.getGlobalParamId());
+            recoverGlobalParameter.setGlobalParamId(globalParameterId);
             recoverGlobalParameter.setStatus(DataStatusEnum.NORMAL.getStatus());
             recoverGlobalParameter.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             recoverGlobalParameter.setLastUpdateOper(operId);
@@ -140,7 +126,7 @@ public class GlobalParameterMgr extends BaseMgr {
      *
      * */
     public int updateGlobalParameter(WfFlowGlobalParameter globalParameter, String operId) {
-        if( DataUtil.isNull(globalParameter) || globalParameter.isGlobalParamIdNotColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(globalParameter) || DataUtil.isNull(globalParameter.getGlobalParamId()) || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update global parameter failed -- invalid update condition.", "无效更新条件");
         }
 
@@ -165,6 +151,9 @@ public class GlobalParameterMgr extends BaseMgr {
 
             updateGlobalParameter.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateGlobalParameter.setLastUpdateOper((operId));
+
+            globalParameter.setLastUpdateTime(updateGlobalParameter.getLastUpdateTime());
+            globalParameter.setLastUpdateOper(updateGlobalParameter.getLastUpdateOper());
             return wfFlowGlobalParameterMapper.updateByPrimaryKeySelective(updateGlobalParameter);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update global parameter failed.", "更新全局参数失败", e);

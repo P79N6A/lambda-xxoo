@@ -60,8 +60,8 @@ public class JsonObjectMgr extends BaseMgr {
         }
     }
 
-    public int deleteJsonObject(WfJsonObject jsonObject, String operId) {
-        return deleteJsonObject(jsonObject, false, operId);
+    public int deleteJsonObject(Long jsonObjectId, String operId) {
+        return deleteJsonObject(jsonObjectId, false, operId);
     }
 
     /*
@@ -70,14 +70,14 @@ public class JsonObjectMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteJsonObject(WfJsonObject jsonObject, boolean clearData, String operId) {
-        if(DataUtil.isNull(jsonObject) || jsonObject.isObjectIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteJsonObject(Long jsonObjectId, boolean clearData, String operId) {
+        if(DataUtil.isNull(jsonObjectId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete json object -- invalid delete condition.", "无效删除条件");
         }
 
         try {
             WfJsonObject deleteJsonObject = new WfJsonObject();
-            deleteJsonObject.setObjectId(jsonObject.getObjectId());
+            deleteJsonObject.setObjectId(jsonObjectId);
             if(clearData) {
                 deleteJsonObject.setObjectData(null);
                 deleteJsonObject.setObjectState(JsonObjectStateEnum.EMPTY.getState());
@@ -121,7 +121,7 @@ public class JsonObjectMgr extends BaseMgr {
      *
      * */
     public int updateJsonObject(WfJsonObject jsonObject, String operId) {
-        if( DataUtil.isNull(jsonObject) || jsonObject.isObjectIdNotColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(jsonObject) || DataUtil.isNull(jsonObject.getObjectId()) || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update json object failed -- invalid update condition.", "无效更新条件");
         }
 
@@ -146,6 +146,9 @@ public class JsonObjectMgr extends BaseMgr {
 
             updateJsonObject.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateJsonObject.setLastUpdateOper((operId));
+
+            jsonObject.setLastUpdateTime(updateJsonObject.getLastUpdateTime());
+            jsonObject.setLastUpdateOper(updateJsonObject.getLastUpdateOper());
             return wfJsonObjectMapper.updateByPrimaryKeySelective(updateJsonObject);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update json object failed.", "更新Json对象失败", e);

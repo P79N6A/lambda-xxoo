@@ -7,7 +7,10 @@ import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
 public class DataTable extends DwDataTable implements IRichModel {
 
-    public DataTable(DwDataTable data) {super.copyProperties(data);}
+    public DataTable(DwDataTable data) {
+        super.copyProperties(data);
+        this.clearColoured();
+    }
 
     @Override
     public JSONObject toJSON() {

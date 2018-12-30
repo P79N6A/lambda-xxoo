@@ -27,6 +27,7 @@ public class Component extends CfComponent implements IRichModel {
 
     public Component(CfComponent data) {
         super.copyProperties(data);
+        this.clearColoured();
     }
 
     @Override

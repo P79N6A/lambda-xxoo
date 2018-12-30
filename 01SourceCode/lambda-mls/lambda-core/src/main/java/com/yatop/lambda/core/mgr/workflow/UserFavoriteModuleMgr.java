@@ -58,16 +58,15 @@ public class UserFavoriteModuleMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteUserFavoriteModule(WfUserFavoriteModule favorite, String operId)  {
-        if(DataUtil.isNull(favorite) ||
-                favorite.isProjectIdNotColoured() ||
-                favorite.isOperIdNotColoured() ||
-                favorite.isModuleIdNotColoured() ||
+    public int deleteUserFavoriteModule(Long projectId, String favoriteOper, Long moduleId, String operId)  {
+        if(DataUtil.isNull(projectId) ||
+                DataUtil.isEmpty(favoriteOper) ||
+                DataUtil.isNull(moduleId) ||
                 DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete user favorite module failed -- invalid delete condition.", "无效删除条件");
         }
 
-        if(!existsUserFavoriteModule(favorite.getProjectId(), favorite.getOperId(), favorite.getModuleId())) {
+        if(!existsUserFavoriteModule(projectId, favoriteOper, moduleId)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete user favorite module failed -- user favorite module not found.", "用户收藏记录未找到");
         }
 
@@ -78,7 +77,7 @@ public class UserFavoriteModuleMgr extends BaseMgr {
             deleteFavorite.setLastUpdateOper(operId);
 
             WfUserFavoriteModuleExample example = new WfUserFavoriteModuleExample();
-            example.createCriteria().andProjectIdEqualTo(favorite.getProjectId()).andOperIdEqualTo(favorite.getOperId()).andModuleIdEqualTo(favorite.getModuleId())
+            example.createCriteria().andProjectIdEqualTo(projectId).andOperIdEqualTo(favoriteOper).andModuleIdEqualTo(moduleId)
                     .andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfUserFavoriteModuleMapper.updateByExampleSelective(deleteFavorite, example);
         } catch (Throwable e) {
@@ -114,13 +113,13 @@ public class UserFavoriteModuleMgr extends BaseMgr {
      *   返回是否已存在
      *
      * */
-    public boolean existsUserFavoriteModule(Long projectId, String OperId, Long moduleId)  {
-        if(DataUtil.isNull(projectId) || DataUtil.isEmpty(OperId) || DataUtil.isNull(moduleId))
+    public boolean existsUserFavoriteModule(Long projectId, String favoriteOper, Long moduleId)  {
+        if(DataUtil.isNull(projectId) || DataUtil.isEmpty(favoriteOper) || DataUtil.isNull(moduleId))
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check user favorite module exists failed -- invalid check condition.", "无效检查条件");
 
         try {
             WfUserFavoriteModuleExample example = new WfUserFavoriteModuleExample();
-            example.createCriteria().andProjectIdEqualTo(projectId).andOperIdEqualTo(OperId).andModuleIdEqualTo(moduleId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andProjectIdEqualTo(projectId).andOperIdEqualTo(favoriteOper).andModuleIdEqualTo(moduleId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfUserFavoriteModuleMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check user favorite module exists failed.", "检查用户收藏是否已存在失败", e);

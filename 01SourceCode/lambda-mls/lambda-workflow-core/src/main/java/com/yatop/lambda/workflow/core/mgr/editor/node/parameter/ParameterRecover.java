@@ -48,7 +48,7 @@ public class ParameterRecover {
 
     public void recoverParameters(WorkflowContext workflowContext, Node node) {
 
-        nodeParameterMgr.recoverNodeParameter(node, workflowContext.getOperId());
+        nodeParameterMgr.recoverNodeParameter(node.getNodeId(), workflowContext.getOperId());
         List<WfFlowNodeParameter> nodeParameters = nodeParameterMgr.queryNodeParameter(node.getNodeId());
 
         TreeMap<String, WfFlowNodeParameter> parameterMap = new TreeMap<String, WfFlowNodeParameter>();

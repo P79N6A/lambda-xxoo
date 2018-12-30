@@ -2,7 +2,8 @@ package com.yatop.lambda.workflow.core.mgr.editor.node;
 
 
 import com.yatop.lambda.base.model.WfFlowNodeDeleteQueue;
-import com.yatop.lambda.core.mgr.workflow.WorkflowMgr;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.node.NodeDeleteQueueMgr;
 import com.yatop.lambda.core.mgr.workflow.node.NodeMgr;
 import com.yatop.lambda.core.utils.DataUtil;
@@ -20,9 +21,6 @@ import java.util.List;
 public class NodeDelete {
 
     @Autowired
-    WorkflowMgr workflowMgr;
-
-    @Autowired
     NodeMgr nodeMgr;
 
     @Autowired
@@ -34,14 +32,17 @@ public class NodeDelete {
     @Autowired
     ParameterDelete parameterDelete;
 
-    public void deleteNode(WorkflowContext workflowContext, List<Node> nodes) {
+    public void deleteNodes(WorkflowContext workflowContext, List<Node> nodes) {
 
         if(DataUtil.isNotEmpty(nodes)) {
             for (Node node : nodes) {
+                if(DataUtil.isNull(workflowContext.getWorkflow().getFlowId() != node.getOwnerFlowId())) {
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node failed -- flow-id vs owner-flow-id inconsistent.", "节点信息错误", workflowContext.getWorkflow(), node);
+                }
                 nodePortDelete.deleteNodePorts(workflowContext, node);
                 parameterDelete.deleteParameters(workflowContext, node);
-                nodeMgr.deleteNode(node, workflowContext.getOperId());
-                workflowContext.deleteNode(node);
+                nodeMgr.deleteNode(node.getNodeId(), workflowContext.getOperId());
+                workflowContext.markDeleted4Node(node);
             }
 
 
@@ -57,8 +58,7 @@ public class NodeDelete {
                 nodeDeleteQueueMgr.insertNodeDelete(deleteQueue, workflowContext.getOperId());
             }
 
-            workflowMgr.updateWorkflowNodeCount4Delete(workflow, nodes.size() + 0L, workflowContext.getOperId());
-            workflow.copyProperties(workflowMgr.queryWorkflow(workflow.getFlowId()));
+            workflow.doneDeleteNodes(nodes.size() + 0L);
         }
     }
 }

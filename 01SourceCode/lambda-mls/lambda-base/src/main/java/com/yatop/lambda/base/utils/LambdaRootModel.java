@@ -5,4 +5,5 @@ import com.alibaba.fastjson.JSONObject;
 public abstract class LambdaRootModel {
     public abstract JSONObject toJSON();
     public abstract void clear();
+    public abstract void clearColoured();
 }

@@ -22,6 +22,7 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
     public Module(WfModule data, Component component) {
         super.copyProperties(data);
         this.component = component;
+        this.clearColoured();
     }
 
     @Override

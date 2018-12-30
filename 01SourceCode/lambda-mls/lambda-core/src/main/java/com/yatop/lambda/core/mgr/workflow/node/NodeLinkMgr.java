@@ -57,14 +57,14 @@ public class NodeLinkMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteLink(WfFlowNodeLink link, String operId) {
-        if(DataUtil.isNull(link) || link.isLinkIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteLink(Long linkId, String operId) {
+        if(DataUtil.isNull(linkId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node link -- invalid delete condition.", "无效删除条件");
         }
 
         try {
             WfFlowNodeLink deleteLink = new WfFlowNodeLink();
-            deleteLink.setLinkId(link.getLinkId());
+            deleteLink.setLinkId(linkId);
             deleteLink.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteLink.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteLink.setLastUpdateOper(operId);

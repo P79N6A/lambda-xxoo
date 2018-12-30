@@ -31,7 +31,7 @@ public class SchemaRecover {
             }
 
             if (counter > 0) {
-                nodeSchemaMgr.recoverSchema(node, workflowContext.getOperId());
+                nodeSchemaMgr.recoverSchema(node.getNodeId(), workflowContext.getOperId());
                 List<WfFlowNodeSchema> schemaList = nodeSchemaMgr.querySchemaByNodeId(node.getNodeId());
 
                 if (DataUtil.isEmpty(schemaList) || counter != schemaList.size()) {

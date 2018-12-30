@@ -26,9 +26,6 @@ import java.util.List;
 public class NodeRecover {
 
     @Autowired
-    WorkflowMgr workflowMgr;
-
-    @Autowired
     NodeMgr nodeMgr;
 
     @Autowired
@@ -59,23 +56,25 @@ public class NodeRecover {
         nodePortRecover.recoverNodePorts(workflowContext, richNode);
     }
 
-    public void recoverNode(WorkflowContext workflowContext) {
+    public void recoverNodes(WorkflowContext workflowContext) {
 
         Workflow workflow = workflowContext.getWorkflow();
         List<WfFlowNodeDeleteQueue> deleteQueues = nodeDeleteQueueMgr.queryNodeDelete(workflow.getFlowId(), workflow.previousDeleteSequence());
+        if(DataUtil.isEmpty(deleteQueues)) {
+            workflow.doneRecoverNodes(0L);
+            return;
+        }
+
         Long flowMaxNodes = SystemParameterUtil.find4Long(SystemParameterEnum.WK_FLOW_MAX_NODES);
         if(workflow.getNodeCount() + deleteQueues.size() > flowMaxNodes) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node failed -- number of nodes can't exceed more then WK_FLOW_MAX_NODES.", "画布节点数量不能超过" + flowMaxNodes, workflow);
         }
 
         nodeDeleteQueueMgr.removeNodeDelete(workflow.getFlowId(), workflow.previousDeleteSequence());
-        workflowMgr.updateWorkflowNodeCount4Recover(workflow, deleteQueues.size() + 0L, workflowContext.getOperId());
-        workflow.copyProperties(workflowMgr.queryWorkflow(workflow.getFlowId()));
 
-        if(DataUtil.isNotEmpty(deleteQueues)) {
-            for (WfFlowNodeDeleteQueue deleteQueue : deleteQueues) {
-                recoverNode(workflowContext, deleteQueue.getNodeId());
-            }
+        for (WfFlowNodeDeleteQueue deleteQueue : deleteQueues) {
+            recoverNode(workflowContext, deleteQueue.getNodeId());
         }
+        workflow.doneRecoverNodes(deleteQueues.size() + 0L);
     }
 }

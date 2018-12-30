@@ -58,16 +58,15 @@ public class UserFavoriteTableMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteUserFavoriteTable(WfUserFavoriteTable favorite, String operId)  {
-        if(DataUtil.isNull(favorite) ||
-                favorite.isProjectIdNotColoured() ||
-                favorite.isOperIdNotColoured() ||
-                favorite.isTableIdNotColoured() ||
+    public int deleteUserFavoriteTable(Long projectId, String favoriteOper, Long tableId, String operId)  {
+        if(DataUtil.isNull(projectId) ||
+                DataUtil.isEmpty(favoriteOper) ||
+                DataUtil.isNull(tableId) ||
                 DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete user favorite table failed -- invalid delete condition.", "无效删除条件");
         }
 
-        if(!existsUserFavoriteTable(favorite.getProjectId(), favorite.getOperId(), favorite.getTableId())) {
+        if(!existsUserFavoriteTable(projectId, favoriteOper, tableId)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete user favorite table failed -- user favorite table not found.", "用户收藏记录未找到");
         }
 
@@ -78,7 +77,7 @@ public class UserFavoriteTableMgr extends BaseMgr {
             deleteFavorite.setLastUpdateOper(operId);
 
             WfUserFavoriteTableExample example = new WfUserFavoriteTableExample();
-            example.createCriteria().andProjectIdEqualTo(favorite.getProjectId()).andOperIdEqualTo(favorite.getOperId()).andTableIdEqualTo(favorite.getTableId())
+            example.createCriteria().andProjectIdEqualTo(projectId).andOperIdEqualTo(favoriteOper).andTableIdEqualTo(tableId)
                     .andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfUserFavoriteTableMapper.updateByExampleSelective(deleteFavorite, example);
         } catch (Throwable e) {
@@ -114,13 +113,13 @@ public class UserFavoriteTableMgr extends BaseMgr {
      *   返回是否已存在
      *
      * */
-    public boolean existsUserFavoriteTable(Long projectId, String OperId, Long tableId)  {
-        if(DataUtil.isNull(projectId) || DataUtil.isEmpty(OperId) || DataUtil.isNull(tableId))
+    public boolean existsUserFavoriteTable(Long projectId, String favoriteOper, Long tableId)  {
+        if(DataUtil.isNull(projectId) || DataUtil.isEmpty(favoriteOper) || DataUtil.isNull(tableId))
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check user favorite table exists failed -- invalid check condition.", "无效检查条件");
 
         try {
             WfUserFavoriteTableExample example = new WfUserFavoriteTableExample();
-            example.createCriteria().andProjectIdEqualTo(projectId).andOperIdEqualTo(OperId).andTableIdEqualTo(tableId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andProjectIdEqualTo(projectId).andOperIdEqualTo(favoriteOper).andTableIdEqualTo(tableId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfUserFavoriteTableMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check user favorite table exists failed.", "检查用户收藏是否已存在失败", e);

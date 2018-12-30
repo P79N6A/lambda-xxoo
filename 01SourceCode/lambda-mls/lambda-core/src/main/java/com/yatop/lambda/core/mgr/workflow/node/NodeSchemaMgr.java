@@ -55,8 +55,8 @@ public class NodeSchemaMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-    public int deleteSchema(WfFlowNode node, String operId) {
-        if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int deleteSchema(Long nodeId, String operId) {
+        if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node schema -- invalid delete condition.", "无效删除条件");
         }
 
@@ -66,7 +66,7 @@ public class NodeSchemaMgr extends BaseMgr {
             deleteSchema.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteSchema.setLastUpdateOper(operId);
             WfFlowNodeSchemaExample example = new WfFlowNodeSchemaExample();
-            example.createCriteria().andOwnerNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andOwnerNodeIdEqualTo(nodeId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfFlowNodeSchemaMapper.updateByExampleSelective(deleteSchema, example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node schema failed.", "删除节点Schema失败", e);
@@ -79,8 +79,8 @@ public class NodeSchemaMgr extends BaseMgr {
      *   返回恢复数量
      *
      * */
-    public int recoverSchema(WfFlowNode node, String operId) {
-        if(DataUtil.isNull(node) || node.isNodeIdNotColoured() || DataUtil.isEmpty(operId)){
+    public int recoverSchema(Long nodeId, String operId) {
+        if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node schema -- invalid recover condition.", "无效恢复条件");
         }
 
@@ -90,7 +90,7 @@ public class NodeSchemaMgr extends BaseMgr {
             recoverSchema.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             recoverSchema.setLastUpdateOper(operId);
             WfFlowNodeSchemaExample example = new WfFlowNodeSchemaExample();
-            example.createCriteria().andOwnerNodeIdEqualTo(node.getNodeId()).andStatusEqualTo(DataStatusEnum.INVALID.getStatus());
+            example.createCriteria().andOwnerNodeIdEqualTo(nodeId).andStatusEqualTo(DataStatusEnum.INVALID.getStatus());
             return wfFlowNodeSchemaMapper.updateByExampleSelective(recoverSchema, example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node schema failed.", "恢复节点Schema失败", e);
@@ -124,6 +124,9 @@ public class NodeSchemaMgr extends BaseMgr {
 
             updateSchema.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateSchema.setLastUpdateOper((operId));
+
+            schema.setLastUpdateTime(updateSchema.getLastUpdateTime());
+            schema.setLastUpdateOper(updateSchema.getLastUpdateOper());
             return wfFlowNodeSchemaMapper.updateByPrimaryKeySelective(updateSchema);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node schema failed.", "更新节点Schema失败", e);

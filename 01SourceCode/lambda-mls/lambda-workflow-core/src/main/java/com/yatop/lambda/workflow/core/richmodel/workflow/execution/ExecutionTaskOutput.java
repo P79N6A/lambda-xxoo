@@ -12,6 +12,7 @@ public class ExecutionTaskOutput extends WfExecutionTaskOutput implements IRichM
     public ExecutionTaskOutput(WfExecutionTaskOutput data, CmptChar cmptChar) {
         super.copyProperties(data);
         this.cmptChar = cmptChar;
+        this.clearColoured();
     }
 
     @Override
