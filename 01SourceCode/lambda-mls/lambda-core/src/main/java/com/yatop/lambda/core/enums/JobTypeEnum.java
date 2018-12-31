@@ -97,4 +97,16 @@ public enum JobTypeEnum {
             default: return null;
         }
     }
+
+    public static boolean enableFlushWorkflow(JobTypeEnum jobTypeEnum) {
+        switch (jobTypeEnum) {
+            case RUN_ALL:
+            case RUN_START_HERE:
+            case RUN_END_HERE:
+            case RUN_THIS_NODE:
+                return true;
+            default:
+                return false;
+        }
+    }
 }

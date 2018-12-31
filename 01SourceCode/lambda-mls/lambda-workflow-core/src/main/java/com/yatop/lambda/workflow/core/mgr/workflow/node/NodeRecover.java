@@ -60,7 +60,7 @@ public class NodeRecover {
         Workflow workflow = workflowContext.getWorkflow();
         List<WfFlowNodeDeleteQueue> deleteQueues = nodeDeleteQueueMgr.queryNodeDelete(workflow.getFlowId(), workflow.previousDeleteSequence());
         if(DataUtil.isEmpty(deleteQueues)) {
-            workflow.doneRecoverNodes(0L);
+            //TODO Nothing
             return;
         }
 

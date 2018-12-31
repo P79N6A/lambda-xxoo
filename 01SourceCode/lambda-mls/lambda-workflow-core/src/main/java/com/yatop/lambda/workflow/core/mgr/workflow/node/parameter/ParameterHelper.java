@@ -5,16 +5,27 @@ import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.enums.IsDuplicatedEnum;
 import com.yatop.lambda.core.enums.IsGlobalParameterEnum;
 import com.yatop.lambda.core.enums.SourceLevelEnum;
+import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component
 public class ParameterHelper {
+
+    private static NodeParameterMgr NODE_PARAMETER_MGR;
+
+    @Autowired
+    public void setNodeParameterMgr(NodeParameterMgr nodeParameterMgr) {
+        NODE_PARAMETER_MGR = nodeParameterMgr;
+    }
 
     public static NodeParameter simulateParameter(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
@@ -37,5 +48,9 @@ public class ParameterHelper {
         parameter.setCreateTime(curTime);
         parameter.setCreateOper(workflowContext.getOperId());
         return new NodeParameter(parameter, cmptChar, charValue, true);
+    }
+
+    public static void updateNodeParameter(NodeParameter richParameter, String operId) {
+        NODE_PARAMETER_MGR.updateNodeParameter(richParameter, operId);
     }
 }

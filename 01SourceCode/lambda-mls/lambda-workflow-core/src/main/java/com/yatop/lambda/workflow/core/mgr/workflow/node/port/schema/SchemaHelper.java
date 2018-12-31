@@ -5,8 +5,10 @@ import com.yatop.lambda.core.enums.JsonObjectStateEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.JsonObjectMgr;
+import com.yatop.lambda.core.mgr.workflow.node.NodeSchemaMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.workflow.JsonObject;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +18,16 @@ public class SchemaHelper {
 
     private static JsonObjectMgr JSON_OBJECT_MGR;
 
+    private static NodeSchemaMgr NODE_SCHEMA_MGR;
+
     @Autowired
-    public void setNodeSchemaMgr(JsonObjectMgr josnObjectMgr) {
+    public void setJsonObjectMgr(JsonObjectMgr josnObjectMgr) {
         JSON_OBJECT_MGR = josnObjectMgr;
+    }
+
+    @Autowired
+    public void setNodeSchemaMgr(NodeSchemaMgr nodeSchemaMgr) {
+        NODE_SCHEMA_MGR = nodeSchemaMgr;
     }
 
     static public JsonObject queryFieldAttributes(Long objectId) {
@@ -30,20 +39,18 @@ public class SchemaHelper {
     }
 
     static public void updateFieldAttributes(JsonObject richJsonObject, String operId) {
-        WfJsonObject jsonObject = new WfJsonObject();
-        jsonObject.setObjectId(richJsonObject.getObjectId());
-        jsonObject.setObjectData(richJsonObject.getObjectData());
-        jsonObject.setObjectState(DataUtil.isNotEmpty(richJsonObject.getObjectData()) ? JsonObjectStateEnum.NORMAL.getState() : JsonObjectStateEnum.EMPTY.getState());
         JSON_OBJECT_MGR.updateJsonObject(richJsonObject, operId);
-        richJsonObject.copyProperties(JSON_OBJECT_MGR.queryJsonObject(richJsonObject.getObjectId()));
     }
 
-    static public void deleteFieldAttributes(JsonObject richJsonObject, String operId) {
-        JSON_OBJECT_MGR.deleteJsonObject(richJsonObject.getObjectId(), true, operId);
+    static public void deleteFieldAttributes(Long jsonObjectId, String operId) {
+        JSON_OBJECT_MGR.deleteJsonObject(jsonObjectId, true, operId);
     }
 
-    static public JsonObject recoverFieldAttributes(Long jsonObjectId, String operId) {
+    static public void recoverFieldAttributes(Long jsonObjectId, String operId) {
         JSON_OBJECT_MGR.recoverJsonObject(jsonObjectId, operId);
-        return queryFieldAttributes(jsonObjectId);
+    }
+
+    static public void updateNodeSchema(NodeSchema richSchema, String operId) {
+        NODE_SCHEMA_MGR.updateSchema(richSchema, operId);
     }
 }

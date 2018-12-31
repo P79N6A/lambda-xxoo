@@ -28,6 +28,12 @@ public class NodePortOutput extends WfFlowNodePort implements IRichModel {
         super.clear();
     }
 
+    public void flush(String operId) {
+        if(this.isDataPort()) {
+            schema.flush(operId);
+        }
+    }
+
     public ModulePort getModulePort() {
         return modulePort;
     }

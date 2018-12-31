@@ -22,6 +22,22 @@ public class FieldAttribute implements IRichModel {
         type = null;
     }
 
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if(!(that instanceof FieldAttribute)) {
+            return false;
+        }
+
+        FieldAttribute other = (FieldAttribute) that;
+        return this.name.equals(other.name) ? this.type.equals(other.type) : false;
+    }
+
     public String getName() {
         return name;
     }

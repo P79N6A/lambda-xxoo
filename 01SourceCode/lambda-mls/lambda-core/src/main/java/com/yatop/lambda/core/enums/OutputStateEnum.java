@@ -3,14 +3,14 @@ package com.yatop.lambda.core.enums;
 public enum OutputStateEnum {
 
     /**
-     * 空对象
+     * 空输出
      */
-    NORMAL(0, "Empty"),
+    EMPTY(0, "Empty"),
 
     /**
      * 正常
      */
-    EMPTY(1, "Normal");
+    NORMAL(1, "Normal");
 
     private int state;
     private String name;
@@ -38,8 +38,8 @@ public enum OutputStateEnum {
 
     public static OutputStateEnum valueOf(int state) {
         switch (state) {
-            case 0: return NORMAL;
-            case 1: return EMPTY;
+            case 0: return EMPTY;
+            case 1: return NORMAL;
             default: return null;
         }
     }

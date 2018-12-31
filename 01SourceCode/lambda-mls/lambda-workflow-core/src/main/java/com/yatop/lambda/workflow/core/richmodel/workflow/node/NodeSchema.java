@@ -21,6 +21,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
 
     private JsonObject jsonObject;  //关联JSON对象
     private List<FieldAttribute> fieldAttributes;
+    private boolean dirtyFieldAttributes;
 
     public NodeSchema(WfFlowNodeSchema data) {
         this(data, null);
@@ -29,69 +30,94 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     public NodeSchema(WfFlowNodeSchema data, JsonObject jsonObject) {
         super.copyProperties(data);
         this.jsonObject = jsonObject;
+        this.fieldAttributes = null;
+        this.dirtyFieldAttributes = false;
         this.clearColoured();
     }
 
     @Override
     public void clear() {
+        DataUtil.clear(jsonObject);
         jsonObject = null;
         CollectionUtil.clear(fieldAttributes);
+        fieldAttributes = null;
         super.clear();
     }
 
     private JsonObject getJsonObject() {
         if(DataUtil.isNull(jsonObject)) {
             jsonObject = SchemaHelper.queryFieldAttributes(this.getObjectId());
+            if(DataUtil.isNull(jsonObject)){
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- json object data missing.", "节点数据输出端口schema信息错误", this);
+            }
         }
         return jsonObject;
     }
 
     public List<FieldAttribute> getFieldAttributes() {
-        if(this.getSchemaState() != SchemaStateEnum.NORMAL.getState())
+        if(this.getSchemaState() != SchemaStateEnum.NORMAL.getState()) {
             return null;
+        }
 
         if(DataUtil.isEmpty(fieldAttributes)) {
             if (getJsonObject().getObjectState() == JsonObjectStateEnum.NORMAL.getState()) {
-                fieldAttributes = JSONArray.parseArray(this.getJsonObject().getObjectData(), FieldAttribute.class);
+                fieldAttributes = JSONArray.parseArray(getJsonObject().getObjectData(), FieldAttribute.class);
             }
             if(DataUtil.isEmpty(fieldAttributes)){
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- field attribute list confused.", "节点数据输出端口schema信息错乱，请联系管理员");
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- get empty field attribute list.", "节点数据输出端口schema信息错误", this);
             }
         }
         return fieldAttributes;
     }
 
     public void setFieldAttributes(SchemaStateEnum schemaStateEnum, List<FieldAttribute> fieldAttributes) {
-        if(schemaStateEnum.getState() == SchemaStateEnum.NORMAL.getState())
-            this.fieldAttributes = fieldAttributes;
-        else
-            this.fieldAttributes = null;
-        this.setSchemaState(schemaStateEnum.getState());
+        if(schemaStateEnum.getState() == SchemaStateEnum.NORMAL.getState()) {
+
+            if(DataUtil.isEmpty(fieldAttributes)) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- set empty field attribute list.", "节点数据输出端口schema信息错误");
+            }
+
+            if(this.getSchemaState() == SchemaStateEnum.NORMAL.getState()) {
+                if(!CollectionUtil.equals(this.getFieldAttributes(), fieldAttributes)) {
+                    CollectionUtil.clear(this.fieldAttributes);
+                    this.fieldAttributes = fieldAttributes;
+                    this.dirtyFieldAttributes = true;
+                }
+            } else {
+                CollectionUtil.clear(this.fieldAttributes);
+                this.fieldAttributes = fieldAttributes;
+                this.dirtyFieldAttributes = true;
+                this.setSchemaState(SchemaStateEnum.NORMAL.getState());
+            }
+        }
+        else {
+            if(this.getSchemaState() == SchemaStateEnum.NORMAL.getState()) {
+                CollectionUtil.clear(this.fieldAttributes);
+                this.fieldAttributes = null;
+                this.dirtyFieldAttributes = true;
+                this.setSchemaState(schemaStateEnum.getState());
+            } else if (this.getSchemaState() != schemaStateEnum.getState()) {
+                this.setSchemaState(schemaStateEnum.getState());
+            }
+        }
     }
 
-    public void flushFieldAttributes(String operId) {
+    public void flush(String operId) {
+        if(dirtyFieldAttributes) {
+            getJsonObject().setObjectData(DataUtil.isNotEmpty(fieldAttributes) ? JSONArray.toJSONString(fieldAttributes) : null);
+            SchemaHelper.updateFieldAttributes(getJsonObject(), operId);
+        }
 
-        if(this.getSchemaState() == SchemaStateEnum.NORMAL.getState()) {
-            if(DataUtil.isNotEmpty(fieldAttributes)) {
-                this.getJsonObject().setObjectData(JSONArray.toJSONString(fieldAttributes));
-                SchemaHelper.updateFieldAttributes(this.jsonObject, operId);
-            }
-            else
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- empty field attribute list.", "节点数据输出端口schema信息为空，请联系管理员");
+        if(this.isColoured()) {
+            SchemaHelper.updateNodeSchema(this, operId);
         }
     }
 
     public void deleteFieldAttributes(String operId) {
-        SchemaHelper.deleteFieldAttributes(this.getJsonObject(), operId);
-        this.jsonObject = null;
-        CollectionUtil.clear(this.fieldAttributes);
-        this.fieldAttributes = null;
+        SchemaHelper.deleteFieldAttributes(this.getObjectId(), operId);
     }
 
     public void recoverFieldAttributes(String operId) {
         SchemaHelper.recoverFieldAttributes(this.getObjectId(), operId);
-        this.jsonObject = null;
-        CollectionUtil.clear(this.fieldAttributes);
-        this.fieldAttributes = null;
     }
 }

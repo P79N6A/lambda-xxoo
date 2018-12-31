@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNode;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeHelper;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.workflow.GlobalParameter;
@@ -45,8 +46,25 @@ public class Node extends WfFlowNode implements IRichModel {
         super.clear();
     }
 
-    public void flush() {
+    public void flush(String operId) {
 
+        if(this.parameterCount() > 0) {
+            for (NodeParameter parameter : this.getParameters()) {
+                parameter.flush(operId);
+            }
+        }
+        if(this.optimizeParameterCount() > 0) {
+            for (NodeParameter parameter : this.getOptimizeParameters()) {
+                parameter.flush(operId);
+            }
+        }
+        if(this.outputNodePortCount() > 0) {
+            for (NodePortOutput outputPort : this.getOutputNodePorts()) {
+                outputPort.flush(operId);
+            }
+        }
+        if(this.isColoured())
+            NodeHelper.updateNode(this, operId);
     }
 
     public Module getModule() {

@@ -122,4 +122,11 @@ public class CollectionUtil {
 
         return vlist;
     }
+
+    public static <L extends List<V>, V extends Object> boolean equals(L lhs, L rhs) {
+        if(DataUtil.isNull(lhs) || DataUtil.isNull(rhs))
+            return false;
+
+        return lhs.equals(rhs);
+    }
 }

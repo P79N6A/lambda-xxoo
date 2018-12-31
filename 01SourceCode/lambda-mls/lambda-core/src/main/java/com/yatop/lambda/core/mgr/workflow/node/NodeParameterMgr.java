@@ -107,7 +107,7 @@ public class NodeParameterMgr extends BaseMgr {
      *
      * */
     public int updateNodeParameter(WfFlowNodeParameter nodeParameter, String operId) {
-        if( DataUtil.isNull(nodeParameter) || nodeParameter.isNodeIdColoured() || nodeParameter.isCharIdNotColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(nodeParameter) || DataUtil.isNull(nodeParameter.getNodeId()) || DataUtil.isEmpty(nodeParameter.getCharId()) || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node parameter failed -- invalid update condition.", "无效更新条件");
         }
 

@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.context;
 
 import com.yatop.lambda.core.enums.IsWebLinkEnum;
+import com.yatop.lambda.core.enums.JobTypeEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.data.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.model.ModelWarehouse;
@@ -16,8 +17,8 @@ import java.util.*;
 
 public class WorkflowContext implements IWorkContext {
 
-    private boolean onlyWorkflowGraph;
-    private boolean simulateWorkflow;       //是否为模拟工作流（用于对数据文件导入作业任务，实际不存在workflow和node相关记录信息）
+    private boolean enableFlushWorkflow;    //控制是否可执行flush方法更新工作流相关信息
+    private boolean onlyWorkflowGraph;      //控制是否查询带出节点参数和数据输出端口schema等信息
     private Project project;                //操作关联项目
     private Workflow workflow;              //操作关联工作流
     private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库，key=dwId
@@ -35,49 +36,61 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, NodeLink> deleteLinks = new TreeMap<Long, NodeLink>();  //删除节点链接，key=linkId
 
     public static WorkflowContext BuildWorkflowContext(Project project, Workflow workflow, String operId) {
-        return new WorkflowContext(project, workflow, false, operId);
+        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+        context.enableFlushWorkflow = true;
+        context.onlyWorkflowGraph = false;
+        return context;
     }
 
     public static WorkflowContext BuildWorkflowContext4OnlyGraph(Project project, Workflow workflow, String operId) {
-        return new WorkflowContext(project, workflow, true, operId);
+        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+        context.enableFlushWorkflow = false;
+        context.onlyWorkflowGraph = true;
+        return context;
     }
 
-    public static WorkflowContext BuildWorkflowContext4Simulate(Project project, String operId) {
-        return new WorkflowContext(project, operId);
+    public static WorkflowContext BuildWorkflowContext4Execution(WorkflowContext context, JobTypeEnum jobTypeEnum, String operId) {
+        context.enableFlushWorkflow = JobTypeEnum.enableFlushWorkflow(jobTypeEnum);
+        context.onlyWorkflowGraph = false;
+
+        //TODO Clear schema information
+
+        return context;
     }
 
-    private WorkflowContext(Project project, Workflow workflow, boolean onlyWorkflowGraph, String operId) {
+    public static WorkflowContext BuildWorkflowContext4Simulate(WorkflowContext context, JobTypeEnum jobTypeEnum, String operId) {
+        context.enableFlushWorkflow = false;
+        context.onlyWorkflowGraph = false;
+        return context;
+    }
+
+    private WorkflowContext(Project project, Workflow workflow, String operId) {
         this.project = project;
         this.workflow = workflow;
         this.operId = operId;
-        this.onlyWorkflowGraph = onlyWorkflowGraph;
-        this.simulateWorkflow = false;
-    }
-
-    private WorkflowContext(Project project, String operId) {
-        this.project = project;
-        this.operId = operId;
-        this.onlyWorkflowGraph = false;
-        this.simulateWorkflow = true;
     }
 
     public void flush() {
-        if(onlyWorkflowGraph || simulateWorkflow)
+        if(enableFlushWorkflow)
             return;
 
-        workflow.flush();
-        for(Node node : this.getNodes()) {
-            node.flush();
+        for (Node node : this.getNodes()) {
+            node.flush(operId);
         }
+        workflow.flush(operId);
+    }
+
+    public boolean isEnableFlushWorkflow() {
+        return enableFlushWorkflow;
     }
 
     public boolean isOnlyWorkflowGraph() {
         return onlyWorkflowGraph;
     }
 
-    public boolean isSimulateWorkflow() {
-        return simulateWorkflow;
-    }
+//    public boolean isSimulateWorkflow() {
+//        return simulateWorkflow;
+//    }
 
     public Project getProject() {
         return project;
