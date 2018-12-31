@@ -58,12 +58,6 @@ public class WorkflowContext implements IWorkContext {
         return context;
     }
 
-    public static WorkflowContext BuildWorkflowContext4Simulate(WorkflowContext context, JobTypeEnum jobTypeEnum, String operId) {
-        context.enableFlushWorkflow = false;
-        context.onlyWorkflowGraph = false;
-        return context;
-    }
-
     private WorkflowContext(Project project, Workflow workflow, String operId) {
         this.project = project;
         this.workflow = workflow;
@@ -87,10 +81,6 @@ public class WorkflowContext implements IWorkContext {
     public boolean isOnlyWorkflowGraph() {
         return onlyWorkflowGraph;
     }
-
-//    public boolean isSimulateWorkflow() {
-//        return simulateWorkflow;
-//    }
 
     public Project getProject() {
         return project;

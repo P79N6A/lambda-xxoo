@@ -45,7 +45,8 @@ public class NodeQuery {
 
         Node richNode = new Node(node, module);
         workflowContext.putNode(richNode);
-        parameterQuery.queryParameters(workflowContext, richNode);
+        if(!workflowContext.isOnlyWorkflowGraph())
+            parameterQuery.queryParameters(workflowContext, richNode);
         nodePortQuery.queryNodePorts(workflowContext, richNode);
         return richNode;
     }
@@ -64,7 +65,8 @@ public class NodeQuery {
 
             Node richNode = new Node(node, module);
             workflowContext.putNode(richNode);
-            parameterQuery.queryParameters(workflowContext, richNode);
+            if(!workflowContext.isOnlyWorkflowGraph())
+                parameterQuery.queryParameters(workflowContext, richNode);
             nodePortQuery.queryNodePorts(workflowContext, richNode);
         }
     }
