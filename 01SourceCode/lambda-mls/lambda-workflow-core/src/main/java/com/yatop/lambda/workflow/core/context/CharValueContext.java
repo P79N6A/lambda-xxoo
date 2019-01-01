@@ -1,7 +1,7 @@
 package com.yatop.lambda.workflow.core.context;
 
 import com.yatop.lambda.core.enums.SpecTypeEnum;
-import com.yatop.lambda.workflow.core.richmodel.workflow.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;

@@ -1,13 +1,12 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema;
 
 import com.yatop.lambda.base.model.WfJsonObject;
-import com.yatop.lambda.core.enums.JsonObjectStateEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
-import com.yatop.lambda.core.mgr.workflow.JsonObjectMgr;
+import com.yatop.lambda.core.mgr.workflow.unstructured.JsonObjectMgr;
 import com.yatop.lambda.core.mgr.workflow.node.NodeSchemaMgr;
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.workflow.core.richmodel.workflow.JsonObject;
+import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonObject;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -8,7 +8,7 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
-import com.yatop.lambda.workflow.core.richmodel.workflow.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,6 @@ public class CharValueCreate {
         } else if(charValue.getSpecType() == SpecTypeEnum.OUTPUT.getType()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create characteristic value failed -- char-type-clazz uncaught output char-value create event.", "系统内部严重错误，请联系管理员", charValue);
         } else if(DataUtil.isNotEmpty(charValue.getInText())) {
-            //潜在CharValue由于配置错误导致内容过长
             charValue.setCharValue(charValue.getInText());
             charValue.setOutText(charValue.getInText());
             return;

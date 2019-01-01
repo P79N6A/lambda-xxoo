@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2018-12-29 18:22:33
+Date: 2019-01-01 18:07:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -365,16 +365,16 @@ INSERT INTO `cf_cmpt_char_type` VALUES ('9001', 'Json Array', 'json数组', '0',
 -- ----------------------------
 DROP TABLE IF EXISTS `cf_cmpt_char_type_wild`;
 CREATE TABLE `cf_cmpt_char_type_wild` (
-  `WILD_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '通配特征类型ID',
-  `MATCH_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '单元特征类型ID',
+  `DST_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '目标特征类型ID',
+  `SRC_CHAR_TYPE_ID` int(11) NOT NULL COMMENT '来源特征类型ID',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`WILD_CHAR_TYPE_ID`,`MATCH_CHAR_TYPE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征类型通配表（仅查询用），配置通配类型和成员类型的关系';
+  PRIMARY KEY (`DST_CHAR_TYPE_ID`,`SRC_CHAR_TYPE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件端口特征类型通配表（仅查询用），配置目标端口特征类型和来源端口特征类型的匹配关系';
 
 -- ----------------------------
 -- Records of cf_cmpt_char_type_wild
@@ -940,7 +940,7 @@ CREATE TABLE `dw_data_table` (
   KEY `Index_1` (`OWNER_DW_ID`,`TABLE_TYPE`,`TABLE_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_DW_ID`,`TABLE_TYPE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_DW_ID`,`TABLE_TYPE`,`TABLE_STATE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
 
 -- ----------------------------
 -- Records of dw_data_table
@@ -1058,7 +1058,7 @@ CREATE TABLE `mw_model` (
   PRIMARY KEY (`MODEL_ID`),
   KEY `Index_1` (`OWNER_MW_ID`,`MODEL_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_MW_ID`,`MODEL_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除，同一库下正常状态的名称唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除，同一库下正常状态的名称唯一';
 
 -- ----------------------------
 -- Records of mw_model
@@ -1201,6 +1201,7 @@ CREATE TABLE `sys_parameter` (
 INSERT INTO `sys_parameter` VALUES ('2001', 'PR_CACHE_DATA_EXPIRE_DAYS', '项目管理 | 临时缓存数据表过期天数', '2', '-1', '21', '系统级默认过期天数配置，不做自动清理可配置为-1', '0', '2017-05-19 15:09:42', 'admin', '2017-05-19 15:09:42', 'admin');
 INSERT INTO `sys_parameter` VALUES ('6001', 'WK_FLOW_MAX_NODES', '工作流引擎 | 工作流正常节点最大数量', '6', '-1', '512', '超过上限，限制新增节点', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
 INSERT INTO `sys_parameter` VALUES ('6002', 'WK_FLOW_SCHEMA_MAX_FIELDS', '工作流引擎 | 数据输出端口最大字段数量', '6', '-1', '512', '超过上限，中断schema分析', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
+INSERT INTO `sys_parameter` VALUES ('6003', 'WK_FLOW_MAX_GLOBAL_PARAMETERS', '工作流引擎 | 工作流最大全局参数数量', '6', '-1', '16', '超过上限，限制新增全局参数', '0', '2017-05-19 15:22:08', 'admin', '2017-05-19 15:22:08', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7001', 'CF_HDFS_SITE_defaultFS', '计算框架 | HDFS默认文件系统', '7', '-1', 'hdfs://127.0.0.1:9000', 'namenode单点部署设为hdfs://IP:PORT，HA部署设为hdfs://CLUSTER_NAME', '0', '2017-05-19 15:09:42', 'admin', '2017-05-19 15:09:42', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7002', 'CF_HDFS_WORK_ROOT', '计算框架 | HDFS工作根目录', '7', '-1', '/user/lambda_mls', '根据hdfs用户名调整，完整拼接路径 e.g. ${HDFS_SITE}/user/lambda_mls', '0', '2017-05-19 15:26:23', 'admin', '2017-05-19 15:26:23', 'admin');
 INSERT INTO `sys_parameter` VALUES ('7003', 'CF_LOCAL_WORK_ROOT', '计算框架 | 本地工作根目录', '7', '-1', '/opt/lambda_mls', '根据实际磁盘挂载调整', '0', '2017-05-19 15:26:23', 'admin', '2017-05-19 15:26:23', 'admin');
@@ -1245,7 +1246,7 @@ CREATE TABLE `wf_code_script` (
   PRIMARY KEY (`SCRIPT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`SCRIPT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
 
 -- ----------------------------
 -- Records of wf_code_script
@@ -1280,7 +1281,7 @@ CREATE TABLE `wf_execution_job` (
   PRIMARY KEY (`JOB_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
 
 -- ----------------------------
 -- Records of wf_execution_job
@@ -1427,7 +1428,7 @@ CREATE TABLE `wf_flow_global_parameter` (
   KEY `Index_1` (`REL_NODE_ID`,`REL_CHAR_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`REL_NODE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流全局参数表，用于定时调度任务和开放服务API，指定哪些参数可以暴露到外部，从而调用方可以根据作业需要动态设置工作流';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流全局参数表，用于定时调度任务和开放服务API，指定哪些参数可以暴露到外部，从而调用方可以根据作业需要动态设置工作流';
 
 -- ----------------------------
 -- Records of wf_flow_global_parameter
@@ -1618,7 +1619,7 @@ CREATE TABLE `wf_json_object` (
   PRIMARY KEY (`OBJECT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`OBJECT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
 
 -- ----------------------------
 -- Records of wf_json_object
@@ -1740,7 +1741,7 @@ CREATE TABLE `wf_module_port` (
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`PORT_ID`),
   UNIQUE KEY `Index_2` (`OWNER_MODULE_ID`,`BIND_CHAR_ID`),
-  UNIQUE KEY `Index_1` (`OWNER_MODULE_ID`,`PORT_TYPE`,`SEQUENCE`) USING BTREE
+  KEY `Index_1` (`OWNER_MODULE_ID`,`PORT_TYPE`,`SEQUENCE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流组件端口表，映射计算组件输入输出内容到工作流组件端口上';
 
 -- ----------------------------
@@ -1815,6 +1816,27 @@ CREATE TABLE `wf_snapshot` (
 
 -- ----------------------------
 -- Records of wf_snapshot
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_snapshot_parameter
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_snapshot_parameter`;
+CREATE TABLE `wf_snapshot_parameter` (
+  `SNAPSHOT_ID` bigint(20) NOT NULL COMMENT '快照ID',
+  `OWNER_NODE_ID` bigint(20) NOT NULL COMMENT '所属节点ID',
+  `PARAMETER_CONTENT` mediumtext COMMENT '节点参数特征值内容',
+  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
+  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
+  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
+  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
+  KEY `Index_1` (`SNAPSHOT_ID`,`OWNER_NODE_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流快照节点设置特征值表';
+
+-- ----------------------------
+-- Records of wf_snapshot_parameter
 -- ----------------------------
 
 -- ----------------------------

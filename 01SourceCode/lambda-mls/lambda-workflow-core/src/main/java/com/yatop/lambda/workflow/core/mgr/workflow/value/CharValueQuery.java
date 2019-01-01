@@ -7,7 +7,7 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
-import com.yatop.lambda.workflow.core.richmodel.workflow.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 import org.springframework.stereotype.Service;

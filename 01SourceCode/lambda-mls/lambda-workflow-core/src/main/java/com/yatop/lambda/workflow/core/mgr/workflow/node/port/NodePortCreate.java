@@ -31,8 +31,8 @@ public class NodePortCreate {
         nodePort.setRefPortId(inputPort.getPortId());
         nodePort.setRefCharId(inputPort.getCmptChar().getCharId());
         nodePortMgr.insertNodePort(nodePort, workflowContext.getOperId());
+        //nodePort.copyProperties(nodePortMgr.queryNodePort(nodePort.getNodePortId()));
         NodePortInput richNodePort = new NodePortInput(nodePort, inputPort);
-        //richNodePort.copyProperties(nodePortMgr.queryNodePort(richNodePort.getNodePortId()));
         return  richNodePort;
     }
 
@@ -44,8 +44,8 @@ public class NodePortCreate {
         nodePort.setRefPortId(outputPort.getPortId());
         nodePort.setRefCharId(outputPort.getCmptChar().getCharId());
         nodePortMgr.insertNodePort(nodePort, workflowContext.getOperId());
+        //nodePort.copyProperties(nodePortMgr.queryNodePort(nodePort.getNodePortId()));
         NodePortOutput richNodePort = new NodePortOutput(nodePort, outputPort);
-        //richNodePort.copyProperties(nodePortMgr.queryNodePort(richNodePort.getNodePortId()));
 
         if(richNodePort.isDataPort()) {
             schemaCreate.createSchema(workflowContext, node, richNodePort);

@@ -1,10 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel.component;
 
 import com.yatop.lambda.base.model.CfComponent;
-import com.yatop.lambda.core.enums.IsRequiredEnum;
-import com.yatop.lambda.core.enums.IsSystemParamEnum;
-import com.yatop.lambda.core.enums.SourceLevelEnum;
-import com.yatop.lambda.core.enums.SpecTypeEnum;
+import com.yatop.lambda.core.enums.*;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.SystemParameterUtil;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
@@ -41,6 +38,10 @@ public class Component extends CfComponent implements IRichModel {
         CollectionUtil.clear(charValues);
         charValues = null;
         super.clear();
+    }
+
+    public boolean isWebComponent() {
+        return this.getCmptType() == CmptTypeEnum.WEB_CMPT.getType();
     }
 
     public CmptAlgorithm getAlgorithm() {

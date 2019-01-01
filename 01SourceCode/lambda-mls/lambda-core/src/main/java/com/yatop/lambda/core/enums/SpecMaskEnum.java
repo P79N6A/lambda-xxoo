@@ -71,6 +71,10 @@ public enum SpecMaskEnum {
         return (mask & OUTPUT.getBit()) > 0;
     }
 
+    public static boolean matchInputAndOutput(int mask) {
+        return matchInput(mask) && matchOutput(mask);
+    }
+
     public static boolean matchExecution(int mask) {
         return (mask & EXECUTION.getBit()) > 0;
     }

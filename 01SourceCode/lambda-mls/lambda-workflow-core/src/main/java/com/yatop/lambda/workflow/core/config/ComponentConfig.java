@@ -22,6 +22,7 @@ import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCha
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCharType;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpecCharValue;
+import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class ComponentConfig implements InitializingBean {
@@ -70,40 +72,51 @@ public class ComponentConfig implements InitializingBean {
     @Autowired
     private CmptCharTypeWildMgr cmptCharTypeWildMgr;
 
-    private static HashMap<Long, CmptAlgorithm> ALL_ALGORITHMS = new HashMap<Long, CmptAlgorithm>();   //计算组件算法
-    private static HashMap<String, Component> ALL_COMPONENTS = new HashMap<String, Component>();    //计算组件
-    private static HashMap<String, CmptSpec> ALL_SPECIFICATIONS = new HashMap<String, CmptSpec>();  //计算组件规格
-    private static HashMap<String, CmptChar> ALL_CHARACTERISTICS = new HashMap<String, CmptChar>(); //计算组件特征
-    private static HashMap<Integer, CmptCharType> ALL_CHARACTERISTIC_TYPES = new HashMap<Integer, CmptCharType>(); //计算组件特征类型
+    private HashMap<Long, CmptAlgorithm> ALL_ALGORITHMS = new HashMap<Long, CmptAlgorithm>();   //计算组件算法
+    private HashMap<String, Component> ALL_COMPONENTS = new HashMap<String, Component>();    //计算组件
+    private HashMap<String, CmptSpec> ALL_SPECIFICATIONS = new HashMap<String, CmptSpec>();  //计算组件规格
+    private HashMap<String, CmptChar> ALL_CHARACTERISTICS = new HashMap<String, CmptChar>(); //计算组件特征
+    private HashMap<Integer, CmptCharType> ALL_CHARACTERISTIC_TYPES = new HashMap<Integer, CmptCharType>(); //计算组件特征类型
+    private HashMap<Integer, CmptCharType> ALL_PORT_CHARACTERISTIC_TYPES = new HashMap<Integer, CmptCharType>(); //计算组件端口特征类型
 
-    public static CmptAlgorithm getAlgorithm(Long algorithmId) {
+    public CmptAlgorithm getAlgorithm(Long algorithmId) {
         if(DataUtil.isNull(algorithmId))
             return null;
         return ALL_ALGORITHMS.get(algorithmId);
     }
 
-    public static Component getComponent(String cmptId) {
+    public Component getComponent(String cmptId) {
         if(DataUtil.isEmpty(cmptId))
             return null;
         return ALL_COMPONENTS.get(cmptId);
     }
 
-    public static CmptSpec getSpecification(String specId) {
+    public CmptSpec getSpecification(String specId) {
         if(DataUtil.isEmpty(specId))
             return null;
         return ALL_SPECIFICATIONS.get(specId);
     }
 
-    public static CmptChar getCharacteristic(String charId) {
+    public CmptChar getCharacteristic(String charId) {
         if(DataUtil.isEmpty(charId))
             return null;
         return ALL_CHARACTERISTICS.get(charId);
     }
 
-    public static CmptCharType getCharacteristicType(Integer typeId) {
+    public CmptCharType getCharacteristicType(Integer typeId) {
         if(DataUtil.isNull(typeId))
             return null;
         return ALL_CHARACTERISTIC_TYPES.get(typeId);
+    }
+
+    public CmptCharType getPortCharacteristicType(Integer typeId) {
+        if(DataUtil.isNull(typeId))
+            return null;
+        return ALL_PORT_CHARACTERISTIC_TYPES.get(typeId);
+    }
+
+    public List<CmptCharType> getPortCharacteristicTypes() {
+        return CollectionUtil.toList(ALL_PORT_CHARACTERISTIC_TYPES);
     }
 
     @Override
@@ -130,6 +143,7 @@ public class ComponentConfig implements InitializingBean {
     }
 
     private void loadCmptCharTypeConfig() {
+        long wildTypeCounter = 0;
         List<CfCmptCharType> typeList = cmptCharTypeMgr.queryCharType();
         if(DataUtil.isEmpty(typeList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic type configuration."));
@@ -139,11 +153,14 @@ public class ComponentConfig implements InitializingBean {
         for(CfCmptCharType type : typeList) {
             CmptCharType richType = new CmptCharType(type);
 
-            if(DataUtil.isNull(IsWildTypeEnum.valueOf(richType.getIsWildtype()))) {
+            IsWildTypeEnum wildTypeEnum = IsWildTypeEnum.valueOf(richType.getIsWildtype());
+            if(DataUtil.isNull(wildTypeEnum)) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Error Is-WildType:\n%s.", DataUtil.prettyFormat(type)));
                 System.exit(-1);
             }
-
+            if(wildTypeEnum.getMark() == IsWildTypeEnum.YES.getMark()) {
+                wildTypeCounter++;
+            }
             if(!SpecMaskEnum.isCorrectMask(richType.getSpecMask())) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Error Spec-Mask:\n%s.", DataUtil.prettyFormat(type)));
                 System.exit(-1);
@@ -153,22 +170,71 @@ public class ComponentConfig implements InitializingBean {
         }
         typeList.clear();
 
-        List<CfCmptCharTypeWild> matchList = cmptCharTypeWildMgr.queryCharTypeWild();
-        if(DataUtil.isEmpty(matchList)) {
-            logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic type wild match configuration."));
-            System.exit(-1);
-        }
-
-        for(CfCmptCharTypeWild match : matchList) {
-            CmptCharType charType = ALL_CHARACTERISTIC_TYPES.get(match.getWildCharTypeId());
-            if(DataUtil.isNotNull(charType)) {
-                charType.addMatchType(match.getMatchCharTypeId());
-            } else {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Owner characteristic type not found:\n%s.", DataUtil.prettyFormat(match)));
+        if(wildTypeCounter > 0) {
+            List<CfCmptCharTypeWild> matchTypeList = cmptCharTypeWildMgr.queryCharTypeWild();
+            if (DataUtil.isEmpty(matchTypeList)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic type wild match configuration."));
                 System.exit(-1);
             }
+
+            for (CfCmptCharTypeWild match : matchTypeList) {
+                CmptCharType targetCharType = ALL_CHARACTERISTIC_TYPES.get(match.getDstCharTypeId());
+                if (DataUtil.isNull(targetCharType)) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type not found:\n%s.", DataUtil.prettyFormat(match)));
+                    System.exit(-1);
+                }
+                if (targetCharType.getIsWildtype() != IsWildTypeEnum.YES.getMark()) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type info error:\n%s.", DataUtil.prettyFormat(match)));
+                    System.exit(-1);
+                }
+                if (!SpecMaskEnum.matchInputAndOutput(targetCharType.getSpecMask())) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type must be also support input & output:\n%s.", DataUtil.prettyFormat(match)));
+                    System.exit(-1);
+                }
+                CmptCharType sourceCharType = ALL_CHARACTERISTIC_TYPES.get(match.getSrcCharTypeId());
+                if (DataUtil.isNull(sourceCharType)) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Source port characteristic type not found:\n%s.", DataUtil.prettyFormat(match)));
+                    System.exit(-1);
+                }
+                if (!SpecMaskEnum.matchInputAndOutput(sourceCharType.getSpecMask())) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Source port characteristic type must be also support input & output:\n%s.", DataUtil.prettyFormat(match)));
+                    System.exit(-1);
+                }
+
+                sourceCharType.putMatchTargetType(targetCharType);
+            }
+            matchTypeList.clear();
         }
-        matchList.clear();
+
+        //sourceCharTypeId, <targetCharTypeId, CmptCharType>
+        HashMap<Integer, TreeMap<Integer, CmptCharType>> expandedTargetCharTypesCache = new HashMap<Integer, TreeMap<Integer, CmptCharType>>();
+        for(Map.Entry<Integer, CmptCharType> entry: ALL_CHARACTERISTIC_TYPES.entrySet()) {
+            CmptCharType sourceCharType = entry.getValue();
+            if(!SpecMaskEnum.matchInputAndOutput(sourceCharType.getSpecMask())) {
+                ALL_PORT_CHARACTERISTIC_TYPES.put(sourceCharType.getCharTypeId(), sourceCharType);
+
+                TreeMap<Integer, CmptCharType> expandedTargetCharTypes = new TreeMap<Integer, CmptCharType>();
+                expandedTargetCharTypes.put(sourceCharType.getCharTypeId(), sourceCharType);
+                expandedTargetCharTypesCache.put(sourceCharType.getCharTypeId(), expandedTargetCharTypes);
+
+                expandSourcePortTargetCharType(sourceCharType.getMatchTargetTypes(), expandedTargetCharTypes);
+            }
+        }
+
+        for(Map.Entry<Integer, TreeMap<Integer, CmptCharType>> entry : expandedTargetCharTypesCache.entrySet()) {
+            CmptCharType sourceCharType = ALL_PORT_CHARACTERISTIC_TYPES.get(entry.getKey());
+            sourceCharType.replaceMatchTargetTypes(entry.getValue());
+        }
+        expandedTargetCharTypesCache.clear();
+    }
+
+    private void expandSourcePortTargetCharType(List<CmptCharType> targetCharTypes, TreeMap<Integer, CmptCharType> expandedTargetCharTypes) {
+        if(DataUtil.isEmpty(targetCharTypes))
+            return;
+        for(CmptCharType targetCharType : targetCharTypes) {
+            expandSourcePortTargetCharType(targetCharType.getMatchTargetTypes(), expandedTargetCharTypes);
+            expandedTargetCharTypes.put(targetCharType.getCharTypeId(), targetCharType);
+        }
     }
 
     private void loadCmptCharConfig() {

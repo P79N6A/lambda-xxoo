@@ -1,7 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel;
 
 import com.yatop.lambda.LambdaApplication;
-import com.yatop.lambda.core.mgr.data.DataWarehouseMgr;
+import com.yatop.lambda.core.mgr.table.DataWarehouseMgr;
 import com.yatop.lambda.core.mgr.project.ProjectMgr;
 import org.junit.Test;
 import org.junit.runner.RunWith;

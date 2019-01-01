@@ -6,6 +6,7 @@ import com.yatop.lambda.base.model.WfModuleCatalog;
 import com.yatop.lambda.base.model.WfModulePort;
 import com.yatop.lambda.core.enums.ModuleTypeEnum;
 import com.yatop.lambda.core.enums.PortTypeEnum;
+import com.yatop.lambda.core.enums.SpecMaskEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.mgr.workflow.module.ModuleCatalogMgr;
 import com.yatop.lambda.core.mgr.workflow.module.ModuleMgr;
@@ -44,28 +45,28 @@ public class ModuleConfig implements InitializingBean {
     @Autowired
     private ComponentConfig componentConfig;
 
-    private static TreeMultimap<Integer, ModuleCatalog> FIRST_LEVEL_MODULE_CATALOGS = TreeMultimap.create();    //一级工作流组件目录按序号排序
-    private static HashMap<Long, ModuleCatalog> ALL_MODULE_CATALOGS = new HashMap<Long, ModuleCatalog>();       //工作流组件目录
-    private static HashMap<Long, Module> ALL_MODULES = new HashMap<Long, Module>();                             //工作流组件
-    private static HashMap<Long, ModulePort> ALL_MODULE_PORTS = new HashMap<Long, ModulePort>();         //工作流组件端口
+    private TreeMultimap<Integer, ModuleCatalog> FIRST_LEVEL_MODULE_CATALOGS = TreeMultimap.create();    //一级工作流组件目录按序号排序
+    private HashMap<Long, ModuleCatalog> ALL_MODULE_CATALOGS = new HashMap<Long, ModuleCatalog>();       //工作流组件目录
+    private HashMap<Long, Module> ALL_MODULES = new HashMap<Long, Module>();                             //工作流组件
+    private HashMap<Long, ModulePort> ALL_MODULE_PORTS = new HashMap<Long, ModulePort>();         //工作流组件端口
 
-    public static List<ModuleCatalog> getFirstLevelCatalogs() {
+    public List<ModuleCatalog> getFirstLevelCatalogs() {
         return CollectionUtil.toList(FIRST_LEVEL_MODULE_CATALOGS);
     }
 
-    public static ModuleCatalog getCatalog(Long catalogId) {
+    public ModuleCatalog getCatalog(Long catalogId) {
         if(DataUtil.isNull(catalogId))
             return null;
         return ALL_MODULE_CATALOGS.get(catalogId);
     }
 
-    public static Module getModule(Long moduleId) {
+    public Module getModule(Long moduleId) {
         if(DataUtil.isNull(moduleId))
             return null;
         return ALL_MODULES.get(moduleId);
     }
 
-    public static ModulePort getModulePort(Long portId) {
+    public ModulePort getModulePort(Long portId) {
         if(DataUtil.isNull(portId))
             return null;
         return ALL_MODULE_PORTS.get(portId);
@@ -168,6 +169,10 @@ public class ModuleConfig implements InitializingBean {
                 }
                 if(!portTypeEnum.isCorrectPortType(SpecTypeEnum.valueOf(cmptChar.getSpecType()))) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Error port-type vs spec-type:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar)));
+                    System.exit(-1);
+                }
+                if(!SpecMaskEnum.matchInputAndOutput(cmptChar.getType().getSpecMask())) {
+                    logger.error(String.format("Loading module configuration occurs fatal error -- port => char-type.spec-mask must be also support input & output:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar)));
                     System.exit(-1);
                 }
                 Module module =  ALL_MODULES.get(port.getOwnerModuleId());

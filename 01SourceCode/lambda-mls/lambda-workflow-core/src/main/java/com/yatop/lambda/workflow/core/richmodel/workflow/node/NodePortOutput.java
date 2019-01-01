@@ -29,8 +29,10 @@ public class NodePortOutput extends WfFlowNodePort implements IRichModel {
     }
 
     public void flush(String operId) {
-        if(this.isDataPort()) {
-            schema.flush(operId);
+        if(!this.isDeleted()) {
+            if (this.isDataPort() && DataUtil.isNotNull(schema)) {
+                schema.flush(operId);
+            }
         }
     }
 

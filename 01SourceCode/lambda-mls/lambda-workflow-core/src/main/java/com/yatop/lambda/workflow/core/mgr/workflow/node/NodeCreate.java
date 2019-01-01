@@ -44,9 +44,9 @@ public class NodeCreate {
         node.setPositionX(x);
         node.setPositionY(y);
         node = nodeMgr.insertNode(node, workflowContext.getOperId());
+        //node.copyProperties(nodeMgr.queryNode(node.getNodeId()));
 
         Node richNode = new Node(node, module);
-        //richNode.copyProperties(nodeMgr.queryNode(richNode.getNodeId()));
         workflowContext.putNode(richNode);
         workflow.increaseNodeCount();
 

@@ -8,7 +8,7 @@ import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
-import com.yatop.lambda.workflow.core.richmodel.workflow.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
 import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueCreate;
@@ -47,8 +47,8 @@ public class ParameterCreate {
                 parameter.setCharValue(charValue.getCharValue());
             parameter = nodeParameterMgr.insertNodeParameter(parameter, workflowContext.getOperId());
 
+            //parameter.copyProperties(nodeParameterMgr.queryNodeParameter(parameter.getNodeId(), parameter.getCharId()));
             NodeParameter richParameter = new NodeParameter(parameter, cmptChar, charValue);
-            //richParameter.copyProperties(nodeParameterMgr.queryNodeParameter(richParameter.getNodeId(), richParameter.getCharId()));
             return richParameter;
         } else {
             CharValue charValue = new CharValue(cmptChar);

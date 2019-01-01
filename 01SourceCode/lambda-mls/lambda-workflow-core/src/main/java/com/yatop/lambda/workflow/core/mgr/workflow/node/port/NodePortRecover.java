@@ -28,6 +28,9 @@ public class NodePortRecover {
     @Autowired
     private SchemaRecover schemaRecover;
 
+    @Autowired
+    private ModuleConfig moduleConfig;
+
     public void recoverNodePorts(WorkflowContext workflowContext, Node node) {
 
         Module module = node.getModule();
@@ -40,7 +43,7 @@ public class NodePortRecover {
             }
 
             for(WfFlowNodePort nodePort : nodePortList) {
-                ModulePort modulePort = ModuleConfig.getModulePort(nodePort.getRefPortId());
+                ModulePort modulePort = moduleConfig.getModulePort(nodePort.getRefPortId());
                 if(DataUtil.isNull(modulePort) || !module.existsModulePort(modulePort)) {
                     throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node port failed -- module port not found.", "节点端口信息错误", nodePort);
                 }

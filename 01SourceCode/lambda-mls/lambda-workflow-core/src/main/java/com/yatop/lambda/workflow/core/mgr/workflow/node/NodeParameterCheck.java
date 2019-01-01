@@ -3,6 +3,7 @@ package com.yatop.lambda.workflow.core.mgr.workflow.node;
 import com.yatop.lambda.base.model.WfFlowNodeParameter;
 import com.yatop.lambda.core.enums.IsRequiredEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.enums.NodeStateEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.node.NodeMgr;
 import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
@@ -22,16 +23,10 @@ import java.util.TreeMap;
 @Service
 public class NodeParameterCheck {
 
-    @Autowired
-    NodeParameterMgr nodeParameterMgr;
-
-    @Autowired
-    NodeMgr nodeMgr;
-
     public void checkParameter(WorkflowContext workflowContext, Node node) {
 
         if(node.parameterCount() > 0) {
-            int checkCounter = 0;
+            int warningCounter = 0;
             int requiredCounter = 0;
             IModuleClazz moduleClazz = ClazzHelperUtil.getModuleClazzBean(node.getModule());
             if (moduleClazz.catchCheckParameter()) {
@@ -49,13 +44,8 @@ public class NodeParameterCheck {
                                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter failed -- module-clazz return warning message invalid.", "工作流组件校验节点参数返回内容无效", node);
                             }
 
-                            checkCounter++;
-                            WfFlowNodeParameter updateParameter = new WfFlowNodeParameter();
-                            updateParameter.setNodeId(nodeParameter.getNodeId());
-                            updateParameter.setCharId(nodeParameter.getCharId());
-                            updateParameter.setWarningMsg(warningMsg);
-                            nodeParameterMgr.updateNodeParameter(updateParameter, workflowContext.getOperId());
-                            nodeParameter.copyProperties(nodeParameterMgr.queryNodeParameter(nodeParameter.getNodeId(), nodeParameter.getCharId()));
+                            nodeParameter.setWarningMsg(warningMsg);
+                            warningCounter++;
                         }
                     }
                     nodeContext.clear();
@@ -71,10 +61,27 @@ public class NodeParameterCheck {
                 }
             }
 
-            if(checkCounter > 0 || requiredCounter > 0) {
+            for(NodeParameter parameter : node.getOptimizeParameters()) {
+                if(DataUtil.isEmpty(parameter.getCharValue()) && parameter.getCmptChar().getIsRequired() == IsRequiredEnum.YES.getMark()) {
+                    requiredCounter++;
+                }
+            }
 
-                //nodeMgr.updateNode()
+            if(warningCounter > 0 || requiredCounter > 0) {
+                node.setWarningMsg(buildNodeWarningMsg(warningCounter, requiredCounter));
+                node.setNodeState(NodeStateEnum.NOT_READY.getState());
             }
         }
+    }
+
+    private String buildNodeWarningMsg(int warningCounter, int requiredCounter) {
+        StringBuilder sb = new StringBuilder();
+        if(warningCounter > 0) {
+            sb.append("Parameter Check Warning Number:").append(warningCounter).append(",");
+        }
+        if(requiredCounter > 0) {
+            sb.append("Node Missing Required Value Number:").append(requiredCounter);
+        }
+        return sb.toString();
     }
 }

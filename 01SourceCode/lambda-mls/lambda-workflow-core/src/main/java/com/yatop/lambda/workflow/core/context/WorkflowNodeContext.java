@@ -26,7 +26,9 @@ public class WorkflowNodeContext implements IWorkContext {
         node = null;
         outSummary = null;
         outWarningMsgs.clear();
+        outWarningMsgs = null;
         outSchemas.clear();
+        outSchemas = null;
     }
 
     public WorkflowContext getWorkflowContext() {

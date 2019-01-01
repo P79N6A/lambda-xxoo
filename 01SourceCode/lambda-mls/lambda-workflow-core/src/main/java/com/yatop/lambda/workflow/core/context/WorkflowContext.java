@@ -3,8 +3,8 @@ package com.yatop.lambda.workflow.core.context;
 import com.yatop.lambda.core.enums.IsWebLinkEnum;
 import com.yatop.lambda.core.enums.JobTypeEnum;
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.workflow.core.richmodel.data.DataWarehouse;
-import com.yatop.lambda.workflow.core.richmodel.model.ModelWarehouse;
+import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
+import com.yatop.lambda.workflow.core.richmodel.data.model.ModelWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;
@@ -17,8 +17,13 @@ import java.util.*;
 
 public class WorkflowContext implements IWorkContext {
 
-    private boolean enableFlushWorkflow;    //控制是否可执行flush方法更新工作流相关信息
-    private boolean onlyWorkflowGraph;      //控制是否查询带出节点参数和数据输出端口schema等信息
+    /**
+     *  工作流、节点、节点参数、节点数据端口schema等信息采用延迟更新，由flush方法发起提交
+     * */
+
+    private boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
+    private boolean noNodeParamter;         //控制是否查询带出节点参数信息
+    private boolean noDataPortSchema;       //控制是否查询带出数据输出端口schema信息
     private Project project;                //操作关联项目
     private Workflow workflow;              //操作关联工作流
     private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库，key=dwId
@@ -35,26 +40,39 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, Node> deleteNodes = new TreeMap<Long, Node>();      //删除节点，key=nodeId
     private TreeMap<Long, NodeLink> deleteLinks = new TreeMap<Long, NodeLink>();  //删除节点链接，key=linkId
 
+    //工作流编辑用
     public static WorkflowContext BuildWorkflowContext(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
         context.enableFlushWorkflow = true;
-        context.onlyWorkflowGraph = false;
+        context.noNodeParamter = false;
+        context.noDataPortSchema = false;
         return context;
     }
 
+    //仅查询画布图形信息用
     public static WorkflowContext BuildWorkflowContext4OnlyGraph(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
         context.enableFlushWorkflow = false;
-        context.onlyWorkflowGraph = true;
+        context.noNodeParamter = true;
+        context.noDataPortSchema = true;
         return context;
     }
 
-    public static WorkflowContext BuildWorkflowContext4Execution(WorkflowContext context, JobTypeEnum jobTypeEnum, String operId) {
+    //快照用
+    public static WorkflowContext BuildWorkflowContext4Snapshot(Project project, Workflow workflow, String operId) {
+        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+        context.enableFlushWorkflow = false;
+        context.noNodeParamter = false;
+        context.noDataPortSchema = true;
+        return context;
+    }
+
+    //工作流运行用
+    public static WorkflowContext BuildWorkflowContext4Execution(Project project, Workflow workflow, JobTypeEnum jobTypeEnum, String operId) {
+        WorkflowContext context = new WorkflowContext(project, workflow, operId);
         context.enableFlushWorkflow = JobTypeEnum.enableFlushWorkflow(jobTypeEnum);
-        context.onlyWorkflowGraph = false;
-
-        //TODO Clear schema information
-
+        context.noNodeParamter = false;
+        context.noDataPortSchema = true;
         return context;
     }
 
@@ -65,21 +83,25 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public void flush() {
-        if(enableFlushWorkflow)
+        if(!this.isEnableFlushWorkflow())
             return;
 
         for (Node node : this.getNodes()) {
-            node.flush(operId);
+            node.flush(this.operId);
         }
-        workflow.flush(operId);
+        this.workflow.flush(this.operId);
     }
 
     public boolean isEnableFlushWorkflow() {
         return enableFlushWorkflow;
     }
 
-    public boolean isOnlyWorkflowGraph() {
-        return onlyWorkflowGraph;
+    public boolean isNoNodeParamter() {
+        return noNodeParamter;
+    }
+
+    public boolean isNoDataPortSchema() {
+        return noDataPortSchema;
     }
 
     public Project getProject() {
@@ -151,6 +173,18 @@ public class WorkflowContext implements IWorkContext {
         return null;
     }
 
+    public NodeLink getWebInLink(Long dstPortId) {
+        List<NodeLink> linkList = this.getInLinks(dstPortId);
+        if(DataUtil.isNotNull(linkList)) {
+            for (NodeLink link : linkList) {
+                if (link.getIsWebLink() == IsWebLinkEnum.YES.getMark()) {
+                    return link;
+                }
+            }
+        }
+        return null;
+    }
+
     public List<NodeLink> getOutLinks(Long srcPortId) {
         return CollectionUtil.toList(outputLinks.get(srcPortId));
     }
@@ -172,17 +206,17 @@ public class WorkflowContext implements IWorkContext {
         return inputPorts.get(portId);
     }
 
-/*    public List<NodePortInput> getInputPorts() {
+    public List<NodePortInput> getInputPorts() {
         return CollectionUtil.toList(inputPorts);
-    }*/
+    }
 
     public NodePortOutput getOutputPort(Long portId) {
         return outputPorts.get(portId);
     }
 
-/*    public List<NodePortOutput> getOutPorts() {
+    public List<NodePortOutput> getOutPorts() {
         return CollectionUtil.toList(outputPorts);
-    }*/
+    }
 
     public void putDataWarehouse(DataWarehouse warehouse) {
         CollectionUtil.put(dataWarehouses, warehouse.getDwId(), warehouse);

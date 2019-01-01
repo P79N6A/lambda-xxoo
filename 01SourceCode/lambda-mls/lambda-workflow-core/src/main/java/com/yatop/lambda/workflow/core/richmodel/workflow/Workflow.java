@@ -9,14 +9,19 @@ public class Workflow extends WfFlow implements IRichModel {
 
     private static long NODE_DELETE_MAX_SEQUENCE = 0x20;
 
+    private boolean deleted;
+
     public Workflow(WfFlow data) {
         super.copyProperties(data);
+        this.deleted = false;
         this.clearColoured();
     }
 
     public void flush(String operId) {
-        if(this.isColoured())
-            WorkflowHelper.updateWorkflow(this, operId);
+        if(!this.isDeleted()) {
+            if (this.isColoured() && this.getFlowId() > 0)
+                WorkflowHelper.updateWorkflow(this, operId);
+        }
     }
 
     public Long previousDeleteSequence() {
@@ -72,5 +77,13 @@ public class Workflow extends WfFlow implements IRichModel {
     @Override
     public void clear() {
         super.clear();
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void markDeleted() {
+        this.deleted = true;
     }
 }
