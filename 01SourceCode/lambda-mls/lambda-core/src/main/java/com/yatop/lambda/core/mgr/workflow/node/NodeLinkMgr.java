@@ -28,7 +28,9 @@ public class NodeLinkMgr extends BaseMgr {
                 link.isLinkNameNotColoured() ||
                 link.isOwnerFlowIdNotColoured() ||
                 link.isIsWebLinkNotColoured() ||
+                link.isSrcNodeIdNotColoured() ||
                 link.isSrcPortIdNotColoured() ||
+                link.isDstNodeIdNotColoured() ||
                 link.isDstPortIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node link failed -- invalid insert data.", "无效插入数据");
@@ -123,47 +125,85 @@ public class NodeLinkMgr extends BaseMgr {
 
     /*
      *
-     *   查询节点链接（按输出节点端口ID）
+     *   查询节点链接（按输出节点ID）
      *   返回结果集
      *
      * */
-    public List<WfFlowNodeLink> queryLinkBySrcPortId(Long nodePortId, PagerUtil pager) {
-        if(DataUtil.isNull(nodePortId)){
+    public List<WfFlowNodeLink> queryLinkBySrcNodeId(Long srcNodeId) {
+        if(DataUtil.isNull(srcNodeId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
-            PagerUtil.startPage(pager);
             WfFlowNodeLinkExample example = new WfFlowNodeLinkExample();
-            example.createCriteria().andSrcPortIdEqualTo(nodePortId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andSrcNodeIdEqualTo(srcNodeId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return wfFlowNodeLinkMapper.selectByExample(example);
         } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed.", "查询节点链接失败", e);
         }
     }
 
     /*
      *
-     *   查询节点链接（按输入节点端口）
+     *   查询节点链接（按输入节点ID）
      *   返回结果集
      *
      * */
-    public List<WfFlowNodeLink> queryLinkByDstPortId(Long nodePortId, PagerUtil pager) {
+    public List<WfFlowNodeLink> queryLinkByDstNodeId(Long dstNodeId) {
+        if(DataUtil.isNull(dstNodeId)){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- invalid query condition.", "无效查询条件");
+        }
+
+        try {
+            WfFlowNodeLinkExample example = new WfFlowNodeLinkExample();
+            example.createCriteria().andDstNodeIdEqualTo(dstNodeId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.setOrderByClause("CREATE_TIME ASC");
+            return wfFlowNodeLinkMapper.selectByExample(example);
+        } catch (Throwable e) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed.", "查询节点链接失败", e);
+        }
+    }
+
+    /*
+     *
+     *   查询节点链接（按输出节点端口ID）
+     *   返回结果集
+     *
+     * */
+/*    public List<WfFlowNodeLink> queryLinkBySrcPortId(Long nodePortId) {
         if(DataUtil.isNull(nodePortId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
-            PagerUtil.startPage(pager);
+            WfFlowNodeLinkExample example = new WfFlowNodeLinkExample();
+            example.createCriteria().andSrcPortIdEqualTo(nodePortId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.setOrderByClause("CREATE_TIME ASC");
+            return wfFlowNodeLinkMapper.selectByExample(example);
+        } catch (Throwable e) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed.", "查询节点链接失败", e);
+        }
+    }*/
+
+    /*
+     *
+     *   查询节点链接（按输入节点端口ID）
+     *   返回结果集
+     *
+     * */
+/*    public List<WfFlowNodeLink> queryLinkByDstPortId(Long nodePortId) {
+        if(DataUtil.isNull(nodePortId)){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- invalid query condition.", "无效查询条件");
+        }
+
+        try {
             WfFlowNodeLinkExample example = new WfFlowNodeLinkExample();
             example.createCriteria().andDstPortIdEqualTo(nodePortId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return wfFlowNodeLinkMapper.selectByExample(example);
         } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed.", "查询节点链接失败", e);
         }
-    }
+    }*/
 }

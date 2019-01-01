@@ -22,8 +22,8 @@ public class WorkflowContext implements IWorkContext {
      * */
 
     private boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
-    private boolean noNodeParamter;         //控制是否查询带出节点参数信息
-    private boolean noDataPortSchema;       //控制是否查询带出数据输出端口schema信息
+    private boolean loadNodeParameter;      //控制是否查询带出节点参数信息
+    private boolean loadDataPortSchema;     //控制是否查询带出数据输出端口schema信息
     private Project project;                //操作关联项目
     private Workflow workflow;              //操作关联工作流
     private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库，key=dwId
@@ -44,8 +44,8 @@ public class WorkflowContext implements IWorkContext {
     public static WorkflowContext BuildWorkflowContext(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
         context.enableFlushWorkflow = true;
-        context.noNodeParamter = false;
-        context.noDataPortSchema = false;
+        context.loadNodeParameter = true;
+        context.loadDataPortSchema = true;
         return context;
     }
 
@@ -53,8 +53,8 @@ public class WorkflowContext implements IWorkContext {
     public static WorkflowContext BuildWorkflowContext4OnlyGraph(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
         context.enableFlushWorkflow = false;
-        context.noNodeParamter = true;
-        context.noDataPortSchema = true;
+        context.loadNodeParameter = false;
+        context.loadDataPortSchema = false;
         return context;
     }
 
@@ -62,8 +62,8 @@ public class WorkflowContext implements IWorkContext {
     public static WorkflowContext BuildWorkflowContext4Snapshot(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
         context.enableFlushWorkflow = false;
-        context.noNodeParamter = false;
-        context.noDataPortSchema = true;
+        context.loadNodeParameter = true;
+        context.loadDataPortSchema = false;
         return context;
     }
 
@@ -71,8 +71,8 @@ public class WorkflowContext implements IWorkContext {
     public static WorkflowContext BuildWorkflowContext4Execution(Project project, Workflow workflow, JobTypeEnum jobTypeEnum, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
         context.enableFlushWorkflow = JobTypeEnum.enableFlushWorkflow(jobTypeEnum);
-        context.noNodeParamter = false;
-        context.noDataPortSchema = true;
+        context.loadNodeParameter = true;
+        context.loadDataPortSchema = false;
         return context;
     }
 
@@ -87,7 +87,7 @@ public class WorkflowContext implements IWorkContext {
             return;
 
         for (Node node : this.getNodes()) {
-            node.flush(this.operId);
+            node.flush(this.isLoadNodeParameter(), this.isLoadDataPortSchema(), this.operId);
         }
         this.workflow.flush(this.operId);
     }
@@ -96,12 +96,12 @@ public class WorkflowContext implements IWorkContext {
         return enableFlushWorkflow;
     }
 
-    public boolean isNoNodeParamter() {
-        return noNodeParamter;
+    public boolean isLoadNodeParameter() {
+        return loadNodeParameter;
     }
 
-    public boolean isNoDataPortSchema() {
-        return noDataPortSchema;
+    public boolean isLoadDataPortSchema() {
+        return loadDataPortSchema;
     }
 
     public Project getProject() {

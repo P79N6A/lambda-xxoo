@@ -51,6 +51,9 @@ public class BaseMgr {
     protected WfFlowMapper wfFlowMapper;
 
     @Autowired
+    protected WfFlowAccumulateMapper wfFlowAccumulateMapper;
+
+    @Autowired
     protected WfFlowNodeDeleteQueueMapper wfFlowNodeDeleteQueueMapper;
 
     @Autowired
@@ -73,6 +76,9 @@ public class BaseMgr {
 
     @Autowired
     protected WfSnapshotMapper wfSnapshotMapper;
+
+    @Autowired
+    protected WfSnapshotParameterMapper wfSnapshotParameterMapper;
 
     @Autowired
     protected WfUserFavoriteModuleMapper wfUserFavoriteModuleMapper;

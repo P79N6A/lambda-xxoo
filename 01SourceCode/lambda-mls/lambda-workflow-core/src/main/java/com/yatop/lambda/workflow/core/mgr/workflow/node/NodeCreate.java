@@ -28,7 +28,7 @@ public class NodeCreate {
     @Autowired
     private NodePortCreate nodePortCreate;
 
-    private Node createNode(WorkflowContext workflowContext, Module module, Node otherNode, Long x, Long y) {
+    private Node createNode(WorkflowContext workflowContext, Module module, Node otherNode, Long x, Long y, boolean copyOtherName) {
 
         Workflow workflow = workflowContext.getWorkflow();
         Long flowMaxNodes = SystemParameterUtil.find4Long(SystemParameterEnum.WK_FLOW_MAX_NODES);
@@ -37,12 +37,21 @@ public class NodeCreate {
         }
 
         WfFlowNode node = new WfFlowNode();
-        node.setNodeName(module.getModuleName());
         node.setOwnerProjectId(workflow.getOwnerProjectId());
         node.setOwnerFlowId(workflow.getFlowId());
         node.setRefModuleId(module.getModuleId());
         node.setPositionX(x);
         node.setPositionY(y);
+        if(!copyOtherName) {
+            Long sequence = workflow.nextModuleSequence(module, workflowContext.getOperId());
+            node.setNodeName(String.format("%s-%d", module.getModuleName(), sequence));
+            node.setSequence(sequence);
+        } else {
+            workflow.setModuleSequence(module, otherNode.getSequence(), workflowContext.getOperId());
+            node.setNodeName(otherNode.getNodeName());
+            node.setSequence(otherNode.getSequence());
+        }
+
         node = nodeMgr.insertNode(node, workflowContext.getOperId());
         //node.copyProperties(nodeMgr.queryNode(node.getNodeId()));
 
@@ -60,10 +69,14 @@ public class NodeCreate {
     }
 
     public Node createNode(WorkflowContext workflowContext, Module module, Long x, Long y) {
-        return createNode(workflowContext, module, null, x, y);
+        return createNode(workflowContext, module, null, x, y, false);
     }
 
-    public Node createNode(WorkflowContext workflowContext, Node otherNode, Long x, Long y) {
-        return createNode(workflowContext, otherNode.getModule(), otherNode, x, y);
+    public Node copyNode4SameWorkflow(WorkflowContext workflowContext, Node otherNode, Long x, Long y) {
+        return createNode(workflowContext, otherNode.getModule(), otherNode, x, y, false);
+    }
+
+    public Node copyNode4DiffWorkflow(WorkflowContext workflowContext, Node otherNode, Long x, Long y) {
+        return createNode(workflowContext, otherNode.getModule(), otherNode, x, y, true);
     }
 }

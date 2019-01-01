@@ -20,7 +20,7 @@ public class NodeMgr extends BaseMgr {
     
     /*
      *
-     *   插入新节点信息（名称、所属项目ID、所属工作流ID、引用工作流组件ID ...）
+     *   插入新节点信息（名称、所属项目ID、所属工作流ID、引用工作流组件ID、序号 ...）
      *   返回插入记录
      *
      * */
@@ -30,6 +30,7 @@ public class NodeMgr extends BaseMgr {
                 node.isOwnerProjectIdNotColoured() ||
                 node.isOwnerFlowIdNotColoured() ||
                 node.isRefModuleIdNotColoured() ||
+                node.isSequenceNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node info failed -- invalid insert data.", "无效插入数据");
         }

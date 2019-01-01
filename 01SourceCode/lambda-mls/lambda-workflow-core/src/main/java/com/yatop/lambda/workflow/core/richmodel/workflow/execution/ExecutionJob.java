@@ -11,6 +11,12 @@ public class ExecutionJob extends WfExecutionJob implements IRichModel {
         this.clearColoured();
     }
 
+    public void flush(String operId) {
+
+        if (this.isColoured())
+            ;//NodeHelper.updateNode(this, operId);
+    }
+
     @Override
     public void clear() {
         super.clear();

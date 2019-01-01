@@ -50,6 +50,7 @@ public class ExecutionTaskMgr extends BaseMgr {
             insertTask.setTaskStartTimeColoured(false);
             insertTask.setTaskEndTimeColoured(false);
             insertTask.setTaskProgress(0);
+            insertTask.setWarningMsgColoured(false);
             insertTask.setTaskState(TaskStateEnum.PREPARING.getState());
             insertTask.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertTask.setLastUpdateTime(dtCurrentTime);
@@ -89,7 +90,7 @@ public class ExecutionTaskMgr extends BaseMgr {
 
     /*
      *
-     *   更新任务信息（计算引擎、外部任务ID、任务上下文、提交文件、返回文件、日志文件、运行耗时、开始时间、结束时间、任务进度、任务状态、描述）
+     *   更新任务信息（计算引擎、外部任务ID、任务上下文、提交文件、返回文件、日志文件、运行耗时、开始时间、结束时间、任务进度、警告消息、任务状态、描述）
      *   返回更新数量
      *
      * */
@@ -108,6 +109,7 @@ public class ExecutionTaskMgr extends BaseMgr {
                 task.isTaskStartTimeNotColoured() &&
                 task.isTaskEndTimeNotColoured() &&
                 task.isTaskProgressNotColoured() &&
+                task.isWarningMsgNotColoured() &&
                 task.isTaskStateNotColoured() &&
                 task.isDescriptionNotColoured()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update task info failed -- invalid update data.", "无效更新内容");
@@ -134,6 +136,8 @@ public class ExecutionTaskMgr extends BaseMgr {
                 updateTask.setTaskEndTime(task.getTaskEndTime());
             if(task.isTaskProgressColoured())
                 updateTask.setTaskProgress(task.getTaskProgress());
+            if(task.isWarningMsgColoured())
+                updateTask.setWarningMsg(task.getWarningMsg());
             if(task.isTaskStateColoured())
                 updateTask.setTaskState(task.getTaskState());
             if(task.isDescriptionColoured())

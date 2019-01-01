@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-01-01 18:07:28
+Date: 2019-01-01 23:34:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1332,6 +1332,7 @@ CREATE TABLE `wf_execution_task` (
   `TASK_START_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '任务开始时间',
   `TASK_END_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '任务结束时间',
   `TASK_PROGRESS` int(11) NOT NULL DEFAULT '0' COMMENT '任务进度，百分比数值0到100',
+  `WARNING_MSG` varchar(512) DEFAULT NULL COMMENT '警告消息',
   `TASK_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '任务状态\r\n            0：preparing，准备中\r\n            1：ready，已就绪\r\n            2：running，运行中\r\n            3：finished，运行完成\r\n            4：error terminated，出错终止\r\n            5：user terminated，用户终止',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -1343,7 +1344,7 @@ CREATE TABLE `wf_execution_task` (
   UNIQUE KEY `Index_1` (`OWNER_JOB_ID`,`REL_NODE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_JOB_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_JOB_ID`,`TASK_STATE`,`SEQUENCE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
 
 -- ----------------------------
 -- Records of wf_execution_task
@@ -1404,6 +1405,27 @@ CREATE TABLE `wf_flow` (
 
 -- ----------------------------
 -- Records of wf_flow
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_flow_accumulate
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_flow_accumulate`;
+CREATE TABLE `wf_flow_accumulate` (
+  `FLOW_ID` bigint(20) NOT NULL COMMENT '工作流ID',
+  `MODULE_ID` bigint(20) NOT NULL COMMENT '工作流组件ID',
+  `USEAGE_COUNT` bigint(20) NOT NULL DEFAULT '1000' COMMENT '使用计数',
+  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
+  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
+  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
+  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
+  KEY `Index_1` (`FLOW_ID`,`MODULE_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流累计表，记录每个flow使用过的module计数';
+
+-- ----------------------------
+-- Records of wf_flow_accumulate
 -- ----------------------------
 
 -- ----------------------------
@@ -1495,7 +1517,9 @@ CREATE TABLE `wf_flow_node_link` (
   `LINK_NAME` varchar(400) NOT NULL COMMENT '链接名称，自动生成',
   `OWNER_FLOW_ID` bigint(20) NOT NULL COMMENT '所属工作流ID',
   `IS_WEB_LINK` int(11) NOT NULL DEFAULT '0' COMMENT '是否为web组件的流出链接\r\n            0：否\r\n            1：是',
+  `SRC_NODE_ID` bigint(20) NOT NULL COMMENT '流出节点ID',
   `SRC_PORT_ID` bigint(20) NOT NULL COMMENT '流出节点端口ID',
+  `DST_NODE_ID` bigint(20) NOT NULL COMMENT '流入节点ID',
   `DST_PORT_ID` bigint(20) NOT NULL COMMENT '流入节点端口ID',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -1504,10 +1528,10 @@ CREATE TABLE `wf_flow_node_link` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`LINK_ID`),
-  KEY `Index_1` (`SRC_PORT_ID`,`STATUS`,`CREATE_TIME`),
-  KEY `Index_2` (`DST_PORT_ID`,`STATUS`,`CREATE_TIME`),
-  KEY `Index_3` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点链接表\r\n\r\n逻辑删除，同一节点流入端口下正常状态的普通组件流出节点端口唯一和web服务组';
+  KEY `Index_1` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`SRC_NODE_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_3` (`DST_NODE_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点链接表\r\n\r\n逻辑删除，同一节点流入端口下正常状态的普通组件流出节点端口唯一和web服务组';
 
 -- ----------------------------
 -- Records of wf_flow_node_link

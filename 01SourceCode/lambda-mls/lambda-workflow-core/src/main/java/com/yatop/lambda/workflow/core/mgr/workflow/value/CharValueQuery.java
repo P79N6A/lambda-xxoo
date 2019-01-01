@@ -19,6 +19,11 @@ public class CharValueQuery {
     // CharValue <[charValue] ==>> [outText, outObject]>
     public void queryCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
+        //已存在传出内容时直接返回
+        if(DataUtil.isNotEmpty(charValue.getOutText()) || DataUtil.isNotNull(charValue.getOutObject())) {
+            return;
+        }
+
         if(charValue.getSpecType() != SpecTypeEnum.INPUT.getType() && charValue.getSpecType() != SpecTypeEnum.OUTPUT.getType()) {
             if (DataUtil.isEmpty(charValue.getCharValue()))
                 charValue.setCharValue(node.getComponent().getConfigCharValue(charValue.getCmptChar()));

@@ -33,6 +33,10 @@ public class NodeQuery {
 
     public Node queryNode(WorkflowContext workflowContext, Long nodeId) {
 
+        Node richNode = workflowContext.getNode(nodeId);
+        if(DataUtil.isNotNull(richNode))
+            return richNode;
+
         WfFlowNode node = nodeMgr.queryNode(nodeId);
         if(DataUtil.isNull(node)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Query node failed -- node not found, node-id:%d.", nodeId), "节点信息缺失");
@@ -46,9 +50,9 @@ public class NodeQuery {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node failed -- module not found.", "节点信息错误", node);
         }
 
-        Node richNode = new Node(node, module);
+        richNode = new Node(node, module);
         workflowContext.putNode(richNode);
-        if(!workflowContext.isNoNodeParamter())
+        if(!workflowContext.isLoadNodeParameter())
             parameterQuery.queryParameters(workflowContext, richNode);
         nodePortQuery.queryNodePorts(workflowContext, richNode);
         return richNode;
@@ -68,7 +72,7 @@ public class NodeQuery {
 
             Node richNode = new Node(node, module);
             workflowContext.putNode(richNode);
-            if(!workflowContext.isNoNodeParamter())
+            if(!workflowContext.isLoadNodeParameter())
                 parameterQuery.queryParameters(workflowContext, richNode);
             nodePortQuery.queryNodePorts(workflowContext, richNode);
         }

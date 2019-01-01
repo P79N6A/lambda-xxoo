@@ -38,6 +38,8 @@ public class CharValue extends LambdaRootModel implements IRichModel {
         jsonObject.put("charValue", charValue);
         jsonObject.put("inText", inText);
         jsonObject.put("inObject", inObject);
+        jsonObject.put("outText", outText);
+        jsonObject.put("outObject", outObject);
         return jsonObject;
     }
 

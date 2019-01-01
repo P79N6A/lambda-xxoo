@@ -71,7 +71,7 @@ public class NodePortQuery {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module-port vs node-port inconsistent.", "节点端口信息错误", node);
             }
 
-            if(!workflowContext.isNoDataPortSchema())
+            if(!workflowContext.isLoadDataPortSchema())
                 schemaQuery.querySchemas(workflowContext, node);
         }
     }
@@ -117,7 +117,7 @@ public class NodePortQuery {
 
         outputNodePort = new NodePortOutput(nodePort, modulePort);
         workflowContext.putOutputPort(outputNodePort);
-        if(!workflowContext.isNoDataPortSchema())
+        if(!workflowContext.isLoadDataPortSchema())
             schemaQuery.querySchema(workflowContext, outputNodePort);
         return outputNodePort;
     }

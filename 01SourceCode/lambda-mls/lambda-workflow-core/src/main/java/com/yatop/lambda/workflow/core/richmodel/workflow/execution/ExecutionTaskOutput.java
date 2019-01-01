@@ -21,6 +21,11 @@ public class ExecutionTaskOutput extends WfExecutionTaskOutput implements IRichM
         super.clear();
     }
 
+    public void flush(String operId) {
+        if(this.isColoured())
+            ;//ParameterHelper.updateNodeParameter(this, operId);
+    }
+
     public CmptChar getCmptChar() {
         return cmptChar;
     }

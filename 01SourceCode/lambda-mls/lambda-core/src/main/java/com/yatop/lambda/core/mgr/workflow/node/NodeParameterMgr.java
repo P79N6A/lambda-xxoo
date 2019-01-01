@@ -190,7 +190,7 @@ public class NodeParameterMgr extends BaseMgr {
         try {
             WfFlowNodeParameterExample example = new WfFlowNodeParameterExample();
             WfFlowNodeParameterExample.Criteria cond = example.createCriteria().andNodeIdEqualTo(nodeId);
-            if(DataUtil.isEmpty(charId))
+            if(DataUtil.isNotEmpty(charId))
                 cond.andCharIdEqualTo(charId);
             cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
@@ -206,7 +206,7 @@ public class NodeParameterMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public boolean existsNodeParameter(Long nodeId, String charId) {
+/*    public boolean existsNodeParameter(Long nodeId, String charId) {
         if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(charId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter exists failed -- invalid check condition.", "无效检查条件");
         }
@@ -218,5 +218,5 @@ public class NodeParameterMgr extends BaseMgr {
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter exists failed.", "检查节点参数是否已存在失败", e);
         }
-    }
+    }*/
 }

@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNode;
+import com.yatop.lambda.core.enums.NodeStateEnum;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeHelper;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
@@ -46,27 +47,41 @@ public class Node extends WfFlowNode implements IRichModel {
         super.clear();
     }
 
-    public void flush(String operId) {
+    public void flush(boolean flushNodeParameter, boolean flushDataPortSchema, String operId) {
 
         if(!this.isDeleted()) {
-            if (this.parameterCount() > 0) {
+            if (flushNodeParameter && this.parameterCount() > 0) {
                 for (NodeParameter parameter : this.getParameters()) {
                     parameter.flush(operId);
                 }
             }
-            if (this.optimizeParameterCount() > 0) {
+            if (flushNodeParameter && this.optimizeParameterCount() > 0) {
                 for (NodeParameter parameter : this.getOptimizeParameters()) {
                     parameter.flush(operId);
                 }
             }
-            if (this.outputNodePortCount() > 0) {
+            if (flushDataPortSchema && this.outputNodePortCount() > 0) {
                 for (NodePortOutput outputPort : this.getOutputNodePorts()) {
                     outputPort.flush(operId);
                 }
             }
-            if (this.isColoured())
+            if (this.isColoured() && this.getNodeId() > 0)
                 NodeHelper.updateNode(this, operId);
         }
+    }
+
+    public void downgradeToReady(NodeStateEnum stateEnum) {
+        if(this.getNodeState() <= stateEnum.getState())
+            return;
+
+        this.setNodeState(stateEnum.getState());
+    }
+
+    public void changeNodeState(NodeStateEnum stateEnum) {
+        if(this.getNodeState() <= stateEnum.getState())
+            return;
+
+        this.setNodeState(stateEnum.getState());
     }
 
     public Module getModule() {

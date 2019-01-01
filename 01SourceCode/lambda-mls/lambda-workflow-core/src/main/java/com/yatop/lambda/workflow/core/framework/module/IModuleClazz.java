@@ -1,6 +1,6 @@
 package com.yatop.lambda.workflow.core.framework.module;
 
-import com.yatop.lambda.workflow.core.context.TaskContext;
+import com.yatop.lambda.workflow.core.context.TaskExecutionContext;
 import com.yatop.lambda.workflow.core.context.WorkflowNodeContext;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -45,7 +45,7 @@ public interface IModuleClazz extends InitializingBean {
     boolean catchTaskExecution();
 
     //任务执行事件处理，例如：读数据表将输出内容"OUT@DataTable-t1<M>"特征值置为"CCP@TableName"特征值对应数据表的ID值
-    void onTaskExecution(TaskContext context);
+    void onTaskExecution(TaskExecutionContext context);
 
     //////////////////////////////////////////////////////
 

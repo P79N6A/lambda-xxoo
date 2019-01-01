@@ -1,12 +1,9 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node;
 
-import com.yatop.lambda.base.model.WfFlowNodeParameter;
 import com.yatop.lambda.core.enums.IsRequiredEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.NodeStateEnum;
 import com.yatop.lambda.core.exception.LambdaException;
-import com.yatop.lambda.core.mgr.workflow.node.NodeMgr;
-import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.context.WorkflowNodeContext;
@@ -14,7 +11,6 @@ import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
 import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -49,7 +45,6 @@ public class NodeParameterCheck {
                         }
                     }
                     nodeContext.clear();
-                    return;
                 } catch (Exception e) {
                     throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter failed -- module-clazz occur error.", "工作流组件校验节点参数时发生错误", e, node);
                 }

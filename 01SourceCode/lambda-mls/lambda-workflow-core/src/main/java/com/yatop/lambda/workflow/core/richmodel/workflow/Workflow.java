@@ -2,14 +2,22 @@ package com.yatop.lambda.workflow.core.richmodel.workflow;
 
 import com.yatop.lambda.base.model.WfFlow;
 import com.yatop.lambda.core.enums.ShareLockStateEnum;
+import com.yatop.lambda.core.enums.WorkflowStateEnum;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.mgr.workflow.WorkflowHelper;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
+import com.yatop.lambda.workflow.core.utils.CollectionUtil;
+
+import java.util.List;
+import java.util.TreeMap;
 
 public class Workflow extends WfFlow implements IRichModel {
 
     private static long NODE_DELETE_MAX_SEQUENCE = 0x20;
 
     private boolean deleted;
+    private TreeMap<Long, WorkflowAccumulate> accumulates = new TreeMap<Long, WorkflowAccumulate>();
 
     public Workflow(WfFlow data) {
         super.copyProperties(data);
@@ -19,9 +27,57 @@ public class Workflow extends WfFlow implements IRichModel {
 
     public void flush(String operId) {
         if(!this.isDeleted()) {
-            if (this.isColoured() && this.getFlowId() > 0)
+            if(this.accumulateCount() > 0) {
+                for(WorkflowAccumulate accumulate : this.getAccumulates()) {
+                    accumulate.flush(operId);
+                }
+            }
+
+            if (this.isColoured() && this.getFlowId() > 0) {
                 WorkflowHelper.updateWorkflow(this, operId);
+            }
         }
+    }
+
+/*    public void changeWorkflowState(WorkflowStateEnum stateEnum) {
+        if(this.getFlowState() == stateEnum.getState())
+            return;
+
+        this.setFlowState(stateEnum.getState());
+    }*/
+
+
+    public void setModuleSequence(Module module, Long thatSequence, String operId) {
+        WorkflowAccumulate accumulate = this.getAccumulate(module, operId);
+        if(accumulate.getUsageCount() < thatSequence) {
+            accumulate.setUsageCount(thatSequence);
+        }
+    }
+
+    public Long nextModuleSequence(Module module, String operId) {
+        return this.getAccumulate(module, operId).increaseUsageCount();
+    }
+
+    private int accumulateCount() {
+        return accumulates.size();
+    }
+
+    private WorkflowAccumulate getAccumulate(Module module, String operId) {
+
+        WorkflowAccumulate accumulate = CollectionUtil.get(accumulates, module.getModuleId());
+        if(DataUtil.isNull(accumulate)) {
+            accumulate = WorkflowHelper.queryAccumulate(this, module, operId);
+            this.putAccumulate(accumulate);
+        }
+        return accumulate;
+    }
+
+    private List<WorkflowAccumulate> getAccumulates() {
+        return CollectionUtil.toList(accumulates);
+    }
+
+    private void putAccumulate(WorkflowAccumulate accumulate) {
+        CollectionUtil.put(accumulates, accumulate.getModuleId(), accumulate);
     }
 
     public Long previousDeleteSequence() {
@@ -76,6 +132,7 @@ public class Workflow extends WfFlow implements IRichModel {
 
     @Override
     public void clear() {
+        CollectionUtil.clear(accumulates);
         super.clear();
     }
 
