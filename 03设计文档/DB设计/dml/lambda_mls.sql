@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-01-01 23:34:59
+Date: 2019-01-02 01:52:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1384,7 +1384,7 @@ CREATE TABLE `wf_flow` (
   `SHARE_LOCK_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '共享锁状态，实验运行和快照期间加锁\r\n            \r\n            0：未加锁\r\n            1：已加锁',
   `SHARE_LOCK_MSG` varchar(512) DEFAULT NULL COMMENT '共享锁消息',
   `NEXT_SNAPSHOT_VERSION` bigint(20) NOT NULL DEFAULT '1' COMMENT '下一快照版本',
-  `NODE_COUNT` bigint(20) NOT NULL DEFAULT '1000' COMMENT '正常节点计数，超出最大上限后，禁止新增节点',
+  `NODE_COUNT` bigint(20) NOT NULL DEFAULT '0' COMMENT '正常节点计数，超出最大上限后，禁止新增节点',
   `NEXT_DELETE_SEQUENCE` bigint(20) NOT NULL DEFAULT '0' COMMENT '下一删除序号，在0到31之间循环，删除前进，撤销删除后退',
   `LAST_JOB_ID` bigint(20) DEFAULT NULL COMMENT '最后作业ID',
   `FLOW_DFS_DIR` varchar(800) DEFAULT NULL COMMENT 'DFS工作流目录\r\n            \r\n            ${HDFS_SITE}/${DFS_WORK_ROOT}/flow_data/<project_id>/<flow_id>',
@@ -1401,7 +1401,7 @@ CREATE TABLE `wf_flow` (
   UNIQUE KEY `Index_1` (`OWNER_EXPERIMENT_ID`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_PROJECT_ID`,`STATUS`,`FLOW_STATE`,`LAST_UPDATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流表，记录当前的实验状态，由一系列子表记录实验画布上节点和边的图形信息，以及节点参数内容和输出内容';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流表，记录当前的实验状态，由一系列子表记录实验画布上节点和边的图形信息，以及节点参数内容和输出内容';
 
 -- ----------------------------
 -- Records of wf_flow
@@ -1414,7 +1414,7 @@ DROP TABLE IF EXISTS `wf_flow_accumulate`;
 CREATE TABLE `wf_flow_accumulate` (
   `FLOW_ID` bigint(20) NOT NULL COMMENT '工作流ID',
   `MODULE_ID` bigint(20) NOT NULL COMMENT '工作流组件ID',
-  `USEAGE_COUNT` bigint(20) NOT NULL DEFAULT '1000' COMMENT '使用计数',
+  `USAGE_COUNT` bigint(20) NOT NULL DEFAULT '0' COMMENT '使用计数',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -1466,6 +1466,7 @@ CREATE TABLE `wf_flow_node` (
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `OWNER_FLOW_ID` bigint(20) NOT NULL COMMENT '所属工作流ID',
   `REF_MODULE_ID` bigint(20) NOT NULL COMMENT '引用工作流组件ID',
+  `SEQUENCE` bigint(20) NOT NULL DEFAULT '0' COMMENT '序号',
   `POSITION_X` bigint(20) NOT NULL DEFAULT '0' COMMENT '流程图节点X轴坐标',
   `POSITION_Y` bigint(20) NOT NULL DEFAULT '0' COMMENT '流程图节点Y轴坐标',
   `LAST_TASK_ID` bigint(20) DEFAULT NULL COMMENT '最后任务ID',
@@ -1483,7 +1484,7 @@ CREATE TABLE `wf_flow_node` (
   KEY `Index_1` (`OWNER_FLOW_ID`,`REF_MODULE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`REF_MODULE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
 
 -- ----------------------------
 -- Records of wf_flow_node
