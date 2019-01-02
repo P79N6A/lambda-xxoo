@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-01-02 22:49:33
+Date: 2019-01-02 23:43:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1296,7 +1296,7 @@ CREATE TABLE `wf_execution_queue` (
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `JOB_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作业时间\r\n            \r\n            指定作业的开始处理时间，值来自进入队列时和继续执行时',
   `JOB_SIGNAL` int(11) NOT NULL DEFAULT '0' COMMENT '作业信号\r\n            0：SIG_NORMAL，正常作业信号\r\n            1：SIG_KILL，终止作业信号\r\n            2：SIG_PAUSE，暂停执行信号\r\n            3：SIG_CONT，继续执行信号',
-  `JOB_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '作业状态\r\n            1：queueing，排队中\r\n            2：processing，处理中',
+  `JOB_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '作业状态\r\n            1：queueing，排队中\r\n            2：running，运行中',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',

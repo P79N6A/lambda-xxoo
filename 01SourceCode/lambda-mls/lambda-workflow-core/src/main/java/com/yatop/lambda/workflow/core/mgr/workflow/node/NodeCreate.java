@@ -28,6 +28,9 @@ public class NodeCreate {
     @Autowired
     private NodePortCreate nodePortCreate;
 
+    @Autowired
+    private NodeParameterCheck nodeParameterCheck;
+
     private Node createNode(WorkflowContext workflowContext, Module module, Node otherNode, Long x, Long y, boolean copyOtherName) {
 
         Workflow workflow = workflowContext.getWorkflow();
@@ -65,7 +68,7 @@ public class NodeCreate {
             parameterCreate.createParameters(workflowContext, richNode, otherNode);
         }
         nodePortCreate.createNodePorts(workflowContext, richNode);
-
+        nodeParameterCheck.checkParameter(workflowContext, richNode);
         workflowContext.getWorkflow().changeWorkflowState2Draft();
         richNode.downgradeNodeState2Ready();
         return richNode;

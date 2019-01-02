@@ -3,6 +3,7 @@ package com.yatop.lambda.workflow.core.mgr.workflow;
 import com.yatop.lambda.base.model.WfFlow;
 import com.yatop.lambda.core.mgr.workflow.WorkflowMgr;
 import com.yatop.lambda.core.utils.WorkDirectoryUtil;
+import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class WorkflowCreate {
     @Autowired
     private WorkflowMgr workflowMgr;
 
-    public Workflow createWorkflow(Experiment experiment, String operId) {
+    public WorkflowContext createWorkflow(Experiment experiment, String operId) {
 
         WfFlow flow = new WfFlow();
         flow.setFlowId(experiment.getExperimentId());
@@ -29,14 +30,14 @@ public class WorkflowCreate {
 
         //richWorkflow.copyProperties(workflowMgr.queryWorkflow(richWorkflow.getFlowId()));
         richWorkflow.changeWorkflowState2Draft();
-        return richWorkflow;
+        return WorkflowContext.BuildWorkflowContext(experiment.getProject(), richWorkflow, operId);
     }
 
-/*    public Workflow createWorkflow(Experiment experiment, WorkflowContext otherContext, String operId) {
-        Workflow richWorkflow = createWorkflowWithBlank(experiment, operId);
+    public WorkflowContext createWorkflow(Experiment experiment, WorkflowContext thatWorkflowContext, String operId) {
+        WorkflowContext thisWorkFlowContext = createWorkflow(experiment, operId);
 
-        WorkflowContext workFlowContext = new WorkflowContext(experiment.getProject(), richWorkflow, operId);
+        //TODO ...
 
-        return null;
-    }*/
+        return thisWorkFlowContext;
+    }
 }

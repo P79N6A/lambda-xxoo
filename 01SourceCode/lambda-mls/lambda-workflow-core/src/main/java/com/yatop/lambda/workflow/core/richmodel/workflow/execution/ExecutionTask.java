@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.execution;
 
 import com.yatop.lambda.base.model.WfExecutionTask;
+import com.yatop.lambda.core.enums.TaskStateEnum;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
@@ -34,6 +35,33 @@ public class ExecutionTask extends WfExecutionTask implements IRichModel {
         }
         if (this.isColoured())
             ;//NodeHelper.updateNode(this, operId);
+    }
+
+    public void changeTaskState2Ready() {
+        this.changeTaskState(TaskStateEnum.READY);
+    }
+
+    public void changeTaskState2Running() {
+        this.changeTaskState(TaskStateEnum.RUNNING);
+    }
+
+    public void changeTaskState2Finished() {
+        this.changeTaskState(TaskStateEnum.FINISHED);
+    }
+
+    public void changeTaskState2ErrorTerminated() {
+        this.changeTaskState(TaskStateEnum.ERROR_TERMINATED);
+    }
+
+    public void changeTaskState2UserTerminated() {
+        this.changeTaskState(TaskStateEnum.USER_TERMINATED);
+    }
+
+    private void changeTaskState(TaskStateEnum stateEnum) {
+        if(this.getTaskState() == stateEnum.getState())
+            return;
+
+        this.setTaskState(stateEnum.getState());
     }
 
     public Node getNode() {

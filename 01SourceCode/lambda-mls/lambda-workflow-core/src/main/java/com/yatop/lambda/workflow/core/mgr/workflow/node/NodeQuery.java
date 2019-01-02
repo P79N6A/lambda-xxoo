@@ -31,6 +31,9 @@ public class NodeQuery {
     @Autowired
     ModuleConfig moduleConfig;
 
+    @Autowired
+    private NodeParameterCheck nodeParameterCheck;
+
     public Node queryNode(WorkflowContext workflowContext, Long nodeId) {
 
         Node richNode = workflowContext.getNode(nodeId);
@@ -52,9 +55,11 @@ public class NodeQuery {
 
         richNode = new Node(node, module);
         workflowContext.putNode(richNode);
-        if(!workflowContext.isLoadNodeParameter())
-            parameterQuery.queryParameters(workflowContext, richNode);
         nodePortQuery.queryNodePorts(workflowContext, richNode);
+        if(!workflowContext.isLoadNodeParameter()) {
+            parameterQuery.queryParameters(workflowContext, richNode);
+            nodeParameterCheck.checkParameter(workflowContext, richNode);
+        }
         return richNode;
     }
 
@@ -72,9 +77,11 @@ public class NodeQuery {
 
             Node richNode = new Node(node, module);
             workflowContext.putNode(richNode);
-            if(!workflowContext.isLoadNodeParameter())
-                parameterQuery.queryParameters(workflowContext, richNode);
             nodePortQuery.queryNodePorts(workflowContext, richNode);
+            if(!workflowContext.isLoadNodeParameter()) {
+                parameterQuery.queryParameters(workflowContext, richNode);
+                nodeParameterCheck.checkParameter(workflowContext, richNode);
+            }
         }
     }
 }

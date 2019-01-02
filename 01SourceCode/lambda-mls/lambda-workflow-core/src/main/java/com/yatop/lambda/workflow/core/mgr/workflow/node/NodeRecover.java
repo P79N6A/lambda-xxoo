@@ -39,6 +39,9 @@ public class NodeRecover {
     @Autowired
     ModuleConfig moduleConfig;
 
+    @Autowired
+    private NodeParameterCheck nodeParameterCheck;
+
     private void recoverNode(WorkflowContext workflowContext, Long nodeId) {
 
         nodeMgr.recoverNode(nodeId, workflowContext.getOperId());
@@ -56,6 +59,7 @@ public class NodeRecover {
         workflowContext.putNode(richNode);
         parameterRecover.recoverParameters(workflowContext, richNode);
         nodePortRecover.recoverNodePorts(workflowContext, richNode);
+        nodeParameterCheck.checkParameter(workflowContext, richNode);
         richNode.downgradeNodeState2Ready();
     }
 

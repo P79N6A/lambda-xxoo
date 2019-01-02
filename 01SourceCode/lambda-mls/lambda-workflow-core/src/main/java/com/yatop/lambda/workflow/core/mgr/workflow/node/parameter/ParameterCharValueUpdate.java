@@ -5,6 +5,7 @@ import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.enums.WorkflowStateEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeParameterCheck;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
@@ -20,6 +21,9 @@ public class ParameterCharValueUpdate {
 
     @Autowired
     private ParameterCreate parameterCreate;
+
+    @Autowired
+    private NodeParameterCheck nodeParameterCheck;
 
     private NodeParameter updateParameter(WorkflowContext workflowContext, Node node, NodeParameter targetParameter, String charValueText, Class<ParameterCharValueUpdate> none) {
 
@@ -60,7 +64,8 @@ public class ParameterCharValueUpdate {
                 //TODO throw exception ???
         }
 
-        workflowContext.getWorkflow().changeWorkflowState2Draft();
+        nodeParameterCheck.checkParameter(workflowContext, node);
         node.downgradeNodeState2Ready();
+        workflowContext.getWorkflow().changeWorkflowState2Draft();
     }
 }
