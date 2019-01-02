@@ -17,9 +17,9 @@ public class WorkflowCreate {
     public Workflow createWorkflow(Experiment experiment, String operId) {
 
         WfFlow flow = new WfFlow();
+        flow.setFlowId(experiment.getExperimentId());
         flow.setFlowName(experiment.getExperimentId() + " - WorkFLow");
         flow.setOwnerProjectId(experiment.getOwnerProjectId());
-        flow.setOwnerExperimentId(experiment.getExperimentId());
         flow = workflowMgr.insertWorkflow(flow, operId);
 
         Workflow richWorkflow = new Workflow(flow);
@@ -27,7 +27,8 @@ public class WorkflowCreate {
         richWorkflow.setFlowLocalDir(WorkDirectoryUtil.getWorkFLowLocalDirectory(experiment.getOwnerProjectId(), richWorkflow.getFlowId()));
         workflowMgr.updateWorkflow(richWorkflow, operId);
 
-        richWorkflow.copyProperties(workflowMgr.queryWorkflow(richWorkflow.getFlowId()));
+        //richWorkflow.copyProperties(workflowMgr.queryWorkflow(richWorkflow.getFlowId()));
+        richWorkflow.changeWorkflowState2Draft();
         return richWorkflow;
     }
 

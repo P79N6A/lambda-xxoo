@@ -23,6 +23,7 @@ public class NodeTaskExecution {
 
             if(taskExecutionContext.warningOccoured()) {
                 taskExecutionContext.getTask().setWarningMsg(String.format("任务节点[%s]:%s", taskExecutionContext.getWarningMsg()));
+                //taskExecutionContext.getNode().changeNodeState2Error();
             }
         }
     }

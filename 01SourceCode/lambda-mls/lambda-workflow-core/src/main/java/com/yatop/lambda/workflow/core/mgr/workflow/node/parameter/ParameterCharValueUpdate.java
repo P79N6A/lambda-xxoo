@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.mgr.workflow.node.parameter;
 
 import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
+import com.yatop.lambda.core.enums.WorkflowStateEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
@@ -13,9 +14,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ParameterCharValueUpdate {
-
-/*    @Autowired
-    private NodeParameterMgr nodeParameterMgr;*/
 
     @Autowired
     private CharValueUpdate charValueUpdate;
@@ -61,5 +59,8 @@ public class ParameterCharValueUpdate {
             default:
                 //TODO throw exception ???
         }
+
+        workflowContext.getWorkflow().changeWorkflowState2Draft();
+        node.downgradeNodeState2Ready();
     }
 }

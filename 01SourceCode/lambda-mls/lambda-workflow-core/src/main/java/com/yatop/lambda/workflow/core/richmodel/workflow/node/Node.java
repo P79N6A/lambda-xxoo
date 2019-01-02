@@ -70,15 +70,39 @@ public class Node extends WfFlowNode implements IRichModel {
         }
     }
 
-    public void downgradeToReady(NodeStateEnum stateEnum) {
-        if(this.getNodeState() <= stateEnum.getState())
-            return;
-
-        this.setNodeState(stateEnum.getState());
+    public void changeNodeState2NotReady() {
+        this.changeNodeState(NodeStateEnum.NOT_READY);
     }
 
-    public void changeNodeState(NodeStateEnum stateEnum) {
-        if(this.getNodeState() <= stateEnum.getState())
+    public void downgradeNodeState2Ready() {
+        if(this.getNodeState() <= NodeStateEnum.READY.getState())
+            return;
+
+        this.changeNodeState(NodeStateEnum.READY);
+    }
+
+    public void changeNodeState2Ready() {
+        this.changeNodeState(NodeStateEnum.READY);
+    }
+
+    public void changeNodeState2Preparing() {
+        this.changeNodeState(NodeStateEnum.PREPARING);
+    }
+
+    public void changeNodeState2Running() {
+        this.changeNodeState(NodeStateEnum.RUNNING);
+    }
+
+    public void changeNodeState2Success() {
+        this.changeNodeState(NodeStateEnum.SUCCESS);
+    }
+
+    public void changeNodeState2Error() {
+        this.changeNodeState(NodeStateEnum.ERROR);
+    }
+
+    private void changeNodeState(NodeStateEnum stateEnum) {
+        if(this.getNodeState() == stateEnum.getState())
             return;
 
         this.setNodeState(stateEnum.getState());

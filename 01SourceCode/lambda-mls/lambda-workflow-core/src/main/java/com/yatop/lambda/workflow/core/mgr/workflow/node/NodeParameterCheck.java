@@ -64,7 +64,9 @@ public class NodeParameterCheck {
 
             if(warningCounter > 0 || requiredCounter > 0) {
                 node.setWarningMsg(buildNodeWarningMsg(warningCounter, requiredCounter));
-                node.setNodeState(NodeStateEnum.NOT_READY.getState());
+                node.changeNodeState2NotReady();
+            } else {
+                node.changeNodeState2Ready();
             }
         }
     }
@@ -72,7 +74,7 @@ public class NodeParameterCheck {
     private String buildNodeWarningMsg(int warningCounter, int requiredCounter) {
         StringBuilder sb = new StringBuilder();
         if(warningCounter > 0) {
-            sb.append("Parameter Check Warning Number:").append(warningCounter).append(",");
+            sb.append("Node Parameter Check Warning Number:").append(warningCounter).append(",");
         }
         if(requiredCounter > 0) {
             sb.append("Node Missing Required Value Number:").append(requiredCounter);

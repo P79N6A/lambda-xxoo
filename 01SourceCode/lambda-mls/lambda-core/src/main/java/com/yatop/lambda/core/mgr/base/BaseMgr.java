@@ -78,9 +78,6 @@ public class BaseMgr {
     protected WfSnapshotMapper wfSnapshotMapper;
 
     @Autowired
-    protected WfSnapshotParameterMapper wfSnapshotParameterMapper;
-
-    @Autowired
     protected WfUserFavoriteModuleMapper wfUserFavoriteModuleMapper;
 
     @Autowired

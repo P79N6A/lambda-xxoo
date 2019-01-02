@@ -47,9 +47,7 @@ public class LinkCreate {
         NodeLink richNodeLink = new NodeLink(nodeLink);
         workflowContext.putLink(richNodeLink);
 
-        if(!richNodeLink.isWebLink()) {
-            workflowContext.getWorkflow().changeWorkflowState(WorkflowStateEnum.DRAFT);
-        }
+        workflowContext.getWorkflow().changeWorkflowState2Draft();
         return richNodeLink;
     }
 

@@ -59,6 +59,7 @@ public class NodeDelete {
             }
 
             workflow.doneDeleteNodes(nodes.size() + 0L);
+            workflowContext.getWorkflow().changeWorkflowState2Draft();
         }
     }
 }

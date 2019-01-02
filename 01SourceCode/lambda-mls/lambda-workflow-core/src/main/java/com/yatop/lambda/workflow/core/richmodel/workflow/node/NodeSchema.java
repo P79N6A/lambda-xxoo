@@ -70,36 +70,55 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
         return fieldAttributes;
     }
 
-    public void setFieldAttributes(SchemaStateEnum schemaStateEnum, List<FieldAttribute> fieldAttributes) {
-        if(schemaStateEnum.getState() == SchemaStateEnum.NORMAL.getState()) {
+    public void clearFieldAttributes(SchemaStateEnum schemaStateEnum) {
+        if(this.isNormalState()) {
+            CollectionUtil.clear(this.fieldAttributes);
+            this.fieldAttributes = null;
+            this.dirtyFieldAttributes = true;
+        }
+        this.changeWorkflowState(schemaStateEnum);
+    }
 
-            if(DataUtil.isEmpty(fieldAttributes)) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- set empty field attribute list.", "节点数据输出端口schema信息错误");
-            }
+    public void setFieldAttributes(List<FieldAttribute> fieldAttributes) {
 
-            if(this.getSchemaState() == SchemaStateEnum.NORMAL.getState()) {
-                if(!CollectionUtil.equals(this.getFieldAttributes(), fieldAttributes)) {
-                    CollectionUtil.clear(this.fieldAttributes);
-                    this.fieldAttributes = fieldAttributes;
-                    this.dirtyFieldAttributes = true;
-                }
-            } else {
+        if(DataUtil.isEmpty(fieldAttributes)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- input empty field attribute list.", "节点数据输出端口schema信息错误");
+        }
+
+        if(this.isNormalState()) {
+            if(!CollectionUtil.equals(this.getFieldAttributes(), fieldAttributes)) {
                 CollectionUtil.clear(this.fieldAttributes);
                 this.fieldAttributes = fieldAttributes;
                 this.dirtyFieldAttributes = true;
-                this.setSchemaState(SchemaStateEnum.NORMAL.getState());
             }
+        } else {
+            this.fieldAttributes = fieldAttributes;
+            this.dirtyFieldAttributes = true;
+            this.changeWorkflowState(SchemaStateEnum.NORMAL);
         }
-        else {
-            if(this.getSchemaState() == SchemaStateEnum.NORMAL.getState()) {
-                CollectionUtil.clear(this.fieldAttributes);
-                this.fieldAttributes = null;
-                this.dirtyFieldAttributes = true;
-                this.setSchemaState(schemaStateEnum.getState());
-            } else if (this.getSchemaState() != schemaStateEnum.getState()) {
-                this.setSchemaState(schemaStateEnum.getState());
-            }
-        }
+    }
+
+    public boolean isEmptyState() {
+        return this.getSchemaState() == SchemaStateEnum.EMPTY.getState();
+    }
+
+    public boolean isNormalState() {
+        return this.getSchemaState() == SchemaStateEnum.NORMAL.getState();
+    }
+
+    public boolean isNotSupportState() {
+        return this.getSchemaState() == SchemaStateEnum.NOT_SUPPORT.getState();
+    }
+
+    public boolean isOverloadInterruptState() {
+        return this.getSchemaState() == SchemaStateEnum.OVERLOAD_INTERRUPT.getState();
+    }
+
+    public void changeWorkflowState(SchemaStateEnum stateEnum) {
+        if(this.getSchemaState() == stateEnum.getState())
+            return;
+
+        this.setSchemaState(stateEnum.getState());
     }
 
     public void flush(String operId) {

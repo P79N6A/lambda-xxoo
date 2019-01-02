@@ -56,6 +56,7 @@ public class NodeRecover {
         workflowContext.putNode(richNode);
         parameterRecover.recoverParameters(workflowContext, richNode);
         nodePortRecover.recoverNodePorts(workflowContext, richNode);
+        richNode.downgradeNodeState2Ready();
     }
 
     public void recoverNodes(WorkflowContext workflowContext) {
@@ -78,5 +79,6 @@ public class NodeRecover {
             recoverNode(workflowContext, deleteQueue.getNodeId());
         }
         workflow.doneRecoverNodes(deleteQueues.size() + 0L);
+        workflowContext.getWorkflow().changeWorkflowState2Draft();
     }
 }

@@ -29,12 +29,11 @@ public class SchemaCreate {
         object.setObjectType(JsonObjectTypeEnum.OUTPUT_PORT_SCHEMA.getType());
         object.setObjectSrc(JsonObjectSourceEnum.EDITOR.getSource());
         object.setOwnerProjectId(workflowContext.getProject().getProjectId());
-        object.setRelExperimentId(workflowContext.getWorkflow().getOwnerExperimentId());
         object.setRelFlowId(workflowContext.getWorkflow().getFlowId());
         object.setRelSnapshotVersion(workflowContext.getWorkflow().getNextSnapshotVersion());
-        object.setRelJobId(-1L);
         object.setRelNodeId(node.getNodeId());
         object.setRelCharId(outputPort.getModulePort().getCmptChar().getCharId());
+        object.setRelTaskId(-1L);
         object.setStorageLocation(StorageLocationEnum.TABLE_FIELD.getLocation());
         object.setObjectState(JsonObjectStateEnum.EMPTY.getState());
         object = jsonObjectMgr.insertJsonObject(object, workflowContext.getOperId());

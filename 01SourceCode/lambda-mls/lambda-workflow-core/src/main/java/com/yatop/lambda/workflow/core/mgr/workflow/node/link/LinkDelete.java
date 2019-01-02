@@ -23,9 +23,7 @@ public class LinkDelete {
         nodeLinkMgr.deleteLink(link.getLinkId(), workflowContext.getOperId());
         workflowContext.markDeleted4Link(link);
 
-        if(!link.isWebLink()) {
-            workflowContext.getWorkflow().changeWorkflowState(WorkflowStateEnum.DRAFT);
-        }
+        workflowContext.getWorkflow().changeWorkflowState2Draft();
     }
 
     public void deleteLink(WorkflowContext workflowContext, List<NodeLink> links) {

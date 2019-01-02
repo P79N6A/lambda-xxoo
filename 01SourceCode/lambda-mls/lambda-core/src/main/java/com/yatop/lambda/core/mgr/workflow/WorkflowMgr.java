@@ -149,7 +149,7 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   查询工作流信息（按工作流ID，同实验ID）
+     *   查询工作流信息（按工作流ID<同实验ID>）
      *   返回结果
      *
      * */

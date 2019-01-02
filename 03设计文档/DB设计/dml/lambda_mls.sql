@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-01-02 20:08:58
+Date: 2019-01-02 22:49:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1837,27 +1837,6 @@ CREATE TABLE `wf_snapshot` (
 
 -- ----------------------------
 -- Records of wf_snapshot
--- ----------------------------
-
--- ----------------------------
--- Table structure for wf_snapshot_parameter
--- ----------------------------
-DROP TABLE IF EXISTS `wf_snapshot_parameter`;
-CREATE TABLE `wf_snapshot_parameter` (
-  `SNAPSHOT_ID` bigint(20) NOT NULL COMMENT '快照ID',
-  `OWNER_NODE_ID` bigint(20) NOT NULL COMMENT '所属节点ID',
-  `PARAMETER_CONTENT` mediumtext COMMENT '节点参数特征值内容',
-  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
-  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
-  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
-  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  KEY `Index_1` (`SNAPSHOT_ID`,`OWNER_NODE_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流快照节点设置特征值表';
-
--- ----------------------------
--- Records of wf_snapshot_parameter
 -- ----------------------------
 
 -- ----------------------------

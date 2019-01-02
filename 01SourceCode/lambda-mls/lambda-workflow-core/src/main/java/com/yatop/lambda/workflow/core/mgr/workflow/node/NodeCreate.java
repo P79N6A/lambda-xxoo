@@ -65,6 +65,9 @@ public class NodeCreate {
             parameterCreate.createParameters(workflowContext, richNode, otherNode);
         }
         nodePortCreate.createNodePorts(workflowContext, richNode);
+
+        workflowContext.getWorkflow().changeWorkflowState2Draft();
+        richNode.downgradeNodeState2Ready();
         return richNode;
     }
 

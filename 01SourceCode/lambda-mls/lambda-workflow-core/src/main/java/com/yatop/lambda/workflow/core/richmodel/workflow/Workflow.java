@@ -39,13 +39,28 @@ public class Workflow extends WfFlow implements IRichModel {
         }
     }
 
-/*    public void changeWorkflowState(WorkflowStateEnum stateEnum) {
+    public void changeWorkflowState2Draft() {
+        this.changeWorkflowState(WorkflowStateEnum.DRAFT);
+    }
+
+    public void changeWorkflowState2Preparing() {
+        this.changeWorkflowState(WorkflowStateEnum.PREPARING);
+    }
+
+    public void changeWorkflowState2Running() {
+        this.changeWorkflowState(WorkflowStateEnum.RUNNING);
+    }
+
+    public void changeWorkflowState2FinishedRunning() {
+        this.changeWorkflowState(WorkflowStateEnum.FINISHED_RUNNING);
+    }
+
+    private void changeWorkflowState(WorkflowStateEnum stateEnum) {
         if(this.getFlowState() == stateEnum.getState())
             return;
 
         this.setFlowState(stateEnum.getState());
-    }*/
-
+    }
 
     public void setModuleSequence(Module module, Long thatSequence, String operId) {
         WorkflowAccumulate accumulate = this.getAccumulate(module, operId);
