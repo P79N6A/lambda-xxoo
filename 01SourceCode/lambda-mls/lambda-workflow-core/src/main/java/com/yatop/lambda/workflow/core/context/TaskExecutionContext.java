@@ -16,8 +16,10 @@ import java.util.TreeMap;
 
 public class TaskExecutionContext implements IWorkContext {
 
-    private JobExecutionContext jobContext;     //操作关联运行作业上下文
-    private ExecutionTask task;                 //操作关联运行任务
+    private ExecutionJob job;       //操作关联运行作业
+    private ExecutionTask task;     //操作关联运行任务
+    private WorkflowContext workflowContext;    //作业内容的工作流上下文
+    private Node node;                          //操作关联节点
     private TreeMap<String, CharValue> inputCharValues = new TreeMap<String, CharValue>();         //节点输入内容特征值
     private TreeMap<String, CharValue> outputCharValues = new TreeMap<String, CharValue>();        //节点输出内容特征值
     private TreeMap<String, CharValue> execCharValues = new TreeMap<String, CharValue>();          //节点调用执行特征值
@@ -25,15 +27,19 @@ public class TaskExecutionContext implements IWorkContext {
     private TreeMap<String, CharValue> parameterCharValues = new TreeMap<String, CharValue>();     //节点组件参数特征值
     private String warningMsg;
 
-    public TaskExecutionContext(JobExecutionContext jobContext, ExecutionTask task, Node node) {
-        this.jobContext = jobContext;
+    public TaskExecutionContext(ExecutionJob job, ExecutionTask task, WorkflowContext workflowContext, Node node) {
+        this.job = job;
         this.task = task;
+        this.workflowContext = workflowContext;
+        this.node = node;
     }
 
     @Override
     public void clear() {
-        jobContext = null;
+        job = null;
         task = null;
+        workflowContext = null;
+        node = null;
         CollectionUtil.clear(inputCharValues);
         CollectionUtil.clear(outputCharValues);
         CollectionUtil.clear(execCharValues);
@@ -43,26 +49,26 @@ public class TaskExecutionContext implements IWorkContext {
     }
 
     public void flush() {
-        //this.job.flush(workflowContext.getOperId());
-        //this.task.flush(workflowContext.getOperId());
-        //this.node.flush(true, true, workflowContext.getOperId());
-        //this.workflowContext.getWorkflow().flush(workflowContext.getOperId());
+        this.job.flush(workflowContext.getOperId());
+        this.task.flush(workflowContext.getOperId());
+        this.node.flush(true, true, workflowContext.getOperId());
+        this.workflowContext.getWorkflow().flush(workflowContext.getOperId());
     }
 
     public ExecutionJob getJob() {
-        return this.jobContext.getJob();
+        return job;
     }
 
     public ExecutionTask getTask() {
-        return this.task;
+        return task;
     }
 
     public WorkflowContext getWorkflowContext() {
-        return this.jobContext.getWorkflowContext();
+        return workflowContext;
     }
 
     public Node getNode() {
-        return task.getNode();
+        return node;
     }
 
     public boolean warningOccoured() {
