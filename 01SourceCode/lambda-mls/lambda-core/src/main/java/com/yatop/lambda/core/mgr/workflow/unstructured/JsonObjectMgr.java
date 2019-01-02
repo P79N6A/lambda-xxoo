@@ -31,12 +31,11 @@ public class JsonObjectMgr extends BaseMgr {
                 jsonObject.isObjectTypeNotColoured() ||
                 jsonObject.isObjectSrcNotColoured() ||
                 jsonObject.isOwnerProjectIdNotColoured() ||
-                jsonObject.isRelExperimentIdNotColoured() ||
                 jsonObject.isRelFlowIdNotColoured() ||
                 jsonObject.isRelSnapshotVersionNotColoured() ||
-                jsonObject.isRelJobIdNotColoured() ||
                 jsonObject.isRelNodeIdNotColoured() ||
                 jsonObject.isRelCharIdNotColoured() ||
+                jsonObject.isRelTaskIdNotColoured() ||
                 jsonObject.isStorageLocationNotColoured() ||
                 jsonObject.isObjectStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
@@ -161,14 +160,14 @@ public class JsonObjectMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public WfJsonObject queryJsonObject(Long id) {
-        if(DataUtil.isNull(id)){
+    public WfJsonObject queryJsonObject(Long objectId) {
+        if(DataUtil.isNull(objectId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query json object failed -- invalid query condition.", "无效查询条件");
         }
 
         WfJsonObject jsonObject;
         try {
-            jsonObject = wfJsonObjectMapper.selectByPrimaryKey(id);
+            jsonObject = wfJsonObjectMapper.selectByPrimaryKey(objectId);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query json object failed.", "查询Json对象失败", e);
         }

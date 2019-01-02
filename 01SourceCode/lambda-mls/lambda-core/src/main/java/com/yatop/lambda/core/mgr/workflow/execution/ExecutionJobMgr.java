@@ -168,14 +168,14 @@ public class ExecutionJobMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public WfExecutionJob queryJob(Long id) {
-        if(DataUtil.isNull(id)){
+    public WfExecutionJob queryJob(Long jobId) {
+        if(DataUtil.isNull(jobId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed -- invalid query condition.", "无效查询条件");
         }
 
         WfExecutionJob job;
         try {
-            job = wfExecutionJobMapper.selectByPrimaryKey(id);
+            job = wfExecutionJobMapper.selectByPrimaryKey(jobId);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed.", "查询作业信息失败", e);
         }

@@ -21,15 +21,15 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   插入新工作流信息（名称、所属项目ID、所属实验ID ...）
+     *   插入新工作流信息（工作流ID<同实验ID>、名称、所属项目ID ...）
      *   返回插入记录
      *
      * */
     public WfFlow insertWorkflow(WfFlow workflow, String operId) {
         if( DataUtil.isNull(workflow) ||
+                workflow.isFlowIdNotColoured() ||
                 workflow.isFlowNameNotColoured() ||
                 workflow.isOwnerProjectIdNotColoured() ||
-                workflow.isOwnerExperimentIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert workflow info failed -- invalid insert data.", "无效插入数据");
         }
@@ -38,7 +38,6 @@ public class WorkflowMgr extends BaseMgr {
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertWorkflow.copyProperties(workflow);
-            insertWorkflow.setFlowIdColoured(false);
             insertWorkflow.setShareLockState(ShareLockStateEnum.UNLOCKED.getState());
             insertWorkflow.setShareLockMsgColoured(false);
             insertWorkflow.setNextSnapshotVersion(1L);
@@ -150,44 +149,18 @@ public class WorkflowMgr extends BaseMgr {
 
     /*
      *
-     *   查询工作流信息（按实验ID）
+     *   查询工作流信息（按工作流ID，同实验ID）
      *   返回结果
      *
      * */
-    public WfFlow queryWorkflowByExperimentId(Long experimentId) {
-        if(DataUtil.isNull(experimentId)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow info failed -- invalid query condition.", "无效查询条件");
-        }
-
-        List<WfFlow> resultList;
-        try {
-            WfFlowExample example = new WfFlowExample();
-            example.createCriteria().andOwnerExperimentIdEqualTo(experimentId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            resultList = wfFlowMapper.selectByExample(example);
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow info failed.", "查询工作流信息失败", e);
-        }
-
-        if(DataUtil.isEmpty(resultList))
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow info failed -- invalid status or not found.", "已删除或未查找到");
-
-        return resultList.get(0);
-    }
-
-    /*
-     *
-     *   查询工作流信息（按ID）
-     *   返回结果
-     *
-     * */
-    public WfFlow queryWorkflow(Long id) {
-        if(DataUtil.isNull(id)){
+    public WfFlow queryWorkflow(Long workflowId) {
+        if(DataUtil.isNull(workflowId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow info failed -- invalid query condition.", "无效查询条件");
         }
 
         WfFlow workflow;
         try {
-            workflow = wfFlowMapper.selectByPrimaryKey(id);
+            workflow = wfFlowMapper.selectByPrimaryKey(workflowId);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow info failed.", "查询工作流信息失败", e);
         }

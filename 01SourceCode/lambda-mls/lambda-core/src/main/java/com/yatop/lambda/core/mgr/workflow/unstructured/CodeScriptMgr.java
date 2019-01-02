@@ -31,12 +31,11 @@ public class CodeScriptMgr extends BaseMgr {
                 codeScript.isScriptTypeNotColoured() ||
                 codeScript.isScriptSrcNotColoured() ||
                 codeScript.isOwnerProjectIdNotColoured() ||
-                codeScript.isRelExperimentIdNotColoured() ||
                 codeScript.isRelFlowIdNotColoured() ||
                 codeScript.isRelSnapshotVersionNotColoured() ||
-                codeScript.isRelJobIdNotColoured() ||
                 codeScript.isRelNodeIdNotColoured() ||
                 codeScript.isRelCharIdNotColoured() ||
+                codeScript.isRelTaskIdNotColoured() ||
                 codeScript.isScriptStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert code script failed -- invalid insert data.", "无效插入数据");
@@ -164,14 +163,14 @@ public class CodeScriptMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public WfCodeScript queryCodeScript(Long id) {
-        if(DataUtil.isNull(id)){
+    public WfCodeScript queryCodeScript(Long scriptId) {
+        if(DataUtil.isNull(scriptId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query code script failed -- invalid query condition.", "无效查询条件");
         }
 
         WfCodeScript codeScript;
         try {
-            codeScript = wfCodeScriptMapper.selectByPrimaryKey(id);
+            codeScript = wfCodeScriptMapper.selectByPrimaryKey(scriptId);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query code script failed.", "查询代码脚本失败", e);
         }

@@ -28,6 +28,10 @@ public class DataTableMgr extends BaseMgr {
                 table.isTableTypeNotColoured() ||
                 table.isTableSrcNotColoured() ||
                 table.isOwnerDwIdNotColoured() ||
+                table.isRelFlowIdNotColoured() ||
+                table.isRelNodeIdNotColoured() ||
+                table.isRelCharIdNotColoured() ||
+                table.isRelTaskIdNotColoured() ||
                 table.isDataFileTypeNotColoured() ||
                 table.isTableStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
@@ -145,14 +149,14 @@ public class DataTableMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public DwDataTable queryDataTable(Long id) {
-        if(DataUtil.isNull(id)){
+    public DwDataTable queryDataTable(Long tableId) {
+        if(DataUtil.isNull(tableId)){
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed -- invalid query condition.", "无效查询条件");
         }
 
         DwDataTable table;
         try {
-            table = dwDataTableMapper.selectByPrimaryKey(id);
+            table = dwDataTableMapper.selectByPrimaryKey(tableId);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed.", "查询数据表信息失败", e);
         }
@@ -263,7 +267,7 @@ public class DataTableMgr extends BaseMgr {
      *   返回是否存在
      *
      * */
-    public boolean existsDataTable(Long warehouseId, String tableName, Long originalId)  {
+    public boolean existsDataTable(Long warehouseId, String tableName, Long originalTableId)  {
         if(DataUtil.isNull(warehouseId) && DataUtil.isEmpty(tableName))
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Check data table exists failed -- invalid check condition.", "无效检查条件");
 
@@ -271,8 +275,8 @@ public class DataTableMgr extends BaseMgr {
             DwDataTableExample example = new DwDataTableExample();
             DwDataTableExample.Criteria criteria = example.createCriteria().andOwnerDwIdEqualTo(warehouseId)
                     .andTableNameEqualTo(tableName).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            if(DataUtil.isNotNull(originalId))
-                criteria.andTableIdNotEqualTo(originalId);
+            if(DataUtil.isNotNull(originalTableId))
+                criteria.andTableIdNotEqualTo(originalTableId);
             return dwDataTableMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Check data table exists failed.", "检查已存在数据表失败", e);

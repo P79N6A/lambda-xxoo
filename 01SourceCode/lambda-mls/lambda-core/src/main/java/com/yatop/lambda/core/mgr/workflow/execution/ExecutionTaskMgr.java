@@ -160,14 +160,14 @@ public class ExecutionTaskMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public WfExecutionTask queryTask(Long id) {
-        if(DataUtil.isNull(id)){
+    public WfExecutionTask queryTask(Long taskId) {
+        if(DataUtil.isNull(taskId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed -- invalid query condition.", "无效查询条件");
         }
 
         WfExecutionTask task;
         try {
-            task = wfExecutionTaskMapper.selectByPrimaryKey(id);
+            task = wfExecutionTaskMapper.selectByPrimaryKey(taskId);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed.", "查询任务信息失败", e);
         }

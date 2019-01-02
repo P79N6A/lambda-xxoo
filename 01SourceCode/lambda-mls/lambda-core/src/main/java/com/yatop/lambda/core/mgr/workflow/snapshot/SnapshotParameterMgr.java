@@ -124,14 +124,14 @@ public class SnapshotParameterMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public WfSnapshot querySnapshot(Long id) {
-        if(DataUtil.isNull(id)){
+    public WfSnapshot querySnapshot(Long snapshotId) {
+        if(DataUtil.isNull(snapshotId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query snapshot info failed -- invalid query condition.", "无效查询条件");
         }
 
         WfSnapshot snapshot;
         try {
-            snapshot = wfSnapshotMapper.selectByPrimaryKey(id);
+            snapshot = wfSnapshotMapper.selectByPrimaryKey(snapshotId);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query snapshot info failed.", "查询快照信息失败", e);
         }

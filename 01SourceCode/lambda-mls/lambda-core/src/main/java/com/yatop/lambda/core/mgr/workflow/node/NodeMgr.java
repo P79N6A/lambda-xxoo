@@ -162,14 +162,14 @@ public class NodeMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public WfFlowNode queryNode(Long id) {
-        if(DataUtil.isNull(id)){
+    public WfFlowNode queryNode(Long nodeId) {
+        if(DataUtil.isNull(nodeId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node info failed -- invalid query condition.", "无效查询条件");
         }
 
         WfFlowNode node;
         try {
-            node = wfFlowNodeMapper.selectByPrimaryKey(id);
+            node = wfFlowNodeMapper.selectByPrimaryKey(nodeId);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node info failed.", "查询节点信息失败", e);
         }
