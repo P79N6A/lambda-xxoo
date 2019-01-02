@@ -50,7 +50,8 @@ public class ParameterHelper {
         return new NodeParameter(parameter, cmptChar, charValue, true);
     }
 
-    public static void updateNodeParameter(NodeParameter richParameter, String operId) {
-        NODE_PARAMETER_MGR.updateNodeParameter(richParameter, operId);
+    public static void updateNodeParameter(NodeParameter parameter, String operId) {
+        NODE_PARAMETER_MGR.updateNodeParameter(parameter, operId);
+        parameter.clearColoured();
     }
 }

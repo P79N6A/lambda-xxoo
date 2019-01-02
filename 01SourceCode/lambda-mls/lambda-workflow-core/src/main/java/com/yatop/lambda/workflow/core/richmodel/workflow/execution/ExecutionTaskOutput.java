@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.execution;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.base.model.WfExecutionTaskOutput;
+import com.yatop.lambda.core.enums.OutputStateEnum;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 
@@ -21,9 +22,15 @@ public class ExecutionTaskOutput extends WfExecutionTaskOutput implements IRichM
         super.clear();
     }
 
-    public void flush(String operId) {
-        if(this.isColoured())
-            ;//ParameterHelper.updateNodeParameter(this, operId);
+    public void changeOutputState2Normal() {
+        this.changeOutputState(OutputStateEnum.NORMAL);
+    }
+
+    private void changeOutputState(OutputStateEnum stateEnum) {
+        if(this.getOutputState() == stateEnum.getState())
+            return;
+
+        this.setOutputState(stateEnum.getState());
     }
 
     public CmptChar getCmptChar() {

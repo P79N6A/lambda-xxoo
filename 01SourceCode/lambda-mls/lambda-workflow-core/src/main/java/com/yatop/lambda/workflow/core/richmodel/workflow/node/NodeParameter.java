@@ -33,8 +33,9 @@ public class NodeParameter extends WfFlowNodeParameter implements IRichModel {
     }
 
     public void flush(String operId) {
-        if(this.isColoured() && !simulateParameter)
+        if(this.isColoured() && !simulateParameter) {
             ParameterHelper.updateNodeParameter(this, operId);
+        }
     }
 
     public CmptChar getCmptChar() {

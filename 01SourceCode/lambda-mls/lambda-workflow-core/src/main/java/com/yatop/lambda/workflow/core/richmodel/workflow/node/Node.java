@@ -24,13 +24,15 @@ public class Node extends WfFlowNode implements IRichModel {
     private TreeMap<Long, NodePortOutput> outputNodePorts = new TreeMap<Long, NodePortOutput>();                //输出节点端口，key=nodePortId
     private TreeMap<String, NodePortOutput> outputNodePortsOrderByCharId = new TreeMap<String, NodePortOutput>();                //输出节点端口，key=charId
     private TreeMap<Integer, NodePortOutput> outputNodePortsOrderBySequence = new TreeMap<Integer, NodePortOutput>();//输出节点端口按序号排序
-    private TreeMap<String, GlobalParameter> globalParameters = new TreeMap<String, GlobalParameter>();  //操作关联节点参数，key=charId
+  //private TreeMap<String, GlobalParameter> globalParameters = new TreeMap<String, GlobalParameter>();  //操作关联节点参数，key=charId
     private boolean deleted;
+    private boolean anlyzed;
 
     public Node(WfFlowNode data, Module module) {
         super.copyProperties(data);
         this.module = module;
         this.deleted = false;
+        this.anlyzed = false;
         this.clearColoured();
     }
 
@@ -43,7 +45,7 @@ public class Node extends WfFlowNode implements IRichModel {
         inputNodePortsOrderBySequence.clear();
         CollectionUtil.clear(outputNodePorts);
         outputNodePortsOrderBySequence.clear();
-        CollectionUtil.clear(globalParameters);
+      //CollectionUtil.clear(globalParameters);
         super.clear();
     }
 
@@ -203,6 +205,7 @@ public class Node extends WfFlowNode implements IRichModel {
         CollectionUtil.put(outputNodePortsOrderByCharId, outputNodePort.getRefCharId(), outputNodePort);
         CollectionUtil.put(outputNodePortsOrderBySequence, outputNodePort.getModulePort().getSequence(), outputNodePort);
     }
+/*
 
     public int globalParameterCount() {
         return globalParameters.size();
@@ -223,6 +226,7 @@ public class Node extends WfFlowNode implements IRichModel {
     public void removeGlobalParameter(String charId) {
         CollectionUtil.remove(globalParameters, charId);
     }
+*/
 
     public boolean isDeleted() {
         return deleted;
@@ -237,6 +241,19 @@ public class Node extends WfFlowNode implements IRichModel {
         if(this.outputNodePortCount() > 0) {
             for (NodePortOutput outputPort : this.getOutputNodePorts()) {
                 outputPort.markDeleted();
+            }
+        }
+        this.deleted = true;
+    }
+
+    public boolean isAnalyzed() {
+        return deleted;
+    }
+
+    public void markAnalyzed() {
+        if(this.inputNodePortCount() > 0) {
+            for (NodePortInput inputPort : this.getInputNodePorts()) {
+                inputPort.markAnalyzed();
             }
         }
         this.deleted = true;

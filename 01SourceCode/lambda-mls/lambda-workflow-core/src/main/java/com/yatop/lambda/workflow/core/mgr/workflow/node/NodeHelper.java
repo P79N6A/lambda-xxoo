@@ -19,5 +19,6 @@ public class NodeHelper {
     //名称、X坐标、Y坐标、最后任务ID、警告消息、节点状态、注释、概要、描述
     public static void updateNode(Node node, String operId) {
         NODE_MGR.updateNode(node, operId);
+        node.clearColoured();
     }
 }

@@ -2,9 +2,12 @@ package com.yatop.lambda.workflow.core.context;
 
 import com.yatop.lambda.core.enums.IsWebLinkEnum;
 import com.yatop.lambda.core.enums.JobTypeEnum;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.data.model.ModelWarehouse;
+import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;
@@ -21,11 +24,13 @@ public class WorkflowContext implements IWorkContext {
      *  工作流、节点、节点参数、节点数据端口schema等信息采用延迟更新，由flush方法发起提交
      * */
 
+    private boolean executionWorkMode;      //标识是否为运行工作模式，否则视为编辑器模式（用于特征CharValue增删改查等事件内部判断用）
     private boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
     private boolean loadNodeParameter;      //控制是否查询带出节点参数信息
     private boolean loadDataPortSchema;     //控制是否查询带出数据输出端口schema信息
     private Project project;                //操作关联项目
     private Workflow workflow;              //操作关联工作流
+    private ExecutionJob job;
     private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库，key=dwId
     private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联模型仓库，key=mwId
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();      //操作关联节点，key=nodeId
@@ -34,8 +39,11 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, TreeSet<NodeLink>> outputLinks = new TreeMap<Long, TreeSet<NodeLink>>();  //操作关联节点链接，key=srcPortId
     private TreeMap<Long, NodePortInput> inputPorts = new TreeMap<Long, NodePortInput>();  //操作关联节点输入端口，key=nodePortId
     private TreeMap<Long, NodePortOutput> outputPorts = new TreeMap<Long, NodePortOutput>();  //操作关联节点输出端口，key=nodePortId
-    //private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联节点全局参数，key=globalParameterId
+  //private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联节点全局参数，key=globalParameterId
     private String operId;
+
+    private TreeMap<Long, Node> changedNodes = new TreeMap<Long, Node>();      //变更节点（节点创建、节点参数更新），key=nodeId
+    private TreeMap<Long, NodeLink> changedLinks = new TreeMap<Long, NodeLink>();  //变更节点链接（节点链接创建），key=linkId
 
     private TreeMap<Long, Node> deleteNodes = new TreeMap<Long, Node>();      //删除节点，key=nodeId
     private TreeMap<Long, NodeLink> deleteLinks = new TreeMap<Long, NodeLink>();  //删除节点链接，key=linkId
@@ -43,6 +51,7 @@ public class WorkflowContext implements IWorkContext {
     //工作流编辑用
     public static WorkflowContext BuildWorkflowContext(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
+        context.executionWorkMode = false;
         context.enableFlushWorkflow = true;
         context.loadNodeParameter = true;
         context.loadDataPortSchema = true;
@@ -52,26 +61,40 @@ public class WorkflowContext implements IWorkContext {
     //仅查询画布图形信息用
     public static WorkflowContext BuildWorkflowContext4OnlyGraph(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
+        context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;
         context.loadDataPortSchema = false;
         return context;
     }
 
-    //快照用
-    public static WorkflowContext BuildWorkflowContext4Snapshot(Project project, Workflow workflow, String operId) {
+    //查询工作流内容构建快照内容和作业内容用
+    public static WorkflowContext BuildWorkflowContext4NoSchema(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
+        context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = true;
         context.loadDataPortSchema = false;
         return context;
     }
 
-    //工作流运行用
-    public static WorkflowContext BuildWorkflowContext4Execution(Project project, Workflow workflow, JobTypeEnum jobTypeEnum, String operId) {
+    //快照内容查看用
+    public static WorkflowContext BuildWorkflowContext4Snapshot(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
-        context.enableFlushWorkflow = JobTypeEnum.enableFlushWorkflow(jobTypeEnum);
-        context.loadNodeParameter = true;
+        context.executionWorkMode = false;
+        context.enableFlushWorkflow = false;
+        context.loadNodeParameter = false;  //WorkflowContextCodec中填入
+        context.loadDataPortSchema = false;
+        return context;
+    }
+
+    //工作流作业内容查看用
+    public static WorkflowContext BuildWorkflowContext4Execution(Project project, Workflow workflow, ExecutionJob job, String operId) {
+        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+        context.job = job;
+        context.executionWorkMode = true;
+        context.enableFlushWorkflow = JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(job.getJobType()));
+        context.loadNodeParameter = false;  //WorkflowContextCodec中填入
         context.loadDataPortSchema = false;
         return context;
     }
@@ -92,6 +115,10 @@ public class WorkflowContext implements IWorkContext {
         this.workflow.flush(this.operId);
     }
 
+    public boolean isExecutionWorkMode() {
+        return executionWorkMode;
+    }
+
     public boolean isEnableFlushWorkflow() {
         return enableFlushWorkflow;
     }
@@ -110,6 +137,13 @@ public class WorkflowContext implements IWorkContext {
 
     public Workflow getWorkflow() {
         return workflow;
+    }
+
+    public ExecutionJob getJob() {
+        if(executionWorkMode && DataUtil.isNull(job)){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution work mode missing job info.", "工作流上下文错误");
+        }
+        return job;
     }
 
     public DataWarehouse getDataWarehouse(Long dataWarehouseId) {
@@ -276,6 +310,7 @@ public class WorkflowContext implements IWorkContext {
         CollectionUtil.put(globalParameters, globalParameter.getGlobalParamId(), globalParameter);
 
     }*/
+
     public String getOperId() {
         return operId;
     }
@@ -288,6 +323,22 @@ public class WorkflowContext implements IWorkContext {
     public void markDeleted4Link(NodeLink link) {
         link.markDeleted();
         deleteLinks.put(link.getLinkId(), link);
+    }
+
+    public List<Node> getChangedNodes() {
+        return CollectionUtil.toList(deleteNodes);
+    }
+
+    public List<NodeLink> getChangedLinks() {
+        return CollectionUtil.toList(deleteLinks);
+    }
+
+    public Node pollChangedNode() {
+        return deleteNodes.pollFirstEntry().getValue();
+    }
+
+    public NodeLink pollChangedLink() {
+        return deleteLinks.pollFirstEntry().getValue();
     }
 
     public List<Node> getDeletedNodes() {
@@ -319,7 +370,7 @@ public class WorkflowContext implements IWorkContext {
         outputLinks.clear();
         inputPorts.clear();
         outputPorts.clear();
-        //globalParameters.clear();
+      //globalParameters.clear();
         deleteNodes.clear();
         deleteLinks.clear();
     }

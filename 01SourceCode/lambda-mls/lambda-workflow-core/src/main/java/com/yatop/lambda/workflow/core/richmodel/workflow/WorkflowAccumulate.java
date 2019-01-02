@@ -15,8 +15,9 @@ public class WorkflowAccumulate extends WfFlowAccumulate implements IRichModel {
     }
 
     public void flush(String operId) {
-        if (this.isColoured())
+        if (this.isColoured()) {
             WorkflowHelper.updateAccumulate(this, operId);
+        }
     }
 
     public Long increaseUsageCount() {

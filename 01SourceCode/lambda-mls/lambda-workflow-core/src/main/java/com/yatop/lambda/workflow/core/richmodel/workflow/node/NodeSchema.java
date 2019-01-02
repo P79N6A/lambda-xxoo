@@ -125,6 +125,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
         if(dirtyFieldAttributes) {
             getJsonObject().setObjectData(DataUtil.isNotEmpty(fieldAttributes) ? JSONArray.toJSONString(fieldAttributes) : null);
             SchemaHelper.updateFieldAttributes(getJsonObject(), operId);
+            dirtyFieldAttributes = false;
         }
 
         if(this.isColoured()) {

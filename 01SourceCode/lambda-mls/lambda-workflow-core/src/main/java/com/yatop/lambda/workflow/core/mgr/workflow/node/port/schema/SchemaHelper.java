@@ -37,8 +37,9 @@ public class SchemaHelper {
         return new JsonObject(jsonObject);
     }
 
-    static public void updateFieldAttributes(JsonObject richJsonObject, String operId) {
-        JSON_OBJECT_MGR.updateJsonObject(richJsonObject, operId);
+    static public void updateFieldAttributes(JsonObject jsonObject, String operId) {
+        JSON_OBJECT_MGR.updateJsonObject(jsonObject, operId);
+        jsonObject.clearColoured();
     }
 
     static public void deleteFieldAttributes(Long jsonObjectId, String operId) {
@@ -49,7 +50,8 @@ public class SchemaHelper {
         JSON_OBJECT_MGR.recoverJsonObject(jsonObjectId, operId);
     }
 
-    static public void updateNodeSchema(NodeSchema richSchema, String operId) {
-        NODE_SCHEMA_MGR.updateSchema(richSchema, operId);
+    static public void updateNodeSchema(NodeSchema schema, String operId) {
+        NODE_SCHEMA_MGR.updateSchema(schema, operId);
+        schema.clearColoured();
     }
 }
