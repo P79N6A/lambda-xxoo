@@ -5,7 +5,6 @@ import com.yatop.lambda.core.enums.NodeStateEnum;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeHelper;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
-import com.yatop.lambda.workflow.core.richmodel.workflow.global.GlobalParameter;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
@@ -26,13 +25,13 @@ public class Node extends WfFlowNode implements IRichModel {
     private TreeMap<Integer, NodePortOutput> outputNodePortsOrderBySequence = new TreeMap<Integer, NodePortOutput>();//输出节点端口按序号排序
   //private TreeMap<String, GlobalParameter> globalParameters = new TreeMap<String, GlobalParameter>();  //操作关联节点参数，key=charId
     private boolean deleted;
-    private boolean anlyzed;
+    private boolean analyzed;
 
     public Node(WfFlowNode data, Module module) {
         super.copyProperties(data);
         this.module = module;
         this.deleted = false;
-        this.anlyzed = false;
+        this.analyzed = false;
         this.clearColoured();
     }
 
@@ -233,29 +232,14 @@ public class Node extends WfFlowNode implements IRichModel {
     }
 
     public void markDeleted() {
-        if(this.inputNodePortCount() > 0) {
-            for (NodePortInput inputPort : this.getInputNodePorts()) {
-                inputPort.markDeleted();
-            }
-        }
-        if(this.outputNodePortCount() > 0) {
-            for (NodePortOutput outputPort : this.getOutputNodePorts()) {
-                outputPort.markDeleted();
-            }
-        }
         this.deleted = true;
     }
 
     public boolean isAnalyzed() {
-        return deleted;
+        return analyzed;
     }
 
     public void markAnalyzed() {
-        if(this.inputNodePortCount() > 0) {
-            for (NodePortInput inputPort : this.getInputNodePorts()) {
-                inputPort.markAnalyzed();
-            }
-        }
-        this.deleted = true;
+        this.analyzed = true;
     }
 }

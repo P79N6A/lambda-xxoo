@@ -26,6 +26,10 @@ public class NodeLink extends WfFlowNodeLink implements IRichModel, Comparable<N
         return this.getLinkId().compareTo(o.getLinkId());
     }
 
+    public boolean isWebLink() {
+        return this.getIsWebLink() == IsWebLinkEnum.YES.getMark();
+    }
+
     public boolean isOverride() {
         return override;
     }
@@ -40,9 +44,5 @@ public class NodeLink extends WfFlowNodeLink implements IRichModel, Comparable<N
 
     public void markDeleted() {
         this.deleted = true;
-    }
-
-    public boolean isWebLink() {
-        return this.getIsWebLink() == IsWebLinkEnum.YES.getMark();
     }
 }

@@ -1,5 +1,6 @@
 package com.yatop.lambda.workflow.core.context;
 
+import com.yatop.lambda.core.enums.AnalyzeTypeEnum;
 import com.yatop.lambda.core.enums.IsWebLinkEnum;
 import com.yatop.lambda.core.enums.JobTypeEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
@@ -28,6 +29,7 @@ public class WorkflowContext implements IWorkContext {
     private boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
     private boolean loadNodeParameter;      //控制是否查询带出节点参数信息
     private boolean loadDataPortSchema;     //控制是否查询带出数据输出端口schema信息
+    private AnalyzeTypeEnum schemaAnalyze;
     private Project project;                //操作关联项目
     private Workflow workflow;              //操作关联工作流
     private ExecutionJob job;
@@ -42,11 +44,8 @@ public class WorkflowContext implements IWorkContext {
   //private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联节点全局参数，key=globalParameterId
     private String operId;
 
-    private TreeMap<Long, Node> changedNodes = new TreeMap<Long, Node>();      //变更节点（节点创建、节点参数更新），key=nodeId
-    private TreeMap<Long, NodeLink> changedLinks = new TreeMap<Long, NodeLink>();  //变更节点链接（节点链接创建），key=linkId
-
-    private TreeMap<Long, Node> deleteNodes = new TreeMap<Long, Node>();      //删除节点，key=nodeId
-    private TreeMap<Long, NodeLink> deleteLinks = new TreeMap<Long, NodeLink>();  //删除节点链接，key=linkId
+    private TreeMap<Long, Node> analyzeNodes = new TreeMap<Long, Node>();      //待分析节点，key=nodeId
+    private TreeMap<Long, NodeLink> analyzeLinks = new TreeMap<Long, NodeLink>();  //待分析节点链接，key=linkId
 
     //工作流编辑用
     public static WorkflowContext BuildWorkflowContext(Project project, Workflow workflow, String operId) {
@@ -103,6 +102,7 @@ public class WorkflowContext implements IWorkContext {
         this.project = project;
         this.workflow = workflow;
         this.operId = operId;
+        this.schemaAnalyze = AnalyzeTypeEnum.NONE;
     }
 
     public void flush() {
@@ -113,6 +113,56 @@ public class WorkflowContext implements IWorkContext {
             node.flush(this.isLoadNodeParameter(), this.isLoadDataPortSchema(), this.operId);
         }
         this.workflow.flush(this.operId);
+    }
+
+    public AnalyzeTypeEnum getAnalyzeType() {
+        return schemaAnalyze;
+    }
+
+    public void markAnalyzeWithCreateNode(Node node) {
+        //TODO 对于异常情况是否抛出错误
+        if(schemaAnalyze.isAnalyzeWithNone() || schemaAnalyze.isAnalyzeWithCreateNode() || schemaAnalyze.isAnalyzeWithCreateLink()) {
+            this.schemaAnalyze = AnalyzeTypeEnum.CREATE_NODE;
+            CollectionUtil.put(analyzeNodes, node.getNodeId(), node);
+        }
+    }
+
+    public void markAnalyzeWithCreateLink(NodeLink link) {
+        //TODO 对于异常情况是否抛出错误
+        if(schemaAnalyze.isAnalyzeWithNone()) {
+            this.schemaAnalyze = AnalyzeTypeEnum.CREATE_LINK;
+            CollectionUtil.put(analyzeLinks, link.getLinkId(), link);
+        }
+    }
+
+    public void markAnalyzeWithWithUpdateNodeParameter(Node node) {
+        //TODO 对于异常情况是否抛出错误
+        if(schemaAnalyze.isAnalyzeWithNone()) {
+            this.schemaAnalyze = AnalyzeTypeEnum.UPDATE_NODE_PARAMETER;
+            CollectionUtil.put(analyzeNodes, node.getNodeId(), node);
+        }
+    }
+
+    public void markAnalyzeWithDeleteNode(Node node) {
+        //TODO 对于异常情况是否抛出错误
+        if(schemaAnalyze.isAnalyzeWithNone() || schemaAnalyze.isAnalyzeWithDeleteNode() || schemaAnalyze.isAnalyzeWithDeleteLink()) {
+            this.schemaAnalyze = AnalyzeTypeEnum.DELETE_NODE;
+            CollectionUtil.put(analyzeNodes, node.getNodeId(), node);
+        }
+    }
+
+    public void markAnalyzeWithDeleteLink(NodeLink link) {
+        //TODO 对于异常情况是否抛出错误
+        if(schemaAnalyze.isAnalyzeWithNone() || schemaAnalyze.isAnalyzeWithDeleteLink()) {
+            this.schemaAnalyze = AnalyzeTypeEnum.DELETE_LINK;
+            CollectionUtil.put(analyzeLinks, link.getLinkId(), link);
+        }
+    }
+
+    public void markAnalyzeWithCopyWorkflow() {
+        //TODO 对于异常情况是否抛出错误
+        if(schemaAnalyze.isAnalyzeWithCreateNode())
+            this.schemaAnalyze = AnalyzeTypeEnum.COPY_WORKFLOW;
     }
 
     public boolean isExecutionWorkMode() {
@@ -163,7 +213,7 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public int nodeCount() {
-        return nodes.size() - deleteNodes.size();
+        return nodes.size() - analyzeNodes.size();
     }
 
     public Node getNode(Long nodeId) {
@@ -184,7 +234,7 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public int linkCount() {
-        return links.size() - deleteLinks.size();
+        return links.size() - analyzeLinks.size();
     }
 
     public NodeLink getLink(Long linkId) {
@@ -317,44 +367,36 @@ public class WorkflowContext implements IWorkContext {
 
     public void markDeleted4Node(Node node) {
         node.markDeleted();
-        deleteNodes.put(node.getNodeId(), node);
+        markAnalyzeWithDeleteNode(node);
     }
 
     public void markDeleted4Link(NodeLink link) {
         link.markDeleted();
-        deleteLinks.put(link.getLinkId(), link);
+        markAnalyzeWithDeleteLink(link);
     }
 
-    public List<Node> getChangedNodes() {
-        return CollectionUtil.toList(deleteNodes);
+    public int analyzeNodeCount() {
+        return analyzeNodes.size();
     }
 
-    public List<NodeLink> getChangedLinks() {
-        return CollectionUtil.toList(deleteLinks);
+    public int analyzeLinkCount() {
+        return analyzeLinks.size();
     }
 
-    public Node pollChangedNode() {
-        return deleteNodes.pollFirstEntry().getValue();
+    public List<Node> getAnalyzeNodes() {
+        return CollectionUtil.toList(analyzeNodes);
     }
 
-    public NodeLink pollChangedLink() {
-        return deleteLinks.pollFirstEntry().getValue();
+    public List<NodeLink> getAnalyzeLinks() {
+        return CollectionUtil.toList(analyzeLinks);
     }
 
-    public List<Node> getDeletedNodes() {
-        return CollectionUtil.toList(deleteNodes);
+    public Node pollAnalyzeNode() {
+        return analyzeNodes.pollFirstEntry().getValue();
     }
 
-    public List<NodeLink> getDeletedLinks() {
-        return CollectionUtil.toList(deleteLinks);
-    }
-
-    public Node pollDeletedNode() {
-        return deleteNodes.pollFirstEntry().getValue();
-    }
-
-    public NodeLink pollDeletedLink() {
-        return deleteLinks.pollFirstEntry().getValue();
+    public NodeLink pollAnalyzeLink() {
+        return analyzeLinks.pollFirstEntry().getValue();
     }
 
     @Override
@@ -371,7 +413,7 @@ public class WorkflowContext implements IWorkContext {
         inputPorts.clear();
         outputPorts.clear();
       //globalParameters.clear();
-        deleteNodes.clear();
-        deleteLinks.clear();
+        analyzeNodes.clear();
+        analyzeLinks.clear();
     }
 }

@@ -11,12 +11,10 @@ public class NodePortOutput extends WfFlowNodePort implements IRichModel {
 
     private ModulePort modulePort;
     private NodeSchema schema;
-    private boolean deleted;
 
     public NodePortOutput(WfFlowNodePort data, ModulePort modulePort) {
         super.copyProperties(data);
         this.modulePort = modulePort;
-        this.deleted = false;
         this.clearColoured();
     }
 
@@ -28,11 +26,9 @@ public class NodePortOutput extends WfFlowNodePort implements IRichModel {
         super.clear();
     }
 
-    public void flush(String operId) {
-        if(!this.isDeleted()) {
-            if (this.isDataPort() && DataUtil.isNotNull(schema)) {
-                schema.flush(operId);
-            }
+    protected void flush(String operId) {
+        if (this.isDataPort() && DataUtil.isNotNull(schema)) {
+            schema.flush(operId);
         }
     }
 
@@ -50,13 +46,5 @@ public class NodePortOutput extends WfFlowNodePort implements IRichModel {
 
     public void setSchema(NodeSchema schema) {
         this.schema = schema;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void markDeleted() {
-        this.deleted = true;
     }
 }
