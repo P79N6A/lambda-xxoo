@@ -1,13 +1,13 @@
-package com.yatop.lambda.core.concurrent.workflow;
+package com.yatop.lambda.core.concurrent.execution;
 
-import com.yatop.lambda.core.concurrent.lock.INamedLockService;
 import com.yatop.lambda.core.concurrent.daemon.NamedLockDaemon;
 import com.yatop.lambda.core.concurrent.lock.BaseNamedLockService;
+import com.yatop.lambda.core.concurrent.lock.INamedLockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WorkflowNamedLockService extends BaseNamedLockService implements INamedLockService {
+public class ExecutionNamedLockService extends BaseNamedLockService implements INamedLockService {
 
     @Autowired
     NamedLockDaemon namedLockDaemon;
@@ -18,7 +18,7 @@ public class WorkflowNamedLockService extends BaseNamedLockService implements IN
     }
 
     @Override
-    public boolean requestResource(Long resourceId /*flow id*/) {
+    public boolean requestResource(Long resourceId /*job id*/) {
         return namedLockDaemon.requestLock(super.prepareDoLock(resourceId));
     }
 

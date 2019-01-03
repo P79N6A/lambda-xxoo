@@ -23,7 +23,7 @@ public class ExecutionQueue extends WfExecutionQueue implements IRichModel {
         super.clear();
     }
 
-    public void changeJobState2Running() {
+    public void changeState2Running() {
         this.changeJobState(JobStateEnum.RUNNING);
     }
 

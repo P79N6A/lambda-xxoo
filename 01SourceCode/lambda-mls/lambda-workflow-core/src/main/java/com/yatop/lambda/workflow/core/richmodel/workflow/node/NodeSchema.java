@@ -71,7 +71,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     }
 
     public void clearFieldAttributes(SchemaStateEnum schemaStateEnum) {
-        if(this.isNormalSchemaState()) {
+        if(this.isStateNormal()) {
             CollectionUtil.clear(this.fieldAttributes);
             this.fieldAttributes = null;
             this.dirtyFieldAttributes = false;  //schema非normal状态不更新JsonObject，仅更新schema状态
@@ -85,7 +85,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- input empty field attribute list.", "节点数据输出端口schema信息错误");
         }
 
-        if(this.isNormalSchemaState()) {
+        if(this.isStateNormal()) {
             if(!CollectionUtil.equals(this.getFieldAttributes(), fieldAttributes)) {
                 CollectionUtil.clear(this.fieldAttributes);
                 this.fieldAttributes = fieldAttributes;
@@ -98,19 +98,19 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
         }
     }
 
-    public boolean isEmptySchemaState() {
+    public boolean isStateEmpty() {
         return this.getSchemaState() == SchemaStateEnum.EMPTY.getState();
     }
 
-    public boolean isNormalSchemaState() {
+    public boolean isStateNormal() {
         return this.getSchemaState() == SchemaStateEnum.NORMAL.getState();
     }
 
-    public boolean isNotSupportSchemaState() {
+    public boolean isStateNotSupport() {
         return this.getSchemaState() == SchemaStateEnum.NOT_SUPPORT.getState();
     }
 
-    public boolean isOverloadInterruptSchemaState() {
+    public boolean isStateOverloadInterrupt() {
         return this.getSchemaState() == SchemaStateEnum.OVERLOAD_INTERRUPT.getState();
     }
 
@@ -121,7 +121,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
         this.setSchemaState(stateEnum.getState());
     }
 
-    public void flush(String operId) {
+    protected void flush(String operId) {
         if(dirtyFieldAttributes) {
             getJsonObject().setObjectData(DataUtil.isNotEmpty(fieldAttributes) ? JSONArray.toJSONString(fieldAttributes) : null);
             SchemaHelper.updateFieldAttributes(getJsonObject(), operId);

@@ -119,7 +119,46 @@ public class WorkflowContext implements IWorkContext {
         return schemaAnalyze;
     }
 
-    public void markAnalyzeWithCreateNode(Node node) {
+    public void doneCreateNode(Node node) {
+        node.downgradeState2Ready();
+        this.putNode(node);
+        this.workflow.changeState2Draft();
+        this.markAnalyzeWithCreateNode(node);
+    }
+
+    public void doneCreateLink(NodeLink link) {
+        this.putLink(link);
+        this.workflow.changeState2Draft();
+        this.markAnalyzeWithCreateLink(link);
+    }
+
+    public void doneUpdateNodeParameter(Node node) {
+        node.downgradeState2Ready();
+        this.workflow.changeState2Draft();
+        this.markAnalyzeWithWithUpdateNodeParameter(node);
+    }
+
+    public void doneDeleteNode(Node node) {
+        node.markDeleted();
+        this.workflow.changeState2Draft();
+        this.markAnalyzeWithDeleteNode(node);
+    }
+
+    public void doneRecoverNode(Node node) {
+        this.doneCreateNode(node);
+    }
+
+    public void doneDeleteLink(NodeLink link) {
+        link.markDeleted();
+        this.workflow.changeState2Draft();
+        this.markAnalyzeWithDeleteLink(link);
+    }
+
+    public void doneCopyWorkflow() {
+        this.markAnalyzeWithCopyWorkflow();
+    }
+
+    private void markAnalyzeWithCreateNode(Node node) {
         //TODO 对于异常情况是否抛出错误
         if(schemaAnalyze.isAnalyzeWithNone() || schemaAnalyze.isAnalyzeWithCreateNode() || schemaAnalyze.isAnalyzeWithCreateLink()) {
             this.schemaAnalyze = AnalyzeTypeEnum.CREATE_NODE;
@@ -127,7 +166,7 @@ public class WorkflowContext implements IWorkContext {
         }
     }
 
-    public void markAnalyzeWithCreateLink(NodeLink link) {
+    private void markAnalyzeWithCreateLink(NodeLink link) {
         //TODO 对于异常情况是否抛出错误
         if(schemaAnalyze.isAnalyzeWithNone()) {
             this.schemaAnalyze = AnalyzeTypeEnum.CREATE_LINK;
@@ -135,7 +174,7 @@ public class WorkflowContext implements IWorkContext {
         }
     }
 
-    public void markAnalyzeWithWithUpdateNodeParameter(Node node) {
+    private void markAnalyzeWithWithUpdateNodeParameter(Node node) {
         //TODO 对于异常情况是否抛出错误
         if(schemaAnalyze.isAnalyzeWithNone()) {
             this.schemaAnalyze = AnalyzeTypeEnum.UPDATE_NODE_PARAMETER;
@@ -143,7 +182,7 @@ public class WorkflowContext implements IWorkContext {
         }
     }
 
-    public void markAnalyzeWithDeleteNode(Node node) {
+    private void markAnalyzeWithDeleteNode(Node node) {
         //TODO 对于异常情况是否抛出错误
         if(schemaAnalyze.isAnalyzeWithNone() || schemaAnalyze.isAnalyzeWithDeleteNode() || schemaAnalyze.isAnalyzeWithDeleteLink()) {
             this.schemaAnalyze = AnalyzeTypeEnum.DELETE_NODE;
@@ -151,7 +190,7 @@ public class WorkflowContext implements IWorkContext {
         }
     }
 
-    public void markAnalyzeWithDeleteLink(NodeLink link) {
+    private void markAnalyzeWithDeleteLink(NodeLink link) {
         //TODO 对于异常情况是否抛出错误
         if(schemaAnalyze.isAnalyzeWithNone() || schemaAnalyze.isAnalyzeWithDeleteLink()) {
             this.schemaAnalyze = AnalyzeTypeEnum.DELETE_LINK;
@@ -159,7 +198,7 @@ public class WorkflowContext implements IWorkContext {
         }
     }
 
-    public void markAnalyzeWithCopyWorkflow() {
+    private void markAnalyzeWithCopyWorkflow() {
         //TODO 对于异常情况是否抛出错误
         if(schemaAnalyze.isAnalyzeWithCreateNode())
             this.schemaAnalyze = AnalyzeTypeEnum.COPY_WORKFLOW;
@@ -190,6 +229,9 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public ExecutionJob getJob() {
+        if(!executionWorkMode){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Non execution work mode.", "工作流上下文错误");
+        }
         if(executionWorkMode && DataUtil.isNull(job)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution work mode missing job info.", "工作流上下文错误");
         }
@@ -213,7 +255,7 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public int nodeCount() {
-        return nodes.size() - analyzeNodes.size();
+        return nodes.size();
     }
 
     public Node getNode(Long nodeId) {
@@ -221,20 +263,11 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public List<Node> getNodes() {
-        if(nodeCount() > 0) {
-            List<Node> nodeList = new ArrayList<Node>(nodeCount());
-            for (Map.Entry<Long, Node> entry : nodes.entrySet()) {
-                if (!entry.getValue().isDeleted()) {
-                    nodeList.add(entry.getValue());
-                }
-            }
-            return nodeList;
-        }
-        return null;
+        return CollectionUtil.toList(nodes);
     }
 
     public int linkCount() {
-        return links.size() - analyzeLinks.size();
+        return links.size();
     }
 
     public NodeLink getLink(Long linkId) {
@@ -365,16 +398,6 @@ public class WorkflowContext implements IWorkContext {
         return operId;
     }
 
-    public void markDeleted4Node(Node node) {
-        node.markDeleted();
-        markAnalyzeWithDeleteNode(node);
-    }
-
-    public void markDeleted4Link(NodeLink link) {
-        link.markDeleted();
-        markAnalyzeWithDeleteLink(link);
-    }
-
     public int analyzeNodeCount() {
         return analyzeNodes.size();
     }
@@ -397,6 +420,34 @@ public class WorkflowContext implements IWorkContext {
 
     public NodeLink pollAnalyzeLink() {
         return analyzeLinks.pollFirstEntry().getValue();
+    }
+
+    public void eraseNode(Node node) {
+
+        for(NodePortInput inputNodePort : node.getInputNodePorts()) {
+            List<NodeLink> links = this.getInLinks(inputNodePort.getNodePortId());
+            if(DataUtil.isNotEmpty(links)) {
+                for(NodeLink link : links)
+                    eraseLink(link);
+                CollectionUtil.remove(inputLinks, inputNodePort.getNodePortId());
+            }
+            CollectionUtil.remove(inputPorts, inputNodePort.getNodePortId());
+        }
+
+        for(NodePortOutput outputNodePort : node.getOutputNodePorts()) {
+            List<NodeLink> links = this.getOutLinks(outputNodePort.getNodePortId());
+            if(DataUtil.isNotEmpty(links)) {
+                for(NodeLink link : links)
+                    eraseLink(link);
+                CollectionUtil.remove(outputLinks, outputNodePort.getNodePortId());
+            }
+            CollectionUtil.remove(outputPorts, outputNodePort.getNodePortId());
+        }
+        CollectionUtil.remove(nodes, node.getNodeId());
+    }
+
+    private void eraseLink(NodeLink link) {
+        CollectionUtil.remove(links, link.getLinkId());
     }
 
     @Override

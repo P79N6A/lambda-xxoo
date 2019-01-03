@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.core.enums.NodeStateEnum;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeHelper;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
@@ -71,34 +72,58 @@ public class Node extends WfFlowNode implements IRichModel {
         }
     }
 
-    public void changeNodeState2NotReady() {
+    public boolean isStateNotReady() {
+        return this.getNodeState() == NodeStateEnum.NOT_READY.getState();
+    }
+
+    public boolean isStateReady() {
+        return this.getNodeState() == NodeStateEnum.READY.getState();
+    }
+
+    public boolean isStatePreparing() {
+        return this.getNodeState() == NodeStateEnum.PREPARING.getState();
+    }
+
+    public boolean isStateRunning() {
+        return this.getNodeState() == NodeStateEnum.RUNNING.getState();
+    }
+
+    public boolean isStateSuccess() {
+        return this.getNodeState() == NodeStateEnum.SUCCESS.getState();
+    }
+
+    public boolean isStateError() {
+        return this.getNodeState() == NodeStateEnum.ERROR.getState();
+    }
+
+    public void changeState2NotReady() {
         this.changeNodeState(NodeStateEnum.NOT_READY);
     }
 
-    public void downgradeNodeState2Ready() {
+    public void downgradeState2Ready() {
         if(this.getNodeState() <= NodeStateEnum.READY.getState())
             return;
 
         this.changeNodeState(NodeStateEnum.READY);
     }
 
-    public void changeNodeState2Ready() {
+    public void changeState2Ready() {
         this.changeNodeState(NodeStateEnum.READY);
     }
 
-    public void changeNodeState2Preparing() {
+    public void changeState2Preparing() {
         this.changeNodeState(NodeStateEnum.PREPARING);
     }
 
-    public void changeNodeState2Running() {
+    public void changeState2Running() {
         this.changeNodeState(NodeStateEnum.RUNNING);
     }
 
-    public void changeNodeState2Success() {
+    public void changeState2Success() {
         this.changeNodeState(NodeStateEnum.SUCCESS);
     }
 
-    public void changeNodeState2Error() {
+    public void changeState2Error() {
         this.changeNodeState(NodeStateEnum.ERROR);
     }
 

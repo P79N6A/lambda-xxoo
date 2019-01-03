@@ -16,13 +16,19 @@ public class ExecutionTaskOutput extends WfExecutionTaskOutput implements IRichM
         this.clearColoured();
     }
 
+    protected void flush(String operId) {
+
+        if (this.isColoured())
+            ;//NodeHelper.updateNode(this, operId);
+    }
+
     @Override
     public void clear() {
         cmptChar = null;
         super.clear();
     }
 
-    public void changeOutputState2Normal() {
+    public void changeState2Normal() {
         this.changeOutputState(OutputStateEnum.NORMAL);
     }
 

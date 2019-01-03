@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNodeParameter;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.parameter.ParameterHelper;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
@@ -32,7 +33,7 @@ public class NodeParameter extends WfFlowNodeParameter implements IRichModel {
         super.clear();
     }
 
-    public void flush(String operId) {
+    protected void flush(String operId) {
         if(this.isColoured() && !simulateParameter) {
             ParameterHelper.updateNodeParameter(this, operId);
         }
@@ -48,5 +49,9 @@ public class NodeParameter extends WfFlowNodeParameter implements IRichModel {
 
     public boolean isSimulateParameter() {
         return simulateParameter;
+    }
+
+    public boolean isWarning() {
+        return DataUtil.isNotEmpty(this.getWarningMsg());
     }
 }

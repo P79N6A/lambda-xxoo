@@ -29,7 +29,7 @@ public class WorkflowCreate {
         workflowMgr.updateWorkflow(richWorkflow, operId);
 
         //richWorkflow.copyProperties(workflowMgr.queryWorkflow(richWorkflow.getFlowId()));
-        richWorkflow.changeWorkflowState2Draft();
+        richWorkflow.changeState2Draft();
         return WorkflowContext.BuildWorkflowContext(experiment.getProject(), richWorkflow, operId);
     }
 
@@ -38,6 +38,7 @@ public class WorkflowCreate {
 
         //TODO ...
 
+        thisWorkFlowContext.doneCopyWorkflow();
         return thisWorkFlowContext;
     }
 }

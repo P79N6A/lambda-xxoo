@@ -45,9 +45,8 @@ public class LinkCreate {
         nodeLink = nodeLinkMgr.insertLink(nodeLink, workflowContext.getOperId());
         //nodeLink.copyProperties(nodeLinkMgr.queryLink(nodeLink.getLinkId()));
         NodeLink richNodeLink = new NodeLink(nodeLink);
-        workflowContext.putLink(richNodeLink);
 
-        workflowContext.getWorkflow().changeWorkflowState2Draft();
+        workflowContext.doneCreateLink(richNodeLink);
         return richNodeLink;
     }
 

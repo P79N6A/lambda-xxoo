@@ -16,9 +16,8 @@ import java.util.TreeMap;
 
 public class TaskExecutionContext implements IWorkContext {
 
-    private ExecutionJob job;       //操作关联运行作业
     private ExecutionTask task;     //操作关联运行任务
-    private WorkflowContext workflowContext;    //作业内容的工作流上下文
+    private JobExecutionContext jobExecutionContext;    //作业内容的工作流上下文
     private Node node;                          //操作关联节点
     private TreeMap<String, CharValue> inputCharValues = new TreeMap<String, CharValue>();         //节点输入内容特征值
     private TreeMap<String, CharValue> outputCharValues = new TreeMap<String, CharValue>();        //节点输出内容特征值
@@ -27,18 +26,17 @@ public class TaskExecutionContext implements IWorkContext {
     private TreeMap<String, CharValue> parameterCharValues = new TreeMap<String, CharValue>();     //节点组件参数特征值
     private String warningMsg;
 
-    public TaskExecutionContext(ExecutionJob job, ExecutionTask task, WorkflowContext workflowContext, Node node) {
-        this.job = job;
+    public TaskExecutionContext(ExecutionTask task, JobExecutionContext jobExecutionContext, Node node) {
         this.task = task;
-        this.workflowContext = workflowContext;
+        this.jobExecutionContext = jobExecutionContext;
         this.node = node;
+        this.warningMsg = null;
     }
 
     @Override
     public void clear() {
-        job = null;
         task = null;
-        workflowContext = null;
+        jobExecutionContext = null;
         node = null;
         CollectionUtil.clear(inputCharValues);
         CollectionUtil.clear(outputCharValues);
@@ -48,15 +46,15 @@ public class TaskExecutionContext implements IWorkContext {
         warningMsg = null;
     }
 
-    public void flush() {
+/*    public void flush() {
         this.job.flush(workflowContext.getOperId());
         this.task.flush(workflowContext.getOperId());
         this.node.flush(true, true, workflowContext.getOperId());
         this.workflowContext.getWorkflow().flush(workflowContext.getOperId());
-    }
+    }*/
 
     public ExecutionJob getJob() {
-        return job;
+        return jobExecutionContext.getJob();
     }
 
     public ExecutionTask getTask() {
@@ -64,7 +62,7 @@ public class TaskExecutionContext implements IWorkContext {
     }
 
     public WorkflowContext getWorkflowContext() {
-        return workflowContext;
+        return jobExecutionContext.getWorkflowContext();
     }
 
     public Node getNode() {

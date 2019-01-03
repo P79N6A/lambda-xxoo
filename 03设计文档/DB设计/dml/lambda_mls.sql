@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-01-02 23:43:39
+Date: 2019-01-04 02:57:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -940,7 +940,7 @@ CREATE TABLE `dw_data_table` (
   KEY `Index_1` (`OWNER_DW_ID`,`TABLE_TYPE`,`TABLE_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_DW_ID`,`TABLE_TYPE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_DW_ID`,`REL_TASK_ID`,`TABLE_STATE`,`STATUS`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
 
 -- ----------------------------
 -- Records of dw_data_table
@@ -1059,7 +1059,7 @@ CREATE TABLE `mw_model` (
   KEY `Index_1` (`OWNER_MW_ID`,`MODEL_TYPE`,`MODEL_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_MW_ID`,`MODEL_TYPE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_MW_ID`,`REL_TASK_ID`,`MODEL_STATE`,`STATUS`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除';
 
 -- ----------------------------
 -- Records of mw_model
@@ -1246,7 +1246,7 @@ CREATE TABLE `wf_code_script` (
   PRIMARY KEY (`SCRIPT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`SCRIPT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
 
 -- ----------------------------
 -- Records of wf_code_script
@@ -1271,7 +1271,7 @@ CREATE TABLE `wf_execution_job` (
   `JOB_SUBMIT_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业提交时间（提交队列）',
   `JOB_START_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业开始时间',
   `JOB_END_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业结束时间',
-  `JOB_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '作业状态\r\n            0：preparing，准备中\r\n            1：queueing，排队中\r\n            2：running，运行中\r\n            3：finished，运行完成\r\n            4：error terminated，出错终止\r\n            5：user terminated，用户终止',
+  `JOB_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '作业状态\r\n            0：preparing，准备中\r\n            1：queueing，排队中\r\n            2：running，运行中\r\n            3：success，运行成功\r\n            4：error terminated，出错终止\r\n            5：user terminated，用户终止',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -1281,7 +1281,7 @@ CREATE TABLE `wf_execution_job` (
   PRIMARY KEY (`JOB_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
 
 -- ----------------------------
 -- Records of wf_execution_job
@@ -1333,7 +1333,7 @@ CREATE TABLE `wf_execution_task` (
   `TASK_END_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '任务结束时间',
   `TASK_PROGRESS` int(11) NOT NULL DEFAULT '0' COMMENT '任务进度，百分比数值0到100',
   `WARNING_MSG` varchar(512) DEFAULT NULL COMMENT '警告消息',
-  `TASK_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '任务状态\r\n            0：preparing，准备中\r\n            1：ready，已就绪\r\n            2：running，运行中\r\n            3：finished，运行完成\r\n            4：error terminated，出错终止\r\n            5：user terminated，用户终止',
+  `TASK_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '任务状态\r\n            0：preparing，准备中\r\n            1：ready，已就绪\r\n            2：running，运行中\r\n            3：success，运行成功\r\n            4：error terminated，出错终止\r\n            5：user terminated，用户终止',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -1388,7 +1388,7 @@ CREATE TABLE `wf_flow` (
   `LAST_JOB_ID` bigint(20) DEFAULT NULL COMMENT '最后作业ID',
   `FLOW_DFS_DIR` varchar(800) DEFAULT NULL COMMENT 'DFS工作流目录\r\n            \r\n            ${HDFS_SITE}/${DFS_WORK_ROOT}/flow_data/<project_id>/<flow_id>',
   `FLOW_LOCAL_DIR` varchar(800) DEFAULT NULL COMMENT '本地工作流目录\r\n            \r\n            ${LOCAL_WORK_ROOT}/flow_data/<project_id>/<flow_id>',
-  `FLOW_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '工作流状态\r\n            0：draft，草稿\r\n            1：preparing，准备中\r\n            2：running，运行中\r\n            3：finished running，运行结束',
+  `FLOW_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '工作流状态\r\n            0：draft，草稿\r\n            1：preparing，准备中\r\n            2：running，运行中\r\n            3：finished，运行结束',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -1481,7 +1481,7 @@ CREATE TABLE `wf_flow_node` (
   PRIMARY KEY (`NODE_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`REF_MODULE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点表';
 
 -- ----------------------------
 -- Records of wf_flow_node
@@ -1529,7 +1529,7 @@ CREATE TABLE `wf_flow_node_link` (
   KEY `Index_1` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`SRC_NODE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`DST_NODE_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点链接表\r\n\r\n逻辑删除，同一节点流入端口下正常状态的普通组件流出节点端口唯一和web服务组';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点链接表\r\n\r\n逻辑删除，同一节点流入端口下正常状态的普通组件流出节点端口唯一和web服务组';
 
 -- ----------------------------
 -- Records of wf_flow_node_link
@@ -1640,7 +1640,7 @@ CREATE TABLE `wf_json_object` (
   PRIMARY KEY (`OBJECT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`OBJECT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
 
 -- ----------------------------
 -- Records of wf_json_object

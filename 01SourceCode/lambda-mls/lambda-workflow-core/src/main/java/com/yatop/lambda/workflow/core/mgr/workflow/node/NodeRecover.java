@@ -56,11 +56,11 @@ public class NodeRecover {
         }
 
         Node richNode = new Node(node, module);
-        workflowContext.putNode(richNode);
+        //workflowContext.putNode(richNode);
         parameterRecover.recoverParameters(workflowContext, richNode);
         nodePortRecover.recoverNodePorts(workflowContext, richNode);
         nodeParameterCheck.checkParameter(workflowContext, richNode);
-        richNode.downgradeNodeState2Ready();
+        workflowContext.doneRecoverNode(richNode);
     }
 
     public void recoverNodes(WorkflowContext workflowContext) {
@@ -83,6 +83,5 @@ public class NodeRecover {
             recoverNode(workflowContext, deleteQueue.getNodeId());
         }
         workflow.doneRecoverNodes(deleteQueues.size() + 0L);
-        workflowContext.getWorkflow().changeWorkflowState2Draft();
     }
 }

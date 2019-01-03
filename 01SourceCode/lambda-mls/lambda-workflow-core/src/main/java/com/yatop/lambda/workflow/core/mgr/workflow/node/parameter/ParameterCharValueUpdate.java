@@ -65,7 +65,6 @@ public class ParameterCharValueUpdate {
         }
 
         nodeParameterCheck.checkParameter(workflowContext, node);
-        node.downgradeNodeState2Ready();
-        workflowContext.getWorkflow().changeWorkflowState2Draft();
+        workflowContext.doneUpdateNodeParameter(node);
     }
 }

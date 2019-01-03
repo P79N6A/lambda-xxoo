@@ -59,7 +59,7 @@ public class NodeCreate {
         //node.copyProperties(nodeMgr.queryNode(node.getNodeId()));
 
         Node richNode = new Node(node, module);
-        workflowContext.putNode(richNode);
+        //workflowContext.putNode(richNode);
         workflow.increaseNodeCount();
 
         if(DataUtil.isNull(otherNode)) {
@@ -69,8 +69,7 @@ public class NodeCreate {
         }
         nodePortCreate.createNodePorts(workflowContext, richNode);
         nodeParameterCheck.checkParameter(workflowContext, richNode);
-        workflowContext.getWorkflow().changeWorkflowState2Draft();
-        richNode.downgradeNodeState2Ready();
+        workflowContext.doneCreateNode(richNode);
         return richNode;
     }
 

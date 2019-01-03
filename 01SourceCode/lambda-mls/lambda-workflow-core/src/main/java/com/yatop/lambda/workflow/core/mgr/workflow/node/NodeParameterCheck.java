@@ -64,9 +64,9 @@ public class NodeParameterCheck {
 
             if(warningCounter > 0 || requiredCounter > 0) {
                 node.setWarningMsg(buildNodeWarningMsg(warningCounter, requiredCounter));
-                node.changeNodeState2NotReady();
+                node.changeState2NotReady();
             } else {
-                node.changeNodeState2Ready();
+                node.changeState2Ready();
             }
         }
     }

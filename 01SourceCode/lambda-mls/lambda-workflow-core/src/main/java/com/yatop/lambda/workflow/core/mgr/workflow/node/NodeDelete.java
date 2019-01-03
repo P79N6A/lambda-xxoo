@@ -42,7 +42,7 @@ public class NodeDelete {
                 nodePortDelete.deleteNodePorts(workflowContext, node);
                 parameterDelete.deleteParameters(workflowContext, node);
                 nodeMgr.deleteNode(node.getNodeId(), workflowContext.getOperId());
-                workflowContext.markDeleted4Node(node);
+                workflowContext.doneDeleteNode(node);
             }
 
 
@@ -59,7 +59,6 @@ public class NodeDelete {
             }
 
             workflow.doneDeleteNodes(nodes.size() + 0L);
-            workflowContext.getWorkflow().changeWorkflowState2Draft();
         }
     }
 }

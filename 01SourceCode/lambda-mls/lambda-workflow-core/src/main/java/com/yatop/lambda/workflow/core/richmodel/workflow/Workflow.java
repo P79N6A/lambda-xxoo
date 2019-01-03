@@ -39,20 +39,36 @@ public class Workflow extends WfFlow implements IRichModel {
         }
     }
 
-    public void changeWorkflowState2Draft() {
+    public boolean isStateDraft() {
+        return this.getFlowState() == WorkflowStateEnum.DRAFT.getState();
+    }
+
+    public boolean isStatePreparing() {
+        return this.getFlowState() == WorkflowStateEnum.PREPARING.getState();
+    }
+
+    public boolean isStateRunning() {
+        return this.getFlowState() == WorkflowStateEnum.RUNNING.getState();
+    }
+
+    public boolean isStateFinished() {
+        return this.getFlowState() == WorkflowStateEnum.FINISHED.getState();
+    }
+
+    public void changeState2Draft() {
         this.changeWorkflowState(WorkflowStateEnum.DRAFT);
     }
 
-    public void changeWorkflowState2Preparing() {
+    public void changeState2Preparing() {
         this.changeWorkflowState(WorkflowStateEnum.PREPARING);
     }
 
-    public void changeWorkflowState2Running() {
+    public void changeState2Running() {
         this.changeWorkflowState(WorkflowStateEnum.RUNNING);
     }
 
-    public void changeWorkflowState2FinishedRunning() {
-        this.changeWorkflowState(WorkflowStateEnum.FINISHED_RUNNING);
+    public void changeState2Finished() {
+        this.changeWorkflowState(WorkflowStateEnum.FINISHED);
     }
 
     private void changeWorkflowState(WorkflowStateEnum stateEnum) {
