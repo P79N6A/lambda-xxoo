@@ -71,12 +71,12 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     }
 
     public void clearFieldAttributes(SchemaStateEnum schemaStateEnum) {
-        if(this.isNormalState()) {
+        if(this.isNormalSchemaState()) {
             CollectionUtil.clear(this.fieldAttributes);
             this.fieldAttributes = null;
-            this.dirtyFieldAttributes = true;
+            this.dirtyFieldAttributes = false;  //schema非normal状态不更新JsonObject，仅更新schema状态
         }
-        this.changeWorkflowState(schemaStateEnum);
+        this.changeSchemaState(schemaStateEnum);
     }
 
     public void setFieldAttributes(List<FieldAttribute> fieldAttributes) {
@@ -85,7 +85,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- input empty field attribute list.", "节点数据输出端口schema信息错误");
         }
 
-        if(this.isNormalState()) {
+        if(this.isNormalSchemaState()) {
             if(!CollectionUtil.equals(this.getFieldAttributes(), fieldAttributes)) {
                 CollectionUtil.clear(this.fieldAttributes);
                 this.fieldAttributes = fieldAttributes;
@@ -94,27 +94,27 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
         } else {
             this.fieldAttributes = fieldAttributes;
             this.dirtyFieldAttributes = true;
-            this.changeWorkflowState(SchemaStateEnum.NORMAL);
+            this.changeSchemaState(SchemaStateEnum.NORMAL);
         }
     }
 
-    public boolean isEmptyState() {
+    public boolean isEmptySchemaState() {
         return this.getSchemaState() == SchemaStateEnum.EMPTY.getState();
     }
 
-    public boolean isNormalState() {
+    public boolean isNormalSchemaState() {
         return this.getSchemaState() == SchemaStateEnum.NORMAL.getState();
     }
 
-    public boolean isNotSupportState() {
+    public boolean isNotSupportSchemaState() {
         return this.getSchemaState() == SchemaStateEnum.NOT_SUPPORT.getState();
     }
 
-    public boolean isOverloadInterruptState() {
+    public boolean isOverloadInterruptSchemaState() {
         return this.getSchemaState() == SchemaStateEnum.OVERLOAD_INTERRUPT.getState();
     }
 
-    public void changeWorkflowState(SchemaStateEnum stateEnum) {
+    public void changeSchemaState(SchemaStateEnum stateEnum) {
         if(this.getSchemaState() == stateEnum.getState())
             return;
 
