@@ -7,14 +7,14 @@ import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import java.util.List;
 import java.util.TreeMap;
 
-public class JobExecutionContext implements IWorkContext {
+public class ExecutionJobContext implements IWorkContext {
 
     private ExecutionJob job;       //操作关联运行作业
     private WorkflowContext workflowContext;    //作业内容的工作流上下文
     private TreeMap<Long, ExecutionTask> tasks = new TreeMap<Long, ExecutionTask>();      //操作关联运行任务
     private String operId;
 
-    public JobExecutionContext(ExecutionJob job, WorkflowContext workflowContext, String operId) {
+    public ExecutionJobContext(ExecutionJob job, WorkflowContext workflowContext, String operId) {
         //TODO check workflow context execution work mode ???
 
         this.job = job;

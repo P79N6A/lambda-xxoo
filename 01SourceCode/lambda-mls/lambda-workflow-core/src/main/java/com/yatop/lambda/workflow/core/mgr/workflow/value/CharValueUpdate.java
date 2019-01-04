@@ -35,7 +35,7 @@ public class CharValueUpdate {
         if(charValue.getSpecType() != SpecTypeEnum.OUTPUT.getType()) {
 
             if (DataUtil.isNotEmpty(charValue.getInText()) && !charValueValidate.validateCharValue(workflowContext, node, charValue)){
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-value validation failed.", "计算组件特征值验证失败", charValue);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-value validation failed.", "传入内容验证失败", charValue);
 
                 //原特征值和更新值都为空时
             } else if(DataUtil.isEmpty(charValue.getCharValue()) && DataUtil.isEmpty(charValue.getInText())) {

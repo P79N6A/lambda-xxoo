@@ -36,8 +36,8 @@ public class CharValueCreate {
             if (DataUtil.isEmpty(charValue.getInText()))
                 charValue.setInText(node.getComponent().getConfigCharValue(charValue.getCmptChar()));
 
-            if (DataUtil.isNotNull(charValue.getInText()) && !charValueValidate.validateCharValue(workflowContext, node, charValue)){
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create characteristic value failed -- char-value validation failed.", "计算组件特征值验证失败", charValue);
+            if (DataUtil.isNotNull(charValue.getInText()) && !charValueValidate. validateCharValue(workflowContext, node, charValue)){
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create characteristic value failed -- char-value validation failed.", "传入内容验证失败", charValue);
             }
         }
 

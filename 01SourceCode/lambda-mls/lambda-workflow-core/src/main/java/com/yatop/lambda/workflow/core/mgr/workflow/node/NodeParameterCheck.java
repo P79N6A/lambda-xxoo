@@ -11,6 +11,7 @@ import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
 import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
+import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -23,7 +24,8 @@ public class NodeParameterCheck {
 
         if(node.parameterCount() > 0) {
             int warningCounter = 0;
-            int requiredCounter = 0;
+            int missingCounter = 0;
+            TreeMap<String, String> warningMsgs = null;
             IModuleClazz moduleClazz = ClazzHelperUtil.getModuleClazzBean(node.getModule());
             if (moduleClazz.catchCheckParameter()) {
 
@@ -31,7 +33,7 @@ public class NodeParameterCheck {
                     WorkflowNodeContext nodeContext = new WorkflowNodeContext(workflowContext, node);
                     moduleClazz.onCheckParameter(nodeContext);
 
-                    TreeMap<String, String> warningMsgs = nodeContext.getOutWarningMsgs();
+                    warningMsgs = nodeContext.getOutWarningMsgs();
                     if (!warningMsgs.isEmpty()) {
                         for (Map.Entry<String, String> entry : warningMsgs.entrySet()) {
                             NodeParameter nodeParameter = node.getParameter(entry.getKey());
@@ -40,7 +42,7 @@ public class NodeParameterCheck {
                                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter failed -- module-clazz return warning message invalid.", "工作流组件校验节点参数返回内容无效", node);
                             }
 
-                            nodeParameter.setWarningMsg(warningMsg);
+                            nodeParameter.changeOccuredWarning(warningMsg);
                             warningCounter++;
                         }
                     }
@@ -52,32 +54,46 @@ public class NodeParameterCheck {
 
             for(NodeParameter parameter : node.getParameters()) {
                 if(DataUtil.isEmpty(parameter.getCharValue()) && parameter.getCmptChar().getIsRequired() == IsRequiredEnum.YES.getMark()) {
-                    requiredCounter++;
+                    missingCounter++;
+
+                    if(!CollectionUtil.containsKey(warningMsgs, parameter.getCharId()))
+                        parameter.changeOccuredWarning("节点参数值缺失");
+                } else {
+                    if(!CollectionUtil.containsKey(warningMsgs, parameter.getCharId()))
+                        parameter.clearOccuredWarning();
                 }
             }
 
             for(NodeParameter parameter : node.getOptimizeParameters()) {
                 if(DataUtil.isEmpty(parameter.getCharValue()) && parameter.getCmptChar().getIsRequired() == IsRequiredEnum.YES.getMark()) {
-                    requiredCounter++;
+                    missingCounter++;
+
+                    if(!CollectionUtil.containsKey(warningMsgs, parameter.getCharId()))
+                        parameter.changeOccuredWarning("节点执行调优参数值缺失");
+                } else {
+                    if(!CollectionUtil.containsKey(warningMsgs, parameter.getCharId()))
+                        parameter.clearOccuredWarning();
                 }
             }
 
-            if(warningCounter > 0 || requiredCounter > 0) {
-                node.setWarningMsg(buildNodeWarningMsg(warningCounter, requiredCounter));
-                node.changeState2NotReady();
+            if(DataUtil.isNotEmpty(warningMsgs))
+                warningMsgs.clear();
+
+            if(warningCounter > 0 || missingCounter > 0) {
+                node.changeOccuredWarning(buildNodeWarningMsg(warningCounter, missingCounter));
             } else {
                 node.changeState2Ready();
             }
         }
     }
 
-    private String buildNodeWarningMsg(int warningCounter, int requiredCounter) {
+    private String buildNodeWarningMsg(int warningCounter, int missingCounter) {
         StringBuilder sb = new StringBuilder();
         if(warningCounter > 0) {
-            sb.append("Node Parameter Check Warning Number:").append(warningCounter).append(",");
+            sb.append("参数值错误数量:").append(warningCounter).append(",");
         }
-        if(requiredCounter > 0) {
-            sb.append("Node Missing Required Value Number:").append(requiredCounter);
+        if(missingCounter > 0) {
+            sb.append("参数值缺失数量:").append(missingCounter);
         }
         return sb.toString();
     }

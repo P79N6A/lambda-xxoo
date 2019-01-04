@@ -108,6 +108,7 @@ public class Node extends WfFlowNode implements IRichModel {
     }
 
     public void changeState2Ready() {
+        this.clearOccuredWarning();
         this.changeNodeState(NodeStateEnum.READY);
     }
 
@@ -266,5 +267,19 @@ public class Node extends WfFlowNode implements IRichModel {
 
     public void markAnalyzed() {
         this.analyzed = true;
+    }
+
+    public boolean isOccuredWarning() {
+        return isStateNotReady();
+    }
+
+    public void changeOccuredWarning(String warningMsg) {
+        this.setWarningMsg(warningMsg);
+        this.changeState2NotReady();
+    }
+
+    public void clearOccuredWarning() {
+        if(DataUtil.isNotEmpty(this.getWarningMsg()))
+            this.setWarningMsg(null);
     }
 }

@@ -35,7 +35,7 @@ public class LinkCreate {
         }
 
         WfFlowNodeLink nodeLink = new WfFlowNodeLink();
-        nodeLink.setLinkName(String.format("%d.%d -->> %d.%d", srcNode.getNodeId(), srcNodePort.getNodePortId(), dstNode.getNodeId(), dstNodePort.getNodePortId()));
+        nodeLink.setLinkName(String.format("From %d.%d to %d.%d", srcNode.getNodeId(), srcNodePort.getNodePortId(), dstNode.getNodeId(), dstNodePort.getNodePortId()));
         nodeLink.setOwnerFlowId(workflowContext.getWorkflow().getFlowId());
         nodeLink.setIsWebLink(srcNode.getComponent().isWebComponent() ? IsWebLinkEnum.YES.getMark() : IsWebLinkEnum.NO.getMark());
         nodeLink.setSrcNodeId(srcNode.getNodeId());

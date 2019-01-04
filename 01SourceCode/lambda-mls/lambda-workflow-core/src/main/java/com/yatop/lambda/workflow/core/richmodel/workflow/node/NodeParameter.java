@@ -51,7 +51,16 @@ public class NodeParameter extends WfFlowNodeParameter implements IRichModel {
         return simulateParameter;
     }
 
-    public boolean isWarning() {
+    public boolean isOccuredWarning() {
         return DataUtil.isNotEmpty(this.getWarningMsg());
+    }
+
+    public void changeOccuredWarning(String warningMsg) {
+        this.setWarningMsg(warningMsg);
+    }
+
+    public void clearOccuredWarning() {
+        if(DataUtil.isNotEmpty(this.getWarningMsg()))
+            this.setWarningMsg(null);
     }
 }

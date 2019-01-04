@@ -2,9 +2,7 @@ package com.yatop.lambda.workflow.core.context;
 
 import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
@@ -14,10 +12,10 @@ import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import java.util.List;
 import java.util.TreeMap;
 
-public class TaskExecutionContext implements IWorkContext {
+public class ExecutionTaskContext implements IWorkContext {
 
     private ExecutionTask task;     //操作关联运行任务
-    private JobExecutionContext jobExecutionContext;    //作业内容的工作流上下文
+    private ExecutionJobContext executionJobContext;    //作业内容的工作流上下文
     private Node node;                          //操作关联节点
     private TreeMap<String, CharValue> inputCharValues = new TreeMap<String, CharValue>();         //节点输入内容特征值
     private TreeMap<String, CharValue> outputCharValues = new TreeMap<String, CharValue>();        //节点输出内容特征值
@@ -26,9 +24,9 @@ public class TaskExecutionContext implements IWorkContext {
     private TreeMap<String, CharValue> parameterCharValues = new TreeMap<String, CharValue>();     //节点组件参数特征值
     private String warningMsg;
 
-    public TaskExecutionContext(ExecutionTask task, JobExecutionContext jobExecutionContext, Node node) {
+    public ExecutionTaskContext(ExecutionTask task, ExecutionJobContext executionJobContext, Node node) {
         this.task = task;
-        this.jobExecutionContext = jobExecutionContext;
+        this.executionJobContext = executionJobContext;
         this.node = node;
         this.warningMsg = null;
     }
@@ -36,7 +34,7 @@ public class TaskExecutionContext implements IWorkContext {
     @Override
     public void clear() {
         task = null;
-        jobExecutionContext = null;
+        executionJobContext = null;
         node = null;
         CollectionUtil.clear(inputCharValues);
         CollectionUtil.clear(outputCharValues);
@@ -54,7 +52,7 @@ public class TaskExecutionContext implements IWorkContext {
     }*/
 
     public ExecutionJob getJob() {
-        return jobExecutionContext.getJob();
+        return executionJobContext.getJob();
     }
 
     public ExecutionTask getTask() {
@@ -62,15 +60,11 @@ public class TaskExecutionContext implements IWorkContext {
     }
 
     public WorkflowContext getWorkflowContext() {
-        return jobExecutionContext.getWorkflowContext();
+        return executionJobContext.getWorkflowContext();
     }
 
     public Node getNode() {
         return node;
-    }
-
-    public boolean warningOccoured() {
-        return DataUtil.isNotEmpty(getWarningMsg());
     }
 
     public String getWarningMsg() {

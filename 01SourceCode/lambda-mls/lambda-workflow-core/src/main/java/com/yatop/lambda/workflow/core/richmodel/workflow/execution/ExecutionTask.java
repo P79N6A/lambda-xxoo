@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.execution;
 
 import com.yatop.lambda.base.model.WfExecutionTask;
 import com.yatop.lambda.core.enums.TaskStateEnum;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
@@ -107,4 +108,20 @@ public class ExecutionTask extends WfExecutionTask implements IRichModel {
     public void putTaskOutput(ExecutionTaskOutput taskOutput) {
         CollectionUtil.put(taskOutputs, taskOutput.getCharId(), taskOutput);
     }
+
+    public boolean isOccuredWarning() {
+        return DataUtil.isNotEmpty(this.getWarningMsg());
+    }
+
+    public void changeOccuredWarning(String warningMsg) {
+        this.setWarningMsg(warningMsg);
+        changeState2ErrorTerminated();
+    }
+
+    /*
+    public void clearOccuredWarning() {
+        if(DataUtil.isNotEmpty(this.getWarningMsg()))
+            this.setWarningMsg(null);
+    }
+    */
 }
