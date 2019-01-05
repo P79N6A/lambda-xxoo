@@ -9,20 +9,24 @@ import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 public class Node extends WfFlowNode implements IRichModel {
 
     private Module module;
     private TreeMap<String, NodeParameter> parameters = new TreeMap<String, NodeParameter>();   //组件参数，key=charId
+    private TreeMap<String, NodeParameter> parametersOrderByCharCode = new TreeMap<String, NodeParameter>();   //组件参数，key=charCode
     private TreeMap<String, NodeParameter> optimizeParameters = new TreeMap<String, NodeParameter>();         //执行调优参数，key=charId
+    private TreeMap<String, NodeParameter> optimizeParametersOrderByCharCode = new TreeMap<String, NodeParameter>();         //执行调优参数，key=charCode
     private TreeMap<Long, NodePortInput> inputNodePorts = new TreeMap<Long, NodePortInput>();                 //输入节点端口，key=nodePortId
     private TreeMap<String, NodePortInput> inputNodePortsOrderByCharId = new TreeMap<String, NodePortInput>();                 //输入节点端口，key=charId
+    private TreeMap<String, NodePortInput> inputNodePortsOrderByCharCode = new TreeMap<String, NodePortInput>();                 //输入节点端口，key=charCode
     private TreeMap<Integer, NodePortInput> inputNodePortsOrderBySequence = new TreeMap<Integer, NodePortInput>(); //输入节点端口按序号排序
     private TreeMap<Long, NodePortOutput> outputNodePorts = new TreeMap<Long, NodePortOutput>();                //输出节点端口，key=nodePortId
     private TreeMap<String, NodePortOutput> outputNodePortsOrderByCharId = new TreeMap<String, NodePortOutput>();                //输出节点端口，key=charId
+    private TreeMap<String, NodePortOutput> outputNodePortsOrderByCharCode = new TreeMap<String, NodePortOutput>();                //输出节点端口，key=charCode
     private TreeMap<Integer, NodePortOutput> outputNodePortsOrderBySequence = new TreeMap<Integer, NodePortOutput>();//输出节点端口按序号排序
   //private TreeMap<String, GlobalParameter> globalParameters = new TreeMap<String, GlobalParameter>();  //操作关联节点参数，key=charId
     private boolean deleted;
@@ -62,7 +66,7 @@ public class Node extends WfFlowNode implements IRichModel {
                     parameter.flush(operId);
                 }
             }
-            if (flushDataPortSchema && this.outputNodePortCount() > 0) {
+            if (flushDataPortSchema && this.outputPortCount() > 0) {
                 for (NodePortOutput outputPort : this.getOutputNodePorts()) {
                     outputPort.flush(operId);
                 }
@@ -143,6 +147,14 @@ public class Node extends WfFlowNode implements IRichModel {
         return module.getComponent();
     }
 
+    public int inputPortCount() {
+        return module.inputPortCount();
+    }
+
+    public int outputPortCount() {
+        return module.outputPortCount();
+    }
+
     public int parameterCount() {
         return parameters.size();
     }
@@ -151,12 +163,17 @@ public class Node extends WfFlowNode implements IRichModel {
         return CollectionUtil.get(parameters, charId);
     }
 
+    public NodeParameter getParameterByCharCode(String charCode) {
+        return CollectionUtil.get(parametersOrderByCharCode, charCode);
+    }
+
     public List<NodeParameter> getParameters() {
         return CollectionUtil.toList(parameters);
     }
 
     public void putParameter(NodeParameter parameter) {
         CollectionUtil.put(parameters, parameter.getCharId(), parameter);
+        CollectionUtil.put(parametersOrderByCharCode, parameter.getCmptChar().getCharCode(), parameter);
     }
 
     public int optimizeParameterCount() {
@@ -167,16 +184,17 @@ public class Node extends WfFlowNode implements IRichModel {
         return CollectionUtil.get(optimizeParameters, charId);
     }
 
+    public NodeParameter getOptimizeParameterByCharCode(String charCode) {
+        return CollectionUtil.get(optimizeParametersOrderByCharCode, charCode);
+    }
+
     public List<NodeParameter> getOptimizeParameters() {
         return CollectionUtil.toList(optimizeParameters);
     }
 
     public void putOptimizeParameter(NodeParameter parameter) {
         CollectionUtil.put(optimizeParameters, parameter.getCharId(), parameter);
-    }
-
-    public int inputNodePortCount() {
-        return inputNodePorts.size();
+        CollectionUtil.put(optimizeParametersOrderByCharCode, parameter.getCmptChar().getCharCode(), parameter);
     }
 
     public NodePortInput getInputNodePort(Long nodePortId) {
@@ -187,6 +205,10 @@ public class Node extends WfFlowNode implements IRichModel {
         return CollectionUtil.get(inputNodePortsOrderByCharId, charId);
     }
 
+    public NodePortInput getInputNodePortByCharCode(String charCode) {
+        return CollectionUtil.get(inputNodePortsOrderByCharCode, charCode);
+    }
+
     public List<NodePortInput> getInputNodePorts() {
         return CollectionUtil.toList(inputNodePortsOrderBySequence);
     }
@@ -194,11 +216,8 @@ public class Node extends WfFlowNode implements IRichModel {
     public void putInputNodePort(NodePortInput inputNodePort) {
         CollectionUtil.put(inputNodePorts, inputNodePort.getNodePortId(), inputNodePort);
         CollectionUtil.put(inputNodePortsOrderByCharId, inputNodePort.getRefCharId(), inputNodePort);
+        CollectionUtil.put(inputNodePortsOrderByCharCode, inputNodePort.getCmptChar().getCharCode(), inputNodePort);
         CollectionUtil.put(inputNodePortsOrderBySequence, inputNodePort.getModulePort().getSequence(), inputNodePort);
-    }
-
-    public int outputNodePortCount() {
-        return outputNodePorts.size();
     }
 
     public NodePortOutput getOutputNodePort(Long nodePortId) {
@@ -209,17 +228,32 @@ public class Node extends WfFlowNode implements IRichModel {
         return CollectionUtil.get(outputNodePortsOrderByCharId, charId);
     }
 
+    public NodePortOutput getOutputNodePortByCharCode(String charCode) {
+        return CollectionUtil.get(outputNodePortsOrderByCharCode, charCode);
+    }
+
     public List<NodePortOutput> getOutputNodePorts() {
         return CollectionUtil.toList(outputNodePortsOrderBySequence);
     }
 
-    //key=charId
-    public TreeMap<String, NodeSchema> getOutputPortSchemas() {
-        TreeMap<String, NodeSchema> nodeSchemas = new TreeMap<String, NodeSchema>();
-        for(Map.Entry<Long, NodePortOutput> entry : outputNodePorts.entrySet()) {
-            if(entry.getValue().isDataPort()) {
-                NodeSchema schema = entry.getValue().getSchema();
-                nodeSchemas.put(entry.getValue().getRefCharId(), schema);
+    public NodeSchema getOutputDataPortSchema(String charId) {
+        NodePortOutput outputNodePort = getOutputNodePort(charId);
+        return outputNodePort.isDataPort() ? outputNodePort.getSchema() : null;
+    }
+
+    public NodeSchema getOutputDataPortSchemaByCharCode(String charCode) {
+        NodePortOutput outputNodePort = getOutputNodePortByCharCode(charCode);
+        return outputNodePort.isDataPort() ? outputNodePort.getSchema() : null;
+    }
+
+    public List<NodeSchema> getOutputDataPortSchemas() {
+        List<NodeSchema> nodeSchemas = null;
+        if(outputDataPortCount() > 0) {
+            nodeSchemas = new ArrayList<NodeSchema>(outputDataPortCount());
+            for (NodePortOutput outputNodePort : getOutputNodePorts()) {
+                if (outputNodePort.isDataPort()) {
+                    nodeSchemas.add(outputNodePort.getSchema());
+                }
             }
         }
         return nodeSchemas;
@@ -228,6 +262,7 @@ public class Node extends WfFlowNode implements IRichModel {
     public void putOutputNodePort(NodePortOutput outputNodePort) {
         CollectionUtil.put(outputNodePorts, outputNodePort.getNodePortId(), outputNodePort);
         CollectionUtil.put(outputNodePortsOrderByCharId, outputNodePort.getRefCharId(), outputNodePort);
+        CollectionUtil.put(outputNodePortsOrderByCharCode, outputNodePort.getCmptChar().getCharCode(), outputNodePort);
         CollectionUtil.put(outputNodePortsOrderBySequence, outputNodePort.getModulePort().getSequence(), outputNodePort);
     }
 /*
@@ -265,7 +300,17 @@ public class Node extends WfFlowNode implements IRichModel {
         return analyzed;
     }
 
-    public void markAnalyzed() {
+    private void markAnalyzed() {
+        if(inputPortCount() > 0) {
+            for (NodePortInput inputNodePort : this.getInputNodePorts()) {
+                inputNodePort.markAnalyzed();
+            }
+        }
+        if(outputPortCount() > 0) {
+            for (NodePortOutput outputNodePort : this.getOutputNodePorts()) {
+                outputNodePort.markAnalyzed();
+            }
+        }
         this.analyzed = true;
     }
 
@@ -281,5 +326,13 @@ public class Node extends WfFlowNode implements IRichModel {
     public void clearOccuredWarning() {
         if(DataUtil.isNotEmpty(this.getWarningMsg()))
             this.setWarningMsg(null);
+    }
+
+    public int inputDataPortCount() {
+        return module.inputDataPortCount();
+    }
+
+    public int outputDataPortCount() {
+        return module.outputDataPortCount();
     }
 }

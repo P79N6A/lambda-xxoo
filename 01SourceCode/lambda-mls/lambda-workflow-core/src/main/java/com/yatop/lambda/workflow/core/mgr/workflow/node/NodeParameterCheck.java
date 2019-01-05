@@ -34,7 +34,7 @@ public class NodeParameterCheck {
                     moduleClazz.onCheckParameter(nodeContext);
 
                     warningMsgs = nodeContext.getOutWarningMsgs();
-                    if (!warningMsgs.isEmpty()) {
+                    if (DataUtil.isNotEmpty(warningMsgs)) {
                         for (Map.Entry<String, String> entry : warningMsgs.entrySet()) {
                             NodeParameter nodeParameter = node.getParameter(entry.getKey());
                             String warningMsg = entry.getValue();

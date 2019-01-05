@@ -2,19 +2,20 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNodePort;
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.workflow.core.framework.chartype.clazz.data.CharTypeDataGeneric;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
-import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 
 public class NodePortOutput extends WfFlowNodePort implements IRichModel {
 
     private ModulePort modulePort;
     private NodeSchema schema;
+    private boolean analyzed;
 
     public NodePortOutput(WfFlowNodePort data, ModulePort modulePort) {
         super.copyProperties(data);
         this.modulePort = modulePort;
+        this.analyzed = false;
         this.clearColoured();
     }
 
@@ -36,8 +37,12 @@ public class NodePortOutput extends WfFlowNodePort implements IRichModel {
         return modulePort;
     }
 
+    public CmptChar getCmptChar() {
+        return modulePort.getCmptChar();
+    }
+
     public boolean isDataPort() {
-        return ClazzHelperUtil.getCharTypeClazzBean(modulePort.getCmptChar().getType()) instanceof CharTypeDataGeneric;
+        return modulePort.isDataPort();
     }
 
     public NodeSchema getSchema() {
@@ -46,5 +51,13 @@ public class NodePortOutput extends WfFlowNodePort implements IRichModel {
 
     public void setSchema(NodeSchema schema) {
         this.schema = schema;
+    }
+
+    public boolean isAnalyzed() {
+        return analyzed;
+    }
+
+    protected void markAnalyzed() {
+        this.analyzed = true;
     }
 }

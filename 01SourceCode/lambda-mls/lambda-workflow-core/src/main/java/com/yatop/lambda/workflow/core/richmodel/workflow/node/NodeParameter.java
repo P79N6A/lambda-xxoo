@@ -47,6 +47,14 @@ public class NodeParameter extends WfFlowNodeParameter implements IRichModel {
         return value;
     }
 
+    public String getTextValue() {
+        return this.getValue().getTextValue();
+    }
+
+    public IRichModel getObjectValue() {
+        return this.getValue().getObjectValue();
+    }
+
     public boolean isSimulateParameter() {
         return simulateParameter;
     }

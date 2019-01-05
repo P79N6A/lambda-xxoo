@@ -201,7 +201,7 @@ public class ModuleConfig implements InitializingBean {
             portList.clear();
         }
 
-        //工作流组件校验
+        //工作流组件校验和初始化
         {
             for(Map.Entry<Long, Module> moduleEntry : ALL_MODULES.entrySet()) {
                 Module module = moduleEntry.getValue();
@@ -214,15 +214,26 @@ public class ModuleConfig implements InitializingBean {
                 }
 
                 int sequence = 0;
-                if(module.outputPortCount() > 0) {
-                    for (ModulePort modulePort : module.getOutputPorts()) {
+                if(module.inputPortCount() > 0) {
+                    for (ModulePort modulePort : module.getInputPorts()) {
                         if (modulePort.getSequence() != sequence) {
-                            logger.error(String.format("Check module configuration occurs fatal error -- Error sequence number:\n%s.", DataUtil.prettyFormat(modulePort)));
+                            logger.error(String.format("Check module configuration occurs fatal error -- Error input port sequence number:\n%s.", DataUtil.prettyFormat(modulePort)));
                             System.exit(-1);
                         }
                         sequence++;
                     }
                 }
+                if(module.outputPortCount() > 0) {
+                    for (ModulePort modulePort : module.getOutputPorts()) {
+                        if (modulePort.getSequence() != sequence) {
+                            logger.error(String.format("Check module configuration occurs fatal error -- Error output port sequence number:\n%s.", DataUtil.prettyFormat(modulePort)));
+                            System.exit(-1);
+                        }
+                        sequence++;
+                    }
+                }
+
+                module.initializeDataPortCount();
             }
         }
     }

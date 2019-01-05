@@ -65,6 +65,6 @@ public class ParameterCharValueUpdate {
         }
 
         nodeParameterCheck.checkParameter(workflowContext, node);
-        workflowContext.doneUpdateNodeParameter(node);
+        workflowContext.doneUpdateNodeParameter(node, targetParameter);
     }
 }

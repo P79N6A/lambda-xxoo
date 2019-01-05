@@ -9,13 +9,10 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.data.model.ModelWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.*;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
 
 import java.util.*;
 
@@ -25,6 +22,7 @@ public class WorkflowContext implements IWorkContext {
      *  工作流、节点、节点参数、节点数据端口schema等信息采用延迟更新，由flush方法发起提交
      * */
 
+    private boolean lazyLoadMode;           //标识是否为懒加载模式，否则视为节点和链接的相关信息都已经一次性读取到上下文中
     private boolean executionWorkMode;      //标识是否为运行工作模式，否则视为编辑器模式（用于特征CharValue增删改查等事件内部判断用）
     private boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
     private boolean loadNodeParameter;      //控制是否查询带出节点参数信息
@@ -47,39 +45,58 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, Node> analyzeNodes = new TreeMap<Long, Node>();      //待分析节点，key=nodeId
     private TreeMap<Long, NodeLink> analyzeLinks = new TreeMap<Long, NodeLink>();  //待分析节点链接，key=linkId
 
-    //工作流编辑用
-    public static WorkflowContext BuildWorkflowContext(Project project, Workflow workflow, String operId) {
+    //工作流新建使用（无需加载）
+    public static WorkflowContext BuildWorkflowContext4Create(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
+        context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = true;
         context.loadNodeParameter = true;
         context.loadDataPortSchema = true;
+        context.initialize();
         return context;
     }
 
-    //仅查询画布图形信息用
+    //工作流编辑使用（增量加载）
+    public static WorkflowContext BuildWorkflowContext4Edit(Project project, Workflow workflow, String operId) {
+        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+        context.lazyLoadMode = true;
+        context.executionWorkMode = false;
+        context.enableFlushWorkflow = true;
+        context.loadNodeParameter = true;
+        context.loadDataPortSchema = true;
+        context.initialize();
+        return context;
+    }
+
+    //仅查询画布图形信息使用（全量加载）
     public static WorkflowContext BuildWorkflowContext4OnlyGraph(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
+        context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;
         context.loadDataPortSchema = false;
+        context.initialize(true);
         return context;
     }
 
-    //查询工作流内容构建快照内容和作业内容用
+    //查询工作流内容用于进行拷贝、构建快照内容、构建作业内容等场景使用（全量加载）
     public static WorkflowContext BuildWorkflowContext4NoSchema(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
+        context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = true;
         context.loadDataPortSchema = false;
+        context.initialize(true);
         return context;
     }
 
-    //快照内容查看用
+    //快照内容读取使用（反序列化时注入）
     public static WorkflowContext BuildWorkflowContext4Snapshot(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
+        context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;  //WorkflowContextCodec中填入
@@ -87,10 +104,11 @@ public class WorkflowContext implements IWorkContext {
         return context;
     }
 
-    //工作流作业内容查看用
+    //工作流作业内容读取使用（反序列化时注入）
     public static WorkflowContext BuildWorkflowContext4Execution(Project project, Workflow workflow, ExecutionJob job, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
         context.job = job;
+        context.lazyLoadMode = false;
         context.executionWorkMode = true;
         context.enableFlushWorkflow = JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(job.getJobType()));
         context.loadNodeParameter = false;  //WorkflowContextCodec中填入
@@ -105,12 +123,25 @@ public class WorkflowContext implements IWorkContext {
         this.schemaAnalyze = AnalyzeTypeEnum.NONE;
     }
 
+    private void initialize() {
+        this.initialize(false);
+    }
+
+    private void initialize(boolean doPreload) {
+        if(doPreload) {
+            WorkflowContextHelper.loadAllNodes(this);
+            WorkflowContextHelper.loadAllLinks(this);
+        }
+    }
+
     public void flush() {
         if(!this.isEnableFlushWorkflow())
             return;
 
-        for (Node node : this.getNodes()) {
-            node.flush(this.isLoadNodeParameter(), this.isLoadDataPortSchema(), this.operId);
+        if(this.nodeCount() > 0) {
+            for (Node node : this.getNodes()) {
+                node.flush(this.isLoadNodeParameter(), this.isLoadDataPortSchema(), this.operId);
+            }
         }
         this.workflow.flush(this.operId);
     }
@@ -132,7 +163,7 @@ public class WorkflowContext implements IWorkContext {
         this.markAnalyzeWithCreateLink(link);
     }
 
-    public void doneUpdateNodeParameter(Node node) {
+    public void doneUpdateNodeParameter(Node node, NodeParameter parameter) {
         node.downgradeState2Ready();
         this.workflow.changeState2Draft();
         this.markAnalyzeWithWithUpdateNodeParameter(node);
@@ -204,6 +235,10 @@ public class WorkflowContext implements IWorkContext {
             this.schemaAnalyze = AnalyzeTypeEnum.COPY_WORKFLOW;
     }
 
+    public boolean isLazyLoadMode() {
+        return lazyLoadMode;
+    }
+
     public boolean isExecutionWorkMode() {
         return executionWorkMode;
     }
@@ -266,6 +301,11 @@ public class WorkflowContext implements IWorkContext {
         return CollectionUtil.toList(nodes);
     }
 
+    public Node fetchNode(Long nodeId) {
+        WorkflowContextHelper.loadOneNode(this, nodeId);
+        return getNode(nodeId);
+    }
+
     public int linkCount() {
         return links.size();
     }
@@ -274,13 +314,23 @@ public class WorkflowContext implements IWorkContext {
         return links.get(linkId);
     }
 
+    public NodeLink fetchLink(Long linkId) {
+        WorkflowContextHelper.loadOneLink(this, linkId);
+        return getLink(linkId);
+    }
+
     public List<NodeLink> getInLinks(Long dstPortId) {
         return CollectionUtil.toList(inputLinks.get(dstPortId));
     }
 
+    public List<NodeLink> fetchInLinks(Long dstPortId) {
+        WorkflowContextHelper.loadInLinks(this, dstPortId);
+        return getInLinks(dstPortId);
+    }
+
     public NodeLink getNonWebInLink(Long dstPortId) {
         List<NodeLink> linkList = this.getInLinks(dstPortId);
-        if(DataUtil.isNotNull(linkList)) {
+        if(DataUtil.isNotEmpty(linkList)) {
             for (NodeLink link : linkList) {
                 if (link.getIsWebLink() == IsWebLinkEnum.NO.getMark()) {
                     return link;
@@ -290,9 +340,14 @@ public class WorkflowContext implements IWorkContext {
         return null;
     }
 
+    public NodeLink fetchNonWebInLink(Long dstPortId) {
+        this.fetchInLinks(dstPortId);
+        return getNonWebInLink(dstPortId);
+    }
+
     public NodeLink getWebInLink(Long dstPortId) {
         List<NodeLink> linkList = this.getInLinks(dstPortId);
-        if(DataUtil.isNotNull(linkList)) {
+        if(DataUtil.isNotEmpty(linkList)) {
             for (NodeLink link : linkList) {
                 if (link.getIsWebLink() == IsWebLinkEnum.YES.getMark()) {
                     return link;
@@ -300,6 +355,11 @@ public class WorkflowContext implements IWorkContext {
             }
         }
         return null;
+    }
+
+    public NodeLink fetchWebInLink(Long dstPortId) {
+        this.fetchInLinks(dstPortId);
+        return getWebInLink(dstPortId);
     }
 
     public List<NodeLink> getOutLinks(Long srcPortId) {
@@ -322,6 +382,12 @@ public class WorkflowContext implements IWorkContext {
     public NodePortInput getInputPort(Long portId) {
         return inputPorts.get(portId);
     }
+
+    public NodePortInput fetchUpstreamInputPort(Long dstPortId) {
+        this.fetchInLinks(dstPortId);
+        return WorkflowContextHelper.loadUpstreamWebPort(this, dstPortId);
+    }
+
 
     public List<NodePortInput> getInputPorts() {
         return CollectionUtil.toList(inputPorts);

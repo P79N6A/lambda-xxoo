@@ -55,7 +55,7 @@ public interface IModuleClazz extends InitializingBean {
     boolean supportAnalyzeSchema();
 
     //影响重新分析schema的参数集合
-    //返回特征代码集合
+    //返回特征ID集合
     HashSet<String> reanlyzeSchemaParameterSet();
     /* {
         static final HashSet<String> parameterSet = new HashSet<String>() {{

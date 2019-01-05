@@ -121,4 +121,12 @@ public class CharValue extends LambdaRootModel implements IRichModel {
     public void setOutObject(IRichModel outObject) {
         this.outObject = outObject;
     }
+
+    public String getTextValue() {
+        return this.getOutText();
+    }
+
+    public IRichModel getObjectValue() {
+        return this.getOutObject();
+    }
 }

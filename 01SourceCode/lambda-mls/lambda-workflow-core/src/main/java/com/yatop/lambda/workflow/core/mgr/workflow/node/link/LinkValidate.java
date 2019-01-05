@@ -19,17 +19,17 @@ public class LinkValidate {
     NodeQuery nodeQuery;
 
     public boolean matchTargetCharType(NodePortOutput srcNodePort, NodePortInput dstNodePort) {
-        return srcNodePort.getModulePort().getCmptChar().getType().matchTargetType(dstNodePort.getModulePort().getCmptChar().getType());
+        return srcNodePort.getCmptChar().getType().matchTargetType(dstNodePort.getCmptChar().getType());
     }
 
     public boolean validateLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodePortOutput srcNodePort, NodePortInput dstNodePort) {
 
         if(srcNode.getComponent().isWebComponent()) {
-            NodeLink link = workflowContext.getWebInLink(dstNodePort.getNodePortId());
+            NodeLink link = workflowContext.fetchWebInLink(dstNodePort.getNodePortId());
             if (DataUtil.isNotNull(link))
                 return false;
         } else {
-            NodeLink link = workflowContext.getNonWebInLink(dstNodePort.getNodePortId());
+            NodeLink link = workflowContext.fetchNonWebInLink(dstNodePort.getNodePortId());
             if (DataUtil.isNotNull(link))
                 return false;
         }

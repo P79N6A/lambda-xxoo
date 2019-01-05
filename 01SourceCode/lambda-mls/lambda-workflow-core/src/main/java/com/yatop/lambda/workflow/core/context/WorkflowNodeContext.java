@@ -13,7 +13,7 @@ public class WorkflowNodeContext implements IWorkContext {
     private Node node;                          //操作节点
     private String outSummary;                  //传出生成摘要
     private TreeMap<String, String> outWarningMsgs = new TreeMap<String, String>();     //charId, warningMsg，传出组件参数告警消息
-    private List<NodeSchema> outSchemas = new ArrayList<NodeSchema>();              //传出更新的schema
+    private TreeMap<String, NodeSchema> outSchemas = new TreeMap<String, NodeSchema>(); //charId, schema，传出更新的schema
 
     public WorkflowNodeContext(WorkflowContext workflowContext, Node node) {
         this.workflowContext = workflowContext;
@@ -63,11 +63,11 @@ public class WorkflowNodeContext implements IWorkContext {
         return outSchemas.size();
     }
 
-    public List<NodeSchema> getOutSchemas() {
+    public TreeMap<String, NodeSchema> getOutSchemas() {
         return outSchemas;
     }
 
-    public void addOutSchema(NodeSchema schema) {
-        CollectionUtil.add(outSchemas, schema);
+    public void putOutSchema(NodeSchema schema) {
+        CollectionUtil.put(outSchemas, schema.getCmptChar().getCharId(), schema);
     }
 }

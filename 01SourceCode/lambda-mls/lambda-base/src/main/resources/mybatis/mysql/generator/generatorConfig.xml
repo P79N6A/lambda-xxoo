@@ -47,12 +47,6 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-<!--
-		<table tableName="CF_CMPT_CHAR" >
-			<property name="ignoreQualifiersAtRuntime" value="true" />
-		</table>
--->
-<!--
 		<table tableName="%" >
 			<property name="ignoreQualifiersAtRuntime" value="true" />
 		</table>
@@ -132,6 +126,6 @@
 			<property name="ignoreQualifiersAtRuntime" value="true" />
 			<generatedKey column="SNAPSHOT_ID" sqlStatement="Mysql" identity="true"/>
 		</table>
--->
+
 	</context>
 </generatorConfiguration>

@@ -1,6 +1,8 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node.link;
 
 import com.yatop.lambda.base.model.WfFlowNodeLink;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.node.NodeLinkMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
@@ -18,6 +20,21 @@ public class LinkQuery {
     @Autowired
     NodeLinkMgr nodeLinkMgr;
 
+    public NodeLink queryLink(WorkflowContext workflowContext, Long linkId) {
+        NodeLink richNodeLink = workflowContext.getLink(linkId);
+        if(DataUtil.isNotNull(richNodeLink))
+            return richNodeLink;
+
+        WfFlowNodeLink nodeLink = nodeLinkMgr.queryLink(linkId);
+        if(DataUtil.isNull(nodeLink)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Query node link failed -- node link not found, link-id:%d.", linkId), "链接信息缺失");
+        }
+
+        richNodeLink = new NodeLink(nodeLink);
+        workflowContext.putLink(richNodeLink);
+        return  richNodeLink;
+    }
+
     public void queryLinks(WorkflowContext workflowContext) {
         List<WfFlowNodeLink> nodeLinks = nodeLinkMgr.queryLink(workflowContext.getWorkflow().getFlowId(), null);
         if(DataUtil.isEmpty(nodeLinks)) {
@@ -30,45 +47,56 @@ public class LinkQuery {
         }
     }
 
-    public List<NodeLink> queryOutLinks(WorkflowContext workflowContext, Node srcNode) {
-        List<WfFlowNodeLink> nodeLinks = nodeLinkMgr.queryLinkBySrcNodeId(srcNode.getNodeId());
+    private List<NodeLink> doneQueyLinks(WorkflowContext workflowContext, List<WfFlowNodeLink> nodeLinks) {
         if(DataUtil.isEmpty(nodeLinks)) {
             return null;
         }
 
-        List<NodeLink> outLinks = new ArrayList<NodeLink>(nodeLinks.size());
+        List<NodeLink> richLinks = new ArrayList<NodeLink>(nodeLinks.size());
         for(WfFlowNodeLink nodeLink : nodeLinks) {
             NodeLink richNodeLink = workflowContext.getLink(nodeLink.getLinkId());
             if(DataUtil.isNotNull(richNodeLink)) {
-                outLinks.add(richNodeLink);
+                richLinks.add(richNodeLink);
                 continue;
             }
 
             richNodeLink = new NodeLink(nodeLink);
             workflowContext.putLink(richNodeLink);
-            outLinks.add(richNodeLink);
+            richLinks.add(richNodeLink);
         }
-        return outLinks;
+        return richLinks;
+    }
+
+    public List<NodeLink> queryOutLinks(WorkflowContext workflowContext, Long srcNodePortId) {
+
+        List<NodeLink> outLinks = workflowContext.getOutLinks(srcNodePortId);
+        if(DataUtil.isNotEmpty(outLinks))
+            return outLinks;
+
+        return doneQueyLinks(workflowContext, nodeLinkMgr.queryLinkBySrcPortId(srcNodePortId));
+    }
+
+    public List<NodeLink> queryOutLinks(WorkflowContext workflowContext, Node srcNode) {
+
+        if(srcNode.outputPortCount() == 0)
+            return null;
+
+        return doneQueyLinks(workflowContext, nodeLinkMgr.queryLinkBySrcNodeId(srcNode.getNodeId()));
+    }
+
+    public List<NodeLink> queryInLinks(WorkflowContext workflowContext, Long dstNodePortId) {
+
+        List<NodeLink> inLinks = workflowContext.getInLinks(dstNodePortId);
+        if(DataUtil.isNotEmpty(inLinks))
+            return inLinks;
+
+        return doneQueyLinks(workflowContext, nodeLinkMgr.queryLinkByDstPortId(dstNodePortId));
     }
 
     public List<NodeLink> queryInLinks(WorkflowContext workflowContext, Node dstNode) {
-        List<WfFlowNodeLink> nodeLinks = nodeLinkMgr.queryLinkByDstNodeId(dstNode.getNodeId());
-        if(DataUtil.isEmpty(nodeLinks)) {
+        if(dstNode.inputPortCount() == 0)
             return null;
-        }
 
-        List<NodeLink> inLinks = new ArrayList<NodeLink>(nodeLinks.size());
-        for(WfFlowNodeLink nodeLink : nodeLinks) {
-            NodeLink richNodeLink = workflowContext.getLink(nodeLink.getLinkId());
-            if(DataUtil.isNotNull(richNodeLink)) {
-                inLinks.add(richNodeLink);
-                continue;
-            }
-
-            richNodeLink = new NodeLink(nodeLink);
-            workflowContext.putLink(richNodeLink);
-            inLinks.add(richNodeLink);
-        }
-        return inLinks;
+        return doneQueyLinks(workflowContext, nodeLinkMgr.queryLinkByDstNodeId(dstNode.getNodeId()));
     }
 }

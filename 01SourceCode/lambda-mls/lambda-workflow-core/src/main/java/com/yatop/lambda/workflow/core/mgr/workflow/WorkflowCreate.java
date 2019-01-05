@@ -33,7 +33,7 @@ public class WorkflowCreate {
         return WorkflowContext.BuildWorkflowContext(experiment.getProject(), richWorkflow, operId);
     }
 
-    public WorkflowContext createWorkflow(Experiment experiment, WorkflowContext thatWorkflowContext, String operId) {
+    public WorkflowContext createWorkflow(Experiment experiment, WorkflowContext otherWorkflowContext, String operId) {
         WorkflowContext thisWorkFlowContext = createWorkflow(experiment, operId);
 
         //TODO ...

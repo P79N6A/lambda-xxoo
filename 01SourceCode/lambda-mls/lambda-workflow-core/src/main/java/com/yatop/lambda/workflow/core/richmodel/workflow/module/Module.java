@@ -18,6 +18,8 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
     private TreeMap<Long, ModulePort> outputPorts = new TreeMap<Long, ModulePort>();    //工作流组件输出端口
     private TreeMap<String, ModulePort> outputPortsOrderByCharId = new TreeMap<String, ModulePort>();     //工作流组件输出端口
     private TreeMap<Integer, ModulePort> outputPortsOrderBySequence = new TreeMap<Integer, ModulePort>();   //工作流组件输出端口按序号排序
+    private int inputDataPortCount = 0;
+    private int outputDataPortCount = 0;
 
     public Module(WfModule data, Component component) {
         super.copyProperties(data);
@@ -39,6 +41,29 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
         outputPortsOrderByCharId.clear();
         outputPortsOrderBySequence.clear();
         super.clear();
+    }
+
+    public void initializeDataPortCount() {
+        {
+            int counter = 0;
+            if(inputPortCount() > 0) {
+                for (ModulePort modulePort : getInputPorts()) {
+                    if (modulePort.isDataPort())
+                        counter++;
+                }
+            }
+            inputDataPortCount = counter;
+        }
+         {
+            int counter = 0;
+            if(outputPortCount() > 0) {
+                for (ModulePort modulePort : getOutputPorts()) {
+                    if (modulePort.isDataPort())
+                        counter++;
+                }
+            }
+             outputDataPortCount = counter;
+        }
     }
 
     public Component getComponent() {
@@ -89,5 +114,13 @@ public class Module extends WfModule implements Comparable<Module>, IRichModel {
 
     public boolean existsModulePort(ModulePort modulePort) {
         return DataUtil.isNotNull(this.getInputPort(modulePort.getPortId())) || DataUtil.isNotNull(this.getOutputPort(modulePort.getPortId()));
+    }
+
+    public int inputDataPortCount() {
+        return inputDataPortCount;
+    }
+
+    public int outputDataPortCount() {
+        return outputDataPortCount;
     }
 }

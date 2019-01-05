@@ -25,14 +25,14 @@ public class SchemaCreate {
     public void createSchema(WorkflowContext workflowContext, Node node, NodePortOutput outputPort) {
 
         WfJsonObject object = new WfJsonObject();
-        object.setObjectName(String.format("output_port_schema_%s_%s", node.getNodeId(), outputPort.getModulePort().getCmptChar().getCharId()));
+        object.setObjectName(String.format("output_port_schema_%s_%s", node.getNodeId(), outputPort.getCmptChar().getCharId()));
         object.setObjectType(JsonObjectTypeEnum.OUTPUT_PORT_SCHEMA.getType());
         object.setObjectSrc(JsonObjectSourceEnum.EDITOR.getSource());
         object.setOwnerProjectId(workflowContext.getProject().getProjectId());
         object.setRelFlowId(workflowContext.getWorkflow().getFlowId());
         object.setRelSnapshotVersion(workflowContext.getWorkflow().getNextSnapshotVersion());
         object.setRelNodeId(node.getNodeId());
-        object.setRelCharId(outputPort.getModulePort().getCmptChar().getCharId());
+        object.setRelCharId(outputPort.getCmptChar().getCharId());
         object.setRelTaskId(-1L);
         object.setStorageLocation(StorageLocationEnum.TABLE_FIELD.getLocation());
         object.setObjectState(JsonObjectStateEnum.EMPTY.getState());
@@ -48,7 +48,7 @@ public class SchemaCreate {
         schema.setSchemaState(SchemaStateEnum.EMPTY.getState());
         schema = nodeSchemaMgr.insertSchema(schema, workflowContext.getOperId());
         //schema.copyProperties(nodeSchemaMgr.querySchema(schema.getNodePortId()));
-        NodeSchema richSchema = new NodeSchema(schema, richObject);
+        NodeSchema richSchema = new NodeSchema(schema, outputPort.getCmptChar(), richObject);
         outputPort.setSchema(richSchema);
     }
 }

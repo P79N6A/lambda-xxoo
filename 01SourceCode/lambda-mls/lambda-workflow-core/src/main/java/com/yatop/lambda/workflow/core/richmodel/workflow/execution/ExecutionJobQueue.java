@@ -1,13 +1,13 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.execution;
 
 import com.yatop.lambda.base.model.WfExecutionJob;
-import com.yatop.lambda.base.model.WfExecutionQueue;
+import com.yatop.lambda.base.model.WfExecutionJobQueue;
 import com.yatop.lambda.core.enums.JobStateEnum;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
-public class ExecutionQueue extends WfExecutionQueue implements IRichModel {
+public class ExecutionJobQueue extends WfExecutionJobQueue implements IRichModel {
 
-    public ExecutionQueue(WfExecutionQueue data) {
+    public ExecutionJobQueue(WfExecutionJobQueue data) {
         super.copyProperties(data);
         this.clearColoured();
     }

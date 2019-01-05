@@ -16,7 +16,7 @@ public class SchemaDelete {
 
     public void deleteSchemas(WorkflowContext workflowContext, Node node) {
 
-        if(node.outputNodePortCount() > 0) {
+        if(node.outputPortCount() > 0) {
             int counter = 0;
             for (NodePortOutput port : node.getOutputNodePorts()) {
                 if (port.isDataPort()) {

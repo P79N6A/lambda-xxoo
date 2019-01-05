@@ -171,20 +171,20 @@ public class NodeLinkMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-/*    public List<WfFlowNodeLink> queryLinkBySrcPortId(Long nodePortId) {
-        if(DataUtil.isNull(nodePortId)){
+    public List<WfFlowNodeLink> queryLinkBySrcPortId(Long srcNodePortId) {
+        if(DataUtil.isNull(srcNodePortId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
             WfFlowNodeLinkExample example = new WfFlowNodeLinkExample();
-            example.createCriteria().andSrcPortIdEqualTo(nodePortId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andSrcPortIdEqualTo(srcNodePortId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return wfFlowNodeLinkMapper.selectByExample(example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed.", "查询节点链接失败", e);
         }
-    }*/
+    }
 
     /*
      *
@@ -192,18 +192,18 @@ public class NodeLinkMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-/*    public List<WfFlowNodeLink> queryLinkByDstPortId(Long nodePortId) {
-        if(DataUtil.isNull(nodePortId)){
+    public List<WfFlowNodeLink> queryLinkByDstPortId(Long dstNodePortId) {
+        if(DataUtil.isNull(dstNodePortId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
             WfFlowNodeLinkExample example = new WfFlowNodeLinkExample();
-            example.createCriteria().andDstPortIdEqualTo(nodePortId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andDstPortIdEqualTo(dstNodePortId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return wfFlowNodeLinkMapper.selectByExample(example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed.", "查询节点链接失败", e);
         }
-    }*/
+    }
 }

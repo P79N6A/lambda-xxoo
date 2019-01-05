@@ -1,4 +1,4 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.execution.queue;
 
-public class QueueUpdate {
+public class JobQueueHelper {
 }
