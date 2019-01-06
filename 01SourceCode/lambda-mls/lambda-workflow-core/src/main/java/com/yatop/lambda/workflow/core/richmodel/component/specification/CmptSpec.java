@@ -20,9 +20,9 @@ public class CmptSpec extends CfCmptSpec implements IRichModel {
 
     @Override
     public void clear() {
-        cmptChars.clear();
+        CollectionUtil.clear(cmptChars);
         cmptChars = null;
-        CollectionUtil.clear(charValues);
+        CollectionUtil.enhancedClear(charValues);
         charValues = null;
         super.clear();
     }

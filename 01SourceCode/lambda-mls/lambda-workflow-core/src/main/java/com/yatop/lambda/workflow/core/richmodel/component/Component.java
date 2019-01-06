@@ -35,7 +35,7 @@ public class Component extends CfComponent implements IRichModel {
         execution = null;
         optimizeExecution = null;
         parameter = null;
-        CollectionUtil.clear(charValues);
+        CollectionUtil.enhancedClear(charValues);
         charValues = null;
         super.clear();
     }

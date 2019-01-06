@@ -22,9 +22,9 @@ public class CmptChar extends CfCmptChar implements IRichModel {
     @Override
     public void clear() {
         type = null;
-        enums.clear();
+        CollectionUtil.enhancedClear(enums);
         enums = null;
-        CollectionUtil.clear(enumsOrderbySequence);
+        CollectionUtil.enhancedClear(enumsOrderbySequence);
         enumsOrderbySequence = null;
         super.clear();
     }

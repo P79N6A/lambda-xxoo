@@ -1,7 +1,6 @@
 package com.yatop.lambda.workflow.core.context;
 
 import com.yatop.lambda.core.enums.SpecTypeEnum;
-import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
@@ -36,11 +35,11 @@ public class ExecutionTaskContext implements IWorkContext {
         task = null;
         executionJobContext = null;
         node = null;
-        CollectionUtil.clear(inputCharValues);
-        CollectionUtil.clear(outputCharValues);
-        CollectionUtil.clear(execCharValues);
-        CollectionUtil.clear(optimizeCharValues);
-        CollectionUtil.clear(parameterCharValues);
+        CollectionUtil.enhancedClear(inputCharValues);
+        CollectionUtil.enhancedClear(outputCharValues);
+        CollectionUtil.enhancedClear(execCharValues);
+        CollectionUtil.enhancedClear(optimizeCharValues);
+        CollectionUtil.enhancedClear(parameterCharValues);
         warningMsg = null;
     }
 

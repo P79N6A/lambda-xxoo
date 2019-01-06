@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class LinkValidate {
 
-    @Autowired
-    NodeQuery nodeQuery;
+    //@Autowired
+    //NodeQuery nodeQuery;
 
     public boolean matchTargetCharType(NodePortOutput srcNodePort, NodePortInput dstNodePort) {
         return srcNodePort.getCmptChar().getType().matchTargetType(dstNodePort.getCmptChar().getType());
@@ -38,8 +38,8 @@ public class LinkValidate {
     }
 
     public boolean validateLink(WorkflowContext workflowContext, Long srcNodeId, Long dstNodeId, Long srcNodePortId, Long dstNodePortId) {
-        Node srcNode = nodeQuery.queryNode(workflowContext, srcNodeId);
-        Node dstNode = nodeQuery.queryNode(workflowContext, dstNodeId);
+        Node srcNode = workflowContext.fetchNode(srcNodeId);
+        Node dstNode = workflowContext.fetchNode(dstNodeId);
 
         NodePortOutput srcNodePort = srcNode.getOutputNodePort(srcNodePortId);
         if(DataUtil.isNull(srcNodePort)) {

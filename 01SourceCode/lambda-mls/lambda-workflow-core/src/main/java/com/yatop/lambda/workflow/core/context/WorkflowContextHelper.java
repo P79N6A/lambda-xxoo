@@ -63,35 +63,23 @@ public class WorkflowContextHelper {
         }
     }
 
-    protected static void loadUpstreamNode(WorkflowContext workflowContext, NodeLink nodeLink) {
-        if(workflowContext.isLazyLoadMode()) {
-            WorkflowContextHelper.NODE_QUERY.queryNode(workflowContext, nodeLink.getSrcNodeId());
-        }
-    }
-
     protected static void loadUpstreamNodes(WorkflowContext workflowContext, Node node) {
         if(workflowContext.isLazyLoadMode()) {
-            List<NodeLink> nodeLinks = WorkflowContextHelper.LINK_QUERY.queryInLinks(workflowContext, node);
+            //List<NodeLink> nodeLinks = WorkflowContextHelper.LINK_QUERY.queryInLinks(workflowContext, node);
             if (DataUtil.isNotEmpty(nodeLinks)) {
                 for (NodeLink nodeLink : nodeLinks) {
-                    loadUpstreamNode(workflowContext, nodeLink);
+                    loadOneNode(workflowContext, nodeLink.getSrcNodeId());
                 }
             }
         }
     }
 
-    protected static void loadDownstreamNode(WorkflowContext workflowContext, NodeLink nodeLink) {
-        if(workflowContext.isLazyLoadMode()) {
-            WorkflowContextHelper.NODE_QUERY.queryNode(workflowContext, nodeLink.getDstNodeId());
-        }
-    }
-
     protected static void loadDownstreamNodes(WorkflowContext workflowContext, Node node) {
         if(workflowContext.isLazyLoadMode()) {
-            List<NodeLink> nodeLinks = WorkflowContextHelper.LINK_QUERY.queryOutLinks(workflowContext, node);
+            //List<NodeLink> nodeLinks = WorkflowContextHelper.LINK_QUERY.queryOutLinks(workflowContext, node);
             if (DataUtil.isNotEmpty(nodeLinks)) {
                 for (NodeLink nodeLink : nodeLinks) {
-                    loadDownstreamNode(workflowContext, nodeLink);
+                    loadOneNode(workflowContext, nodeLink.getDstNodeId());
                 }
             }
         }
@@ -133,26 +121,38 @@ public class WorkflowContextHelper {
         }
     }
 
-    protected static void loadUpstreamNonWebPort(WorkflowContext workflowContext, Long dstPortId) {
+    protected static void loadInputPort(WorkflowContext workflowContext, Long portId) {
         if(workflowContext.isLazyLoadMode()) {
-            NodeLink nodeLink = workflowContext.getNonWebInLink(dstPortId);
+            WorkflowContextHelper.NODE_PORT_QUERY.queryInputNodePort(workflowContext, portId);
+        }
+    }
+
+    protected static void loadOutputPort(WorkflowContext workflowContext, Long portId) {
+        if(workflowContext.isLazyLoadMode()) {
+            WorkflowContextHelper.NODE_PORT_QUERY.queryOutputNodePort(workflowContext, portId);
+        }
+    }
+
+/*    protected static void loadUpstreamNonWebPort(WorkflowContext workflowContext, Long dstPortId) {
+        if(workflowContext.isLazyLoadMode()) {
+            NodeLink nodeLink = workflowContext.fetchNonWebInLink(dstPortId);
             WorkflowContextHelper.NODE_PORT_QUERY.queryOutputNodePort(workflowContext, nodeLink.getSrcPortId());
         }
     }
 
     protected static void loadUpstreamWebPort(WorkflowContext workflowContext, Long dstPortId) {
         if(workflowContext.isLazyLoadMode()) {
-            NodeLink nodeLink = workflowContext.getWebInLink(dstPortId);
+            NodeLink nodeLink = workflowContext.fetchWebInLink(dstPortId);
             WorkflowContextHelper.NODE_PORT_QUERY.queryOutputNodePort(workflowContext, nodeLink.getSrcPortId());
         }
-    }
+    }*/
 
     protected static void loadUpstreamPorts(WorkflowContext workflowContext, Long dstPortId) {
         if(workflowContext.isLazyLoadMode()) {
-            List<NodeLink> nodeLinks = workflowContext.getInLinks(dstPortId);
+            List<NodeLink> nodeLinks = workflowContext.fetchInLinks(dstPortId);
             if(DataUtil.isNotEmpty(nodeLinks)) {
                 for(NodeLink nodeLink : nodeLinks) {
-                    WorkflowContextHelper.NODE_PORT_QUERY.queryOutputNodePort(workflowContext, nodeLink.getSrcPortId());
+                    WorkflowContextHelper.loadOutputPort(workflowContext, nodeLink.getSrcPortId());
                 }
             }
         }
@@ -160,10 +160,10 @@ public class WorkflowContextHelper {
 
     protected static void loadDownstreamPorts(WorkflowContext workflowContext, Long srcPortId) {
         if(workflowContext.isLazyLoadMode()) {
-            List<NodeLink> nodeLinks = workflowContext.getInLinks(srcPortId);
+            List<NodeLink> nodeLinks = workflowContext.getOutLinks(srcPortId);
             if(DataUtil.isNotEmpty(nodeLinks)) {
                 for(NodeLink nodeLink : nodeLinks) {
-                    WorkflowContextHelper.NODE_PORT_QUERY.queryInputNodePort(workflowContext, nodeLink.getDstPortId());
+                    WorkflowContextHelper.loadInputPort(workflowContext, nodeLink.getDstPortId());
                 }
             }
         }

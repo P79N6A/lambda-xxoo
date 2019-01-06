@@ -1,7 +1,6 @@
 package com.yatop.lambda.workflow.core.utils;
 
-import com.google.common.collect.SetMultimap;
-import com.yatop.lambda.base.utils.LambdaRootModel;
+import com.google.common.collect.Multimap;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 
@@ -49,7 +48,14 @@ public class CollectionUtil {
         return vlist;
     }
 
-    public static <M extends Map<K, V>, K, V extends IRichModel> void clear(M map) {
+    public static <M extends Map<K, V>, K, V> void clear(M map) {
+        if(DataUtil.isNull(map))
+            return;
+
+        map.clear();
+    }
+
+    public static <M extends Map<K, V>, K, V extends IRichModel> void enhancedClear(M map) {
         if(DataUtil.isNull(map))
             return;
 
@@ -60,7 +66,34 @@ public class CollectionUtil {
         map.clear();
     }
 
-    public static <M extends SetMultimap<K, V>, K, V> List<V> toList(M map) {
+    public static <M extends Map<K, List<V>>, K, V> void put4ChainMap(M map, K key, V value) {
+        if(DataUtil.isNull(map) || DataUtil.isNull(key) || DataUtil.isNull(value))
+            return;
+
+        List<V> chainList = map.get(key);
+        if(DataUtil.isNotEmpty(chainList)) {
+            chainList.add(value);
+        } else {
+            chainList = new ArrayList<V>();
+            chainList.add(value);
+            map.put(key, chainList);
+        }
+    }
+
+    public static <M extends Map<K, List<V>>, K, V> List<V> toList4ChainMap(M map) {
+        if(DataUtil.isNull(map) || map.isEmpty())
+            return null;
+
+        TreeMap<K, V> mergeMap = new TreeMap<K, V>();
+        for(Map.Entry<K, List<V>> entry : map.entrySet()) {
+            for(V data : entry.getValue()) {
+                mergeMap.put(entry.getKey(), data);
+            }
+        }
+        return CollectionUtil.toList(mergeMap);
+    }
+
+    public static <M extends Multimap<K, V>, K, V> List<V> toList(M map) {
         if(DataUtil.isNull(map) || map.isEmpty())
             return null;
 

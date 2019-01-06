@@ -12,6 +12,7 @@ public class ExecutionJobContext implements IWorkContext {
     private ExecutionJob job;       //操作关联运行作业
     private WorkflowContext workflowContext;    //作业内容的工作流上下文
     private TreeMap<Long, ExecutionTask> tasks = new TreeMap<Long, ExecutionTask>();      //操作关联运行任务
+    private TreeMap<Long, ExecutionTask> tasksOrderByNodeId = new TreeMap<Long, ExecutionTask>();      //操作关联运行任务
     private String operId;
 
     public ExecutionJobContext(ExecutionJob job, WorkflowContext workflowContext, String operId) {
@@ -25,10 +26,20 @@ public class ExecutionJobContext implements IWorkContext {
     @Override
     public void clear() {
         job = null;
+        workflowContext.clear();
         workflowContext = null;
+        operId = null;
+        CollectionUtil.enhancedClear(tasks);
+        CollectionUtil.clear(tasksOrderByNodeId);
     }
 
     public void flush() {
+        if(this.taskCount() > 0) {
+            for(ExecutionTask task : this.getTasks()) {
+                task.flush(this.operId);
+            }
+        }
+
         this.job.flush(this.operId);
         this.workflowContext.getWorkflow().flush(this.operId);
     }
@@ -45,15 +56,20 @@ public class ExecutionJobContext implements IWorkContext {
         return tasks.size();
     }
 
-    public ExecutionTask getNode(Long taskId) {
+    public ExecutionTask getTask(Long taskId) {
         return tasks.get(taskId);
     }
 
-    public List<ExecutionTask> getNodes() {
+    public ExecutionTask getTaskByNodeId(Long nodeId) {
+        return tasksOrderByNodeId.get(nodeId);
+    }
+
+    public List<ExecutionTask> getTasks() {
         return CollectionUtil.toList(tasks);
     }
 
     public void putTask(ExecutionTask task) {
         CollectionUtil.put(tasks, task.getTaskId(), task);
+        CollectionUtil.put(tasksOrderByNodeId, task.getRelNodeId(), task);
     }
 }

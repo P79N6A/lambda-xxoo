@@ -18,7 +18,7 @@ public class CmptCharType extends CfCmptCharType implements IRichModel {
 
     @Override
     public void clear() {
-        matchTargetTypes.clear();
+        CollectionUtil.clear(matchTargetTypes);
         matchTargetTypes = null;
         super.clear();
     }

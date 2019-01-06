@@ -90,6 +90,14 @@ public class LinkQuery {
         if(DataUtil.isNotEmpty(inLinks))
             return inLinks;
 
+        List<WfFlowNodeLink> nodeLinks = nodeLinkMgr.queryLinkByDstPortId(dstNodePortId);
+        if(DataUtil.isEmpty(nodeLinks))
+            return null;
+
+        if(nodeLinks.size() > 2) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Query node link failed -- input-port.in-links more than two, node-port-id:%d.", dstNodePortId), "节点输入端口的链接信息错误");
+        }
+
         return doneQueyLinks(workflowContext, nodeLinkMgr.queryLinkByDstPortId(dstNodePortId));
     }
 

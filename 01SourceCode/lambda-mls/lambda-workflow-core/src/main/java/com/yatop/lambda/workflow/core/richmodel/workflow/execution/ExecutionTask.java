@@ -23,7 +23,8 @@ public class ExecutionTask extends WfExecutionTask implements IRichModel {
 
     @Override
     public void clear() {
-        taskOutputs.clear();
+        node = null;
+        CollectionUtil.enhancedClear(taskOutputs);
         super.clear();
     }
 
@@ -42,8 +43,8 @@ public class ExecutionTask extends WfExecutionTask implements IRichModel {
         return this.getTaskState() == TaskStateEnum.PREPARING.getState();
     }
 
-    public boolean isStateReady() {
-        return this.getTaskState() == TaskStateEnum.READY.getState();
+    public boolean isStateQueueing() {
+        return this.getTaskState() == TaskStateEnum.QUEUEING.getState();
     }
 
     public boolean isStateRunning() {
@@ -62,8 +63,8 @@ public class ExecutionTask extends WfExecutionTask implements IRichModel {
         return this.getTaskState() == TaskStateEnum.USER_TERMINATED.getState();
     }
 
-    public void changeState2Ready() {
-        this.changeTaskState(TaskStateEnum.READY);
+    public void changeState2Queueing() {
+        this.changeTaskState(TaskStateEnum.QUEUEING);
     }
 
     public void changeState2Running() {

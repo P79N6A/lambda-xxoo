@@ -43,13 +43,13 @@ public class Node extends WfFlowNode implements IRichModel {
     @Override
     public void clear() {
         module = null;
-        CollectionUtil.clear(parameters);
-        CollectionUtil.clear(optimizeParameters);
-        CollectionUtil.clear(inputNodePorts);
-        inputNodePortsOrderBySequence.clear();
-        CollectionUtil.clear(outputNodePorts);
-        outputNodePortsOrderBySequence.clear();
-      //CollectionUtil.clear(globalParameters);
+        CollectionUtil.enhancedClear(parameters);
+        CollectionUtil.enhancedClear(optimizeParameters);
+        CollectionUtil.enhancedClear(inputNodePorts);
+        CollectionUtil.clear(inputNodePortsOrderBySequence);
+        CollectionUtil.enhancedClear(outputNodePorts);
+        CollectionUtil.clear(outputNodePortsOrderBySequence);
+      //CollectionUtil.enhancedClear(globalParameters);
         super.clear();
     }
 

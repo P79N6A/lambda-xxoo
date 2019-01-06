@@ -163,7 +163,7 @@ public class Workflow extends WfFlow implements IRichModel {
 
     @Override
     public void clear() {
-        CollectionUtil.clear(accumulates);
+        CollectionUtil.enhancedClear(accumulates);
         super.clear();
     }
 
