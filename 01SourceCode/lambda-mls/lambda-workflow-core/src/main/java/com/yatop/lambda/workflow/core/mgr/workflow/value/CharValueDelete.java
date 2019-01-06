@@ -20,7 +20,7 @@ public class CharValueDelete {
     // CharValue <[charValue] ==>> none>
     public void deleteCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
-        if(charValue.getCmptChar().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
+        if(charValue.getCmptChar().data().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete characteristic value failed -- forbid delete non-workflow source level char-value", "不允许非工作流来源级别的特征值删除", charValue);
         }
         

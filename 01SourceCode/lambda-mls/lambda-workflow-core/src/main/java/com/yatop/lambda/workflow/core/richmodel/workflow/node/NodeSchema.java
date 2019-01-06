@@ -9,7 +9,7 @@ import com.yatop.lambda.core.enums.SystemParameterEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.SystemParameterUtil;
-import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.table.field.FieldAttribute;
 import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonObject;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
+public class NodeSchema extends RichModel<WfFlowNodeSchema> {
 
     private CmptChar cmptChar;
     private JsonObject jsonObject;  //关联JSON对象
@@ -32,19 +32,18 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     }
 
     public NodeSchema(WfFlowNodeSchema data, CmptChar cmptChar, JsonObject jsonObject) {
-        super.copyProperties(data);
+        super(data);
         this.cmptChar = cmptChar;
         this.jsonObject = jsonObject;
         this.fieldAttributes = null;
         this.dirtyFieldAttributes = false;
-        this.clearColoured();
     }
 
     @Override
     public void clear() {
         DataUtil.clear(jsonObject);
         jsonObject = null;
-        CollectionUtil.clear(fieldAttributes);
+        CollectionUtil.enhancedClear(fieldAttributes);
         fieldAttributes = null;
         super.clear();
     }
@@ -55,7 +54,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
 
     private JsonObject getJsonObject() {
         if(DataUtil.isNull(jsonObject)) {
-            jsonObject = SchemaHelper.queryFieldAttributes(this.getObjectId());
+            jsonObject = SchemaHelper.queryFieldAttributes(this.data().getObjectId());
             if(DataUtil.isNull(jsonObject)){
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- json object data missing.", "节点数据输出端口schema信息错误", this);
             }
@@ -64,13 +63,13 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     }
 
     public List<FieldAttribute> getFieldAttributes() {
-        if(this.getSchemaState() != SchemaStateEnum.NORMAL.getState()) {
+        if(this.data().getSchemaState() != SchemaStateEnum.NORMAL.getState()) {
             return null;
         }
 
         if(DataUtil.isEmpty(fieldAttributes)) {
-            if (getJsonObject().getObjectState() == JsonObjectStateEnum.NORMAL.getState()) {
-                fieldAttributes = JSONArray.parseArray(getJsonObject().getObjectData(), FieldAttribute.class);
+            if (getJsonObject().data().getObjectState() == JsonObjectStateEnum.NORMAL.getState()) {
+                fieldAttributes = JSONArray.parseArray(getJsonObject().data().getObjectData(), FieldAttribute.class);
             }
             if(DataUtil.isEmpty(fieldAttributes)){
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- get empty field attribute list.", "节点数据输出端口schema信息错误", this);
@@ -81,7 +80,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
 
     private void clearFieldAttributes(SchemaStateEnum schemaStateEnum) {
         if(this.isStateNormal()) {
-            CollectionUtil.clear(this.fieldAttributes);
+            CollectionUtil.enhancedClear(this.fieldAttributes);
             this.fieldAttributes = null;
             this.dirtyFieldAttributes = false;  //schema非normal状态不更新JsonObject，仅更新schema状态
         }
@@ -99,7 +98,7 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
                 this.changeState2OverloadInterrupt();
             }
             if(!CollectionUtil.equals(this.getFieldAttributes(), fieldAttributes)) {
-                CollectionUtil.clear(this.fieldAttributes);
+                CollectionUtil.enhancedClear(this.fieldAttributes);
                 this.fieldAttributes = fieldAttributes;
                 this.dirtyFieldAttributes = true;
             }
@@ -114,19 +113,19 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     }
 
     public boolean isStateEmpty() {
-        return this.getSchemaState() == SchemaStateEnum.EMPTY.getState();
+        return this.data().getSchemaState() == SchemaStateEnum.EMPTY.getState();
     }
 
     public boolean isStateNormal() {
-        return this.getSchemaState() == SchemaStateEnum.NORMAL.getState();
+        return this.data().getSchemaState() == SchemaStateEnum.NORMAL.getState();
     }
 
     public boolean isStateNotSupport() {
-        return this.getSchemaState() == SchemaStateEnum.NOT_SUPPORT.getState();
+        return this.data().getSchemaState() == SchemaStateEnum.NOT_SUPPORT.getState();
     }
 
     public boolean isStateOverloadInterrupt() {
-        return this.getSchemaState() == SchemaStateEnum.OVERLOAD_INTERRUPT.getState();
+        return this.data().getSchemaState() == SchemaStateEnum.OVERLOAD_INTERRUPT.getState();
     }
 
     public void changeState2Empty() {
@@ -142,15 +141,15 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     }
 
     private void changeSchemaState(SchemaStateEnum stateEnum) {
-        if(this.getSchemaState() == stateEnum.getState())
+        if(this.data().getSchemaState() == stateEnum.getState())
             return;
 
-        this.setSchemaState(stateEnum.getState());
+        this.data().setSchemaState(stateEnum.getState());
     }
 
     protected void flush(String operId) {
         if(dirtyFieldAttributes) {
-            getJsonObject().setObjectData(DataUtil.isNotEmpty(fieldAttributes) ? JSONArray.toJSONString(fieldAttributes) : null);
+            getJsonObject().data().setObjectData(DataUtil.isNotEmpty(fieldAttributes) ? JSONArray.toJSONString(fieldAttributes) : null);
             SchemaHelper.updateFieldAttributes(getJsonObject(), operId);
             dirtyFieldAttributes = false;
         }
@@ -161,10 +160,10 @@ public class NodeSchema extends WfFlowNodeSchema implements IRichModel {
     }
 
     public void deleteFieldAttributes(String operId) {
-        SchemaHelper.deleteFieldAttributes(this.getObjectId(), operId);
+        SchemaHelper.deleteFieldAttributes(this.data().getObjectId(), operId);
     }
 
     public void recoverFieldAttributes(String operId) {
-        SchemaHelper.recoverFieldAttributes(this.getObjectId(), operId);
+        SchemaHelper.recoverFieldAttributes(this.data().getObjectId(), operId);
     }
 }

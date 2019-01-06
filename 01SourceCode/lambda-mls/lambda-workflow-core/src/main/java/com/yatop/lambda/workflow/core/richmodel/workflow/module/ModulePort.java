@@ -1,19 +1,18 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.module;
 
 import com.yatop.lambda.base.model.WfModulePort;
-import com.yatop.lambda.workflow.core.framework.chartype.clazz.data.CharTypeDataGeneric;
-import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.table.CharTypeTableGeneric;
+import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 
-public class ModulePort extends WfModulePort implements IRichModel {
+public class ModulePort extends RichModel<WfModulePort> {
 
     private CmptChar cmptChar;  //关联计算组件特征
 
     public ModulePort(WfModulePort data, CmptChar cmptChar) {
-        super.copyProperties(data);
+        super(data);
         this.cmptChar = cmptChar;
-        this.clearColoured();
     }
 
     @Override
@@ -27,6 +26,6 @@ public class ModulePort extends WfModulePort implements IRichModel {
     }
 
     public boolean isDataPort() {
-        return ClazzHelperUtil.getCharTypeClazzBean(this.getCmptChar().getType()) instanceof CharTypeDataGeneric;
+        return ClazzHelperUtil.getCharTypeClazzBean(this.getCmptChar().getType()) instanceof CharTypeTableGeneric;
     }
 }

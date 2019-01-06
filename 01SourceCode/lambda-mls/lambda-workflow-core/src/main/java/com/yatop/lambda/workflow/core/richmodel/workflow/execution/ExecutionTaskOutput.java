@@ -1,19 +1,17 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.execution;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.base.model.WfExecutionTaskOutput;
 import com.yatop.lambda.core.enums.OutputStateEnum;
-import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 
-public class ExecutionTaskOutput extends WfExecutionTaskOutput implements IRichModel {
+public class ExecutionTaskOutput extends RichModel<WfExecutionTaskOutput> {
 
     private CmptChar cmptChar;
 
     public ExecutionTaskOutput(WfExecutionTaskOutput data, CmptChar cmptChar) {
-        super.copyProperties(data);
+        super(data);
         this.cmptChar = cmptChar;
-        this.clearColoured();
     }
 
     protected void flush(String operId) {
@@ -33,10 +31,10 @@ public class ExecutionTaskOutput extends WfExecutionTaskOutput implements IRichM
     }
 
     private void changeOutputState(OutputStateEnum stateEnum) {
-        if(this.getOutputState() == stateEnum.getState())
+        if(this.data().getOutputState() == stateEnum.getState())
             return;
 
-        this.setOutputState(stateEnum.getState());
+        this.data().setOutputState(stateEnum.getState());
     }
 
     public CmptChar getCmptChar() {

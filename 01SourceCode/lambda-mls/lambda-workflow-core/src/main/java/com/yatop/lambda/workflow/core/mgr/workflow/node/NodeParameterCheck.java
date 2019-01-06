@@ -53,25 +53,25 @@ public class NodeParameterCheck {
             }
 
             for(NodeParameter parameter : node.getParameters()) {
-                if(DataUtil.isEmpty(parameter.getCharValue()) && parameter.getCmptChar().getIsRequired() == IsRequiredEnum.YES.getMark()) {
+                if(DataUtil.isEmpty(parameter.data().getCharValue()) && parameter.getCmptChar().data().getIsRequired() == IsRequiredEnum.YES.getMark()) {
                     missingCounter++;
 
-                    if(!CollectionUtil.containsKey(warningMsgs, parameter.getCharId()))
+                    if(!CollectionUtil.containsKey(warningMsgs, parameter.data().getCharId()))
                         parameter.changeOccuredWarning("节点参数值缺失");
                 } else {
-                    if(!CollectionUtil.containsKey(warningMsgs, parameter.getCharId()))
+                    if(!CollectionUtil.containsKey(warningMsgs, parameter.data().getCharId()))
                         parameter.clearOccuredWarning();
                 }
             }
 
             for(NodeParameter parameter : node.getOptimizeParameters()) {
-                if(DataUtil.isEmpty(parameter.getCharValue()) && parameter.getCmptChar().getIsRequired() == IsRequiredEnum.YES.getMark()) {
+                if(DataUtil.isEmpty(parameter.data().getCharValue()) && parameter.getCmptChar().data().getIsRequired() == IsRequiredEnum.YES.getMark()) {
                     missingCounter++;
 
-                    if(!CollectionUtil.containsKey(warningMsgs, parameter.getCharId()))
+                    if(!CollectionUtil.containsKey(warningMsgs, parameter.data().getCharId()))
                         parameter.changeOccuredWarning("节点执行调优参数值缺失");
                 } else {
-                    if(!CollectionUtil.containsKey(warningMsgs, parameter.getCharId()))
+                    if(!CollectionUtil.containsKey(warningMsgs, parameter.data().getCharId()))
                         parameter.clearOccuredWarning();
                 }
             }

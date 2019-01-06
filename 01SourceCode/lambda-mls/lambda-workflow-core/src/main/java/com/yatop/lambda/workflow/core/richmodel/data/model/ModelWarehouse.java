@@ -1,17 +1,12 @@
 package com.yatop.lambda.workflow.core.richmodel.data.model;
 
 import com.yatop.lambda.base.model.MwModelWarehouse;
-import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.RichModel;
 
-public class ModelWarehouse extends MwModelWarehouse implements IRichModel {
+public class ModelWarehouse extends RichModel<MwModelWarehouse> {
 
     public ModelWarehouse(MwModelWarehouse data) {
-        super.copyProperties(data);
+        super(data);
         this.clearColoured();
-    }
-
-    @Override
-    public void clear() {
-        super.clear();
     }
 }

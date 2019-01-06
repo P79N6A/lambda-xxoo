@@ -38,7 +38,7 @@ public class SchemaHelper {
     }
 
     static public void updateFieldAttributes(JsonObject jsonObject, String operId) {
-        JSON_OBJECT_MGR.updateJsonObject(jsonObject, operId);
+        JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), operId);
         jsonObject.clearColoured();
     }
 
@@ -51,7 +51,7 @@ public class SchemaHelper {
     }
 
     static public void updateNodeSchema(NodeSchema schema, String operId) {
-        NODE_SCHEMA_MGR.updateSchema(schema, operId);
+        NODE_SCHEMA_MGR.updateSchema(schema.data(), operId);
         schema.clearColoured();
     }
 }

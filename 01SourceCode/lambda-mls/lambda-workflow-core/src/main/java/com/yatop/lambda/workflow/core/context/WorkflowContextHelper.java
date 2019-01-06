@@ -30,26 +30,7 @@ public class WorkflowContextHelper {
     void setNodePortQuery(NodePortQuery nodePortQuery) {
         WorkflowContextHelper.NODE_PORT_QUERY = nodePortQuery;
     }
-
-
-/*    //inputNodePortId, node
-    public TreeMap<Long, List<Node>> getUpstreamNodes(WorkflowContext workflowContext, Node node) {
-        //loadUpstreamNodes(workflowContext, node);
-
-        if(node.inputPortCount() > 0) {
-            TreeMap<Long, Node> upstreamNodes = new TreeMap<Long, Node>();
-            for(NodePortInput inputNodePort : node.getInputNodePorts()) {
-                NodeLink inLink = workflowContext.getInLinks(inputNodePort.getNodePortId());
-                CollectionUtil.put(upstreamNodes, inputNodePort.getNodePortId(), );
-            }
-        }
-        return null;
-    }
-
-    //outputNodePortId, node
-    public TreeMap<Long, Node> getDownstreamNodes(Node node) {
-
-    }*/
+    
 
     protected static void loadAllNodes(WorkflowContext workflowContext) {
         if(!workflowContext.isLazyLoadMode()) {
@@ -68,7 +49,7 @@ public class WorkflowContextHelper {
             //List<NodeLink> nodeLinks = WorkflowContextHelper.LINK_QUERY.queryInLinks(workflowContext, node);
             if (DataUtil.isNotEmpty(nodeLinks)) {
                 for (NodeLink nodeLink : nodeLinks) {
-                    loadOneNode(workflowContext, nodeLink.getSrcNodeId());
+                    loadOneNode(workflowContext, nodeLink.data().getSrcNodeId());
                 }
             }
         }
@@ -79,7 +60,7 @@ public class WorkflowContextHelper {
             //List<NodeLink> nodeLinks = WorkflowContextHelper.LINK_QUERY.queryOutLinks(workflowContext, node);
             if (DataUtil.isNotEmpty(nodeLinks)) {
                 for (NodeLink nodeLink : nodeLinks) {
-                    loadOneNode(workflowContext, nodeLink.getDstNodeId());
+                    loadOneNode(workflowContext, nodeLink.data().getDstNodeId());
                 }
             }
         }
@@ -136,14 +117,14 @@ public class WorkflowContextHelper {
 /*    protected static void loadUpstreamNonWebPort(WorkflowContext workflowContext, Long dstPortId) {
         if(workflowContext.isLazyLoadMode()) {
             NodeLink nodeLink = workflowContext.fetchNonWebInLink(dstPortId);
-            WorkflowContextHelper.NODE_PORT_QUERY.queryOutputNodePort(workflowContext, nodeLink.getSrcPortId());
+            WorkflowContextHelper.NODE_PORT_QUERY.queryOutputNodePort(workflowContext, nodeLink.data().getSrcPortId());
         }
     }
 
     protected static void loadUpstreamWebPort(WorkflowContext workflowContext, Long dstPortId) {
         if(workflowContext.isLazyLoadMode()) {
             NodeLink nodeLink = workflowContext.fetchWebInLink(dstPortId);
-            WorkflowContextHelper.NODE_PORT_QUERY.queryOutputNodePort(workflowContext, nodeLink.getSrcPortId());
+            WorkflowContextHelper.NODE_PORT_QUERY.queryOutputNodePort(workflowContext, nodeLink.data().getSrcPortId());
         }
     }*/
 
@@ -152,7 +133,7 @@ public class WorkflowContextHelper {
             List<NodeLink> nodeLinks = workflowContext.fetchInLinks(dstPortId);
             if(DataUtil.isNotEmpty(nodeLinks)) {
                 for(NodeLink nodeLink : nodeLinks) {
-                    WorkflowContextHelper.loadOutputPort(workflowContext, nodeLink.getSrcPortId());
+                    WorkflowContextHelper.loadOutputPort(workflowContext, nodeLink.data().getSrcPortId());
                 }
             }
         }
@@ -163,7 +144,7 @@ public class WorkflowContextHelper {
             List<NodeLink> nodeLinks = workflowContext.getOutLinks(srcPortId);
             if(DataUtil.isNotEmpty(nodeLinks)) {
                 for(NodeLink nodeLink : nodeLinks) {
-                    WorkflowContextHelper.loadInputPort(workflowContext, nodeLink.getDstPortId());
+                    WorkflowContextHelper.loadInputPort(workflowContext, nodeLink.data().getDstPortId());
                 }
             }
         }

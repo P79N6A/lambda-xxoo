@@ -49,14 +49,13 @@ public class CollectionUtil {
     }
 
     public static <M extends Map<K, V>, K, V> void clear(M map) {
-        if(DataUtil.isNull(map))
+        if(DataUtil.isNull(map) || map.isEmpty())
             return;
-
         map.clear();
     }
 
     public static <M extends Map<K, V>, K, V extends IRichModel> void enhancedClear(M map) {
-        if(DataUtil.isNull(map))
+        if(DataUtil.isNull(map) || map.isEmpty())
             return;
 
         for(Map.Entry<K, V> entry : map.entrySet()) {
@@ -105,15 +104,10 @@ public class CollectionUtil {
         return vlist;
     }
 
-    public static <L extends List<V>, V extends IRichModel> void clear(L list) {
-        if(DataUtil.isNull(list))
+    public static <M extends Multimap<K, V>, K, V> void clear(M map) {
+        if(DataUtil.isNull(map) || map.isEmpty())
             return;
-
-        for(IRichModel model : list) {
-            model.clear();
-        }
-
-        list.clear();
+        map.clear();
     }
 
     public static <S extends Set<K>, K> boolean contains(S set, K key) {
@@ -137,13 +131,6 @@ public class CollectionUtil {
         set.remove(key);
     }
 
-    public static <L extends List<V>, V> void add(L list, V value) {
-        if(DataUtil.isNull(list) || DataUtil.isNull(value))
-            return;
-
-        list.add(value);
-    }
-
     public static <S extends Set<K>, K> List<K> toList(S set) {
         if(DataUtil.isNull(set) || set.isEmpty())
             return null;
@@ -156,8 +143,32 @@ public class CollectionUtil {
         return vlist;
     }
 
-    public static <L extends List<V>, V extends Object> boolean equals(L lhs, L rhs) {
-        if(DataUtil.isNull(lhs) || DataUtil.isNull(rhs))
+    public static <L extends List<V>, V> void add(L list, V value) {
+        if(DataUtil.isNull(list) || DataUtil.isNull(value))
+            return;
+
+        list.add(value);
+    }
+
+    public static <L extends List<V>, V> void clear(L list) {
+        if(DataUtil.isEmpty(list))
+            return;
+        list.clear();
+    }
+
+    public static <L extends List<V>, V extends IRichModel> void enhancedClear(L list) {
+        if(DataUtil.isEmpty(list))
+            return;
+
+        for(IRichModel model : list) {
+            model.clear();
+        }
+
+        list.clear();
+    }
+
+    public static <L extends List<V>, V> boolean equals(L lhs, L rhs) {
+        if(DataUtil.isEmpty(lhs) || DataUtil.isEmpty(rhs))
             return false;
 
         return lhs.equals(rhs);

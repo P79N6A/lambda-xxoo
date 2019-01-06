@@ -3,7 +3,6 @@ package com.yatop.lambda.workflow.core.mgr.workflow.node.link;
 import com.yatop.lambda.base.model.WfFlowNodeLink;
 import com.yatop.lambda.core.enums.IsWebLinkEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
-import com.yatop.lambda.core.enums.WorkflowStateEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.node.NodeLinkMgr;
 import com.yatop.lambda.core.utils.DataUtil;
@@ -35,13 +34,16 @@ public class LinkCreate {
         }
 
         WfFlowNodeLink nodeLink = new WfFlowNodeLink();
-        nodeLink.setLinkName(String.format("From %d.%d to %d.%d", srcNode.getNodeId(), srcNodePort.getNodePortId(), dstNode.getNodeId(), dstNodePort.getNodePortId()));
-        nodeLink.setOwnerFlowId(workflowContext.getWorkflow().getFlowId());
+        nodeLink.setLinkName(String.format("From %d.%d to %d.%d", srcNode.data().getNodeId(),
+                                                                  srcNodePort.data().getNodePortId(),
+                                                                  dstNode.data().getNodeId(),
+                                                                  dstNodePort.data().getNodePortId()));
+        nodeLink.setOwnerFlowId(workflowContext.getWorkflow().data().getFlowId());
         nodeLink.setIsWebLink(srcNode.getComponent().isWebComponent() ? IsWebLinkEnum.YES.getMark() : IsWebLinkEnum.NO.getMark());
-        nodeLink.setSrcNodeId(srcNode.getNodeId());
-        nodeLink.setSrcPortId(srcNodePort.getNodePortId());
-        nodeLink.setDstNodeId(dstNode.getNodeId());
-        nodeLink.setDstPortId(dstNodePort.getNodePortId());
+        nodeLink.setSrcNodeId(srcNode.data().getNodeId());
+        nodeLink.setSrcPortId(srcNodePort.data().getNodePortId());
+        nodeLink.setDstNodeId(dstNode.data().getNodeId());
+        nodeLink.setDstPortId(dstNodePort.data().getNodePortId());
         nodeLink = nodeLinkMgr.insertLink(nodeLink, workflowContext.getOperId());
         //nodeLink.copyProperties(nodeLinkMgr.queryLink(nodeLink.getLinkId()));
         NodeLink richNodeLink = new NodeLink(nodeLink);

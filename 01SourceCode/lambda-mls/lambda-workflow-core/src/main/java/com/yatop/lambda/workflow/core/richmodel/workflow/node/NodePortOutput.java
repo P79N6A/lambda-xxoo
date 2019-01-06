@@ -2,21 +2,20 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNodePort;
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
 
-public class NodePortOutput extends WfFlowNodePort implements IRichModel {
+public class NodePortOutput extends RichModel<WfFlowNodePort> {
 
     private ModulePort modulePort;
     private NodeSchema schema;
     private boolean analyzed;
 
     public NodePortOutput(WfFlowNodePort data, ModulePort modulePort) {
-        super.copyProperties(data);
+        super(data);
         this.modulePort = modulePort;
         this.analyzed = false;
-        this.clearColoured();
     }
 
     @Override

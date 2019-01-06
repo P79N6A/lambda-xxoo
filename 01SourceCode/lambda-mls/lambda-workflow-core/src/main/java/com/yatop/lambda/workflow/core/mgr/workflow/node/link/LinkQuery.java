@@ -36,7 +36,7 @@ public class LinkQuery {
     }
 
     public void queryLinks(WorkflowContext workflowContext) {
-        List<WfFlowNodeLink> nodeLinks = nodeLinkMgr.queryLink(workflowContext.getWorkflow().getFlowId(), null);
+        List<WfFlowNodeLink> nodeLinks = nodeLinkMgr.queryLink(workflowContext.getWorkflow().data().getFlowId(), null);
         if(DataUtil.isEmpty(nodeLinks)) {
             return;
         }
@@ -81,7 +81,7 @@ public class LinkQuery {
         if(srcNode.outputPortCount() == 0)
             return null;
 
-        return doneQueyLinks(workflowContext, nodeLinkMgr.queryLinkBySrcNodeId(srcNode.getNodeId()));
+        return doneQueyLinks(workflowContext, nodeLinkMgr.queryLinkBySrcNodeId(srcNode.data().getNodeId()));
     }
 
     public List<NodeLink> queryInLinks(WorkflowContext workflowContext, Long dstNodePortId) {
@@ -105,6 +105,6 @@ public class LinkQuery {
         if(dstNode.inputPortCount() == 0)
             return null;
 
-        return doneQueyLinks(workflowContext, nodeLinkMgr.queryLinkByDstNodeId(dstNode.getNodeId()));
+        return doneQueyLinks(workflowContext, nodeLinkMgr.queryLinkByDstNodeId(dstNode.data().getNodeId()));
     }
 }

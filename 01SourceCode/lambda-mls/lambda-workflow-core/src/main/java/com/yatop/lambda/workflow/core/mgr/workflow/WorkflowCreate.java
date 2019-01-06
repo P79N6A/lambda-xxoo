@@ -18,19 +18,19 @@ public class WorkflowCreate {
     public WorkflowContext createWorkflow(Experiment experiment, String operId) {
 
         WfFlow flow = new WfFlow();
-        flow.setFlowId(experiment.getExperimentId());
-        flow.setFlowName(experiment.getExperimentId() + " - WorkFLow");
-        flow.setOwnerProjectId(experiment.getOwnerProjectId());
+        flow.setFlowId(experiment.data().getExperimentId());
+        flow.setFlowName(experiment.data().getExperimentId() + " - WorkFLow");
+        flow.setOwnerProjectId(experiment.data().getOwnerProjectId());
         flow = workflowMgr.insertWorkflow(flow, operId);
 
         Workflow richWorkflow = new Workflow(flow);
-        richWorkflow.setFlowDfsDir(WorkDirectoryUtil.getWorkFLowDfsDirectory(experiment.getOwnerProjectId(), richWorkflow.getFlowId()));
-        richWorkflow.setFlowLocalDir(WorkDirectoryUtil.getWorkFLowLocalDirectory(experiment.getOwnerProjectId(), richWorkflow.getFlowId()));
-        workflowMgr.updateWorkflow(richWorkflow, operId);
+        richWorkflow.data().setFlowDfsDir(WorkDirectoryUtil.getWorkFLowDfsDirectory(experiment.data().getOwnerProjectId(), richWorkflow.data().getFlowId()));
+        richWorkflow.data().setFlowLocalDir(WorkDirectoryUtil.getWorkFLowLocalDirectory(experiment.data().getOwnerProjectId(), richWorkflow.data().getFlowId()));
+        workflowMgr.updateWorkflow(richWorkflow.data(), operId);
 
-        //richWorkflow.copyProperties(workflowMgr.queryWorkflow(richWorkflow.getFlowId()));
+        //richWorkflow.copyProperties(workflowMgr.queryWorkflow(richWorkflow.data().getFlowId()));
         richWorkflow.changeState2Draft();
-        return WorkflowContext.BuildWorkflowContext(experiment.getProject(), richWorkflow, operId);
+        return WorkflowContext.BuildWorkflowContext4Create(experiment.getProject(), richWorkflow, operId);
     }
 
     public WorkflowContext createWorkflow(Experiment experiment, WorkflowContext otherWorkflowContext, String operId) {

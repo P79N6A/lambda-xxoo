@@ -43,13 +43,6 @@ public class ExecutionTaskContext implements IWorkContext {
         warningMsg = null;
     }
 
-/*    public void flush() {
-        this.job.flush(workflowContext.getOperId());
-        this.task.flush(workflowContext.getOperId());
-        this.node.flush(true, true, workflowContext.getOperId());
-        this.workflowContext.getWorkflow().flush(workflowContext.getOperId());
-    }*/
-
     public ExecutionJob getJob() {
         return executionJobContext.getJob();
     }
@@ -91,17 +84,17 @@ public class ExecutionTaskContext implements IWorkContext {
     }
 
     public CharValue getCharValue(CmptChar cmptChar) {
-        switch (SpecTypeEnum.valueOf(cmptChar.getSpecType())) {
+        switch (SpecTypeEnum.valueOf(cmptChar.data().getSpecType())) {
             case INPUT:
-                return inputCharValues.get(cmptChar.getCharId());
+                return inputCharValues.get(cmptChar.data().getCharId());
             case OUTPUT:
-                return outputCharValues.get(cmptChar.getCharId());
+                return outputCharValues.get(cmptChar.data().getCharId());
             case EXECUTION:
-                return execCharValues.get(cmptChar.getCharId());
+                return execCharValues.get(cmptChar.data().getCharId());
             case OPTIMIZE_EXECUTION:
-                return optimizeCharValues.get(cmptChar.getCharId());
+                return optimizeCharValues.get(cmptChar.data().getCharId());
             case PARAMETER:
-                return parameterCharValues.get(cmptChar.getCharId());
+                return parameterCharValues.get(cmptChar.data().getCharId());
         }
         return null;
     }
@@ -123,17 +116,17 @@ public class ExecutionTaskContext implements IWorkContext {
     }
 
     public void putCharValue(CmptChar cmptChar, CharValue charValue) {
-        switch (SpecTypeEnum.valueOf(cmptChar.getSpecType())) {
+        switch (SpecTypeEnum.valueOf(cmptChar.data().getSpecType())) {
             case INPUT:
-                CollectionUtil.put(inputCharValues, cmptChar.getCharId(), charValue);
+                CollectionUtil.put(inputCharValues, cmptChar.data().getCharId(), charValue);
             case OUTPUT:
-                CollectionUtil.put(outputCharValues, cmptChar.getCharId(), charValue);
+                CollectionUtil.put(outputCharValues, cmptChar.data().getCharId(), charValue);
             case EXECUTION:
-                CollectionUtil.put(execCharValues, cmptChar.getCharId(), charValue);
+                CollectionUtil.put(execCharValues, cmptChar.data().getCharId(), charValue);
             case OPTIMIZE_EXECUTION:
-                CollectionUtil.put(optimizeCharValues, cmptChar.getCharId(), charValue);
+                CollectionUtil.put(optimizeCharValues, cmptChar.data().getCharId(), charValue);
             case PARAMETER:
-                CollectionUtil.put(parameterCharValues, cmptChar.getCharId(), charValue);
+                CollectionUtil.put(parameterCharValues, cmptChar.data().getCharId(), charValue);
         }
     }
 }

@@ -4,7 +4,7 @@ import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.core.enums.NodeStateEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeHelper;
-import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-public class Node extends WfFlowNode implements IRichModel {
+public class Node extends RichModel<WfFlowNode> {
 
     private Module module;
     private TreeMap<String, NodeParameter> parameters = new TreeMap<String, NodeParameter>();   //组件参数，key=charId
@@ -33,11 +33,10 @@ public class Node extends WfFlowNode implements IRichModel {
     private boolean analyzed;
 
     public Node(WfFlowNode data, Module module) {
-        super.copyProperties(data);
+        super(data);
         this.module = module;
         this.deleted = false;
         this.analyzed = false;
-        this.clearColoured();
     }
 
     @Override
@@ -71,33 +70,33 @@ public class Node extends WfFlowNode implements IRichModel {
                     outputPort.flush(operId);
                 }
             }
-            if (this.isColoured() && this.getNodeId() > 0)
+            if (this.isColoured() && this.data().getNodeId() > 0)
                 NodeHelper.updateNode(this, operId);
         }
     }
 
     public boolean isStateNotReady() {
-        return this.getNodeState() == NodeStateEnum.NOT_READY.getState();
+        return this.data().getNodeState() == NodeStateEnum.NOT_READY.getState();
     }
 
     public boolean isStateReady() {
-        return this.getNodeState() == NodeStateEnum.READY.getState();
+        return this.data().getNodeState() == NodeStateEnum.READY.getState();
     }
 
     public boolean isStatePreparing() {
-        return this.getNodeState() == NodeStateEnum.PREPARING.getState();
+        return this.data().getNodeState() == NodeStateEnum.PREPARING.getState();
     }
 
     public boolean isStateRunning() {
-        return this.getNodeState() == NodeStateEnum.RUNNING.getState();
+        return this.data().getNodeState() == NodeStateEnum.RUNNING.getState();
     }
 
     public boolean isStateSuccess() {
-        return this.getNodeState() == NodeStateEnum.SUCCESS.getState();
+        return this.data().getNodeState() == NodeStateEnum.SUCCESS.getState();
     }
 
     public boolean isStateError() {
-        return this.getNodeState() == NodeStateEnum.ERROR.getState();
+        return this.data().getNodeState() == NodeStateEnum.ERROR.getState();
     }
 
     public void changeState2NotReady() {
@@ -105,7 +104,7 @@ public class Node extends WfFlowNode implements IRichModel {
     }
 
     public void downgradeState2Ready() {
-        if(this.getNodeState() <= NodeStateEnum.READY.getState())
+        if(this.data().getNodeState() <= NodeStateEnum.READY.getState())
             return;
 
         this.changeNodeState(NodeStateEnum.READY);
@@ -133,10 +132,10 @@ public class Node extends WfFlowNode implements IRichModel {
     }
 
     private void changeNodeState(NodeStateEnum stateEnum) {
-        if(this.getNodeState() == stateEnum.getState())
+        if(this.data().getNodeState() == stateEnum.getState())
             return;
 
-        this.setNodeState(stateEnum.getState());
+        this.data().setNodeState(stateEnum.getState());
     }
 
     public Module getModule() {
@@ -172,8 +171,8 @@ public class Node extends WfFlowNode implements IRichModel {
     }
 
     public void putParameter(NodeParameter parameter) {
-        CollectionUtil.put(parameters, parameter.getCharId(), parameter);
-        CollectionUtil.put(parametersOrderByCharCode, parameter.getCmptChar().getCharCode(), parameter);
+        CollectionUtil.put(parameters, parameter.data().getCharId(), parameter);
+        CollectionUtil.put(parametersOrderByCharCode, parameter.getCmptChar().data().getCharCode(), parameter);
     }
 
     public int optimizeParameterCount() {
@@ -193,8 +192,8 @@ public class Node extends WfFlowNode implements IRichModel {
     }
 
     public void putOptimizeParameter(NodeParameter parameter) {
-        CollectionUtil.put(optimizeParameters, parameter.getCharId(), parameter);
-        CollectionUtil.put(optimizeParametersOrderByCharCode, parameter.getCmptChar().getCharCode(), parameter);
+        CollectionUtil.put(optimizeParameters, parameter.data().getCharId(), parameter);
+        CollectionUtil.put(optimizeParametersOrderByCharCode, parameter.getCmptChar().data().getCharCode(), parameter);
     }
 
     public NodePortInput getInputNodePort(Long nodePortId) {
@@ -214,10 +213,10 @@ public class Node extends WfFlowNode implements IRichModel {
     }
 
     public void putInputNodePort(NodePortInput inputNodePort) {
-        CollectionUtil.put(inputNodePorts, inputNodePort.getNodePortId(), inputNodePort);
-        CollectionUtil.put(inputNodePortsOrderByCharId, inputNodePort.getRefCharId(), inputNodePort);
-        CollectionUtil.put(inputNodePortsOrderByCharCode, inputNodePort.getCmptChar().getCharCode(), inputNodePort);
-        CollectionUtil.put(inputNodePortsOrderBySequence, inputNodePort.getModulePort().getSequence(), inputNodePort);
+        CollectionUtil.put(inputNodePorts, inputNodePort.data().getNodePortId(), inputNodePort);
+        CollectionUtil.put(inputNodePortsOrderByCharId, inputNodePort.data().getRefCharId(), inputNodePort);
+        CollectionUtil.put(inputNodePortsOrderByCharCode, inputNodePort.getCmptChar().data().getCharCode(), inputNodePort);
+        CollectionUtil.put(inputNodePortsOrderBySequence, inputNodePort.getModulePort().data().getSequence(), inputNodePort);
     }
 
     public NodePortOutput getOutputNodePort(Long nodePortId) {
@@ -260,10 +259,10 @@ public class Node extends WfFlowNode implements IRichModel {
     }
 
     public void putOutputNodePort(NodePortOutput outputNodePort) {
-        CollectionUtil.put(outputNodePorts, outputNodePort.getNodePortId(), outputNodePort);
-        CollectionUtil.put(outputNodePortsOrderByCharId, outputNodePort.getRefCharId(), outputNodePort);
-        CollectionUtil.put(outputNodePortsOrderByCharCode, outputNodePort.getCmptChar().getCharCode(), outputNodePort);
-        CollectionUtil.put(outputNodePortsOrderBySequence, outputNodePort.getModulePort().getSequence(), outputNodePort);
+        CollectionUtil.put(outputNodePorts, outputNodePort.data().getNodePortId(), outputNodePort);
+        CollectionUtil.put(outputNodePortsOrderByCharId, outputNodePort.data().getRefCharId(), outputNodePort);
+        CollectionUtil.put(outputNodePortsOrderByCharCode, outputNodePort.getCmptChar().data().getCharCode(), outputNodePort);
+        CollectionUtil.put(outputNodePortsOrderBySequence, outputNodePort.getModulePort().data().getSequence(), outputNodePort);
     }
 /*
 
@@ -280,7 +279,7 @@ public class Node extends WfFlowNode implements IRichModel {
     }
 
     public void putGlobalParameter(GlobalParameter globalParameter) {
-        CollectionUtil.put(globalParameters, globalParameter.getRelCharId(), globalParameter);
+        CollectionUtil.put(globalParameters, globalParameter.data().getRelCharId(), globalParameter);
     }
 
     public void removeGlobalParameter(String charId) {
@@ -319,13 +318,13 @@ public class Node extends WfFlowNode implements IRichModel {
     }
 
     public void changeOccuredWarning(String warningMsg) {
-        this.setWarningMsg(warningMsg);
+        this.data().setWarningMsg(warningMsg);
         this.changeState2NotReady();
     }
 
     public void clearOccuredWarning() {
-        if(DataUtil.isNotEmpty(this.getWarningMsg()))
-            this.setWarningMsg(null);
+        if(DataUtil.isNotEmpty(this.data().getWarningMsg()))
+            this.data().setWarningMsg(null);
     }
 
     public int inputDataPortCount() {

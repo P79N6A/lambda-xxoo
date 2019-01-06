@@ -3,12 +3,12 @@ package com.yatop.lambda.workflow.core.richmodel.data.table;
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.base.model.DwDataTable;
 import com.yatop.lambda.workflow.core.codec.TaskContextCodec;
-import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.RichModel;
 
-public class DataTable extends DwDataTable implements IRichModel {
+public class DataTable extends RichModel<DwDataTable> {
 
     public DataTable(DwDataTable data) {
-        super.copyProperties(data);
+        super(data);
         this.clearColoured();
     }
 
@@ -17,10 +17,5 @@ public class DataTable extends DwDataTable implements IRichModel {
         JSONObject jsonObject = super.toJSON();
         jsonObject.put(TaskContextCodec.JSON_CLASS_NAME_KEY, DataTable.class.getName());
         return jsonObject;
-    }
-
-    @Override
-    public void clear() {
-        super.clear();
     }
 }

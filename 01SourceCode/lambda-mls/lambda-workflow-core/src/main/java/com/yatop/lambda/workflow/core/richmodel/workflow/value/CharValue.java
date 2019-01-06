@@ -45,10 +45,12 @@ public class CharValue extends LambdaRootModel implements IRichModel {
 
     @Override
     public void clear() {
+        cmptChar = null;
         charValue = null;
         isDuplicated = null;
         inText = null;
         outText = null;
+        inObject = null;
         outObject = null;
     }
 
@@ -67,7 +69,7 @@ public class CharValue extends LambdaRootModel implements IRichModel {
     }
 
     public Integer getSpecType() {
-        return this.getCmptChar().getSpecType();
+        return this.getCmptChar().data().getSpecType();
     }
 
     public String getCharValue() {

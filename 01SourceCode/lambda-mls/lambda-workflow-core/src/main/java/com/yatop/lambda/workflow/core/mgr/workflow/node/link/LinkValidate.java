@@ -4,20 +4,14 @@ import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeQuery;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LinkValidate {
-
-    //@Autowired
-    //NodeQuery nodeQuery;
-
     public boolean matchTargetCharType(NodePortOutput srcNodePort, NodePortInput dstNodePort) {
         return srcNodePort.getCmptChar().getType().matchTargetType(dstNodePort.getCmptChar().getType());
     }
@@ -25,11 +19,11 @@ public class LinkValidate {
     public boolean validateLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodePortOutput srcNodePort, NodePortInput dstNodePort) {
 
         if(srcNode.getComponent().isWebComponent()) {
-            NodeLink link = workflowContext.fetchWebInLink(dstNodePort.getNodePortId());
+            NodeLink link = workflowContext.fetchWebInLink(dstNodePort.data().getNodePortId());
             if (DataUtil.isNotNull(link))
                 return false;
         } else {
-            NodeLink link = workflowContext.fetchNonWebInLink(dstNodePort.getNodePortId());
+            NodeLink link = workflowContext.fetchNonWebInLink(dstNodePort.data().getNodePortId());
             if (DataUtil.isNotNull(link))
                 return false;
         }

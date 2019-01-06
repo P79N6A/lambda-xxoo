@@ -69,7 +69,7 @@ public class ExecutionJobContext implements IWorkContext {
     }
 
     public void putTask(ExecutionTask task) {
-        CollectionUtil.put(tasks, task.getTaskId(), task);
-        CollectionUtil.put(tasksOrderByNodeId, task.getRelNodeId(), task);
+        CollectionUtil.put(tasks, task.data().getTaskId(), task);
+        CollectionUtil.put(tasksOrderByNodeId, task.data().getRelNodeId(), task);
     }
 }

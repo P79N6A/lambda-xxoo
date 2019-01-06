@@ -3,22 +3,21 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.execution;
 import com.yatop.lambda.base.model.WfExecutionTask;
 import com.yatop.lambda.core.enums.TaskStateEnum;
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.List;
 import java.util.TreeMap;
 
-public class ExecutionTask extends WfExecutionTask implements IRichModel {
+public class ExecutionTask extends RichModel<WfExecutionTask> {
 
     private Node node;  //操作关联节点
     private TreeMap<String, ExecutionTaskOutput> taskOutputs = new TreeMap<String, ExecutionTaskOutput>();   //任务输出内容
 
     public ExecutionTask(WfExecutionTask data, Node node) {
-        super.copyProperties(data);
+        super(data);
         this.node = node;
-        this.clearColoured();
     }
 
     @Override
@@ -40,27 +39,27 @@ public class ExecutionTask extends WfExecutionTask implements IRichModel {
     }
 
     public boolean isStatePreparing() {
-        return this.getTaskState() == TaskStateEnum.PREPARING.getState();
+        return this.data().getTaskState() == TaskStateEnum.PREPARING.getState();
     }
 
     public boolean isStateQueueing() {
-        return this.getTaskState() == TaskStateEnum.QUEUEING.getState();
+        return this.data().getTaskState() == TaskStateEnum.QUEUEING.getState();
     }
 
     public boolean isStateRunning() {
-        return this.getTaskState() == TaskStateEnum.RUNNING.getState();
+        return this.data().getTaskState() == TaskStateEnum.RUNNING.getState();
     }
 
     public boolean isStateSuccess() {
-        return this.getTaskState() == TaskStateEnum.SUCCESS.getState();
+        return this.data().getTaskState() == TaskStateEnum.SUCCESS.getState();
     }
 
     public boolean isStateErrorTerminated() {
-        return this.getTaskState() == TaskStateEnum.ERROR_TERMINATED.getState();
+        return this.data().getTaskState() == TaskStateEnum.ERROR_TERMINATED.getState();
     }
 
     public boolean isStateUserTerminated() {
-        return this.getTaskState() == TaskStateEnum.USER_TERMINATED.getState();
+        return this.data().getTaskState() == TaskStateEnum.USER_TERMINATED.getState();
     }
 
     public void changeState2Queueing() {
@@ -84,10 +83,10 @@ public class ExecutionTask extends WfExecutionTask implements IRichModel {
     }
 
     private void changeTaskState(TaskStateEnum stateEnum) {
-        if(this.getTaskState() == stateEnum.getState())
+        if(this.data().getTaskState() == stateEnum.getState())
             return;
 
-        this.setTaskState(stateEnum.getState());
+        this.data().setTaskState(stateEnum.getState());
     }
 
     public Node getNode() {
@@ -107,22 +106,22 @@ public class ExecutionTask extends WfExecutionTask implements IRichModel {
     }
 
     public void putTaskOutput(ExecutionTaskOutput taskOutput) {
-        CollectionUtil.put(taskOutputs, taskOutput.getCharId(), taskOutput);
+        CollectionUtil.put(taskOutputs, taskOutput.data().getCharId(), taskOutput);
     }
 
     public boolean isOccuredWarning() {
-        return DataUtil.isNotEmpty(this.getWarningMsg());
+        return DataUtil.isNotEmpty(this.data().getWarningMsg());
     }
 
     public void changeOccuredWarning(String warningMsg) {
-        this.setWarningMsg(warningMsg);
+        this.data().setWarningMsg(warningMsg);
         changeState2ErrorTerminated();
     }
 
     /*
     public void clearOccuredWarning() {
-        if(DataUtil.isNotEmpty(this.getWarningMsg()))
-            this.setWarningMsg(null);
+        if(DataUtil.isNotEmpty(this.data().getWarningMsg()))
+            this.data().setWarningMsg(null);
     }
     */
 }

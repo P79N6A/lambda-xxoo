@@ -34,15 +34,15 @@ public class ParameterHelper {
         //模拟生成非workflow来源级别的节点参数，和workflow来源级别缺失的节点参数
         Date curTime = new Date();
         WfFlowNodeParameter parameter = new WfFlowNodeParameter();
-        parameter.setNodeId(node.getNodeId());
+        parameter.setNodeId(node.data().getNodeId());
         parameter.setSpecType(charValue.getSpecType());
-        parameter.setCharId(cmptChar.getCharId());
+        parameter.setCharId(cmptChar.data().getCharId());
         if(DataUtil.isNotNull(charValue.getCharValue()))
             parameter.setCharValue(charValue.getCharValue());
         parameter.setIsGlobalParameter(IsGlobalParameterEnum.NO.getMark());
         parameter.setIsDuplicated(IsDuplicatedEnum.NO.getMark());
         parameter.setStatus(DataStatusEnum.NORMAL.getStatus());
-        parameter.setDescription(SourceLevelEnum.valueOf(cmptChar.getSrcLevel()) + " Source Level -- Simulate Parameter");
+        parameter.setDescription(SourceLevelEnum.valueOf(cmptChar.data().getSrcLevel()) + " Source Level -- Simulate Parameter");
         parameter.setLastUpdateTime(curTime);
         parameter.setLastUpdateOper(workflowContext.getOperId());
         parameter.setCreateTime(curTime);
@@ -51,7 +51,7 @@ public class ParameterHelper {
     }
 
     public static void updateNodeParameter(NodeParameter parameter, String operId) {
-        NODE_PARAMETER_MGR.updateNodeParameter(parameter, operId);
+        NODE_PARAMETER_MGR.updateNodeParameter(parameter.data(), operId);
         parameter.clearColoured();
     }
 }

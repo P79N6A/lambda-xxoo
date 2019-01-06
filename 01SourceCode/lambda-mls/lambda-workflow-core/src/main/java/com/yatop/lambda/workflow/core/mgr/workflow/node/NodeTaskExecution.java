@@ -23,7 +23,7 @@ public class NodeTaskExecution {
             }
 
             if(DataUtil.isNotEmpty(executionTaskContext.getWarningMsg())) {
-                executionTaskContext.getTask().changeOccuredWarning(String.format("任务节点[%s]:%s", executionTaskContext.getNode().getNodeName(), executionTaskContext.getWarningMsg()));
+                executionTaskContext.getTask().changeOccuredWarning(String.format("任务节点[%s]:%s", executionTaskContext.getNode().data().getNodeName(), executionTaskContext.getWarningMsg()));
             }
         }
     }

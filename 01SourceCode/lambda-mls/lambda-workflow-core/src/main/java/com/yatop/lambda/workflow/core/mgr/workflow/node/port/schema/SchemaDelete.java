@@ -27,7 +27,7 @@ public class SchemaDelete {
             }
 
             if(counter > 0)
-                nodeSchemaMgr.deleteSchema(node.getNodeId(), workflowContext.getOperId());
+                nodeSchemaMgr.deleteSchema(node.data().getNodeId(), workflowContext.getOperId());
         }
     }
 }

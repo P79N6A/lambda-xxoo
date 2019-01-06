@@ -31,7 +31,7 @@ public class ParameterQuery {
 
     private NodeParameter queryParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, WfFlowNodeParameter parameter) {
 
-        if(cmptChar.getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource() && DataUtil.isNotNull(parameter)) {
+        if(cmptChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource() && DataUtil.isNotNull(parameter)) {
             CharValue charValue = new CharValue(cmptChar, parameter.getCharValue(), IsDuplicatedEnum.valueOf(parameter.getIsDuplicated()));
             charValueQuery.queryCharValue(workflowContext, node, charValue);
             return new NodeParameter(parameter, cmptChar, charValue);
@@ -43,7 +43,7 @@ public class ParameterQuery {
     }
 
     public void queryParameters(WorkflowContext workflowContext, Node node) {
-        List<WfFlowNodeParameter> nodeParameters = nodeParameterMgr.queryNodeParameter(node.getNodeId());
+        List<WfFlowNodeParameter> nodeParameters = nodeParameterMgr.queryNodeParameter(node.data().getNodeId());
 
         TreeMap<String, WfFlowNodeParameter> parameterMap = new TreeMap<String, WfFlowNodeParameter>();
         TreeMap<String, WfFlowNodeParameter> optimizeMap = new TreeMap<String, WfFlowNodeParameter>();
@@ -68,7 +68,7 @@ public class ParameterQuery {
         CmptSpec paramSpec = component.getParameter();
         if(paramSpec.cmptCharCount() > 0) {
             for (CmptChar cmptChar : paramSpec.getCmptChars()) {
-                NodeParameter parameter = queryParameter(workflowContext, node, cmptChar, parameterMap.get(cmptChar.getCharId()));
+                NodeParameter parameter = queryParameter(workflowContext, node, cmptChar, parameterMap.get(cmptChar.data().getCharId()));
                 node.putParameter(parameter);
             }
         }
@@ -77,7 +77,7 @@ public class ParameterQuery {
         CmptSpec optimizeSpec = component.getOptimizeExecution();
         if(optimizeSpec.cmptCharCount() > 0) {
             for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
-                NodeParameter parameter = queryParameter(workflowContext, node, cmptChar, optimizeMap.get(cmptChar.getCharId()));
+                NodeParameter parameter = queryParameter(workflowContext, node, cmptChar, optimizeMap.get(cmptChar.data().getCharId()));
                 node.putOptimizeParameter(parameter);
             }
         }

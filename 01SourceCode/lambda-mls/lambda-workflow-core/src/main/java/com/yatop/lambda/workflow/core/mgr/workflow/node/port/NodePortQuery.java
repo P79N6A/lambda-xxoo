@@ -36,7 +36,7 @@ public class NodePortQuery {
         Module module = node.getModule();
         if(module.inputPortCount() > 0 || module.outputPortCount() > 0) {
 
-            List<WfFlowNodePort> nodePortList = nodePortMgr.queryNodePortByNodeId(node.getNodeId());
+            List<WfFlowNodePort> nodePortList = nodePortMgr.queryNodePortByNodeId(node.data().getNodeId());
             if (DataUtil.isEmpty(nodePortList)) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- node port list empty.", "节点端口信息缺失", node);
             }
@@ -47,7 +47,7 @@ public class NodePortQuery {
                     throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module port not found.", "节点端口信息错误", nodePort);
                 }
 
-                switch(PortTypeEnum.valueOf(modulePort.getPortType())) {
+                switch(PortTypeEnum.valueOf(modulePort.data().getPortType())) {
                     case INPUT_PORT:
                         NodePortInput inputNodePort =  workflowContext.getInputPort(nodePort.getNodePortId());
                         if (DataUtil.isNull(inputNodePort)) {
@@ -89,7 +89,7 @@ public class NodePortQuery {
         }
 
         ModulePort modulePort = moduleConfig.getModulePort(nodePort.getRefPortId());
-        if(DataUtil.isNull(modulePort) || PortTypeEnum.valueOf(modulePort.getPortType()) != PortTypeEnum.INPUT_PORT) {
+        if(DataUtil.isNull(modulePort) || PortTypeEnum.valueOf(modulePort.data().getPortType()) != PortTypeEnum.INPUT_PORT) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module port not found.", "节点端口信息错误", nodePort);
         }
 
@@ -111,7 +111,7 @@ public class NodePortQuery {
         }
 
         ModulePort modulePort = moduleConfig.getModulePort(nodePort.getRefPortId());
-        if(DataUtil.isNull(modulePort) || PortTypeEnum.valueOf(modulePort.getPortType()) != PortTypeEnum.OUTPUT_PORT) {
+        if(DataUtil.isNull(modulePort) || PortTypeEnum.valueOf(modulePort.data().getPortType()) != PortTypeEnum.OUTPUT_PORT) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module port not found.", "节点端口信息错误", nodePort);
         }
 

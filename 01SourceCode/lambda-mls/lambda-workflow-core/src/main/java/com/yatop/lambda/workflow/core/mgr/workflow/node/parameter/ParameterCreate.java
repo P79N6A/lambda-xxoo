@@ -34,20 +34,20 @@ public class ParameterCreate {
 
     protected NodeParameter createParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, String charValueText) {
 
-        if(cmptChar.getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
+        if(cmptChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
             CharValue charValue = new CharValue(cmptChar);
             charValue.setInText(charValueText);
             charValueCreate.createCharValue(workflowContext, node, charValue);
 
             WfFlowNodeParameter parameter = new WfFlowNodeParameter();
-            parameter.setNodeId(node.getNodeId());
+            parameter.setNodeId(node.data().getNodeId());
             parameter.setSpecType(charValue.getSpecType());
-            parameter.setCharId(cmptChar.getCharId());
+            parameter.setCharId(cmptChar.data().getCharId());
             if(DataUtil.isNotNull(charValue.getCharValue()))
                 parameter.setCharValue(charValue.getCharValue());
             parameter = nodeParameterMgr.insertNodeParameter(parameter, workflowContext.getOperId());
 
-            //parameter.copyProperties(nodeParameterMgr.queryNodeParameter(parameter.getNodeId(), parameter.getCharId()));
+            //parameter.copyProperties(nodeParameterMgr.queryNodeParameter(parameter.data().getNodeId(), parameter.data().getCharId()));
             NodeParameter richParameter = new NodeParameter(parameter, cmptChar, charValue);
             return richParameter;
         } else {
@@ -86,7 +86,7 @@ public class ParameterCreate {
         CmptSpec paramSpec = component.getParameter();
         if(paramSpec.cmptCharCount() > 0) {
             for (CmptChar cmptChar : paramSpec.getCmptChars()) {
-                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getParameter(cmptChar.getCharId()).getValue().getOutText());
+                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getParameter(cmptChar.data().getCharId()).getCharValue().getOutText());
                 node.putParameter(parameter);
             }
         }
@@ -95,7 +95,7 @@ public class ParameterCreate {
         CmptSpec optimizeSpec = component.getOptimizeExecution();
         if(optimizeSpec.cmptCharCount() > 0) {
             for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
-                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getOptimizeParameter(cmptChar.getCharId()).getValue().getOutText());
+                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getOptimizeParameter(cmptChar.data().getCharId()).getCharValue().getOutText());
                 node.putOptimizeParameter(parameter);
             }
         }

@@ -20,7 +20,7 @@ public class CharValueRecover {
     // CharValue <[charValue] ==>> charValue, [outText, outObject]>
     public void recoverCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
-        if(charValue.getCmptChar().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
+        if(charValue.getCmptChar().data().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover characteristic value failed -- forbid recover non-workflow source level char-value", "不允许非工作流来源级别的特征值恢复", charValue);
         }
 

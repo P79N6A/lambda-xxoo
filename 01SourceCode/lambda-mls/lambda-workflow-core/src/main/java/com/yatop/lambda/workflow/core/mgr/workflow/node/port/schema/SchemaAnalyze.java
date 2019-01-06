@@ -30,7 +30,7 @@ public class SchemaAnalyze {
                 outSchemas = nodeContext.getOutSchemas();
 
                 if(node.outputPortCount() > 0) {
-                    NodePortOutput
+                    //NodePortOutput
 
                     if (DataUtil.isNotEmpty(outSchemas)) {
                         for (NodeSchema nodeSchema :) {

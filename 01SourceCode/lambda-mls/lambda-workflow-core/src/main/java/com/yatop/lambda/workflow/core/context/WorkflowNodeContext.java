@@ -68,6 +68,6 @@ public class WorkflowNodeContext implements IWorkContext {
     }
 
     public void putOutSchema(NodeSchema schema) {
-        CollectionUtil.put(outSchemas, schema.getCmptChar().getCharId(), schema);
+        CollectionUtil.put(outSchemas, schema.getCmptChar().data().getCharId(), schema);
     }
 }

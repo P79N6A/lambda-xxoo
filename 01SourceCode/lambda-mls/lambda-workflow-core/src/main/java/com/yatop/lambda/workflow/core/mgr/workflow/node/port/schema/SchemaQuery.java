@@ -31,7 +31,7 @@ public class SchemaQuery {
             }
 
             if (counter > 0) {
-                List<WfFlowNodeSchema> schemaList = nodeSchemaMgr.querySchemaByNodeId(node.getNodeId());
+                List<WfFlowNodeSchema> schemaList = nodeSchemaMgr.querySchemaByNodeId(node.data().getNodeId());
 
                 if (DataUtil.isEmpty(schemaList) || counter != schemaList.size()) {
                     throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data node output port schema failed -- schema list size inconsistent.", "节点数据输出端口schema缺失", node);
@@ -53,7 +53,7 @@ public class SchemaQuery {
     public void querySchema(WorkflowContext workflowContext, NodePortOutput outputNodePort) {
 
         if(outputNodePort.isDataPort()) {
-            WfFlowNodeSchema schema = nodeSchemaMgr.querySchema(outputNodePort.getNodePortId());
+            WfFlowNodeSchema schema = nodeSchemaMgr.querySchema(outputNodePort.data().getNodePortId());
             outputNodePort.setSchema(new NodeSchema(schema, outputNodePort.getCmptChar()));
         } else {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data node output port schema failed -- non data port.", "非节点数据端口", outputNodePort);

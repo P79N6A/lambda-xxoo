@@ -35,24 +35,24 @@ public class NodeCreate {
 
         Workflow workflow = workflowContext.getWorkflow();
         Long flowMaxNodes = SystemParameterUtil.find4Long(SystemParameterEnum.WK_FLOW_MAX_NODES);
-        if(workflow.getNodeCount() + 1 > flowMaxNodes) {
+        if(workflow.data().getNodeCount() + 1 > flowMaxNodes) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node failed -- number of nodes can't exceed more then WK_FLOW_MAX_NODES.", "画布节点数量不能超过" + flowMaxNodes, workflow);
         }
 
         WfFlowNode node = new WfFlowNode();
-        node.setOwnerProjectId(workflow.getOwnerProjectId());
-        node.setOwnerFlowId(workflow.getFlowId());
-        node.setRefModuleId(module.getModuleId());
+        node.setOwnerProjectId(workflow.data().getOwnerProjectId());
+        node.setOwnerFlowId(workflow.data().getFlowId());
+        node.setRefModuleId(module.data().getModuleId());
         node.setPositionX(x);
         node.setPositionY(y);
         if(!copyOtherName) {
             Long sequence = workflow.nextModuleSequence(module, workflowContext.getOperId());
-            node.setNodeName(String.format("%s-%d", module.getModuleName(), sequence));
+            node.setNodeName(String.format("%s-%d", module.data().getModuleName(), sequence));
             node.setSequence(sequence);
         } else {
-            workflow.setModuleSequence(module, otherNode.getSequence(), workflowContext.getOperId());
-            node.setNodeName(otherNode.getNodeName());
-            node.setSequence(otherNode.getSequence());
+            workflow.setModuleSequence(module, otherNode.data().getSequence(), workflowContext.getOperId());
+            node.setNodeName(otherNode.data().getNodeName());
+            node.setSequence(otherNode.data().getSequence());
         }
 
         node = nodeMgr.insertNode(node, workflowContext.getOperId());

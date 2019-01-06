@@ -110,7 +110,7 @@ public class WorkflowContext implements IWorkContext {
         context.job = job;
         context.lazyLoadMode = false;
         context.executionWorkMode = true;
-        context.enableFlushWorkflow = JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(job.getJobType()));
+        context.enableFlushWorkflow = JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(job.data().getJobType()));
         context.loadNodeParameter = false;  //WorkflowContextCodec中填入
         context.loadDataPortSchema = false;
         return context;
@@ -193,7 +193,7 @@ public class WorkflowContext implements IWorkContext {
         //TODO 对于异常情况是否抛出错误
         if(schemaAnalyze.isAnalyzeWithNone() || schemaAnalyze.isAnalyzeWithCreateNode() || schemaAnalyze.isAnalyzeWithCreateLink()) {
             this.schemaAnalyze = AnalyzeTypeEnum.CREATE_NODE;
-            CollectionUtil.put(analyzeNodes, node.getNodeId(), node);
+            CollectionUtil.put(analyzeNodes, node.data().getNodeId(), node);
         }
     }
 
@@ -201,7 +201,7 @@ public class WorkflowContext implements IWorkContext {
         //TODO 对于异常情况是否抛出错误
         if(schemaAnalyze.isAnalyzeWithNone()) {
             this.schemaAnalyze = AnalyzeTypeEnum.CREATE_LINK;
-            CollectionUtil.put(analyzeLinks, link.getLinkId(), link);
+            CollectionUtil.put(analyzeLinks, link.data().getLinkId(), link);
         }
     }
 
@@ -209,7 +209,7 @@ public class WorkflowContext implements IWorkContext {
         //TODO 对于异常情况是否抛出错误
         if(schemaAnalyze.isAnalyzeWithNone()) {
             this.schemaAnalyze = AnalyzeTypeEnum.UPDATE_NODE_PARAMETER;
-            CollectionUtil.put(analyzeNodes, node.getNodeId(), node);
+            CollectionUtil.put(analyzeNodes, node.data().getNodeId(), node);
         }
     }
 
@@ -217,7 +217,7 @@ public class WorkflowContext implements IWorkContext {
         //TODO 对于异常情况是否抛出错误
         if(schemaAnalyze.isAnalyzeWithNone() || schemaAnalyze.isAnalyzeWithDeleteNode() || schemaAnalyze.isAnalyzeWithDeleteLink()) {
             this.schemaAnalyze = AnalyzeTypeEnum.DELETE_NODE;
-            CollectionUtil.put(analyzeNodes, node.getNodeId(), node);
+            CollectionUtil.put(analyzeNodes, node.data().getNodeId(), node);
         }
     }
 
@@ -225,7 +225,7 @@ public class WorkflowContext implements IWorkContext {
         //TODO 对于异常情况是否抛出错误
         if(schemaAnalyze.isAnalyzeWithNone() || schemaAnalyze.isAnalyzeWithDeleteLink()) {
             this.schemaAnalyze = AnalyzeTypeEnum.DELETE_LINK;
-            CollectionUtil.put(analyzeLinks, link.getLinkId(), link);
+            CollectionUtil.put(analyzeLinks, link.data().getLinkId(), link);
         }
     }
 
@@ -308,11 +308,11 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public Node getUpstreamNode(NodeLink nodeLink) {
-        return getNode(nodeLink.getSrcNodeId());
+        return getNode(nodeLink.data().getSrcNodeId());
     }
 
     public Node getDownstreamNode(NodeLink nodeLink) {
-        return getNode(nodeLink.getDstNodeId());
+        return getNode(nodeLink.data().getDstNodeId());
     }
 
     //key:nodePortId
@@ -337,11 +337,11 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public Node fetchUpstreamNode(NodeLink nodeLink) {
-        return fetchNode(nodeLink.getSrcNodeId());
+        return fetchNode(nodeLink.data().getSrcNodeId());
     }
 
     public Node fetchDownstreamNode(NodeLink nodeLink) {
-        return fetchNode(nodeLink.getDstNodeId());
+        return fetchNode(nodeLink.data().getDstNodeId());
     }
 
     /*
@@ -367,7 +367,7 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public List<NodeLink> getInLinks(NodePortInput inputNodePort) {
-        return this.getInLinks(inputNodePort.getNodePortId());
+        return this.getInLinks(inputNodePort.data().getNodePortId());
     }
 
     public List<NodeLink> getInLinks(Node node) {
@@ -388,7 +388,7 @@ public class WorkflowContext implements IWorkContext {
     public NodeLink filterPortInLinks(List<NodeLink> nodeLinks, IsWebLinkEnum linkFilter) {
         if(DataUtil.isNotEmpty(nodeLinks)) {
             for (NodeLink nodeLink : nodeLinks) {
-                if (nodeLink.getIsWebLink() == linkFilter.getMark())
+                if (nodeLink.data().getIsWebLink() == linkFilter.getMark())
                     return nodeLink;
             }
         }
@@ -410,7 +410,7 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public List<NodeLink> getOutLinks(NodePortOutput outputNodePort) {
-        return this.getOutLinks(outputNodePort.getNodePortId());
+        return this.getOutLinks(outputNodePort.data().getNodePortId());
     }
 
     public List<NodeLink> getOutLinks(Node node) {
@@ -439,7 +439,7 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public List<NodeLink> fetchInLinks(NodePortInput inputNodePort) {
-        return this.fetchInLinks(inputNodePort.getNodePortId());
+        return this.fetchInLinks(inputNodePort.data().getNodePortId());
     }
 
     public List<NodeLink> fetchInLinks(Node node) {
@@ -463,7 +463,7 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public List<NodeLink> fetchOutLinks(NodePortOutput outputNodePort) {
-        return this.fetchOutLinks(outputNodePort.getNodePortId());
+        return this.fetchOutLinks(outputNodePort.data().getNodePortId());
     }
 
     public List<NodeLink> fetchOutLinks(Node node) {
@@ -512,49 +512,49 @@ public class WorkflowContext implements IWorkContext {
      */
 
     public void putDataWarehouse(DataWarehouse warehouse) {
-        CollectionUtil.put(dataWarehouses, warehouse.getDwId(), warehouse);
+        CollectionUtil.put(dataWarehouses, warehouse.data().getDwId(), warehouse);
     }
 
     public void putModelWarehouse(ModelWarehouse warehouse) {
-        CollectionUtil.put(modelWarehouses, warehouse.getMwId(), warehouse);
+        CollectionUtil.put(modelWarehouses, warehouse.data().getMwId(), warehouse);
     }
 
     public void putNode(Node node) {
-        CollectionUtil.put(nodes, node.getNodeId(), node);
+        CollectionUtil.put(nodes, node.data().getNodeId(), node);
     }
 
     public void putLink(NodeLink link) {
-        CollectionUtil.put(links, link.getLinkId(), link);
+        CollectionUtil.put(links, link.data().getLinkId(), link);
 
         {
-            TreeSet<NodeLink> inLinkSet = CollectionUtil.get(inputLinks, link.getLinkId());
+            TreeSet<NodeLink> inLinkSet = CollectionUtil.get(inputLinks, link.data().getLinkId());
             if (DataUtil.isNotNull(inLinkSet))
                 CollectionUtil.add(inLinkSet, link);
             else {
                 inLinkSet = new TreeSet<NodeLink>();
                 CollectionUtil.add(inLinkSet, link);
-                CollectionUtil.put(inputLinks, link.getDstPortId(), inLinkSet);
+                CollectionUtil.put(inputLinks, link.data().getDstPortId(), inLinkSet);
             }
         }
 
         {
-            TreeSet<NodeLink> outLinkSet = CollectionUtil.get(outputLinks, link.getLinkId());
+            TreeSet<NodeLink> outLinkSet = CollectionUtil.get(outputLinks, link.data().getLinkId());
             if (DataUtil.isNotNull(outLinkSet))
                 CollectionUtil.add(outLinkSet, link);
             else {
                 outLinkSet = new TreeSet<NodeLink>();
                 CollectionUtil.add(outLinkSet, link);
-                CollectionUtil.put(outputLinks, link.getSrcPortId(), outLinkSet);
+                CollectionUtil.put(outputLinks, link.data().getSrcPortId(), outLinkSet);
             }
         }
     }
 
     public void putInputPort(NodePortInput inputPort) {
-        CollectionUtil.put(inputPorts, inputPort.getNodePortId(), inputPort);
+        CollectionUtil.put(inputPorts, inputPort.data().getNodePortId(), inputPort);
     }
 
     public void putOutputPort(NodePortOutput outputPort) {
-        CollectionUtil.put(outputPorts, outputPort.getNodePortId(), outputPort);
+        CollectionUtil.put(outputPorts, outputPort.data().getNodePortId(), outputPort);
     }
 
 /*    public GlobalParameter getGlobalParameter(Long globalParameterId) {
@@ -566,7 +566,7 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public void putGlobalParameter(GlobalParameter globalParameter) {
-        CollectionUtil.put(globalParameters, globalParameter.getGlobalParamId(), globalParameter);
+        CollectionUtil.put(globalParameters, globalParameter.data().getGlobalParamId(), globalParameter);
 
     }*/
 
@@ -607,25 +607,25 @@ public class WorkflowContext implements IWorkContext {
     public void eraseNode(Node node) {
 
         for(NodePortInput inputNodePort : node.getInputNodePorts()) {
-            List<NodeLink> nodeLinks = this.getInLinks(inputNodePort.getNodePortId());
+            List<NodeLink> nodeLinks = this.getInLinks(inputNodePort.data().getNodePortId());
             if(DataUtil.isNotEmpty(nodeLinks)) {
                 for(NodeLink link : nodeLinks)
-                    CollectionUtil.remove(links, link.getLinkId());
-                CollectionUtil.remove(inputLinks, inputNodePort.getNodePortId());
+                    CollectionUtil.remove(links, link.data().getLinkId());
+                CollectionUtil.remove(inputLinks, inputNodePort.data().getNodePortId());
             }
-            CollectionUtil.remove(inputPorts, inputNodePort.getNodePortId());
+            CollectionUtil.remove(inputPorts, inputNodePort.data().getNodePortId());
         }
 
         for(NodePortOutput outputNodePort : node.getOutputNodePorts()) {
-            List<NodeLink> nodeLinks = this.getOutLinks(outputNodePort.getNodePortId());
+            List<NodeLink> nodeLinks = this.getOutLinks(outputNodePort.data().getNodePortId());
             if(DataUtil.isNotEmpty(nodeLinks)) {
                 for(NodeLink link : nodeLinks)
-                    CollectionUtil.remove(links, link.getLinkId());
-                CollectionUtil.remove(outputLinks, outputNodePort.getNodePortId());
+                    CollectionUtil.remove(links, link.data().getLinkId());
+                CollectionUtil.remove(outputLinks, outputNodePort.data().getNodePortId());
             }
-            CollectionUtil.remove(outputPorts, outputNodePort.getNodePortId());
+            CollectionUtil.remove(outputPorts, outputNodePort.data().getNodePortId());
         }
-        CollectionUtil.remove(nodes, node.getNodeId());
+        CollectionUtil.remove(nodes, node.data().getNodeId());
     }
 
     @Override

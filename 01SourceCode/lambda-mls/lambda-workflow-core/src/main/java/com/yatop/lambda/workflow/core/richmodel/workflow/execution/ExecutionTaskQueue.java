@@ -2,13 +2,12 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.execution;
 
 import com.yatop.lambda.base.model.WfExecutionTaskQueue;
 import com.yatop.lambda.core.enums.TaskStateEnum;
-import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.RichModel;
 
-public class ExecutionTaskQueue extends WfExecutionTaskQueue implements IRichModel {
+public class ExecutionTaskQueue extends RichModel<WfExecutionTaskQueue> {
 
     public ExecutionTaskQueue(WfExecutionTaskQueue data) {
-        super.copyProperties(data);
-        this.clearColoured();
+        super(data);
     }
 
     public void flush(String operId) {
@@ -17,19 +16,14 @@ public class ExecutionTaskQueue extends WfExecutionTaskQueue implements IRichMod
             ;//NodeHelper.updateNode(this, operId);
     }
 
-    @Override
-    public void clear() {
-        super.clear();
-    }
-
     public void changeState2Running() {
         this.changeTaskState(TaskStateEnum.RUNNING);
     }
 
     private void changeTaskState(TaskStateEnum stateEnum) {
-        if(this.getTaskState() == stateEnum.getState())
+        if(this.data().getTaskState() == stateEnum.getState())
             return;
 
-        this.setTaskState(stateEnum.getState());
+        this.data().setTaskState(stateEnum.getState());
     }
 }

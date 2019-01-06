@@ -21,8 +21,8 @@ public class ParameterDelete {
 
     private void deleteParameter(WorkflowContext workflowContext, Node node, NodeParameter parameter) {
 
-        if(parameter.getCmptChar().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource() && DataUtil.isNotNull(parameter)) {
-            charValueDelete.deleteCharValue(workflowContext, node, parameter.getValue());
+        if(parameter.getCmptChar().data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource() && DataUtil.isNotNull(parameter)) {
+            charValueDelete.deleteCharValue(workflowContext, node, parameter.getCharValue());
         }
     }
 
@@ -43,6 +43,6 @@ public class ParameterDelete {
         }
 
         if(node.parameterCount() > 0 && node.optimizeParameterCount() > 0)
-            nodeParameterMgr.deleteNodeParameter(node.getNodeId(), workflowContext.getOperId());
+            nodeParameterMgr.deleteNodeParameter(node.data().getNodeId(), workflowContext.getOperId());
     }
 }

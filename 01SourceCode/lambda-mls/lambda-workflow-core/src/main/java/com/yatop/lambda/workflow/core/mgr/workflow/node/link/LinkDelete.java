@@ -1,6 +1,5 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node.link;
 
-import com.yatop.lambda.core.enums.WorkflowStateEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeLinkMgr;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeQuery;
@@ -20,7 +19,7 @@ public class LinkDelete {
     NodeQuery nodeQuery;
 
     public void deleteLink(WorkflowContext workflowContext, NodeLink link) {
-        nodeLinkMgr.deleteLink(link.getLinkId(), workflowContext.getOperId());
+        nodeLinkMgr.deleteLink(link.data().getLinkId(), workflowContext.getOperId());
         workflowContext.doneDeleteLink(link);
     }
 

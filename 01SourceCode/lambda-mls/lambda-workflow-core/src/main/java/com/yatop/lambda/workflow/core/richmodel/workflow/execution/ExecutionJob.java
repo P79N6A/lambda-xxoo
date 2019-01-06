@@ -2,13 +2,12 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.execution;
 
 import com.yatop.lambda.base.model.WfExecutionJob;
 import com.yatop.lambda.core.enums.JobStateEnum;
-import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.RichModel;
 
-public class ExecutionJob extends WfExecutionJob implements IRichModel {
+public class ExecutionJob extends RichModel<WfExecutionJob> {
 
     public ExecutionJob(WfExecutionJob data) {
-        super.copyProperties(data);
-        this.clearColoured();
+        super(data);
     }
 
     public void flush(String operId) {
@@ -23,27 +22,27 @@ public class ExecutionJob extends WfExecutionJob implements IRichModel {
     }
 
     public boolean isStatePreparing() {
-        return this.getJobState() == JobStateEnum.PREPARING.getState();
+        return this.data().getJobState() == JobStateEnum.PREPARING.getState();
     }
 
     public boolean isStateQueueing() {
-        return this.getJobState() == JobStateEnum.QUEUEING.getState();
+        return this.data().getJobState() == JobStateEnum.QUEUEING.getState();
     }
 
     public boolean isStateRunning() {
-        return this.getJobState() == JobStateEnum.RUNNING.getState();
+        return this.data().getJobState() == JobStateEnum.RUNNING.getState();
     }
 
     public boolean isStateSuccess() {
-        return this.getJobState() == JobStateEnum.SUCCESS.getState();
+        return this.data().getJobState() == JobStateEnum.SUCCESS.getState();
     }
 
     public boolean isStateErrorTerminated() {
-        return this.getJobState() == JobStateEnum.ERROR_TERMINATED.getState();
+        return this.data().getJobState() == JobStateEnum.ERROR_TERMINATED.getState();
     }
 
     public boolean isStateUserTerminated() {
-        return this.getJobState() == JobStateEnum.USER_TERMINATED.getState();
+        return this.data().getJobState() == JobStateEnum.USER_TERMINATED.getState();
     }
 
     public void changeState2Queueing() {
@@ -67,9 +66,9 @@ public class ExecutionJob extends WfExecutionJob implements IRichModel {
     }
 
     private void changeJobState(JobStateEnum stateEnum) {
-        if(this.getJobState() == stateEnum.getState())
+        if(this.data().getJobState() == stateEnum.getState())
             return;
 
-        this.setJobState(stateEnum.getState());
+        this.data().setJobState(stateEnum.getState());
     }
 }

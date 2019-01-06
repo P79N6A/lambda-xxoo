@@ -35,7 +35,7 @@ public class ParameterRecover {
 
     private NodeParameter recoverParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, WfFlowNodeParameter parameter) {
 
-        if(cmptChar.getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource() && DataUtil.isNotNull(parameter)) {
+        if(cmptChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource() && DataUtil.isNotNull(parameter)) {
             CharValue charValue = new CharValue(cmptChar, parameter.getCharValue(), IsDuplicatedEnum.valueOf(parameter.getIsDuplicated()));
             charValueRecover.recoverCharValue(workflowContext, node, charValue);
             return new NodeParameter(parameter, cmptChar, charValue);
@@ -48,8 +48,8 @@ public class ParameterRecover {
 
     public void recoverParameters(WorkflowContext workflowContext, Node node) {
 
-        nodeParameterMgr.recoverNodeParameter(node.getNodeId(), workflowContext.getOperId());
-        List<WfFlowNodeParameter> nodeParameters = nodeParameterMgr.queryNodeParameter(node.getNodeId());
+        nodeParameterMgr.recoverNodeParameter(node.data().getNodeId(), workflowContext.getOperId());
+        List<WfFlowNodeParameter> nodeParameters = nodeParameterMgr.queryNodeParameter(node.data().getNodeId());
 
         TreeMap<String, WfFlowNodeParameter> parameterMap = new TreeMap<String, WfFlowNodeParameter>();
         TreeMap<String, WfFlowNodeParameter> optimizeMap = new TreeMap<String, WfFlowNodeParameter>();
@@ -74,7 +74,7 @@ public class ParameterRecover {
         CmptSpec paramSpec = component.getParameter();
         if(paramSpec.cmptCharCount() > 0) {
             for (CmptChar cmptChar : paramSpec.getCmptChars()) {
-                NodeParameter parameter = recoverParameter(workflowContext, node, cmptChar, parameterMap.get(cmptChar.getCharId()));
+                NodeParameter parameter = recoverParameter(workflowContext, node, cmptChar, parameterMap.get(cmptChar.data().getCharId()));
                 node.putParameter(parameter);
             }
         }
@@ -83,7 +83,7 @@ public class ParameterRecover {
         CmptSpec optimizeSpec = component.getOptimizeExecution();
         if(optimizeSpec.cmptCharCount() > 0) {
             for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
-                NodeParameter parameter = recoverParameter(workflowContext, node, cmptChar, optimizeMap.get(cmptChar.getCharId()));
+                NodeParameter parameter = recoverParameter(workflowContext, node, cmptChar, optimizeMap.get(cmptChar.data().getCharId()));
                 node.putOptimizeParameter(parameter);
             }
         }

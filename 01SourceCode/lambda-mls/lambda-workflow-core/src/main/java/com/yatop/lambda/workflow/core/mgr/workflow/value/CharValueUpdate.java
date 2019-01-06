@@ -24,7 +24,7 @@ public class CharValueUpdate {
     // CharValue <[charValue, inText] ==>> charValue, [outText, outObject]>
     public void updateCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
-        if(charValue.getCmptChar().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
+        if(charValue.getCmptChar().data().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- forbid update non-workflow source level char-value", "不允许非工作流来源级别的特征值更新", charValue);
         }
 
