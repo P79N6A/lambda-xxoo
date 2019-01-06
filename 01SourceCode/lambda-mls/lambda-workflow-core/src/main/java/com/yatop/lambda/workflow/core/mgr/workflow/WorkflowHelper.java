@@ -30,16 +30,16 @@ public class WorkflowHelper {
 
     //名称、共享锁状态、共享锁消息、下一快照版本、节点数量、下一删除批次、最后作业ID、DFS工作流目录、本地工作流目录、工作流状态、描述、版本号
     public static void updateWorkflow(Workflow workflow, String operId) {
-        WORKFLOW_MGR.updateWorkflow(workflow, operId);
+        WORKFLOW_MGR.updateWorkflow(workflow.data(), operId);
         workflow.clearColoured();
     }
 
     public static WorkflowAccumulate queryAccumulate(Workflow workflow, Module module, String operId) {
-        WfFlowAccumulate accumulate = WORKFLOW_ACCUMULATE_MGR.queryFlowAccumulate(workflow.getFlowId(), module.getModuleId());
+        WfFlowAccumulate accumulate = WORKFLOW_ACCUMULATE_MGR.queryFlowAccumulate(workflow.data().getFlowId(), module.data().getModuleId());
         if(DataUtil.isNull(accumulate)) {
             accumulate = new WfFlowAccumulate();
-            accumulate.setFlowId(workflow.getFlowId());
-            accumulate.setModuleId(module.getModuleId());
+            accumulate.setFlowId(workflow.data().getFlowId());
+            accumulate.setModuleId(module.data().getModuleId());
             accumulate.setUsageCount(0L);
             accumulate = WORKFLOW_ACCUMULATE_MGR.insertFlowAccumulate(accumulate, operId);
         }
@@ -47,11 +47,11 @@ public class WorkflowHelper {
     }
 
     static public void updateAccumulate(WorkflowAccumulate accumulate, String operId) {
-        WORKFLOW_ACCUMULATE_MGR.updateFlowAccumulate(accumulate, operId);
+        WORKFLOW_ACCUMULATE_MGR.updateFlowAccumulate(accumulate.data(), operId);
         accumulate.clearColoured();
     }
 
     static public void deleteAccumulates(Workflow workflow, String operId) {
-        WORKFLOW_ACCUMULATE_MGR.deleteFlowAccumulate(workflow.getFlowId(), operId);
+        WORKFLOW_ACCUMULATE_MGR.deleteFlowAccumulate(workflow.data().getFlowId(), operId);
     }
 }

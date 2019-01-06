@@ -150,12 +150,6 @@ public class CollectionUtil {
         list.add(value);
     }
 
-    public static <L extends List<V>, V> void clear(L list) {
-        if(DataUtil.isEmpty(list))
-            return;
-        list.clear();
-    }
-
     public static <L extends List<V>, V extends IRichModel> void enhancedClear(L list) {
         if(DataUtil.isEmpty(list))
             return;
@@ -172,5 +166,23 @@ public class CollectionUtil {
             return false;
 
         return lhs.equals(rhs);
+    }
+
+    public static <Q extends Deque<V>, V> void offerLast(Q queue, V value) {
+        if(DataUtil.isNull(queue))
+            return;
+        queue.offerLast(value);
+    }
+
+    public static <Q extends Deque<V>, V> V pollLast(Q queue) {
+        if(DataUtil.isNull(queue))
+            return null;
+        return queue.pollLast();
+    }
+
+    public static <C extends Collection<V>, V> void clear(C collection) {
+        if(DataUtil.isEmpty(collection))
+            return;
+        collection.clear();
     }
 }

@@ -9,6 +9,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -134,5 +135,18 @@ public class WorkflowContextHelper {
                 }
             }
         }
+    }
+
+    public static List<Node> searchHeadNodes(WorkflowContext workflowContext) {
+        if(workflowContext.nodeCount() == 0)
+            return null;
+
+        List<Node> headNodes = new ArrayList<Node>();
+        for(Node node : workflowContext.getNodes()) {
+            if(node.inputPortCount() == 0) {
+                headNodes.add(node);
+            }
+        }
+        return headNodes;
     }
 }

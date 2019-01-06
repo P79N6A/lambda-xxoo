@@ -7,6 +7,8 @@ import com.yatop.lambda.core.mgr.workflow.unstructured.JsonObjectMgr;
 import com.yatop.lambda.core.mgr.workflow.node.NodeSchemaMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonObject;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,14 +21,21 @@ public class SchemaHelper {
 
     private static NodeSchemaMgr NODE_SCHEMA_MGR;
 
+    private static  SchemaAnalyze SCHEMA_ANALYZE;
+
     @Autowired
     public void setJsonObjectMgr(JsonObjectMgr josnObjectMgr) {
-        JSON_OBJECT_MGR = josnObjectMgr;
+        SchemaHelper.JSON_OBJECT_MGR = josnObjectMgr;
     }
 
     @Autowired
     public void setNodeSchemaMgr(NodeSchemaMgr nodeSchemaMgr) {
-        NODE_SCHEMA_MGR = nodeSchemaMgr;
+        SchemaHelper.NODE_SCHEMA_MGR = nodeSchemaMgr;
+    }
+
+    @Autowired
+    public void setSchemaAnalyze(SchemaAnalyze schemaAnalyze) {
+        SchemaHelper.SCHEMA_ANALYZE = schemaAnalyze;
     }
 
     static public JsonObject queryFieldAttributes(Long objectId) {
@@ -53,5 +62,9 @@ public class SchemaHelper {
     static public void updateNodeSchema(NodeSchema schema, String operId) {
         NODE_SCHEMA_MGR.updateSchema(schema.data(), operId);
         schema.clearColoured();
+    }
+
+    static public boolean reanalyzeSchema(Node node, NodeParameter parameter) {
+        return SCHEMA_ANALYZE.reanalyzeSchema(node, parameter);
     }
 }

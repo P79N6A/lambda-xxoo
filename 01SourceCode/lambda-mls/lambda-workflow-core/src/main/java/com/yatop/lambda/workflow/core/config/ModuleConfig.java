@@ -88,15 +88,15 @@ public class ModuleConfig implements InitializingBean {
 
             for (WfModuleCatalog catalog : catalogList) {
                 ModuleCatalog richCatalog = new ModuleCatalog(catalog);
-                ALL_MODULE_CATALOGS.put(richCatalog.getCatalogId(), richCatalog);
+                ALL_MODULE_CATALOGS.put(richCatalog.data().getCatalogId(), richCatalog);
             }
             catalogList.clear();
 
             for (Map.Entry<Long, ModuleCatalog>  entry : ALL_MODULE_CATALOGS.entrySet()) {
-                if(entry.getValue().getParentCatalogId() == 0) {
-                    FIRST_LEVEL_MODULE_CATALOGS.put(entry.getValue().getSequence(), entry.getValue());
+                if(entry.getValue().data().getParentCatalogId() == 0) {
+                    FIRST_LEVEL_MODULE_CATALOGS.put(entry.getValue().data().getSequence(), entry.getValue());
                 } else {
-                    ModuleCatalog parentCatalog = ALL_MODULE_CATALOGS.get(entry.getValue().getParentCatalogId());
+                    ModuleCatalog parentCatalog = ALL_MODULE_CATALOGS.get(entry.getValue().data().getParentCatalogId());
                     if(DataUtil.isNotNull(parentCatalog)) {
                         parentCatalog.putChildCatalog(entry.getValue());
                     } else {
@@ -134,10 +134,10 @@ public class ModuleConfig implements InitializingBean {
                 }
 
                 Module richModule = new Module(module, component);
-                ALL_MODULES.put(richModule.getModuleId(), richModule);
+                ALL_MODULES.put(richModule.data().getModuleId(), richModule);
 
-                if(richModule.getCatalogId() > 0) {
-                    ModuleCatalog catalog = ALL_MODULE_CATALOGS.get(richModule.getCatalogId());
+                if(richModule.data().getCatalogId() > 0) {
+                    ModuleCatalog catalog = ALL_MODULE_CATALOGS.get(richModule.data().getCatalogId());
                     if(DataUtil.isNotNull(catalog)) {
                         catalog.putChildModule(richModule);
                     } else {
@@ -167,11 +167,11 @@ public class ModuleConfig implements InitializingBean {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.prettyFormat(port)));
                     System.exit(-1);
                 }
-                if(!portTypeEnum.isCorrectPortType(SpecTypeEnum.valueOf(cmptChar.getSpecType()))) {
+                if(!portTypeEnum.isCorrectPortType(SpecTypeEnum.valueOf(cmptChar.data().getSpecType()))) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Error port-type vs spec-type:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar)));
                     System.exit(-1);
                 }
-                if(!SpecMaskEnum.matchInputAndOutput(cmptChar.getType().getSpecMask())) {
+                if(!SpecMaskEnum.matchInputAndOutput(cmptChar.getType().data().getSpecMask())) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- port => char-type.spec-mask must be also support input & output:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar)));
                     System.exit(-1);
                 }
@@ -180,7 +180,7 @@ public class ModuleConfig implements InitializingBean {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Module not found:\n%s.", DataUtil.prettyFormat(port)));
                     System.exit(-1);
                 }
-                if(module.getModuleType() == ModuleTypeEnum.NON_WORKFLOW_MODULE.getType()) {
+                if(module.data().getModuleType() == ModuleTypeEnum.NON_WORKFLOW_MODULE.getType()) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Forbid non-workflow-module hold input/output port:\n%s.", DataUtil.prettyFormat(port)));
                     System.exit(-1);
                 }
@@ -216,7 +216,7 @@ public class ModuleConfig implements InitializingBean {
                 int sequence = 0;
                 if(module.inputPortCount() > 0) {
                     for (ModulePort modulePort : module.getInputPorts()) {
-                        if (modulePort.getSequence() != sequence) {
+                        if (modulePort.data().getSequence() != sequence) {
                             logger.error(String.format("Check module configuration occurs fatal error -- Error input port sequence number:\n%s.", DataUtil.prettyFormat(modulePort)));
                             System.exit(-1);
                         }
@@ -225,7 +225,7 @@ public class ModuleConfig implements InitializingBean {
                 }
                 if(module.outputPortCount() > 0) {
                     for (ModulePort modulePort : module.getOutputPorts()) {
-                        if (modulePort.getSequence() != sequence) {
+                        if (modulePort.data().getSequence() != sequence) {
                             logger.error(String.format("Check module configuration occurs fatal error -- Error output port sequence number:\n%s.", DataUtil.prettyFormat(modulePort)));
                             System.exit(-1);
                         }

@@ -52,6 +52,7 @@ public class ParameterCharValueUpdate {
             case PARAMETER: {
                 NodeParameter parameter = updateParameter(workflowContext, node, targetParameter, charValueText, ParameterCharValueUpdate.class);
                 node.putParameter(parameter);
+                nodeParameterCheck.checkParameter(workflowContext, node);
                 break;
             }
             case OPTIMIZE_EXECUTION: {
@@ -62,8 +63,6 @@ public class ParameterCharValueUpdate {
             default:
                 //TODO throw exception ???
         }
-
-        nodeParameterCheck.checkParameter(workflowContext, node);
         workflowContext.doneUpdateNodeParameter(node, targetParameter);
     }
 }

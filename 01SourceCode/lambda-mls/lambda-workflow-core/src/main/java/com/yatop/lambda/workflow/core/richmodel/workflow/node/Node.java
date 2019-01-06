@@ -146,14 +146,6 @@ public class Node extends RichModel<WfFlowNode> {
         return module.getComponent();
     }
 
-    public int inputPortCount() {
-        return module.inputPortCount();
-    }
-
-    public int outputPortCount() {
-        return module.outputPortCount();
-    }
-
     public int parameterCount() {
         return parameters.size();
     }
@@ -196,6 +188,10 @@ public class Node extends RichModel<WfFlowNode> {
         CollectionUtil.put(optimizeParametersOrderByCharCode, parameter.getCmptChar().data().getCharCode(), parameter);
     }
 
+    public int inputPortCount() {
+        return module.inputPortCount();
+    }
+
     public NodePortInput getInputNodePort(Long nodePortId) {
         return CollectionUtil.get(inputNodePorts, nodePortId);
     }
@@ -219,6 +215,27 @@ public class Node extends RichModel<WfFlowNode> {
         CollectionUtil.put(inputNodePortsOrderBySequence, inputNodePort.getModulePort().data().getSequence(), inputNodePort);
     }
 
+    public int inputDataPortCount() {
+        return module.inputDataPortCount();
+    }
+
+    public List<NodePortInput> getInputDataPorts() {
+        List<NodePortInput> dataPorts = null;
+        if(outputDataPortCount() > 0) {
+            dataPorts = new ArrayList<NodePortInput>();
+            for (NodePortInput inputNodePort : getInputNodePorts()) {
+                if (inputNodePort.isDataPort()) {
+                    dataPorts.add(inputNodePort);
+                }
+            }
+        }
+        return dataPorts;
+    }
+
+    public int outputPortCount() {
+        return module.outputPortCount();
+    }
+
     public NodePortOutput getOutputNodePort(Long nodePortId) {
         return CollectionUtil.get(outputNodePorts, nodePortId);
     }
@@ -233,6 +250,30 @@ public class Node extends RichModel<WfFlowNode> {
 
     public List<NodePortOutput> getOutputNodePorts() {
         return CollectionUtil.toList(outputNodePortsOrderBySequence);
+    }
+
+    public void putOutputNodePort(NodePortOutput outputNodePort) {
+        CollectionUtil.put(outputNodePorts, outputNodePort.data().getNodePortId(), outputNodePort);
+        CollectionUtil.put(outputNodePortsOrderByCharId, outputNodePort.data().getRefCharId(), outputNodePort);
+        CollectionUtil.put(outputNodePortsOrderByCharCode, outputNodePort.getCmptChar().data().getCharCode(), outputNodePort);
+        CollectionUtil.put(outputNodePortsOrderBySequence, outputNodePort.getModulePort().data().getSequence(), outputNodePort);
+    }
+
+    public int outputDataPortCount() {
+        return module.outputDataPortCount();
+    }
+
+    public List<NodePortOutput> getOutputDataPorts() {
+        List<NodePortOutput> dataPorts = null;
+        if(outputDataPortCount() > 0) {
+            dataPorts = new ArrayList<NodePortOutput>();
+            for (NodePortOutput outputNodePort : getOutputNodePorts()) {
+                if (outputNodePort.isDataPort()) {
+                    dataPorts.add(outputNodePort);
+                }
+            }
+        }
+        return dataPorts;
     }
 
     public NodeSchema getOutputDataPortSchema(String charId) {
@@ -258,12 +299,6 @@ public class Node extends RichModel<WfFlowNode> {
         return nodeSchemas;
     }
 
-    public void putOutputNodePort(NodePortOutput outputNodePort) {
-        CollectionUtil.put(outputNodePorts, outputNodePort.data().getNodePortId(), outputNodePort);
-        CollectionUtil.put(outputNodePortsOrderByCharId, outputNodePort.data().getRefCharId(), outputNodePort);
-        CollectionUtil.put(outputNodePortsOrderByCharCode, outputNodePort.getCmptChar().data().getCharCode(), outputNodePort);
-        CollectionUtil.put(outputNodePortsOrderBySequence, outputNodePort.getModulePort().data().getSequence(), outputNodePort);
-    }
 /*
 
     public int globalParameterCount() {
@@ -325,13 +360,5 @@ public class Node extends RichModel<WfFlowNode> {
     public void clearOccuredWarning() {
         if(DataUtil.isNotEmpty(this.data().getWarningMsg()))
             this.data().setWarningMsg(null);
-    }
-
-    public int inputDataPortCount() {
-        return module.inputDataPortCount();
-    }
-
-    public int outputDataPortCount() {
-        return module.outputDataPortCount();
     }
 }

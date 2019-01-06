@@ -96,6 +96,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
         if(this.isStateNormal()) {
             if(fieldAttributes.size() > SystemParameterUtil.find4Integer(SystemParameterEnum.WK_FLOW_SCHEMA_MAX_FIELDS, 512)) {
                 this.changeState2OverloadInterrupt();
+                return;
             }
             if(!CollectionUtil.equals(this.getFieldAttributes(), fieldAttributes)) {
                 CollectionUtil.enhancedClear(this.fieldAttributes);
@@ -105,6 +106,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
         } else {
             if(fieldAttributes.size() > SystemParameterUtil.find4Integer(SystemParameterEnum.WK_FLOW_SCHEMA_MAX_FIELDS, 512)) {
                 this.changeState2OverloadInterrupt();
+                return;
             }
             this.fieldAttributes = fieldAttributes;
             this.dirtyFieldAttributes = true;

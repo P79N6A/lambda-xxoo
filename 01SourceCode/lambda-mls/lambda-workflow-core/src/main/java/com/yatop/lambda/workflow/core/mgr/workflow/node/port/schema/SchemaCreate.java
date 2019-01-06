@@ -22,7 +22,10 @@ public class SchemaCreate {
     @Autowired
     JsonObjectMgr jsonObjectMgr;
 
-    public void createSchema(WorkflowContext workflowContext, Node node, NodePortOutput outputPort) {
+    @Autowired
+    SchemaAnalyze schemaAnalyze;
+
+    private JsonObject createObject(WorkflowContext workflowContext, Node node, NodePortOutput outputPort) {
 
         WfJsonObject object = new WfJsonObject();
         object.setObjectName(String.format("output_port_schema_%s_%s", node.data().getNodeId(), outputPort.getCmptChar().data().getCharId()));
@@ -38,17 +41,21 @@ public class SchemaCreate {
         object.setObjectState(JsonObjectStateEnum.EMPTY.getState());
         object = jsonObjectMgr.insertJsonObject(object, workflowContext.getOperId());
         //object.copyProperties(jsonObjectMgr.queryFieldAttributes(object.data().getObjectId()));
-        JsonObject richObject = new JsonObject(object);
+        return new JsonObject(object);
+    }
 
+    public void createSchema(WorkflowContext workflowContext, Node node, NodePortOutput outputPort) {
+
+        JsonObject jsonObject = createObject(workflowContext, node, outputPort);
         WfFlowNodeSchema schema = new WfFlowNodeSchema();
         schema.setNodePortId(outputPort.data().getNodePortId());
         schema.setSchemaName(outputPort.data().getNodePortName());
         schema.setOwnerNodeId(node.data().getNodeId());
-        schema.setObjectId(richObject.data().getObjectId());
-        schema.setSchemaState(SchemaStateEnum.EMPTY.getState());
+        schema.setObjectId(jsonObject.data().getObjectId());
+        schema.setSchemaState(schemaAnalyze.supportAnalyzeSchema(node) ? SchemaStateEnum.EMPTY.getState() : SchemaStateEnum.NOT_SUPPORT.getState());
         schema = nodeSchemaMgr.insertSchema(schema, workflowContext.getOperId());
         //schema.copyProperties(nodeSchemaMgr.querySchema(schema.data().getNodePortId()));
-        NodeSchema richSchema = new NodeSchema(schema, outputPort.getCmptChar(), richObject);
+        NodeSchema richSchema = new NodeSchema(schema, outputPort.getCmptChar(), jsonObject);
         outputPort.setSchema(richSchema);
     }
 }

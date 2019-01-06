@@ -1,11 +1,9 @@
 package com.yatop.lambda.workflow.core.context;
 
-import com.yatop.lambda.core.enums.AnalyzeTypeEnum;
-import com.yatop.lambda.core.enums.IsWebLinkEnum;
-import com.yatop.lambda.core.enums.JobTypeEnum;
-import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.enums.*;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.data.model.ModelWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
@@ -44,8 +42,8 @@ public class WorkflowContext implements IWorkContext {
   //private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联节点全局参数，key=globalParameterId
     private String operId;
 
-    private TreeMap<Long, Node> analyzeNodes = new TreeMap<Long, Node>();      //待分析节点，key=nodeId
-    private TreeMap<Long, NodeLink> analyzeLinks = new TreeMap<Long, NodeLink>();  //待分析节点链接，key=linkId
+    private Deque<Node> analyzeNodes = new LinkedList<Node>();      //待分析节点，key=nodeId
+    private Deque<NodeLink> analyzeLinks = new LinkedList<NodeLink>();  //待分析节点链接，key=linkId
 
     //工作流新建使用（无需加载）
     public static WorkflowContext BuildWorkflowContext4Create(Project project, Workflow workflow, String operId) {
@@ -190,7 +188,8 @@ public class WorkflowContext implements IWorkContext {
     public void doneUpdateNodeParameter(Node node, NodeParameter parameter) {
         node.downgradeState2Ready();
         this.workflow.changeState2Draft();
-        this.markAnalyzeWithWithUpdateNodeParameter(node);
+        if(parameter.getCmptChar().data().getSpecType() == SpecTypeEnum.PARAMETER.getType())
+            this.markAnalyzeWithUpdateNodeParameter(node, parameter);
     }
 
     public void doneDeleteNode(Node node) {
@@ -218,6 +217,10 @@ public class WorkflowContext implements IWorkContext {
      * Schema Analyze Section
      *
      */
+
+    public AnalyzeTypeEnum getAnalyzeType() {
+        return schemaAnalyze;
+    }
 
     public boolean isAnalyzeWithNone() {
         return this.schemaAnalyze.getType() == AnalyzeTypeEnum.NONE.getType();
@@ -249,9 +252,9 @@ public class WorkflowContext implements IWorkContext {
 
     private void markAnalyzeWithCreateNode(Node node) {
         //TODO 对于异常情况是否抛出错误
-        if(this.isAnalyzeWithNone() || this.isAnalyzeWithCreateNode() || this.isAnalyzeWithCreateLink()) {
+        if(this.isAnalyzeWithNone() || this.isAnalyzeWithCreateNode()) {
             this.schemaAnalyze = AnalyzeTypeEnum.CREATE_NODE;
-            CollectionUtil.put(analyzeNodes, node.data().getNodeId(), node);
+            this.pushAnalyzeNode(node);
         }
     }
 
@@ -259,15 +262,17 @@ public class WorkflowContext implements IWorkContext {
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone()) {
             this.schemaAnalyze = AnalyzeTypeEnum.CREATE_LINK;
-            CollectionUtil.put(analyzeLinks, link.data().getLinkId(), link);
+            this.pushAnalyzeLink(link);
         }
     }
 
-    private void markAnalyzeWithWithUpdateNodeParameter(Node node) {
+    private void markAnalyzeWithUpdateNodeParameter(Node node, NodeParameter parameter) {
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone()) {
-            this.schemaAnalyze = AnalyzeTypeEnum.UPDATE_NODE_PARAMETER;
-            CollectionUtil.put(analyzeNodes, node.data().getNodeId(), node);
+            if(SchemaHelper.reanalyzeSchema(node, parameter)) {
+                this.schemaAnalyze = AnalyzeTypeEnum.UPDATE_NODE_PARAMETER;
+                this.pushAnalyzeNode(node);
+            }
         }
     }
 
@@ -275,7 +280,7 @@ public class WorkflowContext implements IWorkContext {
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone() || this.isAnalyzeWithDeleteNode() || this.isAnalyzeWithDeleteLink()) {
             this.schemaAnalyze = AnalyzeTypeEnum.DELETE_NODE;
-            CollectionUtil.put(analyzeNodes, node.data().getNodeId(), node);
+            this.pushAnalyzeNode(node);
         }
     }
 
@@ -283,7 +288,7 @@ public class WorkflowContext implements IWorkContext {
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone() || this.isAnalyzeWithDeleteLink()) {
             this.schemaAnalyze = AnalyzeTypeEnum.DELETE_LINK;
-            CollectionUtil.put(analyzeLinks, link.data().getLinkId(), link);
+            this.pushAnalyzeLink(link);
         }
     }
 
@@ -731,20 +736,20 @@ public class WorkflowContext implements IWorkContext {
         return analyzeLinks.size();
     }
 
-    public List<Node> getAnalyzeNodes() {
-        return CollectionUtil.toList(analyzeNodes);
+    public void pushAnalyzeNode(Node node) {
+        this.pushAnalyzeNode(node);
     }
 
-    public List<NodeLink> getAnalyzeLinks() {
-        return CollectionUtil.toList(analyzeLinks);
+    public void pushAnalyzeLink(NodeLink link) {
+        this.pushAnalyzeLink(link);
     }
 
-    public Node pollAnalyzeNode() {
-        return analyzeNodes.pollFirstEntry().getValue();
+    public Node popAnalyzeNode() {
+        return CollectionUtil.pollLast(analyzeNodes);
     }
 
-    public NodeLink pollAnalyzeLink() {
-        return analyzeLinks.pollFirstEntry().getValue();
+    public NodeLink popAnalyzeLink() {
+        return CollectionUtil.pollLast(analyzeLinks);
     }
 
     public void eraseNode(Node node) {

@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.context;
 
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
@@ -55,8 +56,8 @@ public class WorkflowNodeContext implements IWorkContext {
         return outWarningMsgs;
     }
 
-    public void putOutWarningMsg(String charId, String warningMsg) {
-        CollectionUtil.put(outWarningMsgs, charId, warningMsg);
+    public void putOutWarningMsg(NodeParameter parameter, String warningMsg) {
+        CollectionUtil.put(outWarningMsgs, parameter.getCmptChar().data().getCharId(), warningMsg);
     }
 
     public int outSchemaCount() {

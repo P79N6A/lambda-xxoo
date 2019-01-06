@@ -8,12 +8,12 @@ public enum AnalyzeTypeEnum {
     NONE(0, "Node"),
 
     /**
-     * 创建节点（排斥除COPY_WORKFLOW之外，包括创建节点和画布内节点复制）
+     * 创建节点（独占，包括创建节点和画布内节点复制创建）
      */
     CREATE_NODE(1, "Create Nodes In Canvas"),
 
     /**
-     * 创建链接（排斥除CREATE_NODE之外）
+     * 创建链接（独占）
      */
     CREATE_LINK(2, "Create Link In Canvas"),
 
