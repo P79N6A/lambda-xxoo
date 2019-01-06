@@ -41,7 +41,7 @@ public class ExecutionJobContext implements IWorkContext {
         }
 
         this.job.flush(this.operId);
-        this.workflowContext.getWorkflow().flush(this.operId);
+        this.workflowContext.flush();
     }
 
     public ExecutionJob getJob() {

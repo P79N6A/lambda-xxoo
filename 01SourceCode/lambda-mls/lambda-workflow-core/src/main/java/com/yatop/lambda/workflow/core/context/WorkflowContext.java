@@ -9,6 +9,7 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.data.model.ModelWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
+import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.*;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;
@@ -27,10 +28,11 @@ public class WorkflowContext implements IWorkContext {
     private boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
     private boolean loadNodeParameter;      //控制是否查询带出节点参数信息
     private boolean loadDataPortSchema;     //控制是否查询带出数据输出端口schema信息
-    private AnalyzeTypeEnum schemaAnalyze;
+    private AnalyzeTypeEnum schemaAnalyze;  //触发的schema分析类型
     private Project project;                //操作关联项目
     private Workflow workflow;              //操作关联工作流
-    private ExecutionJob job;
+    private ExecutionJob job;               //操作关联作业
+    private ExecutionTask task;             //操作关联任务
     private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库，key=dwId
     private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联模型仓库，key=mwId
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();      //操作关联节点，key=nodeId
@@ -134,6 +136,26 @@ public class WorkflowContext implements IWorkContext {
         }
     }
 
+    @Override
+    public void clear() {
+        project = null;
+        workflow = null;
+        operId = null;
+        job = null;
+        task = null;
+        CollectionUtil.enhancedClear(dataWarehouses);
+        CollectionUtil.enhancedClear(modelWarehouses);
+        CollectionUtil.enhancedClear(nodes);
+        CollectionUtil.enhancedClear(links);
+        CollectionUtil.clear(inputLinks);
+        CollectionUtil.clear(outputLinks);
+        CollectionUtil.clear(inputPorts);
+        CollectionUtil.clear(outputPorts);
+        //CollectionUtil.clear(globalParameters);
+        CollectionUtil.clear(analyzeNodes);
+        CollectionUtil.clear(analyzeLinks);
+    }
+
     public void flush() {
         if(!this.isEnableFlushWorkflow())
             return;
@@ -146,9 +168,11 @@ public class WorkflowContext implements IWorkContext {
         this.workflow.flush(this.operId);
     }
 
-    public AnalyzeTypeEnum getAnalyzeType() {
-        return schemaAnalyze;
-    }
+    /*
+     *
+     * Editor Transaction Done Section
+     *
+     */
 
     public void doneCreateNode(Node node) {
         node.downgradeState2Ready();
@@ -189,9 +213,43 @@ public class WorkflowContext implements IWorkContext {
         this.markAnalyzeWithCopyWorkflow();
     }
 
+    /*
+     *
+     * Schema Analyze Section
+     *
+     */
+
+    public boolean isAnalyzeWithNone() {
+        return this.schemaAnalyze.getType() == AnalyzeTypeEnum.NONE.getType();
+    }
+
+    public boolean isAnalyzeWithCreateNode() {
+        return this.schemaAnalyze.getType() == AnalyzeTypeEnum.CREATE_NODE.getType();
+    }
+
+    public boolean isAnalyzeWithCreateLink() {
+        return this.schemaAnalyze.getType() == AnalyzeTypeEnum.CREATE_LINK.getType();
+    }
+
+    public boolean isAnalyzeWithUpdateNodeParameter() {
+        return this.schemaAnalyze.getType() == AnalyzeTypeEnum.UPDATE_NODE_PARAMETER.getType();
+    }
+
+    public boolean isAnalyzeWithDeleteNode() {
+        return this.schemaAnalyze.getType() == AnalyzeTypeEnum.DELETE_NODE.getType();
+    }
+
+    public boolean isAnalyzeWithDeleteLink() {
+        return this.schemaAnalyze.getType() == AnalyzeTypeEnum.DELETE_LINK.getType();
+    }
+
+    public boolean isAnalyzeWithCopyWorkflow() {
+        return this.schemaAnalyze.getType() == AnalyzeTypeEnum.COPY_WORKFLOW.getType();
+    }
+
     private void markAnalyzeWithCreateNode(Node node) {
         //TODO 对于异常情况是否抛出错误
-        if(schemaAnalyze.isAnalyzeWithNone() || schemaAnalyze.isAnalyzeWithCreateNode() || schemaAnalyze.isAnalyzeWithCreateLink()) {
+        if(this.isAnalyzeWithNone() || this.isAnalyzeWithCreateNode() || this.isAnalyzeWithCreateLink()) {
             this.schemaAnalyze = AnalyzeTypeEnum.CREATE_NODE;
             CollectionUtil.put(analyzeNodes, node.data().getNodeId(), node);
         }
@@ -199,7 +257,7 @@ public class WorkflowContext implements IWorkContext {
 
     private void markAnalyzeWithCreateLink(NodeLink link) {
         //TODO 对于异常情况是否抛出错误
-        if(schemaAnalyze.isAnalyzeWithNone()) {
+        if(this.isAnalyzeWithNone()) {
             this.schemaAnalyze = AnalyzeTypeEnum.CREATE_LINK;
             CollectionUtil.put(analyzeLinks, link.data().getLinkId(), link);
         }
@@ -207,7 +265,7 @@ public class WorkflowContext implements IWorkContext {
 
     private void markAnalyzeWithWithUpdateNodeParameter(Node node) {
         //TODO 对于异常情况是否抛出错误
-        if(schemaAnalyze.isAnalyzeWithNone()) {
+        if(this.isAnalyzeWithNone()) {
             this.schemaAnalyze = AnalyzeTypeEnum.UPDATE_NODE_PARAMETER;
             CollectionUtil.put(analyzeNodes, node.data().getNodeId(), node);
         }
@@ -215,7 +273,7 @@ public class WorkflowContext implements IWorkContext {
 
     private void markAnalyzeWithDeleteNode(Node node) {
         //TODO 对于异常情况是否抛出错误
-        if(schemaAnalyze.isAnalyzeWithNone() || schemaAnalyze.isAnalyzeWithDeleteNode() || schemaAnalyze.isAnalyzeWithDeleteLink()) {
+        if(this.isAnalyzeWithNone() || this.isAnalyzeWithDeleteNode() || this.isAnalyzeWithDeleteLink()) {
             this.schemaAnalyze = AnalyzeTypeEnum.DELETE_NODE;
             CollectionUtil.put(analyzeNodes, node.data().getNodeId(), node);
         }
@@ -223,7 +281,7 @@ public class WorkflowContext implements IWorkContext {
 
     private void markAnalyzeWithDeleteLink(NodeLink link) {
         //TODO 对于异常情况是否抛出错误
-        if(schemaAnalyze.isAnalyzeWithNone() || schemaAnalyze.isAnalyzeWithDeleteLink()) {
+        if(this.isAnalyzeWithNone() || this.isAnalyzeWithDeleteLink()) {
             this.schemaAnalyze = AnalyzeTypeEnum.DELETE_LINK;
             CollectionUtil.put(analyzeLinks, link.data().getLinkId(), link);
         }
@@ -231,9 +289,15 @@ public class WorkflowContext implements IWorkContext {
 
     private void markAnalyzeWithCopyWorkflow() {
         //TODO 对于异常情况是否抛出错误
-        if(schemaAnalyze.isAnalyzeWithCreateNode())
+        if(this.isAnalyzeWithCreateNode())
             this.schemaAnalyze = AnalyzeTypeEnum.COPY_WORKFLOW;
     }
+
+    /*
+     *
+     * Common Section
+     *
+     */
 
     public boolean isLazyLoadMode() {
         return lazyLoadMode;
@@ -265,12 +329,27 @@ public class WorkflowContext implements IWorkContext {
 
     public ExecutionJob getJob() {
         if(!executionWorkMode){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Non execution work mode.", "工作流上下文错误");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Non execution work mode.", "系统内部发生错误，请联系管理员");
         }
         if(executionWorkMode && DataUtil.isNull(job)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution work mode missing job info.", "工作流上下文错误");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution work mode missing job info.", "系统内部发生错误，请联系管理员");
         }
         return job;
+    }
+
+    public ExecutionTask getTask() {
+        ExecutionJob execJob = getJob();
+        if(executionWorkMode && DataUtil.isNull(task)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution work mode missing task info.", "系统内部发生错误，请联系管理员");
+        }
+        if(!execJob.data().getJobId().equals(task.data().getOwnerJobId())) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution job.job_id & task.owner_job_id inconsistent.", "系统内部发生错误，请联系管理员", execJob, task);
+        }
+        return task;
+    }
+
+    public void switchTask(ExecutionTask task) {
+        this.task = task;
     }
 
     public DataWarehouse getDataWarehouse(Long dataWarehouseId) {
@@ -287,6 +366,10 @@ public class WorkflowContext implements IWorkContext {
 
     public List<ModelWarehouse> getModelWarehouses() {
         return CollectionUtil.toList(modelWarehouses);
+    }
+
+    public String getOperId() {
+        return operId;
     }
 
     /*
@@ -315,7 +398,7 @@ public class WorkflowContext implements IWorkContext {
         return getNode(nodeLink.data().getDstNodeId());
     }
 
-    //key:nodePortId
+    //key:inputNodePortId
     public TreeMap<Long, List<Node>> getUpstreamNodes(Node node) {
         if(node.inputPortCount() == 0)
             return null;
@@ -324,9 +407,27 @@ public class WorkflowContext implements IWorkContext {
         if(DataUtil.isNotEmpty(inLinks)) {
             TreeMap<Long, List<Node>> upstreamNodes = new TreeMap<Long, List<Node>>();
             for(NodeLink nodeLink : inLinks) {
-
+                Node upstreamNode = this.getUpstreamNode(nodeLink);
+                CollectionUtil.put4ChainMap(upstreamNodes, nodeLink.data().getDstPortId(), upstreamNode);
             }
             return upstreamNodes;
+        }
+        return null;
+    }
+
+    //key:outputNodePortId
+    public TreeMap<Long, List<Node>> getDownstreamNodes(Node node) {
+        if(node.inputPortCount() == 0)
+            return null;
+
+        List<NodeLink> outLinks = this.getOutLinks(node);
+        if(DataUtil.isNotEmpty(outLinks)) {
+            TreeMap<Long, List<Node>> downstreamNodes = new TreeMap<Long, List<Node>>();
+            for(NodeLink nodeLink : outLinks) {
+                Node downstreamNode = this.getDownstreamNode(nodeLink);
+                CollectionUtil.put4ChainMap(downstreamNodes, nodeLink.data().getSrcPortId(), downstreamNode);
+            }
+            return downstreamNodes;
         }
         return null;
     }
@@ -342,6 +443,16 @@ public class WorkflowContext implements IWorkContext {
 
     public Node fetchDownstreamNode(NodeLink nodeLink) {
         return fetchNode(nodeLink.data().getDstNodeId());
+    }
+
+    public TreeMap<Long, List<Node>> fetchUpstreamNodes(Node node) {
+        WorkflowContextHelper.loadUpstreamNodes(this, node);
+        return getUpstreamNodes(node);
+    }
+
+    public TreeMap<Long, List<Node>> fetchDownstreamNodes(Node node) {
+        WorkflowContextHelper.loadDownstreamNodes(this, node);
+        return getDownstreamNodes(node);
     }
 
     /*
@@ -495,6 +606,32 @@ public class WorkflowContext implements IWorkContext {
         return outputPorts.get(portId);
     }
 
+    public List<NodePortOutput> getUpstreamPorts(Long dstPortId) {
+        List<NodeLink> nodeLinks = this.getInLinks(dstPortId);
+        if(DataUtil.isNotEmpty(nodeLinks)) {
+            List<NodePortOutput> outputPorts = new ArrayList<NodePortOutput>(nodeLinks.size());
+            for(NodeLink nodeLink : nodeLinks) {
+                NodePortOutput outputNodePort = this.getOutputPort(nodeLink.data().getSrcPortId());
+                outputPorts.add(outputNodePort);
+            }
+            return outputPorts;
+        }
+        return null;
+    }
+
+    public List<NodePortInput> getDownstreamPorts(Long srcPortId) {
+        List<NodeLink> nodeLinks = this.getOutLinks(srcPortId);
+        if(DataUtil.isNotEmpty(nodeLinks)) {
+            List<NodePortInput> inputPorts = new ArrayList<NodePortInput>(nodeLinks.size());
+            for(NodeLink nodeLink : nodeLinks) {
+                NodePortInput inputNodePort = this.getInputPort(nodeLink.data().getDstPortId());
+                inputPorts.add(inputNodePort);
+            }
+            return inputPorts;
+        }
+        return null;
+    }
+
     public NodePortInput fetchInputPort(Long portId) {
         WorkflowContextHelper.loadInputPort(this, portId);
         return getInputPort(portId);
@@ -503,6 +640,16 @@ public class WorkflowContext implements IWorkContext {
     public NodePortInput fetchOutputPort(Long portId) {
         WorkflowContextHelper.loadOutputPort(this, portId);
         return getInputPort(portId);
+    }
+
+    public List<NodePortOutput> fetchUpstreamPorts(Long dstPortId) {
+        WorkflowContextHelper.loadUpstreamPorts(this, dstPortId);
+        return this.getUpstreamPorts(dstPortId);
+    }
+
+    public List<NodePortInput> fetchDownstreamPorts(Long srcPortId) {
+        WorkflowContextHelper.loadDownstreamPorts(this, srcPortId);
+        return this.getDownstreamPorts(srcPortId);
     }
 
     /*
@@ -576,10 +723,6 @@ public class WorkflowContext implements IWorkContext {
      *
      */
 
-    public String getOperId() {
-        return operId;
-    }
-
     public int analyzeNodeCount() {
         return analyzeNodes.size();
     }
@@ -626,23 +769,5 @@ public class WorkflowContext implements IWorkContext {
             CollectionUtil.remove(outputPorts, outputNodePort.data().getNodePortId());
         }
         CollectionUtil.remove(nodes, node.data().getNodeId());
-    }
-
-    @Override
-    public void clear() {
-        project = null;
-        workflow = null;
-        operId = null;
-        CollectionUtil.enhancedClear(dataWarehouses);
-        CollectionUtil.enhancedClear(modelWarehouses);
-        CollectionUtil.enhancedClear(nodes);
-        CollectionUtil.enhancedClear(links);
-        CollectionUtil.clear(inputLinks);
-        CollectionUtil.clear(outputLinks);
-        CollectionUtil.clear(inputPorts);
-        CollectionUtil.clear(outputPorts);
-      //CollectionUtil.clear(globalParameters);
-        CollectionUtil.clear(analyzeNodes);
-        CollectionUtil.clear(analyzeLinks);
     }
 }

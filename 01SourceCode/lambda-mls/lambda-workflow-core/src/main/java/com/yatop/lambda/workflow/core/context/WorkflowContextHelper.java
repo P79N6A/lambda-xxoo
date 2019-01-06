@@ -46,7 +46,7 @@ public class WorkflowContextHelper {
 
     protected static void loadUpstreamNodes(WorkflowContext workflowContext, Node node) {
         if(workflowContext.isLazyLoadMode()) {
-            //List<NodeLink> nodeLinks = WorkflowContextHelper.LINK_QUERY.queryInLinks(workflowContext, node);
+            List<NodeLink> nodeLinks = workflowContext.fetchInLinks(node);
             if (DataUtil.isNotEmpty(nodeLinks)) {
                 for (NodeLink nodeLink : nodeLinks) {
                     loadOneNode(workflowContext, nodeLink.data().getSrcNodeId());
@@ -57,7 +57,7 @@ public class WorkflowContextHelper {
 
     protected static void loadDownstreamNodes(WorkflowContext workflowContext, Node node) {
         if(workflowContext.isLazyLoadMode()) {
-            //List<NodeLink> nodeLinks = WorkflowContextHelper.LINK_QUERY.queryOutLinks(workflowContext, node);
+            List<NodeLink> nodeLinks = workflowContext.fetchOutLinks(node);
             if (DataUtil.isNotEmpty(nodeLinks)) {
                 for (NodeLink nodeLink : nodeLinks) {
                     loadOneNode(workflowContext, nodeLink.data().getDstNodeId());
@@ -113,20 +113,6 @@ public class WorkflowContextHelper {
             WorkflowContextHelper.NODE_PORT_QUERY.queryOutputNodePort(workflowContext, portId);
         }
     }
-
-/*    protected static void loadUpstreamNonWebPort(WorkflowContext workflowContext, Long dstPortId) {
-        if(workflowContext.isLazyLoadMode()) {
-            NodeLink nodeLink = workflowContext.fetchNonWebInLink(dstPortId);
-            WorkflowContextHelper.NODE_PORT_QUERY.queryOutputNodePort(workflowContext, nodeLink.data().getSrcPortId());
-        }
-    }
-
-    protected static void loadUpstreamWebPort(WorkflowContext workflowContext, Long dstPortId) {
-        if(workflowContext.isLazyLoadMode()) {
-            NodeLink nodeLink = workflowContext.fetchWebInLink(dstPortId);
-            WorkflowContextHelper.NODE_PORT_QUERY.queryOutputNodePort(workflowContext, nodeLink.data().getSrcPortId());
-        }
-    }*/
 
     protected static void loadUpstreamPorts(WorkflowContext workflowContext, Long dstPortId) {
         if(workflowContext.isLazyLoadMode()) {

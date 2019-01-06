@@ -60,32 +60,4 @@ public enum AnalyzeTypeEnum {
     public void setName(String name) {
         this.name = name;
     }
-
-    public boolean isAnalyzeWithNone() {
-        return this == AnalyzeTypeEnum.NONE;
-    }
-
-    public boolean isAnalyzeWithCreateNode() {
-        return this == AnalyzeTypeEnum.CREATE_NODE;
-    }
-
-    public boolean isAnalyzeWithCreateLink() {
-        return this == AnalyzeTypeEnum.CREATE_LINK;
-    }
-
-    public boolean isAnalyzeWithUpdateNodeParameter() {
-        return this == AnalyzeTypeEnum.UPDATE_NODE_PARAMETER;
-    }
-
-    public boolean isAnalyzeWithDeleteNode() {
-        return this == AnalyzeTypeEnum.DELETE_NODE;
-    }
-
-    public boolean isAnalyzeWithDeleteLink() {
-        return this == AnalyzeTypeEnum.DELETE_LINK;
-    }
-
-    public boolean isAnalyzeWithCopyWorkflow() {
-        return this == AnalyzeTypeEnum.COPY_WORKFLOW;
-    }
 }
