@@ -555,6 +555,11 @@ public class WorkflowContext implements IWorkContext {
         return filterPortInLinks4Port(nodeLinks, IsWebLinkEnum.NO);
     }
 
+    public NodeLink getWebInLink(Long dstPortId) {
+        List<NodeLink> nodeLinks = this.getInLinks(dstPortId);
+        return filterPortInLinks4Port(nodeLinks, IsWebLinkEnum.YES);
+    }
+
     public List<NodeLink> getNonWebInLinks(Node node) {
         List<NodeLink> nodeLinks = this.getInLinks(node);
         return filterPortInLinks4Node(nodeLinks, IsWebLinkEnum.NO);
@@ -605,6 +610,11 @@ public class WorkflowContext implements IWorkContext {
     public NodeLink fetchNonWebInLink(Long dstPortId) {
         WorkflowContextHelper.loadInLinks(this, dstPortId);
         return getNonWebInLink(dstPortId);
+    }
+
+    public NodeLink fetchWebInLink(Long dstPortId) {
+        WorkflowContextHelper.loadInLinks(this, dstPortId);
+        return getWebInLink(dstPortId);
     }
 
     public List<NodeLink> fetchNonWebInLinks(Node node) {
