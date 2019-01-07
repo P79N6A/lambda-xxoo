@@ -47,7 +47,7 @@ public class NodePortCreate {
         //nodePort.copyProperties(nodePortMgr.queryNodePort(nodePort.getNodePortId()));
         NodePortOutput richNodePort = new NodePortOutput(nodePort, outputPort);
 
-        if(richNodePort.isDataPort()) {
+        if(richNodePort.isDataTablePort()) {
             schemaCreate.createSchema(workflowContext, node, richNodePort);
         }
 

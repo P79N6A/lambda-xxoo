@@ -64,7 +64,11 @@ public class SchemaHelper {
         schema.clearColoured();
     }
 
-    static public boolean reanalyzeSchema(Node node, NodeParameter parameter) {
-        return SCHEMA_ANALYZE.reanalyzeSchema(node, parameter);
+    static public boolean needAnalyzeSchema(Node node, NodeParameter parameter) {
+        return SCHEMA_ANALYZE.needAnalyzeSchema(node, parameter);
+    }
+
+    static public boolean needAnalyzeSchema(Node node) {
+        return SCHEMA_ANALYZE.needAnalyzeSchema(node);
     }
 }

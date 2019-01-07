@@ -3,6 +3,7 @@ package com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,8 +34,8 @@ public class SchemaAnalyzer {
             case DELETE_LINK:
                 dealAnalyzeSchema4DeleteLink(workflowContext);
                 break;
-            case COPY_WORKFLOW:
-                dealAnalyzeSchema4CopyWokflow(workflowContext);
+            case REFRESH_WORKFLOW:
+                dealAnalyzeSchema4RefreshWokflow(workflowContext);
                 break;
             default:
                 break;
@@ -42,20 +43,28 @@ public class SchemaAnalyzer {
     }
 
     public static void dealAnalyzeSchema4CreateNode(WorkflowContext workflowContext) {
-        if(workflowContext.analyzeNodeCount() == 0)
-            return;
 
-        while(workflowContext.analyzeNodeCount() > 0) {
-
-            Node analyzeNode = workflowContext.popAnalyzeNode();
-            if()
-            SCHEMA_ANALYZE.analyzeSchema(workflowContext, analyzeNode);
-            analyzeNode.getOutputDataPorts();
+        Node analyzeNode;
+        while(DataUtil.isNotNull(analyzeNode = workflowContext.popAnalyzeNode())) {
+            if(analyzeNode.isHeadNode() && analyzeNode.haveOutputDataTablePort() && !analyzeNode.isAnalyzed()) {
+                SCHEMA_ANALYZE.analyzeSchema(workflowContext, analyzeNode);
+                analyzeNode.markAnalyzed();
+            }
         }
     }
 
     public static void dealAnalyzeSchema4CreateLink(WorkflowContext workflowContext) {
+        NodeLink analyzeLink = workflowContext.popAnalyzeLink();
+        if(DataUtil.isNotNull(analyzeLink) && !analyzeLink.isWebLink()) {
+            workflowContext.clearAnalyzeNodes();
+            Node analyzeNode = workflowContext.fetchDownstreamNode(analyzeLink);
+            if(!analyzeNode.isAnalyzed()) {
+                SCHEMA_ANALYZE.analyzeSchema(workflowContext, analyzeNode);
+                analyzeNode.markAnalyzed();
 
+                //TODO ....
+            }
+        }
     }
 
     public static void dealAnalyzeSchema4UpdateNodeParameter(WorkflowContext workflowContext) {
@@ -70,7 +79,7 @@ public class SchemaAnalyzer {
 
     }
 
-    public static void dealAnalyzeSchema4CopyWokflow(WorkflowContext workflowContext) {
+    public static void dealAnalyzeSchema4RefreshWokflow(WorkflowContext workflowContext) {
 
     }
 }

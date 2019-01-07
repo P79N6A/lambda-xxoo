@@ -30,8 +30,8 @@ public class NodePortInput extends RichModel<WfFlowNodePort> {
         return modulePort.getCmptChar();
     }
 
-    public boolean isDataPort() {
-        return modulePort.isDataPort();
+    public boolean isDataTablePort() {
+        return modulePort.isDataTablePort();
     }
 
     public boolean isAnalyzed() {

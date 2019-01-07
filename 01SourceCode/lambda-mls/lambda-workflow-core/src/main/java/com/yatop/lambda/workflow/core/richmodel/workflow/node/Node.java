@@ -31,12 +31,14 @@ public class Node extends RichModel<WfFlowNode> {
   //private TreeMap<String, GlobalParameter> globalParameters = new TreeMap<String, GlobalParameter>();  //操作关联节点参数，key=charId
     private boolean deleted;
     private boolean analyzed;
+    private boolean isStateChanged;
 
     public Node(WfFlowNode data, Module module) {
         super(data);
         this.module = module;
         this.deleted = false;
         this.analyzed = false;
+        this.isStateChanged = false;
     }
 
     @Override
@@ -50,6 +52,10 @@ public class Node extends RichModel<WfFlowNode> {
         CollectionUtil.clear(outputNodePortsOrderBySequence);
       //CollectionUtil.enhancedClear(globalParameters);
         super.clear();
+    }
+
+    public boolean isStateChanged() {
+        return isStateChanged;
     }
 
     public void flush(boolean flushNodeParameter, boolean flushDataPortSchema, String operId) {
@@ -136,6 +142,7 @@ public class Node extends RichModel<WfFlowNode> {
             return;
 
         this.data().setNodeState(stateEnum.getState());
+        this.isStateChanged = true;
     }
 
     public Module getModule() {
@@ -192,6 +199,22 @@ public class Node extends RichModel<WfFlowNode> {
         return module.inputPortCount();
     }
 
+    public boolean isHeadNode() {
+        return module.inputPortCount() == 0;
+    }
+
+    public boolean isTailNode() {
+        return module.outputPortCount() == 0;
+    }
+
+    public boolean haveOutputDataTablePort() {
+        return module.outputDataTablePortCount() > 0;
+    }
+
+    public int inputNodePortCount() {
+        return inputNodePorts.size();
+    }
+
     public NodePortInput getInputNodePort(Long nodePortId) {
         return CollectionUtil.get(inputNodePorts, nodePortId);
     }
@@ -215,16 +238,16 @@ public class Node extends RichModel<WfFlowNode> {
         CollectionUtil.put(inputNodePortsOrderBySequence, inputNodePort.getModulePort().data().getSequence(), inputNodePort);
     }
 
-    public int inputDataPortCount() {
-        return module.inputDataPortCount();
+    public int inputDataTablePortCount() {
+        return module.inputDataTablePortCount();
     }
 
-    public List<NodePortInput> getInputDataPorts() {
+    public List<NodePortInput> getInputDataTablePorts() {
         List<NodePortInput> dataPorts = null;
-        if(outputDataPortCount() > 0) {
+        if(outputDataTablePortCount() > 0) {
             dataPorts = new ArrayList<NodePortInput>();
             for (NodePortInput inputNodePort : getInputNodePorts()) {
-                if (inputNodePort.isDataPort()) {
+                if (inputNodePort.isDataTablePort()) {
                     dataPorts.add(inputNodePort);
                 }
             }
@@ -234,6 +257,10 @@ public class Node extends RichModel<WfFlowNode> {
 
     public int outputPortCount() {
         return module.outputPortCount();
+    }
+
+    public int outputNodePortCount() {
+        return outputNodePorts.size();
     }
 
     public NodePortOutput getOutputNodePort(Long nodePortId) {
@@ -259,16 +286,16 @@ public class Node extends RichModel<WfFlowNode> {
         CollectionUtil.put(outputNodePortsOrderBySequence, outputNodePort.getModulePort().data().getSequence(), outputNodePort);
     }
 
-    public int outputDataPortCount() {
-        return module.outputDataPortCount();
+    public int outputDataTablePortCount() {
+        return module.outputDataTablePortCount();
     }
 
-    public List<NodePortOutput> getOutputDataPorts() {
+    public List<NodePortOutput> getOutputDataTablePorts() {
         List<NodePortOutput> dataPorts = null;
-        if(outputDataPortCount() > 0) {
+        if(outputDataTablePortCount() > 0) {
             dataPorts = new ArrayList<NodePortOutput>();
             for (NodePortOutput outputNodePort : getOutputNodePorts()) {
-                if (outputNodePort.isDataPort()) {
+                if (outputNodePort.isDataTablePort()) {
                     dataPorts.add(outputNodePort);
                 }
             }
@@ -276,22 +303,22 @@ public class Node extends RichModel<WfFlowNode> {
         return dataPorts;
     }
 
-    public NodeSchema getOutputDataPortSchema(String charId) {
+    public NodeSchema getOutputDataTablePortSchema(String charId) {
         NodePortOutput outputNodePort = getOutputNodePort(charId);
-        return outputNodePort.isDataPort() ? outputNodePort.getSchema() : null;
+        return outputNodePort.isDataTablePort() ? outputNodePort.getSchema() : null;
     }
 
-    public NodeSchema getOutputDataPortSchemaByCharCode(String charCode) {
+    public NodeSchema getOutputDataTablePortSchemaByCharCode(String charCode) {
         NodePortOutput outputNodePort = getOutputNodePortByCharCode(charCode);
-        return outputNodePort.isDataPort() ? outputNodePort.getSchema() : null;
+        return outputNodePort.isDataTablePort() ? outputNodePort.getSchema() : null;
     }
 
-    public List<NodeSchema> getOutputDataPortSchemas() {
+    public List<NodeSchema> getOutputDataTablePortSchemas() {
         List<NodeSchema> nodeSchemas = null;
-        if(outputDataPortCount() > 0) {
-            nodeSchemas = new ArrayList<NodeSchema>(outputDataPortCount());
+        if(outputDataTablePortCount() > 0) {
+            nodeSchemas = new ArrayList<NodeSchema>(outputDataTablePortCount());
             for (NodePortOutput outputNodePort : getOutputNodePorts()) {
-                if (outputNodePort.isDataPort()) {
+                if (outputNodePort.isDataTablePort()) {
                     nodeSchemas.add(outputNodePort.getSchema());
                 }
             }
@@ -334,7 +361,7 @@ public class Node extends RichModel<WfFlowNode> {
         return analyzed;
     }
 
-    private void markAnalyzed() {
+    public void markAnalyzed() {
         if(inputPortCount() > 0) {
             for (NodePortInput inputNodePort : this.getInputNodePorts()) {
                 inputNodePort.markAnalyzed();

@@ -1,5 +1,6 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema;
 
+import com.yatop.lambda.core.enums.IsRequiredEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.exception.LambdaException;
@@ -7,9 +8,7 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.context.WorkflowNodeContext;
 import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.*;
 import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import org.springframework.stereotype.Service;
@@ -23,15 +22,26 @@ public class SchemaAnalyze {
 
     public boolean supportAnalyzeSchema(Node node) {
 
-        if (node.outputDataPortCount() > 0) {
+        if (node.outputDataTablePortCount() > 0) {
             return ClazzHelperUtil.getModuleClazzBean(node.getModule()).supportAnalyzeSchema();
         }
         return false;
     }
 
-    public boolean reanalyzeSchema(Node node, NodeParameter parameter) {
+    public boolean needAnalyzeSchema(Node node) {
 
-        if (node.outputDataPortCount() > 0 && parameter.getCmptChar().data().getSpecType() == SpecTypeEnum.PARAMETER.getType()) {
+        if (node.haveOutputDataTablePort()) {
+            IModuleClazz moduleClazz = ClazzHelperUtil.getModuleClazzBean(node.getModule());
+            if (moduleClazz.supportAnalyzeSchema()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean needAnalyzeSchema(Node node, NodeParameter parameter) {
+
+        if (node.haveOutputDataTablePort() && parameter.getCmptChar().data().getSpecType() == SpecTypeEnum.PARAMETER.getType()) {
             IModuleClazz moduleClazz = ClazzHelperUtil.getModuleClazzBean(node.getModule());
             if (moduleClazz.supportAnalyzeSchema()) {
                 HashSet<String> cmptCodeSet = moduleClazz.reanlyzeSchemaParameterSet();
@@ -41,30 +51,53 @@ public class SchemaAnalyze {
         return false;
     }
 
-    private boolean reanalyzeSchemaParameterWarning(IModuleClazz moduleClazz, Node node) {
-        HashSet<String> cmptCodeSet = moduleClazz.reanlyzeSchemaParameterSet();
-        List<NodeParameter> nodeParameters = node.getParameters();
-        if(DataUtil.isNotEmpty(nodeParameters)) {
-            for (NodeParameter nodeParameter : node.getParameters()) {
-                if (CollectionUtil.contains(cmptCodeSet, nodeParameter.getCmptChar().data().getCharCode()) && nodeParameter.isOccuredWarning())
-                    return true;
+    private boolean reanalyzeSchemaConditionReady(WorkflowContext workflowContext, IModuleClazz moduleClazz, Node node) {
+        {
+            //reanalyze schema parameter in warning
+            HashSet<String> cmptCodeSet = moduleClazz.reanlyzeSchemaParameterSet();
+            List<NodeParameter> nodeParameters = node.getParameters();
+            if (DataUtil.isNotEmpty(nodeParameters)) {
+                for (NodeParameter nodeParameter : node.getParameters()) {
+                    if (CollectionUtil.contains(cmptCodeSet, nodeParameter.getCmptChar().data().getCharCode()) && nodeParameter.isOccuredWarning())
+                        return false;
+                }
             }
         }
-        return false;
+        {
+            //required inputDataTablePort -> nonWebUpstreamPort's schema state is normal
+            if(!node.isHeadNode()) {
+                if(!node.haveOutputDataTablePort())
+                    return false;
+
+                TreeMap<Long, NodePortOutput> upstreamPorts = workflowContext.fetchNonWebUpstreamPorts(node);
+                if(DataUtil.isEmpty(upstreamPorts))
+                    return false;
+
+                for (NodePortInput inputNodePort : node.getInputDataTablePorts()) {
+                    if(inputNodePort.getCmptChar().data().getIsRequired() == IsRequiredEnum.YES.getMark()) {
+                        NodePortOutput upstreamPort = CollectionUtil.get(upstreamPorts, inputNodePort.data().getNodePortId());
+                        if(DataUtil.isNull(upstreamPort) || !upstreamPort.getSchema().isStateNormal()) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public void analyzeSchema(WorkflowContext workflowContext, Node node) {
 
         IModuleClazz moduleClazz = ClazzHelperUtil.getModuleClazzBean(node.getModule());
-        if (node.outputDataPortCount() > 0) {
+        if (node.haveOutputDataTablePort()) {
             if (moduleClazz.supportAnalyzeSchema()) {
-                if(!this.reanalyzeSchemaParameterWarning(moduleClazz, node)) {
+                if(!this.reanalyzeSchemaConditionReady(workflowContext, moduleClazz, node)) {
                     try {
                         WorkflowNodeContext nodeContext = new WorkflowNodeContext(workflowContext, node);
                         moduleClazz.analyzeSchema(nodeContext);
                         TreeMap<String, NodeSchema> outSchemas = nodeContext.getOutSchemas();
 
-                        List<NodeSchema> dataPortSchemas = node.getOutputDataPortSchemas();
+                        List<NodeSchema> dataPortSchemas = node.getOutputDataTablePortSchemas();
                         if (DataUtil.isNotEmpty(dataPortSchemas)) {
                             for (NodeSchema nodeSchema : dataPortSchemas) {
                                 if (!CollectionUtil.containsKey(outSchemas, nodeSchema.getCmptChar().data().getCharId()))
@@ -76,15 +109,14 @@ public class SchemaAnalyze {
                         throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze node data port schema failed -- module-clazz occur error.", "工作流组件分析节点数据端口schema时发生错误", e, node);
                     }
                 } else {
-                    List<NodeSchema> dataPortSchemas = node.getOutputDataPortSchemas();
+                    List<NodeSchema> dataPortSchemas = node.getOutputDataTablePortSchemas();
                     if (DataUtil.isNotEmpty(dataPortSchemas)) {
-                        for (NodeSchema nodeSchema : dataPortSchemas) {
+                        for (NodeSchema nodeSchema : dataPortSchemas)
                             nodeSchema.changeState2Empty();
-                        }
                     }
                 }
             } else {
-                List<NodeSchema> dataPortSchemas = node.getOutputDataPortSchemas();
+                List<NodeSchema> dataPortSchemas = node.getOutputDataTablePortSchemas();
                 if (DataUtil.isNotEmpty(dataPortSchemas)) {
                     for (NodeSchema nodeSchema : dataPortSchemas) {
                         nodeSchema.changeState2NotSupport();

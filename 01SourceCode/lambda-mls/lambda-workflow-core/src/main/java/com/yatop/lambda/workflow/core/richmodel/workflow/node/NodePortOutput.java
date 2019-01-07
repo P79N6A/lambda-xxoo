@@ -27,7 +27,7 @@ public class NodePortOutput extends RichModel<WfFlowNodePort> {
     }
 
     protected void flush(String operId) {
-        if (this.isDataPort() && DataUtil.isNotNull(schema)) {
+        if (this.isDataTablePort() && DataUtil.isNotNull(schema)) {
             schema.flush(operId);
         }
     }
@@ -40,8 +40,8 @@ public class NodePortOutput extends RichModel<WfFlowNodePort> {
         return modulePort.getCmptChar();
     }
 
-    public boolean isDataPort() {
-        return modulePort.isDataPort();
+    public boolean isDataTablePort() {
+        return modulePort.isDataTablePort();
     }
 
     public NodeSchema getSchema() {

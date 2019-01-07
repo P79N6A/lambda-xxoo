@@ -18,8 +18,8 @@ public class Module extends RichModel<WfModule> implements Comparable<Module> {
     private TreeMap<Long, ModulePort> outputPorts = new TreeMap<Long, ModulePort>();    //工作流组件输出端口
     private TreeMap<String, ModulePort> outputPortsOrderByCharId = new TreeMap<String, ModulePort>();     //工作流组件输出端口
     private TreeMap<Integer, ModulePort> outputPortsOrderBySequence = new TreeMap<Integer, ModulePort>();   //工作流组件输出端口按序号排序
-    private int inputDataPortCount = 0;
-    private int outputDataPortCount = 0;
+    private int inputDataTablePortCount = 0;
+    private int outputDataTablePortCount = 0;
 
     public Module(WfModule data, Component component) {
         super(data);
@@ -40,8 +40,8 @@ public class Module extends RichModel<WfModule> implements Comparable<Module> {
         CollectionUtil.clear(outputPorts);
         CollectionUtil.clear(outputPortsOrderByCharId);
         CollectionUtil.clear(outputPortsOrderBySequence);
-        inputDataPortCount = 0;
-        outputDataPortCount = 0;
+        inputDataTablePortCount = 0;
+        outputDataTablePortCount = 0;
         super.clear();
     }
 
@@ -50,21 +50,21 @@ public class Module extends RichModel<WfModule> implements Comparable<Module> {
             int counter = 0;
             if(inputPortCount() > 0) {
                 for (ModulePort modulePort : getInputPorts()) {
-                    if (modulePort.isDataPort())
+                    if (modulePort.isDataTablePort())
                         counter++;
                 }
             }
-            inputDataPortCount = counter;
+            inputDataTablePortCount = counter;
         }
          {
             int counter = 0;
             if(outputPortCount() > 0) {
                 for (ModulePort modulePort : getOutputPorts()) {
-                    if (modulePort.isDataPort())
+                    if (modulePort.isDataTablePort())
                         counter++;
                 }
             }
-             outputDataPortCount = counter;
+             outputDataTablePortCount = counter;
         }
     }
 
@@ -118,11 +118,11 @@ public class Module extends RichModel<WfModule> implements Comparable<Module> {
         return DataUtil.isNotNull(this.getInputPort(modulePort.data().getPortId())) || DataUtil.isNotNull(this.getOutputPort(modulePort.data().getPortId()));
     }
 
-    public int inputDataPortCount() {
-        return inputDataPortCount;
+    public int inputDataTablePortCount() {
+        return inputDataTablePortCount;
     }
 
-    public int outputDataPortCount() {
-        return outputDataPortCount;
+    public int outputDataTablePortCount() {
+        return outputDataTablePortCount;
     }
 }

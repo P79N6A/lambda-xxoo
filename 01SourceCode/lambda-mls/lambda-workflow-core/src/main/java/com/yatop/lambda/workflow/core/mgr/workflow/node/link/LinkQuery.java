@@ -78,7 +78,7 @@ public class LinkQuery {
 
     public List<NodeLink> queryOutLinks(WorkflowContext workflowContext, Node srcNode) {
 
-        if(srcNode.outputPortCount() == 0)
+        if(srcNode.isTailNode())
             return null;
 
         return doneQueyLinks(workflowContext, nodeLinkMgr.queryLinkBySrcNodeId(srcNode.data().getNodeId()));
@@ -102,7 +102,7 @@ public class LinkQuery {
     }
 
     public List<NodeLink> queryInLinks(WorkflowContext workflowContext, Node dstNode) {
-        if(dstNode.inputPortCount() == 0)
+        if(dstNode.isHeadNode())
             return null;
 
         return doneQueyLinks(workflowContext, nodeLinkMgr.queryLinkByDstNodeId(dstNode.data().getNodeId()));

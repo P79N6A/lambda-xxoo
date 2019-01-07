@@ -25,7 +25,7 @@ public class SchemaQuery {
         if(node.outputPortCount() > 0) {
             int counter = 0;
             for (NodePortOutput port : node.getOutputNodePorts()) {
-                if (port.isDataPort()) {
+                if (port.isDataTablePort()) {
                     counter++;
                 }
             }
@@ -52,7 +52,7 @@ public class SchemaQuery {
 
     public void querySchema(WorkflowContext workflowContext, NodePortOutput outputNodePort) {
 
-        if(outputNodePort.isDataPort()) {
+        if(outputNodePort.isDataTablePort()) {
             WfFlowNodeSchema schema = nodeSchemaMgr.querySchema(outputNodePort.data().getNodePortId());
             outputNodePort.setSchema(new NodeSchema(schema, outputNodePort.getCmptChar()));
         } else {

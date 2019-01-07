@@ -6,6 +6,8 @@ import com.yatop.lambda.workflow.core.mgr.workflow.node.link.LinkQuery;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.NodePortQuery;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -115,9 +117,9 @@ public class WorkflowContextHelper {
         }
     }
 
-    protected static void loadUpstreamPorts(WorkflowContext workflowContext, Long dstPortId) {
+    protected static void loadUpstreamPorts(WorkflowContext workflowContext, NodePortInput inputNodePort) {
         if(workflowContext.isLazyLoadMode()) {
-            List<NodeLink> nodeLinks = workflowContext.fetchInLinks(dstPortId);
+            List<NodeLink> nodeLinks = workflowContext.fetchInLinks(inputNodePort);
             if(DataUtil.isNotEmpty(nodeLinks)) {
                 for(NodeLink nodeLink : nodeLinks) {
                     WorkflowContextHelper.loadOutputPort(workflowContext, nodeLink.data().getSrcPortId());
@@ -126,12 +128,34 @@ public class WorkflowContextHelper {
         }
     }
 
-    protected static void loadDownstreamPorts(WorkflowContext workflowContext, Long srcPortId) {
+    protected static void loadDownstreamPorts(WorkflowContext workflowContext, NodePortOutput outputNodePort) {
         if(workflowContext.isLazyLoadMode()) {
-            List<NodeLink> nodeLinks = workflowContext.getOutLinks(srcPortId);
+            List<NodeLink> nodeLinks = workflowContext.getOutLinks(outputNodePort);
             if(DataUtil.isNotEmpty(nodeLinks)) {
                 for(NodeLink nodeLink : nodeLinks) {
                     WorkflowContextHelper.loadInputPort(workflowContext, nodeLink.data().getDstPortId());
+                }
+            }
+        }
+    }
+
+    protected static void loadUpstreamPorts(WorkflowContext workflowContext, Node node) {
+        if(workflowContext.isLazyLoadMode()) {
+            List<NodeLink> nodeLinks = workflowContext.fetchInLinks(node);
+            if (DataUtil.isNotEmpty(nodeLinks)) {
+                for (NodeLink nodeLink : nodeLinks) {
+                    loadOutputPort(workflowContext, nodeLink.data().getSrcPortId());
+                }
+            }
+        }
+    }
+
+    protected static void loadDownstreamPorts(WorkflowContext workflowContext, Node node) {
+        if(workflowContext.isLazyLoadMode()) {
+            List<NodeLink> nodeLinks = workflowContext.fetchOutLinks(node);
+            if (DataUtil.isNotEmpty(nodeLinks)) {
+                for (NodeLink nodeLink : nodeLinks) {
+                    loadInputPort(workflowContext, nodeLink.data().getDstPortId());
                 }
             }
         }
@@ -143,7 +167,20 @@ public class WorkflowContextHelper {
 
         List<Node> headNodes = new ArrayList<Node>();
         for(Node node : workflowContext.getNodes()) {
-            if(node.inputPortCount() == 0) {
+            if(node.isHeadNode()) {
+                headNodes.add(node);
+            }
+        }
+        return headNodes;
+    }
+
+    public static List<Node> searchReadTableHeadNodes(WorkflowContext workflowContext) {
+        if(workflowContext.nodeCount() == 0)
+            return null;
+
+        List<Node> headNodes = new ArrayList<Node>();
+        for(Node node : workflowContext.getNodes()) {
+            if(node.isHeadNode() && node.haveOutputDataTablePort()) {
                 headNodes.add(node);
             }
         }

@@ -13,6 +13,7 @@ public class NodeParameter extends RichModel<WfFlowNodeParameter> {
     private CmptChar cmptChar;
     private CharValue charValue;
     private boolean simulateParameter;  //标记来自ParameterHelper.simulateParameter构建的模拟节点参数
+    private boolean isStateChanged;
 
     public NodeParameter(WfFlowNodeParameter data, CmptChar cmptChar, CharValue charValue) {
         this(data, cmptChar, charValue, false);
@@ -23,6 +24,7 @@ public class NodeParameter extends RichModel<WfFlowNodeParameter> {
         this.cmptChar = cmptChar;
         this.charValue = charValue;
         this.simulateParameter = simulateParameter;
+        this.isStateChanged = false;
     }
 
     @Override
@@ -31,6 +33,10 @@ public class NodeParameter extends RichModel<WfFlowNodeParameter> {
         DataUtil.clear(charValue);
         charValue = null;
         super.clear();
+    }
+
+    public boolean isStateChanged() {
+        return isStateChanged;
     }
 
     protected void flush(String operId) {
@@ -64,11 +70,16 @@ public class NodeParameter extends RichModel<WfFlowNodeParameter> {
     }
 
     public void changeOccuredWarning(String warningMsg) {
-        this.data().setWarningMsg(warningMsg);
+        if(!DataUtil.equals(this.data().getWarningMsg(), warningMsg)) {
+            this.data().setWarningMsg(warningMsg);
+            isStateChanged = true;
+        }
     }
 
     public void clearOccuredWarning() {
-        if(this.isOccuredWarning())
+        if(this.isOccuredWarning()) {
             this.changeOccuredWarning(null);
+            isStateChanged = true;
+        }
     }
 }

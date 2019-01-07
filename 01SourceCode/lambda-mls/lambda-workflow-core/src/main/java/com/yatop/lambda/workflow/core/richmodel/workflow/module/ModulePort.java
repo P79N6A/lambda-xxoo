@@ -25,7 +25,7 @@ public class ModulePort extends RichModel<WfModulePort> {
         return cmptChar;
     }
 
-    public boolean isDataPort() {
+    public boolean isDataTablePort() {
         return ClazzHelperUtil.getCharTypeClazzBean(this.getCmptChar().getType()) instanceof CharTypeTableGeneric;
     }
 }

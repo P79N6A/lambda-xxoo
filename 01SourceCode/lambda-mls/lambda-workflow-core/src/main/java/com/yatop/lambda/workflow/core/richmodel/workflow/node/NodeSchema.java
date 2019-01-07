@@ -26,6 +26,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
     private JsonObject jsonObject;  //关联JSON对象
     private List<FieldAttribute> fieldAttributes;
     private boolean dirtyFieldAttributes;
+    private boolean isStateChanged;
 
     public NodeSchema(WfFlowNodeSchema data, CmptChar cmptChar) {
         this(data, cmptChar, null);
@@ -37,6 +38,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
         this.jsonObject = jsonObject;
         this.fieldAttributes = null;
         this.dirtyFieldAttributes = false;
+        this.isStateChanged = false;
     }
 
     @Override
@@ -50,6 +52,10 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
 
     public CmptChar getCmptChar() {
         return cmptChar;
+    }
+
+    public boolean isStateChanged() {
+        return isStateChanged;
     }
 
     private JsonObject getJsonObject() {
@@ -147,6 +153,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
             return;
 
         this.data().setSchemaState(stateEnum.getState());
+        this.isStateChanged = true;
     }
 
     protected void flush(String operId) {

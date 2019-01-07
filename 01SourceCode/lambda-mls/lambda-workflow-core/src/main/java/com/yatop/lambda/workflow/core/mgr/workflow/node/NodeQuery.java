@@ -58,7 +58,7 @@ public class NodeQuery {
         nodePortQuery.queryNodePorts(workflowContext, richNode);
         if(!workflowContext.isLoadNodeParameter()) {
             parameterQuery.queryParameters(workflowContext, richNode);
-            //nodeParameterCheck.checkParameter(workflowContext, richNode);
+            nodeParameterCheck.checkParameter(workflowContext, richNode);
         }
         return richNode;
     }
@@ -80,7 +80,7 @@ public class NodeQuery {
             nodePortQuery.queryNodePorts(workflowContext, richNode);
             if(!workflowContext.isLoadNodeParameter()) {
                 parameterQuery.queryParameters(workflowContext, richNode);
-                //nodeParameterCheck.checkParameter(workflowContext, richNode);
+                nodeParameterCheck.checkParameter(workflowContext, richNode);
             }
         }
     }

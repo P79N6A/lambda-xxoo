@@ -25,7 +25,7 @@ public class SchemaRecover {
         if(node.outputPortCount() > 0) {
             int counter = 0;
             for (NodePortOutput port : node.getOutputNodePorts()) {
-                if (port.isDataPort()) {
+                if (port.isDataTablePort()) {
                     counter++;
                 }
             }

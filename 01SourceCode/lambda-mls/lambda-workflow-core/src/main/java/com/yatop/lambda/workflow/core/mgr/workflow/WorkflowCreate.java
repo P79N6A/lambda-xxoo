@@ -35,10 +35,10 @@ public class WorkflowCreate {
 
     public WorkflowContext createWorkflow(Experiment experiment, WorkflowContext otherWorkflowContext, String operId) {
         WorkflowContext thisWorkFlowContext = createWorkflow(experiment, operId);
+        thisWorkFlowContext.markAnalyzeWithRefreshWorkflow();
 
         //TODO ...
 
-        thisWorkFlowContext.doneCopyWorkflow();
         return thisWorkFlowContext;
     }
 }

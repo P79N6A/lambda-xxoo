@@ -67,7 +67,7 @@ public class NodePortQuery {
                 }
             }
 
-            if(module.inputPortCount() != node.inputPortCount() || module.outputPortCount() != node.outputPortCount()) {
+            if(module.inputPortCount() != node.inputNodePortCount() || module.outputPortCount() != node.outputNodePortCount()) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module-port vs node-port inconsistent.", "节点端口信息错误", node);
             }
 
