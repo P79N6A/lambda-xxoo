@@ -71,4 +71,8 @@ public class SchemaHelper {
     static public boolean needAnalyzeSchema(Node node) {
         return SCHEMA_ANALYZE.needAnalyzeSchema(node);
     }
+
+    static public boolean supportAnalyzeSchema(Node node) {
+        return SCHEMA_ANALYZE.supportAnalyzeSchema(node);
+    }
 }

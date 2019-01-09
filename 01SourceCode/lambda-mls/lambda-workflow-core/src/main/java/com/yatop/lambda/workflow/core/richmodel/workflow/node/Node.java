@@ -4,6 +4,7 @@ import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.core.enums.NodeStateEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeHelper;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
@@ -373,6 +374,10 @@ public class Node extends RichModel<WfFlowNode> {
             }
         }
         this.analyzed = true;
+    }
+
+    public boolean isSupportAnalyze() {
+        return SchemaHelper.needAnalyzeSchema(this);
     }
 
     public boolean isOccuredWarning() {

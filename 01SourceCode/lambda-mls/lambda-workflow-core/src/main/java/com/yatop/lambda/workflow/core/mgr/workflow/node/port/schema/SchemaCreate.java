@@ -22,9 +22,6 @@ public class SchemaCreate {
     @Autowired
     JsonObjectMgr jsonObjectMgr;
 
-    @Autowired
-    SchemaAnalyze schemaAnalyze;
-
     private JsonObject createObject(WorkflowContext workflowContext, Node node, NodePortOutput outputPort) {
 
         WfJsonObject object = new WfJsonObject();
@@ -52,7 +49,7 @@ public class SchemaCreate {
         schema.setSchemaName(outputPort.data().getNodePortName());
         schema.setOwnerNodeId(node.data().getNodeId());
         schema.setObjectId(jsonObject.data().getObjectId());
-        schema.setSchemaState(schemaAnalyze.supportAnalyzeSchema(node) ? SchemaStateEnum.EMPTY.getState() : SchemaStateEnum.NOT_SUPPORT.getState());
+        schema.setSchemaState(SchemaHelper.supportAnalyzeSchema(node) ? SchemaStateEnum.EMPTY.getState() : SchemaStateEnum.NOT_SUPPORT.getState());
         schema = nodeSchemaMgr.insertSchema(schema, workflowContext.getOperId());
         //schema.copyProperties(nodeSchemaMgr.querySchema(schema.data().getNodePortId()));
         NodeSchema richSchema = new NodeSchema(schema, outputPort.getCmptChar(), jsonObject);

@@ -22,7 +22,7 @@ public class SchemaAnalyze {
 
     public boolean supportAnalyzeSchema(Node node) {
 
-        if (node.outputDataTablePortCount() > 0) {
+        if (node.haveOutputDataTablePort()) {
             return ClazzHelperUtil.getModuleClazzBean(node.getModule()).supportAnalyzeSchema();
         }
         return false;
