@@ -5,7 +5,7 @@ public enum AnalyzeTypeEnum {
     /**
      * 无
      */
-    NONE(0, "Node"),
+    NONE(0, "None"),
 
     /**
      * 创建节点（独占，包括创建节点和画布内节点复制创建）
@@ -33,9 +33,9 @@ public enum AnalyzeTypeEnum {
     DELETE_LINK(5, "Delete Link In Canvas"),
 
     /**
-     * 刷新工作流（独占，包括复制（实验、快照、模版）创建的实验，实验运行前工作流校验，手动刷新）
+     * 编译工作流（独占，包括复制（实验、快照、模版）创建的实验，实验运行前工作流校验，工作流编译）
      */
-    REFRESH_WORKFLOW(6, "Refresh Workflow");
+    COMPILE_WORKFLOW(6, "Compile Workflow");
 
     private int type;
     private String name;

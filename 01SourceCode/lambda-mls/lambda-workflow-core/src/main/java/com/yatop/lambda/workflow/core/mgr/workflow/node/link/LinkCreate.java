@@ -24,10 +24,7 @@ public class LinkCreate {
     @Autowired
     LinkValidate linkValidate;
 
-    @Autowired
-    NodeQuery nodeQuery;
-
-    public NodeLink createLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodePortOutput srcNodePort, NodePortInput dstNodePort) {
+    private NodeLink createLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodePortOutput srcNodePort, NodePortInput dstNodePort) {
 
         if(!linkValidate.validateLink(workflowContext, srcNode, dstNode, srcNodePort, dstNodePort)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- validation failed for establishing link.", "输出端口和输入端口的建立链接验证失败", srcNodePort, dstNodePort);
@@ -39,7 +36,7 @@ public class LinkCreate {
                                                                   dstNode.data().getNodeId(),
                                                                   dstNodePort.data().getNodePortId()));
         nodeLink.setOwnerFlowId(workflowContext.getWorkflow().data().getFlowId());
-        nodeLink.setIsWebLink(srcNode.getComponent().isWebComponent() ? IsWebLinkEnum.YES.getMark() : IsWebLinkEnum.NO.getMark());
+        nodeLink.setIsWebLink(srcNode.getModule().isWebModule() ? IsWebLinkEnum.YES.getMark() : IsWebLinkEnum.NO.getMark());
         nodeLink.setSrcNodeId(srcNode.data().getNodeId());
         nodeLink.setSrcPortId(srcNodePort.data().getNodePortId());
         nodeLink.setDstNodeId(dstNode.data().getNodeId());
@@ -53,8 +50,8 @@ public class LinkCreate {
     }
 
     public NodeLink createLink(WorkflowContext workflowContext, Long srcNodeId, Long dstNodeId, Long srcNodePortId, Long dstNodePortId) {
-        Node srcNode = nodeQuery.queryNode(workflowContext, srcNodeId);
-        Node dstNode = nodeQuery.queryNode(workflowContext, dstNodeId);
+        Node srcNode = workflowContext.fetchNode(srcNodeId);
+        Node dstNode = workflowContext.fetchNode(dstNodeId);
 
         NodePortOutput srcNodePort = srcNode.getOutputNodePort(srcNodePortId);
         if(DataUtil.isNull(srcNodePort)) {

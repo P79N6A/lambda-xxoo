@@ -34,7 +34,7 @@ public class SchemaAnalyzer {
             case DELETE_LINK:
                 dealAnalyzeSchema4DeleteLink(workflowContext);
                 break;
-            case REFRESH_WORKFLOW:
+            case COMPILE_WORKFLOW:
                 dealAnalyzeSchema4RefreshWokflow(workflowContext);
                 break;
             default:

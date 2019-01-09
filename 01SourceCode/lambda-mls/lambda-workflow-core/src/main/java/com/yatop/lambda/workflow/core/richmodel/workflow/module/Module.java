@@ -125,4 +125,16 @@ public class Module extends RichModel<WfModule> implements Comparable<Module> {
     public int outputDataTablePortCount() {
         return outputDataTablePortCount;
     }
+
+    public boolean isHeadNode() {
+        return this.inputPortCount() == 0;
+    }
+
+    public boolean isTailNode() {
+        return this.outputPortCount() == 0;
+    }
+
+    public boolean isWebModule() {
+        return this.getComponent().isWebComponent();
+    }
 }

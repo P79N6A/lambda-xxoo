@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node;
 
 
+import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.core.mgr.workflow.node.NodeMgr;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,12 @@ public class NodeHelper {
         NODE_MGR = nodeMgr;
     }
 
-    //名称、X坐标、Y坐标、最后任务ID、警告消息、节点状态、注释、概要、描述
+    //最后任务ID、警告消息、节点状态、概要
     public static void updateNode(Node node, String operId) {
         NODE_MGR.updateNode(node.data(), operId);
         node.clearColoured();
     }
+
+    //名称、X坐标、Y坐标、注释、描述
+    //TODO 直接调用 NodeMgr.updateNode去做更新
 }

@@ -30,6 +30,7 @@ public class Node extends RichModel<WfFlowNode> {
     private TreeMap<String, NodePortOutput> outputNodePortsOrderByCharCode = new TreeMap<String, NodePortOutput>();                //输出节点端口，key=charCode
     private TreeMap<Integer, NodePortOutput> outputNodePortsOrderBySequence = new TreeMap<Integer, NodePortOutput>();//输出节点端口按序号排序
   //private TreeMap<String, GlobalParameter> globalParameters = new TreeMap<String, GlobalParameter>();  //操作关联节点参数，key=charId
+    private int indegree;
     private boolean deleted;
     private boolean analyzed;
     private boolean isStateChanged;
@@ -201,11 +202,11 @@ public class Node extends RichModel<WfFlowNode> {
     }
 
     public boolean isHeadNode() {
-        return module.inputPortCount() == 0;
+        return module.isHeadNode();
     }
 
     public boolean isTailNode() {
-        return module.outputPortCount() == 0;
+        return module.isTailNode();
     }
 
     public boolean haveOutputDataTablePort() {
@@ -392,5 +393,17 @@ public class Node extends RichModel<WfFlowNode> {
     public void clearOccuredWarning() {
         if(DataUtil.isNotEmpty(this.data().getWarningMsg()))
             this.data().setWarningMsg(null);
+    }
+
+    public int getIndegree() {
+        return indegree;
+    }
+
+    public void setIndegree(int indegree) {
+        this.indegree = indegree;
+    }
+
+    public int decreaseIndegree() {
+        return --this.indegree;
     }
 }

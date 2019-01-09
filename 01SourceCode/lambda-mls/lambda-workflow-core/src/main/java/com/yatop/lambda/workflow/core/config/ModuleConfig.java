@@ -234,6 +234,13 @@ public class ModuleConfig implements InitializingBean {
                 }
 
                 module.initializeDataPortCount();
+
+                if(module.isWebModule()) {
+                    if(!module.isHeadNode() && !module.isTailNode()) {
+                        logger.error(String.format("Check module configuration occurs fatal error -- Web module must be defined as Head-Node or Tail-Node:\n%s.", DataUtil.prettyFormat(module)));
+                        System.exit(-1);
+                    }
+                }
             }
         }
     }

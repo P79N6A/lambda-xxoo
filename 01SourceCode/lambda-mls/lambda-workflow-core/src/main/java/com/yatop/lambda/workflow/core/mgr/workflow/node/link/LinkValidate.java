@@ -12,13 +12,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LinkValidate {
-    public boolean matchTargetCharType(NodePortOutput srcNodePort, NodePortInput dstNodePort) {
-        return srcNodePort.getCmptChar().getType().matchTargetType(dstNodePort.getCmptChar().getType());
-    }
 
     public boolean validateLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodePortOutput srcNodePort, NodePortInput dstNodePort) {
 
-        if(srcNode.getComponent().isWebComponent()) {
+        if(srcNode.getModule().isWebModule()) {
             NodeLink link = workflowContext.fetchWebInLink(dstNodePort.data().getNodePortId());
             if (DataUtil.isNotNull(link))
                 return false;
@@ -28,7 +25,7 @@ public class LinkValidate {
                 return false;
         }
 
-        return matchTargetCharType(srcNodePort, dstNodePort);
+        return srcNodePort.matchTargetInputPort(dstNodePort);
     }
 
     public boolean validateLink(WorkflowContext workflowContext, Long srcNodeId, Long dstNodeId, Long srcNodePortId, Long dstNodePortId) {

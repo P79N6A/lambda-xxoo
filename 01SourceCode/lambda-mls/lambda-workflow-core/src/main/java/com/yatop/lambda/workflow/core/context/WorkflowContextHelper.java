@@ -8,11 +8,11 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class WorkflowContextHelper {
@@ -130,7 +130,7 @@ public class WorkflowContextHelper {
 
     protected static void loadDownstreamPorts(WorkflowContext workflowContext, NodePortOutput outputNodePort) {
         if(workflowContext.isLazyLoadMode()) {
-            List<NodeLink> nodeLinks = workflowContext.getOutLinks(outputNodePort);
+            List<NodeLink> nodeLinks = workflowContext.fetchOutLinks(outputNodePort);
             if(DataUtil.isNotEmpty(nodeLinks)) {
                 for(NodeLink nodeLink : nodeLinks) {
                     WorkflowContextHelper.loadInputPort(workflowContext, nodeLink.data().getDstPortId());
@@ -185,5 +185,41 @@ public class WorkflowContextHelper {
             }
         }
         return headNodes;
+    }
+
+    public static boolean existDirectedCyclicGraph(WorkflowContext workflowContext) {
+
+        if(workflowContext.nodeCount() == 0)
+            return false;
+
+        //initialize node indegree & zero indegree stack
+        int totalCount = 0;
+        LinkedList<Node> zeroIndegreeStack = new LinkedList<Node>();
+        {
+            for(Node node : workflowContext.getNodes()) {
+                if(node.getModule().isWebModule())
+                    continue;
+                if(node.isHeadNode()) {
+                    node.setIndegree(0);
+                    CollectionUtil.offerLast(zeroIndegreeStack, node);
+                    continue;
+                }
+
+                TreeMap<Long, Node> upstreamNodes = workflowContext.fetchNonWebUpstreamNodes(node);
+                if(DataUtil.isEmpty(upstreamNodes)) {
+                    node.setIndegree(0);
+                    CollectionUtil.offerLast(zeroIndegreeStack, node);
+                }
+                else {
+                    node.setIndegree(upstreamNodes.size());
+                }
+                CollectionUtil.clear(upstreamNodes);
+            }
+        }
+
+        int zeroCount = 0;
+
+
+        return null;
     }
 }
