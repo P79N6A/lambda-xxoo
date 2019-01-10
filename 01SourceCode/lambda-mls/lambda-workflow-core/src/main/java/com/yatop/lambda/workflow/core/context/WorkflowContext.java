@@ -18,10 +18,6 @@ import java.util.*;
 
 public class WorkflowContext implements IWorkContext {
 
-    /**
-     *  工作流、节点、节点参数、节点数据端口schema等信息采用延迟更新，由flush方法发起提交
-     * */
-
     private boolean lazyLoadMode;           //标识是否为懒加载模式，否则视为节点和链接的相关信息都已经一次性读取到上下文中
     private boolean executionWorkMode;      //标识是否为运行工作模式，否则视为编辑器模式（用于特征CharValue增删改查等事件内部判断用）
     private boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
@@ -54,10 +50,11 @@ public class WorkflowContext implements IWorkContext {
         context.enableFlushWorkflow = true;
         context.loadNodeParameter = true;
         context.loadDataPortSchema = true;
+        //context.initialize();
         return context;
     }
 
-    //工作流编辑使用（创建节点、更新节点参数、删除节点和删除链接，增量加载）
+    //工作流编辑使用（创建节点、删除节点和删除链接，增量加载）
     public static WorkflowContext BuildWorkflowContext4Edit(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
         context.lazyLoadMode = true;
@@ -65,22 +62,23 @@ public class WorkflowContext implements IWorkContext {
         context.enableFlushWorkflow = true;
         context.loadNodeParameter = true;
         context.loadDataPortSchema = true;
+        //context.initialize();
         return context;
     }
 
-    //工作流编辑创建链接使用（全量预加载）
-    public static WorkflowContext BuildWorkflowContext4EditCreateLink(Project project, Workflow workflow, String operId) {
+    //工作流编辑使用（创建链接、更新节点参数，全量预加载）
+    public static WorkflowContext BuildWorkflowContext4EditPreload(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
         context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = true;
         context.loadNodeParameter = true;
         context.loadDataPortSchema = true;
-        context.initialize(true);
+        context.initialize();
         return context;
     }
 
-    //工作流编辑验证链接使用（增量加载）
+    //工作流编辑使用（验证链接，增量加载）
     public static WorkflowContext BuildWorkflowContext4EditValidateLink(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
         context.lazyLoadMode = true;
@@ -88,6 +86,7 @@ public class WorkflowContext implements IWorkContext {
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;
         context.loadDataPortSchema = false;
+        //context.initialize();
         return context;
     }
 
@@ -99,7 +98,7 @@ public class WorkflowContext implements IWorkContext {
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;
         context.loadDataPortSchema = false;
-        context.initialize(true);
+        context.initialize();
         return context;
     }
 
@@ -111,7 +110,7 @@ public class WorkflowContext implements IWorkContext {
         context.enableFlushWorkflow = true;
         context.loadNodeParameter = true;
         context.loadDataPortSchema = true;
-        context.initialize(true);
+        context.initialize();
         return context;
     }
 
@@ -123,6 +122,7 @@ public class WorkflowContext implements IWorkContext {
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;  //WorkflowContextCodec中填入
         context.loadDataPortSchema = false;
+        //context.initialize();
         return context;
     }
 
@@ -135,6 +135,7 @@ public class WorkflowContext implements IWorkContext {
         context.enableFlushWorkflow = JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(job.data().getJobType()));
         context.loadNodeParameter = false;  //WorkflowContextCodec中填入
         context.loadDataPortSchema = false;
+        //context.initialize();
         return context;
     }
 
@@ -145,10 +146,11 @@ public class WorkflowContext implements IWorkContext {
         this.schemaAnalyze = AnalyzeTypeEnum.NONE;
     }
 
-    private void initialize(boolean doPreload) {
-        if(doPreload) {
+    private void initialize() {
+        if(!this.isLazyLoadMode()) {
             WorkflowContextHelper.loadAllNodes(this);
             WorkflowContextHelper.loadAllLinks(this);
+
             if(WorkflowContextHelper.existDirectedCyclicGraph(this)) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Workflow exists directed cyclic graph.", "工作流数据异常，请联系管理员");
             }

@@ -35,7 +35,7 @@ public class SchemaAnalyzer {
                 dealAnalyzeSchema4DeleteLink(workflowContext);
                 break;
             case COMPILE_WORKFLOW:
-                dealAnalyzeSchema4RefreshWokflow(workflowContext);
+                dealAnalyzeSchema4CompileWorkflow(workflowContext);
                 break;
             default:
                 break;
@@ -51,6 +51,10 @@ public class SchemaAnalyzer {
                 analyzeNode.markAnalyzed();
             }
         }
+    }
+
+    private static void dealAnalyzeSchema4PendingNode(WorkflowContext workflowContext) {
+
     }
 
     public static void dealAnalyzeSchema4CreateLink(WorkflowContext workflowContext) {
@@ -72,14 +76,14 @@ public class SchemaAnalyzer {
     }
 
     public static void dealAnalyzeSchema4DeleteNode(WorkflowContext workflowContext) {
-
+        //TODO 一路clear下去
     }
 
     public static void dealAnalyzeSchema4DeleteLink(WorkflowContext workflowContext) {
-
+        //TODO 一路clear下去
     }
 
-    public static void dealAnalyzeSchema4RefreshWokflow(WorkflowContext workflowContext) {
-
+    public static void dealAnalyzeSchema4CompileWorkflow(WorkflowContext workflowContext) {
+        //TODO 从头节点开始分析
     }
 }

@@ -378,7 +378,7 @@ public class Node extends RichModel<WfFlowNode> {
     }
 
     public boolean isSupportAnalyze() {
-        return SchemaHelper.needAnalyzeSchema(this);
+        return SchemaHelper.supportAnalyzeSchema(this);
     }
 
     public boolean isOccuredWarning() {

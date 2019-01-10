@@ -50,7 +50,7 @@ public class NodeRecover {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Recover node failed -- node not found, node-id:%d.", nodeId), "节点信息缺失");
         }
 
-        Module module = moduleConfig.getModule(node.getNodeId());
+        Module module = moduleConfig.getModule(node.getRefModuleId());
         if(DataUtil.isNull(module)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node failed -- module not found.", "节点信息错误", node);
         }

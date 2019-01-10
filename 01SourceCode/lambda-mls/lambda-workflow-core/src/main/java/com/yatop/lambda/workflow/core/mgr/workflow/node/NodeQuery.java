@@ -48,7 +48,7 @@ public class NodeQuery {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node failed -- flow-id vs owner-flow-id inconsistent.", "节点信息错误", workflowContext.getWorkflow(), node);
         }
 
-        Module module = moduleConfig.getModule(node.getNodeId());
+        Module module = moduleConfig.getModule(node.getRefModuleId());
         if(DataUtil.isNull(module)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node failed -- module not found.", "节点信息错误", node);
         }
@@ -70,10 +70,13 @@ public class NodeQuery {
         }
 
         for(WfFlowNode node : nodeList) {
-            Module module = moduleConfig.getModule(node.getNodeId());
+            Module module = moduleConfig.getModule(node.getRefModuleId());
             if(DataUtil.isNull(module)) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node failed -- module not found.", "节点信息错误", node);
             }
+
+            if(DataUtil.isNotNull(workflowContext.getNode(node.getNodeId())))
+                continue;
 
             Node richNode = new Node(node, module);
             workflowContext.putNode(richNode);

@@ -187,6 +187,7 @@ public class WorkflowContextHelper {
         return headNodes;
     }
 
+    //检测是否存在有向循环图，排除web工作流节点
     public static boolean existDirectedCyclicGraph(WorkflowContext workflowContext) {
 
         if(workflowContext.nodeCount() == 0)
@@ -199,27 +200,47 @@ public class WorkflowContextHelper {
             for(Node node : workflowContext.getNodes()) {
                 if(node.getModule().isWebModule())
                     continue;
+
+                totalCount++;
                 if(node.isHeadNode()) {
                     node.setIndegree(0);
                     CollectionUtil.offerLast(zeroIndegreeStack, node);
                     continue;
                 }
 
-                TreeMap<Long, Node> upstreamNodes = workflowContext.fetchNonWebUpstreamNodes(node);
-                if(DataUtil.isEmpty(upstreamNodes)) {
+                List<NodeLink> inLinks = workflowContext.fetchNonWebInLinks(node);
+                if(DataUtil.isEmpty(inLinks)) {
                     node.setIndegree(0);
                     CollectionUtil.offerLast(zeroIndegreeStack, node);
                 }
                 else {
-                    node.setIndegree(upstreamNodes.size());
+                    node.setIndegree(inLinks.size());
                 }
-                CollectionUtil.clear(upstreamNodes);
             }
         }
 
         int zeroCount = 0;
+        Node zeroNode = null;
+        while(DataUtil.isNotNull(zeroNode = CollectionUtil.pollLast(zeroIndegreeStack))) {
+            zeroCount++;
 
+            if(zeroNode.outputNodePortCount() > 0) {
+                Map<Long, List<Node>> downstreamNodes = workflowContext.fetchDownstreamNodes(zeroNode);
+                if(DataUtil.isNotEmpty(downstreamNodes)) {
+                    for (List<Node> chainList : CollectionUtil.toList(downstreamNodes)) {
+                        for(Node downstreamNode : chainList) {
+                            if(downstreamNode.getModule().isWebModule())
+                                continue;
 
-        return null;
+                            if(downstreamNode.decreaseIndegree() == 0)
+                                CollectionUtil.offerLast(zeroIndegreeStack, downstreamNode);
+                        }
+                    }
+                }
+                CollectionUtil.clear(downstreamNodes);
+            }
+        }
+
+        return zeroCount < totalCount;
     }
 }

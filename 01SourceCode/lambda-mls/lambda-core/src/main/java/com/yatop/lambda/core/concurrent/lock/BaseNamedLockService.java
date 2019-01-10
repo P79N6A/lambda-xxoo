@@ -161,7 +161,7 @@ public abstract class BaseNamedLockService {
                         for (LockRequest threadRequest : chainList) {
                             if(threadRequest.isNotHold()) {
                                 if(threadRequest.getHold()) {
-                                    logger.error("警告!!! 移除过期名称锁[NamedLock:{}, 资源ID{}, 线程ID{}, 过期时间{}, 移除时间{}]",
+                                    logger.error("Warning!!! Remove Expired Named Lock[NamedLock:{}, Resource ID{}, Thread ID{}, Expired Time{}, Remove Time{}]",
                                             threadRequest.namedLockServiceId(), threadRequest.getName(), threadRequest.getThread().getId(), new Timestamp(threadRequest.getExpire()), new Timestamp(System.currentTimeMillis()));
                                 }
                                 threadRequest.setHold(false);

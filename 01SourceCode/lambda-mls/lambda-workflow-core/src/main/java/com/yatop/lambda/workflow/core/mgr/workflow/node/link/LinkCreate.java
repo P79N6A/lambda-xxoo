@@ -7,6 +7,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.node.NodeLinkMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.context.WorkflowContextHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeQuery;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
@@ -27,7 +28,7 @@ public class LinkCreate {
     private NodeLink createLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodePortOutput srcNodePort, NodePortInput dstNodePort) {
 
         if(!linkValidate.validateLink(workflowContext, srcNode, dstNode, srcNodePort, dstNodePort)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- validation failed for establishing link.", "输出端口和输入端口的建立链接验证失败", srcNodePort, dstNodePort);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- validation failed for establishing link.", "输出端口和输入端口间链接建立验证失败", srcNodePort, dstNodePort);
         }
 
         WfFlowNodeLink nodeLink = new WfFlowNodeLink();
@@ -44,8 +45,11 @@ public class LinkCreate {
         nodeLink = nodeLinkMgr.insertLink(nodeLink, workflowContext.getOperId());
         //nodeLink.copyProperties(nodeLinkMgr.queryLink(nodeLink.getLinkId()));
         NodeLink richNodeLink = new NodeLink(nodeLink);
-
         workflowContext.doneCreateLink(richNodeLink);
+
+        if(WorkflowContextHelper.existDirectedCyclicGraph(workflowContext)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- Create link will make workflow exists directed cyclic graph..", "新建立链接将导致工作流产生有向循环图", srcNodePort, dstNodePort);
+        }
         return richNodeLink;
     }
 

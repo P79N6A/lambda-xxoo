@@ -29,14 +29,7 @@ public class SchemaAnalyze {
     }
 
     public boolean needAnalyzeSchema(Node node) {
-
-        if (node.haveOutputDataTablePort()) {
-            IModuleClazz moduleClazz = ClazzHelperUtil.getModuleClazzBean(node.getModule());
-            if (moduleClazz.supportAnalyzeSchema()) {
-                return true;
-            }
-        }
-        return false;
+        return node.haveOutputDataTablePort();
     }
 
     public boolean needAnalyzeSchema(Node node, NodeParameter parameter) {
