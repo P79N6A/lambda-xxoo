@@ -155,6 +155,10 @@ public class Node extends RichModel<WfFlowNode> {
         return module.getComponent();
     }
 
+    public boolean isWebNode() {
+        return this.getModule().isWebModule();
+    }
+
     public int parameterCount() {
         return parameters.size();
     }

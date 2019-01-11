@@ -46,14 +46,16 @@ public class SchemaAnalyzer {
 
         Node analyzeNode;
         while(DataUtil.isNotNull(analyzeNode = workflowContext.popAnalyzeNode())) {
-            if(analyzeNode.isHeadNode() && analyzeNode.haveOutputDataTablePort() && !analyzeNode.isAnalyzed()) {
+            if(SchemaHelper.needAnalyzeSchema(analyzeNode)
+                    && analyzeNode.isHeadNode() //非头结点创建时schema已经初始化为empty
+                    && !analyzeNode.isAnalyzed()) {
                 SCHEMA_ANALYZE.analyzeSchema(workflowContext, analyzeNode);
                 analyzeNode.markAnalyzed();
             }
         }
     }
 
-    private static void dealAnalyzeSchema4PendingNode(WorkflowContext workflowContext) {
+    private static void dealAnalyzeSchema4PendingNodes(WorkflowContext workflowContext) {
 
     }
 
@@ -62,10 +64,11 @@ public class SchemaAnalyzer {
         if(DataUtil.isNotNull(analyzeLink) && !analyzeLink.isWebLink()) {
             workflowContext.clearAnalyzeNodes();
             Node analyzeNode = workflowContext.fetchDownstreamNode(analyzeLink);
-            if(!analyzeNode.isAnalyzed()) {
+            if(SchemaHelper.needAnalyzeSchema(analyzeNode) && !analyzeNode.isAnalyzed()) {
                 SCHEMA_ANALYZE.analyzeSchema(workflowContext, analyzeNode);
                 analyzeNode.markAnalyzed();
 
+                if(analyzeNode.isStateChanged())
                 //TODO ....
             }
         }

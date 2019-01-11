@@ -22,14 +22,14 @@ public class SchemaAnalyze {
 
     public boolean supportAnalyzeSchema(Node node) {
 
-        if (node.haveOutputDataTablePort()) {
+        if (!node.isWebNode() && node.haveOutputDataTablePort()) {
             return ClazzHelperUtil.getModuleClazzBean(node.getModule()).supportAnalyzeSchema();
         }
         return false;
     }
 
     public boolean needAnalyzeSchema(Node node) {
-        return node.haveOutputDataTablePort();
+        return !node.isWebNode() && node.haveOutputDataTablePort();
     }
 
     public boolean needAnalyzeSchema(Node node, NodeParameter parameter) {

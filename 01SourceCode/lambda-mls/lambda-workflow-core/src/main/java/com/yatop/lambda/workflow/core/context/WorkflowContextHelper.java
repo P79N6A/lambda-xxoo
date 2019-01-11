@@ -198,7 +198,7 @@ public class WorkflowContextHelper {
         LinkedList<Node> zeroIndegreeStack = new LinkedList<Node>();
         {
             for(Node node : workflowContext.getNodes()) {
-                if(node.getModule().isWebModule())
+                if(node.isWebNode())
                     continue;
 
                 totalCount++;
@@ -229,7 +229,7 @@ public class WorkflowContextHelper {
                 if(DataUtil.isNotEmpty(downstreamNodes)) {
                     for (List<Node> chainList : CollectionUtil.toList(downstreamNodes)) {
                         for(Node downstreamNode : chainList) {
-                            if(downstreamNode.getModule().isWebModule())
+                            if(downstreamNode.isWebNode())
                                 continue;
 
                             if(downstreamNode.decreaseIndegree() == 0)

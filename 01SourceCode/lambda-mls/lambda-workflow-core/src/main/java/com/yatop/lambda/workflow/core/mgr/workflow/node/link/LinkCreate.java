@@ -37,7 +37,7 @@ public class LinkCreate {
                                                                   dstNode.data().getNodeId(),
                                                                   dstNodePort.data().getNodePortId()));
         nodeLink.setOwnerFlowId(workflowContext.getWorkflow().data().getFlowId());
-        nodeLink.setIsWebLink(srcNode.getModule().isWebModule() ? IsWebLinkEnum.YES.getMark() : IsWebLinkEnum.NO.getMark());
+        nodeLink.setIsWebLink(srcNode.isWebNode() ? IsWebLinkEnum.YES.getMark() : IsWebLinkEnum.NO.getMark());
         nodeLink.setSrcNodeId(srcNode.data().getNodeId());
         nodeLink.setSrcPortId(srcNodePort.data().getNodePortId());
         nodeLink.setDstNodeId(dstNode.data().getNodeId());
