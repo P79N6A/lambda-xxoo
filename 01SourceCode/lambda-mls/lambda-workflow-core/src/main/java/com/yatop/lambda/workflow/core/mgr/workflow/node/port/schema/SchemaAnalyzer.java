@@ -63,18 +63,18 @@ public class SchemaAnalyzer {
         }
     }
 
-    private static void searchDownstreamNodes4AnalyzeStack(WorkflowContext workflowContext, Node currentNode, Deque<Node> analyzeStack) {
+    private static void searchDownstreamNodes(WorkflowContext workflowContext, Node currentNode, Deque<Node> analyzeStack) {
         if(DataUtil.isNull(currentNode) || !currentNode.needAnalyzeSchema())
             return;
 
         for(NodePortOutput outputDataPort : currentNode.getOutputDataTablePorts()) {
             //仅数据输出端口为schema changed时，找出端口下游节点
             if(outputDataPort.isSchemaChanged()) {
-                List<Node> downStreamNodes = workflowContext.fetchDownstreamNodes(outputDataPort);
-                if(DataUtil.isNotEmpty(downStreamNodes)) {
-                    for (Node downStreamNode : downStreamNodes) {
-                        if(downStreamNode.needAnalyzeSchema())
-                            CollectionUtil.offerLast(analyzeStack, downStreamNode);
+                List<Node> downstreamNodes = workflowContext.fetchDownstreamNodes(outputDataPort);
+                if(DataUtil.isNotEmpty(downstreamNodes)) {
+                    for (Node downstreamNode : downstreamNodes) {
+                        if(downstreamNode.needAnalyzeSchema())
+                            CollectionUtil.offerLast(analyzeStack, downstreamNode);
                     }
                 }
             }
@@ -100,7 +100,7 @@ public class SchemaAnalyzer {
                             if (!upstreamDataPort.getSchema().isStateNormal()) {
                                 currentNode.changeSchemas2Empty();
                                 currentNode.markAnalyzed();
-                                searchDownstreamNodes4AnalyzeStack(workflowContext, currentNode, analyzeStack);
+                                searchDownstreamNodes(workflowContext, currentNode, analyzeStack);
                                 return;
                             }
 
@@ -122,7 +122,7 @@ public class SchemaAnalyzer {
 
         SCHEMA_ANALYZE.analyzeSchema(workflowContext, currentNode);
         currentNode.markAnalyzed();
-        searchDownstreamNodes4AnalyzeStack(workflowContext, currentNode, analyzeStack);
+        searchDownstreamNodes(workflowContext, currentNode, analyzeStack);
     }
 
     private static void analyzeStackNodes4CreateAndUpdate(WorkflowContext workflowContext, Deque<Node> analyzeStack, Deque<Node> analyzePendingStack) {
@@ -144,18 +144,18 @@ public class SchemaAnalyzer {
         for(NodePortOutput outputDataPort : currentNode.getOutputDataTablePorts()) {
             //仅数据输出端口为schema changed时，找出端口下游节点
             if(outputDataPort.isSchemaChanged()) {
-                List<Node> downStreamNodes = workflowContext.fetchDownstreamNodes(outputDataPort);
-                if(DataUtil.isNotEmpty(downStreamNodes)) {
-                    for (Node downStreamNode : downStreamNodes) {
-                        if(downStreamNode.needAnalyzeSchema()) {
-                            if(CollectionUtil.containsKey(pendingDependencyNodes, downStreamNode.data().getNodeId())) {
-                                TreeMap<Long, Node> dependentNodes = CollectionUtil.get(pendingDependencyNodes, downStreamNode.data().getNodeId());
+                List<Node> downstreamNodes = workflowContext.fetchDownstreamNodes(outputDataPort);
+                if(DataUtil.isNotEmpty(downstreamNodes)) {
+                    for (Node downstreamNode : downstreamNodes) {
+                        if(downstreamNode.needAnalyzeSchema()) {
+                            if(CollectionUtil.containsKey(pendingDependencyNodes, downstreamNode.data().getNodeId())) {
+                                TreeMap<Long, Node> dependentNodes = CollectionUtil.get(pendingDependencyNodes, downstreamNode.data().getNodeId());
                                 if(!CollectionUtil.containsKey(dependentNodes, searchNode.data().getNodeId()))
                                     CollectionUtil.put(dependentNodes, searchNode.data().getNodeId(), searchNode);
 
                                 //TODO continue
                             } else {
-                                CollectionUtil.offerLast(searchPendingDependencyStack, downStreamNode);
+                                CollectionUtil.offerLast(searchPendingDependencyStack, downstreamNode);
                             }
                         }
                     }
@@ -215,7 +215,7 @@ public class SchemaAnalyzer {
         return DataUtil.isNotEmpty(noDependencyNodes) ? noDependencyNodes : null;
     }
 
-    private static void removePendingIndependency(Node removeNode, TreeMap<Long, TreeMap<Long, Node>> pendingDependencyNodes) {
+    private static void removePendingDependency(Node removeNode, TreeMap<Long, TreeMap<Long, Node>> pendingDependencyNodes) {
         if(DataUtil.isNull(removeNode) || DataUtil.isEmpty(pendingDependencyNodes))
             return;
 
@@ -243,7 +243,7 @@ public class SchemaAnalyzer {
             while(DataUtil.isNotEmpty(noDependencyNodes = findPendingNoDependencyNodes(pendingNodes, pendingDependencyNodes))) {
                 for(Node noDependencyNode : noDependencyNodes) {
                     analyzeOneNode4CreateAndUpdate(workflowContext, noDependencyNode, true, analyzeStack, analyzePendingStack);
-                    removePendingIndependency(noDependencyNode, pendingDependencyNodes);
+                    removePendingDependency(noDependencyNode, pendingDependencyNodes);
                 }
                 analyzeStackNodes4CreateAndUpdate(workflowContext, analyzeStack, analyzePendingStack);
                 analyzePendingDependency4CreateAndUpdate(workflowContext, analyzePendingStack, pendingNodes, pendingDependencyNodes);
@@ -265,12 +265,70 @@ public class SchemaAnalyzer {
         analyzeStartNode4CreateAndUpdate(workflowContext, analyzeNode);
     }
 
+    private static List<Node> searchDownstreamNodes4DeleteNode(WorkflowContext workflowContext, Node deleteNode) {
+        if(DataUtil.isNull(deleteNode))
+            return null;
+
+        TreeMap<Long, Node> downstreamNodes = new TreeMap<Long, Node>();
+        for(NodePortOutput outputDataPort : deleteNode.getOutputDataTablePorts()) {
+            List<Node> nodes = workflowContext.fetchDownstreamNodes(outputDataPort);
+            if(DataUtil.isNotEmpty(downstreamNodes)) {
+                for (Node downstreamNode : nodes) {
+                    if(downstreamNode.needAnalyzeSchema())
+                        CollectionUtil.put(downstreamNodes, downstreamNode.data().getNodeId(), downstreamNode);
+                }
+            }
+        }
+
+        return CollectionUtil.toList(downstreamNodes);
+    }
+
+    private static void analyzeOneNode4Delete(WorkflowContext workflowContext, Node currentNode, Deque<Node> analyzeStack) {
+        if(DataUtil.isNull(currentNode) || !currentNode.needAnalyzeSchema())
+            return;
+
+        currentNode.changeSchemas2Empty();
+        currentNode.markAnalyzed();
+        searchDownstreamNodes(workflowContext, currentNode, analyzeStack);
+    }
+
+    private static void analyzeStackNodes4Delete(WorkflowContext workflowContext, Deque<Node> analyzeStack) {
+        Node currentNode = null;
+        while(DataUtil.isNotNull(currentNode = CollectionUtil.pollLast(analyzeStack))) {
+            analyzeOneNode4Delete(workflowContext, currentNode, analyzeStack);
+        }
+    }
+
+    private static void analyzeStartNode4Delete(WorkflowContext workflowContext, Node startNode) {
+
+        Deque<Node> analyzeStack = new LinkedList<Node>();
+        analyzeOneNode4Delete(workflowContext, startNode, analyzeStack);
+        analyzeStackNodes4Delete(workflowContext, analyzeStack);
+    }
+
     public static void dealAnalyzeSchema4DeleteNode(WorkflowContext workflowContext) {
-        //TODO 一路clear下去
+
+        Node deleteNode = null;
+        while (DataUtil.isNotNull(deleteNode = workflowContext.popAnalyzeNode())) {
+            if(SchemaHelper.needAnalyzeNode(deleteNode)) {
+                List<Node> downstreamNodes =  searchDownstreamNodes4DeleteNode(workflowContext, deleteNode);
+                if(DataUtil.isNotEmpty(downstreamNodes)) {
+                    for(Node downstreamNode : downstreamNodes)
+                        analyzeStartNode4Delete(workflowContext, downstreamNode);
+                }
+            }
+        }
     }
 
     public static void dealAnalyzeSchema4DeleteLink(WorkflowContext workflowContext) {
-        //TODO 一路clear下去
+
+        NodeLink deleteLink = null;
+        while(DataUtil.isNotNull(deleteLink = workflowContext.popAnalyzeLink())) {
+            if(!deleteLink.isWebLink()) {
+                Node downstreamNode = workflowContext.fetchDownstreamNode(deleteLink);
+                analyzeStartNode4Delete(workflowContext, downstreamNode);
+            }
+        }
     }
 
     public static void dealAnalyzeSchema4CompileWorkflow(WorkflowContext workflowContext) {
