@@ -70,6 +70,6 @@ public class NodePortOutput extends RichModel<WfFlowNodePort> {
     }
 
     public boolean isSchemaChanged() {
-        return isDataTablePort() && getSchema().isStateNormal();
+        return isDataTablePort() && getSchema().isSchemaChanged();
     }
 }

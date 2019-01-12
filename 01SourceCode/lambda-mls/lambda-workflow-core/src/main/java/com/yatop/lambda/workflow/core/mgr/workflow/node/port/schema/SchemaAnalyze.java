@@ -28,11 +28,11 @@ public class SchemaAnalyze {
         return false;
     }
 
-    public boolean needAnalyzeSchema(Node node) {
+    public boolean needAnalyzeNode(Node node) {
         return !node.isWebNode() && node.haveOutputDataTablePort();
     }
 
-    public boolean needAnalyzeSchema(Node node, NodeParameter parameter) {
+    public boolean needAnalyzeNode(Node node, NodeParameter parameter) {
 
         if (node.haveOutputDataTablePort() && parameter.getCmptChar().data().getSpecType() == SpecTypeEnum.PARAMETER.getType()) {
             IModuleClazz moduleClazz = ClazzHelperUtil.getModuleClazzBean(node.getModule());

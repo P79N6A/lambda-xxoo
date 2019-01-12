@@ -276,7 +276,7 @@ public class WorkflowContext implements IWorkContext {
     private void markAnalyzeWithCreateNode(Node node) {
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone() || this.isAnalyzeWithCreateNode()) {
-            if(SchemaHelper.needAnalyzeSchema(node)) {
+            if(SchemaHelper.needAnalyzeNode(node)) {
                 this.schemaAnalyze = AnalyzeTypeEnum.CREATE_NODE;
                 this.pushAnalyzeNode(node);
             }
@@ -296,7 +296,7 @@ public class WorkflowContext implements IWorkContext {
     private void markAnalyzeWithUpdateNodeParameter(Node node, NodeParameter parameter) {
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone()) {
-            if(SchemaHelper.needAnalyzeSchema(node, parameter)) {
+            if(SchemaHelper.needAnalyzeNode(node, parameter)) {
                 this.schemaAnalyze = AnalyzeTypeEnum.UPDATE_NODE_PARAMETER;
                 this.pushAnalyzeNode(node);
             }
@@ -306,7 +306,7 @@ public class WorkflowContext implements IWorkContext {
     private void markAnalyzeWithDeleteNode(Node node) {
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone() || this.isAnalyzeWithDeleteNode() || this.isAnalyzeWithDeleteLink()) {
-            if(SchemaHelper.needAnalyzeSchema(node)) {
+            if(SchemaHelper.needAnalyzeNode(node)) {
                 this.schemaAnalyze = AnalyzeTypeEnum.DELETE_NODE;
                 this.pushAnalyzeNode(node);
             }

@@ -1,6 +1,8 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema;
 
 import com.yatop.lambda.core.enums.IsRequiredEnum;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
@@ -53,25 +55,26 @@ public class SchemaAnalyzer {
 
     public static void dealAnalyzeSchema4CreateNode(WorkflowContext workflowContext) {
 
-        Node analyzeNode;
+        Node analyzeNode = null;
         while(DataUtil.isNotNull(analyzeNode = workflowContext.popAnalyzeNode())) {
-            if(SchemaHelper.needAnalyzeSchema(analyzeNode)
-                    && analyzeNode.isHeadNode() //非头结点创建时schema已经初始化为empty
-                    && !analyzeNode.isAnalyzed()) {
+
+            //非头结点创建时schema已经初始化为empty，这里仅对头结点schema做分析
+            if(analyzeNode.needAnalyzeSchema() && analyzeNode.isHeadNode()) {
                 SCHEMA_ANALYZE.analyzeSchema(workflowContext, analyzeNode);
                 analyzeNode.markAnalyzed();
             }
         }
     }
 
-    private static void searchDownStreamNodes(WorkflowContext workflowContext, Node currentNode, Deque<Node> analyzeStack) {
+    private static void searchDownstreamNodes(WorkflowContext workflowContext, Node currentNode, Deque<Node> analyzeStack) {
 
         for(NodePortOutput outputDataPort : currentNode.getOutputDataTablePorts()) {
+            //仅数据输出端口为schema changed时，找出端口下游节点
             if(outputDataPort.isSchemaChanged()) {
                 List<Node> downStreamNodes = workflowContext.fetchDownstreamNodes(outputDataPort);
                 if(DataUtil.isNotEmpty(downStreamNodes)) {
                     for (Node downStreamNode : downStreamNodes) {
-                        if(SchemaHelper.needAnalyzeSchema(downStreamNode) && !downStreamNode.isAnalyzed())
+                        if(downStreamNode.needAnalyzeSchema())
                             CollectionUtil.offerLast(analyzeStack, downStreamNode);
                     }
                 }
@@ -79,58 +82,74 @@ public class SchemaAnalyzer {
         }
     }
 
-    private static void analyzeSchemaByStartNode(WorkflowContext workflowContext, Node startNode) {
+    private static void analyzeOneNode4CreateAndUpdate(WorkflowContext workflowContext, Node currentNode, boolean isStartNode, Deque<Node> analyzeStack, Deque<Node> analyzePendingStack) {
 
-        if(DataUtil.isNotNull(startNode) && !startNode.isWebNode()) {
-            if(SchemaHelper.needAnalyzeSchema(startNode) && !startNode.isAnalyzed()) {
-                SCHEMA_ANALYZE.analyzeSchema(workflowContext, startNode);
-                startNode.markAnalyzed();
+        if(DataUtil.isNull(currentNode) || !currentNode.needAnalyzeSchema())
+            return;
 
-                Deque<Node> analyzeStack = new LinkedList<Node>();
-                Deque<Node> analyzePendingStack = new LinkedList<Node>();
-                searchDownStreamNodes(workflowContext, startNode, analyzeStack);
+        TreeMap<Long, NodePortOutput> upstreamNonWebPorts = workflowContext.fetchNonWebUpstreamPorts(currentNode);
+        for(NodePortInput inputDataPort : currentNode.getInputDataTablePorts()) {
+            //仅对必须输入端口的上游端口状态做分析判断
+            if(inputDataPort.getCmptChar().data().getIsRequired() == IsRequiredEnum.YES.getMark()) {
+                NodePortOutput upstreamDataPort = CollectionUtil.get(upstreamNonWebPorts, inputDataPort.data().getNodePortId());
+                if (DataUtil.isNotNull(upstreamDataPort)) {
+                    if(!upstreamDataPort.isDataTablePort())
+                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Schema Analyzer error -- Illegal upstream node port.", "系统数据异常，请联系管理员", upstreamDataPort, inputDataPort);
 
-                Node currentNode = null;
-                while(DataUtil.isNotNull(currentNode = CollectionUtil.pollLast(analyzeStack))) {
-                    boolean ready = true;
-                    TreeMap<Long, NodePortOutput> upstreamPorts = workflowContext.fetchNonWebUpstreamPorts(currentNode);
-                    for(NodePortInput inputDataPort : currentNode.getInputDataTablePorts()) {
-                        if(inputDataPort.getCmptChar().data().getIsRequired() == IsRequiredEnum.YES.getMark()) {
-                            NodePortOutput upstreamDataPort = CollectionUtil.get(upstreamPorts, inputDataPort.data().getNodePortId());
-                            if (DataUtil.isNull(upstreamDataPort) || !upstreamDataPort.isDataTablePort()) {
-                                if(upstreamDataPort.isAnalyzed()) {
-                                    if(upstreamDataPort.getSchema().isStateNormal()) {
-                                        ready = true;
-                                    } else if(upstreamDataPort) {
-                                        currentNode.changeSchemas2Empty();
-                                    }
-                                } else {
-                                    ready = false;
-                                }
-                            } else {
-                                ready = false;
-                            }
+                    //起始节点，必须输入端口的上游端口schema state不是normal时，直接更改为empty
+                    //非起始节点，必须输入端口的上游端口已分析且schema state不是normal时，直接更改为empty
+                    if(isStartNode || upstreamDataPort.isAnalyzed()) {
+                        if(!upstreamDataPort.getSchema().isStateNormal()) {
+                            currentNode.changeSchemas2Empty();
+                            currentNode.markAnalyzed();
+                            searchDownstreamNodes(workflowContext, currentNode, analyzeStack);
+                            return;
                         }
+
+                        //起始节点或非起始节点（上游端口已分析），必须输入端口的上游端口schema state为normal时，继续确认下一必须输入端口的上游端口状况
+                        continue;
+                    } else {
+                        //非起始节点，上游必须输入端口未分析，转入pending队列
+                        CollectionUtil.offerLast(analyzePendingStack, currentNode);
+                        return;
                     }
+                } else {
+                    //必须输入端口无对应数据流入时，无需分析该节点
+                    return;
                 }
             }
+        }
+
+
+        SCHEMA_ANALYZE.analyzeSchema(workflowContext, currentNode);
+        currentNode.markAnalyzed();
+        searchDownstreamNodes(workflowContext, currentNode, analyzeStack);
+    }
+
+    private static void analyzeStartNode4CreateAndUpdate(WorkflowContext workflowContext, Node startNode) {
+
+        Deque<Node> analyzeStack = new LinkedList<Node>();
+        Deque<Node> analyzePendingStack = new LinkedList<Node>();
+        analyzeOneNode4CreateAndUpdate(workflowContext, startNode, true, analyzeStack, analyzePendingStack);
+
+        Node currentNode = null;
+        while(DataUtil.isNotNull(currentNode = CollectionUtil.pollLast(analyzeStack))) {
+            analyzeOneNode4CreateAndUpdate(workflowContext, currentNode, false, analyzeStack, analyzePendingStack);
         }
     }
 
     public static void dealAnalyzeSchema4CreateLink(WorkflowContext workflowContext) {
         NodeLink analyzeLink = workflowContext.popAnalyzeLink();
-        workflowContext.clearAnalyzeLinks();
         if(DataUtil.isNotNull(analyzeLink) && !analyzeLink.isWebLink()) {
             workflowContext.clearAnalyzeNodes();
             Node analyzeNode = workflowContext.fetchDownstreamNode(analyzeLink);
-            analyzeSchemaByStartNode(workflowContext, analyzeNode);
+            analyzeStartNode4CreateAndUpdate(workflowContext, analyzeNode);
         }
     }
 
     public static void dealAnalyzeSchema4UpdateNodeParameter(WorkflowContext workflowContext) {
         Node analyzeNode = workflowContext.popAnalyzeNode();
-        workflowContext.clearAnalyzeNodes();
-        analyzeSchemaByStartNode(workflowContext, analyzeNode);
+        analyzeStartNode4CreateAndUpdate(workflowContext, analyzeNode);
     }
 
     public static void dealAnalyzeSchema4DeleteNode(WorkflowContext workflowContext) {

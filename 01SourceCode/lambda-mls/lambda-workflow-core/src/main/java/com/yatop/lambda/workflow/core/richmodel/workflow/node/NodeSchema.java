@@ -26,7 +26,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
     private JsonObject jsonObject;  //关联JSON对象
     private List<FieldAttribute> fieldAttributes;
     private boolean dirtyFieldAttributes;
-    private boolean isFieldAttributesChanged;
+    private boolean isSchemaChanged;
     private boolean isStateChanged;
 
     public NodeSchema(WfFlowNodeSchema data, CmptChar cmptChar) {
@@ -39,8 +39,8 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
         this.jsonObject = jsonObject;
         this.fieldAttributes = null;
         this.dirtyFieldAttributes = false;
-        this.isFieldAttributesChanged = false;
-        this.isStateChanged = false;
+        this.isSchemaChanged = false;   //用于标记Schema字段属性信息变化
+        this.isStateChanged = false;    //用于标记Schema记录state变化
     }
 
     @Override
@@ -90,7 +90,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
         if(this.isStateNormal()) {
             CollectionUtil.enhancedClear(this.fieldAttributes);
             this.fieldAttributes = null;
-            this.isFieldAttributesChanged = true;
+            this.isSchemaChanged = true;
             this.dirtyFieldAttributes = false;  //schema非normal状态不更新JsonObject，仅更新schema状态
         }
         this.changeSchemaState(schemaStateEnum);
@@ -106,13 +106,13 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
             if(fieldAttributes.size() > SystemParameterUtil.find4Integer(SystemParameterEnum.WK_FLOW_SCHEMA_MAX_FIELDS, 512)) {
                 this.changeState2OverloadInterrupt();
                 this.fieldAttributes = null;
-                this.isFieldAttributesChanged = true;
+                this.isSchemaChanged = true;
                 this.dirtyFieldAttributes = false;  //schema非normal状态不更新JsonObject，仅更新schema状态
             }
             else if(!CollectionUtil.equals(this.getFieldAttributes(), fieldAttributes)) {
                 CollectionUtil.enhancedClear(this.fieldAttributes);
                 this.fieldAttributes = fieldAttributes;
-                this.isFieldAttributesChanged = true;
+                this.isSchemaChanged = true;
                 this.dirtyFieldAttributes = true;
             }
         } else {
@@ -121,7 +121,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
                 return;
             }
             this.fieldAttributes = fieldAttributes;
-            this.isFieldAttributesChanged = true;
+            this.isSchemaChanged = true;
             this.dirtyFieldAttributes = true;
             this.changeSchemaState(SchemaStateEnum.NORMAL);
         }
@@ -144,7 +144,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
     }
 
     public boolean isSchemaChanged() {
-        return isFieldAttributesChanged;
+        return isSchemaChanged;
     }
 
     public void changeState2Empty() {
