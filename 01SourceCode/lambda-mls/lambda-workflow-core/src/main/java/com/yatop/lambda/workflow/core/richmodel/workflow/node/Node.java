@@ -387,7 +387,7 @@ public class Node extends RichModel<WfFlowNode> {
 
     //用于analyzer在分析过程中判断节点是否需要分析输出数据端口的schema
     public boolean needAnalyzeSchema() {
-        return !this.isAnalyzed() && !this.isWebNode() && this.haveOutputDataTablePort();
+        return /*!this.isAnalyzed() &&*/ !this.isWebNode() && this.haveOutputDataTablePort();
     }
 
     public void changeSchemas2Empty() {
