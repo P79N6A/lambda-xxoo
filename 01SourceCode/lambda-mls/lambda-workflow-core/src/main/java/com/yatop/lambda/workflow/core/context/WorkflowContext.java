@@ -3,7 +3,7 @@ package com.yatop.lambda.workflow.core.context;
 import com.yatop.lambda.core.enums.*;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaAnalyzer;
+import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzer;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.data.model.ModelWarehouse;
@@ -269,8 +269,8 @@ public class WorkflowContext implements IWorkContext {
         return this.schemaAnalyze.getType() == AnalyzeTypeEnum.DELETE_LINK.getType();
     }
 
-    public boolean isAnalyzeWithCompileWorkflow() {
-        return this.schemaAnalyze.getType() == AnalyzeTypeEnum.COMPILE_WORKFLOW.getType();
+    public boolean isAnalyzeWithRefreshSchema() {
+        return this.schemaAnalyze.getType() == AnalyzeTypeEnum.REFRESH_SCHEMA.getType();
     }
 
     private void markAnalyzeWithCreateNode(Node node) {
@@ -323,10 +323,10 @@ public class WorkflowContext implements IWorkContext {
         }
     }
 
-    public void markAnalyzeWithCompileWorkflow() {
+    public void markAnalyzeWithRefreshSchema() {
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone())
-            this.schemaAnalyze = AnalyzeTypeEnum.COMPILE_WORKFLOW;
+            this.schemaAnalyze = AnalyzeTypeEnum.REFRESH_SCHEMA;
     }
 
     /*
