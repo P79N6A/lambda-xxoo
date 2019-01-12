@@ -385,6 +385,22 @@ public class Node extends RichModel<WfFlowNode> {
         return SchemaHelper.supportAnalyzeSchema(this);
     }
 
+    public void changeSchemas2Empty() {
+        List<NodeSchema> dataPortSchemas = this.getOutputDataTablePortSchemas();
+        if (DataUtil.isNotEmpty(dataPortSchemas)) {
+            for (NodeSchema nodeSchema : dataPortSchemas)
+                nodeSchema.changeState2Empty();
+        }
+    }
+
+    public void changeSchemas2NotSupport() {
+        List<NodeSchema> dataPortSchemas = this.getOutputDataTablePortSchemas();
+        if (DataUtil.isNotEmpty(dataPortSchemas)) {
+            for (NodeSchema nodeSchema : dataPortSchemas)
+                nodeSchema.changeState2NotSupport();
+        }
+    }
+
     public boolean isOccuredWarning() {
         return isStateNotReady();
     }

@@ -68,4 +68,8 @@ public class NodePortOutput extends RichModel<WfFlowNodePort> {
     public boolean matchTargetInputPort(NodePortInput dstNodePort) {
         return this.getType().matchTargetType(dstNodePort.getType());
     }
+
+    public boolean isSchemaChanged() {
+        return isDataTablePort() && getSchema().isStateNormal();
+    }
 }

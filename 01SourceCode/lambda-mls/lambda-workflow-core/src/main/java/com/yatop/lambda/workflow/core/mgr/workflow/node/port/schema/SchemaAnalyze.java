@@ -102,19 +102,10 @@ public class SchemaAnalyze {
                         throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze node data port schema failed -- module-clazz occur error.", "工作流组件分析节点数据端口schema时发生错误", e, node);
                     }
                 } else {
-                    List<NodeSchema> dataPortSchemas = node.getOutputDataTablePortSchemas();
-                    if (DataUtil.isNotEmpty(dataPortSchemas)) {
-                        for (NodeSchema nodeSchema : dataPortSchemas)
-                            nodeSchema.changeState2Empty();
-                    }
+                    node.changeSchemas2Empty();
                 }
             } else {
-                List<NodeSchema> dataPortSchemas = node.getOutputDataTablePortSchemas();
-                if (DataUtil.isNotEmpty(dataPortSchemas)) {
-                    for (NodeSchema nodeSchema : dataPortSchemas) {
-                        nodeSchema.changeState2NotSupport();
-                    }
-                }
+                node.changeSchemas2NotSupport();
             }
         }
     }

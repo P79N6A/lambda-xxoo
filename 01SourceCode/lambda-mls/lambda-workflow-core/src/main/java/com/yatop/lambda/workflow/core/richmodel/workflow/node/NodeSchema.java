@@ -26,6 +26,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
     private JsonObject jsonObject;  //关联JSON对象
     private List<FieldAttribute> fieldAttributes;
     private boolean dirtyFieldAttributes;
+    private boolean isFieldAttributesChanged;
     private boolean isStateChanged;
 
     public NodeSchema(WfFlowNodeSchema data, CmptChar cmptChar) {
@@ -38,6 +39,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
         this.jsonObject = jsonObject;
         this.fieldAttributes = null;
         this.dirtyFieldAttributes = false;
+        this.isFieldAttributesChanged = false;
         this.isStateChanged = false;
     }
 
@@ -88,6 +90,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
         if(this.isStateNormal()) {
             CollectionUtil.enhancedClear(this.fieldAttributes);
             this.fieldAttributes = null;
+            this.isFieldAttributesChanged = true;
             this.dirtyFieldAttributes = false;  //schema非normal状态不更新JsonObject，仅更新schema状态
         }
         this.changeSchemaState(schemaStateEnum);
@@ -102,11 +105,14 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
         if(this.isStateNormal()) {
             if(fieldAttributes.size() > SystemParameterUtil.find4Integer(SystemParameterEnum.WK_FLOW_SCHEMA_MAX_FIELDS, 512)) {
                 this.changeState2OverloadInterrupt();
-                return;
+                this.fieldAttributes = null;
+                this.isFieldAttributesChanged = true;
+                this.dirtyFieldAttributes = false;  //schema非normal状态不更新JsonObject，仅更新schema状态
             }
-            if(!CollectionUtil.equals(this.getFieldAttributes(), fieldAttributes)) {
+            else if(!CollectionUtil.equals(this.getFieldAttributes(), fieldAttributes)) {
                 CollectionUtil.enhancedClear(this.fieldAttributes);
                 this.fieldAttributes = fieldAttributes;
+                this.isFieldAttributesChanged = true;
                 this.dirtyFieldAttributes = true;
             }
         } else {
@@ -115,6 +121,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
                 return;
             }
             this.fieldAttributes = fieldAttributes;
+            this.isFieldAttributesChanged = true;
             this.dirtyFieldAttributes = true;
             this.changeSchemaState(SchemaStateEnum.NORMAL);
         }
@@ -136,6 +143,10 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
         return this.data().getSchemaState() == SchemaStateEnum.OVERLOAD_INTERRUPT.getState();
     }
 
+    public boolean isSchemaChanged() {
+        return isFieldAttributesChanged;
+    }
+
     public void changeState2Empty() {
         this.clearFieldAttributes(SchemaStateEnum.EMPTY);
     }
@@ -144,12 +155,15 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
         this.clearFieldAttributes(SchemaStateEnum.NOT_SUPPORT);
     }
 
-    public void changeState2OverloadInterrupt() {
+    private void changeState2OverloadInterrupt() {
         this.clearFieldAttributes(SchemaStateEnum.OVERLOAD_INTERRUPT);
     }
 
     private void changeSchemaState(SchemaStateEnum stateEnum) {
         if(this.data().getSchemaState() == stateEnum.getState())
+            return;
+
+        if(this.data().getSchemaState() == SchemaStateEnum.NOT_SUPPORT.getState() && stateEnum == SchemaStateEnum.EMPTY)
             return;
 
         this.data().setSchemaState(stateEnum.getState());

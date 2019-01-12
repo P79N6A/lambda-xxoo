@@ -1,11 +1,20 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema;
 
+import com.yatop.lambda.core.enums.IsRequiredEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.TreeMap;
 
 @Component
 public class SchemaAnalyzer {
@@ -55,27 +64,73 @@ public class SchemaAnalyzer {
         }
     }
 
-    private static void dealAnalyzeSchema4PendingNodes(WorkflowContext workflowContext) {
+    private static void searchDownStreamNodes(WorkflowContext workflowContext, Node currentNode, Deque<Node> analyzeStack) {
 
-    }
-
-    public static void dealAnalyzeSchema4CreateLink(WorkflowContext workflowContext) {
-        NodeLink analyzeLink = workflowContext.popAnalyzeLink();
-        if(DataUtil.isNotNull(analyzeLink) && !analyzeLink.isWebLink()) {
-            workflowContext.clearAnalyzeNodes();
-            Node analyzeNode = workflowContext.fetchDownstreamNode(analyzeLink);
-            if(SchemaHelper.needAnalyzeSchema(analyzeNode) && !analyzeNode.isAnalyzed()) {
-                SCHEMA_ANALYZE.analyzeSchema(workflowContext, analyzeNode);
-                analyzeNode.markAnalyzed();
-
-                if(analyzeNode.isStateChanged())
-                //TODO ....
+        for(NodePortOutput outputDataPort : currentNode.getOutputDataTablePorts()) {
+            if(outputDataPort.isSchemaChanged()) {
+                List<Node> downStreamNodes = workflowContext.fetchDownstreamNodes(outputDataPort);
+                if(DataUtil.isNotEmpty(downStreamNodes)) {
+                    for (Node downStreamNode : downStreamNodes) {
+                        if(SchemaHelper.needAnalyzeSchema(downStreamNode) && !downStreamNode.isAnalyzed())
+                            CollectionUtil.offerLast(analyzeStack, downStreamNode);
+                    }
+                }
             }
         }
     }
 
-    public static void dealAnalyzeSchema4UpdateNodeParameter(WorkflowContext workflowContext) {
+    private static void analyzeSchemaByStartNode(WorkflowContext workflowContext, Node startNode) {
 
+        if(DataUtil.isNotNull(startNode) && !startNode.isWebNode()) {
+            if(SchemaHelper.needAnalyzeSchema(startNode) && !startNode.isAnalyzed()) {
+                SCHEMA_ANALYZE.analyzeSchema(workflowContext, startNode);
+                startNode.markAnalyzed();
+
+                Deque<Node> analyzeStack = new LinkedList<Node>();
+                Deque<Node> analyzePendingStack = new LinkedList<Node>();
+                searchDownStreamNodes(workflowContext, startNode, analyzeStack);
+
+                Node currentNode = null;
+                while(DataUtil.isNotNull(currentNode = CollectionUtil.pollLast(analyzeStack))) {
+                    boolean ready = true;
+                    TreeMap<Long, NodePortOutput> upstreamPorts = workflowContext.fetchNonWebUpstreamPorts(currentNode);
+                    for(NodePortInput inputDataPort : currentNode.getInputDataTablePorts()) {
+                        if(inputDataPort.getCmptChar().data().getIsRequired() == IsRequiredEnum.YES.getMark()) {
+                            NodePortOutput upstreamDataPort = CollectionUtil.get(upstreamPorts, inputDataPort.data().getNodePortId());
+                            if (DataUtil.isNull(upstreamDataPort) || !upstreamDataPort.isDataTablePort()) {
+                                if(upstreamDataPort.isAnalyzed()) {
+                                    if(upstreamDataPort.getSchema().isStateNormal()) {
+                                        ready = true;
+                                    } else if(upstreamDataPort) {
+                                        currentNode.changeSchemas2Empty();
+                                    }
+                                } else {
+                                    ready = false;
+                                }
+                            } else {
+                                ready = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void dealAnalyzeSchema4CreateLink(WorkflowContext workflowContext) {
+        NodeLink analyzeLink = workflowContext.popAnalyzeLink();
+        workflowContext.clearAnalyzeLinks();
+        if(DataUtil.isNotNull(analyzeLink) && !analyzeLink.isWebLink()) {
+            workflowContext.clearAnalyzeNodes();
+            Node analyzeNode = workflowContext.fetchDownstreamNode(analyzeLink);
+            analyzeSchemaByStartNode(workflowContext, analyzeNode);
+        }
+    }
+
+    public static void dealAnalyzeSchema4UpdateNodeParameter(WorkflowContext workflowContext) {
+        Node analyzeNode = workflowContext.popAnalyzeNode();
+        workflowContext.clearAnalyzeNodes();
+        analyzeSchemaByStartNode(workflowContext, analyzeNode);
     }
 
     public static void dealAnalyzeSchema4DeleteNode(WorkflowContext workflowContext) {

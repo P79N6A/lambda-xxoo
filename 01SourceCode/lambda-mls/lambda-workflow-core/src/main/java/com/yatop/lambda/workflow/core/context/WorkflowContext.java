@@ -507,6 +507,18 @@ public class WorkflowContext implements IWorkContext {
         return null;
     }
 
+    public List<Node> fetchDownstreamNodes(NodePortOutput outputNodePort) {
+        List<NodeLink> outLinks = this.fetchOutLinks(outputNodePort);
+        if(DataUtil.isNotEmpty(outLinks)) {
+            List<Node> downstreamNodes = new LinkedList<Node>();
+            for(NodeLink nodeLink : outLinks) {
+                CollectionUtil.add(downstreamNodes, this.fetchDownstreamNode(nodeLink));
+            }
+            return downstreamNodes;
+        }
+        return null;
+    }
+
     /*
      *
      * Link Section
