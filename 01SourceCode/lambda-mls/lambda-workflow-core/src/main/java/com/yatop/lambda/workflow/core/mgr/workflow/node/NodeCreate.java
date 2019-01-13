@@ -81,7 +81,7 @@ public class NodeCreate {
         return createNode(workflowContext, otherNode.getModule(), otherNode, x, y, false);
     }
 
-    public Node copyNode4DiffWorkflow(WorkflowContext workflowContext, Node otherNode, Long x, Long y) {
-        return createNode(workflowContext, otherNode.getModule(), otherNode, x, y, true);
+    public Node copyNode4DiffWorkflow(WorkflowContext workflowContext, Node otherNode) {
+        return createNode(workflowContext, otherNode.getModule(), otherNode, otherNode.data().getPositionX(), otherNode.data().getPositionY(), true);
     }
 }

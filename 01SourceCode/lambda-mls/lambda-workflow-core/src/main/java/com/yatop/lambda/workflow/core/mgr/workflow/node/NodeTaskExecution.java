@@ -27,4 +27,8 @@ public class NodeTaskExecution {
             }
         }
     }
+
+    public boolean clearOutputOnTaskExecutionFailed(ExecutionTaskContext executionTaskContext) {
+        return ClazzHelperUtil.getModuleClazzBean(executionTaskContext.getNode().getModule()).clearOutputOnTaskExecutionFailed();
+    }
 }

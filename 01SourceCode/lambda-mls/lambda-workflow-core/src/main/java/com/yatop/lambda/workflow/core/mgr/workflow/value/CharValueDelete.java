@@ -23,9 +23,9 @@ public class CharValueDelete {
         if(charValue.getCmptChar().data().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete characteristic value failed -- forbid delete non-workflow source level char-value", "不允许非工作流来源级别的特征值删除", charValue);
         }
-        
-        if(charValue.getSpecType() == SpecTypeEnum.INPUT.getType() || charValue.getSpecType() == SpecTypeEnum.OUTPUT.getType() || charValue.getSpecType() == SpecTypeEnum.EXECUTION.getType()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete characteristic value failed -- forbid delete input & execution char-value.", "不允许输入输出内容和调用执行的特征值删除", charValue);
+
+        if(charValue.getSpecType() == SpecTypeEnum.INPUT.getType() || charValue.getSpecType() == SpecTypeEnum.EXECUTION.getType()) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete characteristic value failed -- forbid delete input & execution char-value.", "不允许输入内容和调用执行的特征值删除", charValue);
         }
 
         if(DataUtil.isEmpty(charValue.getCharValue())) {

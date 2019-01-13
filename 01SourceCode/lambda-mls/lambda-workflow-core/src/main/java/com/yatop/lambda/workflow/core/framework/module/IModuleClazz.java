@@ -47,6 +47,11 @@ public interface IModuleClazz extends InitializingBean {
     //任务执行事件处理，例如：读数据表将输出内容"OUT@DataTable-t1<M>"特征值置为"CCP@TableName"特征值对应数据表的ID值
     void onTaskExecution(ExecutionTaskContext context);
 
+    //任务执行失败时是否清理输出资源，例如：读数据表和读模型返回false，其他一般是返回true
+    //返回false，否
+    //返回true，是
+    boolean clearOutputOnTaskExecutionFailed();
+
     //////////////////////////////////////////////////////
 
     //是否支持动态分析数据输出端口schema
@@ -56,7 +61,7 @@ public interface IModuleClazz extends InitializingBean {
 
     //影响重新分析schema的参数集合
     //返回特征ID集合
-    HashSet<String> reanlyzeSchemaParameterSet();
+    HashSet<String> reanalyzeSchemaParameterSet();
     /* {
         static final HashSet<String> parameterSet = new HashSet<String>() {{
             add("xxx");

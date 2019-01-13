@@ -15,6 +15,12 @@ public class LinkValidate {
 
     public boolean validateLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodePortOutput srcNodePort, NodePortInput dstNodePort) {
 
+        if(DataUtil.isNull(srcNode.getOutputNodePort(srcNodePort.data().getNodePortId())))
+            return false;
+
+        if(DataUtil.isNull(dstNode.getInputNodePort(dstNodePort.data().getNodePortId())))
+            return false;
+
         if(srcNode.isWebNode()) {
             NodeLink link = workflowContext.fetchWebInLink(dstNodePort.data().getNodePortId());
             if (DataUtil.isNotNull(link))

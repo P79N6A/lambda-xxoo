@@ -25,7 +25,7 @@ public class LinkCreate {
     @Autowired
     LinkValidate linkValidate;
 
-    private NodeLink createLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodePortOutput srcNodePort, NodePortInput dstNodePort) {
+    public NodeLink createLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodePortOutput srcNodePort, NodePortInput dstNodePort) {
 
         if(!linkValidate.validateLink(workflowContext, srcNode, dstNode, srcNodePort, dstNodePort)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- validation failed for establishing link.", "输出端口和输入端口间链接建立验证失败", srcNodePort, dstNodePort);
@@ -48,7 +48,7 @@ public class LinkCreate {
         workflowContext.doneCreateLink(richNodeLink);
 
         if(WorkflowContextHelper.existDirectedCyclicGraph(workflowContext)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- Create link will make workflow exists directed cyclic graph..", "新建立链接将导致工作流产生有向循环图", srcNodePort, dstNodePort);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- Create link will make workflow exists directed cyclic graph..", "新建链接将导致工作流产生有向循环图", srcNodePort, dstNodePort);
         }
         return richNodeLink;
     }

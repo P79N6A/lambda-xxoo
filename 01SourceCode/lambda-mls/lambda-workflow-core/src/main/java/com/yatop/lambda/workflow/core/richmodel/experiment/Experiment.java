@@ -22,4 +22,8 @@ public class Experiment extends RichModel<EmExperiment> {
     public Project getProject() {
         return project;
     }
+
+    public Long getWorkflowId() {
+        return data().getExperimentId();
+    }
 }

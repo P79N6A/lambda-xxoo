@@ -52,7 +52,6 @@ public class SchemaAnalyzer {
     private static void dealAnalyzeSchema4CreateLink(WorkflowContext workflowContext) {
         NodeLink analyzeLink = workflowContext.popAnalyzeLink();
         if(DataUtil.isNotNull(analyzeLink) && !analyzeLink.isWebLink()) {
-            workflowContext.clearAnalyzeNodes();
             Node analyzeNode = workflowContext.fetchDownstreamNode(analyzeLink);
             SchemaAnalyzer4CreateAndUpdate.analyzeStartNode(workflowContext, analyzeNode);
         }

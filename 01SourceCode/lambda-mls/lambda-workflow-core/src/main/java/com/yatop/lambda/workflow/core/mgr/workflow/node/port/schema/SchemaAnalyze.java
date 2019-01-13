@@ -37,7 +37,7 @@ public class SchemaAnalyze {
         if (node.haveOutputDataTablePort() && parameter.getCmptChar().data().getSpecType() == SpecTypeEnum.PARAMETER.getType()) {
             IModuleClazz moduleClazz = ClazzHelperUtil.getModuleClazzBean(node.getModule());
             if (moduleClazz.supportAnalyzeSchema()) {
-                HashSet<String> cmptCodeSet = moduleClazz.reanlyzeSchemaParameterSet();
+                HashSet<String> cmptCodeSet = moduleClazz.reanalyzeSchemaParameterSet();
                 return CollectionUtil.contains(cmptCodeSet, parameter.getCmptChar().data().getCharCode());
             }
         }
@@ -47,7 +47,7 @@ public class SchemaAnalyze {
     private boolean reanalyzeSchemaConditionReady(WorkflowContext workflowContext, IModuleClazz moduleClazz, Node node) {
         {
             //reanalyze schema parameter in warning
-            HashSet<String> cmptCodeSet = moduleClazz.reanlyzeSchemaParameterSet();
+            HashSet<String> cmptCodeSet = moduleClazz.reanalyzeSchemaParameterSet();
             List<NodeParameter> nodeParameters = node.getParameters();
             if (DataUtil.isNotEmpty(nodeParameters)) {
                 for (NodeParameter nodeParameter : node.getParameters()) {

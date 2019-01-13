@@ -102,7 +102,7 @@ public class WorkflowContext implements IWorkContext {
         return context;
     }
 
-    //工作流内容查询用于工作流编译、复制、构建快照、构建作业等场景使用（全量预加载）
+    //工作流内容查询用于工作流删除、工作流刷新、工作流复制、构建快照、构建作业等场景使用（全量预加载）
     public static WorkflowContext BuildWorkflowContext4FullContent(Project project, Workflow workflow, String operId) {
         WorkflowContext context = new WorkflowContext(project, workflow, operId);
         context.lazyLoadMode = false;
@@ -423,7 +423,7 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public Node getNode(Long nodeId) {
-        return nodes.get(nodeId);
+        return CollectionUtil.get(nodes, nodeId);
     }
 
     public Node getUpstreamNode(NodeLink nodeLink) {
@@ -534,11 +534,11 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public NodeLink getLink(Long linkId) {
-        return links.get(linkId);
+        return CollectionUtil.get(links, linkId);
     }
 
     public List<NodeLink> getInLinks(Long dstPortId) {
-        return CollectionUtil.toList(inputLinks.get(dstPortId));
+        return CollectionUtil.toList(CollectionUtil.get(inputLinks, dstPortId));
     }
 
     public List<NodeLink> getInLinks(NodePortInput inputNodePort) {
@@ -675,11 +675,11 @@ public class WorkflowContext implements IWorkContext {
      */
 
     public NodePortInput getInputPort(Long portId) {
-        return inputPorts.get(portId);
+        return CollectionUtil.get(inputPorts, portId);
     }
 
     public NodePortOutput getOutputPort(Long portId) {
-        return outputPorts.get(portId);
+        return CollectionUtil.get(outputPorts, portId);
     }
 
     public NodePortOutput getUpstreamPort(NodeLink nodeLink) {
@@ -874,13 +874,13 @@ public class WorkflowContext implements IWorkContext {
      *
      */
 
-    public int analyzeNodeCount() {
+/*    public int analyzeNodeCount() {
         return analyzeNodes.size();
     }
 
     public int analyzeLinkCount() {
         return analyzeLinks.size();
-    }
+    }*/
 
     public void pushAnalyzeNode(Node node) {
         CollectionUtil.offerLast(analyzeNodes, node);
@@ -898,13 +898,13 @@ public class WorkflowContext implements IWorkContext {
         return CollectionUtil.pollLast(analyzeLinks);
     }
 
-    public void clearAnalyzeNodes() {
+/*    public void clearAnalyzeNodes() {
         CollectionUtil.clear(analyzeNodes);
     }
 
     public void clearAnalyzeLinks() {
         CollectionUtil.clear(analyzeLinks);
-    }
+    }*/
 
     public void eraseNode(Node node) {
 

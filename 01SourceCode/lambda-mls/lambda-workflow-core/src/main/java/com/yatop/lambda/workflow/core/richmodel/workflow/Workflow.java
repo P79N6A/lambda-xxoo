@@ -6,6 +6,7 @@ import com.yatop.lambda.core.enums.WorkflowStateEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.mgr.workflow.WorkflowHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
+import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
@@ -16,11 +17,13 @@ public class Workflow extends RichModel<WfFlow> {
 
     private static long NODE_DELETE_MAX_SEQUENCE = 0x20;
 
-    private boolean deleted;
+    Experiment experiment;
     private TreeMap<Long, WorkflowAccumulate> accumulates = new TreeMap<Long, WorkflowAccumulate>();
+    private boolean deleted;
 
-    public Workflow(WfFlow data) {
+    public Workflow(WfFlow data, Experiment experiment) {
         super(data);
+        this.experiment = experiment;
         this.deleted = false;
     }
 
@@ -36,6 +39,10 @@ public class Workflow extends RichModel<WfFlow> {
                 WorkflowHelper.updateWorkflow(this, operId);
             }
         }
+    }
+
+    public Experiment getExperiment() {
+        return experiment;
     }
 
     public boolean isStateDraft() {
@@ -163,6 +170,7 @@ public class Workflow extends RichModel<WfFlow> {
     @Override
     public void clear() {
         CollectionUtil.enhancedClear(accumulates);
+        experiment = null;
         super.clear();
     }
 

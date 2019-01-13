@@ -78,6 +78,30 @@ public class NodeLinkMgr extends BaseMgr {
 
     /*
      *
+     *   逻辑删除节点链接（是否考虑物理删除）
+     *   返回删除数量
+     *
+     * */
+    public int deleteLinkByWorkflowId(Long workflowId, String operId) {
+        if(DataUtil.isNull(workflowId) || DataUtil.isEmpty(operId)){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node link -- invalid delete condition.", "无效删除条件");
+        }
+
+        try {
+            WfFlowNodeLink deleteLink = new WfFlowNodeLink();
+            deleteLink.setStatus(DataStatusEnum.INVALID.getStatus());
+            deleteLink.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            deleteLink.setLastUpdateOper(operId);
+            WfFlowNodeLinkExample example = new WfFlowNodeLinkExample();
+            example.createCriteria().andOwnerFlowIdEqualTo(workflowId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            return wfFlowNodeLinkMapper.updateByExampleSelective(deleteLink, example);
+        } catch (Throwable e) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node link failed.", "删除节点链接失败", e);
+        }
+    }
+
+    /*
+     *
      *   查询节点链接（按ID）
      *   返回结果
      *
