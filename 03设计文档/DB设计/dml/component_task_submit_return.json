@@ -1,6 +1,6 @@
 
-task_context & task_submit.json:{
-<!-- 任务提交上下文，value为对象内容根据对象类型自动展开 ->
+task_submit.json:{
+<!-- 任务提交内容，value为对象内容根据对象类型自动展开 ->
 
 	task:{
 	<!- 任务信息 ->
