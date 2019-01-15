@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.execution;
 
 import com.yatop.lambda.base.model.WfExecutionJob;
 import com.yatop.lambda.core.enums.JobStateEnum;
+import com.yatop.lambda.core.enums.JobTypeEnum;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 
 public class ExecutionJob extends RichModel<WfExecutionJob> {
@@ -70,5 +71,13 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
             return;
 
         this.data().setJobState(stateEnum.getState());
+    }
+
+    public boolean enableFlushWorkflow() {
+        return JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(this.data().getJobType()));
+    }
+
+    public boolean enableFlushSnapshot() {
+        return JobTypeEnum.enableFlushSnapshot(JobTypeEnum.valueOf(this.data().getJobType()));
     }
 }

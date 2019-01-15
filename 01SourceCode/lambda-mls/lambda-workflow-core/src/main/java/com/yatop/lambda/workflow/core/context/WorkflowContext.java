@@ -19,15 +19,14 @@ import java.util.*;
 
 public class WorkflowContext implements IWorkContext {
 
-    private boolean lazyLoadMode;           //标识是否为懒加载模式，否则视为节点和链接的相关信息都已经一次性读取到上下文中
-    private boolean executionWorkMode;      //标识是否为运行工作模式，否则视为编辑器模式（用于特征CharValue增删改查等事件内部判断用）
-    private boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
-    private boolean loadNodeParameter;      //控制是否查询带出节点参数信息
-    private boolean loadDataPortSchema;     //控制是否查询带出数据输出端口schema信息
+    protected boolean lazyLoadMode;           //标识是否为懒加载模式，否则视为节点和链接的相关信息都已经一次性读取到上下文中
+    protected boolean executionWorkMode;      //标识是否为运行工作模式，否则视为编辑器模式（用于特征CharValue增删改查等事件内部判断用）
+    protected boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
+    protected boolean loadNodeParameter;      //控制是否查询带出节点参数信息
+    protected boolean loadDataPortSchema;     //控制是否查询带出数据输出端口schema信息
     private AnalyzeTypeEnum schemaAnalyze;  //触发的schema分析类型
-    //private Project project;                //操作关联项目
     private Workflow workflow;              //操作关联工作流
-    private ExecutionJob job;               //操作关联作业
+    //private ExecutionJob job;               //操作关联作业
     //private ExecutionTask task;             //操作关联任务
     private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库，key=dwId
     private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联模型仓库，key=mwId
@@ -130,7 +129,7 @@ public class WorkflowContext implements IWorkContext {
     //作业内容读取使用（反序列化时注入）
     public static WorkflowContext BuildWorkflowContext4Execution(Workflow workflow, ExecutionJob job, String operId) {
         WorkflowContext context = new WorkflowContext(workflow, operId);
-        context.job = job;
+        //context.job = job;
         context.lazyLoadMode = false;
         context.executionWorkMode = true;
         context.enableFlushWorkflow = JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(job.data().getJobType()));
@@ -161,7 +160,7 @@ public class WorkflowContext implements IWorkContext {
     public void clear() {
         workflow = null;
         operId = null;
-        job = null;
+        //job = null;
         //task = null;
         CollectionUtil.enhancedClear(dataWarehouses);
         CollectionUtil.enhancedClear(modelWarehouses);
@@ -190,14 +189,6 @@ public class WorkflowContext implements IWorkContext {
             }
         }
         this.workflow.flush(this.operId);
-    }
-
-    public DataWarehouse getDataWarehouse() {
-        return dataWarehouse;
-    }
-
-    public ModelWarehouse getModelWarehouse() {
-        return modelWarehouse;
     }
 
     /*
@@ -375,13 +366,14 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public ExecutionJob getJob() {
-        if(!executionWorkMode){
+        return null;
+        /*if(!executionWorkMode){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Non execution work mode.", "系统内部发生错误，请联系管理员");
         }
         if(executionWorkMode && DataUtil.isNull(job)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution work mode missing job info.", "系统内部发生错误，请联系管理员");
         }
-        return job;
+        return job;*/
     }
 
 /*    public ExecutionTask getTask() {
@@ -398,6 +390,14 @@ public class WorkflowContext implements IWorkContext {
 /*    public void switchTask(ExecutionTask task) {
         this.task = task;
     }*/
+
+    public DataWarehouse getDataWarehouse() {
+        return getDataWarehouse(getProject().data().getDwId());
+    }
+
+    public ModelWarehouse getModelWarehouse() {
+        return getModelWarehouse(getProject().data().getMwId());
+    }
 
     public DataWarehouse getDataWarehouse(Long dataWarehouseId) {
         return dataWarehouses.get(dataWarehouseId);
