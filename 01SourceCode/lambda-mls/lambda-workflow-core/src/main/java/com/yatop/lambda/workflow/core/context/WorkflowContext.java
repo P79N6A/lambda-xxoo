@@ -7,6 +7,7 @@ import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzer;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.data.model.ModelWarehouse;
+import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.*;
@@ -24,10 +25,10 @@ public class WorkflowContext implements IWorkContext {
     private boolean loadNodeParameter;      //控制是否查询带出节点参数信息
     private boolean loadDataPortSchema;     //控制是否查询带出数据输出端口schema信息
     private AnalyzeTypeEnum schemaAnalyze;  //触发的schema分析类型
-    private Project project;                //操作关联项目
+    //private Project project;                //操作关联项目
     private Workflow workflow;              //操作关联工作流
     private ExecutionJob job;               //操作关联作业
-    private ExecutionTask task;             //操作关联任务
+    //private ExecutionTask task;             //操作关联任务
     private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库，key=dwId
     private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联模型仓库，key=mwId
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();      //操作关联节点，key=nodeId
@@ -43,8 +44,8 @@ public class WorkflowContext implements IWorkContext {
     private Deque<NodeLink> analyzeLinks = new LinkedList<NodeLink>();  //待分析节点链接，key=linkId
 
     //工作流新建使用（无需加载）
-    public static WorkflowContext BuildWorkflowContext4Create(Project project, Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+    public static WorkflowContext BuildWorkflowContext4Create(Workflow workflow, String operId) {
+        WorkflowContext context = new WorkflowContext(workflow, operId);
         context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = true;
@@ -55,8 +56,8 @@ public class WorkflowContext implements IWorkContext {
     }
 
     //工作流编辑使用（创建节点、删除节点和删除链接，增量加载）
-    public static WorkflowContext BuildWorkflowContext4Edit(Project project, Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+    public static WorkflowContext BuildWorkflowContext4Edit(Workflow workflow, String operId) {
+        WorkflowContext context = new WorkflowContext(workflow, operId);
         context.lazyLoadMode = true;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = true;
@@ -67,8 +68,8 @@ public class WorkflowContext implements IWorkContext {
     }
 
     //工作流编辑使用（创建链接、更新节点参数，全量预加载）
-    public static WorkflowContext BuildWorkflowContext4EditPreload(Project project, Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+    public static WorkflowContext BuildWorkflowContext4EditPreload(Workflow workflow, String operId) {
+        WorkflowContext context = new WorkflowContext(workflow, operId);
         context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = true;
@@ -79,8 +80,8 @@ public class WorkflowContext implements IWorkContext {
     }
 
     //工作流编辑使用（验证链接，增量加载）
-    public static WorkflowContext BuildWorkflowContext4EditValidateLink(Project project, Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+    public static WorkflowContext BuildWorkflowContext4EditValidateLink(Workflow workflow, String operId) {
+        WorkflowContext context = new WorkflowContext(workflow, operId);
         context.lazyLoadMode = true;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
@@ -91,8 +92,8 @@ public class WorkflowContext implements IWorkContext {
     }
 
     //工作流查询画布图形信息使用（全量预加载）
-    public static WorkflowContext BuildWorkflowContext4OnlyGraph(Project project, Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+    public static WorkflowContext BuildWorkflowContext4OnlyGraph(Workflow workflow, String operId) {
+        WorkflowContext context = new WorkflowContext(workflow, operId);
         context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
@@ -103,8 +104,8 @@ public class WorkflowContext implements IWorkContext {
     }
 
     //工作流内容查询用于工作流删除、工作流刷新、工作流复制、构建快照、构建作业等场景使用（全量预加载）
-    public static WorkflowContext BuildWorkflowContext4FullContent(Project project, Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+    public static WorkflowContext BuildWorkflowContext4FullContent(Workflow workflow, String operId) {
+        WorkflowContext context = new WorkflowContext(workflow, operId);
         context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = true;
@@ -115,8 +116,8 @@ public class WorkflowContext implements IWorkContext {
     }
 
     //快照内容读取使用（反序列化时注入）
-    public static WorkflowContext BuildWorkflowContext4Snapshot(Project project, Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+    public static WorkflowContext BuildWorkflowContext4Snapshot(Workflow workflow, String operId) {
+        WorkflowContext context = new WorkflowContext(workflow, operId);
         context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
@@ -127,8 +128,8 @@ public class WorkflowContext implements IWorkContext {
     }
 
     //作业内容读取使用（反序列化时注入）
-    public static WorkflowContext BuildWorkflowContext4Execution(Project project, Workflow workflow, ExecutionJob job, String operId) {
-        WorkflowContext context = new WorkflowContext(project, workflow, operId);
+    public static WorkflowContext BuildWorkflowContext4Execution(Workflow workflow, ExecutionJob job, String operId) {
+        WorkflowContext context = new WorkflowContext(workflow, operId);
         context.job = job;
         context.lazyLoadMode = false;
         context.executionWorkMode = true;
@@ -139,8 +140,7 @@ public class WorkflowContext implements IWorkContext {
         return context;
     }
 
-    private WorkflowContext(Project project, Workflow workflow, String operId) {
-        this.project = project;
+    private WorkflowContext(Workflow workflow, String operId) {
         this.workflow = workflow;
         this.operId = operId;
         this.schemaAnalyze = AnalyzeTypeEnum.NONE;
@@ -159,11 +159,10 @@ public class WorkflowContext implements IWorkContext {
 
     @Override
     public void clear() {
-        project = null;
         workflow = null;
         operId = null;
         job = null;
-        task = null;
+        //task = null;
         CollectionUtil.enhancedClear(dataWarehouses);
         CollectionUtil.enhancedClear(modelWarehouses);
         CollectionUtil.enhancedClear(nodes);
@@ -191,6 +190,14 @@ public class WorkflowContext implements IWorkContext {
             }
         }
         this.workflow.flush(this.operId);
+    }
+
+    public DataWarehouse getDataWarehouse() {
+        return dataWarehouse;
+    }
+
+    public ModelWarehouse getModelWarehouse() {
+        return modelWarehouse;
     }
 
     /*
@@ -356,7 +363,11 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public Project getProject() {
-        return project;
+        return getExperiment().getProject();
+    }
+
+    public Experiment getExperiment() {
+        return getWorkflow().getExperiment();
     }
 
     public Workflow getWorkflow() {
@@ -373,7 +384,7 @@ public class WorkflowContext implements IWorkContext {
         return job;
     }
 
-    public ExecutionTask getTask() {
+/*    public ExecutionTask getTask() {
         ExecutionJob execJob = getJob();
         if(executionWorkMode && DataUtil.isNull(task)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution work mode missing task info.", "系统内部发生错误，请联系管理员");
@@ -382,11 +393,11 @@ public class WorkflowContext implements IWorkContext {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution job.job_id & task.owner_job_id inconsistent.", "系统内部发生错误，请联系管理员", execJob, task);
         }
         return task;
-    }
+    }*/
 
-    public void switchTask(ExecutionTask task) {
+/*    public void switchTask(ExecutionTask task) {
         this.task = task;
-    }
+    }*/
 
     public DataWarehouse getDataWarehouse(Long dataWarehouseId) {
         return dataWarehouses.get(dataWarehouseId);

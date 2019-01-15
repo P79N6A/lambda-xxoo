@@ -105,6 +105,7 @@ public class ExecutionJobMgr extends BaseMgr {
         if(job.isJobContentNotColoured() &&
                 job.isJobDfsDirNotColoured() &&
                 job.isJobLocalDirNotColoured() &&
+                job.isNextTaskSequenceNotColoured() &&
                 job.isJobSubmitTimeNotColoured() &&
                 job.isJobStartTimeNotColoured() &&
                 job.isJobEndTimeNotColoured() &&
@@ -122,6 +123,8 @@ public class ExecutionJobMgr extends BaseMgr {
                 updateJob.setJobDfsDir(job.getJobDfsDir());
             if(job.isJobLocalDirColoured())
                 updateJob.setJobLocalDir(job.getJobLocalDir());
+            if(job.isNextTaskSequenceColoured())
+                updateJob.setNextTaskSequence(job.getNextTaskSequence());
             if(job.isJobSubmitTimeColoured())
                 updateJob.setJobSubmitTime(job.getJobSubmitTime());
             if(job.isJobStartTimeColoured())
