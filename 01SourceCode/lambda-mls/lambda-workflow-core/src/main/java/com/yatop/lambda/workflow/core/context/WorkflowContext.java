@@ -150,9 +150,9 @@ public class WorkflowContext implements IWorkContext {
             WorkflowContextHelper.loadAllNodes(this);
             WorkflowContextHelper.loadAllLinks(this);
 
-            if(WorkflowContextHelper.existDirectedCyclicGraph(this)) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Workflow exists directed cyclic graph.", "工作流数据异常，请联系管理员");
-            }
+            //if(WorkflowContextHelper.existDirectedCyclicGraph(this)) {
+            //    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Workflow exists directed cyclic graph.", "工作流数据异常，请联系管理员");
+            //}
         }
     }
 
