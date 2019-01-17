@@ -4,11 +4,18 @@ import com.yatop.lambda.base.model.WfExecutionJob;
 import com.yatop.lambda.core.enums.JobStateEnum;
 import com.yatop.lambda.core.enums.JobTypeEnum;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
+import com.yatop.lambda.workflow.core.richmodel.workflow.snapshot.Snapshot;
+
+import java.util.TreeSet;
 
 public class ExecutionJob extends RichModel<WfExecutionJob> {
 
-    public ExecutionJob(WfExecutionJob data) {
+    private Snapshot snapshot;
+    private TreeSet<Long> jobContent = new TreeSet<Long>(); //作业内容，nodeId列表
+
+    public ExecutionJob(WfExecutionJob data, Snapshot snapshot) {
         super(data);
+        this.snapshot = snapshot;
     }
 
     public void flush(String operId) {
@@ -79,5 +86,9 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
 
     public boolean enableFlushSnapshot() {
         return JobTypeEnum.enableFlushSnapshot(JobTypeEnum.valueOf(this.data().getJobType()));
+    }
+
+    public Snapshot getSnapshot() {
+        return snapshot;
     }
 }

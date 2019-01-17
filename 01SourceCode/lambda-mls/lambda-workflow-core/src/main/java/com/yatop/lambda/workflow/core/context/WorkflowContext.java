@@ -11,6 +11,7 @@ import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.*;
+import com.yatop.lambda.workflow.core.richmodel.workflow.snapshot.Snapshot;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
@@ -24,10 +25,8 @@ public class WorkflowContext implements IWorkContext {
     protected boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
     protected boolean loadNodeParameter;      //控制是否查询带出节点参数信息
     protected boolean loadDataPortSchema;     //控制是否查询带出数据输出端口schema信息
-    private AnalyzeTypeEnum schemaAnalyze;  //触发的schema分析类型
-    private Workflow workflow;              //操作关联工作流
-    //private ExecutionJob job;               //操作关联作业
-    //private ExecutionTask task;             //操作关联任务
+    private AnalyzeTypeEnum schemaAnalyze;    //触发的schema分析类型
+    private Workflow workflow;                //操作关联工作流
     private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库，key=dwId
     private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联模型仓库，key=mwId
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();      //操作关联节点，key=nodeId
@@ -37,10 +36,14 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, NodePortInput> inputPorts = new TreeMap<Long, NodePortInput>();  //操作关联节点输入端口，key=nodePortId
     private TreeMap<Long, NodePortOutput> outputPorts = new TreeMap<Long, NodePortOutput>();  //操作关联节点输出端口，key=nodePortId
   //private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联节点全局参数，key=globalParameterId
-    private String operId;
+
+    private ExecutionJob currentJob;        //操作关联的当前运行作业
+    private TreeMap<Long, ExecutionJob> jobs = new TreeMap<Long, ExecutionJob>();   //操作关联运行作业
+    private TreeMap<Long, ExecutionTask> tasks = new TreeMap<Long, ExecutionTask>();    //操作关联运行任务
 
     private Deque<Node> analyzeNodes = new LinkedList<Node>();      //待分析节点，key=nodeId
     private Deque<NodeLink> analyzeLinks = new LinkedList<NodeLink>();  //待分析节点链接，key=linkId
+    private String operId;
 
     //工作流新建使用（无需加载）
     public static WorkflowContext BuildWorkflowContext4Create(Workflow workflow, String operId) {
@@ -115,27 +118,22 @@ public class WorkflowContext implements IWorkContext {
     }
 
     //快照内容读取使用（反序列化时注入）
-    public static WorkflowContext BuildWorkflowContext4Snapshot(Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(workflow, operId);
+    public static WorkflowContext BuildWorkflowContext4Snapshot(Snapshot snapshot, String operId) {
+
+        WorkflowContext context = new WorkflowContext(snapshot.getWorkflow(), operId);
         context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;  //WorkflowContextCodec中填入
         context.loadDataPortSchema = false;
-        //context.initialize();
+        context.initialize(snapshot);
         return context;
     }
 
-    //作业内容读取使用（反序列化时注入）
-    public static WorkflowContext BuildWorkflowContext4Execution(Workflow workflow, ExecutionJob job, String operId) {
-        WorkflowContext context = new WorkflowContext(workflow, operId);
-        //context.job = job;
-        context.lazyLoadMode = false;
-        context.executionWorkMode = true;
+    //作业内容读取使用
+    public static WorkflowContext BuildWorkflowContext4Execution(ExecutionJob job, String operId) {
+        WorkflowContext context = BuildWorkflowContext4Snapshot(job.getSnapshot(), operId);
         context.enableFlushWorkflow = JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(job.data().getJobType()));
-        context.loadNodeParameter = false;  //WorkflowContextCodec中填入
-        context.loadDataPortSchema = false;
-        //context.initialize();
         return context;
     }
 
@@ -154,6 +152,10 @@ public class WorkflowContext implements IWorkContext {
             //    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Workflow exists directed cyclic graph.", "工作流数据异常，请联系管理员");
             //}
         }
+    }
+
+    private void initialize(Snapshot snapshot) {
+        //TODO decode
     }
 
     @Override
