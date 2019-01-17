@@ -23,6 +23,36 @@ public class NodeHelper {
         node.clearColoured();
     }
 
-    //名称、X坐标、Y坐标、注释、描述
-    //TODO 直接调用 NodeMgr.updateNode去做更新
+    public static WfFlowNode updateNodeName(Long nodeId, String name, String operId) {
+        WfFlowNode node = NODE_MGR.queryNode(nodeId);
+        node.clearColoured();
+        node.setNodeName(name);
+        NODE_MGR.updateNode(node, operId);
+        return node;
+    }
+
+    public static WfFlowNode updateNodePosition(Long nodeId, Long x, Long y, String operId) {
+        WfFlowNode node = NODE_MGR.queryNode(nodeId);
+        node.clearColoured();
+        node.setPositionX(x);
+        node.setPositionY(y);
+        NODE_MGR.updateNode(node, operId);
+        return node;
+    }
+
+    public static WfFlowNode updateNodeComment(Long nodeId, String comment, String operId) {
+        WfFlowNode node = NODE_MGR.queryNode(nodeId);
+        node.clearColoured();
+        node.setComment(comment);
+        NODE_MGR.updateNode(node, operId);
+        return node;
+    }
+
+    public static WfFlowNode updateNodeDescription(Long nodeId, String description, String operId) {
+        WfFlowNode node = NODE_MGR.queryNode(nodeId);
+        node.clearColoured();
+        node.setDescription(description);
+        NODE_MGR.updateNode(node, operId);
+        return node;
+    }
 }

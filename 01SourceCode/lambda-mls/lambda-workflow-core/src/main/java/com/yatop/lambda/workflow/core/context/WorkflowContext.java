@@ -20,13 +20,13 @@ import java.util.*;
 
 public class WorkflowContext implements IWorkContext {
 
-    protected boolean lazyLoadMode;           //标识是否为懒加载模式，否则视为节点和链接的相关信息都已经一次性读取到上下文中
-    protected boolean executionWorkMode;      //标识是否为运行工作模式，否则视为编辑器模式（用于特征CharValue增删改查等事件内部判断用）
-    protected boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
-    protected boolean loadNodeParameter;      //控制是否查询带出节点参数信息
-    protected boolean loadDataPortSchema;     //控制是否查询带出数据输出端口schema信息
-    private AnalyzeTypeEnum schemaAnalyze;    //触发的schema分析类型
-    private Workflow workflow;                //操作关联工作流
+    private boolean lazyLoadMode;           //标识是否为懒加载模式，否则视为节点和链接的相关信息都已经一次性读取到上下文中
+    private boolean executionWorkMode;      //标识是否为运行工作模式，否则视为编辑器模式（用于特征CharValue增删改查等事件内部判断用）
+    private boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
+    private boolean loadNodeParameter;      //控制是否查询带出节点参数信息
+    private boolean loadDataPortSchema;     //控制是否查询带出数据输出端口schema信息
+    private AnalyzeTypeEnum schemaAnalyze;  //触发的schema分析类型
+    private Workflow workflow;              //操作关联工作流
     private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库，key=dwId
     private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联模型仓库，key=mwId
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();      //操作关联节点，key=nodeId
@@ -46,81 +46,66 @@ public class WorkflowContext implements IWorkContext {
     private String operId;
 
     //工作流新建使用（无需加载）
-    public static WorkflowContext BuildWorkflowContext4Create(Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(workflow, operId);
+    public static WorkflowContext BuildWorkflowContext4Create(Experiment experiment, String operId) {
+        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
         context.lazyLoadMode = false;
         context.executionWorkMode = false;
-        context.enableFlushWorkflow = true;
-        context.loadNodeParameter = true;
-        context.loadDataPortSchema = true;
-        //context.initialize();
+        context.initialize(false);
         return context;
     }
 
     //工作流编辑使用（创建节点、删除节点和删除链接，增量加载）
-    public static WorkflowContext BuildWorkflowContext4Edit(Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(workflow, operId);
-        context.lazyLoadMode = true;
+    public static WorkflowContext BuildWorkflowContext4Edit(Experiment experiment, String operId) {
+        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
         context.executionWorkMode = false;
-        context.enableFlushWorkflow = true;
-        context.loadNodeParameter = true;
-        context.loadDataPortSchema = true;
-        //context.initialize();
+        context.initialize(false);
         return context;
     }
 
     //工作流编辑使用（创建链接、更新节点参数，全量预加载）
-    public static WorkflowContext BuildWorkflowContext4EditPreload(Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(workflow, operId);
+    public static WorkflowContext BuildWorkflowContext4EditPreload(Experiment experiment, String operId) {
+        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
         context.lazyLoadMode = false;
         context.executionWorkMode = false;
-        context.enableFlushWorkflow = true;
-        context.loadNodeParameter = true;
-        context.loadDataPortSchema = true;
-        context.initialize();
+        context.initialize(true);
         return context;
     }
 
     //工作流编辑使用（验证链接，增量加载）
-    public static WorkflowContext BuildWorkflowContext4EditValidateLink(Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(workflow, operId);
-        context.lazyLoadMode = true;
+    public static WorkflowContext BuildWorkflowContext4EditValidateLink(Experiment experiment, String operId) {
+        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
         context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;
         context.loadDataPortSchema = false;
-        //context.initialize();
+        context.initialize(false);
         return context;
     }
 
-    //工作流查询画布图形信息使用（全量预加载）
-    public static WorkflowContext BuildWorkflowContext4OnlyGraph(Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(workflow, operId);
+    //工作流查询使用，用于实验图形查询（全量预加载）
+    public static WorkflowContext BuildWorkflowContext4OnlyGraph(Experiment experiment, String operId) {
+        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
         context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;
         context.loadDataPortSchema = false;
-        context.initialize();
+        context.initialize(true);
         return context;
     }
 
-    //工作流内容查询用于工作流删除、工作流刷新、工作流复制、构建快照、构建作业等场景使用（全量预加载）
-    public static WorkflowContext BuildWorkflowContext4FullContent(Workflow workflow, String operId) {
-        WorkflowContext context = new WorkflowContext(workflow, operId);
+    //工作流查询使用，用于实验删除、实验刷新、实验复制、构建快照、构建作业等场景使用（全量预加载）
+    public static WorkflowContext BuildWorkflowContext4FullContent(Experiment experiment, String operId) {
+        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
         context.lazyLoadMode = false;
         context.executionWorkMode = false;
-        context.enableFlushWorkflow = true;
-        context.loadNodeParameter = true;
-        context.loadDataPortSchema = true;
-        context.initialize();
+        context.initialize(true);
         return context;
     }
 
-    //快照内容读取使用（反序列化时注入）
+    //快照查看使用（反序列化时注入）
     public static WorkflowContext BuildWorkflowContext4Snapshot(Snapshot snapshot, String operId) {
-
-        WorkflowContext context = new WorkflowContext(snapshot.getWorkflow(), operId);
+        WorkflowContext context = new WorkflowContext(snapshot.parseContent(), operId);
         context.lazyLoadMode = false;
         context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
@@ -130,10 +115,12 @@ public class WorkflowContext implements IWorkContext {
         return context;
     }
 
-    //作业内容读取使用
-    public static WorkflowContext BuildWorkflowContext4Execution(ExecutionJob job, String operId) {
-        WorkflowContext context = BuildWorkflowContext4Snapshot(job.getSnapshot(), operId);
-        context.enableFlushWorkflow = JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(job.data().getJobType()));
+    //作业运行使用
+    public static WorkflowContext BuildWorkflowContext4Execution(ExecutionJob currentJob, String operId) {
+        WorkflowContext context = BuildWorkflowContext4Snapshot(currentJob.getSnapshot(), operId);
+        context.currentJob = currentJob;
+        context.enableFlushWorkflow = currentJob.enableFlushWorkflow();
+        context.initialize(currentJob);
         return context;
     }
 
@@ -141,10 +128,16 @@ public class WorkflowContext implements IWorkContext {
         this.workflow = workflow;
         this.operId = operId;
         this.schemaAnalyze = AnalyzeTypeEnum.NONE;
+
+        this.lazyLoadMode = true;
+        this.executionWorkMode = true;
+        this.enableFlushWorkflow = true;
+        this.loadNodeParameter = true;
+        this.loadDataPortSchema = true;
     }
 
-    private void initialize() {
-        if(!this.isLazyLoadMode()) {
+    private void initialize(boolean preload) {
+        if(preload) {
             WorkflowContextHelper.loadAllNodes(this);
             WorkflowContextHelper.loadAllLinks(this);
 
@@ -158,12 +151,16 @@ public class WorkflowContext implements IWorkContext {
         //TODO decode
     }
 
+    private void initialize(ExecutionJob currentJob) {
+        if(!currentJob.enableFlushSnapshot()) {
+            //TODO loadAllTasks and reset node state
+        }
+    }
+
     @Override
     public void clear() {
         workflow = null;
         operId = null;
-        //job = null;
-        //task = null;
         CollectionUtil.enhancedClear(dataWarehouses);
         CollectionUtil.enhancedClear(modelWarehouses);
         CollectionUtil.enhancedClear(nodes);
@@ -173,24 +170,42 @@ public class WorkflowContext implements IWorkContext {
         CollectionUtil.clear(inputPorts);
         CollectionUtil.clear(outputPorts);
         //CollectionUtil.clear(globalParameters);
+
+        if(DataUtil.isNotNull(currentJob)) {
+            currentJob.clear();
+            currentJob = null;
+        }
+        CollectionUtil.enhancedClear(jobs);
+        CollectionUtil.enhancedClear(tasks);
+
         CollectionUtil.clear(analyzeNodes);
         CollectionUtil.clear(analyzeLinks);
     }
 
     public void flush() {
-        if(!this.isEnableFlushWorkflow())
-            return;
+        if(this.isExecutionWorkMode()) {
+            this.getCurrentJob().flush(this.getOperId());
 
-        if(loadNodeParameter && loadDataPortSchema) {
-            SchemaAnalyzer.dealAnalyzeSchema(this);
-        }
-
-        if(this.nodeCount() > 0) {
-            for (Node node : this.getNodes()) {
-                node.flush(this.isLoadNodeParameter(), this.isLoadDataPortSchema(), this.operId);
+            if(tasks.size() > 0) {
+                for(ExecutionTask task : CollectionUtil.toList(tasks)) {
+                    task.flush(this.getOperId());
+                }
             }
         }
-        this.workflow.flush(this.operId);
+
+        if(this.isEnableFlushWorkflow()) {
+
+            if (loadNodeParameter && loadDataPortSchema) {
+                SchemaAnalyzer.dealAnalyzeSchema(this);
+            }
+
+            if (this.nodeCount() > 0) {
+                for (Node node : this.getNodes()) {
+                    node.flush(this.isLoadNodeParameter(), this.isLoadDataPortSchema(), this.getOperId());
+                }
+            }
+            this.workflow.flush(this.getOperId());
+        }
     }
 
     /*
@@ -356,7 +371,7 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public Project getProject() {
-        return getExperiment().getProject();
+        return getWorkflow().getProject();
     }
 
     public Experiment getExperiment() {
@@ -366,32 +381,6 @@ public class WorkflowContext implements IWorkContext {
     public Workflow getWorkflow() {
         return workflow;
     }
-
-    public ExecutionJob getJob() {
-        return null;
-        /*if(!executionWorkMode){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Non execution work mode.", "系统内部发生错误，请联系管理员");
-        }
-        if(executionWorkMode && DataUtil.isNull(job)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution work mode missing job info.", "系统内部发生错误，请联系管理员");
-        }
-        return job;*/
-    }
-
-/*    public ExecutionTask getTask() {
-        ExecutionJob execJob = getJob();
-        if(executionWorkMode && DataUtil.isNull(task)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution work mode missing task info.", "系统内部发生错误，请联系管理员");
-        }
-        if(!execJob.data().getJobId().equals(task.data().getOwnerJobId())) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution job.job_id & task.owner_job_id inconsistent.", "系统内部发生错误，请联系管理员", execJob, task);
-        }
-        return task;
-    }*/
-
-/*    public void switchTask(ExecutionTask task) {
-        this.task = task;
-    }*/
 
     public DataWarehouse getDataWarehouse() {
         return getDataWarehouse(getProject().data().getDwId());
@@ -415,6 +404,42 @@ public class WorkflowContext implements IWorkContext {
 
     public List<ModelWarehouse> getModelWarehouses() {
         return CollectionUtil.toList(modelWarehouses);
+    }
+
+    public ExecutionJob getCurrentJob() {
+        if(!isExecutionWorkMode()){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Non execution work mode.", "系统内部发生错误，请联系管理员");
+        }
+        if(DataUtil.isNull(currentJob)){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Execution work mode missing job info.", "系统内部发生错误，请联系管理员");
+        }
+
+        return currentJob;
+    }
+
+    public ExecutionJob getExecutionJob(Long jobId) {
+        ExecutionJob job = CollectionUtil.get(jobs, jobId);
+        if(DataUtil.isNotNull(job)) {
+            //TODO query job
+            //job = xxx
+        }
+        return job;
+    }
+
+    public ExecutionJob getExecutionJob(ExecutionTask task) {
+        return getExecutionJob(task.data().getOwnerJobId());
+    }
+
+    public ExecutionTask getExecutionTask(Node node) {
+        if(DataUtil.isNull(node.data().getLastTaskId()))
+            return null;
+
+        ExecutionTask task = CollectionUtil.get(tasks, node.data().getLastTaskId());
+        if(DataUtil.isNull(task)) {
+            //TODO query task
+            //task = xxx
+        }
+        return task;
     }
 
     public String getOperId() {
@@ -817,7 +842,7 @@ public class WorkflowContext implements IWorkContext {
 
     /*
      *
-     * Put Warehouse, Node, Link, Node Port, etc. Section
+     * Put Data Warehouse, Model Warehouse, Job, Task, Node, Link, Node Port, etc. Section
      *
      */
 
@@ -827,6 +852,14 @@ public class WorkflowContext implements IWorkContext {
 
     public void putModelWarehouse(ModelWarehouse warehouse) {
         CollectionUtil.put(modelWarehouses, warehouse.data().getMwId(), warehouse);
+    }
+
+    public void putExecutionJob(ExecutionJob job) {
+        CollectionUtil.put(jobs, job.data().getJobId(), job);
+    }
+
+    public void putExecutionTask(ExecutionTask task) {
+        CollectionUtil.put(tasks, task.data().getTaskId(), task);
     }
 
     public void putNode(Node node) {

@@ -42,8 +42,8 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
         return this.data().getTaskState() == TaskStateEnum.PREPARING.getState();
     }
 
-    public boolean isStateQueueing() {
-        return this.data().getTaskState() == TaskStateEnum.QUEUEING.getState();
+    public boolean isStateReady() {
+        return this.data().getTaskState() == TaskStateEnum.READY.getState();
     }
 
     public boolean isStateRunning() {
@@ -62,8 +62,8 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
         return this.data().getTaskState() == TaskStateEnum.USER_TERMINATED.getState();
     }
 
-    public void changeState2Queueing() {
-        this.changeTaskState(TaskStateEnum.QUEUEING);
+    public void changeState2Ready() {
+        this.changeTaskState(TaskStateEnum.READY);
     }
 
     public void changeState2Running() {
@@ -87,6 +87,34 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
             return;
 
         this.data().setTaskState(stateEnum.getState());
+        this.syncTaskState2Node(stateEnum);
+    }
+
+    public void syncTaskState2Node() {
+        this.syncTaskState2Node(TaskStateEnum.valueOf(this.data().getTaskState()));
+    }
+
+    private void syncTaskState2Node(TaskStateEnum stateEnum) {
+        switch (stateEnum) {
+            case PREPARING:
+            case READY:
+                this.node.changeState2Preparing();
+                break;
+            case RUNNING:
+                this.node.changeState2Running();
+                break;
+            case SUCCESS:
+                this.node.changeState2Success();
+                break;
+            case ERROR_TERMINATED:
+                this.node.changeState2Error();
+                break;
+            case USER_TERMINATED:
+                this.node.downgradeState2Ready();
+                break;
+            default:
+                break;
+        }
     }
 
     public Node getNode() {

@@ -7,6 +7,7 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.mgr.workflow.WorkflowHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
+import com.yatop.lambda.workflow.core.richmodel.project.Project;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
@@ -17,14 +18,24 @@ public class Workflow extends RichModel<WfFlow> {
 
     private static long NODE_DELETE_MAX_SEQUENCE = 0x20;
 
-    Experiment experiment;
+    private Project project;
+    private Experiment experiment;
     private TreeMap<Long, WorkflowAccumulate> accumulates = new TreeMap<Long, WorkflowAccumulate>();
     private boolean deleted;
 
-    public Workflow(WfFlow data, Experiment experiment) {
+    public Workflow(WfFlow data, Project project, Experiment experiment) {
         super(data);
+        this.project = project;
         this.experiment = experiment;
         this.deleted = false;
+    }
+
+    @Override
+    public void clear() {
+        project = null;
+        experiment = null;
+        CollectionUtil.enhancedClear(accumulates);
+        super.clear();
     }
 
     public void flush(String operId) {
@@ -39,6 +50,10 @@ public class Workflow extends RichModel<WfFlow> {
                 WorkflowHelper.updateWorkflow(this, operId);
             }
         }
+    }
+
+    public Project getProject() {
+        return project;
     }
 
     public Experiment getExperiment() {
@@ -165,13 +180,6 @@ public class Workflow extends RichModel<WfFlow> {
     public void doneRecoverNodes(Long nodeCount) {
         this.data().setNodeCount(this.data().getNodeCount() + nodeCount);
         this.data().setNextDeleteSequence(previousDeleteSequence());
-    }
-
-    @Override
-    public void clear() {
-        CollectionUtil.enhancedClear(accumulates);
-        experiment = null;
-        super.clear();
     }
 
     public boolean isDeleted() {

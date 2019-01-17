@@ -8,9 +8,9 @@ public enum TaskStateEnum {
     PREPARING(0, "Preparing"),
 
     /**
-     * 排队中
+     * 已就绪
      */
-    QUEUEING(1, "Queueing"),
+    READY(1, "Ready"),
 
     /**
      * 运行中
@@ -59,7 +59,7 @@ public enum TaskStateEnum {
     public static TaskStateEnum valueOf(int state) {
         switch (state) {
             case 0: return PREPARING;
-            case 1: return QUEUEING;
+            case 1: return READY;
             case 2: return RUNNING;
             case 3: return SUCCESS;
             case 4: return ERROR_TERMINATED;

@@ -40,7 +40,7 @@ public class ExecutionTaskQueueMgr extends BaseMgr {
             insertQueue.setOwnerProjectId(jobQueue.getOwnerJobId());
             insertQueue.setOwnerJobId(jobQueue.getOwnerJobId());
             insertQueue.setTaskTime(dtCurrentTime);
-            insertQueue.setTaskState(TaskStateEnum.QUEUEING.getState());
+            insertQueue.setTaskState(TaskStateEnum.READY.getState());
             insertQueue.setLastUpdateTime(dtCurrentTime);
             insertQueue.setLastUpdateOper(operId);
             insertQueue.setCreateTime(dtCurrentTime);

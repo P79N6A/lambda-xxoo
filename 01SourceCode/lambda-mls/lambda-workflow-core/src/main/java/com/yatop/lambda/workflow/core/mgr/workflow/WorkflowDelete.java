@@ -30,9 +30,12 @@ public class WorkflowDelete {
         if(workflowContext.isLoadNodeParameter())
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete workflow error -- workflow context work in not load-data-port-schema mode.", "系统内部错误，请联系管理员");
 
+        //TODO 暂不进行 delete snapshot, job<task, task output>
+
         nodeDelete.deleteAllNodes(workflowContext);
         linkDelete.deleteAllLinks(workflowContext);
         WorkflowHelper.deleteAccumulates(workflowContext.getWorkflow(), workflowContext.getOperId());
         workflowMgr.deleteWorkflow(workflowContext.getWorkflow().data().getFlowId(), workflowContext.getOperId());
+        workflowContext.getWorkflow().markDeleted();
     }
 }
