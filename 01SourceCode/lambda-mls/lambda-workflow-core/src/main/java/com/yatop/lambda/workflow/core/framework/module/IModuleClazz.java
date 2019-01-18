@@ -36,6 +36,15 @@ public interface IModuleClazz extends InitializingBean {
     //生成摘要内容
     void generateSummary(WorkflowNodeContext context);
 */
+    //////////////////////////////////////////////////////
+
+    //需要探测的输出端口集合，例如：读数据表、读模型
+    //返回特征代码集合
+    HashSet<String> exploreOutputPortSet();
+
+    //探测输出端口资源
+    void exploreOutputPortResource(WorkflowNodeContext context);
+
 
     //////////////////////////////////////////////////////
 
@@ -60,7 +69,7 @@ public interface IModuleClazz extends InitializingBean {
     boolean supportAnalyzeSchema();
 
     //影响重新分析schema的参数集合
-    //返回特征ID集合
+    //返回特征代码集合
     HashSet<String> reanalyzeSchemaParameterSet();
     /* {
         static final HashSet<String> parameterSet = new HashSet<String>() {{

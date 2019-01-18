@@ -48,8 +48,6 @@ public class WorkflowContext implements IWorkContext {
     //工作流新建使用（无需加载）
     public static WorkflowContext BuildWorkflowContext4Create(Experiment experiment, String operId) {
         WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
-        context.lazyLoadMode = false;
-        context.executionWorkMode = false;
         context.initialize(false);
         return context;
     }
@@ -57,7 +55,7 @@ public class WorkflowContext implements IWorkContext {
     //工作流编辑使用（创建节点、删除节点和删除链接，增量加载）
     public static WorkflowContext BuildWorkflowContext4Edit(Experiment experiment, String operId) {
         WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
-        context.executionWorkMode = false;
+        context.lazyLoadMode = true;
         context.initialize(false);
         return context;
     }
@@ -65,8 +63,6 @@ public class WorkflowContext implements IWorkContext {
     //工作流编辑使用（创建链接、更新节点参数，全量预加载）
     public static WorkflowContext BuildWorkflowContext4EditPreload(Experiment experiment, String operId) {
         WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
-        context.lazyLoadMode = false;
-        context.executionWorkMode = false;
         context.initialize(true);
         return context;
     }
@@ -74,7 +70,7 @@ public class WorkflowContext implements IWorkContext {
     //工作流编辑使用（验证链接，增量加载）
     public static WorkflowContext BuildWorkflowContext4EditValidateLink(Experiment experiment, String operId) {
         WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
-        context.executionWorkMode = false;
+        context.lazyLoadMode = true;
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;
         context.loadDataPortSchema = false;
@@ -85,8 +81,6 @@ public class WorkflowContext implements IWorkContext {
     //工作流查询使用，用于实验图形查询（全量预加载）
     public static WorkflowContext BuildWorkflowContext4OnlyGraph(Experiment experiment, String operId) {
         WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
-        context.lazyLoadMode = false;
-        context.executionWorkMode = false;
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;
         context.loadDataPortSchema = false;
@@ -97,17 +91,13 @@ public class WorkflowContext implements IWorkContext {
     //工作流查询使用，用于实验删除、实验刷新、实验复制、构建快照、构建作业等场景使用（全量预加载）
     public static WorkflowContext BuildWorkflowContext4FullContent(Experiment experiment, String operId) {
         WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
-        context.lazyLoadMode = false;
-        context.executionWorkMode = false;
         context.initialize(true);
         return context;
     }
 
     //快照查看使用（反序列化时注入）
     public static WorkflowContext BuildWorkflowContext4Snapshot(Snapshot snapshot, String operId) {
-        WorkflowContext context = new WorkflowContext(snapshot.parseContent(), operId);
-        context.lazyLoadMode = false;
-        context.executionWorkMode = false;
+        WorkflowContext context = new WorkflowContext(snapshot.getWorkflow(), operId);
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;  //WorkflowContextCodec中填入
         context.loadDataPortSchema = false;
@@ -120,6 +110,7 @@ public class WorkflowContext implements IWorkContext {
         WorkflowContext context = BuildWorkflowContext4Snapshot(currentJob.getSnapshot(), operId);
         context.currentJob = currentJob;
         context.enableFlushWorkflow = currentJob.enableFlushWorkflow();
+        context.putExecutionJob(currentJob);
         context.initialize(currentJob);
         return context;
     }
@@ -129,8 +120,8 @@ public class WorkflowContext implements IWorkContext {
         this.operId = operId;
         this.schemaAnalyze = AnalyzeTypeEnum.NONE;
 
-        this.lazyLoadMode = true;
-        this.executionWorkMode = true;
+        this.lazyLoadMode = false;
+        this.executionWorkMode = false;
         this.enableFlushWorkflow = true;
         this.loadNodeParameter = true;
         this.loadDataPortSchema = true;
@@ -391,7 +382,13 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public DataWarehouse getDataWarehouse(Long dataWarehouseId) {
-        return dataWarehouses.get(dataWarehouseId);
+        DataWarehouse dataWarehouse = CollectionUtil.get(dataWarehouses, dataWarehouseId);
+        if(DataUtil.isNull(dataWarehouse)) {
+            //TODO query data warehouse
+            //job = xxx
+            this.putDataWarehouse(dataWarehouse);
+        }
+        return dataWarehouse;
     }
 
     public List<DataWarehouse> getDataWarehouses() {
@@ -399,7 +396,13 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public ModelWarehouse getModelWarehouse(Long modelWarehouseId) {
-        return modelWarehouses.get(modelWarehouseId);
+        ModelWarehouse modelWarehouse = CollectionUtil.get(modelWarehouses, modelWarehouseId);
+        if(DataUtil.isNull(modelWarehouse)) {
+            //TODO query model warehouse
+            //job = xxx
+            this.putModelWarehouse(modelWarehouse);
+        }
+        return modelWarehouse;
     }
 
     public List<ModelWarehouse> getModelWarehouses() {
@@ -419,9 +422,10 @@ public class WorkflowContext implements IWorkContext {
 
     public ExecutionJob getExecutionJob(Long jobId) {
         ExecutionJob job = CollectionUtil.get(jobs, jobId);
-        if(DataUtil.isNotNull(job)) {
+        if(DataUtil.isNull(job)) {
             //TODO query job
             //job = xxx
+            this.putExecutionJob(job);
         }
         return job;
     }
@@ -438,6 +442,7 @@ public class WorkflowContext implements IWorkContext {
         if(DataUtil.isNull(task)) {
             //TODO query task
             //task = xxx
+            this.putExecutionTask(task);
         }
         return task;
     }
