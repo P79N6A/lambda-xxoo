@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-01-06 18:56:16
+Date: 2019-01-18 18:46:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1011,7 +1011,7 @@ CREATE TABLE `em_experiment_template` (
   `TEMPLATE_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '模版ID',
   `TEMPLATE_NAME` varchar(200) NOT NULL COMMENT '模版名称',
   `SEQUENCE` int(11) NOT NULL COMMENT '模版序号，排序用',
-  `TEMPLATE_CONTENT` mediumtext COMMENT '模版内容',
+  `TEMPLATE_CONTENT` longtext COMMENT '模版内容',
   `TEMPLATE_COUNT` bigint(20) NOT NULL DEFAULT '1000' COMMENT '模版使用计数',
   `SUMMARY` varchar(256) DEFAULT NULL COMMENT '摘要',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
@@ -1023,7 +1023,7 @@ CREATE TABLE `em_experiment_template` (
   PRIMARY KEY (`TEMPLATE_ID`),
   KEY `Index_1` (`SEQUENCE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`TEMPLATE_NAME`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='实验模版表';
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='实验模版表';
 
 -- ----------------------------
 -- Records of em_experiment_template
@@ -1263,7 +1263,7 @@ CREATE TABLE `wf_execution_job` (
   `JOB_TYPE` int(11) NOT NULL COMMENT '作业类型\r\n            0：全部运行\r\n            1：从此处开始运行\r\n            2：运行到此处\r\n            3：运行该节点\r\n            10：全部运行（小数据试运行）\r\n            11：从此处开始运行（小数据试运行）\r\n            12：运行到此处（小数据试运行）\r\n            13：运行该节点（小数据试运行）\r\n            100：定时调度运行\r\n            101：在线调度运行\r\n            200：数据文件导入',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `REL_FLOW_ID` bigint(20) NOT NULL COMMENT '关联工作流ID，无关联工作流设为-1',
-  `REL_SNAPSHOT_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照ID，无关联则设为-1',
+  `REL_SNAPSHOT_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照ID',
   `REL_NODE_ID` bigint(20) NOT NULL COMMENT '关联节点ID，填写与触发运行相关的节点ID，无关联则设为-1',
   `JOB_CONTENT` mediumtext COMMENT '作业内容',
   `JOB_DFS_DIR` varchar(800) DEFAULT NULL COMMENT 'DFS作业目录\r\n            \r\n            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc/<project_id>/<experiment_id>/<job_id>\r\n            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc<project_id>/other/<job_id>',
@@ -1314,6 +1314,31 @@ CREATE TABLE `wf_execution_job_queue` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for wf_execution_queue
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_execution_queue`;
+CREATE TABLE `wf_execution_queue` (
+  `JOB_ID` bigint(20) NOT NULL COMMENT '作业ID',
+  `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
+  `JOB_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作业时间\r\n            \r\n            指定作业的开始处理时间，值来自进入队列时和继续执行时',
+  `JOB_SIGNAL` int(11) NOT NULL DEFAULT '0' COMMENT '作业信号\r\n            0：SIG_NORMAL，正常作业信号\r\n            1：SIG_KILL，终止作业信号\r\n            2：SIG_PAUSE，暂停执行信号\r\n            3：SIG_CONT，继续执行信号',
+  `JOB_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '作业状态\r\n            1：queueing，排队中\r\n            2：running，运行中',
+  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
+  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
+  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
+  PRIMARY KEY (`JOB_ID`),
+  KEY `Index_1` (`JOB_STATE`,`JOB_SIGNAL`,`JOB_TIME`),
+  KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_STATE`,`CREATE_TIME`),
+  KEY `Index_3` (`JOB_STATE`,`JOB_TIME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行队列表，结束运行后移除';
+
+-- ----------------------------
+-- Records of wf_execution_queue
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for wf_execution_task
 -- ----------------------------
 DROP TABLE IF EXISTS `wf_execution_task`;
@@ -1346,7 +1371,7 @@ CREATE TABLE `wf_execution_task` (
   UNIQUE KEY `Index_1` (`OWNER_JOB_ID`,`REL_NODE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_JOB_ID`,`TASK_STATE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_PROJECT_ID`,`TASK_STATE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
 
 -- ----------------------------
 -- Records of wf_execution_task
@@ -1658,7 +1683,7 @@ CREATE TABLE `wf_json_object` (
   `REL_TASK_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联任务ID，无关联则设为-1',
   `STORAGE_LOCATION` int(11) NOT NULL DEFAULT '0' COMMENT '存储位置\r\n            \r\n            0：OBJECT_DATA字段\r\n            1：文件系统',
   `OBJECT_DATA` mediumtext COMMENT 'JSON数据',
-  `OBJECT_FILE` varchar(800) DEFAULT NULL COMMENT '对象文件名\r\n            \r\n            算法参数：${JOB_DIR}/algorithm_parameters_<json_id>.json（预留）\r\n            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json\r\n            统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json\r\n            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json\r\n            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json\r\n            输出端口schema：${FLOW_DIR}/outport_schema_<json_id>.json（预留）',
+  `OBJECT_FILE` varchar(800) DEFAULT NULL COMMENT '对象文件名\r\n            \r\n            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json\r\n            统计分析报告：${JOB_DIR}/statistics_analysis_report_<json_id>.json\r\n            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json\r\n            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json',
   `OBJECT_STATE` int(11) NOT NULL DEFAULT '0' COMMENT 'JSON数据状态\r\n            0：空对象\r\n            1：正常',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -1669,7 +1694,7 @@ CREATE TABLE `wf_json_object` (
   PRIMARY KEY (`OBJECT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`OBJECT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
 
 -- ----------------------------
 -- Records of wf_json_object
@@ -1849,8 +1874,8 @@ CREATE TABLE `wf_snapshot` (
   `SNAPSHOT_NAME` varchar(200) NOT NULL COMMENT '快照名称',
   `SNAPSHOT_TYPE` int(11) NOT NULL COMMENT '快照类型\r\n            0：运行快照\r\n            1：副本快照\r\n            2：删除快照',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
-  `OWNER_FLOW_ID` bigint(20) NOT NULL COMMENT '所属流程图ID',
-  `SNAPSHOT_CONTENT` mediumtext COMMENT '快照内容',
+  `OWNER_FLOW_ID` bigint(20) NOT NULL COMMENT '所属流程图ID，无关联设为-1',
+  `SNAPSHOT_CONTENT` longtext COMMENT '快照内容',
   `SNAPSHOT_VERSION` bigint(20) NOT NULL COMMENT '快照版本',
   `SNAPSHOT_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '快照状态\r\n            0：generating，快照生成中\r\n            1：finished，快照完成',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
@@ -1860,12 +1885,33 @@ CREATE TABLE `wf_snapshot` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`SNAPSHOT_ID`),
-  KEY `Index_1` (`OWNER_PROJECT_ID`,`OWNER_FLOW_ID`,`SNAPSHOT_TYPE`,`SNAPSHOT_VERSION`),
+  KEY `Index_1` (`OWNER_PROJECT_ID`,`OWNER_FLOW_ID`,`SNAPSHOT_TYPE`,`SNAPSHOT_VERSION`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流快照表，在实验工作台创建副本和运行实验都会触发快照创建，由此实现类似checkpoint功能\r\n\r\n                                -&';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流快照表，在实验工作台创建副本和运行实验都会触发快照创建，由此实现类似checkpoint功能\r\n\r\n                                -&';
 
 -- ----------------------------
 -- Records of wf_snapshot
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for wf_snapshot_parameter
+-- ----------------------------
+DROP TABLE IF EXISTS `wf_snapshot_parameter`;
+CREATE TABLE `wf_snapshot_parameter` (
+  `SNAPSHOT_ID` bigint(20) NOT NULL COMMENT '快照ID',
+  `OWNER_NODE_ID` bigint(20) NOT NULL COMMENT '所属节点ID',
+  `PARAMETER_CONTENT` mediumtext COMMENT '节点参数特征值内容',
+  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
+  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
+  `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
+  `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
+  KEY `Index_1` (`SNAPSHOT_ID`,`OWNER_NODE_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流快照节点设置特征值表';
+
+-- ----------------------------
+-- Records of wf_snapshot_parameter
 -- ----------------------------
 
 -- ----------------------------
