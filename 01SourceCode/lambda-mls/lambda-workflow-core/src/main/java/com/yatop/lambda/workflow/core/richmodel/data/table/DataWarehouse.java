@@ -7,6 +7,5 @@ public class DataWarehouse extends RichModel<DwDataWarehouse> {
 
     public DataWarehouse(DwDataWarehouse data) {
         super(data);
-        this.clearColoured();
     }
 }

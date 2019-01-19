@@ -98,7 +98,8 @@ public class ModelMgr extends BaseMgr {
         if(model.isModelNameNotColoured() &&
                 model.isModelFileSizeNotColoured() &&
                 model.isModelFileNotColoured() &&
-                model.isModelSummaryFileNotColoured() &&
+                model.isDfsSummaryFileNotColoured() &&
+                model.isLocalSummaryFileNotColoured() &&
                 model.isModelStateNotColoured() &&
                 model.isDescriptionNotColoured()) {
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Update model info failed -- invalid update data.", "无效更新内容");
@@ -113,8 +114,10 @@ public class ModelMgr extends BaseMgr {
                 updateModel.setModelFileSize(model.getModelFileSize());
             if(model.isModelFileColoured())
                 updateModel.setModelFile(model.getModelFile());
-            if(model.isModelSummaryFileColoured())
-                updateModel.setModelSummaryFile(model.getModelSummaryFile());
+            if(model.isDfsSummaryFileColoured())
+                updateModel.setDfsSummaryFile(model.getDfsSummaryFile());
+            if(model.isLocalSummaryFileColoured())
+                updateModel.setLocalSummaryFile(model.getLocalSummaryFile());
             if(model.isModelStateColoured())
                 updateModel.setModelState(model.getModelState());
             if(model.isDescriptionColoured())

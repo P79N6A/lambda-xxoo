@@ -1,5 +1,6 @@
 package com.yatop.lambda.workflow.core.richmodel.data.table;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.base.model.DwDataTable;
 import com.yatop.lambda.workflow.core.codec.TaskContentCodec;
@@ -9,7 +10,6 @@ public class DataTable extends RichModel<DwDataTable> {
 
     public DataTable(DwDataTable data) {
         super(data);
-        this.clearColoured();
     }
 
     @Override

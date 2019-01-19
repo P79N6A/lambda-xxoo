@@ -115,7 +115,7 @@ public class JsonObjectMgr extends BaseMgr {
 
     /*
      *
-     *   更新Json对象（名称、对象数据、对象状态、描述）
+     *   更新Json对象（名称、对象数据、DFS对象文件名、本地对象文件名、对象状态、描述）
      *   返回更新数量
      *
      * */
@@ -126,6 +126,8 @@ public class JsonObjectMgr extends BaseMgr {
 
         if(jsonObject.isObjectNameNotColoured() &&
                 jsonObject.isObjectDataNotColoured() &&
+                jsonObject.isDfsObjectFileNotColoured() &&
+                jsonObject.isLocalObjectFileNotColoured() &&
                 jsonObject.isObjectStateNotColoured() &&
                 jsonObject.isDescriptionNotColoured()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update json object failed -- invalid update data.", "无效更新内容");
@@ -138,6 +140,10 @@ public class JsonObjectMgr extends BaseMgr {
                 updateJsonObject.setObjectName(jsonObject.getObjectName());
             if(jsonObject.isObjectDataColoured())
                 updateJsonObject.setObjectData(jsonObject.getObjectData());
+            if(jsonObject.isDfsObjectFileColoured())
+                updateJsonObject.setDfsObjectFile(jsonObject.getDfsObjectFile());
+            if(jsonObject.isLocalObjectFileColoured())
+                updateJsonObject.setLocalObjectFile(jsonObject.getLocalObjectFile());
             if(jsonObject.isObjectStateColoured())
                 updateJsonObject.setObjectState(jsonObject.getObjectState());
             if(jsonObject.isDescriptionColoured())

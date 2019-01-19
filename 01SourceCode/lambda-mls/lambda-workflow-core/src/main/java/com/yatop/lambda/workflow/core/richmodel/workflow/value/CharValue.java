@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.value;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.base.utils.LambdaRootModel;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.CharTypeAlgorithmGeneric;
 import com.yatop.lambda.workflow.core.framework.chartype.clazz.basic.CharTypeBasicGeneric;
@@ -13,6 +14,9 @@ import com.yatop.lambda.workflow.core.framework.chartype.clazz.table.CharTypeTab
 import com.yatop.lambda.workflow.core.framework.chartype.clazz.tune.CharTypeTuneGeneric;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.data.model.Model;
+import com.yatop.lambda.workflow.core.richmodel.data.table.DataTable;
+import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonObject;
 
 public class CharValue extends LambdaRootModel implements IRichModel {
     private CmptChar cmptChar;
@@ -153,5 +157,37 @@ public class CharValue extends LambdaRootModel implements IRichModel {
 
     public boolean isModelDataType() {
         return getCharTypeClazzBean() instanceof CharTypeModelGeneric;
+    }
+
+    public String getBasicValue() {
+        return isBasicDataType() ? (DataUtil.isNull(getOutText()) ? getInText() : null) : null;
+    }
+
+    public String getTuneValue() {
+        return isTuneDataType() ? (DataUtil.isNull(getOutText()) ? getInText() : null) : null;
+    }
+
+    public String getScriptValue() {
+        return isScriptDataType() ? (DataUtil.isNull(getOutText()) ? getInText() : null) : null;
+    }
+
+    public String getJsonValue() {
+        return isJsonDataType() ? (DataUtil.isNull(getOutText()) ? getInText() : null) : null;
+    }
+
+    public JsonObject getAlgorithmValue() {
+        return isAlgorithmDataType() ? (JsonObject) (DataUtil.isNull(getOutObject()) ? getInObject() : null) : null;
+    }
+
+    public JsonObject getReportValue() {
+        return isReportDataType() ? (JsonObject) (DataUtil.isNull(getOutObject()) ? getInObject() : null) : null;
+    }
+
+    public DataTable getTableValue() {
+        return isTableDataType() ? (DataTable) (DataUtil.isNull(getOutObject()) ? getInObject() : null) : null;
+    }
+
+    public Model getModelValue() {
+        return isModelDataType() ? (Model) (DataUtil.isNull(getOutObject()) ? getInObject() : null) : null;
     }
 }

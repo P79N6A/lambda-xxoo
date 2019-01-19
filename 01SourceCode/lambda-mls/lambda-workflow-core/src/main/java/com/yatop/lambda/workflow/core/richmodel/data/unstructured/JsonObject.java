@@ -9,7 +9,6 @@ public class JsonObject extends RichModel<WfJsonObject> {
 
     public JsonObject(WfJsonObject data) {
         super(data);
-        this.clearColoured();
     }
 
     @Override

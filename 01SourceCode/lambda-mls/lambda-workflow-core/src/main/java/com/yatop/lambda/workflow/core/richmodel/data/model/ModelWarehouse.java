@@ -7,6 +7,5 @@ public class ModelWarehouse extends RichModel<MwModelWarehouse> {
 
     public ModelWarehouse(MwModelWarehouse data) {
         super(data);
-        this.clearColoured();
     }
 }

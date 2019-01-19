@@ -8,6 +8,5 @@ public class CodeScript extends RichModel<WfCodeScript> {
 
     public CodeScript(WfCodeScript data) {
         super(data);
-        this.clearColoured();
     }
 }
