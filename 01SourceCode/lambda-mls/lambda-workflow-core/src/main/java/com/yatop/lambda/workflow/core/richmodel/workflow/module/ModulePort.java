@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.module;
 
 import com.yatop.lambda.base.model.WfModulePort;
+import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.framework.chartype.clazz.table.CharTypeTableGeneric;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
@@ -25,7 +26,11 @@ public class ModulePort extends RichModel<WfModulePort> {
         return cmptChar;
     }
 
+    public ICharTypeClazz getCharTypeClazzBean() {
+        return this.getCmptChar().getCharTypeClazzBean();
+    }
+
     public boolean isDataTablePort() {
-        return ClazzHelperUtil.getCharTypeClazzBean(this.getCmptChar().getType()) instanceof CharTypeTableGeneric;
+        return this.getCharTypeClazzBean() instanceof CharTypeTableGeneric;
     }
 }

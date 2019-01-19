@@ -5,6 +5,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.ExecutionTaskContext;
 import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public class NodeTaskExecution {
 
     public void taskExecution(ExecutionTaskContext executionTaskContext) {
 
-        IModuleClazz moduleClazz = ClazzHelperUtil.getModuleClazzBean(executionTaskContext.getNode().getModule());
+        IModuleClazz moduleClazz = executionTaskContext.getNode().getModuleClazzBean();
         if (moduleClazz.catchTaskExecution()) {
 
             try {
@@ -28,7 +29,7 @@ public class NodeTaskExecution {
         }
     }
 
-    public boolean clearOutputOnTaskExecutionFailed(ExecutionTaskContext executionTaskContext) {
-        return ClazzHelperUtil.getModuleClazzBean(executionTaskContext.getNode().getModule()).clearOutputOnTaskExecutionFailed();
+    public boolean enableClearOutputResource(Node node) {
+        return node.getModuleClazzBean().enableClearOutputResource();
     }
 }

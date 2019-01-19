@@ -2,8 +2,10 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.module;
 
 import com.yatop.lambda.base.model.WfModule;
 import com.yatop.lambda.core.utils.DataUtil;
+import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
+import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.List;
@@ -136,5 +138,9 @@ public class Module extends RichModel<WfModule> implements Comparable<Module> {
 
     public boolean isWebModule() {
         return this.getComponent().isWebComponent();
+    }
+
+    public IModuleClazz getModuleClazzBean() {
+        return ClazzHelperUtil.getModuleClazzBean(this);
     }
 }

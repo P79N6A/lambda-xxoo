@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-01-18 18:46:37
+Date: 2019-01-19 16:02:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -302,7 +302,7 @@ CREATE TABLE `cf_cmpt_char_type` (
   `CHAR_TYPE_NAME` varchar(200) NOT NULL COMMENT '特征类型名称',
   `IS_WILDTYPE` int(11) NOT NULL DEFAULT '0' COMMENT '是否为通配类型\r\n0：否\r\n1：是',
   `SPEC_MASK` int(11) NOT NULL DEFAULT '0' COMMENT '适用规格类型二进制掩码（预留）\r\n\r\n0：不支持作为对应规格的特征类型使用\r\n1：支持作为对应规格的特征类型使用\r\n\r\n第一位，输入内容规格，开关位0x01：数据表、模型、算法参数\r\n第二位，输出内容规格，开关位0x02：数据表、模型、算法参数\r\n第三位，调用执行规格，开关位0x04：基本类型\r\n第四位，执行调优规格，开关位0x08：基本类型\r\n第五位，组件参数规格，开关位0x10：基本类型、调参类型、代码脚本、Json Object、Json Array\r\n',
-  `CLASS_PATH` varchar(200) NOT NULL DEFAULT 'unkown' COMMENT '特征类型java类class path',
+  `CLAZZ_PATH` varchar(200) NOT NULL DEFAULT 'unkown' COMMENT '特征类型java类class path',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -1599,9 +1599,7 @@ CREATE TABLE `wf_flow_node_parameter` (
   `CHAR_ID` varchar(64) NOT NULL COMMENT '组件特征ID',
   `CHAR_VALUE` varchar(2000) DEFAULT NULL COMMENT '特征值',
   `IS_GLOBAL_PARAMETER` int(11) NOT NULL DEFAULT '0' COMMENT '是否为全局参数\r\n            0：否\r\n            1：是',
-  `LAST_GLOBAL_PARAMETER_ID` bigint(20) DEFAULT NULL COMMENT '最后全局参数ID',
-  `IS_DUPLICATED` int(11) NOT NULL DEFAULT '0' COMMENT '是否被复制\r\n            0：否\r\n            1：是\r\n            \r\n            创建快照和运行任务时对象数据类型会以浅拷贝方式复制，同时该标记会被置位，辅助于对象类型特征值发生更新时，判断是否创建新对象来保存新值',
-  `WARNING_MSG` varchar(256) DEFAULT NULL COMMENT '警告消息',
+  `WARNING_MSG` varchar(512) DEFAULT NULL COMMENT '警告消息',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -1713,7 +1711,7 @@ CREATE TABLE `wf_module` (
   `SEQUENCE` int(11) NOT NULL COMMENT '排序序号',
   `CATEGORY` varchar(200) DEFAULT NULL COMMENT '组件类别（预留），自定义类别',
   `ICON_TYPE` int(11) NOT NULL COMMENT '图标类型',
-  `CLASS_PATH` varchar(200) NOT NULL COMMENT '组件java类class path',
+  `CLAZZ_PATH` varchar(200) NOT NULL COMMENT '组件java类class path',
   `PKG_CMPT_ID` varchar(64) NOT NULL COMMENT '所封装的计算组件ID',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',

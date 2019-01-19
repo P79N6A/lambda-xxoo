@@ -1,7 +1,6 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node.parameter;
 
 import com.yatop.lambda.base.model.WfFlowNodeParameter;
-import com.yatop.lambda.core.enums.IsDuplicatedEnum;
 import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
@@ -36,7 +35,7 @@ public class ParameterRecover {
     private NodeParameter recoverParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, WfFlowNodeParameter parameter) {
 
         if(cmptChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource() && DataUtil.isNotNull(parameter)) {
-            CharValue charValue = new CharValue(cmptChar, parameter.getCharValue(), IsDuplicatedEnum.valueOf(parameter.getIsDuplicated()));
+            CharValue charValue = new CharValue(cmptChar, parameter.getCharValue());
             charValueRecover.recoverCharValue(workflowContext, node, charValue);
             return new NodeParameter(parameter, cmptChar, charValue);
         } else {

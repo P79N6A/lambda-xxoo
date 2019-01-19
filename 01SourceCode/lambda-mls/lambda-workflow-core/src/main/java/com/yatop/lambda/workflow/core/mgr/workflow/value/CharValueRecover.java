@@ -32,7 +32,7 @@ public class CharValueRecover {
             return;
         }
 
-        ICharTypeClazz charTypeClazz = ClazzHelperUtil.getCharTypeClazzBean(charValue.getCmptChar().getType());
+        ICharTypeClazz charTypeClazz = charValue.getCharTypeClazzBean();
         if (charTypeClazz.catchRecoverValue()) {
 
             try {

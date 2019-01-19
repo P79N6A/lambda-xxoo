@@ -47,7 +47,7 @@ public class CharValueUpdate {
             }
         }
 
-        ICharTypeClazz charTypeClazz = ClazzHelperUtil.getCharTypeClazzBean(charValue.getCmptChar().getType());
+        ICharTypeClazz charTypeClazz = charValue.getCharTypeClazzBean();
         if (charTypeClazz.catchUpdateValue()) {
 
             try {

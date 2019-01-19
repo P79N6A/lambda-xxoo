@@ -33,7 +33,7 @@ public class CharValueQuery {
             return;
         }
 
-        ICharTypeClazz charTypeClazz = ClazzHelperUtil.getCharTypeClazzBean(charValue.getCmptChar().getType());
+        ICharTypeClazz charTypeClazz = charValue.getCharTypeClazzBean();
         if (charTypeClazz.catchQueryValue()) {
 
             try {

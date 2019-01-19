@@ -13,8 +13,9 @@ import java.util.TreeMap;
 
 public class ExecutionTaskContext implements IWorkContext {
 
+    private WorkflowContext workflowContext;
     private ExecutionTask task;     //操作关联运行任务
-    private ExecutionJobContext executionJobContext;    //作业内容的工作流上下文
+    //private ExecutionJobContext executionJobContext;    //作业内容的工作流上下文
     private Node node;                          //操作关联节点
     private TreeMap<String, CharValue> inputCharValues = new TreeMap<String, CharValue>();         //节点输入内容特征值
     private TreeMap<String, CharValue> outputCharValues = new TreeMap<String, CharValue>();        //节点输出内容特征值
@@ -23,9 +24,10 @@ public class ExecutionTaskContext implements IWorkContext {
     private TreeMap<String, CharValue> parameterCharValues = new TreeMap<String, CharValue>();     //节点组件参数特征值
     private String warningMsg;
 
-    public ExecutionTaskContext(ExecutionTask task, ExecutionJobContext executionJobContext, Node node) {
+    public ExecutionTaskContext(ExecutionTask task, WorkflowContext workflowContext, Node node) {
         this.task = task;
-        this.executionJobContext = executionJobContext;
+        this.workflowContext = workflowContext;
+        //this.executionJobContext = executionJobContext;
         this.node = node;
         this.warningMsg = null;
     }

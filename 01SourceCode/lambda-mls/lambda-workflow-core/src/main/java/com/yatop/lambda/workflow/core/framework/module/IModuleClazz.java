@@ -1,10 +1,14 @@
 package com.yatop.lambda.workflow.core.framework.module;
 
 import com.yatop.lambda.workflow.core.context.ExecutionTaskContext;
-import com.yatop.lambda.workflow.core.context.WorkflowNodeContext;
+import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.HashSet;
+import java.util.TreeMap;
 
 /*
 
@@ -25,7 +29,8 @@ public interface IModuleClazz extends InitializingBean {
     boolean catchCheckParameter();
 
     //校验参数处理，例如：数据表读取组件需要校验对应的数据表是否正常
-    void onCheckParameter(WorkflowNodeContext context);
+    //key:charId, warningMessage
+    TreeMap<String, String> onCheckParameter(WorkflowContext workflowContext, Node node);
 
 /*
     //是否支持生成摘要
@@ -34,8 +39,9 @@ public interface IModuleClazz extends InitializingBean {
     boolean supportGenerateSummary();
 
     //生成摘要内容
-    void generateSummary(WorkflowNodeContext context);
+    String generateSummary(Node node);
 */
+
     //////////////////////////////////////////////////////
 
     //需要探测的输出端口集合，例如：读数据表、读模型
@@ -43,7 +49,7 @@ public interface IModuleClazz extends InitializingBean {
     HashSet<String> exploreOutputPortSet();
 
     //探测输出端口资源
-    void exploreOutputPortResource(WorkflowNodeContext context);
+    void onExploreOutputPortResource(WorkflowContext workflowContext, Node node, NodePortOutput outputPort);
 
 
     //////////////////////////////////////////////////////
@@ -56,10 +62,10 @@ public interface IModuleClazz extends InitializingBean {
     //任务执行事件处理，例如：读数据表将输出内容"OUT@DataTable-t1<M>"特征值置为"CCP@TableName"特征值对应数据表的ID值
     void onTaskExecution(ExecutionTaskContext context);
 
-    //任务执行失败时是否清理输出资源，例如：读数据表和读模型返回false，其他一般是返回true
+    //是否允许清理输出资源，例如：读数据表和读模型返回false，默认是返回true
     //返回false，否
     //返回true，是
-    boolean clearOutputOnTaskExecutionFailed();
+    boolean enableClearOutputResource();
 
     //////////////////////////////////////////////////////
 
@@ -80,5 +86,6 @@ public interface IModuleClazz extends InitializingBean {
     };*/
 
     //分析数据输出端口schema
-    void analyzeSchema(WorkflowNodeContext context);
+    //key:charId, NodeSchema
+    TreeMap<String, NodeSchema> analyzeSchema(WorkflowContext workflowContext, Node node);
 }

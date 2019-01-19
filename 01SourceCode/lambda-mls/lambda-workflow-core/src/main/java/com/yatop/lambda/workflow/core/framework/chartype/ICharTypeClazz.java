@@ -6,9 +6,6 @@ import org.springframework.beans.factory.InitializingBean;
 public interface ICharTypeClazz extends InitializingBean {
     //方法失败或异常抛出Exception，CharType类实现该接口，适当封装一些中间abstract组件类以便复用
 
-    //是否需要标记被复制
-    boolean needMarkDuplicated();
-
     //是否捕获特征值新增事件
     //返回false，否
     //返回true，是

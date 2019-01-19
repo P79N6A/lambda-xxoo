@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNodePort;
+import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCharType;
@@ -45,5 +46,9 @@ public class NodePortInput extends RichModel<WfFlowNodePort> {
 
     public CmptCharType getType() {
         return this.getCmptChar().getType();
+    }
+
+    public ICharTypeClazz getCharTypeClazzBean() {
+        return this.getCmptChar().getCharTypeClazzBean();
     }
 }

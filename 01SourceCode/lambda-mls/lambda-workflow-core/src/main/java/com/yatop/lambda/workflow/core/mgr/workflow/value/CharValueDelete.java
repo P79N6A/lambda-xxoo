@@ -32,7 +32,7 @@ public class CharValueDelete {
             return;
         }
 
-        ICharTypeClazz charTypeClazz = ClazzHelperUtil.getCharTypeClazzBean(charValue.getCmptChar().getType());
+        ICharTypeClazz charTypeClazz = charValue.getCharTypeClazzBean();
         if (charTypeClazz.catchDeleteValue()) {
 
             try {

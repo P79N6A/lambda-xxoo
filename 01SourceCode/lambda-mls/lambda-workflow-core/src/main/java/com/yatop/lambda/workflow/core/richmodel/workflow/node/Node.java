@@ -3,6 +3,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.core.enums.NodeStateEnum;
 import com.yatop.lambda.core.utils.DataUtil;
+import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
@@ -430,5 +431,9 @@ public class Node extends RichModel<WfFlowNode> {
 
     public int decreaseIndegree() {
         return --this.indegree;
+    }
+
+    public IModuleClazz getModuleClazzBean() {
+        return this.getModule().getModuleClazzBean();
     }
 }

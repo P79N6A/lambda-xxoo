@@ -1,17 +1,14 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.value;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yatop.lambda.base.model.WfFlowNodeParameter;
 import com.yatop.lambda.base.utils.LambdaRootModel;
-import com.yatop.lambda.core.enums.IsDuplicatedEnum;
-import com.yatop.lambda.core.utils.DataUtil;
+import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 
 public class CharValue extends LambdaRootModel implements IRichModel {
     private CmptChar cmptChar;
     private String charValue;	    //特征值内容
-    private IsDuplicatedEnum isDuplicated;   //是否被复制
     private String inText;		    //传入文本内容，仅限组件参数、调用执行、运行调优参数，以文本内容方式进行传入传出
     private String outText;		    //传出文本内容
     private IRichModel inObject;    //传入对象内容，仅限输入内容、输出内容，以对象内容方式进行传入传出（算法参数、数据表、模型、报告）
@@ -22,13 +19,8 @@ public class CharValue extends LambdaRootModel implements IRichModel {
     }
 
     public CharValue(CmptChar cmptChar, String charValue) {
-        this(cmptChar, charValue, IsDuplicatedEnum.NO);
-    }
-
-    public CharValue(CmptChar cmptChar, String charValue, IsDuplicatedEnum isDuplicated) {
         this.cmptChar = cmptChar;
         this.charValue = charValue;
-        this.isDuplicated = isDuplicated;
         this.clearColoured();
     }
 
@@ -47,7 +39,6 @@ public class CharValue extends LambdaRootModel implements IRichModel {
     public void clear() {
         cmptChar = null;
         charValue = null;
-        isDuplicated = null;
         inText = null;
         outText = null;
         inObject = null;
@@ -78,18 +69,6 @@ public class CharValue extends LambdaRootModel implements IRichModel {
 
     public void setCharValue(String charValue) {
         this.charValue = charValue;
-    }
-
-    public boolean isDuplicated() {
-        return DataUtil.isNull(isDuplicated) ? false : (isDuplicated.getMark() == IsDuplicatedEnum.YES.getMark());
-    }
-
-    public IsDuplicatedEnum getIsDuplicated() {
-        return isDuplicated;
-    }
-
-    public void setIsDuplicated(IsDuplicatedEnum isDuplicated) {
-        this.isDuplicated = isDuplicated;
     }
 
     public String getInText() {
@@ -130,5 +109,9 @@ public class CharValue extends LambdaRootModel implements IRichModel {
 
     public IRichModel getObjectValue() {
         return this.getOutObject();
+    }
+
+    public ICharTypeClazz getCharTypeClazzBean() {
+        return this.cmptChar.getCharTypeClazzBean();
     }
 }

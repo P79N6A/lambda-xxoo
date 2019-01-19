@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNodePort;
 import com.yatop.lambda.core.utils.DataUtil;
+import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCharType;
@@ -71,5 +72,9 @@ public class NodePortOutput extends RichModel<WfFlowNodePort> {
 
     public boolean isSchemaChanged() {
         return isDataTablePort() && getSchema().isSchemaChanged();
+    }
+
+    public ICharTypeClazz getCharTypeClazzBean() {
+        return this.getCmptChar().getCharTypeClazzBean();
     }
 }

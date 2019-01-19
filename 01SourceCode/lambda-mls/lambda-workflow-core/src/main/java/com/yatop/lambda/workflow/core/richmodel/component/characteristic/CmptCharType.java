@@ -1,7 +1,9 @@
 package com.yatop.lambda.workflow.core.richmodel.component.characteristic;
 
 import com.yatop.lambda.base.model.CfCmptCharType;
+import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
+import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.*;
@@ -41,5 +43,9 @@ public class CmptCharType extends RichModel<CfCmptCharType> {
     public void replaceMatchTargetTypes(TreeMap<Integer, CmptCharType> expandedTargetCharTypes) {
         matchTargetTypes.clear();
         this.matchTargetTypes = expandedTargetCharTypes;
+    }
+
+    public ICharTypeClazz getCharTypeClazzBean() {
+        return ClazzHelperUtil.getCharTypeClazzBean(this);
     }
 }

@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel.component.characteristic;
 
 import com.yatop.lambda.base.model.CfCmptChar;
+import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
@@ -47,5 +48,9 @@ public class CmptChar extends RichModel<CfCmptChar> {
     public void putEnum(CmptCharEnum charEnum) {
         CollectionUtil.put(enums, charEnum.data().getEnumValue(), charEnum);
         CollectionUtil.put(enumsOrderbySequence, charEnum.data().getSequence(), charEnum);
+    }
+
+    public ICharTypeClazz getCharTypeClazzBean() {
+        return this.getType().getCharTypeClazzBean();
     }
 }

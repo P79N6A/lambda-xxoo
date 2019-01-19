@@ -6,10 +6,8 @@ import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.context.WorkflowNodeContext;
 import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.*;
-import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +21,7 @@ public class SchemaAnalyze {
     public boolean supportAnalyzeSchema(Node node) {
 
         if (!node.isWebNode() && node.haveOutputDataTablePort()) {
-            return ClazzHelperUtil.getModuleClazzBean(node.getModule()).supportAnalyzeSchema();
+            return node.getModuleClazzBean().supportAnalyzeSchema();
         }
         return false;
     }
@@ -35,7 +33,7 @@ public class SchemaAnalyze {
     public boolean needAnalyzeNode(Node node, NodeParameter parameter) {
 
         if (node.haveOutputDataTablePort() && parameter.getCmptChar().data().getSpecType() == SpecTypeEnum.PARAMETER.getType()) {
-            IModuleClazz moduleClazz = ClazzHelperUtil.getModuleClazzBean(node.getModule());
+            IModuleClazz moduleClazz = node.getModuleClazzBean();
             if (moduleClazz.supportAnalyzeSchema()) {
                 HashSet<String> cmptCodeSet = moduleClazz.reanalyzeSchemaParameterSet();
                 return CollectionUtil.contains(cmptCodeSet, parameter.getCmptChar().data().getCharCode());
@@ -81,15 +79,12 @@ public class SchemaAnalyze {
 
     public void analyzeSchema(WorkflowContext workflowContext, Node node) {
 
-        IModuleClazz moduleClazz = ClazzHelperUtil.getModuleClazzBean(node.getModule());
+        IModuleClazz moduleClazz = node.getModuleClazzBean();
         if (node.haveOutputDataTablePort()) {
             if (moduleClazz.supportAnalyzeSchema()) {
                 if(!this.reanalyzeSchemaConditionReady(workflowContext, moduleClazz, node)) {
                     try {
-                        WorkflowNodeContext nodeContext = new WorkflowNodeContext(workflowContext, node);
-                        moduleClazz.analyzeSchema(nodeContext);
-                        TreeMap<String, NodeSchema> outSchemas = nodeContext.getOutSchemas();
-
+                        TreeMap<String, NodeSchema> outSchemas = moduleClazz.analyzeSchema(workflowContext, node);
                         List<NodeSchema> dataPortSchemas = node.getOutputDataTablePortSchemas();
                         if (DataUtil.isNotEmpty(dataPortSchemas)) {
                             for (NodeSchema nodeSchema : dataPortSchemas) {
@@ -97,7 +92,7 @@ public class SchemaAnalyze {
                                     nodeSchema.changeState2Empty();
                             }
                         }
-                        nodeContext.clear();
+                        CollectionUtil.clear(outSchemas);
                     } catch (Exception e) {
                         throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze node data port schema failed -- module-clazz occur error.", "工作流组件分析节点数据端口schema时发生错误", e, node);
                     }

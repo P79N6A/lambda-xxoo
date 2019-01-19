@@ -41,7 +41,7 @@ public class CharValueCreate {
             }
         }
 
-        ICharTypeClazz charTypeClazz = ClazzHelperUtil.getCharTypeClazzBean(charValue.getCmptChar().getType());
+        ICharTypeClazz charTypeClazz = charValue.getCharTypeClazzBean();
         if (charTypeClazz.catchCreateValue()) {
 
             try {

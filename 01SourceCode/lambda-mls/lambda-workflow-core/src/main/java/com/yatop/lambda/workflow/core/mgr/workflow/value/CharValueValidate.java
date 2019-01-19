@@ -24,7 +24,7 @@ public class CharValueValidate {
         }
 
         if(DataUtil.isNotEmpty(charValue.getInText())) {
-            ICharTypeClazz charTypeClazz = ClazzHelperUtil.getCharTypeClazzBean(charValue.getCmptChar().getType());
+            ICharTypeClazz charTypeClazz = charValue.getCharTypeClazzBean();
             if (charTypeClazz.catchValidateValue()) {
                 CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
                 boolean isPassValidate = charTypeClazz.onValidateValue(charValueContext);
