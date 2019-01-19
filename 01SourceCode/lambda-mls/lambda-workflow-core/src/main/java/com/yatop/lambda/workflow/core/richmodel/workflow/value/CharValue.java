@@ -3,6 +3,14 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.value;
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.base.utils.LambdaRootModel;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.CharTypeAlgorithmGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.basic.CharTypeBasicGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.json.CharTypeJsonGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.model.CharTypeModelGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.report.CharTypeReportGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.script.CharTypeScriptGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.table.CharTypeTableGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.tune.CharTypeTuneGeneric;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 
@@ -113,5 +121,37 @@ public class CharValue extends LambdaRootModel implements IRichModel {
 
     public ICharTypeClazz getCharTypeClazzBean() {
         return this.cmptChar.getCharTypeClazzBean();
+    }
+
+    public boolean isBasicDataType() {
+        return getCharTypeClazzBean() instanceof CharTypeBasicGeneric;
+    }
+
+    public boolean isTuneDataType() {
+        return getCharTypeClazzBean() instanceof CharTypeTuneGeneric;
+    }
+
+    public boolean isJsonDataType() {
+        return getCharTypeClazzBean() instanceof CharTypeJsonGeneric;
+    }
+
+    public boolean isScriptDataType() {
+        return getCharTypeClazzBean() instanceof CharTypeScriptGeneric;
+    }
+
+    public boolean isAlgorithmDataType() {
+        return getCharTypeClazzBean() instanceof CharTypeAlgorithmGeneric;
+    }
+
+    public boolean isReportDataType() {
+        return getCharTypeClazzBean() instanceof CharTypeReportGeneric;
+    }
+
+    public boolean isTableDataType() {
+        return getCharTypeClazzBean() instanceof CharTypeTableGeneric;
+    }
+
+    public boolean isModelDataType() {
+        return getCharTypeClazzBean() instanceof CharTypeModelGeneric;
     }
 }

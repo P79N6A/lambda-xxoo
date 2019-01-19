@@ -15,13 +15,12 @@ public class ExecutionTaskContext implements IWorkContext {
 
     private WorkflowContext workflowContext;
     private ExecutionTask task;     //操作关联运行任务
-    //private ExecutionJobContext executionJobContext;    //作业内容的工作流上下文
     private Node node;                          //操作关联节点
     private TreeMap<String, CharValue> inputCharValues = new TreeMap<String, CharValue>();         //节点输入内容特征值
     private TreeMap<String, CharValue> outputCharValues = new TreeMap<String, CharValue>();        //节点输出内容特征值
     private TreeMap<String, CharValue> execCharValues = new TreeMap<String, CharValue>();          //节点调用执行特征值
-    private TreeMap<String, CharValue> optimizeCharValues = new TreeMap<String, CharValue>();      //节点执行调优参数特征值
-    private TreeMap<String, CharValue> parameterCharValues = new TreeMap<String, CharValue>();     //节点组件参数特征值
+    //private TreeMap<String, CharValue> optimizeCharValues = new TreeMap<String, CharValue>();      //节点执行调优参数特征值
+    //private TreeMap<String, CharValue> parameterCharValues = new TreeMap<String, CharValue>();     //节点组件参数特征值
     private String warningMsg;
 
     public ExecutionTaskContext(ExecutionTask task, WorkflowContext workflowContext, Node node) {
@@ -34,19 +33,19 @@ public class ExecutionTaskContext implements IWorkContext {
 
     @Override
     public void clear() {
+        workflowContext = null;
         task = null;
-        executionJobContext = null;
         node = null;
         CollectionUtil.enhancedClear(inputCharValues);
         CollectionUtil.enhancedClear(outputCharValues);
         CollectionUtil.enhancedClear(execCharValues);
-        CollectionUtil.enhancedClear(optimizeCharValues);
-        CollectionUtil.enhancedClear(parameterCharValues);
+        //CollectionUtil.clear(optimizeCharValues);
+        //CollectionUtil.clear(parameterCharValues);
         warningMsg = null;
     }
 
     public ExecutionJob getJob() {
-        return executionJobContext.getJob();
+        return workflowContext.getCurrentJob();
     }
 
     public ExecutionTask getTask() {
@@ -54,7 +53,7 @@ public class ExecutionTaskContext implements IWorkContext {
     }
 
     public WorkflowContext getWorkflowContext() {
-        return executionJobContext.getWorkflowContext();
+        return workflowContext;
     }
 
     public Node getNode() {
@@ -78,11 +77,11 @@ public class ExecutionTaskContext implements IWorkContext {
     }
 
     public int optimizeCharValueCount() {
-        return optimizeCharValues.size();
+        return node.optimizeParameterCount();
     }
 
     public int parameterCharValueCount() {
-        return parameterCharValues.size();
+        return node.parameterCount();
     }
 
     public CharValue getCharValue(CmptChar cmptChar) {
@@ -94,9 +93,11 @@ public class ExecutionTaskContext implements IWorkContext {
             case EXECUTION:
                 return execCharValues.get(cmptChar.data().getCharId());
             case OPTIMIZE_EXECUTION:
-                return optimizeCharValues.get(cmptChar.data().getCharId());
+                return node.getOptimizeParameterCharValue(cmptChar);
             case PARAMETER:
-                return parameterCharValues.get(cmptChar.data().getCharId());
+                return node.getParameterCharValue(cmptChar);
+            default:
+                break;
         }
         return null;
     }
@@ -110,9 +111,11 @@ public class ExecutionTaskContext implements IWorkContext {
             case EXECUTION:
                 return CollectionUtil.toList(execCharValues);
             case OPTIMIZE_EXECUTION:
-                return CollectionUtil.toList(optimizeCharValues);
+                return node.getOptimizeParameterCharValues();
             case PARAMETER:
-                return CollectionUtil.toList(parameterCharValues);
+                return node.getParameterCharValues();
+            default:
+                break;
         }
         return null;
     }
@@ -121,14 +124,15 @@ public class ExecutionTaskContext implements IWorkContext {
         switch (SpecTypeEnum.valueOf(cmptChar.data().getSpecType())) {
             case INPUT:
                 CollectionUtil.put(inputCharValues, cmptChar.data().getCharId(), charValue);
+                break;
             case OUTPUT:
                 CollectionUtil.put(outputCharValues, cmptChar.data().getCharId(), charValue);
+                break;
             case EXECUTION:
                 CollectionUtil.put(execCharValues, cmptChar.data().getCharId(), charValue);
-            case OPTIMIZE_EXECUTION:
-                CollectionUtil.put(optimizeCharValues, cmptChar.data().getCharId(), charValue);
-            case PARAMETER:
-                CollectionUtil.put(parameterCharValues, cmptChar.data().getCharId(), charValue);
+                break;
+            default:
+                break;
         }
     }
 }

@@ -24,26 +24,23 @@ public class NodeParameterCheck {
             int missingCounter = 0;
             TreeMap<String, String> warningMessages = null;
             IModuleClazz moduleClazz = node.getModuleClazzBean();
-            if (moduleClazz.catchCheckParameter()) {
-
-                try {
-                    warningMessages = moduleClazz.onCheckParameter(workflowContext, node);
-                    if (DataUtil.isNotEmpty(warningMessages)) {
-                        for (Map.Entry<String, String> entry : warningMessages.entrySet()) {
-                            NodeParameter nodeParameter = node.getParameter(entry.getKey());
-                            String warningMsg = entry.getValue();
-                            if (DataUtil.isNull(nodeParameter) || DataUtil.isEmpty(warningMsg)) {
-                                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter failed -- module-clazz return warning message invalid.", "工作流组件校验节点参数返回内容无效", node);
-                            }
-
-                            nodeParameter.changeOccuredWarning(warningMsg);
-                            warningCounter++;
+            try {
+                warningMessages = moduleClazz.checkParameter(workflowContext, node);
+                if (DataUtil.isNotEmpty(warningMessages)) {
+                    for (Map.Entry<String, String> entry : warningMessages.entrySet()) {
+                        NodeParameter nodeParameter = node.getParameter(entry.getKey());
+                        String warningMsg = entry.getValue();
+                        if (DataUtil.isNull(nodeParameter) || DataUtil.isEmpty(warningMsg)) {
+                            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter failed -- module-clazz return warning message invalid.", "工作流组件校验节点参数返回内容无效", node);
                         }
+
+                        nodeParameter.changeOccuredWarning(warningMsg);
+                        warningCounter++;
                     }
-                    CollectionUtil.clear(warningMessages);
-                } catch (Exception e) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter failed -- module-clazz occur error.", "工作流组件校验节点参数时发生错误", e, node);
                 }
+                CollectionUtil.clear(warningMessages);
+            } catch (Exception e) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter failed -- module-clazz occur error.", "工作流组件校验节点参数时发生错误", e, node);
             }
 
             for(NodeParameter parameter : node.getParameters()) {

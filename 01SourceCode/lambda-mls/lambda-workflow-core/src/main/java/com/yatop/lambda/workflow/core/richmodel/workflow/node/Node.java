@@ -8,7 +8,9 @@ import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
+import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
+import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.ArrayList;
@@ -176,6 +178,21 @@ public class Node extends RichModel<WfFlowNode> {
         return CollectionUtil.toList(parameters);
     }
 
+    public CharValue getParameterCharValue(CmptChar cmptChar) {
+        return getParameter(cmptChar.data().getCharId()).getCharValue();
+    }
+
+    public List<CharValue> getParameterCharValues() {
+        if(parameterCount() == 0)
+            return null;
+
+        List<CharValue> charValues = new ArrayList<CharValue>();
+        for(NodeParameter parameter : getParameters()) {
+            charValues.add(parameter.getCharValue());
+        }
+        return charValues;
+    }
+
     public void putParameter(NodeParameter parameter) {
         CollectionUtil.put(parameters, parameter.data().getCharId(), parameter);
         CollectionUtil.put(parametersOrderByCharCode, parameter.getCmptChar().data().getCharCode(), parameter);
@@ -195,6 +212,21 @@ public class Node extends RichModel<WfFlowNode> {
 
     public List<NodeParameter> getOptimizeParameters() {
         return CollectionUtil.toList(optimizeParameters);
+    }
+
+    public CharValue getOptimizeParameterCharValue(CmptChar cmptChar) {
+        return getOptimizeParameter(cmptChar.data().getCharId()).getCharValue();
+    }
+
+    public List<CharValue> getOptimizeParameterCharValues() {
+        if(parameterCount() == 0)
+            return null;
+
+        List<CharValue> charValues = new ArrayList<CharValue>();
+        for(NodeParameter parameter : getOptimizeParameters()) {
+            charValues.add(parameter.getCharValue());
+        }
+        return charValues;
     }
 
     public void putOptimizeParameter(NodeParameter parameter) {
