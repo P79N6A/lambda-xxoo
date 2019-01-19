@@ -99,22 +99,39 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
             case PREPARING:
             case READY:
                 this.node.changeState2Preparing();
+                this.syncTaskId2Node();
                 break;
             case RUNNING:
                 this.node.changeState2Running();
+                this.syncTaskId2Node();
                 break;
             case SUCCESS:
                 this.node.changeState2Success();
+                this.syncTaskId2Node();
                 break;
             case ERROR_TERMINATED:
                 this.node.changeState2Error();
+                this.clearTaskId2Node();
                 break;
             case USER_TERMINATED:
                 this.node.downgradeState2Ready();
+                this.clearTaskId2Node();
                 break;
             default:
                 break;
         }
+    }
+
+    private void syncTaskId2Node() {
+        Long lastTaskId = this.node.data().getLastTaskId();
+        if(DataUtil.isNull(lastTaskId) || !lastTaskId.equals(this.data().getTaskId()))
+            this.node.data().setLastTaskId(this.data().getTaskId());
+    }
+
+    private void clearTaskId2Node() {
+        Long lastTaskId = this.node.data().getLastTaskId();
+        if(DataUtil.isNotNull(lastTaskId) || lastTaskId.equals(this.data().getTaskId()))
+            this.node.data().setLastTaskId(null);
     }
 
     public Node getNode() {

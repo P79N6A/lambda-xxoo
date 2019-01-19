@@ -266,6 +266,10 @@ public class Node extends RichModel<WfFlowNode> {
         return CollectionUtil.get(inputNodePortsOrderByCharCode, charCode);
     }
 
+    public NodePortInput getInputNodePortBySequence(Integer sequence) {
+        return CollectionUtil.get(inputNodePortsOrderBySequence, sequence);
+    }
+
     public List<NodePortInput> getInputNodePorts() {
         return CollectionUtil.toList(inputNodePortsOrderBySequence);
     }
@@ -312,6 +316,10 @@ public class Node extends RichModel<WfFlowNode> {
 
     public NodePortOutput getOutputNodePortByCharCode(String charCode) {
         return CollectionUtil.get(outputNodePortsOrderByCharCode, charCode);
+    }
+
+    public NodePortOutput getOutputNodePortBySequence(Integer sequence) {
+        return CollectionUtil.get(outputNodePortsOrderBySequence, sequence);
     }
 
     public List<NodePortOutput> getOutputNodePorts() {

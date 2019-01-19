@@ -3,8 +3,8 @@ package com.yatop.lambda.workflow.core.framework.module;
 import com.yatop.lambda.workflow.core.context.ExecutionTaskContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
+import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import java.util.TreeMap;
 /*
 
 CharTypeClazz，负责特征值事件处理，包括特征值发生创建（对象创建）、删除（对象删除）、查询（对象展开）、更新（对象更新）时的自定义处理，以及特征值正确性和合法性的常规校验
-ModuleClazz，负责工作流节点事件处理，包括节点的参数逻辑校验、准备任务运行输出、失败时清理任务运行输出、节点输出端口schema分析
+ModuleClazz，负责工作流节点事件处理，包括节点的参数逻辑校验、探测任务运行输出、准备任务运行输出、失败时清理任务运行输出、节点输出端口schema分析
 
 */
 
@@ -39,13 +39,14 @@ public interface IModuleClazz extends InitializingBean {
     //////////////////////////////////////////////////////
 
     //探测任务运行输出资源
-    void exploreTaskExecutionOutputResource(WorkflowContext workflowContext, Node node);
+    //key:charId, CharValue
+    TreeMap<String, CharValue> exploreTaskExecutionOutput(WorkflowContext workflowContext, Node node);
 
     //准备任务运行输出，创建相关输出资源
-    void prepareTaskExecutionOutputResource(ExecutionTaskContext context);
+    void prepareTaskExecutionOutput(ExecutionTaskContext context);
 
     //清理任务运行输出，删除相关输出资源
-    void clearTaskExecutionOutputResource(ExecutionTaskContext context);
+    void clearTaskExecutionOutput(ExecutionTaskContext context);
 
     //////////////////////////////////////////////////////
 

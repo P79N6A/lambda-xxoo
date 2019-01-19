@@ -19,14 +19,11 @@ public class ExecutionTaskContext implements IWorkContext {
     private TreeMap<String, CharValue> inputCharValues = new TreeMap<String, CharValue>();         //节点输入内容特征值
     private TreeMap<String, CharValue> outputCharValues = new TreeMap<String, CharValue>();        //节点输出内容特征值
     private TreeMap<String, CharValue> execCharValues = new TreeMap<String, CharValue>();          //节点调用执行特征值
-    //private TreeMap<String, CharValue> optimizeCharValues = new TreeMap<String, CharValue>();      //节点执行调优参数特征值
-    //private TreeMap<String, CharValue> parameterCharValues = new TreeMap<String, CharValue>();     //节点组件参数特征值
     private String warningMsg;
 
-    public ExecutionTaskContext(ExecutionTask task, WorkflowContext workflowContext, Node node) {
-        this.task = task;
+    public ExecutionTaskContext(WorkflowContext workflowContext, ExecutionTask task, Node node) {
         this.workflowContext = workflowContext;
-        //this.executionJobContext = executionJobContext;
+        this.task = task;
         this.node = node;
         this.warningMsg = null;
     }
@@ -39,8 +36,6 @@ public class ExecutionTaskContext implements IWorkContext {
         CollectionUtil.enhancedClear(inputCharValues);
         CollectionUtil.enhancedClear(outputCharValues);
         CollectionUtil.enhancedClear(execCharValues);
-        //CollectionUtil.clear(optimizeCharValues);
-        //CollectionUtil.clear(parameterCharValues);
         warningMsg = null;
     }
 

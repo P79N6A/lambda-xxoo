@@ -109,8 +109,8 @@ public class WorkflowContext implements IWorkContext {
     public static WorkflowContext BuildWorkflowContext4Execution(ExecutionJob currentJob, String operId) {
         WorkflowContext context = BuildWorkflowContext4Snapshot(currentJob.getSnapshot(), operId);
         context.currentJob = currentJob;
-        context.enableFlushWorkflow = currentJob.enableFlushWorkflow();
         context.putExecutionJob(currentJob);
+        context.enableFlushWorkflow = currentJob.enableFlushWorkflow();
         context.initialize(currentJob);
         return context;
     }
@@ -144,7 +144,7 @@ public class WorkflowContext implements IWorkContext {
 
     private void initialize(ExecutionJob currentJob) {
         if(!currentJob.enableFlushSnapshot()) {
-            //TODO loadAllTasks and reset node state
+            //TODO loadAllTasks and reset [workflow state & last job id] & [node state & last task id]
         }
     }
 

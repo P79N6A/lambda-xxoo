@@ -76,7 +76,6 @@ public class ComponentConfig implements InitializingBean {
     private HashMap<String, Component> ALL_COMPONENTS = new HashMap<String, Component>();    //计算组件
     private HashMap<String, CmptSpec> ALL_SPECIFICATIONS = new HashMap<String, CmptSpec>();  //计算组件规格
     private HashMap<String, CmptChar> ALL_CHARACTERISTICS = new HashMap<String, CmptChar>(); //计算组件特征
-    private HashMap<String, CmptChar> ALL_CHARACTERISTICS_INDEX_BY_CODE = new HashMap<String, CmptChar>(); //计算组件特征按代码索引
     private HashMap<Integer, CmptCharType> ALL_CHARACTERISTIC_TYPES = new HashMap<Integer, CmptCharType>(); //计算组件特征类型
     private HashMap<Integer, CmptCharType> ALL_PORT_CHARACTERISTIC_TYPES = new HashMap<Integer, CmptCharType>(); //计算组件端口特征类型
 
