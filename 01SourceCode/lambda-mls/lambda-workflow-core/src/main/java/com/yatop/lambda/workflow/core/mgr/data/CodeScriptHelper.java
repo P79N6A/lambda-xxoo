@@ -49,7 +49,12 @@ public class CodeScriptHelper {
 
     public static void deleteCodeScript(CharValueContext context, CodeScript codeScript) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        CODE_SCRIPT_MGR.deleteCodeScript(codeScript.data().getScriptId(), true, workflowContext.getOperId());
+        CODE_SCRIPT_MGR.deleteCodeScript(codeScript.data().getScriptId(), workflowContext.getOperId());
+    }
+
+    public static void recoverCodeScript(CharValueContext context, Long codeScriptId) {
+        WorkflowContext workflowContext = context.getWorkflowContext();
+        CODE_SCRIPT_MGR.recoverCodeScript(codeScriptId, workflowContext.getOperId());
     }
 
     public static void updateCodeScript(CharValueContext context, CodeScript codeScript) {

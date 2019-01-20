@@ -18,7 +18,7 @@ public class ExecutionTaskContext implements IWorkContext {
     private TreeMap<String, CharValue> inputCharValues = new TreeMap<String, CharValue>();         //输入内容
     private TreeMap<String, CharValue> execCharValues = new TreeMap<String, CharValue>();          //调用执行
 
-    public ExecutionTaskContext(WorkflowContext workflowContext, ExecutionTask task, Node node) {
+    public ExecutionTaskContext(WorkflowContext workflowContext, ExecutionTask task) {
         this.workflowContext = workflowContext;
         this.task = task;
     }

@@ -131,8 +131,13 @@ public class JsonObjectHelper {
             //TODO ignore object state
             //TODO clear objectFile
         } else {
-            JSON_OBJECT_MGR.deleteJsonObject(jsonObject.data().getObjectId(), true, workflowContext.getOperId());
+            JSON_OBJECT_MGR.deleteJsonObject(jsonObject.data().getObjectId(), workflowContext.getOperId());
         }
+    }
+
+    public static void recoverJsonObject(CharValueContext context, Long jsonObjectId) {
+        WorkflowContext workflowContext = context.getWorkflowContext();
+        JSON_OBJECT_MGR.recoverJsonObject(jsonObjectId, workflowContext.getOperId());
     }
 
     public static void completeJsonObject(CharValueContext context, JsonObject jsonObject) {
