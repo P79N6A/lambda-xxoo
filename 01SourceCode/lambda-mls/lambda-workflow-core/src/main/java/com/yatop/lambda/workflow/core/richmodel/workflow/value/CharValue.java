@@ -127,7 +127,7 @@ public class CharValue extends LambdaRootModel implements IRichModel {
         return this.cmptChar.getCharTypeClazzBean();
     }
 
-    public boolean isBasicDataType() {
+/*    public boolean isBasicDataType() {
         return getCharTypeClazzBean() instanceof CharTypeBasicGeneric;
     }
 
@@ -189,5 +189,5 @@ public class CharValue extends LambdaRootModel implements IRichModel {
 
     public Model getModelValue() {
         return isModelDataType() ? (Model) (DataUtil.isNull(getOutObject()) ? getInObject() : null) : null;
-    }
+    }*/
 }

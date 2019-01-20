@@ -77,7 +77,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
 
         if(DataUtil.isEmpty(fieldAttributes)) {
             if (getJsonObject().data().getObjectState() == JsonObjectStateEnum.NORMAL.getState()) {
-                fieldAttributes = JSONArray.parseArray(getJsonObject().data().getObjectData(), FieldAttribute.class);
+                fieldAttributes = JSONArray.parseArray(getJsonObject().data().getObjectContent(), FieldAttribute.class);
             }
             if(DataUtil.isEmpty(fieldAttributes)){
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- get empty field attribute list.", "节点数据输出端口schema信息错误", this);
@@ -172,7 +172,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
 
     protected void flush(String operId) {
         if(dirtyFieldAttributes) {
-            getJsonObject().data().setObjectData(DataUtil.isNotEmpty(fieldAttributes) ? JSONArray.toJSONString(fieldAttributes) : null);
+            getJsonObject().data().setObjectContent(DataUtil.isNotEmpty(fieldAttributes) ? JSONArray.toJSONString(fieldAttributes) : null);
             SchemaHelper.updateFieldAttributes(getJsonObject(), operId);
             dirtyFieldAttributes = false;
         }

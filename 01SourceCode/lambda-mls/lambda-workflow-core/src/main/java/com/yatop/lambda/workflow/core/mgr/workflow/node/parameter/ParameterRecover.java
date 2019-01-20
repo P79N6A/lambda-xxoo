@@ -6,14 +6,13 @@ import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueHelper;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
-import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueQuery;
-import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueRecover;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,21 +25,15 @@ public class ParameterRecover {
     @Autowired
     private NodeParameterMgr nodeParameterMgr;
 
-    @Autowired
-    private CharValueQuery charValueQuery;
-
-    @Autowired
-    private CharValueRecover charValueRecover;
-
     private NodeParameter recoverParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, WfFlowNodeParameter parameter) {
 
         if(cmptChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource() && DataUtil.isNotNull(parameter)) {
             CharValue charValue = new CharValue(cmptChar, parameter.getCharValue());
-            charValueRecover.recoverCharValue(workflowContext, node, charValue);
-            return new NodeParameter(parameter, cmptChar, charValue);
+            CharValueHelper.recoverCharValue(workflowContext, node, charValue);
+            return new NodeParameter(parameter, charValue);
         } else {
             CharValue charValue = new CharValue(cmptChar);
-            charValueQuery.queryCharValue(workflowContext, node, charValue);
+            CharValueHelper.queryCharValue(workflowContext, node, charValue);
             return ParameterHelper.simulateParameter(workflowContext, node, charValue);
         }
     }

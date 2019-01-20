@@ -4,14 +4,14 @@ import com.yatop.lambda.base.model.WfJsonObject;
 import com.yatop.lambda.core.enums.*;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.unstructured.JsonObjectMgr;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.JsonObjectFileUtil;
-import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonObject;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
-import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,10 +25,62 @@ public class JsonObjectHelper {
     public void setJsonObjectMgr(JsonObjectMgr jsonObjectMgr) {
         JSON_OBJECT_MGR = jsonObjectMgr;
     }
+
+    public static JsonObject createJsonObject4General(CharValueContext context) {
+        return createJsonObject4General(context, null);
+    }
+
+    public static JsonObject createJsonObject4General(CharValueContext context, String defaultObjectContent) {
+        WorkflowContext workflowContext = context.getWorkflowContext();
+        Node node = context.getNode();
+        CmptChar cmptChar = context.getCmptChar();
+
+        WfJsonObject jsonObject = new WfJsonObject();
+        jsonObject.setObjectName(String.format("general_%d_%s", node.data().getNodeId(), cmptChar.data().getCharId()));
+        jsonObject.setObjectType(JsonObjectTypeEnum.ALGORITHM_PARAMETERS.getType());
+        jsonObject.setObjectSrc(JsonObjectSourceEnum.EDITOR.getSource());
+        jsonObject.setOwnerProjectId(workflowContext.getProject().data().getProjectId());
+        jsonObject.setRelFlowId(workflowContext.getWorkflow().data().getFlowId());
+        jsonObject.setRelNodeId(node.data().getNodeId());
+        jsonObject.setRelCharId(cmptChar.data().getCharId());
+        jsonObject.setRelTaskId(-1L);
+        jsonObject.setStorageLocation(StorageLocationEnum.TABLE_FIELD.getLocation());
+        if(DataUtil.isNotEmpty(defaultObjectContent)) {
+            jsonObject.setObjectContent(defaultObjectContent);
+            jsonObject.setObjectState(JsonObjectStateEnum.NORMAL.getState());
+        } else {
+            jsonObject.setObjectState(JsonObjectStateEnum.EMPTY.getState());
+        }
+        jsonObject = JSON_OBJECT_MGR.insertJsonObject(jsonObject, workflowContext.getOperId());
+        return new JsonObject(jsonObject);
+    }
+
+    public static JsonObject createJsonObject4Algorithm(CharValueContext context) {
+        WorkflowContext workflowContext = context.getWorkflowContext();
+        Node node = context.getNode();
+        CmptChar cmptChar = context.getCmptChar();
+        ExecutionJob job = workflowContext.getCurrentJob();
+        ExecutionTask task = workflowContext.getExecutionTask(node);
+
+        WfJsonObject jsonObject = new WfJsonObject();
+        jsonObject.setObjectName(String.format("algorithm_parameters_%d_%s_%d", node.data().getNodeId(), cmptChar.data().getCharId(), job.data().getJobId()));
+        jsonObject.setObjectType(JsonObjectTypeEnum.ALGORITHM_PARAMETERS.getType());
+        jsonObject.setObjectSrc(JsonObjectSourceEnum.EXECUTION.getSource());
+        jsonObject.setOwnerProjectId(workflowContext.getProject().data().getProjectId());
+        jsonObject.setRelFlowId(workflowContext.getWorkflow().data().getFlowId());
+        jsonObject.setRelNodeId(node.data().getNodeId());
+        jsonObject.setRelCharId(cmptChar.data().getCharId());
+        jsonObject.setRelTaskId(task.data().getTaskId());
+        jsonObject.setStorageLocation(StorageLocationEnum.TABLE_FIELD.getLocation());
+        jsonObject.setObjectState(JsonObjectStateEnum.EMPTY.getState());
+        jsonObject = JSON_OBJECT_MGR.insertJsonObject(jsonObject, workflowContext.getOperId());
+        return new JsonObject(jsonObject);
+    }
+
     public static JsonObject createJsonObject4Report(CharValueContext context, JsonObjectTypeEnum jsonObjectType) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         Node node = context.getNode();
-        ModulePort modulePort = node.getOutputNodePort(context.getCmptChar().data().getCharId()).getModulePort();
+        CmptChar cmptChar = context.getCmptChar();
         ExecutionJob job = workflowContext.getCurrentJob();
         ExecutionTask task = workflowContext.getExecutionTask(node);
 
@@ -51,13 +103,13 @@ public class JsonObjectHelper {
         }
 
         WfJsonObject jsonObject = new WfJsonObject();
-        jsonObject.setObjectName(String.format("%s_%d_%s_%d", reportNamePrefix, node.data().getNodeId(), modulePort.getCmptChar().data().getCharId(), job.data().getJobId()));
+        jsonObject.setObjectName(String.format("%s_%d_%s_%d", reportNamePrefix, node.data().getNodeId(), cmptChar.data().getCharId(), job.data().getJobId()));
         jsonObject.setObjectType(jsonObjectType.getType());
         jsonObject.setObjectSrc(JsonObjectSourceEnum.EXECUTION.getSource());
         jsonObject.setOwnerProjectId(workflowContext.getProject().data().getProjectId());
         jsonObject.setRelFlowId(workflowContext.getWorkflow().data().getFlowId());
         jsonObject.setRelNodeId(node.data().getNodeId());
-        jsonObject.setRelCharId(modulePort.getCmptChar().data().getCharId());
+        jsonObject.setRelCharId(cmptChar.data().getCharId());
         jsonObject.setRelTaskId(task.data().getTaskId());
         jsonObject.setStorageLocation(StorageLocationEnum.FILE_SYSTEM.getLocation());
         jsonObject.setObjectState(JsonObjectStateEnum.EMPTY.getState());
@@ -65,27 +117,42 @@ public class JsonObjectHelper {
 
         String jobDfsDir = job.data().getJobDfsDir();
         String jobLocalDir = job.data().getJobLocalDir();
-        jsonObject.setObjectDfsFile(JsonObjectFileUtil.getFilePath4Report(jobDfsDir, task.data().getTaskId(), jsonObject.getJsonObjectId()));
-        jsonObject.setObjectLocalFile(JsonObjectFileUtil.getFilePath4Report(jobLocalDir, task.data().getTaskId(), jsonObject.getJsonObjectId()));
+        jsonObject.setObjectDfsFile(JsonObjectFileUtil.getFilePath4Report(jobDfsDir, reportNamePrefix, jsonObject.getObjectId()));
+        jsonObject.setObjectLocalFile(JsonObjectFileUtil.getFilePath4Report(jobLocalDir, reportNamePrefix, jsonObject.getObjectId()));
         JSON_OBJECT_MGR.updateJsonObject(jsonObject, workflowContext.getOperId());
         return new JsonObject(jsonObject);
     }
 
     public static void deleteJsonObject(CharValueContext context, JsonObject jsonObject) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        JSON_OBJECT_MGR.deleteJsonObject(jsonObject.data().getJsonObjectId(), workflowContext.getOperId());
 
-        //TODO ignore jsonObject state
-        //TODO clear jsonObjectFile & summaryDataFile
+        if(jsonObject.data().getStorageLocation() == StorageLocationEnum.FILE_SYSTEM.getLocation()) {
+            JSON_OBJECT_MGR.deleteJsonObject(jsonObject.data().getObjectId(), workflowContext.getOperId());
+            //TODO ignore object state
+            //TODO clear objectFile
+        } else {
+            JSON_OBJECT_MGR.deleteJsonObject(jsonObject.data().getObjectId(), true, workflowContext.getOperId());
+        }
     }
 
-    public static void updateJsonObject(CharValueContext context, JsonObject jsonObject) {
+    public static void completeJsonObject(CharValueContext context, JsonObject jsonObject) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        jsonObject.data().setJsonObjectNameColoured(true);
-        jsonObject.data().setJsonObjectFileSizeColoured(true);
-        jsonObject.data().setTrainTableIdColoured(true);
-        jsonObject.data().setTrainCostTimeColoured(true);
-        jsonObject.data().setJsonObjectState(JsonObjectStateEnum.NORMAL.getState());
+
+        if(jsonObject.data().getStorageLocation() == StorageLocationEnum.TABLE_FIELD.getLocation()) {
+            jsonObject.data().setObjectContentColoured(true);
+        }
+        jsonObject.data().setObjectState(JsonObjectStateEnum.NORMAL.getState());
+        JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
+    }
+
+    public static void updateJsonObject4General(CharValueContext context, JsonObject jsonObject) {
+        WorkflowContext workflowContext = context.getWorkflowContext();
+
+        if(DataUtil.isNotEmpty(jsonObject.data().getObjectContent())) {
+            jsonObject.data().setObjectState(JsonObjectStateEnum.NORMAL.getState());
+        } else {
+            jsonObject.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
+        }
         JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
     }
 

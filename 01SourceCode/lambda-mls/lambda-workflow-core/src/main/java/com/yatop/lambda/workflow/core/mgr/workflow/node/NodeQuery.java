@@ -7,6 +7,7 @@ import com.yatop.lambda.core.mgr.workflow.node.NodeMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.config.ModuleConfig;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.module.ParameterCheckHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.parameter.ParameterQuery;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.NodePortQuery;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
@@ -30,9 +31,6 @@ public class NodeQuery {
 
     @Autowired
     ModuleConfig moduleConfig;
-
-    @Autowired
-    private NodeParameterCheck nodeParameterCheck;
 
     public Node queryNode(WorkflowContext workflowContext, Long nodeId) {
 
@@ -58,7 +56,7 @@ public class NodeQuery {
         nodePortQuery.queryNodePorts(workflowContext, richNode);
         if(!workflowContext.isLoadNodeParameter()) {
             parameterQuery.queryParameters(workflowContext, richNode);
-            nodeParameterCheck.checkParameter(workflowContext, richNode);
+            //ParameterCheckHelper.checkParameter(workflowContext, richNode);
         }
         return richNode;
     }
@@ -83,7 +81,7 @@ public class NodeQuery {
             nodePortQuery.queryNodePorts(workflowContext, richNode);
             if(!workflowContext.isLoadNodeParameter()) {
                 parameterQuery.queryParameters(workflowContext, richNode);
-                nodeParameterCheck.checkParameter(workflowContext, richNode);
+                //ParameterCheckHelper.checkParameter(workflowContext, richNode);
             }
         }
     }

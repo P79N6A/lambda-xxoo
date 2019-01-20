@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-01-20 16:17:58
+Date: 2019-01-21 00:53:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -918,7 +918,7 @@ INSERT INTO `cf_component` VALUES ('WS@COM-0003', 'WS@Output-ModelFile', 'Web服
 DROP TABLE IF EXISTS `dw_data_table`;
 CREATE TABLE `dw_data_table` (
   `TABLE_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '数据表ID',
-  `TABLE_NAME` varchar(200) NOT NULL COMMENT '数据表名\r\n            \r\n            普通数据表：由英文字符、数字和下划线组成，起始字符不能为下划线\r\n            临时数据表：tmp$<node_id>_<node_port_id>_<job_id>',
+  `TABLE_NAME` varchar(200) NOT NULL COMMENT '数据表名\r\n            \r\n            普通数据表：由英文字符、数字和下划线组成，起始字符不能为下划线\r\n            临时数据表：tmp$<node_id>_<char_id>_<job_id>',
   `TABLE_TYPE` int(11) NOT NULL COMMENT '数据表类型\r\n            0：普通数据表\r\n            1：临时数据表\r\n            2：外部数据表，由在线服务的数据文件输入组件产生，DATA_FILE关联完整文件路径，作业完成时被立即清理',
   `TABLE_SRC` int(11) NOT NULL DEFAULT '0' COMMENT '数据表来源\r\n            0：上传导入数据表\r\n            1：保存临时数据表\r\n            2：任务运行输出',
   `OWNER_DW_ID` bigint(20) NOT NULL COMMENT '所属数据库ID',
@@ -1233,12 +1233,11 @@ INSERT INTO `sys_parameter` VALUES ('7017', 'CF_SPARK_EXTRA_CONFIGURATION', '计
 DROP TABLE IF EXISTS `wf_code_script`;
 CREATE TABLE `wf_code_script` (
   `SCRIPT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '脚本ID',
-  `SCRIPT_NAME` varchar(200) NOT NULL COMMENT '脚本名称\r\n            \r\n            由工作流创建：<module_code>_<node_id>_<char_id>_<snapshot_version>',
+  `SCRIPT_NAME` varchar(200) NOT NULL COMMENT '脚本名称\r\n            \r\n            由工作流创建：<prefix>_<node_id>_<char_id>',
   `SCRIPT_TYPE` int(11) NOT NULL COMMENT '脚本类型\r\n            1：SQL脚本\r\n            2：Python脚本（预留）\r\n            3：R脚本（预留）\r\n            4：特征抽取脚本（预留）',
   `SCRIPT_SRC` int(11) NOT NULL DEFAULT '0' COMMENT '脚本来源\r\n            0：作业运行\r\n            1：实验编辑',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `REL_FLOW_ID` bigint(20) NOT NULL COMMENT '关联工作流ID，无关联工作流设为-1',
-  `REL_SNAPSHOT_VERSION` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联快照版本，取FLOW表的NEXT_SNAPSHOT_VERSION值，无关联则设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建脚本的工作流节点，无关联则设为-1',
   `REL_CHAR_ID` varchar(64) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建脚本的工作流节点输出特征，无关联则设为-1',
   `REL_TASK_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联任务ID，无关联则设为-1',
@@ -1253,7 +1252,7 @@ CREATE TABLE `wf_code_script` (
   PRIMARY KEY (`SCRIPT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`SCRIPT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
 
 -- ----------------------------
 -- Records of wf_code_script
@@ -1373,7 +1372,8 @@ CREATE TABLE `wf_execution_task_output` (
   `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  KEY `Index_1` (`TASK_ID`,`CHAR_ID`,`STATUS`,`CREATE_TIME`)
+  KEY `Index_1` (`TASK_ID`,`CHAR_ID`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`TASK_ID`,`STATUS`,`CREATE_TIME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务输出表，记录输出内容的特征值';
 
 -- ----------------------------
@@ -1651,7 +1651,7 @@ CREATE TABLE `wf_flow_node_schema` (
 DROP TABLE IF EXISTS `wf_json_object`;
 CREATE TABLE `wf_json_object` (
   `OBJECT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '对象ID',
-  `OBJECT_NAME` varchar(200) NOT NULL COMMENT '对象名称\r\n            \r\n            普通对象：object_<node_id>_<char_id> \r\n            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>\r\n            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>\r\n            统计分析报告：statistical_analysis_report_<node_id>_<char_id>_<job_id>\r\n            自动调参报告：tune_parameters_report_<node_id>_<char_id>_<job_id>\r\n            生成规则报告：generate_rules_report_<node_id>_<char_id>_<job_id>\r\n            输出端口schema：output_port_schema_<node_id>_<char_id>',
+  `OBJECT_NAME` varchar(200) NOT NULL COMMENT '对象名称\r\n            \r\n            普通对象：general_<node_id>_<char_id> \r\n            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>\r\n            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>\r\n            统计分析报告：statistical_analysis_report_<node_id>_<char_id>_<job_id>\r\n            自动调参报告：tune_parameters_report_<node_id>_<char_id>_<job_id>\r\n            生成规则报告：generate_rules_report_<node_id>_<char_id>_<job_id>\r\n            输出端口schema：output_port_schema_<node_id>_<char_id>',
   `OBJECT_TYPE` int(11) NOT NULL COMMENT '对象类型\r\n            0：JsonObject&JsonArray（组件参数，仅存放于OBJECT_DATA）\r\n            1：算法参数（输出内容，仅存放于OBJECT_DATA）\r\n            2：模型评估报告（输出内容，存放于文件系统）\r\n            3：交叉验证报告（输出内容，存放于文件系统）\r\n            4：统计分析报告（输出内容，存放于文件系统）\r\n            5：自动调参报告（输出内容，存放于文件系统）\r\n            6：生成规则报告（输出内容，存放于文件系统）\r\n            99：输出端口schema（端口信息，仅存放于OBJECT_DATA）',
   `OBJECT_SRC` int(11) NOT NULL DEFAULT '0' COMMENT '对象来源\r\n            0：作业运行\r\n            1：实验编辑',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
@@ -1659,8 +1659,8 @@ CREATE TABLE `wf_json_object` (
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建脚本的工作流节点，无关联则设为-1',
   `REL_CHAR_ID` varchar(64) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建脚本的工作流节点输出特征，无关联则设为-1',
   `REL_TASK_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联任务ID，无关联则设为-1',
-  `STORAGE_LOCATION` int(11) NOT NULL DEFAULT '0' COMMENT '存储位置\r\n            \r\n            0：OBJECT_DATA字段\r\n            1：文件系统',
-  `OBJECT_DATA` mediumtext COMMENT 'JSON数据',
+  `STORAGE_LOCATION` int(11) NOT NULL DEFAULT '0' COMMENT '存储位置\r\n            \r\n            0：OBJECT_CONTENT字段\r\n            1：文件系统',
+  `OBJECT_CONTENT` mediumtext COMMENT '对象内容',
   `OBJECT_DFS_FILE` varchar(800) DEFAULT NULL COMMENT 'DFS对象文件名\r\n            \r\n            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json\r\n            统计分析报告：${JOB_DIR}/statistical_analysis_report_<json_id>.json\r\n            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json\r\n            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json',
   `OBJECT_LOCAL_FILE` varchar(800) DEFAULT NULL COMMENT '本地对象文件名\r\n            \r\n            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json\r\n            统计分析报告：${JOB_DIR}/statistical_analysis_report_<json_id>.json\r\n            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json\r\n            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json',
   `OBJECT_STATE` int(11) NOT NULL DEFAULT '0' COMMENT 'JSON数据状态\r\n            0：空对象\r\n            1：正常',

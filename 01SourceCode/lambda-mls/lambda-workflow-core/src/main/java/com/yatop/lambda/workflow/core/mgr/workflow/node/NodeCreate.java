@@ -8,6 +8,7 @@ import com.yatop.lambda.core.mgr.workflow.node.NodeMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.SystemParameterUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.module.ParameterCheckHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.parameter.ParameterCreate;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.NodePortCreate;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
@@ -27,9 +28,6 @@ public class NodeCreate {
 
     @Autowired
     private NodePortCreate nodePortCreate;
-
-    @Autowired
-    private NodeParameterCheck nodeParameterCheck;
 
     private Node createNode(WorkflowContext workflowContext, Module module, Node otherNode, Long x, Long y, boolean copyOtherName) {
 
@@ -68,7 +66,7 @@ public class NodeCreate {
             parameterCreate.createParameters(workflowContext, richNode, otherNode);
         }
         nodePortCreate.createNodePorts(workflowContext, richNode);
-        nodeParameterCheck.checkParameter(workflowContext, richNode);
+        ParameterCheckHelper.checkParameter(workflowContext, richNode);
         workflowContext.doneCreateNode(richNode);
         return richNode;
     }

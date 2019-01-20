@@ -6,6 +6,7 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.mgr.warehouse.DataWarehouseHelper;
 import com.yatop.lambda.workflow.core.mgr.warehouse.ModelWarehouseHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzer;
+import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzerHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.data.model.ModelWarehouse;
@@ -291,7 +292,7 @@ public class WorkflowContext implements IWorkContext {
     private void markAnalyzeWithCreateNode(Node node) {
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone() || this.isAnalyzeWithCreateNode()) {
-            if(SchemaHelper.needAnalyzeNode(node)) {
+            if(SchemaAnalyzerHelper.needAnalyzeNode(node)) {
                 this.schemaAnalyze = AnalyzeTypeEnum.CREATE_NODE;
                 this.pushAnalyzeNode(node);
             }
@@ -311,7 +312,7 @@ public class WorkflowContext implements IWorkContext {
     private void markAnalyzeWithUpdateNodeParameter(Node node, NodeParameter parameter) {
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone()) {
-            if(SchemaHelper.needAnalyzeNode(node, parameter)) {
+            if(SchemaAnalyzerHelper.needAnalyzeNode(node, parameter)) {
                 this.schemaAnalyze = AnalyzeTypeEnum.UPDATE_NODE_PARAMETER;
                 this.pushAnalyzeNode(node);
             }
@@ -321,7 +322,7 @@ public class WorkflowContext implements IWorkContext {
     private void markAnalyzeWithDeleteNode(Node node) {
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone() || this.isAnalyzeWithDeleteNode() || this.isAnalyzeWithDeleteLink()) {
-            if(SchemaHelper.needAnalyzeNode(node)) {
+            if(SchemaAnalyzerHelper.needAnalyzeNode(node)) {
                 this.schemaAnalyze = AnalyzeTypeEnum.DELETE_NODE;
                 this.pushAnalyzeNode(node);
             }

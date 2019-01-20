@@ -4,8 +4,8 @@ import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.core.enums.NodeStateEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
+import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzerHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeHelper;
-import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
@@ -423,7 +423,7 @@ public class Node extends RichModel<WfFlowNode> {
     }
 
     public boolean isSupportAnalyze() {
-        return SchemaHelper.supportAnalyzeSchema(this);
+        return SchemaAnalyzerHelper.supportAnalyzeSchema(this);
     }
 
     //用于analyzer在分析过程中判断节点是否需要分析输出数据端口的schema

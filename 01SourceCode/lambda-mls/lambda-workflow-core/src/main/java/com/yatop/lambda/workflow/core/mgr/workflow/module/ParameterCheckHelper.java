@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.core.mgr.workflow.node;
+package com.yatop.lambda.workflow.core.mgr.workflow.module;
 
 import com.yatop.lambda.core.enums.IsRequiredEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
@@ -9,15 +9,13 @@ import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-@Service
-public class NodeParameterCheck {
+public class ParameterCheckHelper {
 
-    public void checkParameter(WorkflowContext workflowContext, Node node) {
+    public static void checkParameter(WorkflowContext workflowContext, Node node) {
 
         if(node.parameterCount() > 0) {
             int warningCounter = 0;
@@ -78,7 +76,7 @@ public class NodeParameterCheck {
         }
     }
 
-    private String buildNodeWarningMsg(int warningCounter, int missingCounter) {
+    private static String buildNodeWarningMsg(int warningCounter, int missingCounter) {
         StringBuilder sb = new StringBuilder();
         if(warningCounter > 0) {
             sb.append("参数值错误数量:").append(warningCounter).append(",");

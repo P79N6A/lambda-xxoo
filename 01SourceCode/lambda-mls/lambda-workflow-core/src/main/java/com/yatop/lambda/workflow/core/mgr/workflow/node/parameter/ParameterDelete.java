@@ -4,9 +4,9 @@ import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueHelper;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
-import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueDelete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +16,10 @@ public class ParameterDelete {
     @Autowired
     private NodeParameterMgr nodeParameterMgr;
 
-    @Autowired
-    private CharValueDelete charValueDelete;
-
     private void deleteParameter(WorkflowContext workflowContext, Node node, NodeParameter parameter) {
 
         if(parameter.getCmptChar().data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource() && DataUtil.isNotNull(parameter)) {
-            charValueDelete.deleteCharValue(workflowContext, node, parameter.getCharValue());
+            CharValueHelper.deleteCharValue(workflowContext, node, parameter.getCharValue());
         }
     }
 

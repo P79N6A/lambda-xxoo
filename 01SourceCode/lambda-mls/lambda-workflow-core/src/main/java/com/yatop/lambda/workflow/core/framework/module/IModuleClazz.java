@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.framework.module;
 
 import com.yatop.lambda.workflow.core.context.ExecutionTaskContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
@@ -40,19 +41,16 @@ public interface IModuleClazz extends InitializingBean {
 
     //探测任务运行输出，查询相关输出资源
     //key:charId, CharValue
-    TreeMap<String, CharValue> exploreTaskExecutionOutput(WorkflowContext workflowContext, Node node);
+    TreeMap<String, CharValue> exploreOutputResource(WorkflowContext workflowContext, ExecutionTask task);
 
     //准备任务运行输出，创建相关输出资源
-    void prepareTaskExecutionOutput(ExecutionTaskContext context);
+    void prepareOutputResource(WorkflowContext workflowContext, ExecutionTask task);
 
-    //计算任务运行输出，计算相关输出内容（组件无调用执行规格时，引擎会调用该方法）
-    void computeTaskExecutionOutput(ExecutionTaskContext context);
-
-    //更新任务运行输出，更新相关输出资源
-    void updateTaskExecutionOutput(ExecutionTaskContext context);
+    //完成任务运行输出，更新相关输出资源
+    void completeOutputResource(WorkflowContext workflowContext, ExecutionTask task);
 
     //清理任务运行输出，删除相关输出资源
-    void clearTaskExecutionOutput(ExecutionTaskContext context);
+    void clearOutputResource(WorkflowContext workflowContext, ExecutionTask task);
 
     //////////////////////////////////////////////////////
 

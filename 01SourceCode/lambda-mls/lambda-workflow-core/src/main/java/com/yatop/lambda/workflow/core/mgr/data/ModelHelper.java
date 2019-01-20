@@ -6,13 +6,12 @@ import com.yatop.lambda.core.enums.ModelStateEnum;
 import com.yatop.lambda.core.enums.ModelTypeEnum;
 import com.yatop.lambda.core.mgr.model.ModelMgr;
 import com.yatop.lambda.core.utils.ModelFileUtil;
-import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.model.Model;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
-import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,7 +29,7 @@ public class ModelHelper {
     public static Model createCachedModel(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         Node node = context.getNode();
-        ModulePort modulePort = node.getOutputNodePort(context.getCmptChar().data().getCharId()).getModulePort();
+        CmptChar cmptChar = context.getCmptChar();
         ExecutionJob job = workflowContext.getCurrentJob();
         ExecutionTask task = workflowContext.getExecutionTask(node);
 
@@ -41,7 +40,7 @@ public class ModelHelper {
         model.setOwnerMwId(workflowContext.getModelWarehouse().data().getMwId());
         model.setRelFlowId(workflowContext.getWorkflow().data().getFlowId());
         model.setRelNodeId(node.data().getNodeId());
-        model.setRelCharId(modulePort.getCmptChar().data().getCharId());
+        model.setRelCharId(cmptChar.data().getCharId());
         model.setRelTaskId(task.data().getTaskId());
         model.setRefAlgorithmId(node.getComponent().getAlgorithm().data().getAlgorithmId());
         model.setModelState(ModelStateEnum.EMPTY.getState());
@@ -63,7 +62,7 @@ public class ModelHelper {
         //TODO clear modelFile & summaryDataFile
     }
 
-    public static void updateModel(WorkflowContext workflowContext, Model model) {
+    public static void completeModel(WorkflowContext workflowContext, Model model) {
         model.data().setModelNameColoured(true);
         model.data().setModelFileSizeColoured(true);
         model.data().setTrainTableIdColoured(true);

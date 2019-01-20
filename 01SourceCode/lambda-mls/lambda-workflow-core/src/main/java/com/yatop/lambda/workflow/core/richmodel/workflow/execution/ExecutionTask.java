@@ -5,15 +5,17 @@ import com.yatop.lambda.core.enums.TaskStateEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
 public class ExecutionTask extends RichModel<WfExecutionTask> {
 
     private Node node;  //操作关联节点
-    private TreeMap<String, ExecutionTaskOutput> taskOutputs = new TreeMap<String, ExecutionTaskOutput>();   //任务输出内容
+    private TreeMap<String, ExecutionTaskOutput> outputs = new TreeMap<String, ExecutionTaskOutput>();   //任务输出内容
 
     public ExecutionTask(WfExecutionTask data, Node node) {
         super(data);
@@ -23,14 +25,14 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
     @Override
     public void clear() {
         node = null;
-        CollectionUtil.enhancedClear(taskOutputs);
+        CollectionUtil.enhancedClear(outputs);
         super.clear();
     }
 
     public void flush(String operId) {
 
         if (this.taskOutputCount() > 0) {
-            for (ExecutionTaskOutput taskOutput : this.getTaskOutputs()) {
+            for (ExecutionTaskOutput taskOutput : this.getOutputs()) {
                 taskOutput.flush(operId);
             }
         }
@@ -139,19 +141,34 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
     }
 
     public int taskOutputCount() {
-        return taskOutputs.size();
+        return outputs.size();
     }
 
-    public List<ExecutionTaskOutput> getTaskOutputs() {
-        return CollectionUtil.toList(taskOutputs);
+    public List<ExecutionTaskOutput> getOutputs() {
+        return CollectionUtil.toList(outputs);
     }
 
-    public ExecutionTaskOutput getTaskOutput(String charId) {
-        return CollectionUtil.get(taskOutputs, charId);
+    public ExecutionTaskOutput getOutput(String charId) {
+        return CollectionUtil.get(outputs, charId);
+    }
+
+    public CharValue getOutputCharValue(String charId) {
+        return CollectionUtil.get(outputs, charId).getCharValue();
+    }
+
+    public List<CharValue> getOutputCharValues() {
+        if(taskOutputCount() == 0)
+            return null;
+
+        List<CharValue> charValues = new ArrayList<CharValue>();
+        for(ExecutionTaskOutput output : getOutputs()) {
+            charValues.add(output.getCharValue());
+        }
+        return charValues;
     }
 
     public void putTaskOutput(ExecutionTaskOutput taskOutput) {
-        CollectionUtil.put(taskOutputs, taskOutput.data().getCharId(), taskOutput);
+        CollectionUtil.put(outputs, taskOutput.data().getCharId(), taskOutput);
     }
 
     public boolean isOccuredWarning() {

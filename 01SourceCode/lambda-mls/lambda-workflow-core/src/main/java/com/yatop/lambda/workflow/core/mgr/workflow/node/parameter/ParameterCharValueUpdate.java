@@ -4,11 +4,11 @@ import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeParameterCheck;
+import com.yatop.lambda.workflow.core.mgr.workflow.module.ParameterCheckHelper;
+import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueHelper;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
-import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +16,7 @@ import org.springframework.stereotype.Service;
 public class ParameterCharValueUpdate {
 
     @Autowired
-    private CharValueUpdate charValueUpdate;
-
-    @Autowired
     private ParameterCreate parameterCreate;
-
-    @Autowired
-    private NodeParameterCheck nodeParameterCheck;
 
     private NodeParameter updateParameter(WorkflowContext workflowContext, Node node, NodeParameter targetParameter, String charValueText, Class<ParameterCharValueUpdate> none) {
 
@@ -33,7 +27,7 @@ public class ParameterCharValueUpdate {
 
                 CharValue charValue = targetParameter.getCharValue();
                 charValue.setInText(charValueText);
-                charValueUpdate.updateCharValue(workflowContext, node, charValue);
+                CharValueHelper.updateCharValue(workflowContext, node, charValue);
 
                 targetParameter.data().setCharValue(DataUtil.isNotEmpty(charValue.getCharValue()) ? charValue.getCharValue() : null);
                 return targetParameter;
@@ -52,7 +46,7 @@ public class ParameterCharValueUpdate {
             case PARAMETER: {
                 NodeParameter parameter = updateParameter(workflowContext, node, targetParameter, charValueText, ParameterCharValueUpdate.class);
                 node.putParameter(parameter);
-                nodeParameterCheck.checkParameter(workflowContext, node);
+                ParameterCheckHelper.checkParameter(workflowContext, node);
                 break;
             }
             case OPTIMIZE_EXECUTION: {

@@ -11,18 +11,16 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 
 public class NodeParameter extends RichModel<WfFlowNodeParameter> {
 
-    private CmptChar cmptChar;
     private CharValue charValue;
     private boolean simulateParameter;  //标记来自ParameterHelper.simulateParameter构建的模拟节点参数
     private boolean isStateChanged;
 
-    public NodeParameter(WfFlowNodeParameter data, CmptChar cmptChar, CharValue charValue) {
-        this(data, cmptChar, charValue, false);
+    public NodeParameter(WfFlowNodeParameter data, CharValue charValue) {
+        this(data, charValue, false);
     }
 
-    public NodeParameter(WfFlowNodeParameter data, CmptChar cmptChar, CharValue charValue, boolean simulateParameter) {
+    public NodeParameter(WfFlowNodeParameter data, CharValue charValue, boolean simulateParameter) {
         super(data);
-        this.cmptChar = cmptChar;
         this.charValue = charValue;
         this.simulateParameter = simulateParameter;
         this.isStateChanged = false;
@@ -30,7 +28,6 @@ public class NodeParameter extends RichModel<WfFlowNodeParameter> {
 
     @Override
     public void clear() {
-        cmptChar = null;
         charValue = null;
         super.clear();
     }
@@ -46,7 +43,7 @@ public class NodeParameter extends RichModel<WfFlowNodeParameter> {
     }
 
     public CmptChar getCmptChar() {
-        return cmptChar;
+        return charValue.getCmptChar();
     }
 
     public CharValue getCharValue() {

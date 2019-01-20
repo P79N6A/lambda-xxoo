@@ -3,7 +3,7 @@ package com.yatop.lambda.workflow.core.richmodel;
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.base.utils.LambdaRootModel;
 
-public class RichModel<T extends LambdaRootModel> extends LambdaRootModel implements IRichModel {
+public abstract class RichModel<T extends LambdaRootModel> extends LambdaRootModel implements IRichModel {
 
     private T data;
 

@@ -45,7 +45,7 @@ public class ParameterHelper {
         parameter.setLastUpdateOper(workflowContext.getOperId());
         parameter.setCreateTime(curTime);
         parameter.setCreateOper(workflowContext.getOperId());
-        return new NodeParameter(parameter, cmptChar, charValue, true);
+        return new NodeParameter(parameter, charValue, true);
     }
 
     public static void updateNodeParameter(NodeParameter parameter, String operId) {

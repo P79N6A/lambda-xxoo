@@ -17,7 +17,7 @@ public class ExecutionTaskContext implements IWorkContext {
     private ExecutionTask task;     //操作关联运行任务
     private Node node;                          //操作关联节点
     private TreeMap<String, CharValue> inputCharValues = new TreeMap<String, CharValue>();         //节点输入内容特征值
-    private TreeMap<String, CharValue> outputCharValues = new TreeMap<String, CharValue>();        //节点输出内容特征值
+    //private TreeMap<String, CharValue> outputCharValues = new TreeMap<String, CharValue>();        //节点输出内容特征值
     private TreeMap<String, CharValue> execCharValues = new TreeMap<String, CharValue>();          //节点调用执行特征值
     private String warningMsg;
 
@@ -34,7 +34,7 @@ public class ExecutionTaskContext implements IWorkContext {
         task = null;
         node = null;
         CollectionUtil.enhancedClear(inputCharValues);
-        CollectionUtil.enhancedClear(outputCharValues);
+        //CollectionUtil.enhancedClear(outputCharValues);
         CollectionUtil.enhancedClear(execCharValues);
         warningMsg = null;
     }
@@ -68,7 +68,7 @@ public class ExecutionTaskContext implements IWorkContext {
     }
 
     public int outputCharValueCount() {
-        return outputCharValues.size();
+        return task.taskOutputCount();
     }
 
     public int optimizeCharValueCount() {
@@ -84,7 +84,7 @@ public class ExecutionTaskContext implements IWorkContext {
             case INPUT:
                 return inputCharValues.get(cmptChar.data().getCharId());
             case OUTPUT:
-                return outputCharValues.get(cmptChar.data().getCharId());
+                return task.getOutputCharValue(cmptChar.data().getCharId());
             case EXECUTION:
                 return execCharValues.get(cmptChar.data().getCharId());
             case OPTIMIZE_EXECUTION:
@@ -102,7 +102,7 @@ public class ExecutionTaskContext implements IWorkContext {
             case INPUT:
                 return CollectionUtil.toList(inputCharValues);
             case OUTPUT:
-                return CollectionUtil.toList(outputCharValues);
+                return task.getOutputCharValues();
             case EXECUTION:
                 return CollectionUtil.toList(execCharValues);
             case OPTIMIZE_EXECUTION:
@@ -115,19 +115,11 @@ public class ExecutionTaskContext implements IWorkContext {
         return null;
     }
 
-    public void putCharValue(CmptChar cmptChar, CharValue charValue) {
-        switch (SpecTypeEnum.valueOf(cmptChar.data().getSpecType())) {
-            case INPUT:
-                CollectionUtil.put(inputCharValues, cmptChar.data().getCharId(), charValue);
-                break;
-            case OUTPUT:
-                CollectionUtil.put(outputCharValues, cmptChar.data().getCharId(), charValue);
-                break;
-            case EXECUTION:
-                CollectionUtil.put(execCharValues, cmptChar.data().getCharId(), charValue);
-                break;
-            default:
-                break;
-        }
+    public void putInputCharValue(CharValue charValue) {
+        CollectionUtil.put(inputCharValues, charValue.getCmptChar().data().getCharId(), charValue);
+    }
+
+    public void putExecutionCharValue(CharValue charValue) {
+        CollectionUtil.put(execCharValues, charValue.getCmptChar().data().getCharId(), charValue);
     }
 }

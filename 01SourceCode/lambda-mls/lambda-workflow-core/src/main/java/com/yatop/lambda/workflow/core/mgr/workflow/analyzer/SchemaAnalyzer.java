@@ -3,7 +3,6 @@ package com.yatop.lambda.workflow.core.mgr.workflow.analyzer;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContextHelper;
-import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
 
@@ -66,7 +65,7 @@ public class SchemaAnalyzer {
 
         Node deleteNode = null;
         while (DataUtil.isNotNull(deleteNode = workflowContext.popAnalyzeNode())) {
-            if(SchemaHelper.needAnalyzeNode(deleteNode)) {
+            if(SchemaAnalyzerHelper.needAnalyzeNode(deleteNode)) {
                 List<Node> downstreamNodes =  SchemaAnalyzer4Delete.searchDownstreamNodes4DeleteNode(workflowContext, deleteNode);
                 if(DataUtil.isNotEmpty(downstreamNodes)) {
                     for(Node downstreamNode : downstreamNodes)
@@ -92,7 +91,7 @@ public class SchemaAnalyzer {
         List<Node> headNodes = WorkflowContextHelper.searchHeadNodes(workflowContext);
         if(DataUtil.isNotEmpty(headNodes)) {
             for(Node headNode : headNodes) {
-                if(SchemaHelper.needAnalyzeNode(headNode))
+                if(SchemaAnalyzerHelper.needAnalyzeNode(headNode))
                     SchemaAnalyzer4RefreshSchema.analyzeStartNode(workflowContext, headNode);
             }
         }

@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.framework.module;
 
 import com.yatop.lambda.workflow.core.context.ExecutionTaskContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
@@ -38,33 +39,25 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
     }
 
     @Override
-    public TreeMap<String, CharValue> exploreTaskExecutionOutput(WorkflowContext workflowContext, Node node) {
+    public TreeMap<String, CharValue> exploreOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
         //TODO query task output resource
         return null;
     }
 
     @Override
-    public void prepareTaskExecutionOutput(ExecutionTaskContext context) {
+    public void prepareOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
         //TODO prepare task output resource
         return;
     }
 
     @Override
-    public void computeTaskExecutionOutput(ExecutionTaskContext context) {
-        //TODO compute task output content（组件无调用执行规格时，引擎会调用该方法）
+    public void completeOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
+        //TODO complete task output resource
         return;
     }
 
-
     @Override
-    public void updateTaskExecutionOutput(ExecutionTaskContext context) {
-        //TODO update task output resource
-        return;
-    }
-
-
-    @Override
-    public void clearTaskExecutionOutput(ExecutionTaskContext context) {
+    public void clearOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
         //TODO clear task output resource
         return;
     }

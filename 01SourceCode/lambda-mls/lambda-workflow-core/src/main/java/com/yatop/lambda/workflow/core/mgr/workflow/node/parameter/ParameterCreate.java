@@ -5,14 +5,13 @@ import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueHelper;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
-import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueCreate;
-import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +20,6 @@ public class ParameterCreate {
 
     @Autowired
     private NodeParameterMgr nodeParameterMgr;
-
-    @Autowired
-    private CharValueCreate charValueCreate;
-
-    @Autowired
-    private CharValueQuery charValueQuery;
 
     protected NodeParameter createParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar) {
         return createParameter(workflowContext, node, cmptChar, null);
@@ -37,7 +30,7 @@ public class ParameterCreate {
         if(cmptChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
             CharValue charValue = new CharValue(cmptChar);
             charValue.setInText(charValueText);
-            charValueCreate.createCharValue(workflowContext, node, charValue);
+            CharValueHelper.createCharValue(workflowContext, node, charValue);
 
             WfFlowNodeParameter parameter = new WfFlowNodeParameter();
             parameter.setNodeId(node.data().getNodeId());
@@ -48,11 +41,11 @@ public class ParameterCreate {
             parameter = nodeParameterMgr.insertNodeParameter(parameter, workflowContext.getOperId());
 
             //parameter.copyProperties(nodeParameterMgr.queryNodeParameter(parameter.data().getNodeId(), parameter.data().getCharId()));
-            NodeParameter richParameter = new NodeParameter(parameter, cmptChar, charValue);
+            NodeParameter richParameter = new NodeParameter(parameter, charValue);
             return richParameter;
         } else {
             CharValue charValue = new CharValue(cmptChar);
-            charValueQuery.queryCharValue(workflowContext, node, charValue);
+            CharValueHelper.queryCharValue(workflowContext, node, charValue);
             return ParameterHelper.simulateParameter(workflowContext, node, charValue);
         }
     }

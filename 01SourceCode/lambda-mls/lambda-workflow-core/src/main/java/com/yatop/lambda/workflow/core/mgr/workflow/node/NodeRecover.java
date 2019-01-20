@@ -11,6 +11,7 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.SystemParameterUtil;
 import com.yatop.lambda.workflow.core.config.ModuleConfig;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.module.ParameterCheckHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.parameter.ParameterRecover;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.NodePortRecover;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
@@ -39,9 +40,6 @@ public class NodeRecover {
     @Autowired
     ModuleConfig moduleConfig;
 
-    @Autowired
-    private NodeParameterCheck nodeParameterCheck;
-
     private void recoverNode(WorkflowContext workflowContext, Long nodeId) {
 
         nodeMgr.recoverNode(nodeId, workflowContext.getOperId());
@@ -59,7 +57,7 @@ public class NodeRecover {
         //workflowContext.putNode(richNode);
         parameterRecover.recoverParameters(workflowContext, richNode);
         nodePortRecover.recoverNodePorts(workflowContext, richNode);
-        nodeParameterCheck.checkParameter(workflowContext, richNode);
+        ParameterCheckHelper.checkParameter(workflowContext, richNode);
         workflowContext.doneRecoverNode(richNode);
     }
 

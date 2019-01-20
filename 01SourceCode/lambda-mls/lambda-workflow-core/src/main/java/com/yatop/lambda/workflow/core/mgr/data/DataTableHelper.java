@@ -6,15 +6,13 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.table.DataTableMgr;
 import com.yatop.lambda.core.utils.DataTableFileUtil;
 import com.yatop.lambda.core.utils.DataTableNameUtil;
-import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.mgr.warehouse.DataWarehouseHelper;
+import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataTable;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
-import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -70,18 +68,18 @@ public class DataTableHelper {
     public static DataTable createCachedTable(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         Node node = context.getNode();
-        ModulePort modulePort = node.getOutputNodePort(context.getCmptChar().data().getCharId()).getModulePort();
+        CmptChar cmptChar = context.getCmptChar();
         ExecutionJob job = workflowContext.getCurrentJob();
         ExecutionTask task = workflowContext.getExecutionTask(node);
 
         DwDataTable table = new DwDataTable();
-        table.setTableName(String.format("tmp$%d_%d_%d", node.data().getNodeId(), modulePort.data().getPortId(), job.data().getJobId()));
+        table.setTableName(String.format("tmp$%d_%s_%d", node.data().getNodeId(), cmptChar.data().getCharId(), job.data().getJobId()));
         table.setTableType(DataTableTypeEnum.CACHED.getType());
         table.setTableSrc(DataTableSourceEnum.EXECUTION.getSource());
         table.setOwnerDwId(workflowContext.getDataWarehouse().data().getDwId());
         table.setRelFlowId(workflowContext.getWorkflow().data().getFlowId());
         table.setRelNodeId(node.data().getNodeId());
-        table.setRelCharId(modulePort.getCmptChar().data().getCharId());
+        table.setRelCharId(cmptChar.data().getCharId());
         table.setRelTaskId(task.data().getTaskId());
         table.setDataFileType(DataFileTypeEnum.PARQUET.getType());
         table.setTableState(DataTableStateEnum.EMPTY.getState());
@@ -99,18 +97,18 @@ public class DataTableHelper {
     public static DataTable createExternalTable(CharValueContext context, String externalDataFile) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         Node node = context.getNode();
-        ModulePort modulePort = node.getOutputNodePort(context.getCmptChar().data().getCharId()).getModulePort();
+        CmptChar cmptChar = context.getCmptChar();
         ExecutionJob job = workflowContext.getCurrentJob();
         ExecutionTask task = workflowContext.getExecutionTask(node);
 
         DwDataTable table = new DwDataTable();
-        table.setTableName(String.format("tmp$%d_%d_%d", node.data().getNodeId(), modulePort.data().getPortId(), job.data().getJobId()));
+        table.setTableName(String.format("ext$%d_%s_%d", node.data().getNodeId(), cmptChar.data().getCharId(), job.data().getJobId()));
         table.setTableType(DataTableTypeEnum.EXTERNAL.getType());
         table.setTableSrc(DataTableSourceEnum.EXECUTION.getSource());
         table.setOwnerDwId(workflowContext.getDataWarehouse().data().getDwId());
         table.setRelFlowId(workflowContext.getWorkflow().data().getFlowId());
         table.setRelNodeId(node.data().getNodeId());
-        table.setRelCharId(modulePort.getCmptChar().data().getCharId());
+        table.setRelCharId(cmptChar.data().getCharId());
         table.setRelTaskId(task.data().getTaskId());
         table.setDataFileType(DataFileTypeEnum.PARQUET.getType());
         table.setDataFile(externalDataFile);
@@ -128,7 +126,7 @@ public class DataTableHelper {
         }
     }
 
-    public static void updateTable(WorkflowContext workflowContext, DataTable table) {
+    public static void completeTable(WorkflowContext workflowContext, DataTable table) {
         table.data().setTableRowsColoured(true);
         table.data().setTableColumnsColoured(true);
         table.data().setDataFileSizeColoured(true);

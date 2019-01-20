@@ -77,7 +77,7 @@ public class JsonObjectMgr extends BaseMgr {
             WfJsonObject deleteJsonObject = new WfJsonObject();
             deleteJsonObject.setObjectId(jsonObjectId);
             if(clearData) {
-                deleteJsonObject.setObjectData(null);
+                deleteJsonObject.setObjectContent(null);
                 deleteJsonObject.setObjectState(JsonObjectStateEnum.EMPTY.getState());
             }
             deleteJsonObject.setStatus(DataStatusEnum.INVALID.getStatus());
@@ -114,7 +114,7 @@ public class JsonObjectMgr extends BaseMgr {
 
     /*
      *
-     *   更新Json对象（名称、对象数据、DFS对象文件名、本地对象文件名、对象状态、描述）
+     *   更新Json对象（名称、对象内容、DFS对象文件名、本地对象文件名、对象状态、描述）
      *   返回更新数量
      *
      * */
@@ -124,7 +124,7 @@ public class JsonObjectMgr extends BaseMgr {
         }
 
         if(jsonObject.isObjectNameNotColoured() &&
-                jsonObject.isObjectDataNotColoured() &&
+                jsonObject.isObjectContentNotColoured() &&
                 jsonObject.isObjectDfsFileNotColoured() &&
                 jsonObject.isObjectLocalFileNotColoured() &&
                 jsonObject.isObjectStateNotColoured() &&
@@ -137,8 +137,8 @@ public class JsonObjectMgr extends BaseMgr {
             updateJsonObject.setObjectId(jsonObject.getObjectId());
             if(jsonObject.isObjectNameColoured())
                 updateJsonObject.setObjectName(jsonObject.getObjectName());
-            if(jsonObject.isObjectDataColoured())
-                updateJsonObject.setObjectData(jsonObject.getObjectData());
+            if(jsonObject.isObjectContentColoured())
+                updateJsonObject.setObjectContent(jsonObject.getObjectContent());
             if(jsonObject.isObjectDfsFileColoured())
                 updateJsonObject.setObjectDfsFile(jsonObject.getObjectDfsFile());
             if(jsonObject.isObjectLocalFileColoured())
