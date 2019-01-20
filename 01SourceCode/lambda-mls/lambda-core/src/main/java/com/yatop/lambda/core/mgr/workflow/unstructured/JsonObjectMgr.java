@@ -21,7 +21,7 @@ public class JsonObjectMgr extends BaseMgr {
 
     /*
      *
-     *   插入新Json对象（名称、对象类型、来源、所属项目ID、关联实验ID、关联工作流ID、关联快照版本号、关联运行作业ID、关联节点ID、关联特征ID、存储位置、对象状态 ...）
+     *   插入新Json对象（名称、对象类型、来源、所属项目ID、关联实验ID、关联工作流ID、关联运行作业ID、关联节点ID、关联特征ID、存储位置、对象状态 ...）
      *   返回插入记录
      *
      * */
@@ -32,7 +32,6 @@ public class JsonObjectMgr extends BaseMgr {
                 jsonObject.isObjectSrcNotColoured() ||
                 jsonObject.isOwnerProjectIdNotColoured() ||
                 jsonObject.isRelFlowIdNotColoured() ||
-                jsonObject.isRelSnapshotVersionNotColoured() ||
                 jsonObject.isRelNodeIdNotColoured() ||
                 jsonObject.isRelCharIdNotColoured() ||
                 jsonObject.isRelTaskIdNotColoured() ||
@@ -126,8 +125,8 @@ public class JsonObjectMgr extends BaseMgr {
 
         if(jsonObject.isObjectNameNotColoured() &&
                 jsonObject.isObjectDataNotColoured() &&
-                jsonObject.isDfsObjectFileNotColoured() &&
-                jsonObject.isLocalObjectFileNotColoured() &&
+                jsonObject.isObjectDfsFileNotColoured() &&
+                jsonObject.isObjectLocalFileNotColoured() &&
                 jsonObject.isObjectStateNotColoured() &&
                 jsonObject.isDescriptionNotColoured()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update json object failed -- invalid update data.", "无效更新内容");
@@ -140,10 +139,10 @@ public class JsonObjectMgr extends BaseMgr {
                 updateJsonObject.setObjectName(jsonObject.getObjectName());
             if(jsonObject.isObjectDataColoured())
                 updateJsonObject.setObjectData(jsonObject.getObjectData());
-            if(jsonObject.isDfsObjectFileColoured())
-                updateJsonObject.setDfsObjectFile(jsonObject.getDfsObjectFile());
-            if(jsonObject.isLocalObjectFileColoured())
-                updateJsonObject.setLocalObjectFile(jsonObject.getLocalObjectFile());
+            if(jsonObject.isObjectDfsFileColoured())
+                updateJsonObject.setObjectDfsFile(jsonObject.getObjectDfsFile());
+            if(jsonObject.isObjectLocalFileColoured())
+                updateJsonObject.setObjectLocalFile(jsonObject.getObjectLocalFile());
             if(jsonObject.isObjectStateColoured())
                 updateJsonObject.setObjectState(jsonObject.getObjectState());
             if(jsonObject.isDescriptionColoured())

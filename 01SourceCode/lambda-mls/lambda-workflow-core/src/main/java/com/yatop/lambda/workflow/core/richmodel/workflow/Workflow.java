@@ -46,7 +46,7 @@ public class Workflow extends RichModel<WfFlow> {
                 }
             }
 
-            if (this.isColoured() && this.data().getFlowId() > 0) {
+            if (this.isColoured()) {
                 WorkflowHelper.updateWorkflow(this, operId);
             }
         }

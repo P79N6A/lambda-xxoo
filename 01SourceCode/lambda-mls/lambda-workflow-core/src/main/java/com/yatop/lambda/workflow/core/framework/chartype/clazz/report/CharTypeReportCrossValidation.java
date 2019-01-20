@@ -1,4 +1,4 @@
 package com.yatop.lambda.workflow.core.framework.chartype.clazz.report;
 
-public class CharTypeGenerateRulesReport extends CharTypeReportGeneric {
+public class CharTypeReportCrossValidation extends CharTypeReportGeneric {
 }

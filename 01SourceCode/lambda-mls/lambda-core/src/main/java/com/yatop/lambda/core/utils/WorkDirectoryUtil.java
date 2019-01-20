@@ -54,19 +54,19 @@ public class WorkDirectoryUtil {
             return String.format("%s/%s/%d/other/%d", getLocalWorkRoot(), getJobFileDirName(), projectId, jobId);
     }
 
-    public static String getDataWarehouseDfsDirectory(String dwCode) {
-        return String.format("%s%s/%s/%s", getDfsDefautlFS(), getDfsWorkRoot(), getDataFileDirName(), dwCode);
+    public static String getDataWarehouseDfsDirectory(Long dwId) {
+        return String.format("%s%s/%s/%d", getDfsDefautlFS(), getDfsWorkRoot(), getDataFileDirName(), dwId);
     }
 
-    public static String getDataWarehouseLocalDirectory(String dwCode) {
-        return String.format("%s/%s/%s", getLocalWorkRoot(), getDataFileDirName(), dwCode);
+    public static String getDataWarehouseLocalDirectory(Long dwId) {
+        return String.format("%s/%s/%d", getLocalWorkRoot(), getDataFileDirName(), dwId);
     }
 
-    public static String getModelWarehouseDfsDirectory(String mwCode) {
-        return String.format("%s%s/%s/%s", getDfsDefautlFS(), getDfsWorkRoot(), getModelFileDirName(), mwCode);
+    public static String getModelWarehouseDfsDirectory(Long mwId) {
+        return String.format("%s%s/%s/%d", getDfsDefautlFS(), getDfsWorkRoot(), getModelFileDirName(), mwId);
     }
 
-    public static String getModelWarehouseLocalDirectory(String mwCode) {
-        return String.format("%s/%s/%s", getLocalWorkRoot(), getModelFileDirName(), mwCode);
+    public static String getModelWarehouseLocalDirectory(Long mwId) {
+        return String.format("%s/%s/%d", getLocalWorkRoot(), getModelFileDirName(), mwId);
     }
 }

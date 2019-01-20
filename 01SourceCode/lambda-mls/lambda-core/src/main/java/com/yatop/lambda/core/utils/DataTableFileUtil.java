@@ -1,6 +1,6 @@
 package com.yatop.lambda.core.utils;
 
-public class TableFileUtil {
+public class DataTableFileUtil {
 
     public static String getFilePath4General(String warehouseDir, Long tableId) {
         return String.format("%s/table_%d.dat", warehouseDir, tableId);

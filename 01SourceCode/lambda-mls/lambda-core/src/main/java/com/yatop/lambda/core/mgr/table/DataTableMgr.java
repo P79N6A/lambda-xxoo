@@ -102,8 +102,8 @@ public class DataTableMgr extends BaseMgr {
                 table.isTableRowsNotColoured() &&
                 table.isDataFileSizeNotColoured() &&
                 table.isDataFileNotColoured() &&
-                table.isDfsSummaryFileNotColoured() &&
-                table.isLocalSummaryFileNotColoured() &&
+                table.isSummaryDfsFileNotColoured() &&
+                table.isSummaryLocalFileNotColoured() &&
                 table.isTableStateNotColoured() &&
                 table.isDescriptionNotColoured()) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Update data table info failed -- invalid update data.", "无效更新内容");
@@ -126,10 +126,10 @@ public class DataTableMgr extends BaseMgr {
                 updateTable.setDataFileSize(table.getDataFileSize());
             if(table.isDataFileColoured())
                 updateTable.setDataFile(table.getDataFile());
-            if(table.isDfsSummaryFileColoured())
-                updateTable.setDfsSummaryFile(table.getDfsSummaryFile());
-            if(table.isLocalSummaryFileColoured())
-                updateTable.setLocalSummaryFile(table.getLocalSummaryFile());
+            if(table.isSummaryDfsFileColoured())
+                updateTable.setSummaryDfsFile(table.getSummaryDfsFile());
+            if(table.isSummaryLocalFileColoured())
+                updateTable.setSummaryLocalFile(table.getSummaryLocalFile());
             if(table.isTableStateColoured())
                 updateTable.setTableState(table.getTableState());
             if(table.isDescriptionColoured())

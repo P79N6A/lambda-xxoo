@@ -38,12 +38,18 @@ public interface IModuleClazz extends InitializingBean {
 
     //////////////////////////////////////////////////////
 
-    //探测任务运行输出资源
+    //探测任务运行输出，查询相关输出资源
     //key:charId, CharValue
     TreeMap<String, CharValue> exploreTaskExecutionOutput(WorkflowContext workflowContext, Node node);
 
     //准备任务运行输出，创建相关输出资源
     void prepareTaskExecutionOutput(ExecutionTaskContext context);
+
+    //计算任务运行输出，计算相关输出内容（组件无调用执行规格时，引擎会调用该方法）
+    void computeTaskExecutionOutput(ExecutionTaskContext context);
+
+    //更新任务运行输出，更新相关输出资源
+    void updateTaskExecutionOutput(ExecutionTaskContext context);
 
     //清理任务运行输出，删除相关输出资源
     void clearTaskExecutionOutput(ExecutionTaskContext context);

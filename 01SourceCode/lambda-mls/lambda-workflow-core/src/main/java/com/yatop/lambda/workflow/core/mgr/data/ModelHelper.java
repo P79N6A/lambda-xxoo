@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.core.mgr.data.model;
+package com.yatop.lambda.workflow.core.mgr.data;
 
 import com.yatop.lambda.base.model.MwModel;
 import com.yatop.lambda.core.enums.ModelSourceEnum;
@@ -47,25 +47,23 @@ public class ModelHelper {
         model.setModelState(ModelStateEnum.EMPTY.getState());
         model = MODEL_MGR.insertModel(model, workflowContext.getOperId());
 
-        String jobDfsDir = WorkDirectoryUtil.getJobDfsDirectory(workflowContext.getProject().data().getProjectId(), workflowContext.getWorkflow().data().getFlowId(), job.data().getJobId());
-        String jobLocalDir = WorkDirectoryUtil.getJobDfsDirectory(workflowContext.getProject().data().getProjectId(), workflowContext.getWorkflow().data().getFlowId(), job.data().getJobId());
+        String jobDfsDir = job.data().getJobDfsDir();
+        String jobLocalDir = job.data().getJobLocalDir();
         model.setModelFile(ModelFileUtil.getFilePath4Cached(jobDfsDir, task.data().getTaskId(), model.getModelId()));
-        model.setDfsSummaryFile(ModelFileUtil.getSummaryFilePath4Cached(jobDfsDir, task.data().getTaskId(), model.getModelId()));
-        model.setLocalSummaryFile(ModelFileUtil.getSummaryFilePath4Cached(jobLocalDir, task.data().getTaskId(), model.getModelId()));
+        model.setSummaryDfsFile(ModelFileUtil.getSummaryFilePath4Cached(jobDfsDir, task.data().getTaskId(), model.getModelId()));
+        model.setSummaryLocalFile(ModelFileUtil.getSummaryFilePath4Cached(jobLocalDir, task.data().getTaskId(), model.getModelId()));
         MODEL_MGR.updateModel(model, workflowContext.getOperId());
         return new Model(model);
     }
 
-    public static void deleteModel(CharValueContext context, Model model) {
-        WorkflowContext workflowContext = context.getWorkflowContext();
+    public static void deleteModel(WorkflowContext workflowContext, Model model) {
         MODEL_MGR.deleteModel(model.data().getModelId(), workflowContext.getOperId());
 
         //TODO ignore model state
         //TODO clear modelFile & summaryDataFile
     }
 
-    public static void updateModel(CharValueContext context, Model model) {
-        WorkflowContext workflowContext = context.getWorkflowContext();
+    public static void updateModel(WorkflowContext workflowContext, Model model) {
         model.data().setModelNameColoured(true);
         model.data().setModelFileSizeColoured(true);
         model.data().setTrainTableIdColoured(true);

@@ -3,6 +3,8 @@ package com.yatop.lambda.workflow.core.context;
 import com.yatop.lambda.core.enums.*;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
+import com.yatop.lambda.workflow.core.mgr.warehouse.DataWarehouseHelper;
+import com.yatop.lambda.workflow.core.mgr.warehouse.ModelWarehouseHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzer;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
@@ -27,8 +29,6 @@ public class WorkflowContext implements IWorkContext {
     private boolean loadDataPortSchema;     //控制是否查询带出数据输出端口schema信息
     private AnalyzeTypeEnum schemaAnalyze;  //触发的schema分析类型
     private Workflow workflow;              //操作关联工作流
-    private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库，key=dwId
-    private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联模型仓库，key=mwId
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();      //操作关联节点，key=nodeId
     private TreeMap<Long, NodeLink> links = new TreeMap<Long, NodeLink>();  //操作关联节点链接，key=linkId
     private TreeMap<Long, TreeSet<NodeLink>> inputLinks = new TreeMap<Long, TreeSet<NodeLink>>();  //操作关联节点链接，key=dstPortId
@@ -36,6 +36,10 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, NodePortInput> inputPorts = new TreeMap<Long, NodePortInput>();  //操作关联节点输入端口，key=nodePortId
     private TreeMap<Long, NodePortOutput> outputPorts = new TreeMap<Long, NodePortOutput>();  //操作关联节点输出端口，key=nodePortId
   //private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();  //操作关联节点全局参数，key=globalParameterId
+
+    private TreeMap<Long, DataWarehouse>  dataWarehouses = new TreeMap<Long, DataWarehouse>();   //操作关联数据仓库，key=dwId
+    private TreeMap<String, DataWarehouse> dataWarehousesOrderByCode = new TreeMap<String, DataWarehouse>();   //操作关联数据仓库，key=dwName
+    private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联模型仓库，key=mwId
 
     private ExecutionJob currentJob;        //操作关联的当前运行作业
     private TreeMap<Long, ExecutionJob> jobs = new TreeMap<Long, ExecutionJob>();   //操作关联运行作业
@@ -144,7 +148,9 @@ public class WorkflowContext implements IWorkContext {
 
     private void initialize(ExecutionJob currentJob) {
         if(!currentJob.enableFlushSnapshot()) {
-            //TODO loadAllTasks and reset [workflow state & last job id] & [node state & last task id]
+            //TODO Clear [workflow & Node]'s execution information by job type
+
+            //TODO loadAllTasks and set [workflow state & last job id] & [node state & last task id]
         }
     }
 
@@ -152,8 +158,6 @@ public class WorkflowContext implements IWorkContext {
     public void clear() {
         workflow = null;
         operId = null;
-        CollectionUtil.enhancedClear(dataWarehouses);
-        CollectionUtil.enhancedClear(modelWarehouses);
         CollectionUtil.enhancedClear(nodes);
         CollectionUtil.enhancedClear(links);
         CollectionUtil.clear(inputLinks);
@@ -162,10 +166,15 @@ public class WorkflowContext implements IWorkContext {
         CollectionUtil.clear(outputPorts);
         //CollectionUtil.clear(globalParameters);
 
+        CollectionUtil.enhancedClear(dataWarehouses);
+        CollectionUtil.clear(dataWarehousesOrderByCode);
+        CollectionUtil.enhancedClear(modelWarehouses);
+
         if(DataUtil.isNotNull(currentJob)) {
             currentJob.clear();
             currentJob = null;
         }
+
         CollectionUtil.enhancedClear(jobs);
         CollectionUtil.enhancedClear(tasks);
 
@@ -184,7 +193,7 @@ public class WorkflowContext implements IWorkContext {
             }
         }
 
-        if(this.isEnableFlushWorkflow()) {
+        if(this.isEnableFlushWorkflow() && this.workflow.data().getFlowId() > 0) {
 
             if (loadNodeParameter && loadDataPortSchema) {
                 SchemaAnalyzer.dealAnalyzeSchema(this);
@@ -384,8 +393,16 @@ public class WorkflowContext implements IWorkContext {
     public DataWarehouse getDataWarehouse(Long dataWarehouseId) {
         DataWarehouse dataWarehouse = CollectionUtil.get(dataWarehouses, dataWarehouseId);
         if(DataUtil.isNull(dataWarehouse)) {
-            //TODO query data warehouse
-            //job = xxx
+            dataWarehouse = DataWarehouseHelper.queryDataWarehouse(dataWarehouseId);
+            this.putDataWarehouse(dataWarehouse);
+        }
+        return dataWarehouse;
+    }
+
+    public DataWarehouse getDataWarehouse(String dataWarehouseCode) {
+        DataWarehouse dataWarehouse = CollectionUtil.get(dataWarehousesOrderByCode, dataWarehouseCode);
+        if(DataUtil.isNull(dataWarehouse)) {
+            dataWarehouse = DataWarehouseHelper.queryDataWarehouse(dataWarehouseCode);
             this.putDataWarehouse(dataWarehouse);
         }
         return dataWarehouse;
@@ -398,8 +415,7 @@ public class WorkflowContext implements IWorkContext {
     public ModelWarehouse getModelWarehouse(Long modelWarehouseId) {
         ModelWarehouse modelWarehouse = CollectionUtil.get(modelWarehouses, modelWarehouseId);
         if(DataUtil.isNull(modelWarehouse)) {
-            //TODO query model warehouse
-            //job = xxx
+            modelWarehouse = ModelWarehouseHelper.queryModelWarehouse(modelWarehouseId);
             this.putModelWarehouse(modelWarehouse);
         }
         return modelWarehouse;
@@ -853,6 +869,7 @@ public class WorkflowContext implements IWorkContext {
 
     public void putDataWarehouse(DataWarehouse warehouse) {
         CollectionUtil.put(dataWarehouses, warehouse.data().getDwId(), warehouse);
+        CollectionUtil.put(dataWarehousesOrderByCode, warehouse.data().getDwName(), warehouse);
     }
 
     public void putModelWarehouse(ModelWarehouse warehouse) {

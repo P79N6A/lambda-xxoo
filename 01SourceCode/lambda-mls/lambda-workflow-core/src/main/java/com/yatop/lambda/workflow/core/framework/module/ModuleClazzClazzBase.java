@@ -39,19 +39,33 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
 
     @Override
     public TreeMap<String, CharValue> exploreTaskExecutionOutput(WorkflowContext workflowContext, Node node) {
-        //TODO query task output
+        //TODO query task output resource
         return null;
     }
 
     @Override
     public void prepareTaskExecutionOutput(ExecutionTaskContext context) {
-        //TODO prepare task output
+        //TODO prepare task output resource
         return;
     }
 
     @Override
+    public void computeTaskExecutionOutput(ExecutionTaskContext context) {
+        //TODO compute task output content（组件无调用执行规格时，引擎会调用该方法）
+        return;
+    }
+
+
+    @Override
+    public void updateTaskExecutionOutput(ExecutionTaskContext context) {
+        //TODO update task output resource
+        return;
+    }
+
+
+    @Override
     public void clearTaskExecutionOutput(ExecutionTaskContext context) {
-        //TODO clear task output
+        //TODO clear task output resource
         return;
     }
 
