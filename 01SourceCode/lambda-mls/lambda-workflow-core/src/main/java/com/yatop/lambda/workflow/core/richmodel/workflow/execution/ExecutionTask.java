@@ -76,7 +76,7 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
         this.changeTaskState(TaskStateEnum.SUCCESS);
     }
 
-    public void changeState2ErrorTerminated() {
+    private void changeState2ErrorTerminated() {
         this.changeTaskState(TaskStateEnum.ERROR_TERMINATED);
     }
 
@@ -175,15 +175,8 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
         return DataUtil.isNotEmpty(this.data().getWarningMsg());
     }
 
-    public void changeOccuredWarning(String warningMsg) {
+    public void setOccuredWarning(String warningMsg) {
         this.data().setWarningMsg(warningMsg);
         changeState2ErrorTerminated();
     }
-
-    /*
-    public void clearOccuredWarning() {
-        if(DataUtil.isNotEmpty(this.data().getWarningMsg()))
-            this.data().setWarningMsg(null);
-    }
-    */
 }

@@ -71,6 +71,10 @@ public class Component extends RichModel<CfComponent> {
         return execution;
     }
 
+    public boolean isNoExecuionRequired() {
+        return DataUtil.isNull(getExecution());
+    }
+
     private void setExecution(CmptSpec execution) {
         this.execution = execution;
     }

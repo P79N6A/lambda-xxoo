@@ -39,9 +39,9 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
     }
 
     @Override
-    public TreeMap<String, CharValue> exploreOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
+    public void exploreOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
         //TODO query task output resource
-        return null;
+        return;
     }
 
     @Override
@@ -59,6 +59,12 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
     @Override
     public void clearOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
         //TODO clear task output resource
+        return;
+    }
+
+    @Override
+    public void execute(ExecutionTaskContext context) {
+        //TODO if needn't submit compute-cluster, compute output content here
         return;
     }
 

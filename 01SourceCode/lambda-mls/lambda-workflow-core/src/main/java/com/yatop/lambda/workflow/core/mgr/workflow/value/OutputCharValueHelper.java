@@ -28,7 +28,7 @@ public class OutputCharValueHelper {
                 charTypeClazz.onCreateValue(charValueContext);
                 charValueContext.clear();
                 return;
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create characteristic value failed -- char-type-clazz occur error.", "计算组件特征值创建时发生错误", e, charValue);
             }
         } else {
@@ -56,7 +56,7 @@ public class OutputCharValueHelper {
                 charTypeClazz.onDeleteValue(charValueContext);
                 charValueContext.clear();
                 return;
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete characteristic value failed -- char-type-clazz occur error.", "计算组件特征值删除时发生错误", e, charValue);
             }
         } else {
@@ -84,7 +84,7 @@ public class OutputCharValueHelper {
                 charTypeClazz.onCompleteValue(charValueContext);
                 charValueContext.clear();
                 return;
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-type-clazz occur error.", "计算组件特征值更新时发生错误", e, charValue);
             }
         } else {
@@ -113,7 +113,7 @@ public class OutputCharValueHelper {
                 charTypeClazz.onQueryValue(charValueContext);
                 charValueContext.clear();
                 return;
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query characteristic value failed -- char-type-clazz occur error.", "计算组件特征值查询时发生错误", e, charValue);
             }
         } else {

@@ -5,7 +5,6 @@ import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
-import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.HashSet;
@@ -40,8 +39,7 @@ public interface IModuleClazz extends InitializingBean {
     //////////////////////////////////////////////////////
 
     //探测任务运行输出，查询相关输出资源
-    //key:charId, CharValue
-    TreeMap<String, CharValue> exploreOutputResource(WorkflowContext workflowContext, ExecutionTask task);
+    void exploreOutputResource(WorkflowContext workflowContext, ExecutionTask task);
 
     //准备任务运行输出，创建相关输出资源
     void prepareOutputResource(WorkflowContext workflowContext, ExecutionTask task);
@@ -51,6 +49,11 @@ public interface IModuleClazz extends InitializingBean {
 
     //清理任务运行输出，删除相关输出资源
     void clearOutputResource(WorkflowContext workflowContext, ExecutionTask task);
+
+    //////////////////////////////////////////////////////
+
+    //本地运行，组件无需提交集群时，引擎将调用该方法，例如：算法组件的输出内容由本地进行计算
+    void execute(ExecutionTaskContext context);
 
     //////////////////////////////////////////////////////
 

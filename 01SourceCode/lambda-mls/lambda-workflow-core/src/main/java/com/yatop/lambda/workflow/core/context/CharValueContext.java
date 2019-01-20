@@ -13,7 +13,6 @@ public class CharValueContext implements IWorkContext {
     private Node node;              //操作关联节点
     private Component component;    //操作关联组件
     private CmptSpec cmptSpec;      //操作关联组件规格
-    private CmptChar cmptChar;      //操作关联组件特征
     private CharValue charValue;    //特征值的传入传出
 
     public CharValueContext(WorkflowContext workflowContext, Node node, CharValue charValue) {
@@ -23,7 +22,6 @@ public class CharValueContext implements IWorkContext {
 
         this.component = this.node.getModule().getComponent();
         this.cmptSpec = this.component.getCmptSpec(SpecTypeEnum.valueOf(this.charValue.getSpecType()));
-        this.cmptChar = this.charValue.getCmptChar();
     }
 
     @Override
@@ -32,7 +30,6 @@ public class CharValueContext implements IWorkContext {
         node = null;
         component = null;
         cmptSpec = null;
-        cmptChar = null;
         charValue = null;
     }
 
@@ -53,7 +50,7 @@ public class CharValueContext implements IWorkContext {
     }
 
     public CmptChar getCmptChar() {
-        return cmptChar;
+        return charValue.getCmptChar();
     }
 
     public CharValue getCharValue() {

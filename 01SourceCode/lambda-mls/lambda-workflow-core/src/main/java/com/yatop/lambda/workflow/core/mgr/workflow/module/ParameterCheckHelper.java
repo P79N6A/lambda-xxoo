@@ -37,7 +37,7 @@ public class ParameterCheckHelper {
                     }
                 }
                 CollectionUtil.clear(warningMessages);
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter failed -- module-clazz occur error.", "工作流组件校验节点参数时发生错误", e, node);
             }
 

@@ -14,29 +14,21 @@ import java.util.TreeMap;
 public class ExecutionTaskContext implements IWorkContext {
 
     private WorkflowContext workflowContext;
-    private ExecutionTask task;     //操作关联运行任务
-    private Node node;                          //操作关联节点
-    private TreeMap<String, CharValue> inputCharValues = new TreeMap<String, CharValue>();         //节点输入内容特征值
-    //private TreeMap<String, CharValue> outputCharValues = new TreeMap<String, CharValue>();        //节点输出内容特征值
-    private TreeMap<String, CharValue> execCharValues = new TreeMap<String, CharValue>();          //节点调用执行特征值
-    private String warningMsg;
+    private ExecutionTask task;                                                    //操作关联运行任务
+    private TreeMap<String, CharValue> inputCharValues = new TreeMap<String, CharValue>();         //输入内容
+    private TreeMap<String, CharValue> execCharValues = new TreeMap<String, CharValue>();          //调用执行
 
     public ExecutionTaskContext(WorkflowContext workflowContext, ExecutionTask task, Node node) {
         this.workflowContext = workflowContext;
         this.task = task;
-        this.node = node;
-        this.warningMsg = null;
     }
 
     @Override
     public void clear() {
         workflowContext = null;
         task = null;
-        node = null;
-        CollectionUtil.enhancedClear(inputCharValues);
-        //CollectionUtil.enhancedClear(outputCharValues);
+        CollectionUtil.clear(inputCharValues);
         CollectionUtil.enhancedClear(execCharValues);
-        warningMsg = null;
     }
 
     public ExecutionJob getJob() {
@@ -52,15 +44,7 @@ public class ExecutionTaskContext implements IWorkContext {
     }
 
     public Node getNode() {
-        return node;
-    }
-
-    public String getWarningMsg() {
-        return warningMsg;
-    }
-
-    public void setWarningMsg(String warningMsg) {
-        this.warningMsg = warningMsg;
+        return task.getNode();
     }
 
     public int inputCharValueCount() {
@@ -72,11 +56,11 @@ public class ExecutionTaskContext implements IWorkContext {
     }
 
     public int optimizeCharValueCount() {
-        return node.optimizeParameterCount();
+        return getNode().optimizeParameterCount();
     }
 
     public int parameterCharValueCount() {
-        return node.parameterCount();
+        return getNode().parameterCount();
     }
 
     public CharValue getCharValue(CmptChar cmptChar) {
@@ -88,9 +72,9 @@ public class ExecutionTaskContext implements IWorkContext {
             case EXECUTION:
                 return execCharValues.get(cmptChar.data().getCharId());
             case OPTIMIZE_EXECUTION:
-                return node.getOptimizeParameterCharValue(cmptChar);
+                return getNode().getOptimizeParameterCharValue(cmptChar);
             case PARAMETER:
-                return node.getParameterCharValue(cmptChar);
+                return getNode().getParameterCharValue(cmptChar);
             default:
                 break;
         }
@@ -106,9 +90,9 @@ public class ExecutionTaskContext implements IWorkContext {
             case EXECUTION:
                 return CollectionUtil.toList(execCharValues);
             case OPTIMIZE_EXECUTION:
-                return node.getOptimizeParameterCharValues();
+                return getNode().getOptimizeParameterCharValues();
             case PARAMETER:
-                return node.getParameterCharValues();
+                return getNode().getParameterCharValues();
             default:
                 break;
         }
