@@ -1,49 +1,297 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.snapshot;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yatop.lambda.base.model.EmExperiment;
-import com.yatop.lambda.base.model.WfFlow;
 import com.yatop.lambda.base.model.WfSnapshot;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SnapshotStateEnum;
+import com.yatop.lambda.core.exception.LambdaException;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.mgr.workflow.snapshot.SnapshotHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
+import com.yatop.lambda.workflow.core.richmodel.project.Project;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.*;
+import com.yatop.lambda.workflow.core.utils.CollectionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.TreeMap;
 
 public class Snapshot extends RichModel<WfSnapshot> {
 
-    private JSONObject content;
+    private static String SNAPSHOT_CONTENT_KEY_EXPERIMENT = "@@@Experiment";
+    private static String SNAPSHOT_CONTENT_KEY_WORKFLOW = "@@@Workflow";
+    private static String SNAPSHOT_CONTENT_KEY_NODES = "@@@Nodes";
+    private static String SNAPSHOT_CONTENT_KEY_NODE_PARAMETERS = "@@@Parameters";
+    private static String SNAPSHOT_CONTENT_KEY_NODE_OPTIMIZE_PARAMETERS = "@@@OptimizeParameters";
+    private static String SNAPSHOT_CONTENT_KEY_NODE_INPUT_PORTS = "@@@InputPorts";
+    private static String SNAPSHOT_CONTENT_KEY_NODE_OUTPUT_PORTS = "@@@OutputPorts";
+    private static String SNAPSHOT_CONTENT_KEY_LINKS = "@@@Links";
 
-    public Snapshot(WfSnapshot data) {
+    public static Logger logger = LoggerFactory.getLogger(Snapshot.class);
+
+    private boolean enableFlushSnapshot;
+    private Workflow workflow;
+    private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();
+    private TreeMap<Long, NodeLink> links = new TreeMap<Long, NodeLink>();
+    //private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();
+
+    //用于快照创建
+    public static Snapshot BuildSnapshot4Create(WfSnapshot data, WorkflowContext workflowContext) {
+        Snapshot snapshot = new Snapshot(data);
+        snapshot.synchronizeContent(workflowContext);
+        snapshot.updateContent();
+        return snapshot;
+    }
+
+    //用于快照查看
+    public static Snapshot BuildSnapshot4View(WfSnapshot data) {
+        Snapshot snapshot = new Snapshot(data);
+        snapshot.parseContent();
+        return snapshot;
+    }
+
+    //用于实验运行
+    public static Snapshot BuildSnapshot4Execution(WfSnapshot data, boolean enableFlushSnapshot) {
+        Snapshot snapshot = new Snapshot(data, enableFlushSnapshot);
+        snapshot.parseContent();
+        return snapshot;
+    }
+
+    //用于实验模版
+    public static Snapshot BuildSnapshot4Template(WfSnapshot data, Project project) {
+        Snapshot snapshot = new Snapshot(data);
+        snapshot.parseContent(project);
+        return snapshot;
+    }
+
+    private Snapshot(WfSnapshot data) {
+        this(data, false);
+    }
+
+    private Snapshot(WfSnapshot data, boolean enableFlushSnapshot) {
         super(data);
+        this.enableFlushSnapshot = enableFlushSnapshot;
     }
 
     public void flush(String operId) {
+
+        if(!this.isEnableFlushSnapshot())
+            return;
+
+        this.updateContent();
         if(this.isColoured()) {
             SnapshotHelper.updateSnapshot(this, operId);
         }
     }
 
-    public void updateContent(WorkflowContext workflowContext) {
-        //TODO create 和 update 注意parameter duplicate flag区分处理
+    @Override
+    public void clear() {
+        workflow = null;
+        CollectionUtil.clear(nodes);
+        CollectionUtil.clear(links);
+        //CollectionUtil.clear(globalParameters);
+    }
+
+    public void synchronizeContent(WorkflowContext workflowContext) {
+        if(DataUtil.isNull(this.workflow) || this.workflow != workflowContext.getWorkflow())
+            this.workflow = workflowContext.getWorkflow();
+
+        if(workflowContext.nodeCount() > 0) {
+            for(Node node : workflowContext.getNodes()) {
+                if(!CollectionUtil.containsKey(nodes, node.data().getNodeId())) {
+                    this.putNode(node);
+                }
+            }
+        }
+
+        if(workflowContext.linkCount() > 0) {
+            for(NodeLink link : workflowContext.getLinks()) {
+                if(!CollectionUtil.containsKey(links, link.data().getLinkId())) {
+                    this.putLink(link);
+                }
+            }
+        }
+
+        //TODO synchronize global parameters
+    }
+
+    public void updateContent() {
+        JSONObject jsonContent = new JSONObject(8, true);
+        JSONObject jsonExperiment = getWorkflow().getExperiment().toJSON();
+        JSONObject jsonWorkflow = getWorkflow().toJSON();
+        JSONArray jsonNodes = new JSONArray();
+        JSONArray jsonLinks = new JSONArray();
+
+        if(nodeCount() > 0) {
+            for(Node node : getNodes()) {
+                JSONObject jsonNode = node.toJSON();
+                JSONArray jsonParameters = new JSONArray();
+                JSONArray jsonOptimizeParameters = new JSONArray();
+                JSONArray jsonInputPorts = new JSONArray();
+                JSONArray jsonOutputPorts = new JSONArray();
+
+                if(node.parameterCount() > 0) {
+                    for(NodeParameter parameter : node.getParameters()) {
+                        JSONObject jsonParameter = parameter.toJSON();
+                        if(parameter.getCharValue().isJsonDataType() || parameter.getCharValue().isScriptDataType())
+                            jsonParameter.put("charValue", parameter.getCharValue().getTextValue());
+
+                        jsonParameters.add(jsonParameter);
+                    }
+                }
+
+                if(node.optimizeParameterCount() > 0) {
+                    for(NodeParameter parameter : node.getOptimizeParameters()) {
+                        JSONObject jsonParameter = parameter.toJSON();
+                        if(parameter.getCharValue().isJsonDataType() || parameter.getCharValue().isScriptDataType())
+                            jsonParameter.put("charValue", parameter.getCharValue().getTextValue());
+
+                        jsonOptimizeParameters.add(jsonParameter);
+                    }
+                }
+
+                if(node.inputNodePortCount() > 0) {
+                    for(NodePortInput inputPort : node.getInputNodePorts()) {
+                        JSONObject jsonInputPort = inputPort.toJSON();
+                        jsonInputPorts.add(jsonInputPort);
+                    }
+                }
+
+                if(node.outputNodePortCount() > 0) {
+                    for(NodePortOutput outputPort : node.getOutputNodePorts()) {
+                        JSONObject jsonOutputPort = outputPort.toJSON();
+                        jsonOutputPorts.add(jsonOutputPort);
+                    }
+                }
+
+                jsonNode.put(SNAPSHOT_CONTENT_KEY_NODE_PARAMETERS, jsonParameters);
+                jsonNode.put(SNAPSHOT_CONTENT_KEY_NODE_OPTIMIZE_PARAMETERS, jsonOptimizeParameters);
+                jsonNode.put(SNAPSHOT_CONTENT_KEY_NODE_INPUT_PORTS, jsonInputPorts);
+                jsonNode.put(SNAPSHOT_CONTENT_KEY_NODE_OUTPUT_PORTS, jsonOutputPorts);
+                jsonNodes.add(jsonNode);
+            }
+
+            if(linkCount() > 0) {
+                for(NodeLink link : getLinks()) {
+                    JSONObject jsonLink = link.toJSON();
+                    jsonLinks.add(jsonLink);
+                }
+            }
+
+            //TODO add global parameters
+        }
+
+        jsonContent.put(SNAPSHOT_CONTENT_KEY_EXPERIMENT, jsonExperiment);
+        jsonContent.put(SNAPSHOT_CONTENT_KEY_WORKFLOW, jsonWorkflow);
+        jsonContent.put(SNAPSHOT_CONTENT_KEY_NODES, jsonNodes);
+        jsonContent.put(SNAPSHOT_CONTENT_KEY_LINKS, jsonLinks);
+        this.data().setSnapshotContent(DataUtil.prettyFormat(jsonContent));
     }
 
     private void parseContent() {
+        parseContent(null);
+    }
+
+    private void parseContent(Project project) {
+        //TODO decode content
         //Query Project
         //Experiment
         //Workflow
+
+        if(DataUtil.isNull(project)) {
+
+        }
+
+        if(DataUtil.isEmpty(this.data().getSnapshotContent())) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse snapshot content failed -- empty content error.", "快照内容为空", this);
+        }
+
+        try {
+            JSONObject jsonContent = JSONObject.parseObject(this.data().getSnapshotContent());
+
+
+        } catch (Throwable e) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse snapshot content failed -- snapshot content error.", "快照内容错误", e, this);
+        }
+
+
+    }
+
+    public boolean isEnableFlushSnapshot() {
+        return enableFlushSnapshot;
+    }
+
+    public Project getProject() {
+        return workflow.getProject();
+    }
+
+    public Experiment getExperiment() {
+        return workflow.getExperiment();
     }
 
     public Workflow getWorkflow() {
+        return workflow;
+    }
 
-        JSONObject jsonExperiment = content.getJSONObject("experiment");
-        EmExperiment experiment = jsonExperiment.toJavaObject(EmExperiment.class);
-        Experiment richExperiment = new Experiment(experiment, );
+    public int nodeCount() {
+        return nodes.size();
+    }
 
+    public List<Node> getNodes() {
+        return CollectionUtil.toList(nodes);
+    }
 
-        JSONObject jsonWorkflow = content.getJSONObject("workflow");
-        WfFlow workflow = jsonWorkflow.toJavaObject(WfFlow.class);
-        return new Workflow(workflow, );
+    public Node getNode(Long nodeId) {
+        return CollectionUtil.get(nodes, nodeId);
+    }
+
+    public void putNode(Node node) {
+        CollectionUtil.put(nodes, node.data().getNodeId(), node);
+    }
+
+    public int linkCount() {
+        return links.size();
+    }
+
+    public List<NodeLink> getLinks() {
+        return CollectionUtil.toList(links);
+    }
+
+    public NodeLink getLink(Long linkId) {
+        return CollectionUtil.get(links, linkId);
+    }
+
+    public void putLink(NodeLink link) {
+        CollectionUtil.put(links, link.data().getLinkId(), link);
+    }
+
+/*    public GlobalParameter getGlobalParameter(Long globalParameterId) {
+        return globalParameters.get(globalParameterId);
+    }
+
+    public List<GlobalParameter> getGlobalParameters() {
+        return CollectionUtil.toList(globalParameters);
+    }
+
+    public void putGlobalParameter(GlobalParameter globalParameter) {
+        CollectionUtil.put(globalParameters, globalParameter.data().getGlobalParamId(), globalParameter);
+
+    }
+*/
+
+    public void changeState2Finished() {
+        this.changeSnapshotState(SnapshotStateEnum.FINISHED);
+    }
+
+    private void changeSnapshotState(SnapshotStateEnum snapshotState) {
+        if(this.data().getSnapshotState() == snapshotState.getState())
+            return;
+
+        this.data().setSnapshotState(snapshotState.getState());
     }
 }

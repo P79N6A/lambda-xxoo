@@ -103,19 +103,13 @@ public class WorkflowContext implements IWorkContext {
     //快照查看使用（反序列化时注入）
     public static WorkflowContext BuildWorkflowContext4Snapshot(Snapshot snapshot, String operId) {
         WorkflowContext context = new WorkflowContext(snapshot.getWorkflow(), operId);
-        context.enableFlushWorkflow = false;
-        context.loadNodeParameter = false;  //WorkflowContextCodec中填入
-        context.loadDataPortSchema = false;
         context.initialize(snapshot);
         return context;
     }
 
-    //作业运行使用
+    //作业查看使用（作业任务运行、运行状态查询）
     public static WorkflowContext BuildWorkflowContext4Execution(ExecutionJob currentJob, String operId) {
         WorkflowContext context = BuildWorkflowContext4Snapshot(currentJob.getSnapshot(), operId);
-        context.currentJob = currentJob;
-        context.putExecutionJob(currentJob);
-        context.enableFlushWorkflow = currentJob.enableFlushWorkflow();
         context.initialize(currentJob);
         return context;
     }
@@ -144,10 +138,18 @@ public class WorkflowContext implements IWorkContext {
     }
 
     private void initialize(Snapshot snapshot) {
-        //TODO decode
+        this.enableFlushWorkflow = false;
+        this.loadNodeParameter = false;  //WorkflowContextCodec中填入
+        this.loadDataPortSchema = false;
+
+        //TODO decode snapshot content
     }
 
     private void initialize(ExecutionJob currentJob) {
+        this.enableFlushWorkflow = currentJob.enableFlushWorkflow();
+        this.currentJob = currentJob;
+        this.putExecutionJob(currentJob);
+
         if(!currentJob.enableFlushSnapshot()) {
             //TODO Clear [workflow & Node]'s execution information by job type
 
@@ -975,7 +977,7 @@ public class WorkflowContext implements IWorkContext {
         CollectionUtil.clear(analyzeLinks);
     }*/
 
-    public void eraseNode(Node node) {
+/*    public void eraseNode(Node node) {
 
         for(NodePortInput inputNodePort : node.getInputNodePorts()) {
             List<NodeLink> nodeLinks = this.getInLinks(inputNodePort.data().getNodePortId());
@@ -997,5 +999,5 @@ public class WorkflowContext implements IWorkContext {
             CollectionUtil.remove(outputPorts, outputNodePort.data().getNodePortId());
         }
         CollectionUtil.remove(nodes, node.data().getNodeId());
-    }
+    }*/
 }
