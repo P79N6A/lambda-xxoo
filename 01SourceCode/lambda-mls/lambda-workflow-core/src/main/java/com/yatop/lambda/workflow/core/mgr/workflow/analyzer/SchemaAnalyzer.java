@@ -86,7 +86,7 @@ public class SchemaAnalyzer {
         }
     }
 
-    private static void dealAnalyzeSchema4RefreshSchema(WorkflowContext workflowContext) {
+    public static void dealAnalyzeSchema4RefreshSchema(WorkflowContext workflowContext) {
 
         List<Node> headNodes = WorkflowContextHelper.searchHeadNodes(workflowContext);
         if(DataUtil.isNotEmpty(headNodes)) {

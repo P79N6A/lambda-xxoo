@@ -170,6 +170,10 @@ public class Node extends RichModel<WfFlowNode> {
         return CollectionUtil.get(parameters, charId);
     }
 
+    public NodeParameter getParameter(CmptChar cmptChar) {
+        return getParameter(cmptChar.data().getCharId());
+    }
+
     public NodeParameter getParameterByCharCode(String charCode) {
         return CollectionUtil.get(parametersOrderByCharCode, charCode);
     }
@@ -204,6 +208,10 @@ public class Node extends RichModel<WfFlowNode> {
 
     public NodeParameter getOptimizeParameter(String charId) {
         return CollectionUtil.get(optimizeParameters, charId);
+    }
+
+    public NodeParameter getOptimizeParameter(CmptChar cmptChar) {
+        return getOptimizeParameter(cmptChar.data().getCharId());
     }
 
     public NodeParameter getOptimizeParameterByCharCode(String charCode) {

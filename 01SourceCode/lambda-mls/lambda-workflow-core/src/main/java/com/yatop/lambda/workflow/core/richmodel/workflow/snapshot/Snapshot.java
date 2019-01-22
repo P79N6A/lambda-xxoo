@@ -84,7 +84,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
         if(!this.isEnableFlushSnapshot())
             return;
 
-        this.syncWorkflowContext2Snapshot(workflowContext);
+        //this.syncWorkflowContext2Snapshot(workflowContext);
         this.updateContent();
         SnapshotHelper.updateSnapshot(this, workflowContext.getOperId());
     }

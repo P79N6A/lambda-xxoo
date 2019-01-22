@@ -84,6 +84,8 @@ public class WorkflowCreate {
                 }
             }
         }
+        
+        thisWorkFlowContext.flush();
         return thisWorkFlowContext;
     }
 }

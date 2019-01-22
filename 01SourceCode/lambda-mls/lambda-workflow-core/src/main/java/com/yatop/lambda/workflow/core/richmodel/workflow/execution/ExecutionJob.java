@@ -62,6 +62,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
             } else {
                 snapshot = SnapshotHelper.querySnapshot4Execution(this);
             }
+            this.syncJobState2SnapshotAndWorkflow();
         }
         return snapshot;
     }
@@ -122,7 +123,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
         this.syncJobState2SnapshotAndWorkflow(jobState);
     }
 
-    public void syncJobState2SnapshotAndWorkflow() {
+    private void syncJobState2SnapshotAndWorkflow() {
         this.syncJobState2SnapshotAndWorkflow(JobStateEnum.valueOf(this.data().getJobState()));
     }
 

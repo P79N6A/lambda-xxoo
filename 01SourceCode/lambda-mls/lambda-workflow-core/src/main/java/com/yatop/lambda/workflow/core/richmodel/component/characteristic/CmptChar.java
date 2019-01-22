@@ -8,7 +8,7 @@ import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import java.util.List;
 import java.util.TreeMap;
 
-public class CmptChar extends RichModel<CfCmptChar> {
+public class CmptChar extends RichModel<CfCmptChar> implements Comparable<CmptChar> {
 
     private CmptCharType type;      //特征类型
     private TreeMap<String, CmptCharEnum> enums = new TreeMap<String, CmptCharEnum>();  //特征枚举值
@@ -17,6 +17,11 @@ public class CmptChar extends RichModel<CfCmptChar> {
     public CmptChar(CfCmptChar data, CmptCharType type) {
         super(data);
         this.type = type;
+    }
+
+    @Override
+    public int compareTo(CmptChar o) {
+        return this.data().getCharId().compareTo(o.data().getCharId());
     }
 
     @Override

@@ -103,8 +103,8 @@ public class WorkflowContext implements IWorkContext {
     }
 
     //实验模版查看使用
-    public static WorkflowContext BuildWorkflowContext4ViewTemplate(ExperimentTemplate template, String operId) {
-        return BuildWorkflowContext4Snapshot(SnapshotHelper.simulateSnapshot4Template(template), operId);
+    public static WorkflowContext BuildWorkflowContext4ViewTemplate(Long templateId, String operId) {
+        return BuildWorkflowContext4Snapshot(SnapshotHelper.simulateSnapshot4Template(templateId), operId);
     }
 
     //快照查看使用
@@ -163,8 +163,10 @@ public class WorkflowContext implements IWorkContext {
 
         if(!currentJob.enableFlushSnapshot()) {
             //TODO Clear [workflow & Node]'s execution information by job type
-
             //TODO loadAllTasks and set [workflow state & last job id] & [node state & last task id]
+            //离线调度和在线调度，重置为ready，lastTaskId置为null，同时加载所有作业下的task做syncTaskState2Node
+        } else{
+            //工作台运行和数据文件导入，正常情况不需要重置，仅create job时根据对分析结果的作业节点做重置syncTaskState2Node
         }
     }
 
@@ -197,11 +199,14 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public void flush() {
+        if(this.workflow.isDeleted())
+            return;
 
         if(this.isEnableFlushWorkflow() && this.workflow.data().getFlowId() > 0) {
 
-            if (loadNodeParameter && loadDataPortSchema) {
+            if (loadNodeParameter && loadDataPortSchema && !isAnalyzeWithNone()) {
                 SchemaAnalyzer.dealAnalyzeSchema(this);
+                this.markAnalyzeWithNone();
             }
 
             if (this.nodeCount() > 0) {
@@ -215,7 +220,8 @@ public class WorkflowContext implements IWorkContext {
         if(this.isExecutionWorkMode()) {
             if(tasks.size() > 0) {
                 for(ExecutionTask task : CollectionUtil.toList(tasks)) {
-                    task.flush(this.getOperId());
+                    if(task.data().getOwnerJobId().equals(currentJob.data().getJobId()))
+                        task.flush(this.getOperId());
                 }
             }
             this.getCurrentJob().flush(this);
@@ -300,6 +306,10 @@ public class WorkflowContext implements IWorkContext {
 
     public boolean isAnalyzeWithRefreshSchema() {
         return this.schemaAnalyze.getType() == AnalyzeTypeEnum.REFRESH_SCHEMA.getType();
+    }
+
+    private void markAnalyzeWithNone() {
+        this.schemaAnalyze = AnalyzeTypeEnum.NONE;
     }
 
     private void markAnalyzeWithCreateNode(Node node) {

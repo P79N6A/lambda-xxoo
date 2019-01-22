@@ -14,6 +14,8 @@ public class JobCreate {
     private ExecutionJobMgr executionJobMgr;
 
     public ExecutionJob createJob(WorkflowContext workflowContext, JobTypeEnum jobType) {
+
+
         //TODO analyze workflow execution content, already to do execute
         //TODO reset execution nodes' state
         //TODO create snapshot
