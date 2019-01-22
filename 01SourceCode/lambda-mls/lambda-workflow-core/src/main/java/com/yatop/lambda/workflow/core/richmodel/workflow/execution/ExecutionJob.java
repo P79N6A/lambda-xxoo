@@ -4,6 +4,7 @@ import com.yatop.lambda.base.model.WfExecutionJob;
 import com.yatop.lambda.core.enums.JobStateEnum;
 import com.yatop.lambda.core.enums.JobTypeEnum;
 import com.yatop.lambda.core.utils.DataUtil;
+import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.mgr.workflow.snapshot.SnapshotHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.snapshot.Snapshot;
@@ -25,13 +26,14 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
         this.isViewMode = isViewMode;
     }
 
-    public void flush(String operId) {
+    public void flush(WorkflowContext workflowContext) {
 
         if(this.isViewMode())
             return;
 
-        if(this.enableFlushSnapshot() && DataUtil.isNotNull(snapshot))
-            this.getSnapshot().flush(operId);
+        if(this.enableFlushSnapshot() && DataUtil.isNotNull(snapshot)) {
+            this.getSnapshot().flush(workflowContext);
+        }
 
         if (this.isColoured())
             //TODO update job
@@ -56,7 +58,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     public Snapshot getSnapshot() {
         if(DataUtil.isNull(snapshot)) {
             if(this.isViewMode()) {
-                snapshot = SnapshotHelper.querySnapshot4ViewExecution(this);
+                snapshot = SnapshotHelper.querySnapshot4View(this);
             } else {
                 snapshot = SnapshotHelper.querySnapshot4Execution(this);
             }
