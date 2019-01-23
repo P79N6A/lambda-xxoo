@@ -16,11 +16,21 @@ public class JobCreate {
     public ExecutionJob createJob(WorkflowContext workflowContext, JobTypeEnum jobType) {
 
 
+        //TODO job content
+        /* preparing nodes
+ready nodes
+running nodes
+success nodes
+failed nodes
+terminated nodes
+ */
+
         //TODO analyze workflow execution content, already to do execute
+        //TODO lock workflow
         //TODO reset execution nodes' state
         //TODO create snapshot
         //TODO create job
-        //TODO push job queue
+        //TODO push job to queue
         return null;
     }
 }

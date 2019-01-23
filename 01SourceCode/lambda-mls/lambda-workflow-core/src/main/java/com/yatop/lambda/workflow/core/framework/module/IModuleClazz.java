@@ -55,6 +55,7 @@ public interface IModuleClazz extends InitializingBean {
     //////////////////////////////////////////////////////
 
     //本地运行，组件无需提交集群时，引擎将调用该方法，例如：算法组件的输出内容由本地进行计算
+    //出错时，在方法内部对task调用setOccuredWarning进行warning message做设置
     void execute(ExecutionTaskContext context);
 
     //////////////////////////////////////////////////////

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-public class Node extends RichModel<WfFlowNode> {
+public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
 
     private Module module;
     private TreeMap<String, NodeParameter> parameters = new TreeMap<String, NodeParameter>();   //组件参数，key=charId
@@ -44,6 +44,11 @@ public class Node extends RichModel<WfFlowNode> {
         this.deleted = false;
         this.analyzed = false;
         this.isStateChanged = false;
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        return this.data().getNodeId().compareTo(o.data().getNodeId());
     }
 
     @Override

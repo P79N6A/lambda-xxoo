@@ -88,7 +88,7 @@ public class SchemaAnalyzer {
 
     public static void dealAnalyzeSchema4RefreshSchema(WorkflowContext workflowContext) {
 
-        List<Node> headNodes = WorkflowContextHelper.searchHeadNodes(workflowContext);
+        List<Node> headNodes = WorkflowContextHelper.searchReadTableHeadNodes(workflowContext);
         if(DataUtil.isNotEmpty(headNodes)) {
             for(Node headNode : headNodes) {
                 if(SchemaAnalyzerHelper.needAnalyzeNode(headNode))

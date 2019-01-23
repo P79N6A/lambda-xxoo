@@ -45,28 +45,28 @@ public class Snapshot extends RichModel<WfSnapshot> {
     public static Snapshot BuildSnapshot4Create(WfSnapshot data, WorkflowContext workflowContext) {
         Snapshot snapshot = new Snapshot(data);
         snapshot.syncWorkflowContext2Snapshot(workflowContext);
-        snapshot.updateContent();
+        snapshot.flushSnapshotContent();
         return snapshot;
     }
 
     //用于快照查看
     public static Snapshot BuildSnapshot4View(WfSnapshot data) {
         Snapshot snapshot = new Snapshot(data);
-        snapshot.parseContent();
+        snapshot.parseSnapshotContent();
         return snapshot;
     }
 
     //用于实验运行
     public static Snapshot BuildSnapshot4Execution(WfSnapshot data, boolean enableFlushSnapshot) {
         Snapshot snapshot = new Snapshot(data, enableFlushSnapshot);
-        snapshot.parseContent();
+        snapshot.parseSnapshotContent();
         return snapshot;
     }
 
     //用于实验模版
     public static Snapshot BuildSnapshot4Template(WfSnapshot data, Project simulationProject) {
         Snapshot snapshot = new Snapshot(data);
-        snapshot.parseContent(simulationProject);
+        snapshot.parseSnapshotContent(simulationProject);
         return snapshot;
     }
 
@@ -85,7 +85,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
             return;
 
         //this.syncWorkflowContext2Snapshot(workflowContext);
-        this.updateContent();
+        this.flushSnapshotContent();
         SnapshotHelper.updateSnapshot(this, workflowContext.getOperId());
     }
 
@@ -149,7 +149,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
         }
     }
 
-    public void updateContent() {
+    public void flushSnapshotContent() {
         JSONObject jsonContent = new JSONObject(8, true);
         JSONObject jsonExperiment = getWorkflow().getExperiment().toJSON();
         JSONObject jsonWorkflow = getWorkflow().toJSON();
@@ -222,11 +222,11 @@ public class Snapshot extends RichModel<WfSnapshot> {
         this.data().setSnapshotContent(DataUtil.prettyFormat(jsonContent));
     }
 
-    private void parseContent() {
-        parseContent(null);
+    private void parseSnapshotContent() {
+        parseSnapshotContent(null);
     }
 
-    private void parseContent(Project simulationProject) {
+    private void parseSnapshotContent(Project simulationProject) {
 
         if(DataUtil.isEmpty(this.data().getSnapshotContent())) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse snapshot content failed -- empty content error.", "快照内容为空", this);

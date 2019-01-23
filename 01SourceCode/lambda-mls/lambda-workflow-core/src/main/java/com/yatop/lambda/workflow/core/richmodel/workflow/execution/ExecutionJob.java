@@ -7,21 +7,56 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.mgr.workflow.snapshot.SnapshotHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.snapshot.Snapshot;
 
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class ExecutionJob extends RichModel<WfExecutionJob> {
 
+    private static String JOB_CONTENT_KEY_HEAD_NODES = "@@@HeadNodes";
+    private static String JOB_CONTENT_KEY_WAIT_NODES = "@@@WaitNodes";
+    private static String JOB_CONTENT_KEY_PREPARING_NODES = "@@@PreparingNodes";
+    private static String JOB_CONTENT_KEY_READY_NODES = "@@@ReadyNodes";
+    private static String JOB_CONTENT_KEY_RUNNING_NODES = "@@@RunningNodes";
+    private static String JOB_CONTENT_KEY_SUCCESS_NODES = "@@@SuccessNodes";
+    private static String JOB_CONTENT_KEY_ERROR_NODES = "@@@ErrorNodes";
+    private static String JOB_CONTENT_KEY_TERMINATED_NODES = "@@@TerminatedNodes";
+
     private boolean isViewMode;
     private Snapshot snapshot;
-    private TreeSet<Long> jobContent = new TreeSet<Long>(); //作业内容，nodeId列表
 
-    public ExecutionJob(WfExecutionJob data) {
-        this(data, false);
+    private TreeSet<Node> waitHeadNodes = new TreeSet<Node>();
+    private TreeSet<Node> waitNodes = new TreeSet<Node>();
+    private TreeMap<Node, Long> preparingNodes = new TreeMap<Node, Long>();
+    private TreeMap<Node, Long> readyNodes = new TreeMap<Node, Long>();
+    private TreeMap<Node, Long> runningNodes = new TreeMap<Node, Long>();
+    private TreeMap<Node, Long> successNodes = new TreeMap<Node, Long>();
+    private TreeMap<Node, Long> errorNodes = new TreeMap<Node, Long>();
+    private TreeMap<Node, Long> terminatedNodes = new TreeMap<Node, Long>();
+
+    public static ExecutionJob BuildExecutionJob4Create(WfExecutionJob data, WorkflowContext workflowContext) {
+        ExecutionJob job = new ExecutionJob(data, false);
+        //TODO analyze workflow context
+        //TODO create execution snapshot
+        //TODO flush JobContent
+        return job;
     }
 
-    public ExecutionJob(WfExecutionJob data, boolean isViewMode) {
+    public static ExecutionJob BuildExecutionJob4Execution(WfExecutionJob data, WorkflowContext workflowContext) {
+        ExecutionJob job = new ExecutionJob(data, false);
+        //TODO parse JobContent
+        return job;
+    }
+
+    public static ExecutionJob BuildExecutionJob4View(WfExecutionJob data, WorkflowContext workflowContext) {
+        ExecutionJob job = new ExecutionJob(data, true);
+        //TODO parse JobContent
+        return job;
+    }
+
+    private ExecutionJob(WfExecutionJob data, boolean isViewMode) {
         super(data);
         this.isViewMode = isViewMode;
     }
@@ -44,7 +79,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     public void clear() {
         super.clear();
         snapshot.clear();
-        jobContent.clear();
+        //jobContent.clear();
     }
 
     public boolean isViewMode() {
@@ -169,5 +204,9 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
 
     public boolean enableFlushWorkflow() {
         return JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(this.data().getJobType()));
+    }
+
+    private void analyzeJobContent(WorkflowContext workflowContext) {
+
     }
 }
