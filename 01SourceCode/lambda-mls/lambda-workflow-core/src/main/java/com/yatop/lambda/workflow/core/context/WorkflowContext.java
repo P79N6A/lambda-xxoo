@@ -7,6 +7,7 @@ import com.yatop.lambda.workflow.core.mgr.warehouse.DataWarehouseHelper;
 import com.yatop.lambda.workflow.core.mgr.warehouse.ModelWarehouseHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzer;
 import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzerHelper;
+import com.yatop.lambda.workflow.core.mgr.workflow.module.AnalyzeNodeStateHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.snapshot.SnapshotHelper;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
@@ -239,25 +240,38 @@ public class WorkflowContext implements IWorkContext {
         this.putNode(node);
         this.workflow.changeState2Draft();
         this.markAnalyzeWithCreateNode(node);
+        AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, node, true);
     }
 
     public void doneCreateLink(NodeLink link) {
         this.putLink(link);
         this.workflow.changeState2Draft();
         this.markAnalyzeWithCreateLink(link);
+        AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, this.fetchDownstreamNode(link));
     }
 
     public void doneUpdateNodeParameter(Node node, NodeParameter parameter) {
         node.downgradeState2Ready();
         this.workflow.changeState2Draft();
-        if(parameter.getCmptChar().data().getSpecType() == SpecTypeEnum.PARAMETER.getType())
+        if(parameter.getCmptChar().data().getSpecType() == SpecTypeEnum.PARAMETER.getType()) {
             this.markAnalyzeWithUpdateNodeParameter(node, parameter);
+        }
+        AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, node);
     }
 
     public void doneDeleteNode(Node node) {
         node.markDeleted();
         this.workflow.changeState2Draft();
         this.markAnalyzeWithDeleteNode(node);
+
+        TreeMap<Long, List<Node>> downstreamNodes = this.fetchDownstreamNodes(node);
+        if(DataUtil.isNotEmpty(downstreamNodes)) {
+            for (List<Node> chainList : CollectionUtil.toList(downstreamNodes)) {
+                for(Node downstreamNode : chainList) {
+                    AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, downstreamNode);
+                }
+            }
+        }
     }
 
     public void doneRecoverNode(Node node) {
@@ -268,6 +282,7 @@ public class WorkflowContext implements IWorkContext {
         link.markDeleted();
         this.workflow.changeState2Draft();
         this.markAnalyzeWithDeleteLink(link);
+        AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, this.fetchDownstreamNode(link));
     }
 
     /*
@@ -724,9 +739,19 @@ public class WorkflowContext implements IWorkContext {
         return getNonWebInLink(dstPortId);
     }
 
+    public NodeLink fetchNonWebInLink(NodePortInput inputNodePort) {
+        WorkflowContextHelper.loadInLinks(this, inputNodePort.data().getNodePortId());
+        return getNonWebInLink(inputNodePort.data().getNodePortId());
+    }
+
     public NodeLink fetchWebInLink(Long dstPortId) {
         WorkflowContextHelper.loadInLinks(this, dstPortId);
         return getWebInLink(dstPortId);
+    }
+
+    public NodeLink fetchWebInLink(NodePortInput inputNodePort) {
+        WorkflowContextHelper.loadInLinks(this, inputNodePort.data().getNodePortId());
+        return getWebInLink(inputNodePort.data().getNodePortId());
     }
 
     public List<NodeLink> fetchNonWebInLinks(Node node) {

@@ -36,14 +36,12 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     private int indegree;
     private boolean deleted;
     private boolean analyzed;
-    private boolean isStateChanged;
 
     public Node(WfFlowNode data, Module module) {
         super(data);
         this.module = module;
         this.deleted = false;
         this.analyzed = false;
-        this.isStateChanged = false;
     }
 
     @Override
@@ -62,10 +60,6 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
         CollectionUtil.clear(outputNodePortsOrderBySequence);
       //CollectionUtil.enhancedClear(globalParameters);
         super.clear();
-    }
-
-    public boolean isStateChanged() {
-        return isStateChanged;
     }
 
     public void flush(boolean flushNodeParameter, boolean flushDataPortSchema, String operId) {
@@ -152,7 +146,6 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
             return;
 
         this.data().setNodeState(stateEnum.getState());
-        this.isStateChanged = true;
     }
 
     public Module getModule() {

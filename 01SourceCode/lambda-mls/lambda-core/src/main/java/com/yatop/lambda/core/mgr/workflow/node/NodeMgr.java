@@ -41,7 +41,7 @@ public class NodeMgr extends BaseMgr {
             insertNode.copyProperties(node);
             insertNode.setNodeIdColoured(false);
             insertNode.setLastTaskIdColoured(false);
-            insertNode.setNodeState(NodeStateEnum.READY.getState());
+            insertNode.setNodeState(NodeStateEnum.NOT_READY.getState());
             insertNode.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertNode.setLastUpdateTime(dtCurrentTime);
             insertNode.setLastUpdateOper(operId);

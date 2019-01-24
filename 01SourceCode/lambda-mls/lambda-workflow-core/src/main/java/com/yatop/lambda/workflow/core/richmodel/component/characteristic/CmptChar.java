@@ -1,11 +1,14 @@
 package com.yatop.lambda.workflow.core.richmodel.component.characteristic;
 
 import com.yatop.lambda.base.model.CfCmptChar;
+import com.yatop.lambda.core.enums.IsRequiredEnum;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.TreeMap;
 
 public class CmptChar extends RichModel<CfCmptChar> implements Comparable<CmptChar> {
@@ -57,5 +60,14 @@ public class CmptChar extends RichModel<CfCmptChar> implements Comparable<CmptCh
 
     public ICharTypeClazz getCharTypeClazzBean() {
         return this.getType().getCharTypeClazzBean();
+    }
+
+    public String getCharAlias() {
+        return Optional.ofNullable(this.data().getCharAlias())
+                       .orElse(this.data().getCharCode());
+    }
+
+    public boolean isRequired() {
+        return this.data().getIsRequired() == IsRequiredEnum.YES.getMark();
     }
 }

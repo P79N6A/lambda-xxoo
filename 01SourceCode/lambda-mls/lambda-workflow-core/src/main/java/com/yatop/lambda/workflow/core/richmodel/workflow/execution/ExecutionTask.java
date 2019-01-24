@@ -101,11 +101,11 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
             case PREPARING:
             case READY:
                 this.node.changeState2Preparing();
-                this.syncTaskId2Node();
+                //this.syncTaskId2Node();
                 break;
             case RUNNING:
                 this.node.changeState2Running();
-                this.syncTaskId2Node();
+                //this.syncTaskId2Node();
                 break;
             case SUCCESS:
                 this.node.changeState2Success();

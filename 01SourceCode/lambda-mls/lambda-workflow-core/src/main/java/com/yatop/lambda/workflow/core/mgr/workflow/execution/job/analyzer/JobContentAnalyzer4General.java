@@ -1,7 +1,5 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.execution.job.analyzer;
 
-import com.yatop.lambda.core.enums.IsRequiredEnum;
-import com.yatop.lambda.core.enums.JobTypeEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
@@ -138,7 +136,7 @@ public class JobContentAnalyzer4General {
                 if (DataUtil.isNotNull(inLink)) {
                     upstreamNode = workflowContext.fetchUpstreamNode(inLink);
                 }
-                if (DataUtil.isNull(upstreamNode) && inputPort.getCmptChar().data().getIsRequired() == IsRequiredEnum.YES.getMark()) {
+                if (DataUtil.isNull(upstreamNode) && inputPort.getCmptChar().isRequired()) {
                     return false;
                 }
                 if (DataUtil.isNotNull(upstreamNode)) {

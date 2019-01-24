@@ -1,6 +1,5 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.analyzer;
 
-import com.yatop.lambda.core.enums.IsRequiredEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.exception.LambdaException;
@@ -62,7 +61,7 @@ public class SchemaAnalyzerHelper {
                     return false;
 
                 for (NodePortInput inputNodePort : node.getInputDataTablePorts()) {
-                    if(inputNodePort.getCmptChar().data().getIsRequired() == IsRequiredEnum.YES.getMark()) {
+                    if(inputNodePort.getCmptChar().isRequired()) {
                         NodePortOutput upstreamPort = CollectionUtil.get(upstreamPorts, inputNodePort.data().getNodePortId());
                         if(DataUtil.isNull(upstreamPort) || !upstreamPort.getSchema().isStateNormal()) {
                             return false;
