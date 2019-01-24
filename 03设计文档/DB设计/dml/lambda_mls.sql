@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-01-24 18:48:10
+Date: 2019-01-25 00:50:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1288,7 +1288,7 @@ CREATE TABLE `wf_execution_job` (
   PRIMARY KEY (`JOB_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
 
 -- ----------------------------
 -- Records of wf_execution_job
@@ -1328,7 +1328,7 @@ CREATE TABLE `wf_execution_task` (
   `TASK_NAME` varchar(200) NOT NULL COMMENT '任务名称，自动生成',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `OWNER_JOB_ID` bigint(20) NOT NULL COMMENT '所属作业ID',
-  `SEQUENCE` int(11) NOT NULL DEFAULT '0' COMMENT '作业中任务序号',
+  `SEQUENCE` bigint(20) NOT NULL DEFAULT '0' COMMENT '作业中任务序号',
   `REL_NODE_ID` bigint(20) NOT NULL COMMENT '关联节点ID',
   `ENGINE_TYPE` varchar(200) DEFAULT 'unknown' COMMENT '计算引擎',
   `EXTERNAL_ID` varchar(800) DEFAULT NULL COMMENT '外部任务ID，比如yarn的application id',
@@ -1352,7 +1352,7 @@ CREATE TABLE `wf_execution_task` (
   UNIQUE KEY `Index_1` (`OWNER_JOB_ID`,`REL_NODE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_JOB_ID`,`TASK_STATE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_PROJECT_ID`,`TASK_STATE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
 
 -- ----------------------------
 -- Records of wf_execution_task
