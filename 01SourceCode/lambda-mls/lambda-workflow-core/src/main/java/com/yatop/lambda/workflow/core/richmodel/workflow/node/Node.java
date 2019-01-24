@@ -75,7 +75,7 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
                     parameter.flush(operId);
                 }
             }
-            if (flushDataPortSchema && this.outputPortCount() > 0) {
+            if (flushDataPortSchema && !this.isTailNode()) {
                 for (NodePortOutput outputPort : this.getOutputNodePorts()) {
                     outputPort.flush(operId);
                 }
@@ -415,12 +415,12 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     }
 
     public void markAnalyzed() {
-        if(inputPortCount() > 0) {
+        if(!this.isHeadNode()) {
             for (NodePortInput inputNodePort : this.getInputNodePorts()) {
                 inputNodePort.markAnalyzed();
             }
         }
-        if(outputPortCount() > 0) {
+        if(!this.isTailNode()) {
             for (NodePortOutput outputNodePort : this.getOutputNodePorts()) {
                 outputNodePort.markAnalyzed();
             }

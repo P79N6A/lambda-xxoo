@@ -602,6 +602,18 @@ public class WorkflowContext implements IWorkContext {
         return null;
     }
 
+    public List<Node> fetchUpstreamNodes(NodePortInput intputNodePort) {
+        List<NodeLink> inLinks = this.fetchInLinks(intputNodePort);
+        if(DataUtil.isNotEmpty(inLinks)) {
+            List<Node> upstreamNodes = new LinkedList<Node>();
+            for(NodeLink nodeLink : inLinks) {
+                CollectionUtil.add(upstreamNodes, this.fetchUpstreamNode(nodeLink));
+            }
+            return upstreamNodes;
+        }
+        return null;
+    }
+
     public List<Node> fetchDownstreamNodes(NodePortOutput outputNodePort) {
         List<NodeLink> outLinks = this.fetchOutLinks(outputNodePort);
         if(DataUtil.isNotEmpty(outLinks)) {
@@ -610,6 +622,30 @@ public class WorkflowContext implements IWorkContext {
                 CollectionUtil.add(downstreamNodes, this.fetchDownstreamNode(nodeLink));
             }
             return downstreamNodes;
+        }
+        return null;
+    }
+
+    public Node fetchNonWebUpstreamNode(NodePortInput intputNodePort) {
+        NodeLink nodeLink = this.fetchNonWebInLink(intputNodePort);
+        if(DataUtil.isNotNull(nodeLink)) {
+            Node upstreamNode = this.fetchUpstreamNode(nodeLink);
+            if(!upstreamNode.isWebNode())
+                return upstreamNode;
+        }
+        return null;
+    }
+
+    public List<Node> fetchNonWebDownstreamNodes(NodePortOutput outputNodePort) {
+        List<NodeLink> outLinks = this.fetchOutLinks(outputNodePort);
+        if(DataUtil.isNotEmpty(outLinks)) {
+            List<Node> downstreamNodes = new LinkedList<Node>();
+            for(NodeLink nodeLink : outLinks) {
+                Node downstreamNode = this.fetchDownstreamNode(nodeLink);
+                if(!downstreamNode.isWebNode())
+                    CollectionUtil.add(downstreamNodes, downstreamNode);
+            }
+            return DataUtil.isNotEmpty(downstreamNodes) ? downstreamNodes : null;
         }
         return null;
     }
