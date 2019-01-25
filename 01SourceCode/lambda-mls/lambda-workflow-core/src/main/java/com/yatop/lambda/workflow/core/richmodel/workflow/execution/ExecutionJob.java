@@ -5,6 +5,7 @@ import com.yatop.lambda.core.enums.JobStateEnum;
 import com.yatop.lambda.core.enums.JobTypeEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.execution.job.JobHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.snapshot.SnapshotHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
@@ -44,13 +45,13 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
         return job;
     }
 
-    public static ExecutionJob BuildExecutionJob4Execution(WfExecutionJob data, WorkflowContext workflowContext) {
+    public static ExecutionJob BuildExecutionJob4Execution(WfExecutionJob data) {
         ExecutionJob job = new ExecutionJob(data, false);
         //TODO parse JobContent
         return job;
     }
 
-    public static ExecutionJob BuildExecutionJob4View(WfExecutionJob data, WorkflowContext workflowContext) {
+    public static ExecutionJob BuildExecutionJob4View(WfExecutionJob data) {
         ExecutionJob job = new ExecutionJob(data, true);
         //TODO parse JobContent
         return job;
@@ -70,16 +71,15 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
             this.getSnapshot().flush(workflowContext);
         }
 
-        if (this.isColoured())
-            //TODO update job
-            ;
+        if (this.isColoured()) {
+            JobHelper.updateExecutionJob(this, workflowContext.getOperId());
+        }
     }
 
     @Override
     public void clear() {
         super.clear();
         snapshot.clear();
-        //jobContent.clear();
     }
 
     public boolean isViewMode() {
@@ -204,9 +204,5 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
 
     public boolean enableFlushWorkflow() {
         return JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(this.data().getJobType()));
-    }
-
-    private void analyzeJobContent(WorkflowContext workflowContext) {
-
     }
 }
