@@ -36,7 +36,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     private TreeMap<Node, Long> errorNodes = new TreeMap<Node, Long>();
     private TreeMap<Node, Long> terminatedNodes = new TreeMap<Node, Long>();
 
-    public static ExecutionJob BuildExecutionJob4Create(WfExecutionJob data, WorkflowContext workflowContext) {
+    public static ExecutionJob BuildExecutionJob4Create(WfExecutionJob data, WorkflowContext workflowContext, Snapshot snapShot, TreeSet<Node>[] jobContent) {
         ExecutionJob job = new ExecutionJob(data, false);
         //TODO analyze workflow context
         //TODO create execution snapshot

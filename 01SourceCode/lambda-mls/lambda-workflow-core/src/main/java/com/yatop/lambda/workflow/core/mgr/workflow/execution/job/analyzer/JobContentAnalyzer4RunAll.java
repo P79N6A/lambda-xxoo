@@ -20,7 +20,7 @@ public class JobContentAnalyzer4RunAll {
 
         List<Node> allHeadNodes = searchHeadNodes(workflowContext);
         if(DataUtil.isEmpty(allHeadNodes))
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- no executable node.", "无可运行节点");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- no executable nodes.", "无可运行节点");
 
         TreeSet<Node> jobHeadNodes = new TreeSet<Node>();
         Deque<Node> analyzeStack = new LinkedList<Node>();
