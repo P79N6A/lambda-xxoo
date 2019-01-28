@@ -45,7 +45,6 @@ public class JobCreate {
         job.setRelFlowId(workflow.data().getFlowId());
         job.setRelSnapshotId(snapShot.data().getSnapshotId());
         job.setRelNodeId(DataUtil.isNotNull(relatedNode) ? relatedNode.data().getNodeId() : -1L);
-        //TODO job.setJobContent("");
         job = executionJobMgr.insertJob(job, workflowContext.getOperId());
 
         Experiment experiment= workflowContext.getExperiment();
@@ -53,21 +52,14 @@ public class JobCreate {
         job.setJobLocalDir(WorkDirectoryUtil.getJobLocalDirectory(experiment.data().getOwnerProjectId(), workflow.data().getFlowId(), job.getJobId()));
         executionJobMgr.updateJob(job, workflowContext.getOperId());
 
+        ExecutionJob richJob = ExecutionJob.BuildExecutionJob4Create(job, workflowContext, snapShot, jobContent);
+        workflow.lockWorkflow();
+        workflow.changeState2Preparing();
+        workflow.data().setLastJobId(job.getJobId());
 
-        //TODO job content
-        /* preparing nodes
-ready nodes
-running nodes
-success nodes
-failed nodes
-terminated nodes
- */
+        workflowContext.flush();
+        richJob.flush(workflowContext);
 
-        // analyze workflow execution content, already to do execute
-        //TODO lock workflow
-        //TODO reset execution nodes' state
-        //TODO create snapshot
-        //TODO create job
         //TODO push job to queue
         return null;
     }

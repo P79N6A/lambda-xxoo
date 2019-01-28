@@ -16,6 +16,7 @@ import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
+import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.*;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
@@ -42,10 +43,8 @@ public class Snapshot extends RichModel<WfSnapshot> {
     //private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();
 
     //用于快照创建
-    public static Snapshot BuildSnapshot4Create(WfSnapshot data, WorkflowContext workflowContext) {
-        Snapshot snapshot = new Snapshot(data);
-        snapshot.syncWorkflowContext2Snapshot(workflowContext);
-        snapshot.flushSnapshotContent();
+    public static Snapshot BuildSnapshot4Create(WfSnapshot data) {
+        Snapshot snapshot = new Snapshot(data, true);
         return snapshot;
     }
 
@@ -57,8 +56,8 @@ public class Snapshot extends RichModel<WfSnapshot> {
     }
 
     //用于实验运行
-    public static Snapshot BuildSnapshot4Execution(WfSnapshot data, boolean enableFlushSnapshot) {
-        Snapshot snapshot = new Snapshot(data, enableFlushSnapshot);
+    public static Snapshot BuildSnapshot4Execution(WfSnapshot data, ExecutionJob job) {
+        Snapshot snapshot = new Snapshot(data, job.enableFlushSnapshot());
         snapshot.parseSnapshotContent();
         return snapshot;
     }
@@ -84,6 +83,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
         if(!this.isEnableFlushSnapshot())
             return;
 
+        this.syncSnapshot2WorkflowContext(workflowContext);
         this.flushSnapshotContent();
         SnapshotHelper.updateSnapshot(this, workflowContext.getOperId());
     }
@@ -219,6 +219,8 @@ public class Snapshot extends RichModel<WfSnapshot> {
         jsonContent.put(SNAPSHOT_CONTENT_KEY_NODES, jsonNodes);
         jsonContent.put(SNAPSHOT_CONTENT_KEY_LINKS, jsonLinks);
         this.data().setSnapshotContent(DataUtil.prettyFormat(jsonContent));
+
+        jsonContent.clear();
     }
 
     private void parseSnapshotContent() {
@@ -312,6 +314,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
                 //TODO add global parameters
             }
 
+            jsonContent.clear();
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse snapshot content failed -- snapshot content error.", "快照内容错误", e, this);
         }

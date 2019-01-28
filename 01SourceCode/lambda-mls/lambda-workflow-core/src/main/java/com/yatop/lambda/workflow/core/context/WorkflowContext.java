@@ -161,6 +161,7 @@ public class WorkflowContext implements IWorkContext {
         this.enableFlushWorkflow = currentJob.enableFlushWorkflow();
         this.currentJob = currentJob;
         this.putExecutionJob(currentJob);
+        currentJob.parseJobContent(this);
 
         if(!currentJob.enableFlushSnapshot()) {
             //TODO Clear [workflow & Node]'s execution information by job type
