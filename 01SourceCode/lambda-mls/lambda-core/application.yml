@@ -38,11 +38,11 @@ lambda.mls:
 ##############################################################
 #### 日志级别配置
 ##############################################################
-logging.file: logs/lambda-mls.log
-logging.level.com.yatop.lambda: DEBUG
-logging.level.org.apache.hadoop: WARN
-logging.level.org.apache.parquet: WARN
-logging.level.org.apache.spark: WARN
+#logging.file: logs/lambda-mls.log
+#logging.level.com.yatop.lambda: DEBUG
+#logging.level.org.apache.hadoop: WARN
+#logging.level.org.apache.parquet: WARN
+#logging.level.org.apache.spark: WARN
 
 ###############################################################
 #### tomcat配置

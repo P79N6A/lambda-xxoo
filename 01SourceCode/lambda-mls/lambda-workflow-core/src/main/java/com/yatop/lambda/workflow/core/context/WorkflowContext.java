@@ -103,6 +103,12 @@ public class WorkflowContext implements IWorkContext {
         return context;
     }
 
+    private static WorkflowContext BuildWorkflowContext4Snapshot(Snapshot snapshot, String operId) {
+        WorkflowContext context = new WorkflowContext(snapshot.getWorkflow(), operId);
+        context.initialize(snapshot);
+        return context;
+    }
+
     //实验模版查看使用
     public static WorkflowContext BuildWorkflowContext4ViewTemplate(Long templateId, String operId) {
         return BuildWorkflowContext4Snapshot(SnapshotHelper.simulateSnapshot4Template(templateId), operId);
@@ -111,12 +117,6 @@ public class WorkflowContext implements IWorkContext {
     //快照查看使用
     public static WorkflowContext BuildWorkflowContext4ViewSnapshot(Long snapshotId, String operId) {
         return BuildWorkflowContext4Snapshot(SnapshotHelper.querySnapshot4View(snapshotId), operId);
-    }
-
-    private static WorkflowContext BuildWorkflowContext4Snapshot(Snapshot snapshot, String operId) {
-        WorkflowContext context = new WorkflowContext(snapshot.getWorkflow(), operId);
-        context.initialize(snapshot);
-        return context;
     }
 
     //作业查看使用（作业任务运行、作业运行查看）
@@ -169,6 +169,7 @@ public class WorkflowContext implements IWorkContext {
             //离线调度和在线调度，重置为ready，lastTaskId置为null，同时加载所有作业下的task做syncTaskState2Node
         } else{
             //工作台运行和数据文件导入，正常情况不需要重置，仅create job时根据对分析结果的作业节点做重置syncTaskState2Node
+            //TODO Nothing
         }
     }
 
