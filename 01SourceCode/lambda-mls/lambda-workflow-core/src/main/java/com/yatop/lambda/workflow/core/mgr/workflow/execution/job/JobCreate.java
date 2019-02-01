@@ -6,9 +6,11 @@ import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.execution.ExecutionJobMgr;
 import com.yatop.lambda.core.utils.DataUtil;
+import com.yatop.lambda.core.utils.SystemTimeUtil;
 import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.mgr.workflow.execution.job.analyzer.JobContentAnalyzer;
+import com.yatop.lambda.workflow.core.mgr.workflow.execution.queue.JobQueueHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.snapshot.SnapshotCreate;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
@@ -18,6 +20,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.snapshot.Snapshot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.TreeSet;
 
 @Service
@@ -29,7 +32,7 @@ public class JobCreate {
     @Autowired
     private SnapshotCreate snapshotCreate;
 
-    private ExecutionJob createJob(WorkflowContext workflowContext, JobTypeEnum jobType, Node relatedNode) {
+    private ExecutionJob createJob(WorkflowContext workflowContext, JobTypeEnum jobType, Node relatedNode, Date jobTime) {
 
         TreeSet<Node>[] jobContent = JobContentAnalyzer.analyzeJobContent(workflowContext, jobType, relatedNode);
         if(DataUtil.isNull(jobContent) || jobContent.length != 2 || DataUtil.isEmpty(jobContent[0]))  {
@@ -45,6 +48,12 @@ public class JobCreate {
         job.setRelFlowId(workflow.data().getFlowId());
         job.setRelSnapshotId(snapShot.data().getSnapshotId());
         job.setRelNodeId(DataUtil.isNotNull(relatedNode) ? relatedNode.data().getNodeId() : -1L);
+        if(DataUtil.isNull(jobTime)) {
+            job.setJobTime(SystemTimeUtil.getCurrentTime());
+        } else {
+            job.setJobTime(jobTime);
+        }
+
         job = executionJobMgr.insertJob(job, workflowContext.getOperId());
 
         Experiment experiment= workflowContext.getExperiment();
@@ -57,15 +66,14 @@ public class JobCreate {
         workflow.changeState2Preparing();
         workflow.data().setLastJobId(job.getJobId());
 
+        JobQueueHelper.pushJobToQueue(richJob, workflowContext.getOperId());
         workflowContext.flush();
         richJob.flush(workflowContext);
-
-        //TODO push job to queue
-        return null;
+        return richJob;
     }
 
     public ExecutionJob createJob4RunAll(WorkflowContext workflowContext) {
-        return createJob(workflowContext, JobTypeEnum.RUN_ALL, null);
+        return createJob(workflowContext, JobTypeEnum.RUN_ALL, null, null);
     }
 
     public ExecutionJob createJob4RunStartHere(WorkflowContext workflowContext, Node relatedNode) {
@@ -74,7 +82,7 @@ public class JobCreate {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job failed -- related node missing.", "运行关联节点确实");
         }
 
-        return createJob(workflowContext, JobTypeEnum.RUN_START_HERE, relatedNode);
+        return createJob(workflowContext, JobTypeEnum.RUN_START_HERE, relatedNode, null);
     }
 
     public ExecutionJob createJob4RunEndHere(WorkflowContext workflowContext, Node relatedNode) {
@@ -83,7 +91,7 @@ public class JobCreate {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job failed -- related node missing.", "运行关联节点确实");
         }
 
-        return createJob(workflowContext, JobTypeEnum.RUN_END_HERE, relatedNode);
+        return createJob(workflowContext, JobTypeEnum.RUN_END_HERE, relatedNode, null);
     }
 
     public ExecutionJob createJob4RunThisNode(WorkflowContext workflowContext, Node relatedNode) {
@@ -92,18 +100,18 @@ public class JobCreate {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job failed -- related node missing.", "运行关联节点确实");
         }
 
-        return createJob(workflowContext, JobTypeEnum.RUN_THIS_NODE, relatedNode);
+        return createJob(workflowContext, JobTypeEnum.RUN_THIS_NODE, relatedNode, null);
     }
 
-    public ExecutionJob createJob4RunOfflineSchedule(WorkflowContext workflowContext) {
-        return createJob(workflowContext, JobTypeEnum.RUN_OFFLINE_SCHEDULE, null);
+    public ExecutionJob createJob4RunOfflineSchedule(WorkflowContext workflowContext, Date jobTime) {
+        return createJob(workflowContext, JobTypeEnum.RUN_OFFLINE_SCHEDULE, null, jobTime);
     }
 
     public ExecutionJob createJob4RunOnlineSchedule(WorkflowContext workflowContext) {
-        return createJob(workflowContext, JobTypeEnum.RUN_ONLINE_SCHEDULE, null);
+        return createJob(workflowContext, JobTypeEnum.RUN_ONLINE_SCHEDULE, null, null);
     }
 
     public ExecutionJob createJob4RunDatafileImport(WorkflowContext workflowContext) {
-        return createJob(workflowContext, JobTypeEnum.RUN_DATAFILE_IMPORT, null);
+        return createJob(workflowContext, JobTypeEnum.RUN_DATAFILE_IMPORT, null, null);
     }
 }

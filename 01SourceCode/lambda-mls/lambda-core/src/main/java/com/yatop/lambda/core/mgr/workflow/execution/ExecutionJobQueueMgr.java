@@ -20,7 +20,7 @@ public class ExecutionJobQueueMgr extends BaseMgr {
 
     /*
      *
-     *   插入新作业队列（作业ID、所属项目ID ...）
+     *   插入新作业队列（作业ID、所属项目ID、作业时间 ...）
      *   返回插入记录
      *
      * */
@@ -28,6 +28,7 @@ public class ExecutionJobQueueMgr extends BaseMgr {
         if( DataUtil.isNull(jobQueue) ||
                 jobQueue.isJobIdNotColoured() ||
                 jobQueue.isOwnerProjectIdNotColoured() ||
+                jobQueue.isJobTimeNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert job queue failed -- invalid insert data.", "无效插入数据");
         }
@@ -36,8 +37,7 @@ public class ExecutionJobQueueMgr extends BaseMgr {
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertQueue.copyProperties(jobQueue);
-            if(jobQueue.isJobTimeNotColoured())
-                insertQueue.setJobTime(dtCurrentTime);
+            insertQueue.setJobSignal(JobSignalEnum.SIG_NORMAL.getSignal());
             insertQueue.setJobState(JobStateEnum.QUEUEING.getState());
             insertQueue.setLastUpdateTime(dtCurrentTime);
             insertQueue.setLastUpdateOper(operId);

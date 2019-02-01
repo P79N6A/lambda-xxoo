@@ -34,6 +34,7 @@ public class ExecutionJobMgr extends BaseMgr {
                 job.isRelFlowIdNotColoured() ||
                 job.isRelSnapshotIdNotColoured() ||
                 job.isRelNodeIdNotColoured() ||
+                job.isJobTimeNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert job info failed -- invalid insert data.", "无效插入数据");
         }
@@ -46,7 +47,6 @@ public class ExecutionJobMgr extends BaseMgr {
             insertJob.setJobDfsDirColoured(false);
             insertJob.setJobLocalDirColoured(false);
             insertJob.setNextTaskSequence(1L);
-            insertJob.setJobSubmitTimeColoured(false);
             insertJob.setJobStartTimeColoured(false);
             insertJob.setJobEndTimeColoured(false);
             insertJob.setJobState(JobStateEnum.PREPARING.getState());
@@ -101,7 +101,6 @@ public class ExecutionJobMgr extends BaseMgr {
                 job.isJobDfsDirNotColoured() &&
                 job.isJobLocalDirNotColoured() &&
                 job.isNextTaskSequenceNotColoured() &&
-                job.isJobSubmitTimeNotColoured() &&
                 job.isJobStartTimeNotColoured() &&
                 job.isJobEndTimeNotColoured() &&
                 job.isJobStateNotColoured() &&
@@ -120,8 +119,6 @@ public class ExecutionJobMgr extends BaseMgr {
                 updateJob.setJobLocalDir(job.getJobLocalDir());
             if(job.isNextTaskSequenceColoured())
                 updateJob.setNextTaskSequence(job.getNextTaskSequence());
-            if(job.isJobSubmitTimeColoured())
-                updateJob.setJobSubmitTime(job.getJobSubmitTime());
             if(job.isJobStartTimeColoured())
                 updateJob.setJobStartTime(job.getJobStartTime());
             if(job.isJobEndTimeColoured())

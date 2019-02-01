@@ -20,7 +20,7 @@ public class ExecutionTaskQueueMgr extends BaseMgr {
 
     /*
      *
-     *   插入新任务队列（任务ID、所属项目ID ...）
+     *   插入新任务队列（任务ID、所属项目ID、所属作业 ...）
      *   返回插入记录
      *
      * */
@@ -40,6 +40,7 @@ public class ExecutionTaskQueueMgr extends BaseMgr {
             insertQueue.setOwnerProjectId(jobQueue.getOwnerJobId());
             insertQueue.setOwnerJobId(jobQueue.getOwnerJobId());
             insertQueue.setTaskTime(dtCurrentTime);
+            insertQueue.setTaskSignal(TaskSignalEnum.SIG_NORMAL.getSignal());
             insertQueue.setTaskState(TaskStateEnum.READY.getState());
             insertQueue.setLastUpdateTime(dtCurrentTime);
             insertQueue.setLastUpdateOper(operId);
