@@ -1,6 +1,6 @@
 package com.yatop.lambda.core.mgr.experiment;
 
-import com.yatop.lambda.base.extend.mapper.ExperimentTemplateMapper;
+import com.yatop.lambda.base.extend.mapper.ExtExperimentTemplateMapper;
 import com.yatop.lambda.base.model.EmExperimentTemplate;
 import com.yatop.lambda.base.model.EmExperimentTemplateExample;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
@@ -20,7 +20,7 @@ import java.util.List;
 public class ExperimentTemplateMgr extends BaseMgr {
 
     @Autowired
-    ExperimentTemplateMapper experimentTemplateMapper;
+    ExtExperimentTemplateMapper extExperimentTemplateMapper;
 
     /*
      *
@@ -184,7 +184,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
         }
 
         try {
-           return experimentTemplateMapper.increaseTemplateCount(templateId, SystemTimeUtil.getCurrentTime(), operId);
+           return extExperimentTemplateMapper.increaseTemplateCount(templateId, SystemTimeUtil.getCurrentTime(), operId);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Experiment template count plus one.", "实验模版计数加一失败", e);
         }

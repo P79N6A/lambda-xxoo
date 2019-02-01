@@ -1,6 +1,6 @@
 package com.yatop.lambda.core.mgr.project;
 
-import com.yatop.lambda.base.extend.mapper.ProjectMapper;
+import com.yatop.lambda.base.extend.mapper.ExtProjectMapper;
 import com.yatop.lambda.base.model.PrProject;
 import com.yatop.lambda.base.model.PrProjectExample;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ProjectMgr extends BaseMgr {
 
     @Autowired
-    ProjectMapper projectMapper;
+    ExtProjectMapper extProjectMapper;
 
     /*
     *
@@ -232,11 +232,11 @@ public class ProjectMgr extends BaseMgr {
 
             //按用户查询
             else if(DataUtil.isEmpty(keyword)) {
-                return projectMapper.getProject4User(user, DataStatusEnum.NORMAL.getStatus());
+                return extProjectMapper.getProject4User(user, DataStatusEnum.NORMAL.getStatus());
 
              //关键字和用户混合查询
             } else {
-                return projectMapper.getProjectMixed4Keyword(keywordLike, user, DataStatusEnum.NORMAL.getStatus());
+                return extProjectMapper.getProjectMixed4Keyword(keywordLike, user, DataStatusEnum.NORMAL.getStatus());
             }
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);

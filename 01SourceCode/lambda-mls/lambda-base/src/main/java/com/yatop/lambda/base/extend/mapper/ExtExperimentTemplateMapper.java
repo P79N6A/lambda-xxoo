@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Update;
 
 import java.util.Date;
 
-public interface ExperimentTemplateMapper {
+public interface ExtExperimentTemplateMapper {
 
     @Update(  "     UPDATE EM_EXPERIMENT_TEMPLATE       " +
             "       SET COUNT = COUNT + 1,              " +

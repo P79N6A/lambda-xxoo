@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
-public interface ProjectMapper {
+public interface ExtProjectMapper {
 
     @Select(  "     SELECT                                                                                             " +
               "         x.`PROJECT_ID` as projectId,                                                                   " +

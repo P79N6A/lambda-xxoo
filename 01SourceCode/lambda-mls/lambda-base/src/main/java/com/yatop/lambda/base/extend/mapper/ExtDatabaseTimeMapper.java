@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 
-public interface DatabaseTimeMapper {
+public interface ExtDatabaseTimeMapper {
     /**
      * 获取数据库当前毫秒时间
      *
