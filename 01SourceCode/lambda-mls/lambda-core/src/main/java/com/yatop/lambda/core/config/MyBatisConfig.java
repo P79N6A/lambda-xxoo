@@ -13,29 +13,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.apache.ibatis.plugin.Interceptor;
 import javax.sql.DataSource;
 
-@Configuration
+@Configuration("coreMybatisConfig")
 @EnableTransactionManagement
 @MapperScan(
-        basePackages = {"com.yatop.lambda.base.mapper"},
+        basePackages = {"com.yatop.lambda.base.mapper", "com.yatop.lambda.base.extend.mapper"},
         sqlSessionFactoryRef = "coreSqlSessionFactory"
 )
 public class MyBatisConfig {
-
-/*
-    @Bean("coreDataSource")
-    @Qualifier("coreDataSource")
-    @Primary
-    public DataSource coreDataSource(@Qualifier("orignalCoreDataSource") DataSource orignalFrameworkDataSource) {
-        return new DataSourceSpy(orignalFrameworkDataSource);
-    }
-
-    @Bean("orignalCoreDataSource")
-    @Qualifier("orignalCoreDataSource")
-    @ConfigurationProperties(prefix = "lambda.mls.datasource")
-    public DataSource orignalCoreDataSource(){
-        return DataSourceBuilder.create().type(DruidDataSource.class).build();
-    }
-*/
 
     @Bean("coreJdbcTemplate")
     @Qualifier("coreJdbcTemplate")
