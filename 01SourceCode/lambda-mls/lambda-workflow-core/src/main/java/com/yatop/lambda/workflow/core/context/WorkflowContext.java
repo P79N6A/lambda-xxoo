@@ -7,6 +7,7 @@ import com.yatop.lambda.workflow.core.mgr.warehouse.DataWarehouseHelper;
 import com.yatop.lambda.workflow.core.mgr.warehouse.ModelWarehouseHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzer;
 import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzerHelper;
+import com.yatop.lambda.workflow.core.mgr.workflow.execution.job.JobHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.module.AnalyzeNodeStateHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.snapshot.SnapshotHelper;
@@ -119,10 +120,19 @@ public class WorkflowContext implements IWorkContext {
         return BuildWorkflowContext4Snapshot(SnapshotHelper.querySnapshot4View(snapshotId), operId);
     }
 
-    //作业查看使用（作业任务运行、作业运行查看）
-    public static WorkflowContext BuildWorkflowContext4Execution(ExecutionJob currentJob, String operId) {
-        WorkflowContext context = BuildWorkflowContext4Snapshot(currentJob.getSnapshot(), operId);
-        context.initialize(currentJob);
+    //作业查看使用
+    public static WorkflowContext BuildWorkflowContext4ViewExecution(Long jobId, String operId) {
+        ExecutionJob job = JobHelper.queryExecutionJob4View(jobId);
+        WorkflowContext context = BuildWorkflowContext4Snapshot(job.getSnapshot(), operId);
+        context.initialize(job);
+        return context;
+    }
+
+    //作业运行使用
+    public static WorkflowContext BuildWorkflowContext4Execution(Long jobId, String operId) {
+        ExecutionJob job = JobHelper.queryExecutionJob4Execution(jobId);
+        WorkflowContext context = BuildWorkflowContext4Snapshot(job.getSnapshot(), operId);
+        context.initialize(job);
         return context;
     }
 
@@ -221,12 +231,12 @@ public class WorkflowContext implements IWorkContext {
         }
 
         if(this.isExecutionWorkMode()) {
-            if(tasks.size() > 0) {
+            /*if(tasks.size() > 0) {
                 for(ExecutionTask task : CollectionUtil.toList(tasks)) {
                     if(task.data().getOwnerJobId().equals(currentJob.data().getJobId()))
                         task.flush(this.getOperId());
                 }
-            }
+            }*/
             this.getCurrentJob().flush(this);
         }
     }

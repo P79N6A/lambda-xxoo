@@ -55,14 +55,14 @@ public class Snapshot extends RichModel<WfSnapshot> {
         return snapshot;
     }
 
-    //用于实验运行
-    public static Snapshot BuildSnapshot4Execution(WfSnapshot data, ExecutionJob job) {
-        Snapshot snapshot = new Snapshot(data, job.enableFlushSnapshot());
+    //用于作业运行和作业查看
+    public static Snapshot BuildSnapshot4Execution(WfSnapshot data, boolean viewMode) {
+        Snapshot snapshot = new Snapshot(data, !viewMode);
         snapshot.parseSnapshotContent();
         return snapshot;
     }
 
-    //用于实验模版
+    //用于实验模版查看
     public static Snapshot BuildSnapshot4Template(WfSnapshot data, Project simulationProject) {
         Snapshot snapshot = new Snapshot(data);
         snapshot.parseSnapshotContent(simulationProject);

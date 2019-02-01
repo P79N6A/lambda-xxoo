@@ -16,7 +16,7 @@ public class JobHelper {
         EXECUTION_JOB_MGR = executionJobMgr;
     }
 
-    public static WfExecutionJob queryExecutionJob(Long jobId) {
+    private static WfExecutionJob queryExecutionJob(Long jobId) {
         return EXECUTION_JOB_MGR.queryJob(jobId);
     }
 

@@ -48,13 +48,13 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
         return job;
     }
 
-    public static ExecutionJob BuildExecutionJob4Execution(WfExecutionJob data) {
-        ExecutionJob job = new ExecutionJob(data, false);
+    public static ExecutionJob BuildExecutionJob4View(WfExecutionJob data) {
+        ExecutionJob job = new ExecutionJob(data, true);
         return job;
     }
 
-    public static ExecutionJob BuildExecutionJob4View(WfExecutionJob data) {
-        ExecutionJob job = new ExecutionJob(data, true);
+    public static ExecutionJob BuildExecutionJob4Execution(WfExecutionJob data) {
+        ExecutionJob job = new ExecutionJob(data, false);
         return job;
     }
 
@@ -208,11 +208,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
 
     public Snapshot getSnapshot() {
         if(DataUtil.isNull(snapshot)) {
-            if(this.isViewMode()) {
-                snapshot = SnapshotHelper.querySnapshot4View(this);
-            } else {
-                snapshot = SnapshotHelper.querySnapshot4Execution(this);
-            }
+            snapshot = SnapshotHelper.querySnapshot4Execution(this.data().getRelSnapshotId(), this.enableFlushSnapshot());
             this.syncJobState2SnapshotAndWorkflow();
         }
         return snapshot;

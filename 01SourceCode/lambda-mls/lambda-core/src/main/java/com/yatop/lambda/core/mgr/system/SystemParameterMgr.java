@@ -26,7 +26,7 @@ public class SystemParameterMgr extends BaseMgr {
             example.createCriteria().andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return sysParameterMapper.selectByExample(example);
         } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.A_SYSTEM_DEFAULT_ERROR, "Query algorithm info failed.", "查询算法信息失败", e);
+            throw new LambdaException(LambdaExceptionEnum.A_SYSTEM_DEFAULT_ERROR, "Query System Parameter failed.", "查询系统参数失败", e);
         }
     }
 }

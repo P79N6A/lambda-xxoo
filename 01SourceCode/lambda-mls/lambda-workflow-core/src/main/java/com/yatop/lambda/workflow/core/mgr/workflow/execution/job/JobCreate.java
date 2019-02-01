@@ -29,7 +29,7 @@ public class JobCreate {
     @Autowired
     private SnapshotCreate snapshotCreate;
 
-    public ExecutionJob createJob(WorkflowContext workflowContext, JobTypeEnum jobType, Node relatedNode) {
+    private ExecutionJob createJob(WorkflowContext workflowContext, JobTypeEnum jobType, Node relatedNode) {
 
         TreeSet<Node>[] jobContent = JobContentAnalyzer.analyzeJobContent(workflowContext, jobType, relatedNode);
         if(DataUtil.isNull(jobContent) || jobContent.length != 2 || DataUtil.isEmpty(jobContent[0]))  {
@@ -62,5 +62,48 @@ public class JobCreate {
 
         //TODO push job to queue
         return null;
+    }
+
+    public ExecutionJob createJob4RunAll(WorkflowContext workflowContext) {
+        return createJob(workflowContext, JobTypeEnum.RUN_ALL, null);
+    }
+
+    public ExecutionJob createJob4RunStartHere(WorkflowContext workflowContext, Node relatedNode) {
+
+        if(DataUtil.isNull(relatedNode))  {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job failed -- related node missing.", "运行关联节点确实");
+        }
+
+        return createJob(workflowContext, JobTypeEnum.RUN_START_HERE, relatedNode);
+    }
+
+    public ExecutionJob createJob4RunEndHere(WorkflowContext workflowContext, Node relatedNode) {
+
+        if(DataUtil.isNull(relatedNode))  {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job failed -- related node missing.", "运行关联节点确实");
+        }
+
+        return createJob(workflowContext, JobTypeEnum.RUN_END_HERE, relatedNode);
+    }
+
+    public ExecutionJob createJob4RunThisNode(WorkflowContext workflowContext, Node relatedNode) {
+
+        if(DataUtil.isNull(relatedNode))  {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job failed -- related node missing.", "运行关联节点确实");
+        }
+
+        return createJob(workflowContext, JobTypeEnum.RUN_THIS_NODE, relatedNode);
+    }
+
+    public ExecutionJob createJob4RunOfflineSchedule(WorkflowContext workflowContext) {
+        return createJob(workflowContext, JobTypeEnum.RUN_OFFLINE_SCHEDULE, null);
+    }
+
+    public ExecutionJob createJob4RunOnlineSchedule(WorkflowContext workflowContext) {
+        return createJob(workflowContext, JobTypeEnum.RUN_ONLINE_SCHEDULE, null);
+    }
+
+    public ExecutionJob createJob4RunDatafileImport(WorkflowContext workflowContext) {
+        return createJob(workflowContext, JobTypeEnum.RUN_DATAFILE_IMPORT, null);
     }
 }

@@ -24,20 +24,16 @@ public class SnapshotHelper {
         SNAPSHOT_MGR = snapshotMgr;
     }
 
-    public static WfSnapshot querySnapshot(Long snapshotId) {
+    private static WfSnapshot querySnapshot(Long snapshotId) {
         return SNAPSHOT_MGR.querySnapshot(snapshotId);
     }
 
-    public static Snapshot querySnapshot4View(Long snapshotId) {
-        return Snapshot.BuildSnapshot4View(querySnapshot(snapshotId));
+    public static Snapshot querySnapshot4View(Long snapShotId) {
+        return Snapshot.BuildSnapshot4View(querySnapshot(snapShotId));
     }
 
-    public static Snapshot querySnapshot4View(ExecutionJob job) {
-        return querySnapshot4View(job.data().getRelSnapshotId());
-    }
-
-    public static Snapshot querySnapshot4Execution(ExecutionJob job) {
-        return Snapshot.BuildSnapshot4Execution(querySnapshot(job.data().getRelSnapshotId()), job);
+    public static Snapshot querySnapshot4Execution(Long snapShotId, boolean viewMode) {
+        return Snapshot.BuildSnapshot4Execution(querySnapshot(snapShotId), viewMode);
     }
 
     public static Snapshot simulateSnapshot4Template(Long templateId) {

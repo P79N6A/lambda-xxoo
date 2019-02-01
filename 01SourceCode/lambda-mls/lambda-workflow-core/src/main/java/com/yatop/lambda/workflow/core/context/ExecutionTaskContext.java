@@ -31,6 +31,11 @@ public class ExecutionTaskContext implements IWorkContext {
         CollectionUtil.enhancedClear(execCharValues);
     }
 
+    public void flush() {
+        this.workflowContext.flush();
+        this.task.flush(this.workflowContext.getOperId());
+    }
+
     public ExecutionJob getJob() {
         return workflowContext.getCurrentJob();
     }
