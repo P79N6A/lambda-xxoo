@@ -135,21 +135,21 @@ public class ExecutionJobQueueMgr extends BaseMgr {
 
     /*
      *
-     *   查询作业队列（按作业状态 + [作业信号]）
+     *   查询作业队列（按作业信号 + [作业状态]）
      *   返回结果集
      *
      * */
-    public List<WfExecutionJobQueue> queryQueue(JobStateEnum stateEnum, JobSignalEnum signalEnum, PagerUtil pager) {
-        if(DataUtil.isNull(stateEnum)){
+    public List<WfExecutionJobQueue> queryQueue(JobSignalEnum signalEnum, JobStateEnum stateEnum, PagerUtil pager) {
+        if(DataUtil.isNull(signalEnum)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job queue failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
             PagerUtil.startPage(pager);
             WfExecutionJobQueueExample example = new WfExecutionJobQueueExample();
-            WfExecutionJobQueueExample.Criteria cond = example.createCriteria().andJobStateEqualTo(stateEnum.getState());
-            if(DataUtil.isNotNull(signalEnum))
-                cond.andJobSignalEqualTo(signalEnum.getSignal());
+            WfExecutionJobQueueExample.Criteria cond = example.createCriteria().andJobSignalEqualTo(signalEnum.getSignal());
+            if(DataUtil.isNotNull(stateEnum))
+                cond.andJobStateEqualTo(stateEnum.getState());
             example.setOrderByClause("JOB_TIME ASC");
             return wfExecutionJobQueueMapper.selectByExample(example);
         } catch (Throwable e) {

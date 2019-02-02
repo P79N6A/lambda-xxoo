@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-02-01 23:41:36
+Date: 2019-02-02 18:11:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1275,7 +1275,7 @@ CREATE TABLE `wf_execution_job` (
   `JOB_DFS_DIR` varchar(800) DEFAULT NULL COMMENT 'DFS作业目录\r\n            \r\n            实验作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc/<project_id>/<workflow_id>/<job_id>\r\n            其他作业：${HDFS_SITE}/${DFS_WORK_ROOT}/proc/<project_id>/other/<job_id>',
   `JOB_LOCAL_DIR` varchar(800) DEFAULT NULL COMMENT '本地作业目录（预留）\r\n            \r\n            实验作业：${LOCAL_WORK_ROOT}/proc/<project_id>/<workflow_id>/<job_id>\r\n            其他作业：${LOCAL_WORK_ROOT}/proc/<project_id>/other/<job_id>',
   `NEXT_TASK_SEQUENCE` bigint(20) NOT NULL DEFAULT '1' COMMENT '下一任务序号',
-  `JOB_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业时间，指定作业开始处理时间',
+  `JOB_SUBMIT_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业提交时间（提交队列）',
   `JOB_START_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业开始时间',
   `JOB_END_TIME` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '作业结束时间',
   `JOB_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '作业状态\r\n            0：preparing，准备中\r\n            1：queueing，排队中\r\n            2：running，运行中\r\n            3：success，运行成功\r\n            4：error terminated，出错终止\r\n            5：user terminated，用户终止',
@@ -1288,7 +1288,7 @@ CREATE TABLE `wf_execution_job` (
   PRIMARY KEY (`JOB_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行作业表，实验粒度的运行任务，由工作流引擎将其分解为以节点为粒度的运行任务';
 
 -- ----------------------------
 -- Records of wf_execution_job
@@ -1310,9 +1310,8 @@ CREATE TABLE `wf_execution_job_queue` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`JOB_ID`),
-  KEY `Index_1` (`JOB_STATE`,`JOB_SIGNAL`,`JOB_TIME`),
-  KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_STATE`,`CREATE_TIME`),
-  KEY `Index_3` (`JOB_STATE`,`JOB_TIME`)
+  KEY `Index_1` (`JOB_SIGNAL`,`JOB_STATE`,`JOB_TIME`),
+  KEY `Index_2` (`OWNER_PROJECT_ID`,`JOB_STATE`,`CREATE_TIME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行作业队列表，结束运行后移除';
 
 -- ----------------------------
@@ -1398,9 +1397,8 @@ CREATE TABLE `wf_execution_task_queue` (
   `CREATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`TASK_ID`),
-  KEY `Index_1` (`TASK_STATE`,`TASK_SIGNAL`,`TASK_TIME`),
+  KEY `Index_1` (`TASK_SIGNAL`,`TASK_STATE`,`TASK_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`TASK_STATE`,`CREATE_TIME`),
-  KEY `Index_3` (`TASK_STATE`,`TASK_TIME`),
   KEY `Index_4` (`OWNER_JOB_ID`,`TASK_STATE`,`CREATE_TIME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务队列表，结束运行后移除';
 

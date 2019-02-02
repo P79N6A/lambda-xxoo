@@ -317,4 +317,34 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     public boolean enableFlushWorkflow() {
         return JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(this.data().getJobType()));
     }
+
+    //TODO Job Execution Daemon Process Steps (集群并发粒度控制???)
+    // 1. Deal running jobs, monitor running tasks ...
+    //  PS: use external-id or return-file, deal both missing case(比如集群挂掉), redo submit task ???
+    // 2. Deal kill signal jobs, monitor running tasks, kill running task ...
+    // 3. Deal queueing jobs, prepare head tasks ...
+
+    //Deal running jobs
+    // 1.scan job queue, scan task queue???
+    // 2.monitor task, return-result analyze, complete task, synchronize task result to workflow
+    // 3.has next tobe running nodes, loop<create & submit task>
+    // 4.no tobe running nodes {
+    //  cond-A: occur error
+    //
+    //
+    // }
+
+    //Deal kill signal jobs
+    // 检测是否有任务已经完成，然后进入kill tasks
+    // Return running tasks, loop<kill task & clear output resources>
+    // Not support SIG_PAUSE & SIG_CONT
+
+    //Deal queueing jobs
+    // Return head nodes, loop<create & submit task>, change job state to running
+    //  PS: queueing VS no tobe running head nodes, end job immediately
+
+
+    //TODO Running => Finished, synchronize job result to workflow
+    //TODO 每个任务运行处理结束，分析当前作业状态，是否终止，否则是否还有就绪的可执行节点（综合KILL信号、运行出错、作业内容信息进行推断和生成结果）
+
 }

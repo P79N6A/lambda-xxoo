@@ -11,6 +11,8 @@ public class PagerUtil {
     //页大小，每次请求的分页大小，小于1时全部查询，每页最多1000条
     private Integer pageSize;
 
+    private boolean skipCount;
+
     private Page page;
 
     public PagerUtil() {
@@ -21,6 +23,12 @@ public class PagerUtil {
         init(pageNum, pageSize);
     }
 
+    public static PagerUtil Pager4TopN(Integer topN) {
+        PagerUtil pager = new PagerUtil(1, topN);
+        pager.skipCount = true;
+        return pager;
+    }
+
     private void init() {
         init(1, 10);
     }
@@ -28,6 +36,7 @@ public class PagerUtil {
     private void init(Integer pageNo, Integer pageSize) {
         setPageNum(pageNo);
         setPageSize(pageSize);
+        this.skipCount = false;
         this.page = null;
     }
 
@@ -54,6 +63,10 @@ public class PagerUtil {
         return -1;
     }
 
+    public boolean isSkipCount() {
+        return skipCount;
+    }
+
     public boolean isNeedTotalCount() {
         return pageNum == 1 ? pageSize > 0 : false;
     }
@@ -72,7 +85,7 @@ public class PagerUtil {
 
     public static void startPage(PagerUtil pager) {
         if(DataUtil.isNotNull(pager) && pager.isNeedPage()) {
-            pager.setPage(PageHelper.startPage(pager.getPageNum(), pager.getPageSize(), pager.isNeedTotalCount()));
+            pager.setPage(PageHelper.startPage(pager.getPageNum(), pager.getPageSize(), (!pager.isSkipCount() && pager.isNeedTotalCount())));
         }
     }
 

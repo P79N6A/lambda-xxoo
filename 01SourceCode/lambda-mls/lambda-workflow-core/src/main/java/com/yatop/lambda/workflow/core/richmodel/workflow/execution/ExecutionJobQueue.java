@@ -10,12 +10,6 @@ public class ExecutionJobQueue extends RichModel<WfExecutionJobQueue> {
         super(data);
     }
 
-    public void flush(String operId) {
-
-        if (this.isColoured())
-            ;//NodeHelper.updateNode(this, operId);
-    }
-
     public void changeState2Running() {
         this.changeJobState(JobStateEnum.RUNNING);
     }
