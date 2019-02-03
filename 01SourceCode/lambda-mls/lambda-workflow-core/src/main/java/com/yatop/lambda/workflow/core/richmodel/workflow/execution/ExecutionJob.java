@@ -319,10 +319,15 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     }
 
     //TODO Job Execution Daemon Process Steps (集群并发粒度控制???)
-    // 1. Deal running jobs, monitor running tasks ...
+    // 1. Deal kill signal jobs, monitor running tasks, kill running task ...
+    // 2. Deal running jobs, monitor running tasks ...
     //  PS: use external-id or return-file, deal both missing case(比如集群挂掉), redo submit task ???
-    // 2. Deal kill signal jobs, monitor running tasks, kill running task ...
     // 3. Deal queueing jobs, prepare head tasks ...
+
+    //Deal kill signal jobs
+    // 检测是否有任务已经完成，然后进入kill tasks
+    // Return running tasks, loop<kill task & clear output resources>
+    // Not support SIG_PAUSE & SIG_CONT
 
     //Deal running jobs
     // 1.scan job queue, scan task queue???
@@ -333,11 +338,6 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     //
     //
     // }
-
-    //Deal kill signal jobs
-    // 检测是否有任务已经完成，然后进入kill tasks
-    // Return running tasks, loop<kill task & clear output resources>
-    // Not support SIG_PAUSE & SIG_CONT
 
     //Deal queueing jobs
     // Return head nodes, loop<create & submit task>, change job state to running

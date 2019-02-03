@@ -153,11 +153,13 @@ public class Workflow extends RichModel<WfFlow> {
         return this.data().getShareLockState() == ShareLockStateEnum.LOCKED.getState();
     }
 
-    public boolean lockWorkflow() {
+    public boolean lockWorkflow(String lockMessage) {
         if(this.data().getShareLockState() == ShareLockStateEnum.LOCKED.getState())
             return false;
 
         this.data().setShareLockState(ShareLockStateEnum.LOCKED.getState());
+        if(DataUtil.isNotEmpty(lockMessage))
+            this.data().setShareLockMsg(lockMessage);
         return true;
     }
 
@@ -166,6 +168,8 @@ public class Workflow extends RichModel<WfFlow> {
             return false;
 
         this.data().setShareLockState(ShareLockStateEnum.UNLOCKED.getState());
+        if(DataUtil.isNotEmpty(this.data().getShareLockMsg()))
+            this.data().setShareLockMsg(null);
         return true;
     }
 

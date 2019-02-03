@@ -59,14 +59,16 @@ public class JobCreate {
         Experiment experiment= workflowContext.getExperiment();
         job.setJobDfsDir(WorkDirectoryUtil.getJobDfsDirectory(experiment.data().getOwnerProjectId(), workflow.data().getFlowId(), job.getJobId()));
         job.setJobLocalDir(WorkDirectoryUtil.getJobLocalDirectory(experiment.data().getOwnerProjectId(), workflow.data().getFlowId(), job.getJobId()));
-        executionJobMgr.updateJob(job, workflowContext.getOperId());
+        //executionJobMgr.updateJob(job, workflowContext.getOperId());
 
         ExecutionJob richJob = ExecutionJob.BuildExecutionJob4Create(job, workflowContext, snapShot, jobContent);
-        workflow.lockWorkflow();
+        workflow.lockWorkflow(String.format("工作流作业运行加锁 - %d", richJob.data().getJobId()));
         workflow.changeState2Preparing();
         workflow.data().setLastJobId(job.getJobId());
 
         JobQueueHelper.pushJobToQueue(richJob, workflowContext.getOperId());
+        richJob.changeState2Queueing();
+        
         workflowContext.flush();
         richJob.flush(workflowContext);
         return richJob;
