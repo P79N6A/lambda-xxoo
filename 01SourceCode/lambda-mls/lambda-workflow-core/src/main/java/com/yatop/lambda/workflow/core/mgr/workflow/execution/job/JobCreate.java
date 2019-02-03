@@ -64,11 +64,10 @@ public class JobCreate {
         ExecutionJob richJob = ExecutionJob.BuildExecutionJob4Create(job, workflowContext, snapShot, jobContent);
         workflow.lockWorkflow(String.format("工作流作业运行加锁 - %d", richJob.data().getJobId()));
         workflow.changeState2Preparing();
-        workflow.data().setLastJobId(job.getJobId());
 
         JobQueueHelper.pushJobToQueue(richJob, workflowContext.getOperId());
         richJob.changeState2Queueing();
-        
+
         workflowContext.flush();
         richJob.flush(workflowContext);
         return richJob;
