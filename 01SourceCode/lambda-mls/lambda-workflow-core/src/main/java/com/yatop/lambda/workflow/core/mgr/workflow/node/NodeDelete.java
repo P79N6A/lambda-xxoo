@@ -8,10 +8,12 @@ import com.yatop.lambda.core.mgr.workflow.node.NodeDeleteQueueMgr;
 import com.yatop.lambda.core.mgr.workflow.node.NodeMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.link.LinkDelete;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.parameter.ParameterDelete;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.NodePortDelete;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class NodeDelete {
 
     @Autowired
     NodeMgr nodeMgr;
+
+    @Autowired
+    LinkDelete linkDelete;
 
     @Autowired
     NodeDeleteQueueMgr nodeDeleteQueueMgr;
@@ -46,10 +51,15 @@ public class NodeDelete {
 
         if(DataUtil.isNotEmpty(nodes)) {
             for (Node node : nodes) {
+                List<NodeLink> inLinks = workflowContext.fetchInLinks(node);
+                List<NodeLink> outLinks = workflowContext.fetchOutLinks(node);
+
                 deleteNode(workflowContext, node);
                 workflowContext.doneDeleteNode(node);
-            }
 
+                linkDelete.deleteLinks(workflowContext, inLinks);
+                linkDelete.deleteLinks(workflowContext, outLinks);
+            }
 
             Workflow workflow = workflowContext.getWorkflow();
             if(nodeDeleteQueueMgr.existsNodeDeleteSequence(workflow.data().getFlowId(), workflow.data().getNextDeleteSequence()))
