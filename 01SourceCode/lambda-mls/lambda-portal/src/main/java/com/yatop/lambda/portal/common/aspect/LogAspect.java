@@ -1,7 +1,7 @@
 package com.yatop.lambda.portal.common.aspect;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.yatop.lambda.portal.common.config.FebsProperties;
+import com.yatop.lambda.portal.common.config.PortalProperties;
 import com.yatop.lambda.portal.common.util.HttpContextUtils;
 import com.yatop.lambda.portal.common.util.IPUtils;
 import com.yatop.lambda.portal.model.SysLog;
@@ -32,7 +32,7 @@ public class LogAspect {
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private FebsProperties febsProperties;
+    private PortalProperties portalProperties;
 
     @Autowired
     private LogService logService;
@@ -59,7 +59,7 @@ public class LogAspect {
         String ip = IPUtils.getIpAddr(request);
         // 执行时长(毫秒)
         long time = System.currentTimeMillis() - beginTime;
-        if (febsProperties.isOpenAopLog()) {
+        if (portalProperties.isOpenAopLog()) {
             // 保存日志
             User user = (User) SecurityUtils.getSubject().getPrincipal();
             SysLog log = new SysLog();

@@ -1,7 +1,7 @@
 package com.yatop.lambda.portal.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yatop.lambda.portal.common.config.FebsProperties;
+import com.yatop.lambda.portal.common.config.PortalProperties;
 import com.yatop.lambda.portal.common.controller.BaseController;
 import com.yatop.lambda.portal.common.domain.JsonResponse;
 import com.yatop.lambda.portal.common.shiro.ShiroRealm;
@@ -34,7 +34,7 @@ public class LoginController extends BaseController {
 
 
     @Autowired
-    private FebsProperties febsProperties;
+    private PortalProperties portalProperties;
 
     @Autowired
     private UserService userService;

@@ -30,7 +30,7 @@ public class JobContentAnalyzer4RunStartHere {
         Deque<Node> analyzeStack = new LinkedList<Node>() {{ add(relatedNode); }};
         analyzeDownstreamNodes(workflowContext, analyzeStack, jobSubNodes);
 
-        for(Node waitNode : CollectionUtil.toList(jobSubNodes)) {
+        for(Node waitNode : jobSubNodes) {
             checkUpstreamNodeExecutionConditionReady(workflowContext, waitNode, relatedNode, jobSubNodes);
         }
 

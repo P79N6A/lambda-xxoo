@@ -32,9 +32,9 @@ public class WebConfig {
     }
 
     @Bean
-    public ObjectMapper getObjectMapper(FebsProperties febsProperties) {
+    public ObjectMapper getObjectMapper(PortalProperties portalProperties) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setDateFormat(new SimpleDateFormat(febsProperties.getTimeFormat()));
+        mapper.setDateFormat(new SimpleDateFormat(portalProperties.getTimeFormat()));
         return mapper;
     }
 

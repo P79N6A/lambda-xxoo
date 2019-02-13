@@ -14,6 +14,7 @@ import com.yatop.lambda.workflow.core.mgr.workflow.snapshot.SnapshotHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.snapshot.Snapshot;
+
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Map;
@@ -24,7 +25,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     private static String JOB_CONTENT_KEY_WAIT_NODES = "@@@WaitNodes";
     private static String JOB_CONTENT_KEY_PENDING_NODES = "@@@PendingNodes";
   //private static String JOB_CONTENT_KEY_PREPARING_NODES = "@@@PreparingNodes";
-    private static String JOB_CONTENT_KEY_READY_NODES = "@@@ReadyNodes";
+  //private static String JOB_CONTENT_KEY_READY_NODES = "@@@ReadyNodes";
     private static String JOB_CONTENT_KEY_RUNNING_NODES = "@@@RunningNodes";
     private static String JOB_CONTENT_KEY_SUCCESS_NODES = "@@@SuccessNodes";
     private static String JOB_CONTENT_KEY_ERROR_NODES = "@@@ErrorNodes";
@@ -37,7 +38,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     private TreeSet<Node> waitNodes = new TreeSet<Node>();
     private TreeSet<Node> pendingNodes = new TreeSet<Node>();
   //private TreeMap<Node, Long> preparingNodes = new TreeMap<Node, Long>();
-    private TreeMap<Node, Long> readyNodes = new TreeMap<Node, Long>();
+  //private TreeMap<Node, Long> readyNodes = new TreeMap<Node, Long>();
     private TreeMap<Node, Long> runningNodes = new TreeMap<Node, Long>();
     private TreeMap<Node, Long> successNodes = new TreeMap<Node, Long>();
     private TreeMap<Node, Long> errorNodes = new TreeMap<Node, Long>();
@@ -109,7 +110,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
         JSONArray jsonWaitNodes = this.toJSONArray(waitNodes);
         JSONArray jsonPendingNodes = this.toJSONArray(pendingNodes);
       //JSONObject jsonPreparingNodes = this.toJSONObject(this.preparingNodes);
-        JSONObject jsonReadyNodes = this.toJSONObject(this.readyNodes);
+      //JSONObject jsonReadyNodes = this.toJSONObject(this.readyNodes);
         JSONObject jsonRunningNodes = this.toJSONObject(this.runningNodes);
         JSONObject jsonSuccessNodes = this.toJSONObject(this.successNodes);
         JSONObject jsonErrorNodes = this.toJSONObject(this.errorNodes);
@@ -119,7 +120,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
         jsonContent.put(JOB_CONTENT_KEY_WAIT_NODES, jsonWaitNodes);
         jsonContent.put(JOB_CONTENT_KEY_PENDING_NODES, jsonPendingNodes);
       //jsonContent.put(JOB_CONTENT_KEY_PREPARING_NODES, jsonPreparingNodes);
-        jsonContent.put(JOB_CONTENT_KEY_READY_NODES, jsonReadyNodes);
+      //jsonContent.put(JOB_CONTENT_KEY_READY_NODES, jsonReadyNodes);
         jsonContent.put(JOB_CONTENT_KEY_RUNNING_NODES, jsonRunningNodes);
         jsonContent.put(JOB_CONTENT_KEY_SUCCESS_NODES, jsonSuccessNodes);
         jsonContent.put(JOB_CONTENT_KEY_ERROR_NODES, jsonErrorNodes);
@@ -162,8 +163,8 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
             JSONArray jsonWaitHeadNodes = jsonContent.getJSONArray(JOB_CONTENT_KEY_WAIT_HEAD_NODES);
             JSONArray jsonWaitNodes = jsonContent.getJSONArray(JOB_CONTENT_KEY_WAIT_NODES);
             JSONArray jsonPendingNodes = jsonContent.getJSONArray(JOB_CONTENT_KEY_PENDING_NODES);
-            //JSONObject jsonPreparingNodes = jsonContent.getJSONObject(JOB_CONTENT_KEY_PREPARING_NODES);
-            JSONObject jsonReadyNodes = jsonContent.getJSONObject(JOB_CONTENT_KEY_READY_NODES);
+          //JSONObject jsonPreparingNodes = jsonContent.getJSONObject(JOB_CONTENT_KEY_PREPARING_NODES);
+          //JSONObject jsonReadyNodes = jsonContent.getJSONObject(JOB_CONTENT_KEY_READY_NODES);
             JSONObject jsonRunningNodes = jsonContent.getJSONObject(JOB_CONTENT_KEY_RUNNING_NODES);
             JSONObject jsonSuccessNodes = jsonContent.getJSONObject(JOB_CONTENT_KEY_SUCCESS_NODES);
             JSONObject jsonErrorNodes = jsonContent.getJSONObject(JOB_CONTENT_KEY_ERROR_NODES);
@@ -173,7 +174,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
             this.parseJSONArray(workflowContext, jsonWaitNodes, this.waitNodes);
             this.parseJSONArray(workflowContext, jsonPendingNodes, this.pendingNodes);
           //this.parseJSONObject(workflowContext, jsonPreparingNodes, this.preparingNodes);
-            this.parseJSONObject(workflowContext, jsonReadyNodes, this.readyNodes);
+          //this.parseJSONObject(workflowContext, jsonReadyNodes, this.readyNodes);
             this.parseJSONObject(workflowContext, jsonRunningNodes, this.runningNodes);
             this.parseJSONObject(workflowContext, jsonSuccessNodes, this.successNodes);
             this.parseJSONObject(workflowContext, jsonErrorNodes, this.errorNodes);
@@ -322,6 +323,34 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
 
     public boolean enableFlushWorkflow() {
         return JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(this.data().getJobType()));
+    }
+
+    public TreeSet<Node> getWaitHeadNodes() {
+        return waitHeadNodes;
+    }
+
+    public TreeSet<Node> getWaitNodes() {
+        return waitNodes;
+    }
+
+    public TreeSet<Node> getPendingNodes() {
+        return pendingNodes;
+    }
+
+    public TreeMap<Node, Long> getRunningNodes() {
+        return runningNodes;
+    }
+
+    public TreeMap<Node, Long> getSuccessNodes() {
+        return successNodes;
+    }
+
+    public TreeMap<Node, Long> getErrorNodes() {
+        return errorNodes;
+    }
+
+    public TreeMap<Node, Long> getTerminatedNodes() {
+        return terminatedNodes;
     }
 
     //TODO Job Execution Daemon Process Steps (集群并发粒度控制???)

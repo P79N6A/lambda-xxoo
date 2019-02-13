@@ -98,10 +98,10 @@ public class AnalyzeNodeStateHelper {
 
         if(DataUtil.isNotEmpty(missingParameters) || DataUtil.isNotEmpty(warningParameters)) {
             StringBuilder sb = new StringBuilder().append(String.format("「%s」节点", node.getModule().data().getModuleName()));
-            for(NodeParameter parameter : CollectionUtil.toList(missingParameters)) {
+            for(NodeParameter parameter : missingParameters) {
                 sb.append(",").append(parameter.data().getWarningMsg());
             }
-            for(NodeParameter parameter : CollectionUtil.toList(warningParameters)) {
+            for(NodeParameter parameter : warningParameters) {
                 sb.append(",").append(parameter.data().getWarningMsg());
             }
 

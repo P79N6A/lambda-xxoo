@@ -29,7 +29,7 @@ import java.util.Properties;
 )*/
 public class MybatisConfig {
 
-    @Value("${lambda.mls.datasource.log4jdbc.enable:false}")
+    @Value("${lambda-framework.log4jdbc.enable:false}")
     private boolean enableLog4jdbc;
 
     @Bean("frameworkDataSource")
@@ -45,7 +45,7 @@ public class MybatisConfig {
 
     @Bean("orignalFrameworkDataSource")
     @Qualifier("orignalFrameworkDataSource")
-    @ConfigurationProperties(prefix = "lambda.mls.datasource")
+    @ConfigurationProperties(prefix = "lambda-framework.datasource")
     public DataSource orignalFrameworkDataSource(){
         return DataSourceBuilder.create().type(DruidDataSource.class).build();
     }

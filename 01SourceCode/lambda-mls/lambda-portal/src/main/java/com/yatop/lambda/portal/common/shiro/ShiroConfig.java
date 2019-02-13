@@ -1,6 +1,6 @@
 package com.yatop.lambda.portal.common.shiro;
 
-import com.yatop.lambda.portal.common.config.FebsProperties;
+import com.yatop.lambda.portal.common.config.PortalProperties;
 import com.yatop.lambda.portal.common.listener.ShiroSessionListener;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.codec.Base64;
@@ -33,7 +33,7 @@ import java.util.LinkedHashMap;
 public class ShiroConfig {
 
     @Autowired
-    private FebsProperties febsProperties;
+    private PortalProperties portalProperties;
 
     @Value("${spring.redis.host}")
     private String host;
@@ -76,19 +76,19 @@ public class ShiroConfig {
         // 设置 securityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         // 登录的 url
-        shiroFilterFactoryBean.setLoginUrl(febsProperties.getShiro().getLoginUrl());
+        shiroFilterFactoryBean.setLoginUrl(portalProperties.getShiro().getLoginUrl());
         // 登录成功后跳转的 url
-        shiroFilterFactoryBean.setSuccessUrl(febsProperties.getShiro().getSuccessUrl());
+        shiroFilterFactoryBean.setSuccessUrl(portalProperties.getShiro().getSuccessUrl());
         // 未授权 url
-        shiroFilterFactoryBean.setUnauthorizedUrl(febsProperties.getShiro().getUnauthorizedUrl());
+        shiroFilterFactoryBean.setUnauthorizedUrl(portalProperties.getShiro().getUnauthorizedUrl());
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         // 设置免认证 url
-        String[] anonUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(febsProperties.getShiro().getAnonUrl(), ",");
+        String[] anonUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(portalProperties.getShiro().getAnonUrl(), ",");
         for (String url : anonUrls) {
             filterChainDefinitionMap.put(url, "anon");
         }
         // 配置退出过滤器，其中具体的退出代码 Shiro已经替我们实现了
-        filterChainDefinitionMap.put(febsProperties.getShiro().getLogoutUrl(), "logout");
+        filterChainDefinitionMap.put(portalProperties.getShiro().getLogoutUrl(), "logout");
         // 除上以外所有 url都必须认证通过才可以访问，未通过认证自动访问 LoginUrl
         filterChainDefinitionMap.put("/**", "user");
 
@@ -125,7 +125,7 @@ public class ShiroConfig {
         // 设置 cookie 名称，对应 login.html 页面的 <input type="checkbox" name="rememberMe"/>
         SimpleCookie cookie = new SimpleCookie("rememberMe");
         // 设置 cookie 的过期时间，单位为秒，这里为一天
-        cookie.setMaxAge(febsProperties.getShiro().getCookieTimeout());
+        cookie.setMaxAge(portalProperties.getShiro().getCookieTimeout());
         return cookie;
     }
 
@@ -177,7 +177,7 @@ public class ShiroConfig {
         Collection<SessionListener> listeners = new ArrayList<>();
         listeners.add(new ShiroSessionListener());
         // 设置session超时时间，单位为毫秒
-        sessionManager.setGlobalSessionTimeout(febsProperties.getShiro().getSessionTimeout());
+        sessionManager.setGlobalSessionTimeout(portalProperties.getShiro().getSessionTimeout());
         sessionManager.setSessionListeners(listeners);
         sessionManager.setSessionDAO(redisSessionDAO());
         sessionManager.setSessionIdUrlRewritingEnabled(false);

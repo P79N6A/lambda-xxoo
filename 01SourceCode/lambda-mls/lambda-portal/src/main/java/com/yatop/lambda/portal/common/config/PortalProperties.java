@@ -6,8 +6,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "lambda-mls-sys-manage")
-public class FebsProperties {
+@ConfigurationProperties(prefix = "lambda-portal")
+public class PortalProperties {
 
     private ShiroProperties shiro = new ShiroProperties();
 

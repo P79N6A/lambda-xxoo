@@ -36,24 +36,20 @@ public class JobQueueHelper {
         EXECUTION_JOB_QUEUE_MGR.removeQueue(job.data().getJobId());
     }
 
-    /*public static ExecutionJobQueue queryJobInQueue(ExecutionJob job) {
-        return new ExecutionJobQueue(EXECUTION_JOB_QUEUE_MGR.queryQueue(job.data().getJobId()));
-    }*/
-
     public static void updateJobInQueue(ExecutionJobQueue jobQueue, String operId) {
         EXECUTION_JOB_QUEUE_MGR.updateQueue(jobQueue.data(), operId);
         jobQueue.clearColoured();
     }
 
-    public static List<WfExecutionJobQueue> queryRunningJobs(int topN) {
-        return EXECUTION_JOB_QUEUE_MGR.queryQueue(JobSignalEnum.SIG_NORMAL, JobStateEnum.RUNNING, PagerUtil.Pager4TopN(topN));
+    public static List<WfExecutionJobQueue> queryRunningJobs() {
+        return EXECUTION_JOB_QUEUE_MGR.queryQueue(JobSignalEnum.SIG_NORMAL, JobStateEnum.RUNNING, null);
     }
 
     public static List<WfExecutionJobQueue> queryQueueingJobs(int topN) {
         return EXECUTION_JOB_QUEUE_MGR.queryQueue(JobSignalEnum.SIG_NORMAL, JobStateEnum.QUEUEING, PagerUtil.Pager4TopN(topN));
     }
 
-    public static List<WfExecutionJobQueue> querKillJobs() {
+    public static List<WfExecutionJobQueue> queryKillJobs() {
         return EXECUTION_JOB_QUEUE_MGR.queryQueue(JobSignalEnum.SIG_KILL, null, null);
     }
 }
