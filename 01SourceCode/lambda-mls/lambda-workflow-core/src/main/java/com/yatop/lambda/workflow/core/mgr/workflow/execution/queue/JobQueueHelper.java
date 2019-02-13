@@ -53,7 +53,7 @@ public class JobQueueHelper {
         return EXECUTION_JOB_QUEUE_MGR.queryQueue(JobSignalEnum.SIG_NORMAL, JobStateEnum.QUEUEING, PagerUtil.Pager4TopN(topN));
     }
 
-    public static List<WfExecutionJobQueue> queryJobsUnderKillSignal() {
+    public static List<WfExecutionJobQueue> querKillJobs() {
         return EXECUTION_JOB_QUEUE_MGR.queryQueue(JobSignalEnum.SIG_KILL, null, null);
     }
 }

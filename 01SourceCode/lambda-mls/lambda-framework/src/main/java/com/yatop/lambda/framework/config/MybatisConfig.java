@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -28,11 +29,18 @@ import java.util.Properties;
 )*/
 public class MybatisConfig {
 
+    @Value("${lambda.mls.datasource.log4jdbc.enable:false}")
+    private boolean enableLog4jdbc;
+
     @Bean("frameworkDataSource")
     @Qualifier("frameworkDataSource")
     @Primary
     public DataSource frameworkDataSource(@Qualifier("orignalFrameworkDataSource") DataSource orignalFrameworkDataSource) {
-        return new DataSourceSpy(orignalFrameworkDataSource);
+        if(enableLog4jdbc) {
+            return new DataSourceSpy(orignalFrameworkDataSource);
+        } else {
+            return orignalFrameworkDataSource;
+        }
     }
 
     @Bean("orignalFrameworkDataSource")
@@ -65,7 +73,7 @@ public class MybatisConfig {
     }
 */
 
-    @Bean("platformTransactionManager")
+    @Bean("frameworkTransactionManager")
     public PlatformTransactionManager platformTransactionManager(@Qualifier("frameworkDataSource") DataSource frameworkDataSource) {
         return new DataSourceTransactionManager(frameworkDataSource);
     }

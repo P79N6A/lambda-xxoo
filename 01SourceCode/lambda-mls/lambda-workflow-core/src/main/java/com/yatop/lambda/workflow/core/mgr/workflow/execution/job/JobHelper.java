@@ -33,5 +33,4 @@ public class JobHelper {
         executionJob.clearColoured();
     }
 
-
 }
