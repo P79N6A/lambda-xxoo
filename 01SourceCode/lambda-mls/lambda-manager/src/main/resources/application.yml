@@ -10,6 +10,7 @@ lambda.mls:
     username: root
     password: root
     driverClassName: com.mysql.jdbc.Driver
+    log4jdbc.enable: true
     ###################以下为druid增加的配置###########################
     type: com.alibaba.druid.pool.DruidDataSource
     # 下面为连接池的补充设置，应用到上面所有数据源中

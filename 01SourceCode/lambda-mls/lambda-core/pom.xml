@@ -67,10 +67,6 @@
             <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.univocity</groupId>
             <artifactId>univocity-parsers</artifactId>
         </dependency>

@@ -6,9 +6,11 @@ import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.exception.LambdaException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ModulePortMgr extends BaseMgr {
 
     /*
