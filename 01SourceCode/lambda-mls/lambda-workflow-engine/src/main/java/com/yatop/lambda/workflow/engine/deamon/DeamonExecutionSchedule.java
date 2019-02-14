@@ -4,7 +4,7 @@ import com.yatop.lambda.base.model.WfExecutionJobQueue;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.mgr.workflow.execution.queue.JobQueueHelper;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJobQueue;
-import com.yatop.lambda.workflow.engine.service.ExecutionService;
+import com.yatop.lambda.workflow.engine.service.ExecutionScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class DeamonWorkflowExecution {
+public class DeamonExecutionSchedule {
 
-    public static Logger logger = LoggerFactory.getLogger(DeamonWorkflowExecution.class);
+    public static Logger logger = LoggerFactory.getLogger(DeamonExecutionSchedule.class);
 
     @Value("${lambda-workflow-engine.daemon.enable:false}")
     private boolean enable;
@@ -26,7 +26,7 @@ public class DeamonWorkflowExecution {
     private int maxRunningJobs;
 
     @Autowired
-    ExecutionService executionService;
+    ExecutionScheduleService executionScheduleService;
 
     @Scheduled(fixedDelay = 1000, initialDelay = 0)
     public void execute() {
@@ -46,7 +46,7 @@ public class DeamonWorkflowExecution {
         for(WfExecutionJobQueue killJob : killJobs) {
 
             //获取其运行中任务列表，并逐个进行kill
-            executionService.processKillSignalJob(new ExecutionJobQueue(killJob));
+            executionScheduleService.processKillSignalJob(new ExecutionJobQueue(killJob));
         }
     }
 
@@ -71,7 +71,7 @@ public class DeamonWorkflowExecution {
 
         for(WfExecutionJobQueue runningJob : runningJobs) {
 
-            executionService.processRunningJob(new ExecutionJobQueue(runningJob));
+            executionScheduleService.processRunningJob(new ExecutionJobQueue(runningJob));
             //获取其运行中任务列表，检查任务在集群运行情况（处理中、已完成、出错），更新运行信息
         }
 
@@ -87,7 +87,7 @@ public class DeamonWorkflowExecution {
 
         for(WfExecutionJobQueue queueingJob : queueingJobs) {
 
-            executionService.processQueueingJob(new ExecutionJobQueue(queueingJob));
+            executionScheduleService.processQueueingJob(new ExecutionJobQueue(queueingJob));
         }
     }
 
