@@ -1,7 +1,7 @@
 package com.yatop.lambda.framework.config;
 
-import com.alibaba.druid.pool.DruidDataSource;
 import com.github.pagehelper.PageInterceptor;
+import com.zaxxer.hikari.HikariDataSource;
 import net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -47,7 +47,7 @@ public class MybatisConfig {
     @Qualifier("orignalFrameworkDataSource")
     @ConfigurationProperties(prefix = "lambda-framework.datasource")
     public DataSource orignalFrameworkDataSource(){
-        return DataSourceBuilder.create().type(DruidDataSource.class).build();
+        return DataSourceBuilder.create().type(HikariDataSource.class).build();
     }
 
     @Bean("frameworkJdbcTemplate")

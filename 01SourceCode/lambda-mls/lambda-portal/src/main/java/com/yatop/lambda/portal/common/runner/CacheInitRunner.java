@@ -44,7 +44,7 @@ public class CacheInitRunner implements CommandLineRunner {
                 userManager.loadUserRedisCache(user);
             }
         } catch (Exception e) {
-            log.error("缓存初始化失败，{}", e.getMessage());
+            log.error("缓存初始化失败: ", e);
             log.error(" ____   __    _   _ ");
             log.error("| |_   / /\\  | | | |");
             log.error("|_|   /_/--\\ |_| |_|__");

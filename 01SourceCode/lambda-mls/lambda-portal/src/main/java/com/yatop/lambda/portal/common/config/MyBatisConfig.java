@@ -3,9 +3,9 @@ package com.yatop.lambda.portal.common.config;
 import com.yatop.lambda.portal.common.interceptor.SqlStatementInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -18,10 +18,10 @@ import javax.sql.DataSource;
 
 @Configuration("portalMybatisConfig")
 @EnableTransactionManagement
-@MapperScan(
-        basePackages = {"com.yatop.lambda.portal.system.dao", "com.yatop.lambda.portal.job.dao"},
+/*@MapperScan(
+        basePackages = {"com.yatop.lambda.portal.*.dao"},
         sqlSessionFactoryRef = "portalSqlSessionFactory"
-)
+)*/
 public class MyBatisConfig {
 
     @Bean("portalJdbcTemplate")
@@ -43,6 +43,11 @@ public class MyBatisConfig {
         bean.setDataSource(portalDataSource);
         bean.setTypeAliasesPackage("com.yatop.lambda.portal.system.domain,com.yatop.lambda.portal.job.domain");
         bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("mapper/*/*.xml"));
+
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setJdbcTypeForNull(JdbcType.NULL);
+        bean.setConfiguration(configuration);
+
         bean.setPlugins(new Interceptor[]{ com.yatop.lambda.framework.config.MybatisConfig.getPageInterceptor()} );
         return bean.getObject();
     }

@@ -21,7 +21,7 @@ public class UserConfigServiceImpl extends BaseService<UserConfig> implements Us
 
     @Override
     public UserConfig findByUserId(String userId) {
-        return this.selectByKey(userId);
+        return this.selectByKey(Long.parseLong(userId));
     }
 
     @Override
