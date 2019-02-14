@@ -1,11 +1,13 @@
 package com.yatop.lambda.portal.common.config;
 
+import com.yatop.lambda.portal.common.interceptor.SqlStatementInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -17,7 +19,7 @@ import javax.sql.DataSource;
 @Configuration("portalMybatisConfig")
 @EnableTransactionManagement
 @MapperScan(
-        basePackages = {"com.yatop.lambda.portal.dao"},
+        basePackages = {"com.yatop.lambda.portal.system.dao", "com.yatop.lambda.portal.job.dao"},
         sqlSessionFactoryRef = "portalSqlSessionFactory"
 )
 public class MyBatisConfig {
@@ -36,11 +38,11 @@ public class MyBatisConfig {
 
     @Bean("portalSqlSessionFactory")
     @Qualifier("portalSqlSessionFactory")
-    public SqlSessionFactory portalSqlSessionFactory(@Qualifier("frameworkDataSource") DataSource coreDataSource) throws Exception {
+    public SqlSessionFactory portalSqlSessionFactory(@Qualifier("frameworkDataSource") DataSource portalDataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-        bean.setDataSource(coreDataSource);
-        bean.setTypeAliasesPackage("com.yatop.lambda.portal.model");
-        bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("mapper/*.xml"));
+        bean.setDataSource(portalDataSource);
+        bean.setTypeAliasesPackage("com.yatop.lambda.portal.system.domain,com.yatop.lambda.portal.job.domain");
+        bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("mapper/*/*.xml"));
         bean.setPlugins(new Interceptor[]{ com.yatop.lambda.framework.config.MybatisConfig.getPageInterceptor()} );
         return bean.getObject();
     }
@@ -51,4 +53,18 @@ public class MyBatisConfig {
         return new DataSourceTransactionManager(portalDataSource);
     }
 */
+
+    /**
+     * 配置 sql打印拦截器
+     * application.yml中 febs.showsql: true 时生效
+     *
+     * @return SqlStatementInterceptor
+     */
+    /*
+    @Bean
+    @ConditionalOnProperty(name = "febs.showsql", havingValue = "true")
+    SqlStatementInterceptor sqlStatementInterceptor() {
+        return new SqlStatementInterceptor();
+    }
+    */
 }

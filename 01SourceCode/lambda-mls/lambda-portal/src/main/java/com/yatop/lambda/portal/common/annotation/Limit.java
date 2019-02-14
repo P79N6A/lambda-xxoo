@@ -1,6 +1,5 @@
 package com.yatop.lambda.portal.common.annotation;
 
-
 import com.yatop.lambda.portal.common.domain.LimitType;
 
 import java.lang.annotation.ElementType;

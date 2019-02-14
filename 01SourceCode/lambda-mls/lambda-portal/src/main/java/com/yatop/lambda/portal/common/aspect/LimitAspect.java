@@ -1,18 +1,17 @@
 package com.yatop.lambda.portal.common.aspect;
 
-import com.google.common.collect.ImmutableList;
 import com.yatop.lambda.portal.common.annotation.Limit;
 import com.yatop.lambda.portal.common.domain.LimitType;
 import com.yatop.lambda.portal.common.exception.LimitAccessException;
-import com.yatop.lambda.portal.common.util.IPUtils;
+import com.yatop.lambda.portal.common.utils.IPUtil;
+import com.google.common.collect.ImmutableList;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -28,13 +27,12 @@ import java.util.Objects;
 
 
 /**
- * 接口限流注解，示例见 cc.mrbird.common.controller.TestController
+ * 接口限流
  */
+@Slf4j
 @Aspect
 @Component
 public class LimitAspect {
-
-    private static final Logger logger = LoggerFactory.getLogger(LimitAspect.class);
 
     private final RedisTemplate<String, Serializable> limitRedisTemplate;
 
@@ -58,11 +56,12 @@ public class LimitAspect {
         LimitType limitType = limitAnnotation.limitType();
         String name = limitAnnotation.name();
         String key;
+        String ip = IPUtil.getIpAddr(request);
         int limitPeriod = limitAnnotation.period();
         int limitCount = limitAnnotation.count();
         switch (limitType) {
             case IP:
-                key = IPUtils.getIpAddr(request);
+                key = ip;
                 break;
             case CUSTOMER:
                 key = limitAnnotation.key();
@@ -70,17 +69,16 @@ public class LimitAspect {
             default:
                 key = StringUtils.upperCase(method.getName());
         }
-        ImmutableList<String> keys = ImmutableList.of(StringUtils.join(limitAnnotation.prefix() + "_", key + "_" + request.getRequestedSessionId()));
+        ImmutableList<String> keys = ImmutableList.of(StringUtils.join(limitAnnotation.prefix() + "_", key, ip));
         String luaScript = buildLuaScript();
         RedisScript<Number> redisScript = new DefaultRedisScript<>(luaScript, Number.class);
         Number count = limitRedisTemplate.execute(redisScript, keys, limitCount, limitPeriod);
-        logger.info("第{}次访问key为 {}，描述为 [{}] 的接口", count, keys, name);
+        log.info("IP:{} 第 {} 次访问key为 {}，描述为 [{}] 的接口", ip, count, keys, name);
         if (count != null && count.intValue() <= limitCount) {
             return point.proceed();
         } else {
             throw new LimitAccessException("接口访问超出频率限制");
         }
-
     }
 
     /**

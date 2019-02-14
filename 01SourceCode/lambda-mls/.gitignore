@@ -12,6 +12,7 @@
 !/lambda-cluster-adapter/
 !/lambda-framework/
 !/lambda-portal/
+!/lambda-portal-backup/
 !/lambda-mybatis-generator/
 !/lambda-component/
 !/lambda-component-python/
