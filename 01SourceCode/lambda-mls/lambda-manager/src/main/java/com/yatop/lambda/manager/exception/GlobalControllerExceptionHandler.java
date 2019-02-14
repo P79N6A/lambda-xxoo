@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class GlobalControllerExceptionHandler {
 
     public static Logger logger = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
@@ -57,7 +57,7 @@ public class GlobalControllerExceptionHandler {
 
 ////////////////////////////////////
 
-    @ExceptionHandler(value = Exception.class)
+    /*@ExceptionHandler(value = Exception.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public Object requestParamErrorHandler(HttpServletRequest req, Exception exception) throws Exception {
@@ -81,7 +81,7 @@ public class GlobalControllerExceptionHandler {
     public Object requestParamErrorHandler(HttpServletRequest req, LambdaException lambdaException) throws Exception {
         logger.info("业务异常错误", lambdaException);
         return JsonResponse.build(lambdaException);
-    }
+    }*/
 
 /*    @ExceptionHandler({UnauthorizedException.class})
     @ResponseStatus(HttpStatus.OK)

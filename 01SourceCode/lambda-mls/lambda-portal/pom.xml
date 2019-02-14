@@ -18,7 +18,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <mysql.driver.version>5.1.30</mysql.driver.version>
+        <mysql.driver.version>8.0.12</mysql.driver.version>
     </properties>
 
     <dependencies>
@@ -130,7 +130,7 @@
 
     <build>
         <plugins>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
@@ -143,15 +143,15 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <!--<plugin>
+            </plugin>-->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.16</version>
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
-            </plugin>-->
+            </plugin>
             <!--
            <plugin>
                <groupId>org.mybatis.generator</groupId>

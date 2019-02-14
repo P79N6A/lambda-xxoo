@@ -1,108 +1,75 @@
 server:
   port: 8081
-#  tomcat:
-#    uri-encoding: utf-8
 
 spring:
-  # Redis配置
+  aop:
+    proxy-target-class: true
+
+  messages:
+    encoding: utf-8
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
   redis:
-    database: 0
     host: 127.0.0.1
     port: 6379
     password:
     jedis:
       pool:
-        # 连接池中的最大空闲连接
-        max-idle: 8
-        # 连接池最大连接数（使用负值表示没有限制）
-        max-active: 64
-        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
         max-wait: 10000
-    # 连接超时时间（毫秒）
     timeout: 0
-
-  aop:
-    proxy-target-class: true
-#  cache:
-#    type:
-#      redis
 
   application:
     name: 雅拓机器学习平台
 
+#pagehelper:
+#  helperDialect: mysql
+#  reasonable: true
+#  supportMethodsArguments: true
+#  params: count=countSql
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ['httptrace', 'metrics']
+
 
 lambda-framework:
-  log4jdbc.enable: true
-
-  ##数据库连接信息
+  log4jdbc.enable: false
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/test_mls?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useAffectedRows=true&useSSL=false
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/test_mls?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useAffectedRows=true&useSSL=false
     username: root
     password: root
-    driverClassName: com.mysql.jdbc.Driver
-
-    ###################以下为druid增加的配置###########################
-    type: com.alibaba.druid.pool.DruidDataSource
-    # 下面为连接池的补充设置，应用到上面所有数据源中
-    # 初始化大小，最小，最大
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
-    # 配置获取连接等待超时的时间
-    maxWait: 60000
-    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-    timeBetweenEvictionRunsMillis: 60000
-    # 配置一个连接在池中最小生存的时间，单位是毫秒
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT 1 FROM DUAL
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    # 打开PSCache，并且指定每个连接上PSCache的大小
-    poolPreparedStatements: true
-    maxPoolPreparedStatementPerConnectionSize: 20
-    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙，此处是filter修改的地方
-    filters:
-      commons-log.connection-logger-name: stat,wall,log4j
-    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
-    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-    # 合并多个DruidDataSource的监控数据
-    useGlobalDataSourceStat: true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      connection-test-query: select 1
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      pool-name: Lambda-Framework-HikariCP
 
 
 lambda-portal:
-  # 时间类型参数在前端页面的展示格式，默认格式为 yyyy-MM-dd HH:mm:ss
-  timeFormat: yyyy-MM-dd HH:mm:ss
-  # 是否开启 AOP 日志，默认开启
+  # 是否在控制台打印 SQL
+  #showsql: false
+  # 是否异步记录用户操作日志
   openAopLog: true
+
   shiro:
-    # shiro redis缓存时长，默认1800秒
-    expireIn: 1800
-    # session 超时时间，默认1800000毫秒
-    sessionTimeout: 1800000
-    # rememberMe cookie有效时长，默认86400秒，即一天
-    cookieTimeout: 86400
-    # 免认证的路径配置，如静态资源，druid监控页面，注册页面，验证码请求等
-    anonUrl: /css/**,/js/**,/fonts/**,/img/**,/druid/**,/user/regist,/gifCode,/,/actuator/**,/test/**
-    # 登录 url
-    loginUrl: /login
-    # 登录成功后跳转的 url
-    successUrl: /index
-    # 登出 url
-    logoutUrl: /logout
-    # 未授权跳转 url
-    unauthorizedUrl: /403
-  # 验证码
-  validateCode:
-    # 宽度，默认 146px
-    width: 146
-    # 高度，默认 33px
-    height: 33
-    # 验证码字符个数，默认4个字符
-    length: 4
+    # 后端免认证接口 url
+    anonUrl: /login,/logout/**,/regist,/user/check/**
+    # token有效期，单位秒
+    jwtTimeOut: 3600
 
 lambda-workflow-engine:
   daemon:
     enable: true
     maxRunningJobs: 8
-
