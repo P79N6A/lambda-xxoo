@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class DataUtil {
@@ -84,6 +85,18 @@ public class DataUtil {
 
     public static JSONObject toJSONObject(LambdaRootModel model) {
         return DataUtil.isNotNull(model) ? model.toJSON() : null;
+    }
+
+    public static <M extends Map<K, V>, K, V extends LambdaRootModel> JSONObject toJSONObject(M models) {
+        if(DataUtil.isEmpty(models))
+            return null;
+
+        JSONObject jsonModels = new JSONObject(models.size(), true);
+        for(Map.Entry<K, V> entry : models.entrySet()) {
+            jsonModels.put(String.valueOf(entry.getKey()), entry.getValue().toJSON());
+        }
+
+        return jsonModels;
     }
 
     public static JSONArray toJSONArray(Collection<? extends LambdaRootModel> models) {
