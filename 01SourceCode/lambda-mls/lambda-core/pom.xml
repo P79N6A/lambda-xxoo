@@ -15,6 +15,10 @@
     <name>lambda-core</name>
     <url>http://maven.apache.org</url>
 
+    <properties>
+        <pagehelper.version>5.1.4</pagehelper.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.yatop.lambda</groupId>
@@ -23,8 +27,8 @@
         </dependency>
         <dependency>
             <groupId>com.yatop.lambda</groupId>
-            <artifactId>lambda-portal</artifactId>
-            <version>${yatop.lambda.portal}</version>
+            <artifactId>lambda-framework</artifactId>
+            <version>${yatop.lambda.framework}</version>
         </dependency>
 
         <!-- =========================================spring================= -->
@@ -53,12 +57,22 @@
 
         <!-- ========================= common  =============================== -->
         <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>${pagehelper.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
             <groupId>com.univocity</groupId>
