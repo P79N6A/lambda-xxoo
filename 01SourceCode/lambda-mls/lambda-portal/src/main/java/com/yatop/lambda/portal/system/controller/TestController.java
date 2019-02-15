@@ -1,9 +1,9 @@
 package com.yatop.lambda.portal.system.controller;
 
 import com.yatop.lambda.portal.common.controller.BaseController;
-import com.yatop.lambda.portal.common.domain.FebsResponse;
+import com.yatop.lambda.portal.common.domain.PortalResponse;
 import com.yatop.lambda.portal.common.domain.QueryRequest;
-import com.yatop.lambda.portal.common.exception.FebsException;
+import com.yatop.lambda.portal.common.exception.PortalException;
 import com.yatop.lambda.portal.system.domain.Test;
 import com.yatop.lambda.portal.system.service.TestService;
 import com.google.common.collect.ImmutableMap;
@@ -61,14 +61,14 @@ public class TestController extends BaseController {
      * 导入Excel数据，并批量插入 T_TEST表
      */
     @PostMapping("import")
-    public FebsResponse importExcels(@RequestParam("file") MultipartFile file) throws FebsException {
+    public PortalResponse importExcels(@RequestParam("file") MultipartFile file) throws PortalException {
         try {
             if (file.isEmpty()) {
-                throw new FebsException("导入数据为空");
+                throw new PortalException("导入数据为空");
             }
             String filename = file.getOriginalFilename();
             if (!StringUtils.endsWith(filename, ".xlsx")) {
-                throw new FebsException("只支持.xlsx类型文件导入");
+                throw new PortalException("只支持.xlsx类型文件导入");
             }
             // 开始导入操作
             long beginTimeMillis = System.currentTimeMillis();
@@ -97,11 +97,11 @@ public class TestController extends BaseController {
                     "data", data,
                     "error", error
             );
-            return new FebsResponse().data(result);
+            return new PortalResponse().data(result);
         } catch (Exception e) {
             message = "导入Excel数据失败," + e.getMessage();
             log.error(message);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
@@ -109,14 +109,14 @@ public class TestController extends BaseController {
      * 导出 Excel
      */
     @PostMapping("export")
-    public void export(HttpServletResponse response) throws FebsException {
+    public void export(HttpServletResponse response) throws PortalException {
         try {
             List<Test> list = this.testService.findTests();
             ExcelKit.$Export(Test.class, response).downXlsx(list, false);
         } catch (Exception e) {
             message = "导出Excel失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 }

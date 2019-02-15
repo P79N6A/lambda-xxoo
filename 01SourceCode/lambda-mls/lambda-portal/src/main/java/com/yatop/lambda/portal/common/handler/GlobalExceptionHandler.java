@@ -1,7 +1,7 @@
 package com.yatop.lambda.portal.common.handler;
 
-import com.yatop.lambda.portal.common.domain.FebsResponse;
-import com.yatop.lambda.portal.common.exception.FebsException;
+import com.yatop.lambda.portal.common.domain.PortalResponse;
+import com.yatop.lambda.portal.common.exception.PortalException;
 import com.yatop.lambda.portal.common.exception.LimitAccessException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -28,34 +28,34 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public FebsResponse handleException(Exception e) {
+    public PortalResponse handleException(Exception e) {
         log.error("系统内部异常，异常信息：", e);
-        return new FebsResponse().message("系统内部异常");
+        return new PortalResponse().message("系统内部异常");
     }
 
-    @ExceptionHandler(value = FebsException.class)
+    @ExceptionHandler(value = PortalException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public FebsResponse handleParamsInvalidException(FebsException e) {
+    public PortalResponse handleParamsInvalidException(PortalException e) {
         log.error("系统错误：{}", e.getMessage());
-        return new FebsResponse().message(e.getMessage());
+        return new PortalResponse().message(e.getMessage());
     }
 
     /**
      * 统一处理请求参数校验(实体对象传参)
      *
      * @param e BindException
-     * @return FebsResponse
+     * @return PortalResponse
      */
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public FebsResponse validExceptionHandler(BindException e) {
+    public PortalResponse validExceptionHandler(BindException e) {
         StringBuilder message = new StringBuilder();
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         for (FieldError error : fieldErrors) {
             message.append(error.getField()).append(error.getDefaultMessage()).append(",");
         }
         message = new StringBuilder(message.substring(0, message.length() - 1));
-        return new FebsResponse().message(message.toString());
+        return new PortalResponse().message(message.toString());
 
     }
 
@@ -63,11 +63,11 @@ public class GlobalExceptionHandler {
      * 统一处理请求参数校验(普通传参)
      *
      * @param e ConstraintViolationException
-     * @return FebsResponse
+     * @return PortalResponse
      */
     @ExceptionHandler(value = ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public FebsResponse handleConstraintViolationException(ConstraintViolationException e) {
+    public PortalResponse handleConstraintViolationException(ConstraintViolationException e) {
         StringBuilder message = new StringBuilder();
         Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
         for (ConstraintViolation<?> violation : violations) {
@@ -76,14 +76,14 @@ public class GlobalExceptionHandler {
             message.append(pathArr[1]).append(violation.getMessage()).append(",");
         }
         message = new StringBuilder(message.substring(0, message.length() - 1));
-        return new FebsResponse().message(message.toString());
+        return new PortalResponse().message(message.toString());
     }
 
     @ExceptionHandler(value = LimitAccessException.class)
     @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
-    public FebsResponse handleLimitAccessException(LimitAccessException e) {
+    public PortalResponse handleLimitAccessException(LimitAccessException e) {
         log.warn(e.getMessage());
-        return new FebsResponse().message(e.getMessage());
+        return new PortalResponse().message(e.getMessage());
     }
 
     @ExceptionHandler(value = UnauthorizedException.class)

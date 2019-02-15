@@ -1,6 +1,6 @@
 package com.yatop.lambda.portal.system.service.impl;
 
-import com.yatop.lambda.portal.common.domain.FebsConstant;
+import com.yatop.lambda.portal.common.domain.PortalConstant;
 import com.yatop.lambda.portal.common.domain.QueryRequest;
 import com.yatop.lambda.portal.common.service.CacheService;
 import com.yatop.lambda.portal.common.service.impl.BaseService;
@@ -66,9 +66,9 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         try {
             if (request.getSortField() != null) {
                 user.setSortField(request.getSortField());
-                if (StringUtils.equals(FebsConstant.ORDER_ASC, request.getSortOrder()))
+                if (StringUtils.equals(PortalConstant.ORDER_ASC, request.getSortOrder()))
                     user.setSortOrder("asc");
-                else if (StringUtils.equals(FebsConstant.ORDER_DESC, request.getSortOrder()))
+                else if (StringUtils.equals(PortalConstant.ORDER_DESC, request.getSortOrder()))
                     user.setSortOrder("desc");
             }
             return this.userMapper.findUserDetail(user);

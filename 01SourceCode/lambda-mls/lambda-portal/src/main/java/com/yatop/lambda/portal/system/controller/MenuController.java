@@ -3,7 +3,7 @@ package com.yatop.lambda.portal.system.controller;
 import com.yatop.lambda.portal.common.annotation.Log;
 import com.yatop.lambda.portal.common.controller.BaseController;
 import com.yatop.lambda.portal.common.domain.router.VueRouter;
-import com.yatop.lambda.portal.common.exception.FebsException;
+import com.yatop.lambda.portal.common.exception.PortalException;
 import com.yatop.lambda.portal.system.domain.Menu;
 import com.yatop.lambda.portal.system.manager.UserManager;
 import com.yatop.lambda.portal.system.service.MenuService;
@@ -48,53 +48,53 @@ public class MenuController extends BaseController {
     @Log("新增菜单/按钮")
     @PostMapping
     @RequiresPermissions("menu:add")
-    public void addMenu(@Valid Menu menu) throws FebsException {
+    public void addMenu(@Valid Menu menu) throws PortalException {
         try {
             this.menuService.createMenu(menu);
         } catch (Exception e) {
             message = "新增菜单/按钮失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @Log("删除菜单/按钮")
     @DeleteMapping("/{menuIds}")
     @RequiresPermissions("menu:delete")
-    public void deleteMenus(@NotBlank(message = "{required}") @PathVariable String menuIds) throws FebsException {
+    public void deleteMenus(@NotBlank(message = "{required}") @PathVariable String menuIds) throws PortalException {
         try {
             String[] ids = menuIds.split(",");
             this.menuService.deleteMeuns(ids);
         } catch (Exception e) {
             message = "删除菜单/按钮失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @Log("修改菜单/按钮")
     @PutMapping
     @RequiresPermissions("menu:update")
-    public void updateMenu(@Valid Menu menu) throws FebsException {
+    public void updateMenu(@Valid Menu menu) throws PortalException {
         try {
             this.menuService.updateMenu(menu);
         } catch (Exception e) {
             message = "修改菜单/按钮失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @PostMapping("excel")
     @RequiresPermissions("menu:export")
-    public void export(Menu menu, HttpServletResponse response) throws FebsException {
+    public void export(Menu menu, HttpServletResponse response) throws PortalException {
         try {
             List<Menu> menus = this.menuService.findMenuList(menu);
             ExcelKit.$Export(Menu.class, response).downXlsx(menus, false);
         } catch (Exception e) {
             message = "导出Excel失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 }

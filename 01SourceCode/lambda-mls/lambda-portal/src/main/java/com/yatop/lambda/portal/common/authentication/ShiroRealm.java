@@ -1,8 +1,8 @@
 package com.yatop.lambda.portal.common.authentication;
 
-import com.yatop.lambda.portal.common.domain.FebsConstant;
+import com.yatop.lambda.portal.common.domain.PortalConstant;
 import com.yatop.lambda.portal.common.service.RedisService;
-import com.yatop.lambda.portal.common.utils.FebsUtil;
+import com.yatop.lambda.portal.common.utils.PortalUtil;
 import com.yatop.lambda.portal.common.utils.HttpContextUtil;
 import com.yatop.lambda.portal.common.utils.IPUtil;
 import com.yatop.lambda.portal.system.domain.User;
@@ -76,10 +76,10 @@ public class ShiroRealm extends AuthorizingRealm {
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         String ip = IPUtil.getIpAddr(request);
 
-        String encryptToken = FebsUtil.encryptToken(token);
+        String encryptToken = PortalUtil.encryptToken(token);
         String encryptTokenInRedis = null;
         try {
-            encryptTokenInRedis = redisService.get(FebsConstant.TOKEN_CACHE_PREFIX + encryptToken + "." + ip);
+            encryptTokenInRedis = redisService.get(PortalConstant.TOKEN_CACHE_PREFIX + encryptToken + "." + ip);
         } catch (Exception ignore) {
         }
         // 如果找不到，说明已经失效
@@ -98,6 +98,6 @@ public class ShiroRealm extends AuthorizingRealm {
             throw new AuthenticationException("用户名或密码错误");
         if (!JWTUtil.verify(token, username, user.getPassword()))
             throw new AuthenticationException("token校验不通过");
-        return new SimpleAuthenticationInfo(token, token, "febs_shiro_realm");
+        return new SimpleAuthenticationInfo(token, token, "lambda_portal_shiro_realm");
     }
 }

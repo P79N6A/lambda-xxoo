@@ -1,7 +1,7 @@
 package com.yatop.lambda.portal.common.utils;
 
 import com.yatop.lambda.portal.common.authentication.JWTUtil;
-import com.yatop.lambda.portal.common.domain.FebsConstant;
+import com.yatop.lambda.portal.common.domain.PortalConstant;
 import com.yatop.lambda.portal.common.domain.QueryRequest;
 import com.yatop.lambda.portal.common.function.CacheSelector;
 import com.yatop.lambda.portal.common.service.CacheService;
@@ -16,10 +16,10 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 /**
- * FEBS工具类
+ * Portal工具类
  */
 @Slf4j
-public class FebsUtil {
+public class PortalUtil {
 
     /**
      * 缓存查询摸板，先查缓存，如果缓存查询失败再从数据库查询
@@ -64,7 +64,7 @@ public class FebsUtil {
      */
     public static String encryptToken(String token) {
         try {
-            EncryptUtil encryptUtil = new EncryptUtil(FebsConstant.TOKEN_CACHE_PREFIX);
+            EncryptUtil encryptUtil = new EncryptUtil(PortalConstant.TOKEN_CACHE_PREFIX);
             return encryptUtil.encrypt(token);
         } catch (Exception e) {
             log.info("token加密失败：", e);
@@ -80,7 +80,7 @@ public class FebsUtil {
      */
     public static String decryptToken(String encryptToken) {
         try {
-            EncryptUtil encryptUtil = new EncryptUtil(FebsConstant.TOKEN_CACHE_PREFIX);
+            EncryptUtil encryptUtil = new EncryptUtil(PortalConstant.TOKEN_CACHE_PREFIX);
             return encryptUtil.decrypt(encryptToken);
         } catch (Exception e) {
             log.info("token解密失败：", e);

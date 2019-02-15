@@ -12,7 +12,6 @@
     <artifactId>lambda-core</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
-
     <name>lambda-core</name>
     <url>http://maven.apache.org</url>
 
@@ -24,13 +23,8 @@
         </dependency>
         <dependency>
             <groupId>com.yatop.lambda</groupId>
-            <artifactId>lambda-framework</artifactId>
-            <version>${yatop.lambda.framework}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yatop.lambda</groupId>
-            <artifactId>lambda-tools</artifactId>
-            <version>${yatop.lambda.tools}</version>
+            <artifactId>lambda-portal</artifactId>
+            <version>${yatop.lambda.portal}</version>
         </dependency>
 
         <!-- =========================================spring================= -->

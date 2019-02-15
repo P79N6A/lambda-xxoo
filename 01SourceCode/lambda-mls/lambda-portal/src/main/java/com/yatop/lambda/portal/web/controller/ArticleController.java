@@ -1,8 +1,8 @@
 package com.yatop.lambda.portal.web.controller;
 
-import com.yatop.lambda.portal.common.domain.FebsConstant;
-import com.yatop.lambda.portal.common.domain.FebsResponse;
-import com.yatop.lambda.portal.common.exception.FebsException;
+import com.yatop.lambda.portal.common.domain.PortalConstant;
+import com.yatop.lambda.portal.common.domain.PortalResponse;
+import com.yatop.lambda.portal.common.exception.PortalException;
 import com.yatop.lambda.portal.common.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -18,22 +18,22 @@ public class ArticleController {
 
     @GetMapping
     @RequiresPermissions("article:view")
-    public FebsResponse queryArticle(String date) throws FebsException {
+    public PortalResponse queryArticle(String date) throws PortalException {
         String param;
         String data;
         try {
             if (StringUtils.isNotBlank(date)) {
                 param = "dev=1&date=" + date;
-                data = HttpUtil.sendSSLPost(FebsConstant.MRYW_DAY_URL, param);
+                data = HttpUtil.sendSSLPost(PortalConstant.MRYW_DAY_URL, param);
             } else {
                 param = "dev=1";
-                data = HttpUtil.sendSSLPost(FebsConstant.MRYW_TODAY_URL, param);
+                data = HttpUtil.sendSSLPost(PortalConstant.MRYW_TODAY_URL, param);
             }
-            return new FebsResponse().data(data);
+            return new PortalResponse().data(data);
         } catch (Exception e) {
             String message = "获取文章失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 }

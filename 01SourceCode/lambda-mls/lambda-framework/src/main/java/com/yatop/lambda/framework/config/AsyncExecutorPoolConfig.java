@@ -10,7 +10,7 @@ import java.util.concurrent.Executor;
 
 @Configuration
 @EnableAsync
-public class AsyncExecutorConfig {
+public class AsyncExecutorPoolConfig {
 
     @Bean
     public Executor getExecutor() {

@@ -1,6 +1,6 @@
 package com.yatop.lambda.portal.system.controller;
 
-import com.yatop.lambda.portal.common.domain.FebsResponse;
+import com.yatop.lambda.portal.common.domain.PortalResponse;
 import com.yatop.lambda.portal.common.domain.RedisInfo;
 import com.yatop.lambda.portal.common.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,9 @@ public class RedisController {
     private RedisService redisService;
 
     @GetMapping("info")
-    public FebsResponse getRedisInfo() throws Exception {
+    public PortalResponse getRedisInfo() throws Exception {
         List<RedisInfo> infoList = this.redisService.getRedisInfo();
-        return new FebsResponse().data(infoList);
+        return new PortalResponse().data(infoList);
     }
 
     @GetMapping("keysSize")

@@ -23,8 +23,8 @@ public class MyBatisConfig {
 
     @Bean("coreJdbcTemplate")
     @Qualifier("coreJdbcTemplate")
-    public JdbcTemplate coreJdbcTemplate(@Qualifier("frameworkDataSource") DataSource frameworkDataSource) {
-        return new JdbcTemplate(frameworkDataSource);
+    public JdbcTemplate coreJdbcTemplate(@Qualifier("portalDataSource") DataSource portalDataSource) {
+        return new JdbcTemplate(portalDataSource);
     }
 
     @Bean("coreSqlSessionTemplate")
@@ -35,11 +35,11 @@ public class MyBatisConfig {
 
     @Bean("coreSqlSessionFactory")
     @Qualifier("coreSqlSessionFactory")
-    public SqlSessionFactory coreSqlSessionFactory(@Qualifier("frameworkDataSource") DataSource coreDataSource) throws Exception {
+    public SqlSessionFactory coreSqlSessionFactory(@Qualifier("portalDataSource") DataSource coreDataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(coreDataSource);
         bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("com/yatop/lambda/base/sqlmapper/*.xml"));
-        bean.setPlugins(new Interceptor[]{ com.yatop.lambda.framework.config.MybatisConfig.getPageInterceptor()} );
+        bean.setPlugins(new Interceptor[]{ com.yatop.lambda.portal.common.config.MyBatisConfig.getPageInterceptor()} );
         return bean.getObject();
     }
 

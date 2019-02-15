@@ -1,9 +1,9 @@
 package com.yatop.lambda.portal.web.controller;
 
 import com.yatop.lambda.portal.common.controller.BaseController;
-import com.yatop.lambda.portal.common.domain.FebsConstant;
-import com.yatop.lambda.portal.common.domain.FebsResponse;
-import com.yatop.lambda.portal.common.exception.FebsException;
+import com.yatop.lambda.portal.common.domain.PortalConstant;
+import com.yatop.lambda.portal.common.domain.PortalResponse;
+import com.yatop.lambda.portal.common.exception.PortalException;
 import com.yatop.lambda.portal.common.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -22,50 +22,50 @@ public class MovieController extends BaseController {
     private String message;
 
     @GetMapping("hot")
-    public FebsResponse getMoiveHot() throws FebsException {
+    public PortalResponse getMoiveHot() throws PortalException {
         try {
-            String data = HttpUtil.sendSSLPost(FebsConstant.TIME_MOVIE_HOT_URL, "locationId=328");
-            return new FebsResponse().data(data);
+            String data = HttpUtil.sendSSLPost(PortalConstant.TIME_MOVIE_HOT_URL, "locationId=328");
+            return new PortalResponse().data(data);
         } catch (Exception e) {
             message = "获取热映影片信息失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @GetMapping("coming")
-    public FebsResponse getMovieComing() throws FebsException {
+    public PortalResponse getMovieComing() throws PortalException {
         try {
-            String data = HttpUtil.sendSSLPost(FebsConstant.TIME_MOVIE_COMING_URL, "locationId=328");
-            return new FebsResponse().data(data);
+            String data = HttpUtil.sendSSLPost(PortalConstant.TIME_MOVIE_COMING_URL, "locationId=328");
+            return new PortalResponse().data(data);
         } catch (Exception e) {
             message = "获取即将上映影片信息失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @GetMapping("detail")
-    public FebsResponse getDetail(@NotBlank(message = "{required}") String id) throws FebsException {
+    public PortalResponse getDetail(@NotBlank(message = "{required}") String id) throws PortalException {
         try {
-            String data = HttpUtil.sendSSLPost(FebsConstant.TIME_MOVIE_DETAIL_URL, "locationId=328&movieId=" + id);
-            return new FebsResponse().data(data);
+            String data = HttpUtil.sendSSLPost(PortalConstant.TIME_MOVIE_DETAIL_URL, "locationId=328&movieId=" + id);
+            return new PortalResponse().data(data);
         } catch (Exception e) {
             message = "获取影片详情失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @GetMapping("comments")
-    public FebsResponse getComments(@NotBlank(message = "{required}") String id) throws FebsException {
+    public PortalResponse getComments(@NotBlank(message = "{required}") String id) throws PortalException {
         try {
-            String data = HttpUtil.sendSSLPost(FebsConstant.TIME_MOVIE_COMMENTS_URL, "movieId=" + id);
-            return new FebsResponse().data(data);
+            String data = HttpUtil.sendSSLPost(PortalConstant.TIME_MOVIE_COMMENTS_URL, "movieId=" + id);
+            return new PortalResponse().data(data);
         } catch (Exception e) {
             message = "获取影片评论失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 }

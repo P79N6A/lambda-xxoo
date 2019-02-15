@@ -2,7 +2,7 @@ package com.yatop.lambda.portal.job.service.impl;
 
 import com.yatop.lambda.portal.common.domain.QueryRequest;
 import com.yatop.lambda.portal.common.service.impl.BaseService;
-import com.yatop.lambda.portal.common.utils.FebsUtil;
+import com.yatop.lambda.portal.common.utils.PortalUtil;
 import com.yatop.lambda.portal.job.dao.JobMapper;
 import com.yatop.lambda.portal.job.domain.Job;
 import com.yatop.lambda.portal.job.service.JobService;
@@ -82,7 +82,7 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
                 criteria.andCondition("date_format(CREATE_TIME,'%Y-%m-%d') <=", job.getCreateTimeTo());
             }
 
-            FebsUtil.handleSort(request, example, "create_time");
+            PortalUtil.handleSort(request, example, "create_time");
             return this.selectByExample(example);
         } catch (Exception e) {
             log.error("获取任务失败", e);

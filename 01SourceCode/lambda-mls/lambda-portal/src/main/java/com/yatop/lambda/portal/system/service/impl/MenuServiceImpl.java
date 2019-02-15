@@ -1,6 +1,6 @@
 package com.yatop.lambda.portal.system.service.impl;
 
-import com.yatop.lambda.portal.common.domain.FebsConstant;
+import com.yatop.lambda.portal.common.domain.PortalConstant;
 import com.yatop.lambda.portal.common.domain.Tree;
 import com.yatop.lambda.portal.common.service.impl.BaseService;
 import com.yatop.lambda.portal.common.utils.TreeUtil;
@@ -59,7 +59,7 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
             buildTrees(trees, menus, ids);
 
             result.put("ids", ids);
-            if (StringUtils.equals(menu.getType(), FebsConstant.TYPE_BUTTON)) {
+            if (StringUtils.equals(menu.getType(), PortalConstant.TYPE_BUTTON)) {
                 result.put("rows", trees);
             } else {
                 Tree<Menu> menuTree = TreeUtil.build(trees);

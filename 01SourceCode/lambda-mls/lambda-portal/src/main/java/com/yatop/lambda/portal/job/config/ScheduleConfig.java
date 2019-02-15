@@ -18,9 +18,9 @@ import java.util.Properties;
 public class ScheduleConfig {
 
 	@Bean
-	public SchedulerFactoryBean schedulerFactoryBean(@Qualifier("frameworkDataSource")DataSource frameworkDataSource) {
+	public SchedulerFactoryBean schedulerFactoryBean(@Qualifier("portalDataSource")DataSource portalDataSource) {
 		SchedulerFactoryBean factory = new SchedulerFactoryBean();
-		factory.setDataSource(frameworkDataSource);
+		factory.setDataSource(portalDataSource);
 
 		// quartz参数
 		Properties prop = new Properties();

@@ -2,7 +2,7 @@ package com.yatop.lambda.portal.system.controller;
 
 import com.yatop.lambda.portal.common.annotation.Log;
 import com.yatop.lambda.portal.common.domain.QueryRequest;
-import com.yatop.lambda.portal.common.exception.FebsException;
+import com.yatop.lambda.portal.common.exception.PortalException;
 import com.yatop.lambda.portal.system.domain.Dept;
 import com.yatop.lambda.portal.system.service.DeptService;
 import com.wuwenze.poi.ExcelKit;
@@ -37,53 +37,53 @@ public class DeptController {
     @Log("新增部门")
     @PostMapping
     @RequiresPermissions("dept:add")
-    public void addDept(@Valid Dept dept) throws FebsException {
+    public void addDept(@Valid Dept dept) throws PortalException {
         try {
             this.deptService.createDept(dept);
         } catch (Exception e) {
             message = "新增部门失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @Log("删除部门")
     @DeleteMapping("/{deptIds}")
     @RequiresPermissions("dept:delete")
-    public void deleteDepts(@NotBlank(message = "{required}") @PathVariable String deptIds) throws FebsException {
+    public void deleteDepts(@NotBlank(message = "{required}") @PathVariable String deptIds) throws PortalException {
         try {
             String[] ids = deptIds.split(",");
             this.deptService.deleteDepts(ids);
         } catch (Exception e) {
             message = "删除部门失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @Log("修改部门")
     @PutMapping
     @RequiresPermissions("dept:update")
-    public void updateDept(@Valid Dept dept) throws FebsException {
+    public void updateDept(@Valid Dept dept) throws PortalException {
         try {
             this.deptService.updateDept(dept);
         } catch (Exception e) {
             message = "修改部门失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @PostMapping("excel")
     @RequiresPermissions("dept:export")
-    public void export(Dept dept, QueryRequest request, HttpServletResponse response) throws FebsException {
+    public void export(Dept dept, QueryRequest request, HttpServletResponse response) throws PortalException {
         try {
             List<Dept> depts = this.deptService.findDepts(dept, request);
             ExcelKit.$Export(Dept.class, response).downXlsx(depts, false);
         } catch (Exception e) {
             message = "导出Excel失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 }

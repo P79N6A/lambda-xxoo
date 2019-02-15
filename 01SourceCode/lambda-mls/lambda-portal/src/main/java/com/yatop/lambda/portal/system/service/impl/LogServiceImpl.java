@@ -4,7 +4,7 @@ import com.yatop.lambda.portal.common.annotation.Log;
 import com.yatop.lambda.portal.common.domain.QueryRequest;
 import com.yatop.lambda.portal.common.service.impl.BaseService;
 import com.yatop.lambda.portal.common.utils.AddressUtil;
-import com.yatop.lambda.portal.common.utils.FebsUtil;
+import com.yatop.lambda.portal.common.utils.PortalUtil;
 import com.yatop.lambda.portal.system.domain.SysLog;
 import com.yatop.lambda.portal.system.service.LogService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -51,7 +51,7 @@ public class LogServiceImpl extends BaseService<SysLog> implements LogService {
                 criteria.andCondition("date_format(CREATE_TIME,'%Y-%m-%d') >=", sysLog.getCreateTimeFrom());
                 criteria.andCondition("date_format(CREATE_TIME,'%Y-%m-%d') <=", sysLog.getCreateTimeTo());
             }
-            FebsUtil.handleSort(request, example, "create_time desc");
+            PortalUtil.handleSort(request, example, "create_time desc");
             return this.selectByExample(example);
         } catch (Exception e) {
             log.error("获取系统日志失败", e);

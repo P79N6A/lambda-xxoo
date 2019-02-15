@@ -2,7 +2,7 @@ package com.yatop.lambda.portal.job.service.impl;
 
 import com.yatop.lambda.portal.common.domain.QueryRequest;
 import com.yatop.lambda.portal.common.service.impl.BaseService;
-import com.yatop.lambda.portal.common.utils.FebsUtil;
+import com.yatop.lambda.portal.common.utils.PortalUtil;
 import com.yatop.lambda.portal.job.domain.JobLog;
 import com.yatop.lambda.portal.job.service.JobLogService;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class JobLogServiceImpl extends BaseService<JobLog> implements JobLogServ
                 criteria.andCondition("date_format(CREATE_TIME,'%Y-%m-%d') <=", jobLog.getCreateTimeTo());
             }
 
-            FebsUtil.handleSort(request, example, "create_time desc");
+            PortalUtil.handleSort(request, example, "create_time desc");
             return this.selectByExample(example);
         } catch (Exception e) {
             log.error("获取调度日志信息失败", e);

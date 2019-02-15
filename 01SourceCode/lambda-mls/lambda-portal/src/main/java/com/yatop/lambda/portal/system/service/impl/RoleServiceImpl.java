@@ -2,7 +2,7 @@ package com.yatop.lambda.portal.system.service.impl;
 
 import com.yatop.lambda.portal.common.domain.QueryRequest;
 import com.yatop.lambda.portal.common.service.impl.BaseService;
-import com.yatop.lambda.portal.common.utils.FebsUtil;
+import com.yatop.lambda.portal.common.utils.PortalUtil;
 import com.yatop.lambda.portal.system.dao.RoleMapper;
 import com.yatop.lambda.portal.system.dao.RoleMenuMapper;
 import com.yatop.lambda.portal.system.domain.Role;
@@ -52,7 +52,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
                 criteria.andCondition("date_format(CREATE_TIME,'%Y-%m-%d') >=", role.getCreateTimeFrom());
                 criteria.andCondition("date_format(CREATE_TIME,'%Y-%m-%d') <=", role.getCreateTimeTo());
             }
-            FebsUtil.handleSort(request, example, "role_id");
+            PortalUtil.handleSort(request, example, "role_id");
             return this.selectByExample(example);
         } catch (Exception e) {
             log.error("获取角色信息失败", e);

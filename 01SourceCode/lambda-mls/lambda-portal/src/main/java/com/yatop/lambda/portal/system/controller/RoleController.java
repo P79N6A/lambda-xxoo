@@ -3,7 +3,7 @@ package com.yatop.lambda.portal.system.controller;
 import com.yatop.lambda.portal.common.annotation.Log;
 import com.yatop.lambda.portal.common.controller.BaseController;
 import com.yatop.lambda.portal.common.domain.QueryRequest;
-import com.yatop.lambda.portal.common.exception.FebsException;
+import com.yatop.lambda.portal.common.exception.PortalException;
 import com.yatop.lambda.portal.system.domain.Role;
 import com.yatop.lambda.portal.system.domain.RoleMenu;
 import com.yatop.lambda.portal.system.service.RoleMenuServie;
@@ -56,53 +56,53 @@ public class RoleController extends BaseController {
     @Log("新增角色")
     @PostMapping
     @RequiresPermissions("role:add")
-    public void addRole(@Valid Role role) throws FebsException {
+    public void addRole(@Valid Role role) throws PortalException {
         try {
             this.roleService.createRole(role);
         } catch (Exception e) {
             message = "新增角色失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @Log("删除角色")
     @DeleteMapping("/{roleIds}")
     @RequiresPermissions("role:delete")
-    public void deleteRoles(@NotBlank(message = "{required}") @PathVariable String roleIds) throws FebsException {
+    public void deleteRoles(@NotBlank(message = "{required}") @PathVariable String roleIds) throws PortalException {
         try {
             String[] ids = roleIds.split(",");
             this.roleService.deleteRoles(ids);
         } catch (Exception e) {
             message = "删除角色失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @Log("修改角色")
     @PutMapping
     @RequiresPermissions("role:update")
-    public void updateRole(Role role) throws FebsException {
+    public void updateRole(Role role) throws PortalException {
         try {
             this.roleService.updateRole(role);
         } catch (Exception e) {
             message = "修改角色失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @PostMapping("excel")
     @RequiresPermissions("role:export")
-    public void export(Role role, QueryRequest request, HttpServletResponse response) throws FebsException {
+    public void export(Role role, QueryRequest request, HttpServletResponse response) throws PortalException {
         try {
             List<Role> roles = this.roleService.findRoles(role, request);
             ExcelKit.$Export(Role.class, response).downXlsx(roles, false);
         } catch (Exception e) {
             message = "导出Excel失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 }

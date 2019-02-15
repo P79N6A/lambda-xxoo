@@ -52,7 +52,7 @@ public class CacheInitRunner implements CommandLineRunner {
             log.error("Lambda-Portal启动失败              ");
             if (e instanceof RedisConnectException)
                 log.error("Redis连接异常，请检查Redis连接配置并确保Redis服务已启动");
-            // 关闭 FEBS
+            // 关闭 Portal
             context.close();
         }
     }

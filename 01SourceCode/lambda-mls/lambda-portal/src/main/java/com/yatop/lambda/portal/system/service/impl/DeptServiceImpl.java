@@ -3,7 +3,7 @@ package com.yatop.lambda.portal.system.service.impl;
 import com.yatop.lambda.portal.common.domain.QueryRequest;
 import com.yatop.lambda.portal.common.domain.Tree;
 import com.yatop.lambda.portal.common.service.impl.BaseService;
-import com.yatop.lambda.portal.common.utils.FebsUtil;
+import com.yatop.lambda.portal.common.utils.PortalUtil;
 import com.yatop.lambda.portal.common.utils.TreeUtil;
 import com.yatop.lambda.portal.system.dao.DeptMapper;
 import com.yatop.lambda.portal.system.domain.Dept;
@@ -56,7 +56,7 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
             criteria.andCondition("date_format(CREATE_TIME,'%Y-%m-%d') >=", dept.getCreateTimeFrom());
             criteria.andCondition("date_format(CREATE_TIME,'%Y-%m-%d') <=", dept.getCreateTimeTo());
         }
-        FebsUtil.handleSort(request, example, "order_num");
+        PortalUtil.handleSort(request, example, "order_num");
         return this.selectByExample(example);
     }
 

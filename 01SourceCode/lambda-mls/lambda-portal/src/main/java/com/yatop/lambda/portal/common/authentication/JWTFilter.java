@@ -1,7 +1,7 @@
 package com.yatop.lambda.portal.common.authentication;
 
 import com.yatop.lambda.portal.common.properties.LambdaPortalProperties;
-import com.yatop.lambda.portal.common.utils.FebsUtil;
+import com.yatop.lambda.portal.common.utils.PortalUtil;
 import com.yatop.lambda.portal.common.utils.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -52,7 +52,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     protected boolean executeLogin(ServletRequest request, ServletResponse response) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String token = httpServletRequest.getHeader(TOKEN);
-        JWTToken jwtToken = new JWTToken(FebsUtil.decryptToken(token));
+        JWTToken jwtToken = new JWTToken(PortalUtil.decryptToken(token));
         try {
             getSubject(request, response).login(jwtToken);
             return true;

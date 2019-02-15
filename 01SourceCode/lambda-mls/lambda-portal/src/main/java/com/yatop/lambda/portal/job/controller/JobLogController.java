@@ -2,7 +2,7 @@ package com.yatop.lambda.portal.job.controller;
 
 import com.yatop.lambda.portal.common.controller.BaseController;
 import com.yatop.lambda.portal.common.domain.QueryRequest;
-import com.yatop.lambda.portal.common.exception.FebsException;
+import com.yatop.lambda.portal.common.exception.PortalException;
 import com.yatop.lambda.portal.job.domain.JobLog;
 import com.yatop.lambda.portal.job.service.JobLogService;
 import com.wuwenze.poi.ExcelKit;
@@ -36,27 +36,27 @@ public class JobLogController extends BaseController {
 
     @DeleteMapping("/{jobIds}")
     @RequiresPermissions("jobLog:delete")
-    public void deleteJobLog(@NotBlank(message = "{required}") @PathVariable String jobIds) throws FebsException {
+    public void deleteJobLog(@NotBlank(message = "{required}") @PathVariable String jobIds) throws PortalException {
         try {
             String[] ids = jobIds.split(",");
             this.jobLogService.deleteJobLogs(ids);
         } catch (Exception e) {
             message = "删除调度日志失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 
     @PostMapping("excel")
     @RequiresPermissions("jobLog:export")
-    public void export(JobLog jobLog, QueryRequest request, HttpServletResponse response) throws FebsException {
+    public void export(JobLog jobLog, QueryRequest request, HttpServletResponse response) throws PortalException {
         try {
             List<JobLog> jobLogs = this.jobLogService.findJobLogs(request, jobLog);
             ExcelKit.$Export(JobLog.class, response).downXlsx(jobLogs, false);
         } catch (Exception e) {
             message = "导出Excel失败";
             log.error(message, e);
-            throw new FebsException(message);
+            throw new PortalException(message);
         }
     }
 }

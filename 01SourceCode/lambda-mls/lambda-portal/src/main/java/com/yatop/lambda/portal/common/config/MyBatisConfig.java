@@ -1,20 +1,30 @@
 package com.yatop.lambda.portal.common.config;
 
+import com.github.pagehelper.PageInterceptor;
 import com.yatop.lambda.portal.common.interceptor.SqlStatementInterceptor;
+import com.zaxxer.hikari.HikariDataSource;
+import net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration("portalMybatisConfig")
 @EnableTransactionManagement
@@ -24,21 +34,37 @@ import javax.sql.DataSource;
 )*/
 public class MyBatisConfig {
 
+    @Value("${lambda-portal.log4jdbc.enable:false}")
+    private boolean enableLog4jdbc;
+
+    @Bean("portalDataSource")
+    @Primary
+    public DataSource portalDataSource(@Qualifier("orignalPortalDataSource") DataSource orignalPortalDataSource) {
+        if(enableLog4jdbc) {
+            return new DataSourceSpy(orignalPortalDataSource);
+        } else {
+            return orignalPortalDataSource;
+        }
+    }
+
+    @Bean("orignalPortalDataSource")
+    @ConfigurationProperties(prefix = "lambda-portal.datasource")
+    public DataSource orignalPortalDataSource(){
+        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+    }
+
     @Bean("portalJdbcTemplate")
-    @Qualifier("portalJdbcTemplate")
-    public JdbcTemplate portalJdbcTemplate(@Qualifier("frameworkDataSource") DataSource frameworkDataSource) {
-        return new JdbcTemplate(frameworkDataSource);
+    public JdbcTemplate portalJdbcTemplate(@Qualifier("portalDataSource") DataSource portalDataSource) {
+        return new JdbcTemplate(portalDataSource);
     }
 
     @Bean("portalSqlSessionTemplate")
-    @Qualifier("portalSqlSessionTemplate")
     public SqlSessionTemplate portalSqlSessionTemplate(@Qualifier("portalSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 
     @Bean("portalSqlSessionFactory")
-    @Qualifier("portalSqlSessionFactory")
-    public SqlSessionFactory portalSqlSessionFactory(@Qualifier("frameworkDataSource") DataSource portalDataSource) throws Exception {
+    public SqlSessionFactory portalSqlSessionFactory(@Qualifier("portalDataSource") DataSource portalDataSource) throws Exception {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(portalDataSource);
         bean.setTypeAliasesPackage("com.yatop.lambda.portal.system.domain,com.yatop.lambda.portal.job.domain");
@@ -48,26 +74,37 @@ public class MyBatisConfig {
         configuration.setJdbcTypeForNull(JdbcType.NULL);
         bean.setConfiguration(configuration);
 
-        bean.setPlugins(new Interceptor[]{ com.yatop.lambda.framework.config.MybatisConfig.getPageInterceptor()} );
+        bean.setPlugins(new Interceptor[]{ getPageInterceptor()} );
         return bean.getObject();
     }
 
-/*
     @Bean("portalTransactionManager")
-    public PlatformTransactionManager portalTransactionManager(@Qualifier("portalDataSource") DataSource portalDataSource) {
+    public PlatformTransactionManager platformTransactionManager(@Qualifier("portalDataSource") DataSource portalDataSource) {
         return new DataSourceTransactionManager(portalDataSource);
     }
-*/
+
+    //PageHelper: https://github.com/pagehelper/Mybatis-PageHelper/blob/v5.1.6/wikis/zh/HowToUse.md
+    static public PageInterceptor getPageInterceptor() {
+        PageInterceptor pageInterceptor = new PageInterceptor();
+        Properties properties = new Properties();
+        properties.setProperty("helperDialect", "mysql");
+        properties.setProperty("pageSizeZero", "true");
+        properties.setProperty("reasonable", "true");
+        properties.setProperty("supportMethodsArguments", "true");
+        properties.setProperty("params", "pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero");
+        pageInterceptor.setProperties(properties);
+        return pageInterceptor;
+    }
 
     /**
      * 配置 sql打印拦截器
-     * application.yml中 febs.showsql: true 时生效
+     * application.yml中 lambda-portal.showsql: true 时生效
      *
      * @return SqlStatementInterceptor
      */
     /*
     @Bean
-    @ConditionalOnProperty(name = "febs.showsql", havingValue = "true")
+    @ConditionalOnProperty(name = "lambda-portal.showsql", havingValue = "true")
     SqlStatementInterceptor sqlStatementInterceptor() {
         return new SqlStatementInterceptor();
     }

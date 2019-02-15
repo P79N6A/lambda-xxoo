@@ -3,7 +3,7 @@ package com.yatop.lambda.portal.system.manager;
 import com.yatop.lambda.portal.common.domain.router.RouterMeta;
 import com.yatop.lambda.portal.common.domain.router.VueRouter;
 import com.yatop.lambda.portal.common.service.CacheService;
-import com.yatop.lambda.portal.common.utils.FebsUtil;
+import com.yatop.lambda.portal.common.utils.PortalUtil;
 import com.yatop.lambda.portal.common.utils.TreeUtil;
 import com.yatop.lambda.portal.system.domain.Menu;
 import com.yatop.lambda.portal.system.domain.Role;
@@ -46,7 +46,7 @@ public class UserManager {
      * @return 用户基本信息
      */
     public User getUser(String username) {
-        return FebsUtil.selectCacheByTemplate(
+        return PortalUtil.selectCacheByTemplate(
                 () -> this.cacheService.getUser(username),
                 () -> this.userService.findByName(username));
     }
@@ -58,7 +58,7 @@ public class UserManager {
      * @return 角色集合
      */
     public Set<String> getUserRoles(String username) {
-        List<Role> roleList = FebsUtil.selectCacheByTemplate(
+        List<Role> roleList = PortalUtil.selectCacheByTemplate(
                 () -> this.cacheService.getRoles(username),
                 () -> this.roleService.findUserRole(username));
         return roleList.stream().map(Role::getRoleName).collect(Collectors.toSet());
@@ -71,7 +71,7 @@ public class UserManager {
      * @return 权限集合
      */
     public Set<String> getUserPermissions(String username) {
-        List<Menu> permissionList = FebsUtil.selectCacheByTemplate(
+        List<Menu> permissionList = PortalUtil.selectCacheByTemplate(
                 () -> this.cacheService.getPermissions(username),
                 () -> this.menuService.findUserPermissions(username));
         return permissionList.stream().map(Menu::getPerms).collect(Collectors.toSet());
@@ -107,7 +107,7 @@ public class UserManager {
      * @return 前端系统个性化配置
      */
     public UserConfig getUserConfig(String userId) {
-        return FebsUtil.selectCacheByTemplate(
+        return PortalUtil.selectCacheByTemplate(
                 () -> this.cacheService.getUserConfig(userId),
                 () -> this.userConfigService.findByUserId(userId));
     }
