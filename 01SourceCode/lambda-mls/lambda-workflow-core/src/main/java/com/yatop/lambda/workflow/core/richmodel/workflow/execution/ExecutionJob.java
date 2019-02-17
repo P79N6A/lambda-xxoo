@@ -15,6 +15,7 @@ import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.snapshot.Snapshot;
 
+import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     private TreeMap<Node, Long> errorNodes = new TreeMap<Node, Long>();
     private TreeMap<Node, Long> terminatedNodes = new TreeMap<Node, Long>();
 
-    public static ExecutionJob BuildExecutionJob4Create(WfExecutionJob data, WorkflowContext workflowContext, Snapshot snapShot, TreeSet<Node>[] jobContent) {
+    public static ExecutionJob BuildExecutionJob4Create(WfExecutionJob data, WorkflowContext workflowContext, Snapshot snapShot, List<TreeSet<Node>> jobContent) {
         ExecutionJob job = new ExecutionJob(data, false);
         job.snapshot = snapShot;
         job.initJobContent(workflowContext, jobContent);
@@ -80,19 +81,19 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     }
 
     @Override
-    public void clear() {
-        super.clear();
-        snapshot.clear();
+    public void clear(boolean clearData) {
+        snapshot.clear(clearData);
+        super.clear(clearData);
     }
 
-    private void initJobContent(WorkflowContext workflowContext, TreeSet<Node>[] jobContent) {
+    private void initJobContent(WorkflowContext workflowContext, List<TreeSet<Node>> jobContent) {
 
-        if(DataUtil.isNull(jobContent) || jobContent.length != 2 || DataUtil.isEmpty(jobContent[0])) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Initialize job content failed -- empty content error.", "作业内容为空", workflowContext.getWorkflow());
+        if(DataUtil.isNull(jobContent) || jobContent.size() != 2 || DataUtil.isEmpty(jobContent.get(0))) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Initialize job content failed -- empty content error.", "作业内容为空", workflowContext.getWorkflow().data());
         }
 
-        waitHeadNodes = jobContent[0];
-        waitNodes = jobContent[1];
+        waitHeadNodes = jobContent.get(0);
+        waitNodes = jobContent.get(1);
 
         for(Node node : waitHeadNodes) {
             node.changeState2Preparing();
@@ -155,7 +156,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     public void parseJobContent(WorkflowContext workflowContext) {
 
         if(DataUtil.isEmpty(this.data().getJobContent())) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse job content failed -- empty content error.", "作业内容为空", this);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse job content failed -- empty content error.", "作业内容为空", this.data());
         }
         try {
 
@@ -182,7 +183,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
 
             jsonContent.clear();
         } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse job content failed -- job content error.", "作业内容错误", e, this);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse job content failed -- job content error.", "作业内容错误", e, this.data());
         }
     }
 

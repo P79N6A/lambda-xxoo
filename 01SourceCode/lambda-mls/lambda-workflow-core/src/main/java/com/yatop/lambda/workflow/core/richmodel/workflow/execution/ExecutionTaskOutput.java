@@ -22,9 +22,9 @@ public class ExecutionTaskOutput extends RichModel<WfExecutionTaskOutput> {
     }
 
     @Override
-    public void clear() {
+    public void clear(boolean clearData) {
         charValue = null;
-        super.clear();
+        super.clear(clearData);
     }
 
     public CmptChar getCmptChar() {

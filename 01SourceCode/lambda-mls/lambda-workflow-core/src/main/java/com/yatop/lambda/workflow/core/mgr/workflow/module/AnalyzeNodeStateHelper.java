@@ -80,7 +80,7 @@ public class AnalyzeNodeStateHelper {
                     }
                     CollectionUtil.clear(warningMessages);
                 } catch (Throwable e) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter failed -- module-clazz occur error.", "节点参数校验时发生错误", e, node);
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter failed -- module-clazz occur error.", "节点参数校验时发生错误", e, node.data());
                 }
             }
         }

@@ -26,7 +26,7 @@ public class SchemaAnalyzer4CreateAndUpdate {
                     NodePortOutput upstreamDataPort = CollectionUtil.get(upstreamNonWebPorts, inputDataPort.data().getNodePortId());
                     if (DataUtil.isNotNull(upstreamDataPort)) {
                         if (!upstreamDataPort.isDataTablePort())
-                            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Schema Analyzer error -- Illegal upstream node port.", "系统数据异常，请联系管理员", upstreamDataPort, inputDataPort);
+                            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Schema Analyzer error -- Illegal upstream node port.", "系统数据异常，请联系管理员", upstreamDataPort.data(), inputDataPort.data());
 
                         //isIgnoreUpstreamAnalyzed=true，或上游端口已分析，必须输入端口的上游端口schema state不是normal时，直接更改为empty
                         if (isIgnoreUpstreamAnalyzed || upstreamDataPort.isAnalyzed()) {

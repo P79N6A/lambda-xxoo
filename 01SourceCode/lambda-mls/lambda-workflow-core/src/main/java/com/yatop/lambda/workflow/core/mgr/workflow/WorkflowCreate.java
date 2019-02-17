@@ -47,7 +47,8 @@ public class WorkflowCreate {
         Workflow richWorkflow = new Workflow(flow, experiment);
 
         //richWorkflow.copyProperties(workflowMgr.queryWorkflow(richWorkflow.data().getFlowId()));
-        richWorkflow.changeState2Draft();
+        //richWorkflow.changeState2Draft();
+        experiment.setWorkflow(richWorkflow);
         return WorkflowContext.BuildWorkflowContext4Create(experiment, operId);
     }
 

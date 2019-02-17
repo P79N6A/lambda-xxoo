@@ -3,7 +3,7 @@ package com.yatop.lambda.workflow.core.richmodel;
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.base.utils.LambdaRootModel;
 
-public abstract class RichModel<T extends LambdaRootModel> extends LambdaRootModel implements IRichModel {
+public abstract class RichModel<T extends LambdaRootModel> implements IRichModel {
 
     private T data;
 
@@ -26,22 +26,21 @@ public abstract class RichModel<T extends LambdaRootModel> extends LambdaRootMod
         return data.hashCode();
     }
 
-    @Override
     public JSONObject toJSON() {
         return this.data.toJSON();
     }
 
     @Override
-    public void clear() {
-        data.clear();
+    public void clear(boolean clearData) {
+        if(clearData) {
+            data.clear();
+        }
     }
 
-    @Override
     public void clearColoured() {
         data.clearColoured();
     }
 
-    @Override
     public boolean isColoured() {
         return data.isColoured();
     }

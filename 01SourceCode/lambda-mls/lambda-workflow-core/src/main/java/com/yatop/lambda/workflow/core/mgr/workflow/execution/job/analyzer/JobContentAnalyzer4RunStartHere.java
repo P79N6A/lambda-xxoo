@@ -14,13 +14,13 @@ import java.util.*;
 
 public class JobContentAnalyzer4RunStartHere {
 
-    protected static TreeSet<Node>[] analyzeJobContent(WorkflowContext workflowContext, Node relatedNode) {
+    protected static List<TreeSet<Node>> analyzeJobContent(WorkflowContext workflowContext, Node relatedNode) {
 
         if(DataUtil.isNull(relatedNode) || relatedNode.isWebNode())
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- no executable nodes.", "无可运行节点");
 
         if(relatedNode.isStateNotReady()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", relatedNode.data().getWarningMsg(), relatedNode);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", relatedNode.data().getWarningMsg(), relatedNode.data());
         }
 
         checkUpstreamNodeExecutionConditionReady(workflowContext, relatedNode);
@@ -34,7 +34,10 @@ public class JobContentAnalyzer4RunStartHere {
             checkUpstreamNodeExecutionConditionReady(workflowContext, waitNode, relatedNode, jobSubNodes);
         }
 
-        return new TreeSet[] {jobHeadNodes, jobSubNodes};
+        List<TreeSet<Node>> jobContent = new ArrayList<TreeSet<Node>>(2);
+        jobContent.add(jobHeadNodes);
+        jobContent.add(jobSubNodes);
+        return jobContent;
     }
 
     private static void analyzeDownstreamNodes(WorkflowContext workflowContext, Deque<Node> analyzeStack, TreeSet<Node> jobSubNodes) {
@@ -55,7 +58,7 @@ public class JobContentAnalyzer4RunStartHere {
             if(DataUtil.isNotEmpty(downstreamNodes)) {
                 for (Node downstreamNode : downstreamNodes) {
                     if(downstreamNode.isStateNotReady()) {
-                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", downstreamNode.data().getWarningMsg(), downstreamNode);
+                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", downstreamNode.data().getWarningMsg(), downstreamNode.data());
                     }
 
                     if(!CollectionUtil.contains(jobSubNodes, downstreamNode)) {
@@ -75,10 +78,10 @@ public class JobContentAnalyzer4RunStartHere {
 
                 Node upstreamNode = workflowContext.fetchNonWebUpstreamNode(inputPort);
                 if (DataUtil.isNull(upstreamNode) && inputPort.getCmptChar().isRequired()) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- required input port not connected.", currentNode.data().getWarningMsg(), currentNode);
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- required input port not connected.", currentNode.data().getWarningMsg(), currentNode.data());
                 }
                 if (DataUtil.isNotNull(upstreamNode) && !upstreamNode.isStateSuccess()) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- upstream node not executed successfully.", "[" + currentNode.data().getNodeName() + "]上游未运行成功", currentNode);
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- upstream node not executed successfully.", "[" + currentNode.data().getNodeName() + "]上游未运行成功", currentNode.data());
                 }
             }
         }
@@ -90,7 +93,7 @@ public class JobContentAnalyzer4RunStartHere {
 
                 Node upstreamNode = workflowContext.fetchNonWebUpstreamNode(inputPort);
                 if (DataUtil.isNull(upstreamNode) && inputPort.getCmptChar().isRequired()) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- required input port not connected.", currentNode.data().getWarningMsg(), currentNode);
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- required input port not connected.", currentNode.data().getWarningMsg(), currentNode.data());
                 }
                 if (DataUtil.isNotNull(upstreamNode)) {
                     if(upstreamNode.compareTo(headNode) == 0)
@@ -100,7 +103,7 @@ public class JobContentAnalyzer4RunStartHere {
                         continue;
 
                     if(!upstreamNode.isStateSuccess())
-                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- upstream node not executed successfully.", "[" + currentNode.data().getNodeName() + "]上游未运行成功", currentNode);
+                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- upstream node not executed successfully.", "[" + currentNode.data().getNodeName() + "]上游未运行成功", currentNode.data());
                 }
             }
         }

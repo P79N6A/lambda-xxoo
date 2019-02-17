@@ -14,7 +14,7 @@ import java.util.*;
 
 public class JobContentAnalyzer4RunAll {
 
-    protected static TreeSet<Node>[] analyzeJobContent(WorkflowContext workflowContext) {
+    protected static List<TreeSet<Node>> analyzeJobContent(WorkflowContext workflowContext) {
 
         //TODO 改为简单点，直接在search node过程中构建wait-head-nodes和wait-nodes ?
 
@@ -31,7 +31,10 @@ public class JobContentAnalyzer4RunAll {
 
         TreeSet<Node> jobSubNodes = new TreeSet<Node>();
         analyzeDownstreamNodes(workflowContext, analyzeStack, jobSubNodes);
-        return new TreeSet[] {jobHeadNodes, jobSubNodes};
+        List<TreeSet<Node>> jobContent = new ArrayList<TreeSet<Node>>(2);
+        jobContent.add(jobHeadNodes);
+        jobContent.add(jobSubNodes);
+        return jobContent;
     }
 
     private static void analyzeDownstreamNodes(WorkflowContext workflowContext, Deque<Node> analyzeStack, TreeSet<Node> jobSubNodes) {
@@ -52,7 +55,7 @@ public class JobContentAnalyzer4RunAll {
             if(DataUtil.isNotEmpty(downstreamNodes)) {
                 for (Node downstreamNode : downstreamNodes) {
                     if(downstreamNode.isStateNotReady()) {
-                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", downstreamNode.data().getWarningMsg(), downstreamNode);
+                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", downstreamNode.data().getWarningMsg(), downstreamNode.data());
                     }
 
                     if(!isUpstreamNodeExecutionConditionReady(workflowContext, downstreamNode))
@@ -92,7 +95,7 @@ public class JobContentAnalyzer4RunAll {
         List<Node> headNodes = new ArrayList<Node>();
         for(Node node : workflowContext.getNodes()) {
             if(node.isStateNotReady()) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", node.data().getWarningMsg(), node);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", node.data().getWarningMsg(), node.data());
             }
 
             if(node.isHeadNode() && !node.isWebNode()) {

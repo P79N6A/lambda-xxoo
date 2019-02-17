@@ -27,16 +27,16 @@ public class Component extends RichModel<CfComponent> {
     }
 
     @Override
-    public void clear() {
+    public void clear(boolean clearData) {
         algorithm = null;
         input = null;
         output = null;
         execution = null;
         optimizeExecution = null;
         parameter = null;
-        CollectionUtil.enhancedClear(charValues);
+        CollectionUtil.enhancedClear(charValues, clearData);
         charValues = null;
-        super.clear();
+        super.clear(clearData);
     }
 
     public boolean isWebComponent() {

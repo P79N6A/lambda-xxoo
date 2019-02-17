@@ -90,7 +90,7 @@ public class SchemaAnalyzerHelper {
                         }
                         CollectionUtil.clear(outSchemas);
                     } catch (Exception e) {
-                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze node data port schema failed -- module-clazz occur error.", "工作流组件分析节点数据端口schema时发生错误", e, node);
+                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze node data port schema failed -- module-clazz occur error.", "工作流组件分析节点数据端口schema时发生错误", e, node.data());
                     }
                 } else {
                     node.changeSchemas2Empty();

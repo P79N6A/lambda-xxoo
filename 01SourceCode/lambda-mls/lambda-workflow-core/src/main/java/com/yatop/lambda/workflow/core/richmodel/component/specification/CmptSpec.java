@@ -18,12 +18,12 @@ public class CmptSpec extends RichModel<CfCmptSpec> {
     }
 
     @Override
-    public void clear() {
+    public void clear(boolean clearData) {
         CollectionUtil.clear(cmptChars);
         cmptChars = null;
-        CollectionUtil.enhancedClear(charValues);
+        CollectionUtil.enhancedClear(charValues, clearData);
         charValues = null;
-        super.clear();
+        super.clear(clearData);
     }
 
     public int cmptCharCount() {

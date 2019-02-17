@@ -23,10 +23,10 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
     }
 
     @Override
-    public void clear() {
+    public void clear(boolean clearData) {
         node = null;
-        CollectionUtil.enhancedClear(outputs);
-        super.clear();
+        CollectionUtil.enhancedClear(outputs, clearData);
+        super.clear(clearData);
     }
 
     public void flush(String operId) {

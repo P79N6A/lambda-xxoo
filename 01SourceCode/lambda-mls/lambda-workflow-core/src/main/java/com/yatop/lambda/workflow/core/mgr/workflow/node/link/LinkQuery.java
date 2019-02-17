@@ -37,7 +37,7 @@ public class LinkQuery {
         NodePortOutput outputNodePort = workflowContext.fetchUpstreamPort(richNodeLink);
         NodePortInput inputNodePort = workflowContext.fetchDownstreamPort(richNodeLink);
         if(!outputNodePort.matchTargetInputPort(inputNodePort)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- source node port vs destination node port were mismatched", "链接信息错误", outputNodePort, inputNodePort);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- source node port vs destination node port were mismatched", "链接信息错误", outputNodePort.data(), inputNodePort.data());
         }
 
         workflowContext.putLink(richNodeLink);

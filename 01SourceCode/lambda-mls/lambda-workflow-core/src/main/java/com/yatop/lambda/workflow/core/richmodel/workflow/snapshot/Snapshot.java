@@ -89,11 +89,12 @@ public class Snapshot extends RichModel<WfSnapshot> {
     }
 
     @Override
-    public void clear() {
+    public void clear(boolean clearData) {
         workflow = null;
         CollectionUtil.clear(nodes);
         CollectionUtil.clear(links);
         //CollectionUtil.clear(globalParameters);
+        super.clear(clearData);
     }
 
     public void syncSnapshot2WorkflowContext(WorkflowContext workflowContext) {
@@ -230,7 +231,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
     private void parseSnapshotContent(Project simulationProject) {
 
         if(DataUtil.isEmpty(this.data().getSnapshotContent())) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse snapshot content failed -- empty content error.", "快照内容为空", this);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse snapshot content failed -- empty content error.", "快照内容为空", this.data());
         }
 
         Project project = DataUtil.isNotNull(simulationProject) ? simulationProject : ProjectHelper.queryProject(this.data().getOwnerProjectId());
@@ -316,7 +317,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
 
             jsonContent.clear();
         } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse snapshot content failed -- snapshot content error.", "快照内容错误", e, this);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse snapshot content failed -- snapshot content error.", "快照内容错误", e, this.data());
         }
     }
 

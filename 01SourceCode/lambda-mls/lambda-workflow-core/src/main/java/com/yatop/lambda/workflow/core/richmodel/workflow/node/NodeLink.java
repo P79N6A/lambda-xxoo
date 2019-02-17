@@ -11,14 +11,9 @@ public class NodeLink extends RichModel<WfFlowNodeLink> implements Comparable<No
 
     public NodeLink(WfFlowNodeLink data) {
         super(data);
-        this.override = false;
-        this.deleted = false;
+        //this.override = false;
+        //this.deleted = false;
         this.clearColoured();
-    }
-
-    @Override
-    public void clear() {
-        super.clear();
     }
 
     @Override

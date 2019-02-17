@@ -38,7 +38,7 @@ public class NodePortQuery {
 
             List<WfFlowNodePort> nodePortList = nodePortMgr.queryNodePortByNodeId(node.data().getNodeId());
             if (DataUtil.isEmpty(nodePortList)) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- node port list empty.", "节点端口信息缺失", node);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- node port list empty.", "节点端口信息缺失", node.data());
             }
 
             for(WfFlowNodePort nodePort : nodePortList) {
@@ -68,7 +68,7 @@ public class NodePortQuery {
             }
 
             if(module.inputPortCount() != node.inputNodePortCount() || module.outputPortCount() != node.outputNodePortCount()) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module-port vs node-port inconsistent.", "节点端口信息错误", node);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module-port vs node-port inconsistent.", "节点端口信息错误", node.data());
             }
 
             if(!workflowContext.isLoadDataPortSchema())

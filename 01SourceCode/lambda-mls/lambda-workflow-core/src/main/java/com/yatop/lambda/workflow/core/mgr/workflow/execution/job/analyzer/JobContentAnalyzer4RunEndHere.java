@@ -14,13 +14,13 @@ import java.util.*;
 
 public class JobContentAnalyzer4RunEndHere {
 
-    protected static TreeSet<Node>[] analyzeJobContent(WorkflowContext workflowContext, Node relatedNode) {
+    protected static List<TreeSet<Node>> analyzeJobContent(WorkflowContext workflowContext, Node relatedNode) {
 
         if(DataUtil.isNull(relatedNode) || relatedNode.isWebNode())
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- no executable nodes.", "无可运行节点");
 
         if(relatedNode.isStateNotReady()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", relatedNode.data().getWarningMsg(), relatedNode);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", relatedNode.data().getWarningMsg(), relatedNode.data());
         }
 
 
@@ -37,7 +37,10 @@ public class JobContentAnalyzer4RunEndHere {
 
         TreeSet<Node> jobSubNodes = new TreeSet<Node>();
         analyzeUpstreamNodes(workflowContext, analyzeStack, jobHeadNodes, jobSubNodes);
-        return new TreeSet[] {jobHeadNodes, jobSubNodes};
+        List<TreeSet<Node>> jobContent = new ArrayList<TreeSet<Node>>(2);
+        jobContent.add(jobHeadNodes);
+        jobContent.add(jobSubNodes);
+        return jobContent;
     }
 
     private static void analyzeUpstreamNodes(WorkflowContext workflowContext, Deque<Node> analyzeStack, TreeSet<Node> jobHeadNodes, TreeSet<Node> jobSubNodes) {
@@ -61,7 +64,7 @@ public class JobContentAnalyzer4RunEndHere {
             }
 
             if(DataUtil.isNull(upstreamNode) || upstreamNode.isStateNotReady()) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", upstreamNode.data().getWarningMsg(), upstreamNode);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", upstreamNode.data().getWarningMsg(), upstreamNode.data());
             }
 
             if(upstreamNode.isHeadNode()) {

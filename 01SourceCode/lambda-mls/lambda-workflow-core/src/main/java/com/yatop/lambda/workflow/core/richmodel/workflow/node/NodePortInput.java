@@ -15,7 +15,7 @@ public class NodePortInput extends RichModel<WfFlowNodePort> implements Comparab
     public NodePortInput(WfFlowNodePort data, ModulePort modulePort) {
         super(data);
         this.modulePort = modulePort;
-        this.analyzed = false;
+        //this.analyzed = false;
     }
 
     @Override
@@ -24,9 +24,9 @@ public class NodePortInput extends RichModel<WfFlowNodePort> implements Comparab
     }
 
     @Override
-    public void clear() {
+    public void clear(boolean clearData) {
         modulePort = null;
-        super.clear();
+        super.clear(clearData);
     }
 
     public ModulePort getModulePort() {

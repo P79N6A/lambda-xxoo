@@ -14,20 +14,23 @@ import java.util.*;
 
 public class JobContentAnalyzer4RunThisNode {
 
-    protected static TreeSet<Node>[] analyzeJobContent(WorkflowContext workflowContext, Node relatedNode) {
+    protected static List<TreeSet<Node>> analyzeJobContent(WorkflowContext workflowContext, Node relatedNode) {
 
         if(DataUtil.isNull(relatedNode) || relatedNode.isWebNode())
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- no executable nodes.", "无可运行节点");
 
         if(relatedNode.isStateNotReady()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", relatedNode.data().getWarningMsg(), relatedNode);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", relatedNode.data().getWarningMsg(), relatedNode.data());
         }
 
         checkUpstreamNodeExecutionConditionReady(workflowContext, relatedNode);
 
         TreeSet<Node> jobHeadNodes = new TreeSet<Node>() {{ add(relatedNode); }};
         TreeSet<Node> jobSubNodes = new TreeSet<Node>();
-        return new TreeSet[] {jobHeadNodes, jobSubNodes};
+        List<TreeSet<Node>> jobContent = new ArrayList<TreeSet<Node>>(2);
+        jobContent.add(jobHeadNodes);
+        jobContent.add(jobSubNodes);
+        return jobContent;
     }
 
     private static void checkUpstreamNodeExecutionConditionReady(WorkflowContext workflowContext, Node currentNode) {
@@ -36,10 +39,10 @@ public class JobContentAnalyzer4RunThisNode {
 
                 Node upstreamNode = workflowContext.fetchNonWebUpstreamNode(inputPort);
                 if (DataUtil.isNull(upstreamNode) && inputPort.getCmptChar().isRequired()) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- required input port not connected.", currentNode.data().getWarningMsg(), currentNode);
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- required input port not connected.", currentNode.data().getWarningMsg(), currentNode.data());
                 }
                 if (DataUtil.isNotNull(upstreamNode) && !upstreamNode.isStateSuccess()) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- upstream node not executed successfully.", "[" + currentNode.data().getNodeName() + "]上游未运行成功", currentNode);
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- upstream node not executed successfully.", "[" + currentNode.data().getNodeName() + "]上游未运行成功", currentNode.data());
                 }
             }
         }

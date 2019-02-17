@@ -28,13 +28,13 @@ public class CmptChar extends RichModel<CfCmptChar> implements Comparable<CmptCh
     }
 
     @Override
-    public void clear() {
+    public void clear(boolean clearData) {
         type = null;
-        CollectionUtil.enhancedClear(enums);
+        CollectionUtil.enhancedClear(enums, clearData);
         enums = null;
-        CollectionUtil.enhancedClear(enumsOrderbySequence);
+        CollectionUtil.enhancedClear(enumsOrderbySequence, clearData);
         enumsOrderbySequence = null;
-        super.clear();
+        super.clear(clearData);
     }
 
     public CmptCharType getType() {

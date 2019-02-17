@@ -55,7 +55,7 @@ public class WorkflowContext implements IWorkContext {
     private Deque<NodeLink> analyzeLinks = new LinkedList<NodeLink>();  //待分析节点链接，key=linkId
     private String operId;
 
-    //工作流新建使用（无需加载）
+    //工作流创建使用（无需加载）
     public static WorkflowContext BuildWorkflowContext4Create(Experiment experiment, String operId) {
         WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
         context.initialize(false);
@@ -72,13 +72,11 @@ public class WorkflowContext implements IWorkContext {
 
     //工作流编辑使用（创建链接、更新节点参数，全量预加载）
     public static WorkflowContext BuildWorkflowContext4EditPreload(Experiment experiment, String operId) {
-        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
-        context.initialize(true);
-        return context;
+        return BuildWorkflowContext4FullContent(experiment, operId);
     }
 
     //工作流编辑使用（验证链接，增量加载）
-    public static WorkflowContext BuildWorkflowContext4EditValidateLink(Experiment experiment, String operId) {
+    public static WorkflowContext BuildWorkflowContext4ValidateLink(Experiment experiment, String operId) {
         WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
         context.lazyLoadMode = true;
         context.enableFlushWorkflow = false;
@@ -88,8 +86,17 @@ public class WorkflowContext implements IWorkContext {
         return context;
     }
 
-    //工作流查询使用，用于实验图形查询（全量预加载）
-    public static WorkflowContext BuildWorkflowContext4OnlyGraph(Experiment experiment, String operId) {
+    //工作流编辑使用，用于查询节点参数（增量加载）
+    public static WorkflowContext BuildWorkflowContext4QueryParameter(Experiment experiment, String operId) {
+        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
+        context.enableFlushWorkflow = false;
+        context.loadDataPortSchema = false;
+        context.initialize(false);
+        return context;
+    }
+
+    //工作流编辑使用，用于实验图形查询（全量预加载）
+    public static WorkflowContext BuildWorkflowContext4QueryGraph(Experiment experiment, String operId) {
         WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
         context.enableFlushWorkflow = false;
         context.loadNodeParameter = false;
@@ -186,27 +193,40 @@ public class WorkflowContext implements IWorkContext {
 
     @Override
     public void clear() {
+        clear(false, true);
+    }
+
+    public void clearAll() {
+        clear(true, true);
+    }
+
+    public void clear(boolean clearData, boolean clearNodeContent) {
+        workflow.clear(clearData);
         workflow = null;
         operId = null;
-        CollectionUtil.enhancedClear(nodes);
-        CollectionUtil.enhancedClear(links);
+        if(clearNodeContent) {
+            CollectionUtil.enhancedClear(nodes, clearData);
+        } else {
+           CollectionUtil.clear(nodes);
+        }
+        CollectionUtil.enhancedClear(links, clearData);
         CollectionUtil.clear(inputLinks);
         CollectionUtil.clear(outputLinks);
         CollectionUtil.clear(inputPorts);
         CollectionUtil.clear(outputPorts);
         //CollectionUtil.clear(globalParameters);
 
-        CollectionUtil.enhancedClear(dataWarehouses);
+        CollectionUtil.enhancedClear(dataWarehouses, clearData);
         CollectionUtil.clear(dataWarehousesOrderByCode);
-        CollectionUtil.enhancedClear(modelWarehouses);
+        CollectionUtil.enhancedClear(modelWarehouses, clearData);
 
         if(DataUtil.isNotNull(currentJob)) {
-            currentJob.clear();
+            currentJob.clear(clearData);
             currentJob = null;
         }
 
-        CollectionUtil.enhancedClear(jobs);
-        CollectionUtil.enhancedClear(tasks);
+        CollectionUtil.enhancedClear(jobs, clearData);
+        CollectionUtil.enhancedClear(tasks, clearData);
 
         CollectionUtil.clear(deleteNodes);
         CollectionUtil.clear(deleteLinks);

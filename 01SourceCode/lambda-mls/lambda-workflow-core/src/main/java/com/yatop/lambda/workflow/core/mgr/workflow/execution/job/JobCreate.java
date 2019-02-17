@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.TreeSet;
+import java.util.List;
 
 @Service
 public class JobCreate {
@@ -34,8 +35,8 @@ public class JobCreate {
 
     private ExecutionJob createJob(WorkflowContext workflowContext, JobTypeEnum jobType, Node relatedNode, Date jobTime) {
 
-        TreeSet<Node>[] jobContent = JobContentAnalyzer.analyzeJobContent(workflowContext, jobType, relatedNode);
-        if(DataUtil.isNull(jobContent) || jobContent.length != 2 || DataUtil.isEmpty(jobContent[0]))  {
+        List<TreeSet<Node>> jobContent = JobContentAnalyzer.analyzeJobContent(workflowContext, jobType, relatedNode);
+        if(DataUtil.isNull(jobContent) || jobContent.size() != 2 || DataUtil.isEmpty(jobContent.get(0)))  {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job content failed -- no executable nodes.", "无可运行节点");
         }
 
@@ -80,7 +81,7 @@ public class JobCreate {
     public ExecutionJob createJob4RunStartHere(WorkflowContext workflowContext, Node relatedNode) {
 
         if(DataUtil.isNull(relatedNode))  {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job failed -- related node missing.", "运行关联节点确实");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job failed -- related node missing.", "运行关联节点缺失");
         }
 
         return createJob(workflowContext, JobTypeEnum.RUN_START_HERE, relatedNode, null);
@@ -89,7 +90,7 @@ public class JobCreate {
     public ExecutionJob createJob4RunEndHere(WorkflowContext workflowContext, Node relatedNode) {
 
         if(DataUtil.isNull(relatedNode))  {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job failed -- related node missing.", "运行关联节点确实");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job failed -- related node missing.", "运行关联节点缺失");
         }
 
         return createJob(workflowContext, JobTypeEnum.RUN_END_HERE, relatedNode, null);
@@ -98,7 +99,7 @@ public class JobCreate {
     public ExecutionJob createJob4RunThisNode(WorkflowContext workflowContext, Node relatedNode) {
 
         if(DataUtil.isNull(relatedNode))  {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job failed -- related node missing.", "运行关联节点确实");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job failed -- related node missing.", "运行关联节点缺失");
         }
 
         return createJob(workflowContext, JobTypeEnum.RUN_THIS_NODE, relatedNode, null);

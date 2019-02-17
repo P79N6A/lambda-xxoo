@@ -1,7 +1,9 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node.parameter;
 
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
+import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.mgr.workflow.module.AnalyzeNodeStateHelper;
@@ -35,8 +37,7 @@ public class ParameterCharValueUpdate {
                 return parameterCreate.createParameter(workflowContext, node, targetParameter.getCmptChar(), charValueText);
             }
         } else {
-            //TODO throw exception ???
-            return null;
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node parameter failed -- error source-level.", "节点参数来源级别不允许更新", node.data(), targetParameter.data());
         }
     }
 
@@ -54,7 +55,7 @@ public class ParameterCharValueUpdate {
                 break;
             }
             default:
-                //TODO throw exception ???
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node parameter failed -- error spec-type.", "节点参数规格类型不允许更新", node.data(), targetParameter.data());
         }
         workflowContext.doneUpdateNodeParameter(node, targetParameter);
     }

@@ -126,13 +126,6 @@ public class DataUtil {
         return !DataUtil.isEmpty(map);
     }
 
-    public static <D extends LambdaRootModel> void clear(D data) {
-        if(DataUtil.isNull(data))
-            return;
-
-        data.clear();
-    }
-
     public static String format(String message, LambdaRootModel m1) {
         return String.format("%s\n%s",message, DataUtil.prettyFormat(m1));
     }

@@ -6,11 +6,13 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContextHelper;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+
+import java.util.List;
 import java.util.TreeSet;
 
 public class JobContentAnalyzer {
 
-    public static TreeSet<Node>[] analyzeJobContent(WorkflowContext workflowContext, JobTypeEnum jobType, Node relatedNode) {
+    public static List<TreeSet<Node>> analyzeJobContent(WorkflowContext workflowContext, JobTypeEnum jobType, Node relatedNode) {
 
         if(WorkflowContextHelper.existDirectedCyclicGraph(workflowContext)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- exists directed cyclic graph.", "存在循环图");

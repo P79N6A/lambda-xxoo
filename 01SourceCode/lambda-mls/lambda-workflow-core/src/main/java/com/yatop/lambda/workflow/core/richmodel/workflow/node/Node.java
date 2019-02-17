@@ -40,8 +40,8 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     public Node(WfFlowNode data, Module module) {
         super(data);
         this.module = module;
-        this.deleted = false;
-        this.analyzed = false;
+        //this.deleted = false;
+        //this.analyzed = false;
     }
 
     @Override
@@ -50,16 +50,16 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     }
 
     @Override
-    public void clear() {
+    public void clear(boolean clearData) {
         module = null;
-        CollectionUtil.enhancedClear(parameters);
-        CollectionUtil.enhancedClear(optimizeParameters);
-        CollectionUtil.enhancedClear(inputNodePorts);
+        CollectionUtil.enhancedClear(parameters, clearData);
+        CollectionUtil.enhancedClear(optimizeParameters, clearData);
+        CollectionUtil.enhancedClear(inputNodePorts, clearData);
         CollectionUtil.clear(inputNodePortsOrderBySequence);
-        CollectionUtil.enhancedClear(outputNodePorts);
+        CollectionUtil.enhancedClear(outputNodePorts, clearData);
         CollectionUtil.clear(outputNodePortsOrderBySequence);
-      //CollectionUtil.enhancedClear(globalParameters);
-        super.clear();
+      //CollectionUtil.enhancedClear(globalParameters, clearData);
+        super.clear(clearData);
     }
 
     public void flush(boolean flushNodeParameter, boolean flushDataPortSchema, String operId) {

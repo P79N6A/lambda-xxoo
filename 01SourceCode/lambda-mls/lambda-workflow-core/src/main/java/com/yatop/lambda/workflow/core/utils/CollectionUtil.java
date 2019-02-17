@@ -54,12 +54,13 @@ public class CollectionUtil {
         map.clear();
     }
 
-    public static <M extends Map<K, V>, K, V extends IRichModel> void enhancedClear(M map) {
+    public static <M extends Map<K, V>, K, V extends IRichModel> void enhancedClear(M map, boolean clearData) {
+
         if(DataUtil.isNull(map) || map.isEmpty())
             return;
 
         for(Map.Entry<K, V> entry : map.entrySet()) {
-            entry.getValue().clear();
+            entry.getValue().clear(clearData);
         }
 
         map.clear();
@@ -150,12 +151,12 @@ public class CollectionUtil {
         list.add(value);
     }
 
-    public static <L extends List<V>, V extends IRichModel> void enhancedClear(L list) {
+    public static <L extends List<V>, V extends IRichModel> void enhancedClear(L list, boolean clearData) {
         if(DataUtil.isEmpty(list))
             return;
 
         for(IRichModel model : list) {
-            model.clear();
+            model.clear(clearData);
         }
 
         list.clear();

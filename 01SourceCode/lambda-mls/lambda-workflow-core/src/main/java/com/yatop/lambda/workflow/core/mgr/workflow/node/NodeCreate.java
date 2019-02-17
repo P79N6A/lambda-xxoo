@@ -34,7 +34,7 @@ public class NodeCreate {
         Workflow workflow = workflowContext.getWorkflow();
         Long flowMaxNodes = SystemParameterUtil.find4Long(SystemParameterEnum.WK_FLOW_MAX_NODES);
         if(workflow.data().getNodeCount() + 1 > flowMaxNodes) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node failed -- number of nodes can't exceed more then WK_FLOW_MAX_NODES.", "画布节点数量不能超过" + flowMaxNodes, workflow);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node failed -- number of nodes can't exceed more then WK_FLOW_MAX_NODES.", "画布节点数量不能超过" + flowMaxNodes, workflow.data());
         }
 
         WfFlowNode node = new WfFlowNode();

@@ -80,39 +80,27 @@ public class ComponentConfig implements InitializingBean {
     private HashMap<Integer, CmptCharType> ALL_PORT_CHARACTERISTIC_TYPES = new HashMap<Integer, CmptCharType>(); //计算组件绑定到端口的特征类型
 
     public CmptAlgorithm getAlgorithm(Long algorithmId) {
-        if(DataUtil.isNull(algorithmId))
-            return null;
-        return ALL_ALGORITHMS.get(algorithmId);
+        return CollectionUtil.get(ALL_ALGORITHMS, algorithmId);
     }
 
     public Component getComponent(String cmptId) {
-        if(DataUtil.isEmpty(cmptId))
-            return null;
-        return ALL_COMPONENTS.get(cmptId);
+        return CollectionUtil.get(ALL_COMPONENTS, cmptId);
     }
 
     public CmptSpec getSpecification(String specId) {
-        if(DataUtil.isEmpty(specId))
-            return null;
-        return ALL_SPECIFICATIONS.get(specId);
+        return CollectionUtil.get(ALL_SPECIFICATIONS, specId);
     }
 
     public CmptChar getCharacteristic(String charId) {
-        if(DataUtil.isEmpty(charId))
-            return null;
-        return ALL_CHARACTERISTICS.get(charId);
+        return CollectionUtil.get(ALL_CHARACTERISTICS, charId);
     }
 
     public CmptCharType getCharacteristicType(Integer typeId) {
-        if(DataUtil.isNull(typeId))
-            return null;
-        return ALL_CHARACTERISTIC_TYPES.get(typeId);
+        return CollectionUtil.get(ALL_CHARACTERISTIC_TYPES, typeId);
     }
 
     public CmptCharType getPortCharacteristicType(Integer typeId) {
-        if(DataUtil.isNull(typeId))
-            return null;
-        return ALL_PORT_CHARACTERISTIC_TYPES.get(typeId);
+        return CollectionUtil.get(ALL_PORT_CHARACTERISTIC_TYPES, typeId);
     }
 
     public List<CmptCharType> getPortCharacteristicTypes() {
@@ -521,7 +509,7 @@ public class ComponentConfig implements InitializingBean {
             if(component.getExecution().cmptCharCount()> 0) {
                 for (CmptChar cmptChar : component.getExecution().getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
-                        logger.error(String.format("Check execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(cmptChar)));
+                        logger.error(String.format("Check execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
                         System.exit(-1);
                     }
                 }
@@ -531,7 +519,7 @@ public class ComponentConfig implements InitializingBean {
             if(component.getOptimizeExecution().cmptCharCount()> 0) {
                 for (CmptChar cmptChar : component.getOptimizeExecution().getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
-                        logger.error(String.format("Check optimize execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(cmptChar)));
+                        logger.error(String.format("Check optimize execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
                         System.exit(-1);
                     }
                 }
@@ -541,7 +529,7 @@ public class ComponentConfig implements InitializingBean {
             if(component.getParameter().cmptCharCount()> 0) {
                 for (CmptChar cmptChar : component.getParameter().getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
-                        logger.error(String.format("Check parameter config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(cmptChar)));
+                        logger.error(String.format("Check parameter config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
                         System.exit(-1);
                     }
                 }

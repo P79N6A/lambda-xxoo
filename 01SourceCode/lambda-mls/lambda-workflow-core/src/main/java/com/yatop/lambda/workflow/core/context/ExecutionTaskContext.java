@@ -28,7 +28,7 @@ public class ExecutionTaskContext implements IWorkContext {
         workflowContext = null;
         task = null;
         CollectionUtil.clear(inputCharValues);
-        CollectionUtil.enhancedClear(execCharValues);
+        CollectionUtil.enhancedClear(execCharValues, true);
     }
 
     public void flush() {

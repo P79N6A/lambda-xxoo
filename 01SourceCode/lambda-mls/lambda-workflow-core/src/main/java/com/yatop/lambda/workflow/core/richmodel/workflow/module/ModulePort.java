@@ -17,9 +17,9 @@ public class ModulePort extends RichModel<WfModulePort> {
     }
 
     @Override
-    public void clear() {
+    public void clear(boolean clearData) {
         cmptChar = null;
-        super.clear();
+        super.clear(clearData);
     }
 
     public CmptChar getCmptChar() {

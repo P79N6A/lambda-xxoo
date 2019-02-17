@@ -28,7 +28,7 @@ public class LinkCreate {
     public NodeLink createLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodePortOutput srcNodePort, NodePortInput dstNodePort) {
 
         if(!linkValidate.validateLink(workflowContext, srcNode, dstNode, srcNodePort, dstNodePort)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- validation failed for establishing link.", "输出端口和输入端口间链接建立验证失败", srcNodePort, dstNodePort);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- validation failed for establishing link.", "输出端口和输入端口间链接建立验证失败", srcNodePort.data(), dstNodePort.data());
         }
 
         WfFlowNodeLink nodeLink = new WfFlowNodeLink();
@@ -48,7 +48,7 @@ public class LinkCreate {
         workflowContext.doneCreateLink(richNodeLink);
 
         if(WorkflowContextHelper.existDirectedCyclicGraph(workflowContext)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- Create link will make workflow exists directed cyclic graph..", "新建链接将产生有向循环图", srcNodePort, dstNodePort);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- Create link will make workflow exists directed cyclic graph..", "新建链接将产生有向循环图", srcNodePort.data(), dstNodePort.data());
         }
         return richNodeLink;
     }
@@ -59,12 +59,12 @@ public class LinkCreate {
 
         NodePortOutput srcNodePort = srcNode.getOutputNodePort(srcNodePortId);
         if(DataUtil.isNull(srcNodePort)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- source node port info missing.", "输出端口信息缺失", srcNode);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- source node port info missing.", "输出端口信息缺失", srcNode.data());
         }
 
         NodePortInput dstNodePort = srcNode.getInputNodePort(dstNodePortId);
         if(DataUtil.isNull(dstNodePort)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- destination node port info missing.", "输入端口信息缺失", dstNode);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- destination node port info missing.", "输入端口信息缺失", dstNode.data());
         }
 
         return createLink(workflowContext, srcNode, dstNode, srcNodePort, dstNodePort);

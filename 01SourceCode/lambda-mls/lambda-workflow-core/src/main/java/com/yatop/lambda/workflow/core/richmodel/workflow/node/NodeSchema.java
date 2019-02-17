@@ -42,12 +42,13 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
     }
 
     @Override
-    public void clear() {
-        DataUtil.clear(jsonObject);
+    public void clear(boolean clearData) {
+        if(DataUtil.isNotNull(jsonObject))
+            jsonObject.clear(clearData);
         jsonObject = null;
-        CollectionUtil.enhancedClear(fieldAttributes);
+        CollectionUtil.enhancedClear(fieldAttributes, clearData);
         fieldAttributes = null;
-        super.clear();
+        super.clear(clearData);
     }
 
     public CmptChar getCmptChar() {
@@ -58,7 +59,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
         if(DataUtil.isNull(jsonObject)) {
             jsonObject = SchemaHelper.queryFieldAttributes(this.data().getObjectId());
             if(DataUtil.isNull(jsonObject)){
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- json object data missing.", "节点数据输出端口schema信息错误", this);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- json object data missing.", "节点数据输出端口schema信息错误", this.data());
             }
         }
         return jsonObject;
@@ -74,7 +75,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
                 fieldAttributes = JSONArray.parseArray(getJsonObject().data().getObjectContent(), FieldAttribute.class);
             }
             if(DataUtil.isEmpty(fieldAttributes)){
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- get empty field attribute list.", "节点数据输出端口schema信息错误", this);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- get empty field attribute list.", "节点数据输出端口schema信息错误", this.data());
             }
         }
         return fieldAttributes;
@@ -82,7 +83,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
 
     private void clearFieldAttributes(SchemaStateEnum schemaStateEnum) {
         if(this.isStateNormal()) {
-            CollectionUtil.enhancedClear(this.fieldAttributes);
+            CollectionUtil.enhancedClear(this.fieldAttributes, true);
             this.fieldAttributes = null;
             this.isSchemaChanged = true;
             this.dirtyFieldAttributes = false;  //schema非normal状态不更新JsonObject，仅更新schema状态
@@ -104,7 +105,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
                 this.dirtyFieldAttributes = false;  //schema非normal状态不更新JsonObject，仅更新schema状态
             }
             else if(!CollectionUtil.equals(this.getFieldAttributes(), fieldAttributes)) {
-                CollectionUtil.enhancedClear(this.fieldAttributes);
+                CollectionUtil.enhancedClear(this.fieldAttributes, true);
                 this.fieldAttributes = fieldAttributes;
                 this.isSchemaChanged = true;
                 this.dirtyFieldAttributes = true;

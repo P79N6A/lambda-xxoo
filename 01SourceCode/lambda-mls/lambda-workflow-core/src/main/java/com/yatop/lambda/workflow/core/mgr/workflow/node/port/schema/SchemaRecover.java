@@ -35,7 +35,7 @@ public class SchemaRecover {
                 List<WfFlowNodeSchema> schemaList = nodeSchemaMgr.querySchemaByNodeId(node.data().getNodeId());
 
                 if (DataUtil.isEmpty(schemaList) || counter != schemaList.size()) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover data node output port schema failed -- schema list size inconsistent.", "节点数据输出端口schema缺失", node);
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover data node output port schema failed -- schema list size inconsistent.", "节点数据输出端口schema缺失", node.data());
                 }
                 for (WfFlowNodeSchema schema : schemaList) {
                     NodePortOutput outputNodePort = node.getOutputNodePort(schema.getNodePortId());

@@ -18,7 +18,7 @@ import com.yatop.lambda.workflow.core.richmodel.data.model.Model;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataTable;
 import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonObject;
 
-public class CharValue extends LambdaRootModel implements IRichModel {
+public class CharValue implements IRichModel {
     private CmptChar cmptChar;
     private String charValue;	    //特征值内容
     private String inText;		    //传入文本内容，仅限组件参数、调用执行、运行调优参数，以文本内容方式进行传入传出
@@ -33,10 +33,8 @@ public class CharValue extends LambdaRootModel implements IRichModel {
     public CharValue(CmptChar cmptChar, String charValue) {
         this.cmptChar = cmptChar;
         this.charValue = charValue;
-        this.clearColoured();
     }
 
-    @Override
     public JSONObject toJSON() {
         JSONObject jsonObject = cmptChar.toJSON();
         jsonObject.put("charValue", charValue);
@@ -46,23 +44,18 @@ public class CharValue extends LambdaRootModel implements IRichModel {
     }
 
     @Override
-    public void clear() {
+    public String toString() {
+        return DataUtil.prettyFormat(toJSON());
+    }
+
+    @Override
+    public void clear(boolean clearData) {
         cmptChar = null;
         charValue = null;
         inText = null;
         outText = null;
         inObject = null;
         outObject = null;
-    }
-
-    @Override
-    public void clearColoured() {
-
-    }
-
-    @Override
-    public boolean isColoured() {
-        return false;
     }
 
     public CmptChar getCmptChar() {
@@ -159,7 +152,7 @@ public class CharValue extends LambdaRootModel implements IRichModel {
         return DataUtil.isNotNull(getOutObject()) ? getOutObject() : getInObject();
     }
 
-    public String getBasicValue() {
+    /*public String getBasicValue() {
         return isBasicDataType() ? getTextValue() : null;
     }
 
@@ -189,5 +182,5 @@ public class CharValue extends LambdaRootModel implements IRichModel {
 
     public Model getModelValue() {
         return isModelDataType() ? (Model) getObjectValue() : null;
-    }
+    }*/
 }

@@ -23,7 +23,7 @@ public class OutputResourceHelper {
         try {
             moduleClazz.prepareOutputResource(workflowContext,task);
         } catch (Throwable e) {
-            e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Prepare task execution output resource failed -- module-clazz occur error.", "准备输出资源时发生错误", e, task);
+            e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Prepare task execution output resource failed -- module-clazz occur error.", "准备输出资源时发生错误", e, task.data());
             logger.error("系统内部发生错误", e);
             task.setOccuredWarning("准备输出资源时发生错误");
         }
@@ -35,7 +35,7 @@ public class OutputResourceHelper {
         try {
             moduleClazz.completeOutputResource(workflowContext,task);
         } catch (Throwable e) {
-            e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Complete task execution output resource failed -- module-clazz occur error.", "完成输出资源时发生错误", e, task);
+            e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Complete task execution output resource failed -- module-clazz occur error.", "完成输出资源时发生错误", e, task.data());
             logger.error("系统内部发生错误", e);
             task.setOccuredWarning("完成输出资源时发生错误");
         }
@@ -47,7 +47,7 @@ public class OutputResourceHelper {
         try {
             moduleClazz.clearOutputResource(workflowContext,task);
         } catch (Throwable e) {
-            e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Clear task execution output resource failed -- module-clazz occur error.", "清理输出资源时发生错误", e, task);
+            e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Clear task execution output resource failed -- module-clazz occur error.", "清理输出资源时发生错误", e, task.data());
             logger.error("系统内部发生错误", e);
         }
     }
@@ -59,7 +59,7 @@ public class OutputResourceHelper {
             moduleClazz.exploreOutputResource(workflowContext, task);
             return true;
         } catch (Throwable e) {
-            e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Explore task execution output resource failed -- module-clazz occur error.", "探测输出资源时发生错误", e, task);
+            e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Explore task execution output resource failed -- module-clazz occur error.", "探测输出资源时发生错误", e, task.data());
             logger.error("系统内部发生错误", e);
             //task.setOccuredWarning("探测输出资源时发生错误");
             return false;

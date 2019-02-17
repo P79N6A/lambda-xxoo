@@ -21,14 +21,14 @@ public class CharValueHelper {
     public static void createCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
         if(charValue.getCmptChar().data().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create characteristic value failed -- forbid create non-workflow source level char-value", "不允许非工作流来源级别的特征值创建", charValue);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create characteristic value failed -- forbid create non-workflow source level char-value.\n" + charValue, "不允许非工作流来源级别的特征值创建", node.data());
         }
 
         if (DataUtil.isEmpty(charValue.getInText()))
             charValue.setInText(node.getComponent().getConfigCharValue(charValue.getCmptChar()));
 
         if (DataUtil.isNotNull(charValue.getInText()) && !validateCharValue(workflowContext, node, charValue)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create characteristic value failed -- char-value validation failed.", "传入内容验证失败", charValue);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create characteristic value failed -- char-value validation failed.\n" + charValue, "传入内容验证失败", node.data());
         }
 
         ICharTypeClazz charTypeClazz = charValue.getCharTypeClazzBean();
@@ -40,7 +40,7 @@ public class CharValueHelper {
                 charValueContext.clear();
                 return;
             } catch (Throwable e) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create characteristic value failed -- char-type-clazz occur error.", "计算组件特征值创建时发生错误", e, charValue);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create characteristic value failed -- char-type-clazz occur error.\n" + charValue, "计算组件特征值创建时发生错误", node.data());
             }
         } else if(DataUtil.isNotEmpty(charValue.getInText())) {
             charValue.setCharValue(charValue.getInText());
@@ -54,7 +54,7 @@ public class CharValueHelper {
     public static void deleteCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
         if(charValue.getCmptChar().data().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete characteristic value failed -- forbid delete non-workflow source level char-value", "不允许非工作流来源级别的特征值删除", charValue);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete characteristic value failed -- forbid delete non-workflow source level char-value.\n" + charValue, "不允许非工作流来源级别的特征值删除", node.data());
         }
 
         if(DataUtil.isEmpty(charValue.getCharValue())) {
@@ -70,7 +70,7 @@ public class CharValueHelper {
                 charValueContext.clear();
                 return;
             } catch (Throwable e) {
-                e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete characteristic value failed -- char-type-clazz occur error.", "计算组件特征值删除时发生错误", e, charValue);
+                e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete characteristic value failed -- char-type-clazz occur error.\n" + charValue, "计算组件特征值删除时发生错误", e, node.data());
                 logger.error("系统内部发生错误", e);
             }
         }
@@ -101,7 +101,7 @@ public class CharValueHelper {
                 charValueContext.clear();
                 return;
             } catch (Throwable e) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query characteristic value failed -- char-type-clazz occur error.", "计算组件特征值查询时发生错误", e, charValue);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query characteristic value failed -- char-type-clazz occur error.\n" + charValue, "计算组件特征值查询时发生错误", e, node.data());
             }
         } else {
             charValue.setOutText(charValue.getCharValue());
@@ -114,7 +114,7 @@ public class CharValueHelper {
     public static void recoverCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
         if(charValue.getCmptChar().data().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover characteristic value failed -- forbid recover non-workflow source level char-value", "不允许非工作流来源级别的特征值恢复", charValue);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover characteristic value failed -- forbid recover non-workflow source level char-value.\n" + charValue, "不允许非工作流来源级别的特征值恢复", node.data());
         }
 
         if(DataUtil.isEmpty(charValue.getCharValue())) {
@@ -130,7 +130,7 @@ public class CharValueHelper {
                 charValueContext.clear();
                 return;
             } catch (Throwable e) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover characteristic value failed -- char-type-clazz occur error.", "计算组件特征值恢复时发生错误", e, charValue);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover characteristic value failed -- char-type-clazz occur error.\n" + charValue, "计算组件特征值恢复时发生错误", e, node.data());
             }
         } else if(DataUtil.isNotEmpty(charValue.getCharValue())) {
             charValue.setOutText(charValue.getCharValue());
@@ -144,11 +144,11 @@ public class CharValueHelper {
     public static void updateCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
         if(charValue.getCmptChar().data().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- forbid update non-workflow source level char-value", "不允许非工作流来源级别的特征值更新", charValue);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- forbid update non-workflow source level char-value.\n" + charValue, "不允许非工作流来源级别的特征值更新", node.data());
         }
 
         if (DataUtil.isNotEmpty(charValue.getInText()) && !validateCharValue(workflowContext, node, charValue)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-value validation failed.", "传入内容验证失败", charValue);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-value validation failed.\n" + charValue, "传入内容验证失败", node.data());
 
             //原特征值和更新值都为空时
         } else if(DataUtil.isEmpty(charValue.getCharValue()) && DataUtil.isEmpty(charValue.getInText())) {
@@ -164,7 +164,7 @@ public class CharValueHelper {
                 charValueContext.clear();
                 return;
             } catch (Throwable e) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-type-clazz occur error.", "计算组件特征值更新时发生错误", e, charValue);
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update characteristic value failed -- char-type-clazz occur error.\n" + charValue, "计算组件特征值更新时发生错误", e, node.data());
             }
         } else {
             charValue.setCharValue(charValue.getInText());

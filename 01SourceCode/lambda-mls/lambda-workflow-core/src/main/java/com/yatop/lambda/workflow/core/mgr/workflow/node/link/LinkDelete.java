@@ -15,11 +15,17 @@ public class LinkDelete {
     @Autowired
     NodeLinkMgr nodeLinkMgr;
 
+    public void deleteLink(WorkflowContext workflowContext, NodeLink link) {
+        if(DataUtil.isNotNull(link)) {
+            nodeLinkMgr.deleteLink(link.data().getLinkId(), workflowContext.getOperId());
+            workflowContext.doneDeleteLink(link);
+        }
+    }
+
     public void deleteLinks(WorkflowContext workflowContext, List<NodeLink> links) {
         if(DataUtil.isNotEmpty(links)) {
             for (NodeLink link : links) {
-                nodeLinkMgr.deleteLink(link.data().getLinkId(), workflowContext.getOperId());
-                workflowContext.doneDeleteLink(link);
+                deleteLink(workflowContext, link);
             }
         }
     }

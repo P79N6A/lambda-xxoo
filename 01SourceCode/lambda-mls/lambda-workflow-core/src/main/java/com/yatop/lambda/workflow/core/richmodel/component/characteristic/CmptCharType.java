@@ -18,10 +18,10 @@ public class CmptCharType extends RichModel<CfCmptCharType> {
     }
 
     @Override
-    public void clear() {
+    public void clear(boolean clearData) {
         CollectionUtil.clear(matchTargetTypes);
         matchTargetTypes = null;
-        super.clear();
+        super.clear(clearData);
     }
 
     public boolean matchTargetType(CmptCharType target) {

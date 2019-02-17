@@ -20,6 +20,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,7 +41,7 @@ public class NodeRecover {
     @Autowired
     ModuleConfig moduleConfig;
 
-    private void recoverNode(WorkflowContext workflowContext, Long nodeId) {
+    private Node recoverNode(WorkflowContext workflowContext, Long nodeId) {
 
         nodeMgr.recoverNode(nodeId, workflowContext.getOperId());
         WfFlowNode node = nodeMgr.queryNode(nodeId);
@@ -57,27 +58,31 @@ public class NodeRecover {
         nodePortRecover.recoverNodePorts(workflowContext, richNode);
         parameterRecover.recoverParameters(workflowContext, richNode);
         workflowContext.doneRecoverNode(richNode);
+        return richNode;
     }
 
-    public void recoverNodes(WorkflowContext workflowContext) {
+    public List<Node> recoverNodes(WorkflowContext workflowContext) {
 
         Workflow workflow = workflowContext.getWorkflow();
         List<WfFlowNodeDeleteQueue> deleteQueues = nodeDeleteQueueMgr.queryNodeDelete(workflow.data().getFlowId(), workflow.previousDeleteSequence());
         if(DataUtil.isEmpty(deleteQueues)) {
             //TODO Nothing
-            return;
+            return null;
         }
 
         Long flowMaxNodes = SystemParameterUtil.find4Long(SystemParameterEnum.WK_FLOW_MAX_NODES);
         if(workflow.data().getNodeCount() + deleteQueues.size() > flowMaxNodes) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node failed -- number of nodes can't exceed more then WK_FLOW_MAX_NODES.", "画布节点数量不能超过" + flowMaxNodes, workflow);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node failed -- number of nodes can't exceed more then WK_FLOW_MAX_NODES.", "画布节点数量不能超过" + flowMaxNodes, workflow.data());
         }
 
         nodeDeleteQueueMgr.removeNodeDelete(workflow.data().getFlowId(), workflow.previousDeleteSequence());
 
+        List<Node> recoverNodes = new ArrayList<>(deleteQueues.size());
         for (WfFlowNodeDeleteQueue deleteQueue : deleteQueues) {
-            recoverNode(workflowContext, deleteQueue.getNodeId());
+            Node recoverNode = recoverNode(workflowContext, deleteQueue.getNodeId());
+            recoverNodes.add(recoverNode);
         }
         workflow.doneRecoverNodes(deleteQueues.size() + 0L);
+        return recoverNodes;
     }
 }

@@ -7,6 +7,7 @@ import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueHelper;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
@@ -46,6 +47,12 @@ public class ParameterHelper {
         parameter.setCreateTime(curTime);
         parameter.setCreateOper(workflowContext.getOperId());
         return new NodeParameter(parameter, charValue, true);
+    }
+
+    public static boolean validateUpdateNodeParameter(WorkflowContext workflowContext, Node node, NodeParameter nodeParameter, String charValueText) {
+        CharValue charValue = nodeParameter.getCharValue();
+        charValue.setInText(charValueText);
+        return CharValueHelper.validateCharValue(workflowContext, node, charValue);
     }
 
     public static void updateNodeParameter(NodeParameter parameter, String operId) {

@@ -55,21 +55,15 @@ public class ModuleConfig implements InitializingBean {
     }
 
     public ModuleCatalog getCatalog(Long catalogId) {
-        if(DataUtil.isNull(catalogId))
-            return null;
-        return ALL_MODULE_CATALOGS.get(catalogId);
+        return CollectionUtil.get(ALL_MODULE_CATALOGS, catalogId);
     }
 
     public Module getModule(Long moduleId) {
-        if(DataUtil.isNull(moduleId))
-            return null;
-        return ALL_MODULES.get(moduleId);
+        return CollectionUtil.get(ALL_MODULES, moduleId);
     }
 
     public ModulePort getModulePort(Long portId) {
-        if(DataUtil.isNull(portId))
-            return null;
-        return ALL_MODULE_PORTS.get(portId);
+        return CollectionUtil.get(ALL_MODULE_PORTS, portId);
     }
 
     @Override
@@ -100,7 +94,7 @@ public class ModuleConfig implements InitializingBean {
                     if(DataUtil.isNotNull(parentCatalog)) {
                         parentCatalog.putChildCatalog(entry.getValue());
                     } else {
-                        logger.error(String.format("Loading module configuration occurs fatal error -- Parent module catalog not found:\n%s", DataUtil.prettyFormat(entry.getValue())));
+                        logger.error(String.format("Loading module configuration occurs fatal error -- Parent module catalog not found:\n%s", DataUtil.prettyFormat(entry.getValue().data())));
                         System.exit(-1);
                     }
                 }
@@ -141,7 +135,7 @@ public class ModuleConfig implements InitializingBean {
                     if(DataUtil.isNotNull(catalog)) {
                         catalog.putChildModule(richModule);
                     } else {
-                        logger.error(String.format("Loading module configuration occurs fatal error -- Owner module catalog not found:\n%s", DataUtil.prettyFormat(richModule)));
+                        logger.error(String.format("Loading module configuration occurs fatal error -- Owner module catalog not found:\n%s", DataUtil.prettyFormat(richModule.data())));
                         System.exit(-1);
                     }
                 }
@@ -168,11 +162,11 @@ public class ModuleConfig implements InitializingBean {
                     System.exit(-1);
                 }
                 if(!portTypeEnum.isCorrectPortType(SpecTypeEnum.valueOf(cmptChar.data().getSpecType()))) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Error port-type vs spec-type:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar)));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Error port-type vs spec-type:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar.data())));
                     System.exit(-1);
                 }
                 if(!SpecMaskEnum.matchInputAndOutput(cmptChar.getType().data().getSpecMask())) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- port => char-type.spec-mask must be also support input & output:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar)));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- port => char-type.spec-mask must be also support input & output:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar.data())));
                     System.exit(-1);
                 }
                 Module module =  ALL_MODULES.get(port.getOwnerModuleId());
@@ -208,7 +202,7 @@ public class ModuleConfig implements InitializingBean {
                 Component component = module.getComponent();
                 if(module.inputPortCount() > 0) {
                     if (module.getInputPorts().size() != component.getInput().cmptCharCount()) {
-                        logger.error(String.format("Check module configuration occurs fatal error -- Inconsistent number of input-port vs input-char:\n%s\n%s.", DataUtil.prettyFormat(component), DataUtil.prettyFormat(module)));
+                        logger.error(String.format("Check module configuration occurs fatal error -- Inconsistent number of input-port vs input-char:\n%s\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(module.data())));
                         System.exit(-1);
                     }
                 }
@@ -217,7 +211,7 @@ public class ModuleConfig implements InitializingBean {
                 if(module.inputPortCount() > 0) {
                     for (ModulePort modulePort : module.getInputPorts()) {
                         if (modulePort.data().getSequence() != sequence) {
-                            logger.error(String.format("Check module configuration occurs fatal error -- Error input port sequence number:\n%s.", DataUtil.prettyFormat(modulePort)));
+                            logger.error(String.format("Check module configuration occurs fatal error -- Error input port sequence number:\n%s.", DataUtil.prettyFormat(modulePort.data())));
                             System.exit(-1);
                         }
                         sequence++;
@@ -226,7 +220,7 @@ public class ModuleConfig implements InitializingBean {
                 if(module.outputPortCount() > 0) {
                     for (ModulePort modulePort : module.getOutputPorts()) {
                         if (modulePort.data().getSequence() != sequence) {
-                            logger.error(String.format("Check module configuration occurs fatal error -- Error output port sequence number:\n%s.", DataUtil.prettyFormat(modulePort)));
+                            logger.error(String.format("Check module configuration occurs fatal error -- Error output port sequence number:\n%s.", DataUtil.prettyFormat(modulePort.data())));
                             System.exit(-1);
                         }
                         sequence++;
@@ -237,7 +231,7 @@ public class ModuleConfig implements InitializingBean {
 
                 if(module.isWebModule()) {
                     if(!module.isHeadNode() && !module.isTailNode()) {
-                        logger.error(String.format("Check module configuration occurs fatal error -- Web module must be defined as Head-Node or Tail-Node:\n%s.", DataUtil.prettyFormat(module)));
+                        logger.error(String.format("Check module configuration occurs fatal error -- Web module must be defined as Head-Node or Tail-Node:\n%s.", DataUtil.prettyFormat(module.data())));
                         System.exit(-1);
                     }
                 }

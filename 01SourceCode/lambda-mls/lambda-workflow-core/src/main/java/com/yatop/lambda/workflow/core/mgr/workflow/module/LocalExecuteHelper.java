@@ -23,7 +23,7 @@ public class LocalExecuteHelper {
         try {
             moduleClazz.execute(context);
         } catch (Throwable e) {
-            e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Local execute task failed -- module-clazz occur error.", "本地运行时发生错误", e, context.getTask());
+            e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Local execute task failed -- module-clazz occur error.", "本地运行时发生错误", e, context.getTask().data());
             logger.error("系统内部发生错误", e);
             context.getTask().setOccuredWarning("本地运行时发生错误");
         }
