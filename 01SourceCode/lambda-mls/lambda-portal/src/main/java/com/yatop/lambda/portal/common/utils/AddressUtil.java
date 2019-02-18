@@ -15,10 +15,10 @@ import java.lang.reflect.Method;
 @Slf4j
 public class AddressUtil {
 
-    private AddressUtil() {
-    }
+    private static final DbSearcher DB_SEARCHER = getDbSearcher();
 
-    public static String getCityInfo(String ip) {
+    private static DbSearcher getDbSearcher() {
+
         try {
             String dbPath = AddressUtil.class.getResource("/ip2region/ip2region.db").getPath();
             File file = new File(dbPath);
@@ -30,32 +30,42 @@ public class AddressUtil {
                 InputStream inputStream = resource.getInputStream();
                 FileUtils.copyInputStreamToFile(inputStream, file);
             }
-            int algorithm = DbSearcher.BTREE_ALGORITHM;
             DbConfig config = new DbConfig();
             DbSearcher searcher = new DbSearcher(config, file.getPath());
+            return searcher;
+        } catch (Throwable e) {
+            log.error("初始化地址数据库异常：{}", e);
+            System.exit(-1);
+            return null;
+        }
+    }
+
+    public static String getCityInfo(String ip) {
+        try {
+            int algorithm = DbSearcher.BTREE_ALGORITHM;
             Method method = null;
             switch (algorithm) {
                 case DbSearcher.BTREE_ALGORITHM:
-                    method = searcher.getClass().getMethod("btreeSearch", String.class);
+                    method = DB_SEARCHER.getClass().getMethod("btreeSearch", String.class);
                     break;
                 case DbSearcher.BINARY_ALGORITHM:
-                    method = searcher.getClass().getMethod("binarySearch", String.class);
+                    method = DB_SEARCHER.getClass().getMethod("binarySearch", String.class);
                     break;
                 case DbSearcher.MEMORY_ALGORITYM:
-                    method = searcher.getClass().getMethod("memorySearch", String.class);
+                    method = DB_SEARCHER.getClass().getMethod("memorySearch", String.class);
                     break;
                 default:
-                    method = searcher.getClass().getMethod("memorySearch", String.class);
+                    method = DB_SEARCHER.getClass().getMethod("memorySearch", String.class);
                     break;
             }
             DataBlock dataBlock = null;
             if (!Util.isIpAddress(ip)) {
-                log.error("Error: Invalid ip address");
+                log.info("Error: Invalid ip address");
             }
-            dataBlock = (DataBlock) method.invoke(searcher, ip);
+            dataBlock = (DataBlock) method.invoke(DB_SEARCHER, ip);
             return dataBlock.getRegion();
         } catch (Exception e) {
-            log.error("获取地址信息异常：{}", e);
+            log.warn("获取地址信息异常：{}", e);
         }
         return "";
     }
