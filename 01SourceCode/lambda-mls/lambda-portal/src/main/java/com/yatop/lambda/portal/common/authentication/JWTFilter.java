@@ -1,10 +1,13 @@
 package com.yatop.lambda.portal.common.authentication;
 
+import com.alibaba.fastjson.JSONObject;
+import com.yatop.lambda.portal.common.domain.PortalResponse;
 import com.yatop.lambda.portal.common.properties.LambdaPortalProperties;
 import com.yatop.lambda.portal.common.utils.PortalUtil;
 import com.yatop.lambda.portal.common.utils.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.springframework.http.HttpStatus;
@@ -15,6 +18,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @Slf4j
 public class JWTFilter extends BasicHttpAuthenticationFilter {
@@ -26,18 +31,24 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws UnauthorizedException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+
         LambdaPortalProperties lambdaPortalProperties = SpringContextUtil.getBean(LambdaPortalProperties.class);
         String[] anonUrl = StringUtils.splitByWholeSeparatorPreserveAllTokens(lambdaPortalProperties.getShiro().getAnonUrl(), ",");
-
-        boolean match = false;
         for (String u : anonUrl) {
             if (pathMatcher.match(u, httpServletRequest.getRequestURI()))
-                match = true;
+                return true;
         }
-        if (match) return true;
+
         if (isLoginAttempt(request, response)) {
-            return executeLogin(request, response);
+            try {
+                return this.executeLogin(request, response);
+            } catch (Exception e) {
+                this.response401(request, response, e.getMessage());
+                return false;
+            }
         }
+
+        this.response401(request, response, "请先登录");
         return false;
     }
 
@@ -53,12 +64,29 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String token = httpServletRequest.getHeader(TOKEN);
         JWTToken jwtToken = new JWTToken(PortalUtil.decryptToken(token));
+        getSubject(request, response).login(jwtToken);
+        return true;
+    }
+
+    /**
+     * 无需转发，直接返回Response信息
+     */
+    private void response401(ServletRequest req, ServletResponse resp, String msg) {
+        HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
+        httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        httpServletResponse.setContentType("application/json; charset=utf-8");
+        PrintWriter out = null;
         try {
-            getSubject(request, response).login(jwtToken);
-            return true;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return false;
+            out = httpServletResponse.getWriter();
+            PortalResponse portalResponse = new PortalResponse().message(msg);
+            out.append(JSONObject.toJSONString(portalResponse));
+        } catch (IOException e) {
+            log.error("发生IO异常错误:" + e.getMessage());
+        } finally {
+            if (out != null) {
+                out.close();
+            }
         }
     }
 

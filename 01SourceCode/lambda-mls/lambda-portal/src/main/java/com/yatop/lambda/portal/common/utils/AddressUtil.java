@@ -6,8 +6,10 @@ import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbSearcher;
 import org.lionsoul.ip2region.Util;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 
 @Slf4j
@@ -24,7 +26,9 @@ public class AddressUtil {
                 String tmpDir = System.getProperties().getProperty("java.io.tmpdir");
                 dbPath = tmpDir + "ip.db";
                 file = new File(dbPath);
-                FileUtils.copyInputStreamToFile(AddressUtil.class.getClassLoader().getResourceAsStream("classpath:ip2region/ip2region.db"), file);
+                ClassPathResource resource = new ClassPathResource("ip2region/ip2region.db");
+                InputStream inputStream = resource.getInputStream();
+                FileUtils.copyInputStreamToFile(inputStream, file);
             }
             int algorithm = DbSearcher.BTREE_ALGORITHM;
             DbConfig config = new DbConfig();

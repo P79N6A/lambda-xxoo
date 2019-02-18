@@ -5,6 +5,7 @@ import com.yatop.lambda.portal.common.exception.PortalException;
 import com.yatop.lambda.portal.common.exception.LimitAccessException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -29,14 +30,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public PortalResponse handleException(Exception e) {
-        log.error("系统内部异常，异常信息：", e);
-        return new PortalResponse().message("系统内部异常");
+        log.error("系统内部错误：", e);
+        return new PortalResponse().message("系统内部错误");
     }
 
     @ExceptionHandler(value = PortalException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public PortalResponse handleParamsInvalidException(PortalException e) {
-        log.error("系统错误：{}", e.getMessage());
+        log.debug("业务请求失败：{}", e);
         return new PortalResponse().message(e.getMessage());
     }
 
@@ -52,9 +53,8 @@ public class GlobalExceptionHandler {
         StringBuilder message = new StringBuilder();
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         for (FieldError error : fieldErrors) {
-            message.append(error.getField()).append(error.getDefaultMessage()).append(",");
+            message.append(error.getField()).append(error.getDefaultMessage()).append(";");
         }
-        message = new StringBuilder(message.substring(0, message.length() - 1));
         return new PortalResponse().message(message.toString());
 
     }
@@ -73,9 +73,8 @@ public class GlobalExceptionHandler {
         for (ConstraintViolation<?> violation : violations) {
             Path path = violation.getPropertyPath();
             String[] pathArr = StringUtils.splitByWholeSeparatorPreserveAllTokens(path.toString(), ".");
-            message.append(pathArr[1]).append(violation.getMessage()).append(",");
+            message.append(pathArr[1]).append(violation.getMessage()).append(";");
         }
-        message = new StringBuilder(message.substring(0, message.length() - 1));
         return new PortalResponse().message(message.toString());
     }
 
@@ -88,7 +87,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = UnauthorizedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public void handleUnauthorizedException(Exception e) {
-        log.error("权限不足，{}", e.getMessage());
+    public PortalResponse handleUnauthorizedException(UnauthorizedException e) {
+        log.debug("无访问权限，{}", e.getMessage());
+        return new PortalResponse().message("无访问权限");
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(UnauthenticatedException.class)
+    public PortalResponse handleUnauthenticatedException(UnauthenticatedException e) {
+        log.debug("未认证请求，{}", e.getMessage());
+        return new PortalResponse().message("请先登录");
     }
 }

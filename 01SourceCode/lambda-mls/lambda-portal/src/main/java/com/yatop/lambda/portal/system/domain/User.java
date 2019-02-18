@@ -41,7 +41,7 @@ public class User implements Serializable {
     public static final String SEX_UNKNOW = "2";
 
     // 默认密码
-    public static final String DEFAULT_PASSWORD = "1234qwer";
+    public static final String DEFAULT_PASSWORD = "yatop123456";
 
     @Id
     @GeneratedValue(generator = "JDBC")

@@ -64,7 +64,7 @@ public class LoginController {
         if (!StringUtils.equals(user.getPassword(), password))
             throw new PortalException(errorMessage);
         if (User.STATUS_LOCK.equals(user.getStatus()))
-            throw new PortalException("账号已被锁定,请联系管理员！");
+            throw new PortalException("账号已被锁定，请联系管理员！");
 
         // 更新用户登录时间
         this.userService.updateLoginTime(username);

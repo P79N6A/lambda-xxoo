@@ -17,6 +17,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
@@ -26,10 +27,13 @@ import java.util.Set;
  *
  * @author MrBird
  */
+
+@Service
 public class ShiroRealm extends AuthorizingRealm {
 
     @Autowired
     private RedisService redisService;
+
     @Autowired
     private UserManager userManager;
 
@@ -95,7 +99,11 @@ public class ShiroRealm extends AuthorizingRealm {
         User user = userManager.getUser(username);
 
         if (user == null)
-            throw new AuthenticationException("用户名或密码错误");
+            throw new AuthenticationException("用户信息错误");
+
+        if(User.STATUS_LOCK.equals(user.getStatus()))
+            throw new AuthenticationException("账号已被锁定，请联系管理员！");
+
         if (!JWTUtil.verify(token, username, user.getPassword()))
             throw new AuthenticationException("token校验不通过");
         return new SimpleAuthenticationInfo(token, token, "lambda_portal_shiro_realm");
