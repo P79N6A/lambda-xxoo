@@ -15,7 +15,7 @@ public class ExecutionScheduleService {
     }
 
     public void processRunningJob(ExecutionJobQueue jobQueue) {
-        WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Execution(jobQueue.data().getJobId(), jobQueue.data().getCreateOper());
+        WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4ExecutionSchedule(jobQueue.data().getJobId(), jobQueue.data().getCreateOper());
 
         monitorRunningJob(jobQueue);
 

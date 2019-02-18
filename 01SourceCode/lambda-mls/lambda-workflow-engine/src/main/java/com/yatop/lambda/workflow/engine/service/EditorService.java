@@ -88,7 +88,7 @@ public class EditorService {
 
         try {
             workflowEditUtil.requestWorkflowResource(richCopyExperiment);
-            WorkflowContext copyWorkflowContext = WorkflowContext.BuildWorkflowContext4FullContent(richCopyExperiment, operId);
+            WorkflowContext copyWorkflowContext = WorkflowContext.BuildWorkflowContext4Preload(richCopyExperiment, operId);
             WorkflowContext thisWorkflowContext = workflowCreate.createWorkflow(richExperiment, copyWorkflowContext, operId);
             WfFlow workflow = thisWorkflowContext.getWorkflow().data();
             thisWorkflowContext.clear();
@@ -133,7 +133,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4FullContent(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(richExperiment, operId);
             workflowDelete.deleteWorkflow(workflowContext);
             workflowContext.clearAll();
         } catch (Throwable exception) {
@@ -145,7 +145,7 @@ public class EditorService {
     public WorkflowContext queryWorkflowGraph(EmExperiment experiment, String operId) {
 
         Experiment richExperiment = new Experiment(experiment);
-        return WorkflowContext.BuildWorkflowContext4QueryGraph(richExperiment, operId);
+        return WorkflowContext.BuildWorkflowContext4Preload(richExperiment, operId, false);
     }
 
     //保存实验工作流副本快照
@@ -157,7 +157,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4FullContent(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(richExperiment, operId);
             Snapshot snapshot = snapshotCreate.createSnapshot4Copy(workflowContext, snapshotName);
             workflowContext.clearAll();
             return snapshot.data();
@@ -168,9 +168,9 @@ public class EditorService {
     }
 
     //查看实验工作流副本快照
-    /*public WorkflowContext viewWorkflowSnapshot(Long snapshotId, String operId) {
+    public WorkflowContext viewWorkflowSnapshot(Long snapshotId, String operId) {
         return WorkflowContext.BuildWorkflowContext4ViewSnapshot(snapshotId, operId);
-    }*/
+    }
 
     //添加实验工作流节点
     @Transactional
@@ -182,7 +182,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Edit(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(richExperiment, operId);
             Node node = nodeCreate.createNode(workflowContext, module, posX, posY);
             workflowContext.flush();
             workflowContext.clear(true, false);
@@ -204,7 +204,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Edit(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(richExperiment, operId);
             Node node = nodeCreate.createNode(workflowContext, module, posX, posY);
 
             //TODO 修改节点参数：数据表名 - CCP@IO-TableName
@@ -231,7 +231,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Edit(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(richExperiment, operId);
             Node node = nodeCreate.createNode(workflowContext, module, posX, posY);
 
             //TODO 修改节点参数：模型ID - CCP@IO-ModelID
@@ -270,7 +270,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Edit(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(richExperiment, operId);
 
             List<Node> newNodes = new ArrayList<>(copyNodeIds.length);
             for(int i = 0; i < copyNodeIds.length; i++) {
@@ -297,7 +297,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Edit(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(richExperiment, operId);
 
             List<Node> deleteNodes = new ArrayList<>(nodeIds.length);
             for(int i = 0; i < nodeIds.length; i++) {
@@ -326,7 +326,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Edit(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(richExperiment, operId);
 
             List<Node> recoverNodes = nodeRecover.recoverNodes(workflowContext);
             workflowContext.flush();
@@ -346,7 +346,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4ValidateLink(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(richExperiment, operId, false);
             boolean passed = linkValidate.validateLink(workflowContext, srcNodeId, dstNodeId, srcNodePortId, dstNodePortId);
             workflowContext.clearAll();
             return passed;
@@ -365,7 +365,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4EditPreload(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(richExperiment, operId);
             NodeLink nodeLink = linkCreate.createLink(workflowContext, srcNodeId, dstNodeId, srcNodePortId, dstNodePortId);
             workflowContext.flush();
             workflowContext.clear();
@@ -385,7 +385,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Edit(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(richExperiment, operId);
             Node upstreamNode = workflowContext.fetchNode(srcNodeId);
             NodePortOutput upstreamNodePort = workflowContext.fetchOutputPort(srcNodePortId);
             if(DataUtil.isNull(upstreamNode.getOutputNodePort(srcNodePortId))) {
@@ -426,7 +426,7 @@ public class EditorService {
     public Node queryWorkflowNodeParameters(EmExperiment experiment, Long nodeId, String operId) {
 
         Experiment richExperiment = new Experiment(experiment);
-        WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4QueryParameter(richExperiment, operId);
+        WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(richExperiment, operId, false);
         Node node = workflowContext.fetchNode(nodeId);
         workflowContext.clear(true, false);
         return node;
@@ -440,7 +440,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4QueryParameter(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(richExperiment, operId);
             Node node = workflowContext.fetchNode(nodeId);
             NodeParameter nodeParameter = workflowEditUtil.findWorkflowNodeParameter(node, paramCode);
             boolean passed = ParameterHelper.validateUpdateNodeParameter(workflowContext, node, nodeParameter, paramValue);
@@ -461,7 +461,7 @@ public class EditorService {
         try {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
-            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4EditPreload(richExperiment, operId);
+            WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(richExperiment, operId);
             Node node = workflowContext.fetchNode(nodeId);
             NodeParameter nodeParameter = workflowEditUtil.findWorkflowNodeParameter(node, paramCode);
             parameterCharValueUpdate.updateParameter(workflowContext, node, nodeParameter, paramValue);

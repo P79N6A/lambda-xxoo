@@ -105,13 +105,13 @@ public class JobCreate {
         return createJob(workflowContext, JobTypeEnum.RUN_THIS_NODE, relatedNode, null);
     }
 
-    public ExecutionJob createJob4RunOfflineSchedule(WorkflowContext workflowContext, Date jobTime) {
+/*    public ExecutionJob createJob4RunOfflineSchedule(WorkflowContext workflowContext, Date jobTime) {
         return createJob(workflowContext, JobTypeEnum.RUN_OFFLINE_SCHEDULE, null, jobTime);
     }
 
     public ExecutionJob createJob4RunOnlineSchedule(WorkflowContext workflowContext) {
         return createJob(workflowContext, JobTypeEnum.RUN_ONLINE_SCHEDULE, null, null);
-    }
+    }*/
 
     public ExecutionJob createJob4RunDatafileImport(WorkflowContext workflowContext) {
         return createJob(workflowContext, JobTypeEnum.RUN_DATAFILE_IMPORT, null, null);

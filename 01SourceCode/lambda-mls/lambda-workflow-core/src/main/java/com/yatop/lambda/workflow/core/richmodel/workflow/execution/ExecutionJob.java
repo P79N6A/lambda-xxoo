@@ -32,7 +32,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     private static String JOB_CONTENT_KEY_ERROR_NODES = "@@@ErrorNodes";
     private static String JOB_CONTENT_KEY_TERMINATED_NODES = "@@@TerminatedNodes";
 
-    private boolean isViewMode;
+    //private boolean isViewMode;
     private Snapshot snapshot;
 
     private TreeSet<Node> waitHeadNodes = new TreeSet<Node>();
@@ -52,11 +52,6 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
         return job;
     }
 
-    public static ExecutionJob BuildExecutionJob4View(WfExecutionJob data) {
-        ExecutionJob job = new ExecutionJob(data, true);
-        return job;
-    }
-
     public static ExecutionJob BuildExecutionJob4Execution(WfExecutionJob data) {
         ExecutionJob job = new ExecutionJob(data, false);
         return job;
@@ -64,13 +59,9 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
 
     private ExecutionJob(WfExecutionJob data, boolean isViewMode) {
         super(data);
-        this.isViewMode = isViewMode;
     }
 
     public void flush(WorkflowContext workflowContext) {
-
-        if(this.isViewMode())
-            return;
 
         if(this.enableFlushSnapshot() && DataUtil.isNotNull(snapshot)) {
             this.getSnapshot().flush(workflowContext);
@@ -204,10 +195,6 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
                 nodes.put(workflowContext.getNode(nodeId), taskId);
             }
         }
-    }
-
-    public boolean isViewMode() {
-        return isViewMode;
     }
 
     public boolean enableFlushSnapshot() {

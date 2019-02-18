@@ -27,9 +27,9 @@ public class JobContentAnalyzer {
                 return JobContentAnalyzer4RunEndHere.analyzeJobContent(workflowContext, relatedNode);
             case RUN_THIS_NODE:
                 return JobContentAnalyzer4RunThisNode.analyzeJobContent(workflowContext, relatedNode);
-            case RUN_OFFLINE_SCHEDULE:
-            case RUN_ONLINE_SCHEDULE:
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- not supported job-type[" + jobType.name() + "].", "运行作业类型暂不支持");
+            //case RUN_OFFLINE_SCHEDULE:
+            //case RUN_ONLINE_SCHEDULE:
+            //    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- not supported job-type[" + jobType.name() + "].", "运行作业类型暂不支持");
             case RUN_DATAFILE_IMPORT:
                 return JobContentAnalyzer4RunAll.analyzeJobContent(workflowContext);
             default:

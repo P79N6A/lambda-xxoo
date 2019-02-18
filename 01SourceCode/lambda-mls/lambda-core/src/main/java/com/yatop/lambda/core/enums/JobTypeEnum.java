@@ -45,12 +45,12 @@ public enum JobTypeEnum {
     /**
      * 定时调度运行
      */
-    RUN_OFFLINE_SCHEDULE(100, "Run Offline Schedule"),
+    //RUN_OFFLINE_SCHEDULE(100, "Run Offline Schedule"),
 
     /**
      * 在线调度运行
      */
-    RUN_ONLINE_SCHEDULE(101, "Run Online Schedule"),
+    //RUN_ONLINE_SCHEDULE(101, "Run Online Schedule"),
 
     /**
      * 数据文件导入
@@ -91,8 +91,8 @@ public enum JobTypeEnum {
 //            case 11: return TRIAL_RUN_START_HERE;
 //            case 12: return TRIAL_RUN_END_HERE;
 //            case 13: return TRIAL_RUN_THIS_NODE;
-            case 100: return RUN_OFFLINE_SCHEDULE;
-            case 101: return RUN_ONLINE_SCHEDULE;
+//            case 100: return RUN_OFFLINE_SCHEDULE;
+//            case 101: return RUN_ONLINE_SCHEDULE;
             case 200: return RUN_DATAFILE_IMPORT;
             default: return null;
         }

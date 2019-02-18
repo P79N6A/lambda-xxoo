@@ -29,7 +29,6 @@ public class WorkflowContext implements IWorkContext {
     private boolean executionWorkMode;      //标识是否为运行工作模式
     private boolean enableFlushWorkflow;    //控制是否可执行flush更新工作流相关信息
     private boolean loadNodeParameter;      //控制是否查询带出节点参数信息
-    private boolean loadDataPortSchema;     //控制是否查询带出数据输出端口schema信息
     private AnalyzeTypeEnum schemaAnalyze;  //触发的schema分析类型
     private Workflow workflow;              //操作关联工作流
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();      //操作关联节点，key=nodeId
@@ -58,63 +57,40 @@ public class WorkflowContext implements IWorkContext {
     //工作流创建使用（无需加载）
     public static WorkflowContext BuildWorkflowContext4Create(Experiment experiment, String operId) {
         WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
-        context.initialize(false);
         return context;
     }
 
-    //工作流编辑使用（创建节点、删除节点和删除链接，增量加载）
-    public static WorkflowContext BuildWorkflowContext4Edit(Experiment experiment, String operId) {
+    //工作流编辑使用（懒加载）
+    public static WorkflowContext BuildWorkflowContext4Lazyload(Experiment experiment, String operId) {
+        return BuildWorkflowContext4Lazyload(experiment, operId, true);
+    }
+
+    public static WorkflowContext BuildWorkflowContext4Lazyload(Experiment experiment, String operId, boolean loadNodeParameter) {
         WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
         context.lazyLoadMode = true;
-        context.initialize(false);
+        context.loadNodeParameter = loadNodeParameter;
         return context;
     }
 
-    //工作流编辑使用（创建链接、更新节点参数，全量预加载）
-    public static WorkflowContext BuildWorkflowContext4EditPreload(Experiment experiment, String operId) {
-        return BuildWorkflowContext4FullContent(experiment, operId);
+    //工作流编辑使用（预加载）
+    public static WorkflowContext BuildWorkflowContext4Preload(Experiment experiment, String operId) {
+        return BuildWorkflowContext4Preload(experiment, operId, true);
     }
 
-    //工作流编辑使用（验证链接，增量加载）
-    public static WorkflowContext BuildWorkflowContext4ValidateLink(Experiment experiment, String operId) {
+    public static WorkflowContext BuildWorkflowContext4Preload(Experiment experiment, String operId, boolean loadNodeParameter) {
         WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
-        context.lazyLoadMode = true;
-        context.enableFlushWorkflow = false;
-        context.loadNodeParameter = false;
-        context.loadDataPortSchema = false;
-        context.initialize(false);
+        context.lazyLoadMode = false;
+        context.loadNodeParameter = loadNodeParameter;
+        context.preloadWorkflowContent();
         return context;
     }
 
-    //工作流编辑使用，用于查询节点参数（增量加载）
-    public static WorkflowContext BuildWorkflowContext4QueryParameter(Experiment experiment, String operId) {
-        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
-        context.enableFlushWorkflow = false;
-        context.loadDataPortSchema = false;
-        context.initialize(false);
-        return context;
-    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //工作流编辑使用，用于实验图形查询（全量预加载）
-    public static WorkflowContext BuildWorkflowContext4QueryGraph(Experiment experiment, String operId) {
-        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
-        context.enableFlushWorkflow = false;
-        context.loadNodeParameter = false;
-        context.loadDataPortSchema = false;
-        context.initialize(true);
-        return context;
-    }
-
-    //工作流查询使用，用于实验删除、实验刷新、实验复制、构建快照、构建作业等场景使用（全量预加载）
-    public static WorkflowContext BuildWorkflowContext4FullContent(Experiment experiment, String operId) {
-        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
-        context.initialize(true);
-        return context;
-    }
-
+    //工作流快照使用
     private static WorkflowContext BuildWorkflowContext4Snapshot(Snapshot snapshot, String operId) {
         WorkflowContext context = new WorkflowContext(snapshot.getWorkflow(), operId);
-        context.initialize(snapshot);
+        context.initializeWithSnapshot(snapshot);
         return context;
     }
 
@@ -123,24 +99,16 @@ public class WorkflowContext implements IWorkContext {
         return BuildWorkflowContext4Snapshot(SnapshotHelper.simulateSnapshot4Template(templateId), operId);
     }
 
-    //快照查看使用
+    //快照查看查看使用
     public static WorkflowContext BuildWorkflowContext4ViewSnapshot(Long snapshotId, String operId) {
         return BuildWorkflowContext4Snapshot(SnapshotHelper.querySnapshot4View(snapshotId), operId);
     }
 
-    //作业查看使用
-    public static WorkflowContext BuildWorkflowContext4ViewExecution(Long jobId, String operId) {
-        ExecutionJob job = JobHelper.queryExecutionJob4View(jobId);
-        WorkflowContext context = BuildWorkflowContext4Snapshot(job.getSnapshot(), operId);
-        context.initialize(job);
-        return context;
-    }
-
-    //作业运行使用
-    public static WorkflowContext BuildWorkflowContext4Execution(Long jobId, String operId) {
+    //作业运行调度使用
+    public static WorkflowContext BuildWorkflowContext4ExecutionSchedule(Long jobId, String operId) {
         ExecutionJob job = JobHelper.queryExecutionJob4Execution(jobId);
         WorkflowContext context = BuildWorkflowContext4Snapshot(job.getSnapshot(), operId);
-        context.initialize(job);
+        context.initializeWithExecution(job);
         return context;
     }
 
@@ -153,42 +121,38 @@ public class WorkflowContext implements IWorkContext {
         this.executionWorkMode = false;
         this.enableFlushWorkflow = true;
         this.loadNodeParameter = true;
-        this.loadDataPortSchema = true;
     }
 
-    private void initialize(boolean preload) {
-        if(preload) {
-            WorkflowContextHelper.loadAllNodes(this);
-            WorkflowContextHelper.loadAllLinks(this);
+    private void preloadWorkflowContent() {
+        WorkflowContextHelper.loadAllNodes(this);
+        WorkflowContextHelper.loadAllLinks(this);
 
-            //if(WorkflowContextHelper.existDirectedCyclicGraph(this)) {
-            //    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Workflow exists directed cyclic graph.", "工作流数据异常，请联系管理员");
-            //}
-        }
+        //if(WorkflowContextHelper.existDirectedCyclicGraph(this)) {
+        //    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Workflow exists directed cyclic graph.", "工作流数据异常，请联系管理员");
+        //}
     }
 
-    private void initialize(Snapshot snapshot) {
+    private void initializeWithSnapshot(Snapshot snapshot) {
         this.enableFlushWorkflow = false;
         this.loadNodeParameter = false;
-        this.loadDataPortSchema = false;
         snapshot.syncSnapshot2WorkflowContext(this);
     }
 
-    private void initialize(ExecutionJob currentJob) {
-        this.executionWorkMode = !currentJob.isViewMode();
+    private void initializeWithExecution(ExecutionJob currentJob) {
+        this.executionWorkMode = true;
         this.enableFlushWorkflow = currentJob.enableFlushWorkflow();
         this.currentJob = currentJob;
         this.putExecutionJob(currentJob);
         currentJob.parseJobContent(this);
 
-        if(!currentJob.enableFlushSnapshot()) {
+        /*if(!currentJob.enableFlushSnapshot()) {
             //TODO Clear [workflow & Node]'s execution information by job type
             //TODO loadAllTasks and set [workflow state & last job id] & [node state & last task id]
             //离线调度和在线调度，重置为ready，lastTaskId置为null，同时加载所有作业下的task做syncTaskState2Node
         } else{
             //工作台运行和数据文件导入，正常情况不需要重置，仅create job时根据对分析结果的作业节点做重置syncTaskState2Node
             //TODO Nothing
-        }
+        }*/
     }
 
     @Override
@@ -241,14 +205,14 @@ public class WorkflowContext implements IWorkContext {
 
         if(this.isEnableFlushWorkflow() && this.workflow.data().getFlowId() > 0) {
 
-            if (loadNodeParameter && loadDataPortSchema && !isAnalyzeWithNone()) {
+            if (loadNodeParameter && !isAnalyzeWithNone()) {
                 SchemaAnalyzer.dealAnalyzeSchema(this);
                 this.markAnalyzeWithNone();
             }
 
             if (this.nodeCount() > 0) {
                 for (Node node : this.getNodes()) {
-                    node.flush(this.isLoadNodeParameter(), this.isLoadDataPortSchema(), this.getOperId());
+                    node.flush(this.isLoadNodeParameter(), this.getOperId());
                 }
             }
             this.workflow.flush(this.getOperId());
@@ -442,10 +406,6 @@ public class WorkflowContext implements IWorkContext {
 
     public boolean isLoadNodeParameter() {
         return loadNodeParameter;
-    }
-
-    public boolean isLoadDataPortSchema() {
-        return loadDataPortSchema;
     }
 
     public Project getProject() {

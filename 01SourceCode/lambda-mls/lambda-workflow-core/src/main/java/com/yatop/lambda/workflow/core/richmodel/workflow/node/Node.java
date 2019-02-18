@@ -62,22 +62,24 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
         super.clear(clearData);
     }
 
-    public void flush(boolean flushNodeParameter, boolean flushDataPortSchema, String operId) {
+    public void flush(boolean flushNodeParameter, String operId) {
 
         if(!this.isDeleted()) {
-            if (flushNodeParameter && this.parameterCount() > 0) {
-                for (NodeParameter parameter : this.getParameters()) {
-                    parameter.flush(operId);
+            if(flushNodeParameter) {
+                if (this.parameterCount() > 0) {
+                    for (NodeParameter parameter : this.getParameters()) {
+                        parameter.flush(operId);
+                    }
                 }
-            }
-            if (flushNodeParameter && this.optimizeParameterCount() > 0) {
-                for (NodeParameter parameter : this.getOptimizeParameters()) {
-                    parameter.flush(operId);
+                if (this.optimizeParameterCount() > 0) {
+                    for (NodeParameter parameter : this.getOptimizeParameters()) {
+                        parameter.flush(operId);
+                    }
                 }
-            }
-            if (flushDataPortSchema && !this.isTailNode()) {
-                for (NodePortOutput outputPort : this.getOutputNodePorts()) {
-                    outputPort.flush(operId);
+                if (!this.isTailNode()) {
+                    for (NodePortOutput outputPort : this.getOutputNodePorts()) {
+                        outputPort.flush(operId);
+                    }
                 }
             }
             if (this.isColoured() && this.data().getNodeId() > 0)

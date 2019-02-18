@@ -20,10 +20,6 @@ public class JobHelper {
         return EXECUTION_JOB_MGR.queryJob(jobId);
     }
 
-    public static ExecutionJob queryExecutionJob4View(Long jobId) {
-        return ExecutionJob.BuildExecutionJob4View(queryExecutionJob(jobId));
-    }
-
     public static ExecutionJob queryExecutionJob4Execution(Long jobId) {
         return ExecutionJob.BuildExecutionJob4Execution(queryExecutionJob(jobId));
     }
