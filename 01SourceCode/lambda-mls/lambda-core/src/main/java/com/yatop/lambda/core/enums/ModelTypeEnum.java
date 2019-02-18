@@ -12,11 +12,6 @@ public enum ModelTypeEnum {
      */
     CACHED(1, "Cached");
 
-    /**
-     * 外部模型
-     */
-  //EXTERNAL(2, "External");
-
     private int type;
     private String name;
 
@@ -45,7 +40,6 @@ public enum ModelTypeEnum {
         switch (type) {
             case 0: return GENERAL;
             case 1: return CACHED;
-//            case 2: return EXTERNAL;
             default: return null;
         }
     }

@@ -10,6 +10,10 @@ import java.util.*;
 
 public class SchemaAnalyzer {
 
+    public static void freshWorkflow(WorkflowContext workflowContext) {
+        dealAnalyzeSchema4RefreshSchema(workflowContext);
+    }
+
     public static void dealAnalyzeSchema(WorkflowContext workflowContext) {
         switch (workflowContext.getAnalyzeType()) {
             case CREATE_NODE:
@@ -86,7 +90,7 @@ public class SchemaAnalyzer {
         }
     }
 
-    public static void dealAnalyzeSchema4RefreshSchema(WorkflowContext workflowContext) {
+    private static void dealAnalyzeSchema4RefreshSchema(WorkflowContext workflowContext) {
 
         List<Node> headNodes = searchReadTableHeadNodes(workflowContext);
         if(DataUtil.isNotEmpty(headNodes)) {
@@ -97,7 +101,7 @@ public class SchemaAnalyzer {
         }
     }
 
-    public static List<Node> searchReadTableHeadNodes(WorkflowContext workflowContext) {
+    private static List<Node> searchReadTableHeadNodes(WorkflowContext workflowContext) {
         if(workflowContext.nodeCount() == 0)
             return null;
 

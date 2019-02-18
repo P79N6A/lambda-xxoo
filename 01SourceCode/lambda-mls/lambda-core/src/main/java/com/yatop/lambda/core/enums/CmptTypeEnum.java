@@ -53,14 +53,9 @@ public enum CmptTypeEnum {
     TIME_CMPT(9, "Time Series Component"),
 
     /**
-     * web服务组件
-     */
-    WEB_CMPT(10, "Web Service Component"),
-
-    /**
      * 业务场景组件
      */
-    BUSINESS_CMPT(11, "Business Scenario Component");
+    BUSINESS_CMPT(10, "Business Scenario Component");
 
     private int type;
     private String name;
@@ -98,8 +93,7 @@ public enum CmptTypeEnum {
             case 7: return TEXT_CMPT;
             case 8: return NETWORK_CMPT;
             case 9: return TIME_CMPT;
-            case 10: return WEB_CMPT;
-            case 11: return BUSINESS_CMPT;
+            case 10: return BUSINESS_CMPT;
             default: return null;
         }
     }

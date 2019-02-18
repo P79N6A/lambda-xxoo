@@ -10,12 +10,7 @@ public enum DataTableTypeEnum {
     /**
      * 临时数据表
      */
-    CACHED(1, "Cached"),
-
-    /**
-     * 外部数据表
-     */
-    EXTERNAL(2, "External");
+    CACHED(1, "Cached");
 
     private int type;
     private String name;
@@ -45,7 +40,6 @@ public enum DataTableTypeEnum {
         switch (type) {
             case 0: return GENERAL;
             case 1: return CACHED;
-            case 2: return EXTERNAL;
             default: return null;
         }
     }

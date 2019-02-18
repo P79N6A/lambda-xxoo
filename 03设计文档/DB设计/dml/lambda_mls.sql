@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-02-15 10:18:01
+Date: 2019-02-19 02:22:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -74,7 +74,6 @@ CREATE TABLE `cf_cmpt_char` (
   `SPEC_TYPE` int(11) NOT NULL COMMENT '适用规格类型',
   `CHAR_TYPE` int(11) NOT NULL COMMENT '特征类型ID',
   `SRC_LEVEL` int(11) NOT NULL COMMENT '特征值来源级别\r\n1：计算组件规格\r\n2：计算组件\r\n3：工作流节点（仅限组件参数、执行调优、输入输出）\r\n\r\n注意，仅限在小于来源级别的地方做特征值设置有效，否则无效\r\n说明，特征值选用次序工作流节点 > 计算组件 > 计算组件规格 > 特征默认值',
-  `IS_ALLOW_GLOBAL` int(11) NOT NULL DEFAULT '0' COMMENT '允许设置为全局变量\r\n            0：否\r\n            1：是',
   `IS_REQUIRED` int(11) NOT NULL COMMENT '特征值是否必须设置\r\n            0：否\r\n            1：是',
   `IS_LIMITED` int(11) NOT NULL COMMENT '特征值是否受限定\r\n0：否\r\n1：开区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n2：闭区间方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n3：左开右闭方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n4：左闭右开方式限定，限数值和日期类型，结合最大值和最小值构成区间范围\r\n5：枚举方式限定',
   `MAX_LENGTH` int(11) DEFAULT NULL COMMENT '最大长度\r\n            \r\n            字符串类型：限制字符串最大长度\r\n            JSON列表类型：限制列表最大长度\r\n            调参类型，限制自定义用户列表最大长度',
@@ -96,143 +95,143 @@ CREATE TABLE `cf_cmpt_char` (
 -- ----------------------------
 -- Records of cf_cmpt_char
 -- ----------------------------
-INSERT INTO `cf_cmpt_char` VALUES ('10030', 'maxIteration', '通用参数 | 机器学习 | 最大iter迭代次数', null, '最大iter迭代次数', '5', '3', '3', '0', '1', '2', null, '1', '1', '10000', '1', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('10031', 'eta', '通用参数 | 机器学习 | 学习速率eta', null, '学习速率eta', '5', '5', '3', '0', '1', '1', null, '0.01', '0', '1.0', '0.05', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('10032', 'epsilon', '通用参数 | 机器学习 | 收敛系数eplison（最小收敛误差）', null, '收敛系数eplison', '5', '5', '3', '0', '0', '0', null, '0.01', null, null, '0.000001', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('10034', 'regularizedType', '通用参数 | 机器学习 | 正则项类型', null, '正则项类型', '5', '7', '3', '0', '0', '5', null, null, null, null, 'None', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('10035', 'regularizedCoef', '通用参数 | 机器学习 | 正则系数', null, '正则系数', '5', '5', '3', '0', '0', '0', null, '0.1', null, null, '1', '可选，正则类型为None时此值无效', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500300', 'treeNumber', '专用参数 | 机器学习 | 随机森林 | 森林中树的数目', null, '森林中树的数目', '5', '3', '3', '0', '1', '2', null, '1', '1', '1000', '100', null, '0', '2017-05-17 18:00:30', 'admin', '2017-05-17 18:00:30', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500301', 'algorithmDistribution', '专用参数 | 机器学习 | 随机森林 | 森林中树的算法分布', null, '森林中树的算法分布', '5', '7', '3', '0', '0', '0', null, null, null, null, null, '如果有则长度为2.比如有n棵树，algorithmTypes=a,b  则[0,a) 是 id3, [a,b) 是cart， [b,n) 是c4.5。例如：在一个拥有5棵树的森林中，[2, 4]表示0，1为id3算法，2, 3为cart算法，4为c4.5算法。如果输入为None，则算法在森林中均分。', '0', '2017-05-17 19:07:52', 'admin', '2017-05-17 19:08:01', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500302', 'randomFeatureNumber', '专用参数 | 机器学习 | 随机森林 | 单颗树输入随机特征的个数', null, '单颗树输入随机特征的个数', '5', '3', '3', '0', '0', '2', null, '1', '1', null, null, '范围 [1, N]，N为feature数，默认log2N', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500303', 'minInstsPerNode', '专用参数 | 机器学习 | 随机森林 | 叶节点数据的最小个数', null, '叶节点数据的最小个数', '5', '3', '3', '0', '0', '2', null, '1', '1', null, '2', null, '0', '2017-05-17 19:28:46', 'admin', '2017-05-17 19:28:46', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500304', 'maxDepth1', '专用参数 | 机器学习 | 随机森林 | 单颗树的最大深度', null, '单颗树的最大深度', '5', '3', '3', '0', '0', '2', null, '1', '1', null, null, '默认无穷大', '0', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500305', 'randomInstsNumber', '专用参数 | 机器学习 | 随机森林 | 单颗树输入随机数据的个数（待定）', null, '单颗树输入随机数据的个数', '5', '3', '3', '0', '0', '2', null, '1', '1000', '1000000', '100000', null, '0', '2017-05-17 19:57:08', 'admin', '2017-05-17 19:57:08', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500400', 'treeNumber1', '专用参数 | 机器学习 | GBDT二分类 | 树的数目', null, '树的数目', '5', '3', '3', '0', '1', '2', null, '1', '1', '10000', '500', null, '0', '2017-05-17 20:05:17', 'admin', '2017-05-17 20:05:17', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500401', 'featureRatio', '专用参数 | 机器学习 | GBDT二分类 | 训练特征采样比', null, '训练特征采样比', '5', '5', '3', '0', '0', '1', null, '0.01', '0', '1.0', '0.6', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500402', 'sampleRatio', '专用参数 | 机器学习 | GBDT二分类 | 训练样本采样比', null, '训练样本采样比', '5', '5', '3', '0', '0', '1', null, '0.01', '0', '1.0', '0.6', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500403', 'testRatio', '专用参数 | 机器学习 | GBDT二分类 | 测试样本采样比', null, '测试样本采样比', '5', '5', '3', '0', '0', '1', null, '0.01', '0', '1.0', '0.6', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500404', 'maxLeafCount', '专用参数 | 机器学习 | GBDT二分类 | 最大叶子节点数', null, '最大叶子节点数', '5', '3', '3', '0', '0', '2', null, '1', '1', '1000', '32', null, '0', '2017-05-17 20:11:09', 'admin', '2017-05-17 20:11:09', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500405', 'maxDepth', '专用参数 | 机器学习 | GBDT二分类 | 树的最大深度', null, '树的最大深度', '5', '3', '3', '0', '0', '2', null, '1', '1', '100', '10', null, '0', '2017-05-17 20:14:25', 'admin', '2017-05-17 20:14:25', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500406', 'metricType1', '专用参数 | 机器学习 | GBDT二分类 | 指标类型', null, '指标类型', '5', '3', '3', '0', '1', '5', null, null, null, null, '0', null, '0', '2017-05-18 11:33:43', 'admin', '2017-05-18 11:33:43', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500407', 'shrinkage', '专用参数 | 机器学习 | GBDT二分类 | 学习速率', null, '学习速率', '5', '3', '3', '0', '1', '1', null, '0.01', '0', '1', '0.05', null, '0', '2017-05-18 12:56:41', 'admin', '2017-05-18 12:56:41', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500408', 'minLeafSampleCount', '专用参数 | 机器学习 | GBDT二分类 | 叶子节点最少样本数', null, '叶子节点最少样本数', '5', '3', '3', '0', '0', '2', null, '1', '1', '1000', '500', null, '0', '2017-05-18 13:05:35', 'admin', '2017-05-18 13:05:35', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500409', 'featureSplitValueMaxSize', '专用参数 | 机器学习 | GBDT二分类 | 一个特征分裂的最大数量', null, '一个特征分裂的最大数量', '5', '3', '3', '0', '0', '2', null, '1', '1', '1000', '500', null, '0', '2017-05-18 13:07:24', 'admin', '2017-05-18 13:07:24', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500500', 'positiveCost', '专用参数 | 机器学习 | 线性支持向量机 | 正例惩罚因子', null, '正例惩罚因子', '5', '5', '3', '0', '0', '1', null, null, '0', null, '1.0', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500501', 'negativeCost', '专用参数 | 机器学习 | 线性支持向量机 | 负例惩罚因子', null, '负例惩罚因子', '5', '5', '3', '0', '0', '1', null, null, '0', null, '1.0', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40500700', 'kNumber', '专用参数 | 机器学习 | KNN | 近邻个数', null, '近邻个数', '5', '3', '3', '0', '1', '2', null, '1', '1', '1000', '100', null, '0', '2017-05-17 20:41:30', 'admin', '2017-05-17 20:41:30', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40510000', 'centerNumber', '专用参数 | 机器学习 | KMeans | 聚类数', null, '聚类数', '5', '3', '3', '0', '1', '2', null, '1', '1', '1000', '10', null, '0', '2017-05-17 21:00:00', 'admin', '2017-05-17 21:00:00', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40510001', 'distanceMeasureType', '专用参数 | 机器学习 | KMeans | 距离度量方式', null, '距离度量方式', '5', '7', '3', '0', '1', '5', null, null, null, null, 'euclidean', null, '0', '2017-05-17 21:02:55', 'admin', '2017-05-17 21:02:55', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40510002', 'centerInitMethod', '专用参数 | 机器学习 | KMeans | 质心初始化方法', null, '质心初始化方法', '5', '7', '3', '0', '1', '5', null, null, null, null, 'random', null, '0', '2017-05-17 21:11:06', 'admin', '2017-05-17 21:11:06', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40520100', 'lossFunctionType', '专用参数 | 机器学习 | GBDT回归 | 损失函数类型', null, '损失函数类型', '5', '3', '3', '0', '1', '5', null, null, null, null, '0', null, '0', '2017-05-18 11:49:55', 'admin', '2017-05-18 11:50:03', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40520101', 'gbrankLossTau', '专用参数 | 机器学习 | GBDT回归 | gbrank loss中的Tau参数', null, 'gbrank loss中的Tau参数', '5', '5', '3', '0', '0', '2', null, '0.1', '0', '1', '0.6', null, '0', '2017-05-18 11:57:20', 'admin', '2017-05-18 11:57:20', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40520102', 'bottomNumber', '专用参数 | 机器学习 | GBDT回归 | gbrank loss/regression loss中的指数底数', null, 'gbrank loss/regression loss中的指数底数', '5', '3', '3', '0', '0', '2', null, '1', '1', '10', '1', null, '0', '2017-05-18 12:36:25', 'admin', '2017-05-18 12:36:25', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40520113', 'useNewtonStep', '专用参数 | 机器学习 | GBDT回归 | 是否使用牛顿迭代方法', null, '是否使用牛顿迭代方法', '5', '3', '3', '0', '0', '5', null, null, null, null, '1', null, '0', '2017-05-18 13:12:31', 'admin', '2017-05-18 13:12:31', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('40590100', 'binCount', '专用参数 | 机器学习 | 预测 | 计算评价指标时阈值按等频/等宽分成多少个桶', null, '计算评价指标时阈值按等频/等宽分成多少个桶', '5', '3', '3', '0', '1', '2', null, '1000', '1000', null, '1000', null, '0', '2017-05-18 17:20:21', 'admin', '2017-05-18 17:20:21', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0000', 'CCP@#Common-Component-Parameter', '通用参数 | #通用参数', null, '#通用参数', '5', '-1', '-1', '-1', '-1', '-1', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0001', 'CCP@LabelColumnName', '通用参数 | 标签列的列名', 'labelColumnName', '标签列的列名', '5', '7', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0002', 'CCP@PositiveLabel', '通用参数 | 正样本标签（二分类）', 'positiveLabel', '正样本标签', '5', '7', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0003', 'CCP@WeightColumnName', '通用参数 | 权重列的列名', 'weightColumnName', '权重列的列名', '5', '7', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0004', 'CCP@GroupColumnName', '通用参数 | 分组列的列名', 'groupColumnName', '分组列的列名', '5', '7', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0005', 'CCP@PredicationResultlColumnName', '通用参数 | 预测输出结果列的列名', 'predicationResultColumnName', '预测输出结果列的列名', '5', '7', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0006', 'CCP@PredicationScoreColumnName', '通用参数 | 预测输出分数列的列名', 'predicationScoreColumnName', '预测输出分数列的列名', '5', '7', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0007', 'CCP@PredicationDetailColumnName', '通用参数 | 预测输出详情列的列名', 'predicationDetailColumnName', '预测输出详情列的列名', '5', '7', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0008', 'CCP@FeatureColumnNames', '通用参数 | 特征列的列名列表（选择特征）（不建议）', 'featureColumnNames', '特征列', '5', '9001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0009', 'CCP@ForceDiscreteColumnNames', '通用参数 | 离散列的列名列表（强制转换）（不建议）', 'forceDiscreteColumnNames', '离散特征列', '5', '9000', '3', '0', '0', '0', null, null, null, null, null, 'feature默认解析规则： string、boolean、date、datetime类型的列解析为离散类型。 整数和浮点数类型的列解析为连续类型，若有将bigint解析为categorical/nominal的情况，通过参数cmptParam_ml_forceDiscreteColumnNames指定。', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0010', 'CCP@ReverseColumnNames', '通用参数 | 保留列的列名列表（附加特征）（不建议）', 'reverseColumnNames', '保留特征列', '5', '9000', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0011', 'CCP@ExcludedColumnNames', '通用参数 | 排除列的列名列表（排除特征）（不建议）', 'excludedColumnNames', '排除特征列', '5', '9000', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-IO@COM-0013', 'CCP@IO-TableName', '通用参数 | 输入输出 | 数据表名', 'tableName', '表名', '5', '7', '3', '0', '1', '0', null, null, null, null, null, '用于数据表读取系列的表名值存放', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-IO@COM-0014', 'CCP@IO-ModelID', '通用参数 | 输入输出 | 模型ID', 'modelID', '模型ID', '5', '4', '3', '0', '1', '0', null, null, null, null, null, '用于模型读取系列组件的模型ID值存放', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-ML@COM-0001', 'CCP@ML-RandSeed', '通用参数 | 机器学习 | 随机数种子', 'randomSeed', '随机数种子', '5', '3', '3', '0', '0', '2', null, '1', '0', '10', '0', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0000', 'EX@#Execution', '调用执行 | #调用执行', null, '#调用执行', '3', '-1', '-1', '-1', '-1', '-1', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0001', 'EX@Engine-Type', '调用执行 | 计算引擎', 'engineType', '计算引擎', '3', '7', '1', '0', '1', '5', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0002', 'EX@Spark-Cmpt-Jar-Dir', '调用执行 | spark组件jar库目录', 'jarDir', 'spark组件jar库目录', '3', '7', '2', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0003', 'EX@Spark-Cmpt-Jar-File', '调用执行 | spark组件jar包文件名', 'jarFile', 'spark组件jar包文件名', '3', '7', '2', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0004', 'EX@Spark-Cmpt-Class-Path', '调用执行 | spark组件class路径', 'class', 'spark组件class路径', '3', '7', '2', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-9996', 'EX@Spark-Python-Cmpt-Pkg-Dir（待定）', '调用执行 | spark python组件包目录', 'pythonPkgDir', 'spark python组件包目录', '3', '7', '2', '0', '1', '0', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-9997', 'EX@Spark-Python-Cmpt-File（待定）', '调用执行 | spark python组件文件名', 'pythonFile', 'spark python组件文件名', '3', '7', '2', '0', '1', '0', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-9998', 'EX@Spark-R-Cmpt-Pkg-Dir（待定）', '调用执行 | spark R组件包目录', 'rPkgDir', 'spark R组件包目录', '3', '7', '2', '0', '1', '0', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('EX@C-9999', 'EX@Spark-R-Cmpt-File（待定）', '调用执行 | spark R组件文件名', 'rFile', 'spark R组件文件名', '3', '7', '2', '0', '1', '0', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0000', 'IN@#Input-Content', '输入内容 | #输入内容', null, '#输入内容', '1', '-1', '-1', '-1', '-1', '-1', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0001', 'IN@DataTable-t1<M>', '输入内容 | 数据表t1<M>', 't1', '数据表t1<M>', '1', '1000', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0002', 'IN@DataTable-t2<M>', '输入内容 | 数据表t2<M>', 't2', '数据表t2<M>', '1', '1000', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0003', 'IN@DataTable-t2<C>', '输入内容 | 数据表t2<C>', 't2', '数据表t2<C>', '1', '1000', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0004', 'IN@DataTable-t3<M>', '输入内容 | 数据表t3<M>', 't3', '数据表t3<M>', '1', '1000', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0005', 'IN@DataTable-t3<C>', '输入内容 | 数据表t3<C>', 't3', '数据表t3<C>', '1', '1000', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0006', 'IN@DataTable-t4<M>', '输入内容 | 数据表t4<M>', 't4', '数据表t4<M>', '1', '1000', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0007', 'IN@DataTable-t4<C>', '输入内容 | 数据表t4<C>', 't4', '数据表t4<C>', '1', '1000', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0008', 'IN@DataTable-t5<M>', '输入内容 | 数据表t5<M>', 't5', '数据表t5<M>', '1', '1000', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0009', 'IN@DataTable-t5<C>', '输入内容 | 数据表t5<C>', 't5', '数据表t5<C>', '1', '1000', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0010', 'IN@DataTable-t6<M>', '输入内容 | 数据表t6<M>', 't6', '数据表t6<M>', '1', '1000', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0011', 'IN@DataTable-t6<C>', '输入内容 | 数据表t6<C>', 't6', '数据表t6<C>', '1', '1000', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0012', 'IN@Algorithm<OneClass-Classification>-a1<M>', '输入内容 | 单分类算法a1<M>', 'a1', '单分类算法a1<M>', '1', '4001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0013', 'IN@Algorithm<TwoClass-Classification>-a1<M>', '输入内容 | 二分类算法a1<M>', 'a1', '二分类算法a1<M>', '1', '4002', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0014', 'IN@Algorithm<MultipleClass-Classification>-a1<M>', '输入内容 | 多分类算法a1<M>', 'a1', '多分类算法a1<M>', '1', '4003', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0015', 'IN@Algorithm<Classification>-a1<M>', '输入内容 | 通配分类算法a1<M>', 'a1', '通配分类算法a1<M>', '1', '4004', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0016', 'IN@Algorithm<Clustering>-a1<M>', '输入内容 | 聚类算法a1<M>', 'a1', '聚类算法a1<M>', '1', '4005', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0017', 'IN@Algorithm<Regression>-a1<M>', '输入内容 | 回归算法a1<M>', 'a1', '回归算法a1<M>', '1', '4006', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0018', 'IN@Algorithm<Classification,Regression>-a1<M>', '输入内容 | 通配分类&回归算法a1<M>', 'a1', '通配分类&回归算法a1<M>', '1', '4007', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0019', 'IN@Model<OneClass-Classification>-m1<M>', '输入内容 | 单分类模型m1<M>', 'm1', '单分类模型m1<M>', '1', '2001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0020', 'IN@Model<TwoClass-Classification>-m1<M>', '输入内容 | 二分类模型m1<M>', 'm1', '二分类模型m1<M>', '1', '2002', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0021', 'IN@Model<MultipleClass-Classification>-m1<M>', '输入内容 | 多分类模型m1<M>', 'm1', '多分类模型m1<M>', '1', '2003', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0022', 'IN@Model<Classification>-m1<M>', '输入内容 | 通配分类模型m1<M>', 'm1', '通配分类模型m1<M>', '1', '2004', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0023', 'IN@Model<Clustering>-m1<M>', '输入内容 | 聚类模型m1<M>', 'm1', '聚类模型m1<M>', '1', '2005', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0024', 'IN@Model<Regression>-m1<M>', '输入内容 | 回归模型m1<M>', 'm1', '回归模型m1<M>', '1', '2006', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0025', 'IN@Model<Classification,Regression>-m1<M>', '输入内容 | 通配分类&回归模型m1<M>', 'm1', '通配分类&回归模型m1<M>', '1', '2007', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0026', 'IN@Model<CollaborativeFiltering>-m1<M>', '输入内容 | 协同过滤模型m1<M>', 'm1', '协同过滤模型m1<M>', '1', '2008', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0000', 'OEX@#OptimizeExecution', '执行调优 | #执行调优', null, '#执行调优', '4', '-1', '-1', '-1', '-1', '-1', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0001', 'OEX@Spark-Executor-Number', '执行调优 | spark.executor.number', 'spark.executor.number', 'spark.executor.number', '4', '3', '3', '0', '0', '0', null, '1', '1', '100', '2', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0002', 'OEX@Spark-Executor-Cores', '执行调优 | spark.executor.cores', 'spark.executor.cores', 'spark.executor.cores', '4', '3', '3', '0', '0', '0', null, '1', '1', '100', '8', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0003', 'OEX@Spark-Executor-Memory', '执行调优 | spark.executor.memory', 'spark.executor.memory', 'spark.executor.memory', '4', '3', '3', '0', '0', '0', null, '1', '256', '131072', '2048', '内存单位MB，最多128GB', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0004', 'OEX@Spark-Driver-Cores', '执行调优 | spark.driver.cores', 'spark.driver.cores', 'spark.driver.cores', '4', '3', '3', '0', '0', '0', null, '1', '1', '100', '8', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0005', 'OEX@Spark-Driver-Memory', '执行调优 | spark.driver.memory', 'spark.driver.memory', 'spark.driver.memory', '4', '3', '3', '0', '0', '0', null, '1', '256', '262144', '1024', '内存单位MB，最多256GB', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0006', 'OEX@Spark-Extra-Configuration', '执行调优 | spark.extra.configuration（待定）', 'spark.extra.configuration', 'spark.extra.configuration', '4', '7', '3', '0', '0', '0', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0000', 'OUT@#Output-Content', '输出内容 | #输出内容', null, '#输出内容', '2', '-1', '-1', '-1', '-1', '-1', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0001', 'OUT@DataTable-t1<M>', '输出内容 | 数据表t1<M>', 't1', '数据表t1<M>', '2', '1001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0002', 'OUT@DataTable-t2<M>', '输出内容 | 数据表t2<M>', 't2', '数据表t2<M>', '2', '1001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0003', 'OUT@DataTable-t2<C>', '输出内容 | 数据表t2<C>', 't2', '数据表t2<C>', '2', '1001', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0004', 'OUT@DataTable-t3<M>', '输出内容 | 数据表t3<M>', 't3', '数据表t3<M>', '2', '1001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0005', 'OUT@DataTable-t3<C>', '输出内容 | 数据表t3<C>', 't3', '数据表t3<C>', '2', '1001', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0006', 'OUT@DataTable-t4<M>', '输出内容 | 数据表t4<M>', 't4', '数据表t4<M>', '2', '1001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0007', 'OUT@DataTable-t4<C>', '输出内容 | 数据表t4<C>', 't4', '数据表t4<C>', '2', '1001', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0008', 'OUT@DataTable-t5<M>', '输出内容 | 数据表t5<M>', 't5', '数据表t5<M>', '2', '1001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0009', 'OUT@DataTable-t5<C>', '输出内容 | 数据表t5<C>', 't5', '数据表t5<C>', '2', '1001', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0010', 'OUT@DataTable-t6<M>', '输出内容 | 数据表t6<M>', 't6', '数据表t6<M>', '2', '1001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0011', 'OUT@DataTable-t6<C>', '输出内容 | 数据表t6<C>', 't6', '数据表t6<C>', '2', '1001', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0012', 'OUT@Algorithm<OneClass-Classification>-a1<M>', '输出内容 | 单分类算法a1<M>', 'a1', '单分类算法a1<M>', '2', '4001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0013', 'OUT@Algorithm<TwoClass-Classification>-a1<M>', '输出内容 | 二分类算法a1<M>', 'a1', '二分类算法a1<M>', '2', '4002', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0014', 'OUT@Algorithm<MultipleClass-Classification>-a1<M>', '输出内容 | 多分类算法a1<M>', 'a1', '多分类算法a1<M>', '2', '4003', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0015', 'OUT@Algorithm<Clustering>-a1<M>', '输出内容 | 聚类算法a1<M>', 'a1', '聚类算法a1<M>', '2', '4005', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0016', 'OUT@Algorithm<Regression>-a1<M>', '输出内容 | 回归算法a1<M>', 'a1', '回归算法a1<M>', '2', '4006', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0017', 'OUT@Algorithm<Classification>-a1<M>', '输出内容 | 通配分类算法a1<M>', 'a1', '通配分类算法a1<M>', '2', '4004', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0018', 'OUT@Algorithm<Classification,Regression>-a1<M>', '输出内容 | 通配分类&回归算法a1<M>', 'a1', '通配分类&回归算法a1<M>', '2', '4007', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0019', 'OUT@Model<OneClass-Classification>-m1<M>', '输出内容 | 单分类模型m1<M>', 'm1', '单分类模型m1<M>', '2', '2001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0020', 'OUT@Model<TwoClass-Classification>-m1<M>', '输出内容 | 二分类模型m1<M>', 'm1', '二分类模型m1<M>', '2', '2002', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0021', 'OUT@Model<MultipleClass-Classification>-m1<M>', '输出内容 | 多分类模型m1<M>', 'm1', '多分类模型m1<M>', '2', '2003', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0022', 'OUT@Model<Clustering>-m1<M>', '输出内容 | 聚类模型m1<M>', 'm1', '聚类模型m1<M>', '2', '2005', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0023', 'OUT@Model<Regression>-m1<M>', '输出内容 | 回归模型m1<M>', 'm1', '回归模型m1<M>', '2', '2006', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0024', 'OUT@Model<CollaborativeFiltering>-m1<M>', '输出内容 | 协同过滤模型m1<M>', 'm1', '协同过滤模型m1<M>', '2', '2008', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0025', 'OUT@Model<Classification>-m1<M>', '输出内容 | 通配分类模型m1<M>', 'm1', '通配分类模型m1<M>', '2', '2004', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0026', 'OUT@Model<Classification,Regression>-m1<M>', '输出内容 | 通配分类&回归模型m1<M>', 'm1', '通配分类&回归模型m1<M>', '2', '2007', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0027', 'OUT@Report<ModelEvaluation>-r1<M>', '输出内容 | 模型评估报告r1<M>', 'r1', '模型评估报告r1<M>', '2', '5001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0028', 'OUT@Report<StatisticsAnalysis>-r1<M>', '输出内容 | 统计分析报告r1<M>', 'r1', '统计分析报告r1<M>', '2', '5002', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0029', 'OUT@Report<CrossValidation>-r1<M>', '输出内容 | 交叉验证报告r1<M>', 'r1', '交叉验证报告r1<M>', '2', '5003', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0030', 'OUT@Report<TuneParameters>-r1<M>', '输出内容 | 自动调参报告r1<M>', 'r1', '自动调参报告r1<M>', '2', '5004', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0031', 'OUT@Report<GenerateRules>-r1<M>', '输出内容 | 生成规则报告r1<M>', 'r1', '生成规则报告r1<M>', '2', '5005', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-AA@COM-0000-00', 'SCP@#Special-Component-Parameter', '专用参数 | #专用参数', null, '#专用参数', '5', '-1', '-1', '-1', '-1', '-1', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-01', 'SCP@Import-DataFile@FileType', '专用参数 | 输入输出 | 数据文件导入 | 文件类型', 'fileType', '文件类型', '5', '7', '3', '0', '1', '5', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-02', 'SCP@Import-DataFile@FilePath', '专用参数 | 输入输出 | 数据文件导入 | 文件路径', 'filePath', '文件路径', '5', '7', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-03', 'SCP@Import-DataFile@ColumnDelimiter', '专用参数 | 输入输出 | 数据文件导入 | 列分隔符', 'columnDelimiter', '列分隔符', '5', '7', '3', '0', '0', '0', null, null, null, null, '0x2C', '列分隔符，内容填写相应符号的ASCII码十六进制值，例如CSV默认为逗号（0x2C），TSV默认为制表符（0x09），TXT默认为空格（0x20）', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-04', 'SCP@Import-DataFile@LineDelimiter', '专用参数 | 输入输出 | 数据文件导入 | 行分隔符', 'lineDelimiter', '行分隔符', '5', '7', '3', '0', '0', '0', null, null, null, null, '0x0A', '行分隔符，内容填写相应符号的ASCII码十六进制值，例如Window默认为回车符换行符（0x0D0x0A），MacOS默认为回车符（0xD），Unix/Linux默认为换行符（0x0A）', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-05', 'SCP@Import-DataFile@CharacterEncoding', '专用参数 | 输入输出 | 数据文件导入 | 字符编码', 'characterEncoding', '字符编码', '5', '7', '3', '0', '1', '5', null, null, null, null, 'UTF-8', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-06', 'SCP@Import-DataFile@ExistHeader', '专用参数 | 输入输出 | 数据文件导入 | 首行是否为字段标题', 'existHeader', '首行是否为字段标题', '5', '1', '3', '0', '0', '0', null, null, null, null, 'false', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-07', 'SCP@Import-DataFile@Schema', '专用参数 | 输入输出 | 数据文件导入 | 字段描述列表', 'schema', '字段描述列表', '5', '9001', '3', '0', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-08', 'SCP@Import-DataFile@DateFormat', '专用参数 | 输入输出 | 数据文件导入 | 日期格式', 'dateFormat', '日期格式', '5', '7', '3', '0', '0', '0', null, null, null, null, 'yyyy-mm-dd', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-09', 'SCP@Import-DataFile@TimeFormat', '专用参数 | 输入输出 | 数据文件导入 | 时间格式', 'timeFormat', '时间格式', '5', '7', '3', '0', '0', '0', null, null, null, null, 'yyyy-mm-dd hh24:mi:ss', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-10', 'SCP@Import-DataFile@TypeException', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理', 'typeException', '字段类型异常处理', '5', '7', '3', '0', '0', '5', null, null, null, null, 'missing value', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-11', 'SCP@Import-DataFile@ColumnsException', '专用参数 | 输入输出 | 数据文件导入 | 列数异常处理', 'columnsException', '列数异常处理', '5', '7', '3', '0', '0', '5', null, null, null, null, 'discard row', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-ST@COM-0001-01', 'SCP@Sql-Script@sqlScript', '专用参数 | 脚本工具 | SQL脚本 | SQL脚本', 'sqlScript', 'SQL脚本', '5', '3001', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-ST@COM-0002-01', 'SCP@Python-Script@pythonScript', '专用参数 | 脚本工具 | Python脚本 | Python脚本', 'pythonScript', 'Python脚本', '5', '3002', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-ST@COM-0003-01', 'SCP@R-Script@rScript', '专用参数 | 脚本工具 | R脚本 | R脚本', 'rScript', 'R脚本', '5', '3003', '3', '0', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('10030', 'maxIteration', '通用参数 | 机器学习 | 最大iter迭代次数', null, '最大iter迭代次数', '5', '3', '3', '1', '2', null, '1', '1', '10000', '1', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('10031', 'eta', '通用参数 | 机器学习 | 学习速率eta', null, '学习速率eta', '5', '5', '3', '1', '1', null, '0.01', '0', '1.0', '0.05', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('10032', 'epsilon', '通用参数 | 机器学习 | 收敛系数eplison（最小收敛误差）', null, '收敛系数eplison', '5', '5', '3', '0', '0', null, '0.01', null, null, '0.000001', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('10034', 'regularizedType', '通用参数 | 机器学习 | 正则项类型', null, '正则项类型', '5', '7', '3', '0', '5', null, null, null, null, 'None', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('10035', 'regularizedCoef', '通用参数 | 机器学习 | 正则系数', null, '正则系数', '5', '5', '3', '0', '0', null, '0.1', null, null, '1', '可选，正则类型为None时此值无效', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500300', 'treeNumber', '专用参数 | 机器学习 | 随机森林 | 森林中树的数目', null, '森林中树的数目', '5', '3', '3', '1', '2', null, '1', '1', '1000', '100', null, '0', '2017-05-17 18:00:30', 'admin', '2017-05-17 18:00:30', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500301', 'algorithmDistribution', '专用参数 | 机器学习 | 随机森林 | 森林中树的算法分布', null, '森林中树的算法分布', '5', '7', '3', '0', '0', null, null, null, null, null, '如果有则长度为2.比如有n棵树，algorithmTypes=a,b  则[0,a) 是 id3, [a,b) 是cart， [b,n) 是c4.5。例如：在一个拥有5棵树的森林中，[2, 4]表示0，1为id3算法，2, 3为cart算法，4为c4.5算法。如果输入为None，则算法在森林中均分。', '0', '2017-05-17 19:07:52', 'admin', '2017-05-17 19:08:01', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500302', 'randomFeatureNumber', '专用参数 | 机器学习 | 随机森林 | 单颗树输入随机特征的个数', null, '单颗树输入随机特征的个数', '5', '3', '3', '0', '2', null, '1', '1', null, null, '范围 [1, N]，N为feature数，默认log2N', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500303', 'minInstsPerNode', '专用参数 | 机器学习 | 随机森林 | 叶节点数据的最小个数', null, '叶节点数据的最小个数', '5', '3', '3', '0', '2', null, '1', '1', null, '2', null, '0', '2017-05-17 19:28:46', 'admin', '2017-05-17 19:28:46', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500304', 'maxDepth1', '专用参数 | 机器学习 | 随机森林 | 单颗树的最大深度', null, '单颗树的最大深度', '5', '3', '3', '0', '2', null, '1', '1', null, null, '默认无穷大', '0', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500305', 'randomInstsNumber', '专用参数 | 机器学习 | 随机森林 | 单颗树输入随机数据的个数（待定）', null, '单颗树输入随机数据的个数', '5', '3', '3', '0', '2', null, '1', '1000', '1000000', '100000', null, '0', '2017-05-17 19:57:08', 'admin', '2017-05-17 19:57:08', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500400', 'treeNumber1', '专用参数 | 机器学习 | GBDT二分类 | 树的数目', null, '树的数目', '5', '3', '3', '1', '2', null, '1', '1', '10000', '500', null, '0', '2017-05-17 20:05:17', 'admin', '2017-05-17 20:05:17', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500401', 'featureRatio', '专用参数 | 机器学习 | GBDT二分类 | 训练特征采样比', null, '训练特征采样比', '5', '5', '3', '0', '1', null, '0.01', '0', '1.0', '0.6', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500402', 'sampleRatio', '专用参数 | 机器学习 | GBDT二分类 | 训练样本采样比', null, '训练样本采样比', '5', '5', '3', '0', '1', null, '0.01', '0', '1.0', '0.6', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500403', 'testRatio', '专用参数 | 机器学习 | GBDT二分类 | 测试样本采样比', null, '测试样本采样比', '5', '5', '3', '0', '1', null, '0.01', '0', '1.0', '0.6', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500404', 'maxLeafCount', '专用参数 | 机器学习 | GBDT二分类 | 最大叶子节点数', null, '最大叶子节点数', '5', '3', '3', '0', '2', null, '1', '1', '1000', '32', null, '0', '2017-05-17 20:11:09', 'admin', '2017-05-17 20:11:09', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500405', 'maxDepth', '专用参数 | 机器学习 | GBDT二分类 | 树的最大深度', null, '树的最大深度', '5', '3', '3', '0', '2', null, '1', '1', '100', '10', null, '0', '2017-05-17 20:14:25', 'admin', '2017-05-17 20:14:25', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500406', 'metricType1', '专用参数 | 机器学习 | GBDT二分类 | 指标类型', null, '指标类型', '5', '3', '3', '1', '5', null, null, null, null, '0', null, '0', '2017-05-18 11:33:43', 'admin', '2017-05-18 11:33:43', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500407', 'shrinkage', '专用参数 | 机器学习 | GBDT二分类 | 学习速率', null, '学习速率', '5', '3', '3', '1', '1', null, '0.01', '0', '1', '0.05', null, '0', '2017-05-18 12:56:41', 'admin', '2017-05-18 12:56:41', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500408', 'minLeafSampleCount', '专用参数 | 机器学习 | GBDT二分类 | 叶子节点最少样本数', null, '叶子节点最少样本数', '5', '3', '3', '0', '2', null, '1', '1', '1000', '500', null, '0', '2017-05-18 13:05:35', 'admin', '2017-05-18 13:05:35', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500409', 'featureSplitValueMaxSize', '专用参数 | 机器学习 | GBDT二分类 | 一个特征分裂的最大数量', null, '一个特征分裂的最大数量', '5', '3', '3', '0', '2', null, '1', '1', '1000', '500', null, '0', '2017-05-18 13:07:24', 'admin', '2017-05-18 13:07:24', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500500', 'positiveCost', '专用参数 | 机器学习 | 线性支持向量机 | 正例惩罚因子', null, '正例惩罚因子', '5', '5', '3', '0', '1', null, null, '0', null, '1.0', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500501', 'negativeCost', '专用参数 | 机器学习 | 线性支持向量机 | 负例惩罚因子', null, '负例惩罚因子', '5', '5', '3', '0', '1', null, null, '0', null, '1.0', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40500700', 'kNumber', '专用参数 | 机器学习 | KNN | 近邻个数', null, '近邻个数', '5', '3', '3', '1', '2', null, '1', '1', '1000', '100', null, '0', '2017-05-17 20:41:30', 'admin', '2017-05-17 20:41:30', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40510000', 'centerNumber', '专用参数 | 机器学习 | KMeans | 聚类数', null, '聚类数', '5', '3', '3', '1', '2', null, '1', '1', '1000', '10', null, '0', '2017-05-17 21:00:00', 'admin', '2017-05-17 21:00:00', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40510001', 'distanceMeasureType', '专用参数 | 机器学习 | KMeans | 距离度量方式', null, '距离度量方式', '5', '7', '3', '1', '5', null, null, null, null, 'euclidean', null, '0', '2017-05-17 21:02:55', 'admin', '2017-05-17 21:02:55', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40510002', 'centerInitMethod', '专用参数 | 机器学习 | KMeans | 质心初始化方法', null, '质心初始化方法', '5', '7', '3', '1', '5', null, null, null, null, 'random', null, '0', '2017-05-17 21:11:06', 'admin', '2017-05-17 21:11:06', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40520100', 'lossFunctionType', '专用参数 | 机器学习 | GBDT回归 | 损失函数类型', null, '损失函数类型', '5', '3', '3', '1', '5', null, null, null, null, '0', null, '0', '2017-05-18 11:49:55', 'admin', '2017-05-18 11:50:03', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40520101', 'gbrankLossTau', '专用参数 | 机器学习 | GBDT回归 | gbrank loss中的Tau参数', null, 'gbrank loss中的Tau参数', '5', '5', '3', '0', '2', null, '0.1', '0', '1', '0.6', null, '0', '2017-05-18 11:57:20', 'admin', '2017-05-18 11:57:20', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40520102', 'bottomNumber', '专用参数 | 机器学习 | GBDT回归 | gbrank loss/regression loss中的指数底数', null, 'gbrank loss/regression loss中的指数底数', '5', '3', '3', '0', '2', null, '1', '1', '10', '1', null, '0', '2017-05-18 12:36:25', 'admin', '2017-05-18 12:36:25', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40520113', 'useNewtonStep', '专用参数 | 机器学习 | GBDT回归 | 是否使用牛顿迭代方法', null, '是否使用牛顿迭代方法', '5', '3', '3', '0', '5', null, null, null, null, '1', null, '0', '2017-05-18 13:12:31', 'admin', '2017-05-18 13:12:31', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('40590100', 'binCount', '专用参数 | 机器学习 | 预测 | 计算评价指标时阈值按等频/等宽分成多少个桶', null, '计算评价指标时阈值按等频/等宽分成多少个桶', '5', '3', '3', '1', '2', null, '1000', '1000', null, '1000', null, '0', '2017-05-18 17:20:21', 'admin', '2017-05-18 17:20:21', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0000', 'CCP@#Common-Component-Parameter', '通用参数 | #通用参数', null, '#通用参数', '5', '-1', '-1', '-1', '-1', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0001', 'CCP@LabelColumnName', '通用参数 | 标签列的列名', 'labelColumnName', '标签列的列名', '5', '7', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0002', 'CCP@PositiveLabel', '通用参数 | 正样本标签（二分类）', 'positiveLabel', '正样本标签', '5', '7', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0003', 'CCP@WeightColumnName', '通用参数 | 权重列的列名', 'weightColumnName', '权重列的列名', '5', '7', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0004', 'CCP@GroupColumnName', '通用参数 | 分组列的列名', 'groupColumnName', '分组列的列名', '5', '7', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0005', 'CCP@PredicationResultlColumnName', '通用参数 | 预测输出结果列的列名', 'predicationResultColumnName', '预测输出结果列的列名', '5', '7', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0006', 'CCP@PredicationScoreColumnName', '通用参数 | 预测输出分数列的列名', 'predicationScoreColumnName', '预测输出分数列的列名', '5', '7', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0007', 'CCP@PredicationDetailColumnName', '通用参数 | 预测输出详情列的列名', 'predicationDetailColumnName', '预测输出详情列的列名', '5', '7', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0008', 'CCP@FeatureColumnNames', '通用参数 | 特征列的列名列表（选择特征）（不建议）', 'featureColumnNames', '特征列', '5', '9001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0009', 'CCP@ForceDiscreteColumnNames', '通用参数 | 离散列的列名列表（强制转换）（不建议）', 'forceDiscreteColumnNames', '离散特征列', '5', '9000', '3', '0', '0', null, null, null, null, null, 'feature默认解析规则： string、boolean、date、datetime类型的列解析为离散类型。 整数和浮点数类型的列解析为连续类型，若有将bigint解析为categorical/nominal的情况，通过参数cmptParam_ml_forceDiscreteColumnNames指定。', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0010', 'CCP@ReverseColumnNames', '通用参数 | 保留列的列名列表（附加特征）（不建议）', 'reverseColumnNames', '保留特征列', '5', '9000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-0011', 'CCP@ExcludedColumnNames', '通用参数 | 排除列的列名列表（排除特征）（不建议）', 'excludedColumnNames', '排除特征列', '5', '9000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-IO@COM-0013', 'CCP@IO-TableName', '通用参数 | 输入输出 | 数据表名', 'tableName', '表名', '5', '7', '3', '1', '0', null, null, null, null, null, '用于数据表读取系列的表名值存放', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-IO@COM-0014', 'CCP@IO-ModelID', '通用参数 | 输入输出 | 模型ID', 'modelID', '模型ID', '5', '4', '3', '1', '0', null, null, null, null, null, '用于模型读取系列组件的模型ID值存放', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('CCP@C-ML@COM-0001', 'CCP@ML-RandSeed', '通用参数 | 机器学习 | 随机数种子', 'randomSeed', '随机数种子', '5', '3', '3', '0', '2', null, '1', '0', '10', '0', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0000', 'EX@#Execution', '调用执行 | #调用执行', null, '#调用执行', '3', '-1', '-1', '-1', '-1', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0001', 'EX@Engine-Type', '调用执行 | 计算引擎', 'engineType', '计算引擎', '3', '7', '1', '1', '5', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0002', 'EX@Spark-Cmpt-Jar-Dir', '调用执行 | spark组件jar库目录', 'jarDir', 'spark组件jar库目录', '3', '7', '2', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0003', 'EX@Spark-Cmpt-Jar-File', '调用执行 | spark组件jar包文件名', 'jarFile', 'spark组件jar包文件名', '3', '7', '2', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-0004', 'EX@Spark-Cmpt-Class-Path', '调用执行 | spark组件class路径', 'class', 'spark组件class路径', '3', '7', '2', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-9996', 'EX@Spark-Python-Cmpt-Pkg-Dir（待定）', '调用执行 | spark python组件包目录', 'pythonPkgDir', 'spark python组件包目录', '3', '7', '2', '1', '0', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-9997', 'EX@Spark-Python-Cmpt-File（待定）', '调用执行 | spark python组件文件名', 'pythonFile', 'spark python组件文件名', '3', '7', '2', '1', '0', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-9998', 'EX@Spark-R-Cmpt-Pkg-Dir（待定）', '调用执行 | spark R组件包目录', 'rPkgDir', 'spark R组件包目录', '3', '7', '2', '1', '0', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('EX@C-9999', 'EX@Spark-R-Cmpt-File（待定）', '调用执行 | spark R组件文件名', 'rFile', 'spark R组件文件名', '3', '7', '2', '1', '0', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0000', 'IN@#Input-Content', '输入内容 | #输入内容', null, '#输入内容', '1', '-1', '-1', '-1', '-1', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0001', 'IN@DataTable-t1<M>', '输入内容 | 数据表t1<M>', 't1', '数据表t1<M>', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0002', 'IN@DataTable-t2<M>', '输入内容 | 数据表t2<M>', 't2', '数据表t2<M>', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0003', 'IN@DataTable-t2<C>', '输入内容 | 数据表t2<C>', 't2', '数据表t2<C>', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0004', 'IN@DataTable-t3<M>', '输入内容 | 数据表t3<M>', 't3', '数据表t3<M>', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0005', 'IN@DataTable-t3<C>', '输入内容 | 数据表t3<C>', 't3', '数据表t3<C>', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0006', 'IN@DataTable-t4<M>', '输入内容 | 数据表t4<M>', 't4', '数据表t4<M>', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0007', 'IN@DataTable-t4<C>', '输入内容 | 数据表t4<C>', 't4', '数据表t4<C>', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0008', 'IN@DataTable-t5<M>', '输入内容 | 数据表t5<M>', 't5', '数据表t5<M>', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0009', 'IN@DataTable-t5<C>', '输入内容 | 数据表t5<C>', 't5', '数据表t5<C>', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0010', 'IN@DataTable-t6<M>', '输入内容 | 数据表t6<M>', 't6', '数据表t6<M>', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0011', 'IN@DataTable-t6<C>', '输入内容 | 数据表t6<C>', 't6', '数据表t6<C>', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0012', 'IN@Algorithm<OneClass-Classification>-a1<M>', '输入内容 | 单分类算法a1<M>', 'a1', '单分类算法a1<M>', '1', '4001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0013', 'IN@Algorithm<TwoClass-Classification>-a1<M>', '输入内容 | 二分类算法a1<M>', 'a1', '二分类算法a1<M>', '1', '4002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0014', 'IN@Algorithm<MultipleClass-Classification>-a1<M>', '输入内容 | 多分类算法a1<M>', 'a1', '多分类算法a1<M>', '1', '4003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0015', 'IN@Algorithm<Classification>-a1<M>', '输入内容 | 通配分类算法a1<M>', 'a1', '通配分类算法a1<M>', '1', '4004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0016', 'IN@Algorithm<Clustering>-a1<M>', '输入内容 | 聚类算法a1<M>', 'a1', '聚类算法a1<M>', '1', '4005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0017', 'IN@Algorithm<Regression>-a1<M>', '输入内容 | 回归算法a1<M>', 'a1', '回归算法a1<M>', '1', '4006', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0018', 'IN@Algorithm<Classification,Regression>-a1<M>', '输入内容 | 通配分类&回归算法a1<M>', 'a1', '通配分类&回归算法a1<M>', '1', '4007', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0019', 'IN@Model<OneClass-Classification>-m1<M>', '输入内容 | 单分类模型m1<M>', 'm1', '单分类模型m1<M>', '1', '2001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0020', 'IN@Model<TwoClass-Classification>-m1<M>', '输入内容 | 二分类模型m1<M>', 'm1', '二分类模型m1<M>', '1', '2002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0021', 'IN@Model<MultipleClass-Classification>-m1<M>', '输入内容 | 多分类模型m1<M>', 'm1', '多分类模型m1<M>', '1', '2003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0022', 'IN@Model<Classification>-m1<M>', '输入内容 | 通配分类模型m1<M>', 'm1', '通配分类模型m1<M>', '1', '2004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0023', 'IN@Model<Clustering>-m1<M>', '输入内容 | 聚类模型m1<M>', 'm1', '聚类模型m1<M>', '1', '2005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0024', 'IN@Model<Regression>-m1<M>', '输入内容 | 回归模型m1<M>', 'm1', '回归模型m1<M>', '1', '2006', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0025', 'IN@Model<Classification,Regression>-m1<M>', '输入内容 | 通配分类&回归模型m1<M>', 'm1', '通配分类&回归模型m1<M>', '1', '2007', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('IN@C-0026', 'IN@Model<CollaborativeFiltering>-m1<M>', '输入内容 | 协同过滤模型m1<M>', 'm1', '协同过滤模型m1<M>', '1', '2008', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0000', 'OEX@#OptimizeExecution', '执行调优 | #执行调优', null, '#执行调优', '4', '-1', '-1', '-1', '-1', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0001', 'OEX@Spark-Executor-Number', '执行调优 | spark.executor.number', 'spark.executor.number', 'spark.executor.number', '4', '3', '3', '0', '0', null, '1', '1', '100', '2', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0002', 'OEX@Spark-Executor-Cores', '执行调优 | spark.executor.cores', 'spark.executor.cores', 'spark.executor.cores', '4', '3', '3', '0', '0', null, '1', '1', '100', '8', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0003', 'OEX@Spark-Executor-Memory', '执行调优 | spark.executor.memory', 'spark.executor.memory', 'spark.executor.memory', '4', '3', '3', '0', '0', null, '1', '256', '131072', '2048', '内存单位MB，最多128GB', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0004', 'OEX@Spark-Driver-Cores', '执行调优 | spark.driver.cores', 'spark.driver.cores', 'spark.driver.cores', '4', '3', '3', '0', '0', null, '1', '1', '100', '8', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0005', 'OEX@Spark-Driver-Memory', '执行调优 | spark.driver.memory', 'spark.driver.memory', 'spark.driver.memory', '4', '3', '3', '0', '0', null, '1', '256', '262144', '1024', '内存单位MB，最多256GB', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OEX@C-0006', 'OEX@Spark-Extra-Configuration', '执行调优 | spark.extra.configuration（待定）', 'spark.extra.configuration', 'spark.extra.configuration', '4', '7', '3', '0', '0', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0000', 'OUT@#Output-Content', '输出内容 | #输出内容', null, '#输出内容', '2', '-1', '-1', '-1', '-1', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0001', 'OUT@DataTable-t1<M>', '输出内容 | 数据表t1<M>', 't1', '数据表t1<M>', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0002', 'OUT@DataTable-t2<M>', '输出内容 | 数据表t2<M>', 't2', '数据表t2<M>', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0003', 'OUT@DataTable-t2<C>', '输出内容 | 数据表t2<C>', 't2', '数据表t2<C>', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0004', 'OUT@DataTable-t3<M>', '输出内容 | 数据表t3<M>', 't3', '数据表t3<M>', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0005', 'OUT@DataTable-t3<C>', '输出内容 | 数据表t3<C>', 't3', '数据表t3<C>', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0006', 'OUT@DataTable-t4<M>', '输出内容 | 数据表t4<M>', 't4', '数据表t4<M>', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0007', 'OUT@DataTable-t4<C>', '输出内容 | 数据表t4<C>', 't4', '数据表t4<C>', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0008', 'OUT@DataTable-t5<M>', '输出内容 | 数据表t5<M>', 't5', '数据表t5<M>', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0009', 'OUT@DataTable-t5<C>', '输出内容 | 数据表t5<C>', 't5', '数据表t5<C>', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0010', 'OUT@DataTable-t6<M>', '输出内容 | 数据表t6<M>', 't6', '数据表t6<M>', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0011', 'OUT@DataTable-t6<C>', '输出内容 | 数据表t6<C>', 't6', '数据表t6<C>', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0012', 'OUT@Algorithm<OneClass-Classification>-a1<M>', '输出内容 | 单分类算法a1<M>', 'a1', '单分类算法a1<M>', '2', '4001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0013', 'OUT@Algorithm<TwoClass-Classification>-a1<M>', '输出内容 | 二分类算法a1<M>', 'a1', '二分类算法a1<M>', '2', '4002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0014', 'OUT@Algorithm<MultipleClass-Classification>-a1<M>', '输出内容 | 多分类算法a1<M>', 'a1', '多分类算法a1<M>', '2', '4003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0015', 'OUT@Algorithm<Clustering>-a1<M>', '输出内容 | 聚类算法a1<M>', 'a1', '聚类算法a1<M>', '2', '4005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0016', 'OUT@Algorithm<Regression>-a1<M>', '输出内容 | 回归算法a1<M>', 'a1', '回归算法a1<M>', '2', '4006', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0017', 'OUT@Algorithm<Classification>-a1<M>', '输出内容 | 通配分类算法a1<M>', 'a1', '通配分类算法a1<M>', '2', '4004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0018', 'OUT@Algorithm<Classification,Regression>-a1<M>', '输出内容 | 通配分类&回归算法a1<M>', 'a1', '通配分类&回归算法a1<M>', '2', '4007', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0019', 'OUT@Model<OneClass-Classification>-m1<M>', '输出内容 | 单分类模型m1<M>', 'm1', '单分类模型m1<M>', '2', '2001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0020', 'OUT@Model<TwoClass-Classification>-m1<M>', '输出内容 | 二分类模型m1<M>', 'm1', '二分类模型m1<M>', '2', '2002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0021', 'OUT@Model<MultipleClass-Classification>-m1<M>', '输出内容 | 多分类模型m1<M>', 'm1', '多分类模型m1<M>', '2', '2003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0022', 'OUT@Model<Clustering>-m1<M>', '输出内容 | 聚类模型m1<M>', 'm1', '聚类模型m1<M>', '2', '2005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0023', 'OUT@Model<Regression>-m1<M>', '输出内容 | 回归模型m1<M>', 'm1', '回归模型m1<M>', '2', '2006', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0024', 'OUT@Model<CollaborativeFiltering>-m1<M>', '输出内容 | 协同过滤模型m1<M>', 'm1', '协同过滤模型m1<M>', '2', '2008', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0025', 'OUT@Model<Classification>-m1<M>', '输出内容 | 通配分类模型m1<M>', 'm1', '通配分类模型m1<M>', '2', '2004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0026', 'OUT@Model<Classification,Regression>-m1<M>', '输出内容 | 通配分类&回归模型m1<M>', 'm1', '通配分类&回归模型m1<M>', '2', '2007', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0027', 'OUT@Report<ModelEvaluation>-r1<M>', '输出内容 | 模型评估报告r1<M>', 'r1', '模型评估报告r1<M>', '2', '5001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0028', 'OUT@Report<StatisticsAnalysis>-r1<M>', '输出内容 | 统计分析报告r1<M>', 'r1', '统计分析报告r1<M>', '2', '5002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0029', 'OUT@Report<CrossValidation>-r1<M>', '输出内容 | 交叉验证报告r1<M>', 'r1', '交叉验证报告r1<M>', '2', '5003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0030', 'OUT@Report<TuneParameters>-r1<M>', '输出内容 | 自动调参报告r1<M>', 'r1', '自动调参报告r1<M>', '2', '5004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('OUT@C-0031', 'OUT@Report<GenerateRules>-r1<M>', '输出内容 | 生成规则报告r1<M>', 'r1', '生成规则报告r1<M>', '2', '5005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-AA@COM-0000-00', 'SCP@#Special-Component-Parameter', '专用参数 | #专用参数', null, '#专用参数', '5', '-1', '-1', '-1', '-1', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-01', 'SCP@Import-DataFile@FileType', '专用参数 | 输入输出 | 数据文件导入 | 文件类型', 'fileType', '文件类型', '5', '7', '3', '1', '5', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-02', 'SCP@Import-DataFile@FilePath', '专用参数 | 输入输出 | 数据文件导入 | 文件路径', 'filePath', '文件路径', '5', '7', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-03', 'SCP@Import-DataFile@ColumnDelimiter', '专用参数 | 输入输出 | 数据文件导入 | 列分隔符', 'columnDelimiter', '列分隔符', '5', '7', '3', '0', '0', null, null, null, null, '0x2C', '列分隔符，内容填写相应符号的ASCII码十六进制值，例如CSV默认为逗号（0x2C），TSV默认为制表符（0x09），TXT默认为空格（0x20）', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-04', 'SCP@Import-DataFile@LineDelimiter', '专用参数 | 输入输出 | 数据文件导入 | 行分隔符', 'lineDelimiter', '行分隔符', '5', '7', '3', '0', '0', null, null, null, null, '0x0A', '行分隔符，内容填写相应符号的ASCII码十六进制值，例如Window默认为回车符换行符（0x0D0x0A），MacOS默认为回车符（0xD），Unix/Linux默认为换行符（0x0A）', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-05', 'SCP@Import-DataFile@CharacterEncoding', '专用参数 | 输入输出 | 数据文件导入 | 字符编码', 'characterEncoding', '字符编码', '5', '7', '3', '1', '5', null, null, null, null, 'UTF-8', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-06', 'SCP@Import-DataFile@ExistHeader', '专用参数 | 输入输出 | 数据文件导入 | 首行是否为字段标题', 'existHeader', '首行是否为字段标题', '5', '1', '3', '0', '0', null, null, null, null, 'false', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-07', 'SCP@Import-DataFile@Schema', '专用参数 | 输入输出 | 数据文件导入 | 字段描述列表', 'schema', '字段描述列表', '5', '9001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-08', 'SCP@Import-DataFile@DateFormat', '专用参数 | 输入输出 | 数据文件导入 | 日期格式', 'dateFormat', '日期格式', '5', '7', '3', '0', '0', null, null, null, null, 'yyyy-mm-dd', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-09', 'SCP@Import-DataFile@TimeFormat', '专用参数 | 输入输出 | 数据文件导入 | 时间格式', 'timeFormat', '时间格式', '5', '7', '3', '0', '0', null, null, null, null, 'yyyy-mm-dd hh24:mi:ss', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-10', 'SCP@Import-DataFile@TypeException', '专用参数 | 输入输出 | 数据文件导入 | 字段类型异常处理', 'typeException', '字段类型异常处理', '5', '7', '3', '0', '5', null, null, null, null, 'missing value', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-IO@COM-9999-11', 'SCP@Import-DataFile@ColumnsException', '专用参数 | 输入输出 | 数据文件导入 | 列数异常处理', 'columnsException', '列数异常处理', '5', '7', '3', '0', '5', null, null, null, null, 'discard row', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-ST@COM-0001-01', 'SCP@Sql-Script@sqlScript', '专用参数 | 脚本工具 | SQL脚本 | SQL脚本', 'sqlScript', 'SQL脚本', '5', '3001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-ST@COM-0002-01', 'SCP@Python-Script@pythonScript', '专用参数 | 脚本工具 | Python脚本 | Python脚本', 'pythonScript', 'Python脚本', '5', '3002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_cmpt_char` VALUES ('SCP@C-ST@COM-0003-01', 'SCP@R-Script@rScript', '专用参数 | 脚本工具 | R脚本 | R脚本', 'rScript', 'R脚本', '5', '3003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_cmpt_char_enum
@@ -346,14 +345,14 @@ INSERT INTO `cf_cmpt_char_type` VALUES ('3001', 'SQL Script', 'SQL脚本', '0', 
 INSERT INTO `cf_cmpt_char_type` VALUES ('3002', 'Python Script', 'Python脚本', '0', '16', 'unkown', '特征值为脚本ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_cmpt_char_type` VALUES ('3003', 'R Script', 'R脚本', '0', '16', 'unkown', '特征值为脚本ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_cmpt_char_type` VALUES ('3004', 'Feature Extraction Script', '特征抽取脚本（不使用，方案待定）', '0', '16', 'unkown', '特征值为脚本ID字符串', '-1', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('4000', 'Untrained Algorithm<?>', '通配泛型算法（不使用）', '0', '3', 'unkown', null, '-1', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('4001', 'Untrained Algorithm<OneClass-Classification>', '单分类算法', '0', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('4002', 'Untrained Algorithm<TwoClass-Classification>', '二分类算法', '0', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('4003', 'Untrained Algorithm<MultipleClass-Classification>', '多分类算法', '0', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('4004', 'Untrained Algorithm<Classification>', '通配分类算法', '1', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('4005', 'Untrained Algorithm<Clustering>', '聚类算法', '0', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('4006', 'Untrained Algorithm<Regression>', '回归算法', '0', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
-INSERT INTO `cf_cmpt_char_type` VALUES ('4007', 'Untrained Algorithm<Classification,Regression>', '通配分类&回归算法', '1', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('4000', 'Algorithm Parameters<?>', '通配泛型算法（不使用）', '0', '3', 'unkown', null, '-1', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('4001', 'Algorithm Parameters<OneClass-Classification>', '单分类算法', '0', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('4002', 'Algorithm Parameters<TwoClass-Classification>', '二分类算法', '0', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('4003', 'Algorithm Parameters<MultipleClass-Classification>', '多分类算法', '0', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('4004', 'Algorithm Parameters<Classification>', '通配分类算法', '1', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('4005', 'Algorithm Parameters<Clustering>', '聚类算法', '0', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('4006', 'Algorithm Parameters<Regression>', '回归算法', '0', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_cmpt_char_type` VALUES ('4007', 'Algorithm Parameters<Classification,Regression>', '通配分类&回归算法', '1', '3', 'unkown', '特征值为JSON对象ID字符串', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
 INSERT INTO `cf_cmpt_char_type` VALUES ('5001', 'Model Evaluation Report', '模型评估报告', '0', '2', 'unkown', '特征值为JSON对象ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_cmpt_char_type` VALUES ('5002', 'Statistical Analysis Report', '统计分析报告', '0', '2', 'unkown', '特征值为JSON对象ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_cmpt_char_type` VALUES ('5003', 'Cross Validation Report', '交叉验证报告', '0', '2', 'unkown', '特征值为JSON对象ID字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
@@ -505,9 +504,6 @@ INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-ML@COM-9006', 'CP@CollaborativeFilte
 INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-ST@COM-0001', 'CP@Sql-Script', '组件参数 | 脚本工具 | SQL脚本', '5', null, '0', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-ST@COM-0002', 'CP@Python-Script', '组件参数 | 脚本工具 | Python脚本（待定）', '5', null, '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-ST@COM-0003', 'CP@R-Script', '组件参数 | 脚本工具 | R脚本（待定）', '5', null, '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-WS@COM-0001', 'CP@Input-DataFile', '组件参数 | 在线服务 | 数据文件输入（待定）', '5', '输入数据文件key', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-WS@COM-0002', 'CP@Output-DataFile', '组件参数 | 在线服务 | 数据文件输出（待定）', '5', '输出数据文件key', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('CP@SPEC-WS@COM-0003', 'CP@Output-ModelFile', '组件参数 | 在线服务 | 模型文件输出（待定）', '5', '输出模型文件key', '-1', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('EX@SPEC-0000', 'EX@#Execution', '调用执行 | #调用执行', '3', null, '-1', '2017-05-17 15:08:09', 'admin', '2017-05-17 15:08:09', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('EX@SPEC-0001', 'EX@Spark', '调用执行 | Spark', '3', 'Scala和Java组件的调用执行规格', '0', '2017-05-17 15:08:09', 'admin', '2017-05-17 15:08:09', 'admin');
 INSERT INTO `cf_cmpt_spec` VALUES ('EX@SPEC-0002', 'EX@Spark-Python', '调用执行 | Spark Python（待定）', '3', null, '-1', '2017-05-17 15:08:09', 'admin', '2017-05-17 15:08:09', 'admin');
@@ -831,10 +827,10 @@ INSERT INTO `cf_cmpt_spec_rel` VALUES ('ST@COM-0001', 'CP@SPEC-ST@COM-0001', '5'
 -- ----------------------------
 DROP TABLE IF EXISTS `cf_component`;
 CREATE TABLE `cf_component` (
-  `CMPT_ID` varchar(64) NOT NULL COMMENT '组件ID，长度限制20\r\n            \r\n            输入输出组件ID范围：IO@COM-[0000 ~ 9999]\r\n            脚本工具组件ID范围：ST@COM-[0000 ~ 9999]\r\n            数据预处理组件ID范围：DP@COM-[0000 ~ 9999]\r\n            特征工程组件ID范围：FE@COM-[0000 ~ 9999]\r\n            统计分析组件ID范围：SA@COM-[0000 ~ 9999]\r\n            机器学习组件ID范围：ML@COM-[0000 ~ 9999]\r\n            深度学习组件ID范围：DL@COM-[0000 ~ 9999]\r\n            文本分析组件ID范围：TA@COM-[0000 ~ 9999]\r\n            网络分析组件ID范围：NA@COM-[0000 ~ 9999]\r\n            时间序列组件ID范围：TS@COM-[0000 ~ 9999]\r\n            在线服务组件ID范围：OS@COM-[0000 ~ 9999]\r\n            业务场景组件ID范围：BS@COM-[0000 ~ 9999]\r\n            深度学习组件ID范围：DL@COM-[0000 ~ 9999]\r\n            文本分析组件ID范围：TA@COM-[0000 ~ 9999]\r\n            网络分析组件ID范围：NA@COM-[0000 ~ 9999]\r\n            ',
+  `CMPT_ID` varchar(64) NOT NULL COMMENT '组件ID，长度限制20\r\n\r\n输入输出组件ID范围：IO@COM-[0000 ~ 9999]\r\n脚本工具组件ID范围：ST@COM-[0000 ~ 9999]\r\n数据预处理组件ID范围：DP@COM-[0000 ~ 9999]\r\n特征工程组件ID范围：FE@COM-[0000 ~ 9999]\r\n统计分析组件ID范围：SA@COM-[0000 ~ 9999]\r\n机器学习组件ID范围：ML@COM-[0000 ~ 9999]\r\n深度学习组件ID范围：DL@COM-[0000 ~ 9999]\r\n文本分析组件ID范围：TA@COM-[0000 ~ 9999]\r\n网络分析组件ID范围：NA@COM-[0000 ~ 9999]\r\n时间序列组件ID范围：TS@COM-[0000 ~ 9999]\r\n业务场景组件ID范围：BS@COM-[2-4位场景字母缩写]-[0000 ~ 9999]\r\n            ',
   `CMPT_CODE` varchar(200) NOT NULL COMMENT '组件代码',
   `CMPT_NAME` varchar(200) NOT NULL COMMENT '组件名称',
-  `CMPT_TYPE` int(11) NOT NULL COMMENT '组件种类\r\n            0：输入输出组件\r\n            1：脚本工具组件\r\n            2：数据预处理组件\r\n            3：特征工程组件\r\n            4：统计分析组件\r\n            5：机器学习组件\r\n            6：深度学习组件\r\n            7：文本分析组件\r\n            8：网络分析组件\r\n            9：时间序列组件\r\n            10：在线服务组件\r\n            11：业务场景组件',
+  `CMPT_TYPE` int(11) NOT NULL COMMENT '组件种类\r\n            0：输入输出组件\r\n            1：脚本工具组件\r\n            2：数据预处理组件\r\n            3：特征工程组件\r\n            4：统计分析组件\r\n            5：机器学习组件\r\n            6：深度学习组件\r\n            7：文本分析组件\r\n            8：网络分析组件\r\n            9：时间序列组件\r\n            10：业务场景组件',
   `REL_ALGORITHM_ID` bigint(20) NOT NULL COMMENT '关联算法ID，非算法组件设为-1',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -850,7 +846,7 @@ CREATE TABLE `cf_component` (
 -- ----------------------------
 -- Records of cf_component
 -- ----------------------------
-INSERT INTO `cf_component` VALUES ('BS@COM-0000', 'BS@#BusinessScenario', '业务场景 | #业务场景', '11', '-1', null, '-1', '2017-05-27 17:47:09', 'admin', '2017-05-27 17:47:09', 'admin');
+INSERT INTO `cf_component` VALUES ('BS@COM-0000', 'BS@#BusinessScenario', '业务场景 | #业务场景', '10', '-1', null, '-1', '2017-05-27 17:47:09', 'admin', '2017-05-27 17:47:09', 'admin');
 INSERT INTO `cf_component` VALUES ('DL@COM-0000', 'DL@#DeepLearning', '深度学习 | #深度学习', '6', '-1', null, '-1', '2017-05-27 17:46:41', 'admin', '2017-05-27 17:46:41', 'admin');
 INSERT INTO `cf_component` VALUES ('DP@COM-0000', 'DP@#DataPreprocessing', '数据预处理 | #数据预处理', '2', '-1', null, '-1', '2017-05-27 16:28:04', 'admin', '2017-05-27 16:28:04', 'admin');
 INSERT INTO `cf_component` VALUES ('FE@COM-0000', 'FE@#FeatureEngineering', '特征工程 | #特征工程', '3', '-1', null, '-1', '2017-05-27 16:28:50', 'admin', '2017-05-27 16:28:50', 'admin');
@@ -908,10 +904,6 @@ INSERT INTO `cf_component` VALUES ('ST@COM-0002', 'ST@Python-Script', '脚本工
 INSERT INTO `cf_component` VALUES ('ST@COM-0003', 'ST@R-Script', '脚本工具 | R脚本（待定）', '1', '-1', null, '-1', '2017-05-16 17:57:49', 'admin', '2017-05-16 17:57:49', 'admin');
 INSERT INTO `cf_component` VALUES ('TA@COM-0000', 'TA@#TextAnalysis', '文本分析 | #文本分析', '7', '-1', null, '-1', '2017-05-27 17:47:09', 'admin', '2017-05-27 17:47:09', 'admin');
 INSERT INTO `cf_component` VALUES ('TS@COM-0000', 'TS@#TimeSeries', '时间序列 | #时间序列', '8', '-1', null, '-1', '2017-05-27 17:47:09', 'admin', '2017-05-27 17:47:09', 'admin');
-INSERT INTO `cf_component` VALUES ('WS@COM-0000', 'WS@#WebService', 'Web服务 | #Web服务', '10', '-1', null, '-1', '2017-05-27 17:47:34', 'admin', '2017-05-27 17:47:34', 'admin');
-INSERT INTO `cf_component` VALUES ('WS@COM-0001', 'WS@Input-DataFile', 'Web服务 | 数据文件输入（待定）', '10', '-1', '仅支持Parquet格式数据文件', '-1', '2017-05-27 17:47:34', 'admin', '2017-05-27 17:47:34', 'admin');
-INSERT INTO `cf_component` VALUES ('WS@COM-0002', 'WS@Output-DataFile', 'Web服务 | 数据文件输出（待定）', '10', '-1', '输出Parquet格式数据文件', '-1', '2017-05-27 17:47:34', 'admin', '2017-05-27 17:47:34', 'admin');
-INSERT INTO `cf_component` VALUES ('WS@COM-0003', 'WS@Output-ModelFile', 'Web服务 | 模型文件输出（待定）（通配所有模型）', '10', '-1', '输出平台训练的模型文件', '-1', '2017-05-27 17:47:34', 'admin', '2017-05-27 17:47:34', 'admin');
 
 -- ----------------------------
 -- Table structure for dw_data_table
@@ -920,21 +912,19 @@ DROP TABLE IF EXISTS `dw_data_table`;
 CREATE TABLE `dw_data_table` (
   `TABLE_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '数据表ID',
   `TABLE_NAME` varchar(200) NOT NULL COMMENT '数据表名\r\n            \r\n            普通数据表：由英文字符、数字和下划线组成，起始字符不能为下划线\r\n            临时数据表：tmp$<node_id>_<char_id>_<job_id>',
-  `TABLE_TYPE` int(11) NOT NULL COMMENT '数据表类型\r\n            0：普通数据表\r\n            1：临时数据表\r\n            2：外部数据表，由在线服务的数据文件输入组件产生，DATA_FILE关联完整文件路径，作业完成时被立即清理',
-  `TABLE_SRC` int(11) NOT NULL DEFAULT '0' COMMENT '数据表来源\r\n            0：上传导入数据表\r\n            1：保存临时数据表\r\n            2：任务运行输出',
+  `TABLE_TYPE` int(11) NOT NULL COMMENT '数据表类型\r\n            0：普通数据表\r\n            1：临时数据表',
   `OWNER_DW_ID` bigint(20) NOT NULL COMMENT '所属数据库ID',
   `REL_FLOW_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联工作流ID，无关联实验设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建数据表的工作流节点，无关联则设为-1',
   `REL_CHAR_ID` varchar(64) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建数据表的工作流节点输出特征，无关联则设为-1',
-  `REL_TASK_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联任务ID，无关联则设为-1',
   `TABLE_COLUMNS` bigint(20) DEFAULT NULL COMMENT '列数',
   `TABLE_ROWS` bigint(20) DEFAULT NULL COMMENT '行数',
   `DATA_FILE_TYPE` int(11) NOT NULL DEFAULT '1' COMMENT '数据文件类型\r\n            1：Parquet文件格式 ',
   `DATA_FILE_SIZE` bigint(20) DEFAULT NULL COMMENT '文件大小，单位为字节',
-  `DATA_FILE` varchar(800) DEFAULT NULL COMMENT '数据文件名，普通数据表存放于数据目录下，临时数据表存放于作业目录下\r\n            \r\n            普通数据表：${DATA_DIR}/table_<table_id>.dat\r\n            临时数据表：${JOB_DIR}/table_<task_id>_<table_id>.dat',
-  `SUMMARY_DFS_FILE` varchar(800) DEFAULT NULL COMMENT 'DFS数据概要文件名，普通数据表存放于数据目录下，临时数据表存放于作业目录下\r\n            \r\n            普通数据表：${DATA_DIR}/table_summary_<table_id>.json\r\n            临时数据表：${JOB_DIR}/table_summary_<task_id>_<table_id>.json',
-  `SUMMARY_LOCAL_FILE` varchar(800) DEFAULT NULL COMMENT '本地数据概要文件名，普通数据表存放于数据目录下，临时数据表存放于作业目录下\r\n            \r\n            普通数据表：${DATA_DIR}/table_summary_<table_id>.json\r\n            临时数据表：${JOB_DIR}/table_summary_<task_id>_<table_id>.json',
-  `TABLE_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '数据表状态\r\n            0：空表\r\n            1：正常\r\n            2：仅概要文件',
+  `DATA_FILE` varchar(800) DEFAULT NULL COMMENT '数据文件名，普通数据表存放于数据目录下，临时数据表存放于作业目录下\r\n            \r\n            普通数据表：${DATA_DIR}/table_<table_id>.dat\r\n            临时数据表：${FLOW_DIR}/table_<flow_id>_<table_id>.dat',
+  `SUMMARY_DFS_FILE` varchar(800) DEFAULT NULL COMMENT 'DFS数据概要文件名，普通数据表存放于数据目录下，临时数据表存放于作业目录下\r\n            \r\n            普通数据表：${DATA_DIR}/table_summary_<table_id>.json\r\n            临时数据表：${FLOW_DIR}/table_summary_<node_id>_<table_id>.json',
+  `SUMMARY_LOCAL_FILE` varchar(800) DEFAULT NULL COMMENT '本地数据概要文件名，普通数据表存放于数据目录下，临时数据表存放于作业目录下\r\n            \r\n            普通数据表：${DATA_DIR}/table_summary_<table_id>.json\r\n            临时数据表：${FLOW_DIR}/table_summary_<node_id>_<table_id>.json',
+  `TABLE_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '数据表状态\r\n            0：空表\r\n            1：正常',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -944,8 +934,8 @@ CREATE TABLE `dw_data_table` (
   PRIMARY KEY (`TABLE_ID`),
   KEY `Index_1` (`OWNER_DW_ID`,`TABLE_TYPE`,`TABLE_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_DW_ID`,`TABLE_TYPE`,`STATUS`,`CREATE_TIME`),
-  KEY `Index_3` (`OWNER_DW_ID`,`REL_TASK_ID`,`TABLE_STATE`,`STATUS`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
+  KEY `Index_3` (`OWNER_DW_ID`,`TABLE_STATE`,`STATUS`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='数据表\r\n\r\n逻辑删除，同一库下正常状态的表名唯一';
 
 -- ----------------------------
 -- Records of dw_data_table
@@ -978,7 +968,7 @@ CREATE TABLE `dw_data_warehouse` (
 -- ----------------------------
 -- Records of dw_data_warehouse
 -- ----------------------------
-INSERT INTO `dw_data_warehouse` VALUES ('10000', 'public_dw', '公共数据库', '0', '0', '${HDFS_SITE}/${DFS_WORK_ROOT}/dw_data/public_data_warehouse', '${LOCAL_WORK_ROOT}/dw_data/public_data_warehouse', '平台内置公共数据库，唯一', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
+INSERT INTO `dw_data_warehouse` VALUES ('10000', 'public_data_warehouse', '公共数据库', '0', '0', '${HDFS_SITE}/${DFS_WORK_ROOT}/dw_data/public_data_warehouse', '${LOCAL_WORK_ROOT}/dw_data/public_data_warehouse', '平台内置公共数据库，唯一', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
 
 -- ----------------------------
 -- Table structure for em_experiment
@@ -987,8 +977,6 @@ DROP TABLE IF EXISTS `em_experiment`;
 CREATE TABLE `em_experiment` (
   `EXPERIMENT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '实验ID',
   `EXPERIMENT_NAME` varchar(200) NOT NULL COMMENT '实验名称',
-  `EXPERIMENT_TYPE` int(11) NOT NULL DEFAULT '0' COMMENT '实验类型\r\n            0：主实验，正常创建实验\r\n            1：预测实验（预留），通过选择主实验中的已训练模型进行自动创建',
-  `MAIN_EXPERIMENT_ID` bigint(20) DEFAULT NULL COMMENT '所属主实验ID，主实验设为自身ID',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `SUMMARY` varchar(256) DEFAULT NULL COMMENT '摘要',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
@@ -998,10 +986,9 @@ CREATE TABLE `em_experiment` (
   `CREATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`EXPERIMENT_ID`),
-  KEY `Index_1` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`EXPERIMENT_NAME`,`STATUS`,`CREATE_TIME`),
-  KEY `Index_2` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`STATUS`,`CREATE_TIME`),
-  KEY `Index_3` (`OWNER_PROJECT_ID`,`EXPERIMENT_TYPE`,`MAIN_EXPERIMENT_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='实验表，实验是工作流的外壳主体\r\n\r\n逻辑删除，主实验正常状态的预测实验唯一';
+  KEY `Index_1` (`OWNER_PROJECT_ID`,`EXPERIMENT_NAME`,`STATUS`,`CREATE_TIME`),
+  KEY `Index_2` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='实验表，实验是工作流的外壳主体\r\n\r\n逻辑删除，主实验正常状态的预测实验唯一';
 
 -- ----------------------------
 -- Records of em_experiment
@@ -1041,19 +1028,17 @@ CREATE TABLE `mw_model` (
   `MODEL_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '模型ID',
   `MODEL_NAME` varchar(200) NOT NULL COMMENT '模型名称\r\n            \r\n            普通模型：由字符和数字组成，无特殊字符\r\n            临时模型：组件名称 - 同组件节点序号 - Model [ - 评估指标 - 排名序号]',
   `MODEL_TYPE` int(11) NOT NULL COMMENT '模型类型\r\n            0：普通模型\r\n            1：临时模型\r\n            2：外部模型（预留）',
-  `MODEL_SRC` int(11) NOT NULL DEFAULT '0' COMMENT '模型来源\r\n            0：上传导入模型\r\n            1：保存临时模型\r\n            2：任务运行输出',
   `OWNER_MW_ID` bigint(20) NOT NULL COMMENT '所属模型库ID',
   `REL_FLOW_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联工作流ID，无关联实验设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建模型的工作流节点，无关联则设为-1',
   `REL_CHAR_ID` varchar(64) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建模型的工作流节点输出特征，无关联则设为-1',
-  `REL_TASK_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联任务ID，无关联则设为-1',
   `REF_ALGORITHM_ID` bigint(20) NOT NULL COMMENT '引用算法ID',
   `MODEL_FILE_SIZE` bigint(20) DEFAULT NULL COMMENT '模型文件大小，单位为字节',
-  `MODEL_FILE` varchar(800) DEFAULT NULL COMMENT '模型文件名，普通模型存放于模型目录下，临时模型存放于作业目录下\r\n            \r\n            普通模型：${MODEL_DIR}/model_<model_id>.dat\r\n            临时模型：${JOB_DIR}/model_<task_id>_<model_id>.dat',
-  `SUMMARY_DFS_FILE` varchar(800) DEFAULT NULL COMMENT 'DFS模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息\r\n            \r\n            普通模型：${MODEL_DIR}/model_summary_<model_id>.json\r\n            临时模型：${JOB_DIR}/model_summary_<task_id>_<model_id>.json',
-  `SUMMARY_LOCAL_FILE` varchar(800) DEFAULT NULL COMMENT '本地模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息\r\n            \r\n            普通模型：${MODEL_DIR}/model_summary_<model_id>.json\r\n            临时模型：${JOB_DIR}/model_summary_<task_id>_<model_id>.json',
+  `MODEL_FILE` varchar(800) DEFAULT NULL COMMENT '模型文件名，普通模型存放于模型目录下，临时模型存放于作业目录下\r\n            \r\n            普通模型：${MODEL_DIR}/model_<model_id>.dat\r\n            临时模型：${FLOW_DIR}/model_<node_id>_<model_id>.dat',
+  `SUMMARY_DFS_FILE` varchar(800) DEFAULT NULL COMMENT 'DFS模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息\r\n            \r\n            普通模型：${MODEL_DIR}/model_summary_<model_id>.json\r\n            临时模型：${FLOW_DIR}/model_summary_<node_id>_<model_id>.json',
+  `SUMMARY_LOCAL_FILE` varchar(800) DEFAULT NULL COMMENT '本地模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息\r\n            \r\n            普通模型：${MODEL_DIR}/model_summary_<model_id>.json\r\n            临时模型：${FLOW_DIR}/model_summary_<node_id>_<model_id>.json',
   `MODEL_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '模型状态\r\n            0：空模型\r\n            1：正常',
-  `TRAIN_TABLE_ID` bigint(20) DEFAULT NULL COMMENT '训练集数据表ID（关联训练集是否需要另外拷贝一份全量数据，待定）',
+  `TRAIN_TABLE_ID` bigint(20) DEFAULT NULL COMMENT '训练集数据表ID',
   `TRAIN_COST_TIME` bigint(20) DEFAULT NULL COMMENT '训练运行时间，单位毫秒',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -1064,8 +1049,8 @@ CREATE TABLE `mw_model` (
   PRIMARY KEY (`MODEL_ID`),
   KEY `Index_1` (`OWNER_MW_ID`,`MODEL_TYPE`,`MODEL_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_MW_ID`,`MODEL_TYPE`,`STATUS`,`CREATE_TIME`),
-  KEY `Index_3` (`OWNER_MW_ID`,`REL_TASK_ID`,`MODEL_STATE`,`STATUS`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除';
+  KEY `Index_3` (`OWNER_MW_ID`,`MODEL_STATE`,`STATUS`)
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除';
 
 -- ----------------------------
 -- Records of mw_model
@@ -1098,7 +1083,7 @@ CREATE TABLE `mw_model_warehouse` (
 -- ----------------------------
 -- Records of mw_model_warehouse
 -- ----------------------------
-INSERT INTO `mw_model_warehouse` VALUES ('10000', 'public_mw', '公共模型库', '0', '0', '${HDFS_SITE}/${DFS_WORK_ROOT}/mw_data/public_model_warehouse', '${LOCAL_WORK_ROOT}/mw_data/public_model_warehouse', '平台内置公共模型库，唯一', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
+INSERT INTO `mw_model_warehouse` VALUES ('10000', 'public_model_warehouse', '公共模型库', '0', '0', '${HDFS_SITE}/${DFS_WORK_ROOT}/mw_data/public_model_warehouse', '${LOCAL_WORK_ROOT}/mw_data/public_model_warehouse', '平台内置公共模型库，唯一', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
 
 -- ----------------------------
 -- Table structure for pr_project
@@ -1126,7 +1111,6 @@ CREATE TABLE `pr_project` (
 -- ----------------------------
 -- Records of pr_project
 -- ----------------------------
-INSERT INTO `pr_project` VALUES ('10000', 'BuiltIn_Project', '平台内置项目', '10000', '10000', '21', '平台内置项目', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
 INSERT INTO `pr_project` VALUES ('10002', 'XXOO', 'Alpha', '999', '999', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
 INSERT INTO `pr_project` VALUES ('10003', 'XXOO1', 'Alpha1', '9992', '9991', '21', 'lock', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
 INSERT INTO `pr_project` VALUES ('10004', 'XXOO2', 'Alpha2', '9992', '9992', '21', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
@@ -1143,6 +1127,7 @@ INSERT INTO `pr_project` VALUES ('100061', 'XXOO41', 'Alpha41', '999', '999', '2
 INSERT INTO `pr_project` VALUES ('100071', 'XXOO51', 'Alpha51', '9991', '9991', '21', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
 INSERT INTO `pr_project` VALUES ('100081', 'XXOO61', 'Alpha61', '9992', '9992', '21', '', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
 INSERT INTO `pr_project` VALUES ('100091', 'XXOO71', 'Alpha71', '9993', '9993', '21', '是龙卷风萨拉大坑副将哎算了废旧塑料', '0', '2018-12-03 15:26:58', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project` VALUES ('100092', 'BuiltIn_Project', '平台内置项目', '0', '0', '21', '平台内置项目', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
 
 -- ----------------------------
 -- Table structure for pr_project_member
@@ -1236,12 +1221,10 @@ CREATE TABLE `wf_code_script` (
   `SCRIPT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '脚本ID',
   `SCRIPT_NAME` varchar(200) NOT NULL COMMENT '脚本名称\r\n            \r\n            由工作流创建：<prefix>_<node_id>_<char_id>',
   `SCRIPT_TYPE` int(11) NOT NULL COMMENT '脚本类型\r\n            1：SQL脚本\r\n            2：Python脚本（预留）\r\n            3：R脚本（预留）\r\n            4：特征抽取脚本（预留）',
-  `SCRIPT_SRC` int(11) NOT NULL DEFAULT '0' COMMENT '脚本来源\r\n            0：作业运行\r\n            1：实验编辑',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `REL_FLOW_ID` bigint(20) NOT NULL COMMENT '关联工作流ID，无关联工作流设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建脚本的工作流节点，无关联则设为-1',
   `REL_CHAR_ID` varchar(64) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建脚本的工作流节点输出特征，无关联则设为-1',
-  `REL_TASK_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联任务ID，无关联则设为-1',
   `SCRIPT_CONTENT` mediumtext COMMENT '脚本内容',
   `SCRIPT_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '脚本状态\r\n            0：空脚本\r\n            1：正常',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
@@ -1253,7 +1236,7 @@ CREATE TABLE `wf_code_script` (
   PRIMARY KEY (`SCRIPT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`SCRIPT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='代码脚本表';
 
 -- ----------------------------
 -- Records of wf_code_script
@@ -1359,56 +1342,6 @@ CREATE TABLE `wf_execution_task` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for wf_execution_task_output
--- ----------------------------
-DROP TABLE IF EXISTS `wf_execution_task_output`;
-CREATE TABLE `wf_execution_task_output` (
-  `TASK_ID` bigint(20) NOT NULL COMMENT '节点ID',
-  `CHAR_ID` varchar(64) NOT NULL COMMENT '组件特征ID',
-  `CHAR_VALUE` varchar(2000) DEFAULT NULL COMMENT '特征值',
-  `OUTPUT_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '输出状态\r\n            0：空输出\r\n            1：正常',
-  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
-  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
-  `LAST_UPDATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
-  `CREATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  KEY `Index_1` (`TASK_ID`,`CHAR_ID`,`STATUS`,`CREATE_TIME`),
-  KEY `Index_2` (`TASK_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务输出表，记录输出内容的特征值';
-
--- ----------------------------
--- Records of wf_execution_task_output
--- ----------------------------
-
--- ----------------------------
--- Table structure for wf_execution_task_queue
--- ----------------------------
-DROP TABLE IF EXISTS `wf_execution_task_queue`;
-CREATE TABLE `wf_execution_task_queue` (
-  `TASK_ID` bigint(20) NOT NULL COMMENT '任务ID',
-  `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
-  `OWNER_JOB_ID` bigint(20) NOT NULL COMMENT '所属作业ID',
-  `TASK_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '任务时间，值来自进入队列时间时',
-  `TASK_SIGNAL` int(11) NOT NULL DEFAULT '0' COMMENT '任务信号\r\n            0：SIG_NORMAL，正常任务信号\r\n            1：SIG_KILL，终止任务信号',
-  `TASK_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '任务状态\r\n            1：queueing，排队中\r\n            2：running，运行中',
-  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
-  `LAST_UPDATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
-  `CREATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`TASK_ID`),
-  KEY `Index_1` (`TASK_STATE`,`TASK_SIGNAL`,`TASK_TIME`),
-  KEY `Index_2` (`OWNER_PROJECT_ID`,`TASK_STATE`,`CREATE_TIME`),
-  KEY `Index_3` (`TASK_STATE`,`TASK_TIME`),
-  KEY `Index_4` (`OWNER_JOB_ID`,`TASK_STATE`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务队列表，结束运行后移除';
-
--- ----------------------------
--- Records of wf_execution_task_queue
--- ----------------------------
-
--- ----------------------------
 -- Table structure for wf_flow
 -- ----------------------------
 DROP TABLE IF EXISTS `wf_flow`;
@@ -1460,34 +1393,6 @@ CREATE TABLE `wf_flow_accumulate` (
 
 -- ----------------------------
 -- Records of wf_flow_accumulate
--- ----------------------------
-
--- ----------------------------
--- Table structure for wf_flow_global_parameter
--- ----------------------------
-DROP TABLE IF EXISTS `wf_flow_global_parameter`;
-CREATE TABLE `wf_flow_global_parameter` (
-  `GLOBAL_PARAM_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '全局参数ID',
-  `GLOBAL_PARAM_NAME` varchar(200) NOT NULL COMMENT '全局参数名',
-  `REL_FLOW_ID` bigint(20) NOT NULL COMMENT '关联工作流ID',
-  `REL_NODE_ID` bigint(20) NOT NULL COMMENT '关联节点ID',
-  `REL_CHAR_ID` varchar(64) NOT NULL COMMENT '关联组件特征ID',
-  `DEFAULT_VALUE` varchar(2000) NOT NULL COMMENT '默认值',
-  `WARNING_MSG` varchar(256) DEFAULT NULL COMMENT '警告消息',
-  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
-  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
-  `LAST_UPDATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
-  `CREATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`GLOBAL_PARAM_ID`),
-  KEY `Index_1` (`REL_NODE_ID`,`REL_CHAR_ID`,`STATUS`,`CREATE_TIME`),
-  KEY `Index_2` (`REL_NODE_ID`,`STATUS`,`CREATE_TIME`),
-  KEY `Index_3` (`REL_FLOW_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流全局参数表，用于定时调度任务和开放服务API，指定哪些参数可以暴露到外部，从而调用方可以根据作业需要动态设置工作流';
-
--- ----------------------------
--- Records of wf_flow_global_parameter
 -- ----------------------------
 
 -- ----------------------------
@@ -1550,7 +1455,6 @@ CREATE TABLE `wf_flow_node_link` (
   `LINK_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '链接ID',
   `LINK_NAME` varchar(400) NOT NULL COMMENT '链接名称，自动生成',
   `OWNER_FLOW_ID` bigint(20) NOT NULL COMMENT '所属工作流ID',
-  `IS_WEB_LINK` int(11) NOT NULL DEFAULT '0' COMMENT '是否为web组件的流出链接\r\n            0：否\r\n            1：是',
   `SRC_NODE_ID` bigint(20) NOT NULL COMMENT '流出节点ID',
   `SRC_PORT_ID` bigint(20) NOT NULL COMMENT '流出节点端口ID',
   `DST_NODE_ID` bigint(20) NOT NULL COMMENT '流入节点ID',
@@ -1565,7 +1469,7 @@ CREATE TABLE `wf_flow_node_link` (
   KEY `Index_1` (`OWNER_FLOW_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`SRC_NODE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`DST_NODE_ID`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流节点链接表\r\n\r\n逻辑删除，同一节点流入端口下正常状态的普通组件流出节点端口唯一和web服务组';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流节点链接表\r\n\r\n逻辑删除，同一节点流入端口下正常状态的普通组件流出节点端口唯一和web服务组';
 
 -- ----------------------------
 -- Records of wf_flow_node_link
@@ -1580,7 +1484,6 @@ CREATE TABLE `wf_flow_node_parameter` (
   `SPEC_TYPE` int(11) NOT NULL COMMENT '规格类型，说明参考CF_CMPT_SPEC.SPEC_TYPE\r\n            节点上只设置组件参数和调优执行',
   `CHAR_ID` varchar(64) NOT NULL COMMENT '组件特征ID',
   `CHAR_VALUE` varchar(2000) DEFAULT NULL COMMENT '特征值',
-  `IS_GLOBAL_PARAMETER` int(11) NOT NULL DEFAULT '0' COMMENT '是否为全局参数\r\n            0：否\r\n            1：是',
   `WARNING_MSG` varchar(512) DEFAULT NULL COMMENT '警告消息',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -1628,9 +1531,9 @@ CREATE TABLE `wf_flow_node_port` (
 DROP TABLE IF EXISTS `wf_flow_node_schema`;
 CREATE TABLE `wf_flow_node_schema` (
   `NODE_PORT_ID` bigint(20) NOT NULL COMMENT '节点输出端口ID',
-  `SCHEMA_NAME` varchar(200) NOT NULL COMMENT 'Schema名称，自动生成',
+  `SCHEMA_NAME` varchar(200) NOT NULL COMMENT 'schema名称，自动生成',
   `OWNER_NODE_ID` bigint(20) NOT NULL COMMENT '所属节点ID',
-  `OBJECT_ID` bigint(20) DEFAULT NULL COMMENT 'json对象ID',
+  `SCHEMA_CONTENT` mediumtext COMMENT 'schema内容',
   `SCHEMA_STATE` int(11) NOT NULL DEFAULT '0' COMMENT 'schema状态\r\n            0：空schema\r\n            1：正常\r\n            2：不支持\r\n            3：超限中断',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -1652,18 +1555,16 @@ CREATE TABLE `wf_flow_node_schema` (
 DROP TABLE IF EXISTS `wf_json_object`;
 CREATE TABLE `wf_json_object` (
   `OBJECT_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '对象ID',
-  `OBJECT_NAME` varchar(200) NOT NULL COMMENT '对象名称\r\n            \r\n            普通对象：general_<node_id>_<char_id> \r\n            算法参数：algorithm_parameters_<node_id>_<char_id>_<job_id>\r\n            模型评估报告：model_evaluation_report_<node_id>_<char_id>_<job_id>\r\n            统计分析报告：statistical_analysis_report_<node_id>_<char_id>_<job_id>\r\n            自动调参报告：tune_parameters_report_<node_id>_<char_id>_<job_id>\r\n            生成规则报告：generate_rules_report_<node_id>_<char_id>_<job_id>\r\n            输出端口schema：output_port_schema_<node_id>_<char_id>',
-  `OBJECT_TYPE` int(11) NOT NULL COMMENT '对象类型\r\n            0：JsonObject&JsonArray（组件参数，仅存放于OBJECT_DATA）\r\n            1：算法参数（输出内容，仅存放于OBJECT_DATA）\r\n            2：模型评估报告（输出内容，存放于文件系统）\r\n            3：交叉验证报告（输出内容，存放于文件系统）\r\n            4：统计分析报告（输出内容，存放于文件系统）\r\n            5：自动调参报告（输出内容，存放于文件系统）\r\n            6：生成规则报告（输出内容，存放于文件系统）\r\n            99：输出端口schema（端口信息，仅存放于OBJECT_DATA）',
-  `OBJECT_SRC` int(11) NOT NULL DEFAULT '0' COMMENT '对象来源\r\n            0：作业运行\r\n            1：实验编辑',
+  `OBJECT_NAME` varchar(200) NOT NULL COMMENT '对象名称\r\n            \r\n            普通对象：general_<node_id>_<char_id> \r\n            算法参数：algorithm_parameters_<node_id>_<char_id>\r\n            模型评估报告：model_evaluation_report_<node_id>_<char_id>\r\n            统计分析报告：statistical_analysis_report_<node_id>_<char_id>\r\n            自动调参报告：tune_parameters_report_<node_id>_<char_id>\r\n            生成规则报告：generate_rules_report_<node_id>_<char_id>',
+  `OBJECT_TYPE` int(11) NOT NULL COMMENT '对象类型\r\n            0：JsonObject&JsonArray（组件参数，仅存放于OBJECT_DATA）\r\n            1：算法参数（输出内容，仅存放于OBJECT_DATA）\r\n            2：模型评估报告（输出内容，存放于文件系统）\r\n            3：交叉验证报告（输出内容，存放于文件系统）\r\n            4：统计分析报告（输出内容，存放于文件系统）\r\n            5：自动调参报告（输出内容，存放于文件系统）\r\n            6：生成规则报告（输出内容，存放于文件系统）',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `REL_FLOW_ID` bigint(20) NOT NULL COMMENT '关联工作流ID，无关联工作流设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建脚本的工作流节点，无关联则设为-1',
   `REL_CHAR_ID` varchar(64) NOT NULL DEFAULT '-1' COMMENT '关联特征ID，创建脚本的工作流节点输出特征，无关联则设为-1',
-  `REL_TASK_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联任务ID，无关联则设为-1',
   `STORAGE_LOCATION` int(11) NOT NULL DEFAULT '0' COMMENT '存储位置\r\n            \r\n            0：OBJECT_CONTENT字段\r\n            1：文件系统',
   `OBJECT_CONTENT` mediumtext COMMENT '对象内容',
-  `OBJECT_DFS_FILE` varchar(800) DEFAULT NULL COMMENT 'DFS对象文件名\r\n            \r\n            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json\r\n            统计分析报告：${JOB_DIR}/statistical_analysis_report_<json_id>.json\r\n            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json\r\n            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json',
-  `OBJECT_LOCAL_FILE` varchar(800) DEFAULT NULL COMMENT '本地对象文件名\r\n            \r\n            模型评估报告：${JOB_DIR}/model_evaluation_report_<json_id>.json\r\n            统计分析报告：${JOB_DIR}/statistical_analysis_report_<json_id>.json\r\n            自动调参报告：${JOB_DIR}/tune_parameters_report_<json_id>.json\r\n            生成规则报告：${JOB_DIR}/generate_rules_report_<json_id>.json',
+  `OBJECT_DFS_FILE` varchar(800) DEFAULT NULL COMMENT 'DFS对象文件名\r\n            \r\n            模型评估报告：${FLOW_DIR}/model_evaluation_report_<node_id>_<json_id>.json\r\n            统计分析报告：${FLOW_DIR}/statistical_analysis_report_<node_id>_<json_id>.json\r\n            自动调参报告：${FLOW_DIR}/tune_parameters_report_<node_id>_<json_id>.json\r\n            生成规则报告：${FLOW_DIR}/generate_rules_report_<node_id>_<json_id>.json',
+  `OBJECT_LOCAL_FILE` varchar(800) DEFAULT NULL COMMENT '本地对象文件名\r\n            \r\n            模型评估报告：${FLOW_DIR}/model_evaluation_report_<node_id>_<json_id>.json\r\n            统计分析报告：${FLOW_DIR}/statistical_analysis_report_<node_id>_<json_id>.json\r\n            自动调参报告：${FLOW_DIR}/tune_parameters_report_<node_id>_<json_id>.json\r\n            生成规则报告：${FLOW_DIR}/generate_rules_report_<node_id>_<json_id>.json',
   `OBJECT_STATE` int(11) NOT NULL DEFAULT '0' COMMENT 'JSON数据状态\r\n            0：空对象\r\n            1：正常',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -1674,7 +1575,7 @@ CREATE TABLE `wf_json_object` (
   PRIMARY KEY (`OBJECT_ID`),
   KEY `Index_1` (`OWNER_PROJECT_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_PROJECT_ID`,`OBJECT_TYPE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='JSON对象表';
 
 -- ----------------------------
 -- Records of wf_json_object
