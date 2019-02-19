@@ -1,21 +1,21 @@
-package com.yatop.lambda.workflow.core.richmodel.workflow.execution;
+package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
-import com.yatop.lambda.base.model.WfExecutionTaskOutput;
+import com.yatop.lambda.base.model.WfFlowNodeOutput;
 import com.yatop.lambda.core.enums.OutputStateEnum;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 
-public class ExecutionTaskOutput extends RichModel<WfExecutionTaskOutput> {
+public class NodeOutput extends RichModel<WfFlowNodeOutput> {
 
     private CharValue charValue;
 
-    public ExecutionTaskOutput(WfExecutionTaskOutput data, CharValue charValue) {
+    public NodeOutput(WfFlowNodeOutput data, CharValue charValue) {
         super(data);
         this.charValue = charValue;
     }
 
-    protected void flush(String operId) {
+    public void flush(String operId) {
 
         if (this.isColoured())
             ;//NodeHelper.updateNode(this, operId);
@@ -33,6 +33,10 @@ public class ExecutionTaskOutput extends RichModel<WfExecutionTaskOutput> {
 
     public CharValue getCharValue() {
         return charValue;
+    }
+
+    public void changeState2Empty() {
+        this.changeOutputState(OutputStateEnum.EMPTY);
     }
 
     public void changeState2Normal() {

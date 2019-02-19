@@ -7,7 +7,7 @@ import com.yatop.lambda.core.mgr.workflow.node.NodeSchemaMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,29 +22,26 @@ public class SchemaRecover {
 
     public void recoverSchemas(WorkflowContext workflowContext, Node node) {
 
-        if(!node.isTailNode()) {
-            int counter = 0;
-            for (NodePortOutput port : node.getOutputNodePorts()) {
-                if (port.isDataTablePort()) {
-                    counter++;
-                }
+        if(!node.isTailNode() && node.haveOutputDataTablePort()) {
+
+            nodeSchemaMgr.recoverSchema(node.data().getNodeId(), workflowContext.getOperId());
+            List<WfFlowNodeSchema> schemaList = nodeSchemaMgr.querySchemaByNodeId(node.data().getNodeId());
+
+            if (DataUtil.isEmpty(schemaList)) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover data node output port schema failed -- schema list size inconsistent.", "节点数据输出端口schema缺失", node.data());
             }
+            for (WfFlowNodeSchema schema : schemaList) {
+                NodeOutputPort outputNodePort = node.getOutputNodePort(schema.getNodePortId());
 
-            if (counter > 0) {
-                nodeSchemaMgr.recoverSchema(node.data().getNodeId(), workflowContext.getOperId());
-                List<WfFlowNodeSchema> schemaList = nodeSchemaMgr.querySchemaByNodeId(node.data().getNodeId());
-
-                if (DataUtil.isEmpty(schemaList) || counter != schemaList.size()) {
-                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover data node output port schema failed -- schema list size inconsistent.", "节点数据输出端口schema缺失", node.data());
+                if (DataUtil.isNull(outputNodePort)) {
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data node output port schema failed -- output node port not found.", "节点数据输出端口信息缺失", schema);
                 }
-                for (WfFlowNodeSchema schema : schemaList) {
-                    NodePortOutput outputNodePort = node.getOutputNodePort(schema.getNodePortId());
+                outputNodePort.setSchema(new NodeSchema(schema, outputNodePort.getCmptChar()));
 
-                    if (DataUtil.isNull(outputNodePort)) {
-                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data node output port schema failed -- output node port not found.", "节点数据输出端口信息缺失", schema);
-                    }
-                    outputNodePort.setSchema(new NodeSchema(schema, outputNodePort.getCmptChar()));
-                    outputNodePort.getSchema().recoverFieldAttributes(workflowContext.getOperId());
+                if(node.isSupportAnalyze()) {
+                    outputNodePort.getSchema().changeState2Empty();
+                } else {
+                    outputNodePort.getSchema().changeState2NotSupport();
                 }
             }
         }

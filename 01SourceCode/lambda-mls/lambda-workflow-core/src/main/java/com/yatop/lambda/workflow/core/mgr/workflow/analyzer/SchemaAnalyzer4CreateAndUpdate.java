@@ -5,8 +5,8 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.*;
@@ -19,11 +19,11 @@ public class SchemaAnalyzer4CreateAndUpdate {
             return;
 
         if(!currentNode.isHeadNode()) {
-            TreeMap<Long, NodePortOutput> upstreamNonWebPorts = workflowContext.fetchNonWebUpstreamPorts(currentNode);
-            for (NodePortInput inputDataPort : currentNode.getInputDataTablePorts()) {
+            TreeMap<Long, NodeOutputPort> upstreamNonWebPorts = workflowContext.fetchUpstreamPorts(currentNode);
+            for (NodeInputPort inputDataPort : currentNode.getInputDataTablePorts()) {
                 //仅对必须输入端口的上游端口状态做分析判断
                 if (inputDataPort.getCmptChar().isRequired()) {
-                    NodePortOutput upstreamDataPort = CollectionUtil.get(upstreamNonWebPorts, inputDataPort.data().getNodePortId());
+                    NodeOutputPort upstreamDataPort = CollectionUtil.get(upstreamNonWebPorts, inputDataPort.data().getNodePortId());
                     if (DataUtil.isNotNull(upstreamDataPort)) {
                         if (!upstreamDataPort.isDataTablePort())
                             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Schema Analyzer error -- Illegal upstream node port.", "系统数据异常，请联系管理员", upstreamDataPort.data(), inputDataPort.data());
@@ -74,7 +74,7 @@ public class SchemaAnalyzer4CreateAndUpdate {
         if(DataUtil.isNull(currentNode) || !currentNode.needAnalyzeSchema())
             return;
 
-        for(NodePortOutput outputDataPort : currentNode.getOutputDataTablePorts()) {
+        for(NodeOutputPort outputDataPort : currentNode.getOutputDataTablePorts()) {
             //仅数据输出端口为schema changed时，找出端口下游节点
             if(outputDataPort.isSchemaChanged()) {
                 List<Node> downstreamNodes = workflowContext.fetchDownstreamNodes(outputDataPort);

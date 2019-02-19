@@ -16,7 +16,6 @@ import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
-import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.*;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
@@ -104,13 +103,13 @@ public class Snapshot extends RichModel<WfSnapshot> {
                 workflowContext.putNode(node);
 
                 if(node.inputNodePortCount() > 0) {
-                    for(NodePortInput inputPort : node.getInputNodePorts()) {
+                    for(NodeInputPort inputPort : node.getInputNodePorts()) {
                         workflowContext.putInputPort(inputPort);
                     }
                 }
 
                 if(node.outputNodePortCount() > 0) {
-                    for(NodePortOutput outputPort : node.getOutputNodePorts()) {
+                    for(NodeOutputPort outputPort : node.getOutputNodePorts()) {
                         workflowContext.putOutputPort(outputPort);
                     }
                 }
@@ -185,14 +184,14 @@ public class Snapshot extends RichModel<WfSnapshot> {
                 }
 
                 if(node.inputNodePortCount() > 0) {
-                    for(NodePortInput inputPort : node.getInputNodePorts()) {
+                    for(NodeInputPort inputPort : node.getInputNodePorts()) {
                         JSONObject jsonInputPort = inputPort.toJSON();
                         jsonInputPorts.add(jsonInputPort);
                     }
                 }
 
                 if(node.outputNodePortCount() > 0) {
-                    for(NodePortOutput outputPort : node.getOutputNodePorts()) {
+                    for(NodeOutputPort outputPort : node.getOutputNodePorts()) {
                         JSONObject jsonOutputPort = outputPort.toJSON();
                         jsonOutputPorts.add(jsonOutputPort);
                     }
@@ -289,14 +288,14 @@ public class Snapshot extends RichModel<WfSnapshot> {
                     if(!jsonInputPorts.isEmpty()) {
                         for (int i = 0; i < jsonInputPorts.size(); i++) {
                             WfFlowNodePort wfFlowNodePort = jsonInputPorts.getJSONObject(i).toJavaObject(WfFlowNodePort.class);
-                            NodePortInput inputPort = new NodePortInput(wfFlowNodePort, ModuleConfigHelper.getModulePort(wfFlowNodePort.getRefPortId()));
+                            NodeInputPort inputPort = new NodeInputPort(wfFlowNodePort, ModuleConfigHelper.getModulePort(wfFlowNodePort.getRefPortId()));
                             node.putInputNodePort(inputPort);
                         }
                     }
                     if(!jsonOutputPorts.isEmpty()) {
                         for (int i = 0; i < jsonOutputPorts.size(); i++) {
                             WfFlowNodePort wfFlowNodePort = jsonOutputPorts.getJSONObject(i).toJavaObject(WfFlowNodePort.class);
-                            NodePortOutput outputPort = new NodePortOutput(wfFlowNodePort, ModuleConfigHelper.getModulePort(wfFlowNodePort.getRefPortId()));
+                            NodeOutputPort outputPort = new NodeOutputPort(wfFlowNodePort, ModuleConfigHelper.getModulePort(wfFlowNodePort.getRefPortId()));
                             node.putOutputNodePort(outputPort);
                         }
                     }

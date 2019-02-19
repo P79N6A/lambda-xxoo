@@ -272,11 +272,6 @@ public class ComponentConfig implements InitializingBean {
                 System.exit(-1);
             }
 
-            if(DataUtil.isNull(IsAllowGlobalEnum.valueOf(richChar.data().getIsAllowGlobal()))) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-Allow-Global:\n%s.", DataUtil.prettyFormat(cmptChar)));
-                System.exit(-1);
-            }
-
             if(DataUtil.isNull(IsRequiredEnum.valueOf(richChar.data().getIsRequired()))) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-Required:\n%s.", DataUtil.prettyFormat(cmptChar)));
                 System.exit(-1);

@@ -6,8 +6,8 @@ import com.yatop.lambda.workflow.core.mgr.workflow.node.link.LinkQuery;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.NodePortQuery;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -81,9 +81,9 @@ public class WorkflowContextHelper {
         }
     }
 
-    protected static void loadInLinks(WorkflowContext workflowContext, Long dstNodePortId) {
+    protected static void loadInLink(WorkflowContext workflowContext, Long dstNodePortId) {
         if(workflowContext.isLazyLoadMode()) {
-            WorkflowContextHelper.LINK_QUERY.queryInLinks(workflowContext, dstNodePortId);
+            WorkflowContextHelper.LINK_QUERY.queryInLink(workflowContext, dstNodePortId);
         }
     }
 
@@ -117,18 +117,16 @@ public class WorkflowContextHelper {
         }
     }
 
-    protected static void loadUpstreamPorts(WorkflowContext workflowContext, NodePortInput inputNodePort) {
+    protected static void loadUpstreamPort(WorkflowContext workflowContext, NodeInputPort inputNodePort) {
         if(workflowContext.isLazyLoadMode()) {
-            List<NodeLink> nodeLinks = workflowContext.fetchInLinks(inputNodePort);
-            if(DataUtil.isNotEmpty(nodeLinks)) {
-                for(NodeLink nodeLink : nodeLinks) {
-                    WorkflowContextHelper.loadOutputPort(workflowContext, nodeLink.data().getSrcPortId());
-                }
+            NodeLink nodeLink = workflowContext.fetchInLink(inputNodePort);
+            if(DataUtil.isNotNull(nodeLink)) {
+                WorkflowContextHelper.loadOutputPort(workflowContext, nodeLink.data().getSrcPortId());
             }
         }
     }
 
-    protected static void loadDownstreamPorts(WorkflowContext workflowContext, NodePortOutput outputNodePort) {
+    protected static void loadDownstreamPorts(WorkflowContext workflowContext, NodeOutputPort outputNodePort) {
         if(workflowContext.isLazyLoadMode()) {
             List<NodeLink> nodeLinks = workflowContext.fetchOutLinks(outputNodePort);
             if(DataUtil.isNotEmpty(nodeLinks)) {
@@ -172,8 +170,6 @@ public class WorkflowContextHelper {
         LinkedList<Node> zeroIndegreeStack = new LinkedList<Node>();
         {
             for(Node node : workflowContext.getNodes()) {
-                if(node.isWebNode())
-                    continue;
 
                 totalCount++;
                 if(node.isHeadNode()) {
@@ -182,7 +178,7 @@ public class WorkflowContextHelper {
                     continue;
                 }
 
-                List<NodeLink> inLinks = workflowContext.fetchNonWebInLinks(node);
+                List<NodeLink> inLinks = workflowContext.fetchInLinks(node);
                 if(DataUtil.isEmpty(inLinks)) {
                     node.setIndegree(0);
                     CollectionUtil.offerLast(zeroIndegreeStack, node);
@@ -203,8 +199,6 @@ public class WorkflowContextHelper {
                 if(DataUtil.isNotEmpty(downstreamNodes)) {
                     for (List<Node> chainList : CollectionUtil.toList(downstreamNodes)) {
                         for(Node downstreamNode : chainList) {
-                            if(downstreamNode.isWebNode())
-                                continue;
 
                             if(downstreamNode.decreaseIndegree() == 0)
                                 CollectionUtil.offerLast(zeroIndegreeStack, downstreamNode);

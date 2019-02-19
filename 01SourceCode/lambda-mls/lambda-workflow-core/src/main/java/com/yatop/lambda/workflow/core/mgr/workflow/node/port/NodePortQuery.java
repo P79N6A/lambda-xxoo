@@ -11,8 +11,8 @@ import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,9 +24,6 @@ public class NodePortQuery {
 
     @Autowired
     private NodePortMgr nodePortMgr;
-
-    @Autowired
-    private SchemaQuery schemaQuery;
 
     @Autowired
     private ModuleConfig moduleConfig;
@@ -49,17 +46,17 @@ public class NodePortQuery {
 
                 switch(PortTypeEnum.valueOf(modulePort.data().getPortType())) {
                     case INPUT_PORT:
-                        NodePortInput inputNodePort =  workflowContext.getInputPort(nodePort.getNodePortId());
+                        NodeInputPort inputNodePort =  workflowContext.getInputPort(nodePort.getNodePortId());
                         if (DataUtil.isNull(inputNodePort)) {
-                            inputNodePort = new NodePortInput(nodePort, modulePort);
+                            inputNodePort = new NodeInputPort(nodePort, modulePort);
                             workflowContext.putInputPort(inputNodePort);
                         }
                         node.putInputNodePort(inputNodePort);
                         break;
                     case OUTPUT_PORT:
-                        NodePortOutput outputNodePort =  workflowContext.getOutputPort(nodePort.getNodePortId());
+                        NodeOutputPort outputNodePort =  workflowContext.getOutputPort(nodePort.getNodePortId());
                         if (DataUtil.isNull(outputNodePort)) {
-                            outputNodePort = new NodePortOutput(nodePort, modulePort);
+                            outputNodePort = new NodeOutputPort(nodePort, modulePort);
                             workflowContext.putOutputPort(outputNodePort);
                         }
                         node.putOutputNodePort(outputNodePort);
@@ -70,15 +67,12 @@ public class NodePortQuery {
             if(module.inputPortCount() != node.inputNodePortCount() || module.outputPortCount() != node.outputNodePortCount()) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module-port vs node-port inconsistent.", "节点端口信息错误", node.data());
             }
-
-            //if(!workflowContext.isLoadDataPortSchema())
-            //    schemaQuery.querySchemas(workflowContext, node);
         }
     }
 
-    public NodePortInput queryInputNodePort(WorkflowContext workflowContext, Long nodePortId) {
+    public NodeInputPort queryInputNodePort(WorkflowContext workflowContext, Long nodePortId) {
 
-        NodePortInput inputNodePort =  workflowContext.getInputPort(nodePortId);
+        NodeInputPort inputNodePort =  workflowContext.getInputPort(nodePortId);
         if (DataUtil.isNotNull(inputNodePort)) {
             return inputNodePort;
         }
@@ -93,14 +87,14 @@ public class NodePortQuery {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module port not found.", "节点端口信息错误", nodePort);
         }
 
-        inputNodePort =  new NodePortInput(nodePort, modulePort);
+        inputNodePort =  new NodeInputPort(nodePort, modulePort);
         workflowContext.putInputPort(inputNodePort);
         return inputNodePort;
     }
 
-    public NodePortOutput queryOutputNodePort(WorkflowContext workflowContext, Long nodePortId) {
+    public NodeOutputPort queryOutputNodePort(WorkflowContext workflowContext, Long nodePortId) {
 
-        NodePortOutput outputNodePort =  workflowContext.getOutputPort(nodePortId);
+        NodeOutputPort outputNodePort =  workflowContext.getOutputPort(nodePortId);
         if (DataUtil.isNotNull(outputNodePort)) {
             return outputNodePort;
         }
@@ -115,10 +109,8 @@ public class NodePortQuery {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node port failed -- module port not found.", "节点端口信息错误", nodePort);
         }
 
-        outputNodePort = new NodePortOutput(nodePort, modulePort);
+        outputNodePort = new NodeOutputPort(nodePort, modulePort);
         workflowContext.putOutputPort(outputNodePort);
-        //if(!workflowContext.isLoadDataPortSchema())
-        //    schemaQuery.querySchema(workflowContext, outputNodePort);
         return outputNodePort;
     }
 }

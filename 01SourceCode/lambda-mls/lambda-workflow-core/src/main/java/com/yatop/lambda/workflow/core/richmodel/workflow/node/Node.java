@@ -24,14 +24,14 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     private TreeMap<String, NodeParameter> parametersOrderByCharCode = new TreeMap<String, NodeParameter>();   //组件参数，key=charCode
     private TreeMap<String, NodeParameter> optimizeParameters = new TreeMap<String, NodeParameter>();         //执行调优参数，key=charId
     private TreeMap<String, NodeParameter> optimizeParametersOrderByCharCode = new TreeMap<String, NodeParameter>();         //执行调优参数，key=charCode
-    private TreeMap<Long, NodePortInput> inputNodePorts = new TreeMap<Long, NodePortInput>();                 //输入节点端口，key=nodePortId
-    private TreeMap<String, NodePortInput> inputNodePortsOrderByCharId = new TreeMap<String, NodePortInput>();                 //输入节点端口，key=charId
-    private TreeMap<String, NodePortInput> inputNodePortsOrderByCharCode = new TreeMap<String, NodePortInput>();                 //输入节点端口，key=charCode
-    private TreeMap<Integer, NodePortInput> inputNodePortsOrderBySequence = new TreeMap<Integer, NodePortInput>(); //输入节点端口按序号排序
-    private TreeMap<Long, NodePortOutput> outputNodePorts = new TreeMap<Long, NodePortOutput>();                //输出节点端口，key=nodePortId
-    private TreeMap<String, NodePortOutput> outputNodePortsOrderByCharId = new TreeMap<String, NodePortOutput>();                //输出节点端口，key=charId
-    private TreeMap<String, NodePortOutput> outputNodePortsOrderByCharCode = new TreeMap<String, NodePortOutput>();                //输出节点端口，key=charCode
-    private TreeMap<Integer, NodePortOutput> outputNodePortsOrderBySequence = new TreeMap<Integer, NodePortOutput>();//输出节点端口按序号排序
+    private TreeMap<Long, NodeInputPort> inputNodePorts = new TreeMap<Long, NodeInputPort>();                 //输入节点端口，key=nodePortId
+    private TreeMap<String, NodeInputPort> inputNodePortsOrderByCharId = new TreeMap<String, NodeInputPort>();                 //输入节点端口，key=charId
+    private TreeMap<String, NodeInputPort> inputNodePortsOrderByCharCode = new TreeMap<String, NodeInputPort>();                 //输入节点端口，key=charCode
+    private TreeMap<Integer, NodeInputPort> inputNodePortsOrderBySequence = new TreeMap<Integer, NodeInputPort>(); //输入节点端口按序号排序
+    private TreeMap<Long, NodeOutputPort> outputNodePorts = new TreeMap<Long, NodeOutputPort>();                //输出节点端口，key=nodePortId
+    private TreeMap<String, NodeOutputPort> outputNodePortsOrderByCharId = new TreeMap<String, NodeOutputPort>();                //输出节点端口，key=charId
+    private TreeMap<String, NodeOutputPort> outputNodePortsOrderByCharCode = new TreeMap<String, NodeOutputPort>();                //输出节点端口，key=charCode
+    private TreeMap<Integer, NodeOutputPort> outputNodePortsOrderBySequence = new TreeMap<Integer, NodeOutputPort>();//输出节点端口按序号排序
   //private TreeMap<String, GlobalParameter> globalParameters = new TreeMap<String, GlobalParameter>();  //操作关联节点参数，key=charId
     private int indegree;
     private boolean deleted;
@@ -77,7 +77,7 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
                     }
                 }
                 if (!this.isTailNode()) {
-                    for (NodePortOutput outputPort : this.getOutputNodePorts()) {
+                    for (NodeOutputPort outputPort : this.getOutputNodePorts()) {
                         outputPort.flush(operId);
                     }
                 }
@@ -156,10 +156,6 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
 
     public Component getComponent() {
         return module.getComponent();
-    }
-
-    public boolean isWebNode() {
-        return this.getModule().isWebModule();
     }
 
     public int parameterCount() {
@@ -262,27 +258,27 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
         return inputNodePorts.size();
     }
 
-    public NodePortInput getInputNodePort(Long nodePortId) {
+    public NodeInputPort getInputNodePort(Long nodePortId) {
         return CollectionUtil.get(inputNodePorts, nodePortId);
     }
 
-    public NodePortInput getInputNodePort(String charId) {
+    public NodeInputPort getInputNodePort(String charId) {
         return CollectionUtil.get(inputNodePortsOrderByCharId, charId);
     }
 
-    public NodePortInput getInputNodePortByCharCode(String charCode) {
+    public NodeInputPort getInputNodePortByCharCode(String charCode) {
         return CollectionUtil.get(inputNodePortsOrderByCharCode, charCode);
     }
 
-    public NodePortInput getInputNodePortBySequence(Integer sequence) {
+    public NodeInputPort getInputNodePortBySequence(Integer sequence) {
         return CollectionUtil.get(inputNodePortsOrderBySequence, sequence);
     }
 
-    public List<NodePortInput> getInputNodePorts() {
+    public List<NodeInputPort> getInputNodePorts() {
         return CollectionUtil.toList(inputNodePortsOrderBySequence);
     }
 
-    public void putInputNodePort(NodePortInput inputNodePort) {
+    public void putInputNodePort(NodeInputPort inputNodePort) {
         CollectionUtil.put(inputNodePorts, inputNodePort.data().getNodePortId(), inputNodePort);
         CollectionUtil.put(inputNodePortsOrderByCharId, inputNodePort.data().getRefCharId(), inputNodePort);
         CollectionUtil.put(inputNodePortsOrderByCharCode, inputNodePort.getCmptChar().data().getCharCode(), inputNodePort);
@@ -293,11 +289,11 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
         return module.inputDataTablePortCount();
     }
 
-    public List<NodePortInput> getInputDataTablePorts() {
-        List<NodePortInput> dataPorts = null;
+    public List<NodeInputPort> getInputDataTablePorts() {
+        List<NodeInputPort> dataPorts = null;
         if(outputDataTablePortCount() > 0) {
-            dataPorts = new ArrayList<NodePortInput>();
-            for (NodePortInput inputNodePort : getInputNodePorts()) {
+            dataPorts = new ArrayList<NodeInputPort>();
+            for (NodeInputPort inputNodePort : getInputNodePorts()) {
                 if (inputNodePort.isDataTablePort()) {
                     dataPorts.add(inputNodePort);
                 }
@@ -314,27 +310,27 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
         return outputNodePorts.size();
     }
 
-    public NodePortOutput getOutputNodePort(Long nodePortId) {
+    public NodeOutputPort getOutputNodePort(Long nodePortId) {
         return CollectionUtil.get(outputNodePorts, nodePortId);
     }
 
-    public NodePortOutput getOutputNodePort(String charId) {
+    public NodeOutputPort getOutputNodePort(String charId) {
         return CollectionUtil.get(outputNodePortsOrderByCharId, charId);
     }
 
-    public NodePortOutput getOutputNodePortByCharCode(String charCode) {
+    public NodeOutputPort getOutputNodePortByCharCode(String charCode) {
         return CollectionUtil.get(outputNodePortsOrderByCharCode, charCode);
     }
 
-    public NodePortOutput getOutputNodePortBySequence(Integer sequence) {
+    public NodeOutputPort getOutputNodePortBySequence(Integer sequence) {
         return CollectionUtil.get(outputNodePortsOrderBySequence, sequence);
     }
 
-    public List<NodePortOutput> getOutputNodePorts() {
+    public List<NodeOutputPort> getOutputNodePorts() {
         return CollectionUtil.toList(outputNodePortsOrderBySequence);
     }
 
-    public void putOutputNodePort(NodePortOutput outputNodePort) {
+    public void putOutputNodePort(NodeOutputPort outputNodePort) {
         CollectionUtil.put(outputNodePorts, outputNodePort.data().getNodePortId(), outputNodePort);
         CollectionUtil.put(outputNodePortsOrderByCharId, outputNodePort.data().getRefCharId(), outputNodePort);
         CollectionUtil.put(outputNodePortsOrderByCharCode, outputNodePort.getCmptChar().data().getCharCode(), outputNodePort);
@@ -345,11 +341,11 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
         return module.outputDataTablePortCount();
     }
 
-    public List<NodePortOutput> getOutputDataTablePorts() {
-        List<NodePortOutput> dataPorts = null;
+    public List<NodeOutputPort> getOutputDataTablePorts() {
+        List<NodeOutputPort> dataPorts = null;
         if(outputDataTablePortCount() > 0) {
-            dataPorts = new ArrayList<NodePortOutput>();
-            for (NodePortOutput outputNodePort : getOutputNodePorts()) {
+            dataPorts = new ArrayList<NodeOutputPort>();
+            for (NodeOutputPort outputNodePort : getOutputNodePorts()) {
                 if (outputNodePort.isDataTablePort()) {
                     dataPorts.add(outputNodePort);
                 }
@@ -359,12 +355,12 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     }
 
     public NodeSchema getOutputDataTablePortSchema(String charId) {
-        NodePortOutput outputNodePort = getOutputNodePort(charId);
+        NodeOutputPort outputNodePort = getOutputNodePort(charId);
         return outputNodePort.isDataTablePort() ? outputNodePort.getSchema() : null;
     }
 
     public NodeSchema getOutputDataTablePortSchemaByCharCode(String charCode) {
-        NodePortOutput outputNodePort = getOutputNodePortByCharCode(charCode);
+        NodeOutputPort outputNodePort = getOutputNodePortByCharCode(charCode);
         return outputNodePort.isDataTablePort() ? outputNodePort.getSchema() : null;
     }
 
@@ -372,7 +368,7 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
         List<NodeSchema> nodeSchemas = null;
         if(outputDataTablePortCount() > 0) {
             nodeSchemas = new ArrayList<NodeSchema>(outputDataTablePortCount());
-            for (NodePortOutput outputNodePort : getOutputNodePorts()) {
+            for (NodeOutputPort outputNodePort : getOutputNodePorts()) {
                 if (outputNodePort.isDataTablePort()) {
                     nodeSchemas.add(outputNodePort.getSchema());
                 }
@@ -418,12 +414,12 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
 
     public void markAnalyzed() {
         if(!this.isHeadNode()) {
-            for (NodePortInput inputNodePort : this.getInputNodePorts()) {
+            for (NodeInputPort inputNodePort : this.getInputNodePorts()) {
                 inputNodePort.markAnalyzed();
             }
         }
         if(!this.isTailNode()) {
-            for (NodePortOutput outputNodePort : this.getOutputNodePorts()) {
+            for (NodeOutputPort outputNodePort : this.getOutputNodePorts()) {
                 outputNodePort.markAnalyzed();
             }
         }
@@ -436,7 +432,7 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
 
     //用于analyzer在分析过程中判断节点是否需要分析输出数据端口的schema
     public boolean needAnalyzeSchema() {
-        return !this.isDeleted() && !this.isAnalyzed() && !this.isWebNode() && this.haveOutputDataTablePort();
+        return !this.isDeleted() && !this.isAnalyzed() && this.haveOutputDataTablePort();
     }
 
     public void changeSchemas2Empty() {

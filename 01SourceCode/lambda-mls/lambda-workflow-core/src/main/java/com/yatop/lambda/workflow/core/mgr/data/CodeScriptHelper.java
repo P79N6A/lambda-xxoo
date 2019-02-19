@@ -1,7 +1,6 @@
 package com.yatop.lambda.workflow.core.mgr.data;
 
 import com.yatop.lambda.base.model.WfCodeScript;
-import com.yatop.lambda.core.enums.CodeScriptSourceEnum;
 import com.yatop.lambda.core.enums.CodeScriptStateEnum;
 import com.yatop.lambda.core.enums.CodeScriptTypeEnum;
 import com.yatop.lambda.core.mgr.workflow.unstructured.CodeScriptMgr;
@@ -31,12 +30,10 @@ public class CodeScriptHelper {
         WfCodeScript codeScript = new WfCodeScript();
         codeScript.setScriptName(String.format("sql_%d_%s", node.data().getNodeId(), cmptChar.data().getCharId()));
         codeScript.setScriptType(CodeScriptTypeEnum.SQL.getType());
-        codeScript.setScriptSrc(CodeScriptSourceEnum.EDITOR.getSource());
         codeScript.setOwnerProjectId(workflowContext.getProject().data().getProjectId());
         codeScript.setRelFlowId(workflowContext.getWorkflow().data().getFlowId());
         codeScript.setRelNodeId(node.data().getNodeId());
         codeScript.setRelCharId(cmptChar.data().getCharId());
-        codeScript.setRelTaskId(-1L);
         if(DataUtil.isNotEmpty(defaultScriptContent)) {
             codeScript.setScriptContent(defaultScriptContent);
             codeScript.setScriptState(CodeScriptStateEnum.NORMAL.getState());

@@ -39,10 +39,6 @@ public class Component extends RichModel<CfComponent> {
         super.clear(clearData);
     }
 
-    public boolean isWebComponent() {
-        return this.data().getCmptType() == CmptTypeEnum.WEB_CMPT.getType();
-    }
-
     public CmptAlgorithm getAlgorithm() {
         return algorithm;
     }

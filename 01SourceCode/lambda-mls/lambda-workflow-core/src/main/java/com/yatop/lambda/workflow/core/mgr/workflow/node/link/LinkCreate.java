@@ -1,18 +1,16 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node.link;
 
 import com.yatop.lambda.base.model.WfFlowNodeLink;
-import com.yatop.lambda.core.enums.IsWebLinkEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.node.NodeLinkMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContextHelper;
-import com.yatop.lambda.workflow.core.mgr.workflow.node.NodeQuery;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +23,7 @@ public class LinkCreate {
     @Autowired
     LinkValidate linkValidate;
 
-    public NodeLink createLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodePortOutput srcNodePort, NodePortInput dstNodePort) {
+    public NodeLink createLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodeOutputPort srcNodePort, NodeInputPort dstNodePort) {
 
         if(!linkValidate.validateLink(workflowContext, srcNode, dstNode, srcNodePort, dstNodePort)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- validation failed for establishing link.", "输出端口和输入端口间链接建立验证失败", srcNodePort.data(), dstNodePort.data());
@@ -37,7 +35,6 @@ public class LinkCreate {
                                                                   dstNode.data().getNodeId(),
                                                                   dstNodePort.data().getNodePortId()));
         nodeLink.setOwnerFlowId(workflowContext.getWorkflow().data().getFlowId());
-        nodeLink.setIsWebLink(srcNode.isWebNode() ? IsWebLinkEnum.YES.getMark() : IsWebLinkEnum.NO.getMark());
         nodeLink.setSrcNodeId(srcNode.data().getNodeId());
         nodeLink.setSrcPortId(srcNodePort.data().getNodePortId());
         nodeLink.setDstNodeId(dstNode.data().getNodeId());
@@ -57,12 +54,12 @@ public class LinkCreate {
         Node srcNode = workflowContext.fetchNode(srcNodeId);
         Node dstNode = workflowContext.fetchNode(dstNodeId);
 
-        NodePortOutput srcNodePort = srcNode.getOutputNodePort(srcNodePortId);
+        NodeOutputPort srcNodePort = srcNode.getOutputNodePort(srcNodePortId);
         if(DataUtil.isNull(srcNodePort)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- source node port info missing.", "输出端口信息缺失", srcNode.data());
         }
 
-        NodePortInput dstNodePort = srcNode.getInputNodePort(dstNodePortId);
+        NodeInputPort dstNodePort = srcNode.getInputNodePort(dstNodePortId);
         if(DataUtil.isNull(dstNodePort)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- destination node port info missing.", "输入端口信息缺失", dstNode.data());
         }

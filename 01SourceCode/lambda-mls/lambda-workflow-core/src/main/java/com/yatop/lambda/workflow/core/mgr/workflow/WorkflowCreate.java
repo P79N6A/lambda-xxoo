@@ -12,9 +12,9 @@ import com.yatop.lambda.workflow.core.mgr.workflow.node.link.LinkCreate;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,8 +76,8 @@ public class WorkflowCreate {
                     if(DataUtil.isNull(thisSrcNode) || DataUtil.isNull(thisDstNode))
                         throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create workflow error -- source node or destination node not found.", "系统数据异常，请联系管理员");
 
-                    NodePortOutput thisSrcPort = thisSrcNode.getOutputNodePort(otherWorkflowContext.getUpstreamPort(otherLink).getCmptChar().data().getCharId());
-                    NodePortInput thisDstPort = thisDstNode.getInputNodePort(otherWorkflowContext.getDownstreamPort(otherLink).getCmptChar().data().getCharId());
+                    NodeOutputPort thisSrcPort = thisSrcNode.getOutputNodePort(otherWorkflowContext.getUpstreamPort(otherLink).getCmptChar().data().getCharId());
+                    NodeInputPort thisDstPort = thisDstNode.getInputNodePort(otherWorkflowContext.getDownstreamPort(otherLink).getCmptChar().data().getCharId());
                     if(DataUtil.isNull(thisSrcPort) || DataUtil.isNull(thisDstPort))
                         throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create workflow error -- source port or destination port not found.", "系统数据异常，请联系管理员");
 

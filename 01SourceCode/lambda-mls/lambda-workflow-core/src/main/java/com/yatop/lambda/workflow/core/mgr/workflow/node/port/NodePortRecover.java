@@ -11,8 +11,8 @@ import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaRecover;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,10 +49,10 @@ public class NodePortRecover {
                 }
                 switch(PortTypeEnum.valueOf(modulePort.data().getPortType())) {
                     case INPUT_PORT:
-                        node.putInputNodePort(new NodePortInput(nodePort, modulePort));
+                        node.putInputNodePort(new NodeInputPort(nodePort, modulePort));
                         break;
                     case OUTPUT_PORT:
-                        node.putOutputNodePort(new NodePortOutput(nodePort, modulePort));
+                        node.putOutputNodePort(new NodeOutputPort(nodePort, modulePort));
                         break;
                 }
             }

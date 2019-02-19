@@ -6,8 +6,8 @@ import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaCreate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class NodePortCreate {
     @Autowired
     SchemaCreate schemaCreate;
 
-    private NodePortInput createInputPort(WorkflowContext workflowContext, Node node, ModulePort inputPort) {
+    private NodeInputPort createInputPort(WorkflowContext workflowContext, Node node, ModulePort inputPort) {
 
         WfFlowNodePort nodePort = new WfFlowNodePort();
         nodePort.setNodePortName(inputPort.data().getPortName());
@@ -32,11 +32,11 @@ public class NodePortCreate {
         nodePort.setRefCharId(inputPort.getCmptChar().data().getCharId());
         nodePortMgr.insertNodePort(nodePort, workflowContext.getOperId());
         //nodePort.copyProperties(nodePortMgr.queryNodePort(nodePort.getNodePortId()));
-        NodePortInput richNodePort = new NodePortInput(nodePort, inputPort);
+        NodeInputPort richNodePort = new NodeInputPort(nodePort, inputPort);
         return  richNodePort;
     }
 
-    private NodePortOutput createOutputPort(WorkflowContext workflowContext, Node node, ModulePort outputPort) {
+    private NodeOutputPort createOutputPort(WorkflowContext workflowContext, Node node, ModulePort outputPort) {
 
         WfFlowNodePort nodePort = new WfFlowNodePort();
         nodePort.setNodePortName(outputPort.data().getPortName());
@@ -45,7 +45,7 @@ public class NodePortCreate {
         nodePort.setRefCharId(outputPort.getCmptChar().data().getCharId());
         nodePortMgr.insertNodePort(nodePort, workflowContext.getOperId());
         //nodePort.copyProperties(nodePortMgr.queryNodePort(nodePort.getNodePortId()));
-        NodePortOutput richNodePort = new NodePortOutput(nodePort, outputPort);
+        NodeOutputPort richNodePort = new NodeOutputPort(nodePort, outputPort);
 
         if(richNodePort.isDataTablePort()) {
             schemaCreate.createSchema(workflowContext, node, richNodePort);
@@ -61,7 +61,7 @@ public class NodePortCreate {
         if(module.inputPortCount() > 0) {
             List<ModulePort> inputPorts = module.getInputPorts();
             for (ModulePort inputPort : inputPorts) {
-                NodePortInput inputNodePort = createInputPort(workflowContext, node, inputPort);
+                NodeInputPort inputNodePort = createInputPort(workflowContext, node, inputPort);
                 node.putInputNodePort(inputNodePort);
                 workflowContext.putInputPort(inputNodePort);
             }
@@ -71,7 +71,7 @@ public class NodePortCreate {
         if(module.outputPortCount() > 0) {
             List<ModulePort> outputPorts = module.getOutputPorts();
             for (ModulePort outputPort : outputPorts) {
-                NodePortOutput outputNodePort = createOutputPort(workflowContext, node, outputPort);
+                NodeOutputPort outputNodePort = createOutputPort(workflowContext, node, outputPort);
                 node.putOutputNodePort(outputNodePort);
                 workflowContext.putOutputPort(outputNodePort);
             }

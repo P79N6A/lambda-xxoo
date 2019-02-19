@@ -10,11 +10,11 @@ public class ModelFileUtil {
         return String.format("%s/model_summary_%d.json", warehouseDir, modelId);
     }
 
-    public static String getFilePath4Cached(String jobDir, Long taskId, Long modelId) {
-        return String.format("%s/model_%d_%d.dat", jobDir, taskId, modelId);
+    public static String getFilePath4Cached(String jobDir, Long nodeId, Long modelId) {
+        return String.format("%s/model_%d_%d.dat", jobDir, nodeId, modelId);
     }
 
-    public static String getSummaryFilePath4Cached(String jobDir, Long taskId, Long modelId) {
-        return String.format("%s/model_summary_%d_%d.json", jobDir, taskId, modelId);
+    public static String getSummaryFilePath4Cached(String jobDir, Long nodeId, Long modelId) {
+        return String.format("%s/model_summary_%d_%d.json", jobDir, nodeId, modelId);
     }
 }

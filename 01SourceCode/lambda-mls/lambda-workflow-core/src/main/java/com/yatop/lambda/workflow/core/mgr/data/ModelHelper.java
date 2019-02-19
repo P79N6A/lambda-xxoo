@@ -1,7 +1,6 @@
 package com.yatop.lambda.workflow.core.mgr.data;
 
 import com.yatop.lambda.base.model.MwModel;
-import com.yatop.lambda.core.enums.ModelSourceEnum;
 import com.yatop.lambda.core.enums.ModelStateEnum;
 import com.yatop.lambda.core.enums.ModelTypeEnum;
 import com.yatop.lambda.core.mgr.model.ModelMgr;
@@ -10,8 +9,6 @@ import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.model.Model;
-import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
-import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,27 +27,23 @@ public class ModelHelper {
         WorkflowContext workflowContext = context.getWorkflowContext();
         Node node = context.getNode();
         CmptChar cmptChar = context.getCmptChar();
-        ExecutionJob job = workflowContext.getCurrentJob();
-        ExecutionTask task = workflowContext.getExecutionTask(node);
 
         MwModel model = new MwModel();
         model.setModelName(String.format("%s - %d - Model", node.getModule().data().getModuleName(), node.data().getSequence()));
         model.setModelType(ModelTypeEnum.CACHED.getType());
-        model.setModelSrc(ModelSourceEnum.EXECUTION.getSource());
         model.setOwnerMwId(workflowContext.getModelWarehouse().data().getMwId());
         model.setRelFlowId(workflowContext.getWorkflow().data().getFlowId());
         model.setRelNodeId(node.data().getNodeId());
         model.setRelCharId(cmptChar.data().getCharId());
-        model.setRelTaskId(task.data().getTaskId());
         model.setRefAlgorithmId(node.getComponent().getAlgorithm().data().getAlgorithmId());
         model.setModelState(ModelStateEnum.EMPTY.getState());
         model = MODEL_MGR.insertModel(model, workflowContext.getOperId());
 
-        String jobDfsDir = job.data().getJobDfsDir();
-        String jobLocalDir = job.data().getJobLocalDir();
-        model.setModelFile(ModelFileUtil.getFilePath4Cached(jobDfsDir, task.data().getTaskId(), model.getModelId()));
-        model.setSummaryDfsFile(ModelFileUtil.getSummaryFilePath4Cached(jobDfsDir, task.data().getTaskId(), model.getModelId()));
-        model.setSummaryLocalFile(ModelFileUtil.getSummaryFilePath4Cached(jobLocalDir, task.data().getTaskId(), model.getModelId()));
+        String flowDfsDir = workflowContext.getWorkflow().data().getFlowDfsDir();
+        String flowLocalDir = workflowContext.getWorkflow().data().getFlowLocalDir();
+        model.setModelFile(ModelFileUtil.getFilePath4Cached(flowDfsDir, node.data().getNodeId(), model.getModelId()));
+        model.setSummaryDfsFile(ModelFileUtil.getSummaryFilePath4Cached(flowDfsDir, node.data().getNodeId(), model.getModelId()));
+        model.setSummaryLocalFile(ModelFileUtil.getSummaryFilePath4Cached(flowLocalDir, node.data().getNodeId(), model.getModelId()));
         MODEL_MGR.updateModel(model, workflowContext.getOperId());
         return new Model(model);
     }

@@ -10,11 +10,11 @@ public class DataTableFileUtil {
         return String.format("%s/table_summary_%d.json", warehouseDir, tableId);
     }
 
-    public static String getFilePath4Cached(String jobDir, Long taskId, Long tableId) {
-        return String.format("%s/table_%d_%d.dat", jobDir, taskId, tableId);
+    public static String getFilePath4Cached(String flowDir, Long nodeId, Long tableId) {
+        return String.format("%s/table_%d_%d.dat", flowDir, nodeId, tableId);
     }
 
-    public static String getSummaryFilePath4Cached(String jobDir, Long taskId, Long tableId) {
-        return String.format("%s/table_summary_%d_%d.json", jobDir, taskId, tableId);
+    public static String getSummaryFilePath4Cached(String flowDir, Long nodeId, Long tableId) {
+        return String.format("%s/table_summary_%d_%d.json", flowDir, nodeId, tableId);
     }
 }

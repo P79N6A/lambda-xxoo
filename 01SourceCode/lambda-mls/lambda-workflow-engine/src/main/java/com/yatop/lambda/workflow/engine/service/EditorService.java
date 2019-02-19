@@ -387,13 +387,13 @@ public class EditorService {
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(richExperiment, operId);
             Node upstreamNode = workflowContext.fetchNode(srcNodeId);
-            NodePortOutput upstreamNodePort = workflowContext.fetchOutputPort(srcNodePortId);
+            NodeOutputPort upstreamNodePort = workflowContext.fetchOutputPort(srcNodePortId);
             if(DataUtil.isNull(upstreamNode.getOutputNodePort(srcNodePortId))) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Remove workflow node link failed -- source node error.", "输出节点信息错误", upstreamNode.data(), upstreamNodePort.data());
             }
 
             Node downstreamNode = workflowContext.fetchNode(dstNodeId);
-            NodePortInput downstreamNodePort = workflowContext.fetchInputPort(dstNodePortId);
+            NodeInputPort downstreamNodePort = workflowContext.fetchInputPort(dstNodePortId);
             if(DataUtil.isNull(downstreamNode.getInputNodePort(dstNodePortId))) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Remove workflow node link failed -- destination node error.", "输入节点信息错误", downstreamNode.data(), downstreamNodePort.data());
             }

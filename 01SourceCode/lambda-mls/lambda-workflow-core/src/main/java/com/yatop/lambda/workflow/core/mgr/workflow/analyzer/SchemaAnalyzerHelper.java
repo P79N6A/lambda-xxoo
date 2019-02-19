@@ -16,14 +16,14 @@ public class SchemaAnalyzerHelper {
 
     public static boolean supportAnalyzeSchema(Node node) {
 
-        if (!node.isWebNode() && node.haveOutputDataTablePort()) {
+        if (node.haveOutputDataTablePort()) {
             return node.getModuleClazzBean().supportAnalyzeSchema();
         }
         return false;
     }
 
     public static boolean needAnalyzeNode(Node node) {
-        return !node.isWebNode() && node.haveOutputDataTablePort();
+        return node.haveOutputDataTablePort();
     }
 
     public static boolean needAnalyzeNode(Node node, NodeParameter parameter) {
@@ -56,13 +56,13 @@ public class SchemaAnalyzerHelper {
                 if(!node.haveOutputDataTablePort())
                     return false;
 
-                TreeMap<Long, NodePortOutput> upstreamPorts = workflowContext.fetchNonWebUpstreamPorts(node);
+                TreeMap<Long, NodeOutputPort> upstreamPorts = workflowContext.fetchUpstreamPorts(node);
                 if(DataUtil.isEmpty(upstreamPorts))
                     return false;
 
-                for (NodePortInput inputNodePort : node.getInputDataTablePorts()) {
+                for (NodeInputPort inputNodePort : node.getInputDataTablePorts()) {
                     if(inputNodePort.getCmptChar().isRequired()) {
-                        NodePortOutput upstreamPort = CollectionUtil.get(upstreamPorts, inputNodePort.data().getNodePortId());
+                        NodeOutputPort upstreamPort = CollectionUtil.get(upstreamPorts, inputNodePort.data().getNodePortId());
                         if(DataUtil.isNull(upstreamPort) || !upstreamPort.getSchema().isStateNormal()) {
                             return false;
                         }
@@ -105,7 +105,7 @@ public class SchemaAnalyzerHelper {
         if(DataUtil.isNull(currentNode) || !currentNode.needAnalyzeSchema())
             return;
 
-        for(NodePortOutput outputDataPort : currentNode.getOutputDataTablePorts()) {
+        for(NodeOutputPort outputDataPort : currentNode.getOutputDataTablePorts()) {
             //仅数据输出端口为schema changed时，找出端口下游节点
             if(outputDataPort.isSchemaChanged()) {
                 List<Node> downstreamNodes = workflowContext.fetchDownstreamNodes(outputDataPort);

@@ -5,9 +5,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.*;
@@ -16,7 +14,7 @@ public class JobContentAnalyzer4RunEndHere {
 
     protected static List<TreeSet<Node>> analyzeJobContent(WorkflowContext workflowContext, Node relatedNode) {
 
-        if(DataUtil.isNull(relatedNode) || relatedNode.isWebNode())
+        if(DataUtil.isNull(relatedNode))
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- no executable nodes.", "无可运行节点");
 
         if(relatedNode.isStateNotReady()) {
@@ -56,8 +54,8 @@ public class JobContentAnalyzer4RunEndHere {
         if(DataUtil.isNull(currentNode) || currentNode.isHeadNode())
             return;
 
-        for(NodePortInput inputPort : currentNode.getInputNodePorts()) {
-            Node upstreamNode = workflowContext.fetchNonWebUpstreamNode(inputPort);
+        for(NodeInputPort inputPort : currentNode.getInputNodePorts()) {
+            Node upstreamNode = workflowContext.fetchUpstreamNode(inputPort);
 
             if (DataUtil.isNull(upstreamNode) && !inputPort.getCmptChar().isRequired()) {
                 continue;

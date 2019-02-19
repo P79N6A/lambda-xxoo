@@ -54,7 +54,7 @@ public class SchemaAnalyzer {
 
     private static void dealAnalyzeSchema4CreateLink(WorkflowContext workflowContext) {
         NodeLink analyzeLink = workflowContext.popAnalyzeLink();
-        if(DataUtil.isNotNull(analyzeLink) && !analyzeLink.isWebLink()) {
+        if(DataUtil.isNotNull(analyzeLink)) {
             Node analyzeNode = workflowContext.fetchDownstreamNode(analyzeLink);
             SchemaAnalyzer4CreateAndUpdate.analyzeStartNode(workflowContext, analyzeNode);
         }
@@ -83,10 +83,9 @@ public class SchemaAnalyzer {
 
         NodeLink deleteLink = null;
         while(DataUtil.isNotNull(deleteLink = workflowContext.popAnalyzeLink())) {
-            if(!deleteLink.isWebLink()) {
-                Node downstreamNode = workflowContext.fetchDownstreamNode(deleteLink);
-                SchemaAnalyzer4Delete.analyzeStartNode(workflowContext, downstreamNode);
-            }
+
+            Node downstreamNode = workflowContext.fetchDownstreamNode(deleteLink);
+            SchemaAnalyzer4Delete.analyzeStartNode(workflowContext, downstreamNode);
         }
     }
 

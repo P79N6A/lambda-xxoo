@@ -3,7 +3,7 @@ package com.yatop.lambda.workflow.core.mgr.workflow.analyzer;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.Deque;
@@ -18,7 +18,7 @@ public class SchemaAnalyzer4Delete {
             return null;
 
         TreeMap<Long, Node> downstreamNodes = new TreeMap<Long, Node>();
-        for(NodePortOutput outputDataPort : deleteNode.getOutputDataTablePorts()) {
+        for(NodeOutputPort outputDataPort : deleteNode.getOutputDataTablePorts()) {
             List<Node> nodes = workflowContext.fetchDownstreamNodes(outputDataPort);
             if(DataUtil.isNotEmpty(downstreamNodes)) {
                 for (Node downstreamNode : nodes) {

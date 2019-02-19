@@ -2,7 +2,6 @@ package com.yatop.lambda.workflow.core.mgr.workflow.node.parameter;
 
 import com.yatop.lambda.base.model.WfFlowNodeParameter;
 import com.yatop.lambda.core.enums.DataStatusEnum;
-import com.yatop.lambda.core.enums.IsGlobalParameterEnum;
 import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
@@ -39,7 +38,6 @@ public class ParameterHelper {
         parameter.setCharId(cmptChar.data().getCharId());
         if(DataUtil.isNotNull(charValue.getCharValue()))
             parameter.setCharValue(charValue.getCharValue());
-        parameter.setIsGlobalParameter(IsGlobalParameterEnum.NO.getMark());
         parameter.setStatus(DataStatusEnum.NORMAL.getStatus());
         parameter.setDescription(SourceLevelEnum.valueOf(cmptChar.data().getSrcLevel()) + " Source Level -- Simulate Parameter");
         parameter.setLastUpdateTime(curTime);

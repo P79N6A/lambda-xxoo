@@ -5,6 +5,7 @@ import com.yatop.lambda.core.enums.TaskStateEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutput;
 import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
@@ -15,7 +16,7 @@ import java.util.TreeMap;
 public class ExecutionTask extends RichModel<WfExecutionTask> {
 
     private Node node;  //操作关联节点
-    private TreeMap<String, ExecutionTaskOutput> outputs = new TreeMap<String, ExecutionTaskOutput>();   //任务输出内容
+    private TreeMap<String, NodeOutput> outputs = new TreeMap<String, NodeOutput>();   //任务输出内容
 
     public ExecutionTask(WfExecutionTask data, Node node) {
         super(data);
@@ -32,8 +33,8 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
     public void flush(String operId) {
 
         if (this.taskOutputCount() > 0) {
-            for (ExecutionTaskOutput taskOutput : this.getOutputs()) {
-                taskOutput.flush(operId);
+            for (NodeOutput nodeOutput : this.getOutputs()) {
+                nodeOutput.flush(operId);
             }
         }
         if (this.isColoured())
@@ -144,11 +145,11 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
         return outputs.size();
     }
 
-    public List<ExecutionTaskOutput> getOutputs() {
+    public List<NodeOutput> getOutputs() {
         return CollectionUtil.toList(outputs);
     }
 
-    public ExecutionTaskOutput getOutput(String charId) {
+    public NodeOutput getOutput(String charId) {
         return CollectionUtil.get(outputs, charId);
     }
 
@@ -161,14 +162,14 @@ public class ExecutionTask extends RichModel<WfExecutionTask> {
             return null;
 
         List<CharValue> charValues = new ArrayList<CharValue>();
-        for(ExecutionTaskOutput output : getOutputs()) {
+        for(NodeOutput output : getOutputs()) {
             charValues.add(output.getCharValue());
         }
         return charValues;
     }
 
-    public void putTaskOutput(ExecutionTaskOutput taskOutput) {
-        CollectionUtil.put(outputs, taskOutput.data().getCharId(), taskOutput);
+    public void putTaskOutput(NodeOutput nodeOutput) {
+        CollectionUtil.put(outputs, nodeOutput.data().getCharId(), nodeOutput);
     }
 
     public boolean isOccuredWarning() {

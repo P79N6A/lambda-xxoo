@@ -5,9 +5,8 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.*;
@@ -50,8 +49,8 @@ public class JobContentAnalyzer4RunAll {
         if(DataUtil.isNull(currentNode) || currentNode.isTailNode())
             return;
 
-        for(NodePortOutput outputPort : currentNode.getOutputNodePorts()) {
-            List<Node> downstreamNodes = workflowContext.fetchNonWebDownstreamNodes(outputPort);
+        for(NodeOutputPort outputPort : currentNode.getOutputNodePorts()) {
+            List<Node> downstreamNodes = workflowContext.fetchDownstreamNodes(outputPort);
             if(DataUtil.isNotEmpty(downstreamNodes)) {
                 for (Node downstreamNode : downstreamNodes) {
                     if(downstreamNode.isStateNotReady()) {
@@ -74,9 +73,9 @@ public class JobContentAnalyzer4RunAll {
 
     private static boolean isUpstreamNodeExecutionConditionReady(WorkflowContext workflowContext, Node currentNode) {
         if(!currentNode.isHeadNode()) {
-            for (NodePortInput inputPort : currentNode.getInputNodePorts()) {
+            for (NodeInputPort inputPort : currentNode.getInputNodePorts()) {
 
-                Node upstreamNode = workflowContext.fetchNonWebUpstreamNode(inputPort);
+                Node upstreamNode = workflowContext.fetchUpstreamNode(inputPort);
                 if (DataUtil.isNull(upstreamNode) && inputPort.getCmptChar().isRequired()) {
                     return false;
                 }
@@ -98,7 +97,7 @@ public class JobContentAnalyzer4RunAll {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", node.data().getWarningMsg(), node.data());
             }
 
-            if(node.isHeadNode() && !node.isWebNode()) {
+            if(node.isHeadNode()) {
                 headNodes.add(node);
             }
         }

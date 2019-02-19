@@ -6,9 +6,9 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.TreeMap;
@@ -25,13 +25,13 @@ public class AnalyzeNodeStateHelper {
         if(node.isDeleted())
             return;
 
-        TreeMap<NodePortInput, String> missingInputPorts = new TreeMap<NodePortInput, String>();
+        TreeMap<NodeInputPort, String> missingInputPorts = new TreeMap<NodeInputPort, String>();
 
         if(!node.isHeadNode()) {
-            for(NodePortInput inputPort : node.getInputNodePorts()) {
+            for(NodeInputPort inputPort : node.getInputNodePorts()) {
                 if(inputPort.getCmptChar().isRequired()) {
                     if(!hintNoLink) {
-                        NodeLink link = workflowContext.fetchNonWebInLink(inputPort);
+                        NodeLink link = workflowContext.fetchInLink(inputPort);
                         if(DataUtil.isNotNull(link) && !link.isDeleted()) {
                             continue;
                         }

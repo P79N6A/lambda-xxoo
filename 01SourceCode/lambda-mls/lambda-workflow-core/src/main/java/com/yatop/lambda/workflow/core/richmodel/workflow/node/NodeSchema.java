@@ -23,19 +23,13 @@ import java.util.List;
 public class NodeSchema extends RichModel<WfFlowNodeSchema> {
 
     private CmptChar cmptChar;
-    private JsonObject jsonObject;  //关联JSON对象
     private List<FieldAttribute> fieldAttributes;
     private boolean dirtyFieldAttributes;
     private boolean isSchemaChanged;
 
     public NodeSchema(WfFlowNodeSchema data, CmptChar cmptChar) {
-        this(data, cmptChar, null);
-    }
-
-    public NodeSchema(WfFlowNodeSchema data, CmptChar cmptChar, JsonObject jsonObject) {
         super(data);
         this.cmptChar = cmptChar;
-        this.jsonObject = jsonObject;
         this.fieldAttributes = null;
         this.dirtyFieldAttributes = false;
         this.isSchemaChanged = false;   //用于标记Schema字段属性信息变化
@@ -43,10 +37,7 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
 
     @Override
     public void clear(boolean clearData) {
-        if(DataUtil.isNotNull(jsonObject))
-            jsonObject.clear(clearData);
-        jsonObject = null;
-        CollectionUtil.enhancedClear(fieldAttributes, clearData);
+        CollectionUtil.clear(fieldAttributes);
         fieldAttributes = null;
         super.clear(clearData);
     }
@@ -56,13 +47,14 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
     }
 
     private JsonObject getJsonObject() {
-        if(DataUtil.isNull(jsonObject)) {
+        /*if(DataUtil.isNull(jsonObject)) {
             jsonObject = SchemaHelper.queryFieldAttributes(this.data().getObjectId());
             if(DataUtil.isNull(jsonObject)){
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Data output port schema info error -- json object data missing.", "节点数据输出端口schema信息错误", this.data());
             }
         }
-        return jsonObject;
+        return jsonObject;*/
+        return null;
     }
 
     public List<FieldAttribute> getFieldAttributes() {
@@ -167,20 +159,12 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
     protected void flush(String operId) {
         if(dirtyFieldAttributes) {
             getJsonObject().data().setObjectContent(DataUtil.isNotEmpty(fieldAttributes) ? JSONArray.toJSONString(fieldAttributes) : null);
-            SchemaHelper.updateFieldAttributes(getJsonObject(), operId);
+            //SchemaHelper.updateFieldAttributes(getJsonObject(), operId);
             dirtyFieldAttributes = false;
         }
 
         if(this.isColoured()) {
             SchemaHelper.updateNodeSchema(this, operId);
         }
-    }
-
-    public void deleteFieldAttributes(String operId) {
-        SchemaHelper.deleteFieldAttributes(this.data().getObjectId(), operId);
-    }
-
-    public void recoverFieldAttributes(String operId) {
-        SchemaHelper.recoverFieldAttributes(this.data().getObjectId(), operId);
     }
 }

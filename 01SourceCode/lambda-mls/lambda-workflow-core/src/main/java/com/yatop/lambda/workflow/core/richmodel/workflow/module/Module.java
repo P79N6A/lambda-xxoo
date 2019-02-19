@@ -136,10 +136,6 @@ public class Module extends RichModel<WfModule> implements Comparable<Module> {
         return this.outputPortCount() == 0;
     }
 
-    public boolean isWebModule() {
-        return this.getComponent().isWebComponent();
-    }
-
     public IModuleClazz getModuleClazzBean() {
         return ClazzHelperUtil.getModuleClazzBean(this);
     }

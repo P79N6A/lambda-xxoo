@@ -1,7 +1,6 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNodeLink;
-import com.yatop.lambda.core.enums.IsWebLinkEnum;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 
 public class NodeLink extends RichModel<WfFlowNodeLink> implements Comparable<NodeLink> {
@@ -19,10 +18,6 @@ public class NodeLink extends RichModel<WfFlowNodeLink> implements Comparable<No
     @Override
     public int compareTo(NodeLink o) {
         return this.data().getLinkId().compareTo(o.data().getLinkId());
-    }
-
-    public boolean isWebLink() {
-        return this.data().getIsWebLink() == IsWebLinkEnum.YES.getMark();
     }
 
     public boolean isOverride() {

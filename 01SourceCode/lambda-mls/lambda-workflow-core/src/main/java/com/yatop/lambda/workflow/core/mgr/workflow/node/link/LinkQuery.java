@@ -7,9 +7,9 @@ import com.yatop.lambda.core.mgr.workflow.node.NodeLinkMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortInput;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodePortOutput;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,8 +34,8 @@ public class LinkQuery {
         }
 
         richNodeLink = new NodeLink(nodeLink);
-        NodePortOutput outputNodePort = workflowContext.fetchUpstreamPort(richNodeLink);
-        NodePortInput inputNodePort = workflowContext.fetchDownstreamPort(richNodeLink);
+        NodeOutputPort outputNodePort = workflowContext.fetchUpstreamPort(richNodeLink);
+        NodeInputPort inputNodePort = workflowContext.fetchDownstreamPort(richNodeLink);
         if(!outputNodePort.matchTargetInputPort(inputNodePort)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- source node port vs destination node port were mismatched", "链接信息错误", outputNodePort.data(), inputNodePort.data());
         }
@@ -96,21 +96,17 @@ public class LinkQuery {
         return doneQueryLinks(workflowContext, nodeLinkMgr.queryLinkBySrcNodeId(srcNode.data().getNodeId()));
     }
 
-    public List<NodeLink> queryInLinks(WorkflowContext workflowContext, Long dstNodePortId) {
+    public NodeLink queryInLink(WorkflowContext workflowContext, Long dstNodePortId) {
 
-        //List<NodeLink> inLinks = workflowContext.getInLinks(dstNodePortId);
-        //if(DataUtil.isNotEmpty(inLinks))
-        //   return inLinks;
+        NodeLink inLink = workflowContext.getInLink(dstNodePortId);
+        if(DataUtil.isNotNull(inLink))
+           return inLink;
 
-        List<WfFlowNodeLink> nodeLinks = nodeLinkMgr.queryLinkByDstPortId(dstNodePortId);
-        if(DataUtil.isEmpty(nodeLinks))
+        WfFlowNodeLink nodeLink = nodeLinkMgr.queryLinkByDstPortId(dstNodePortId);
+        if(DataUtil.isNull(nodeLink))
             return null;
 
-        if(nodeLinks.size() > 2) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, String.format("Query node link failed -- input-port.in-links more than two, node-port-id:%d.", dstNodePortId), "节点输入端口的链接信息错误");
-        }
-
-        return doneQueryLinks(workflowContext, nodeLinkMgr.queryLinkByDstPortId(dstNodePortId));
+        return doneQueryLink(workflowContext, nodeLinkMgr.queryLinkByDstPortId(dstNodePortId));
     }
 
     public List<NodeLink> queryInLinks(WorkflowContext workflowContext, Node dstNode) {
