@@ -1,9 +1,10 @@
 package com.yatop.lambda.portal.system.domain;
 
-import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
+import lombok.Data;
+import javax.persistence.*;
+
+
 import java.io.Serializable;
 
 @Table(name = "t_role_menu")

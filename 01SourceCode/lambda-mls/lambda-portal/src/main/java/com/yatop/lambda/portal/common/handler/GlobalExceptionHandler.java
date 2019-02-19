@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 @Slf4j
-@RestControllerAdvice()
+@RestControllerAdvice
 @Order(value = Ordered.HIGHEST_PRECEDENCE)
 public class GlobalExceptionHandler {
 

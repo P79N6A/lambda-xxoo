@@ -18,7 +18,7 @@ import java.util.LinkedHashMap;
  * @author MrBird
  */
 @Configuration
-public class ShiroConfig {
+public class      ShiroConfig {
 
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
