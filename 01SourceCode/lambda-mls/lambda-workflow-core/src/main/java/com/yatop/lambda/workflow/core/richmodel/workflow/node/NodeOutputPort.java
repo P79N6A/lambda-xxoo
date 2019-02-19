@@ -3,6 +3,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 import com.yatop.lambda.base.model.WfFlowNodePort;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.schema.NodeSchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCharType;
@@ -22,10 +23,8 @@ public class NodeOutputPort extends RichModel<WfFlowNodePort> {
 
     @Override
     public void clear(boolean clearData) {
-        modulePort = null;
         if(DataUtil.isNotNull(schema))
             schema.clear(clearData);
-        schema = null;
         super.clear(clearData);
     }
 
@@ -48,6 +47,13 @@ public class NodeOutputPort extends RichModel<WfFlowNodePort> {
     }
 
     public NodeSchema getSchema() {
+
+        if(!isDataTablePort())
+            return null;
+
+        if(DataUtil.isNull(schema)) {
+            schema = NodeSchemaHelper.querySchema(this);
+        }
         return schema;
     }
 
@@ -72,7 +78,7 @@ public class NodeOutputPort extends RichModel<WfFlowNodePort> {
     }
 
     public boolean isSchemaChanged() {
-        return isDataTablePort() && getSchema().isSchemaChanged();
+        return isDataTablePort() && (DataUtil.isNull(schema) ? false : schema.isSchemaChanged());
     }
 
     public ICharTypeClazz getCharTypeClazzBean() {

@@ -8,12 +8,12 @@ import com.yatop.lambda.core.mgr.workflow.node.NodePortMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.config.ModuleConfig;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.schema.NodeSchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
-import com.yatop.lambda.workflow.core.mgr.workflow.node.port.schema.SchemaRecover;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +24,6 @@ public class NodePortRecover {
 
     @Autowired
     private NodePortMgr nodePortMgr;
-
-    @Autowired
-    private SchemaRecover schemaRecover;
 
     @Autowired
     private ModuleConfig moduleConfig;
@@ -61,7 +58,7 @@ public class NodePortRecover {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node port failed -- module-port vs node-port inconsistent.", "节点端口信息错误", node.data());
             }
 
-            schemaRecover.recoverSchemas(workflowContext, node);
+            NodeSchemaHelper.recoverSchemas(workflowContext, node);
         }
     }
 }
