@@ -27,7 +27,6 @@ public class NodeLinkMgr extends BaseMgr {
         if( DataUtil.isNull(link) ||
                 link.isLinkNameNotColoured() ||
                 link.isOwnerFlowIdNotColoured() ||
-                link.isIsWebLinkNotColoured() ||
                 link.isSrcNodeIdNotColoured() ||
                 link.isSrcPortIdNotColoured() ||
                 link.isDstNodeIdNotColoured() ||
@@ -216,7 +215,7 @@ public class NodeLinkMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public List<WfFlowNodeLink> queryLinkByDstPortId(Long dstNodePortId) {
+    public WfFlowNodeLink queryLinkByDstPortId(Long dstNodePortId) {
         if(DataUtil.isNull(dstNodePortId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- invalid query condition.", "无效查询条件");
         }
@@ -225,7 +224,13 @@ public class NodeLinkMgr extends BaseMgr {
             WfFlowNodeLinkExample example = new WfFlowNodeLinkExample();
             example.createCriteria().andDstPortIdEqualTo(dstNodePortId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
-            return wfFlowNodeLinkMapper.selectByExample(example);
+            List<WfFlowNodeLink> resultList = wfFlowNodeLinkMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList) && resultList.size() > 1) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed -- node link data error.", "系统数据错误");
+            }
+
+            return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node link failed.", "查询节点链接失败", e);
         }

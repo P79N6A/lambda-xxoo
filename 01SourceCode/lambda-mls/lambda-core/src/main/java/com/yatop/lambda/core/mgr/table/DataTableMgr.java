@@ -26,12 +26,10 @@ public class DataTableMgr extends BaseMgr {
         if( DataUtil.isNull(table) ||
                 table.isTableNameNotColoured() ||
                 table.isTableTypeNotColoured() ||
-                table.isTableSrcNotColoured() ||
                 table.isOwnerDwIdNotColoured() ||
                 table.isRelFlowIdNotColoured() ||
                 table.isRelNodeIdNotColoured() ||
                 table.isRelCharIdNotColoured() ||
-                table.isRelTaskIdNotColoured() ||
                 table.isDataFileTypeNotColoured() ||
                 table.isTableStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {

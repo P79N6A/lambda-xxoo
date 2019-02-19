@@ -29,12 +29,10 @@ public class CodeScriptMgr extends BaseMgr {
         if( DataUtil.isNull(codeScript) ||
                 codeScript.isScriptNameNotColoured() ||
                 codeScript.isScriptTypeNotColoured() ||
-                codeScript.isScriptSrcNotColoured() ||
                 codeScript.isOwnerProjectIdNotColoured() ||
                 codeScript.isRelFlowIdNotColoured() ||
                 codeScript.isRelNodeIdNotColoured() ||
                 codeScript.isRelCharIdNotColoured() ||
-                codeScript.isRelTaskIdNotColoured() ||
                 codeScript.isScriptStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert code script failed -- invalid insert data.", "无效插入数据");

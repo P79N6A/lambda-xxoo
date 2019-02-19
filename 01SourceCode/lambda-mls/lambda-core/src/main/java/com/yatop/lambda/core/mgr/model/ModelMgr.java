@@ -28,12 +28,10 @@ public class ModelMgr extends BaseMgr {
         if( DataUtil.isNull(model) ||
                 model.isModelNameNotColoured() ||
                 model.isModelTypeNotColoured() ||
-                model.isModelSrcNotColoured() ||
                 model.isOwnerMwIdNotColoured() ||
                 model.isRelFlowIdNotColoured() ||
                 model.isRelNodeIdNotColoured() ||
                 model.isRelCharIdNotColoured() ||
-                model.isRelTaskIdNotColoured() ||
                 model.isRefAlgorithmIdNotColoured() ||
                 model.isModelStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {

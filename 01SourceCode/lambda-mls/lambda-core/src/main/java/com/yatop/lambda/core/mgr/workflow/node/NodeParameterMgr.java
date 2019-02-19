@@ -2,7 +2,6 @@ package com.yatop.lambda.core.mgr.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNodeParameter;
 import com.yatop.lambda.base.model.WfFlowNodeParameterExample;
-import com.yatop.lambda.core.enums.IsGlobalParameterEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
@@ -32,11 +31,14 @@ public class NodeParameterMgr extends BaseMgr {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node parameter failed -- invalid insert data.", "无效插入数据");
         }
 
+        if(existsNodeParameter(nodeParameter.getNodeId(), nodeParameter.getCharId())) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node parameter failed -- parameter characteristics conflict.", "参数特征冲突");
+        }
+
         WfFlowNodeParameter insertNodeParameter = new WfFlowNodeParameter();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertNodeParameter.copyProperties(nodeParameter);
-            insertNodeParameter.setIsGlobalParameter(IsGlobalParameterEnum.NO.getMark());
             insertNodeParameter.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertNodeParameter.setLastUpdateTime(dtCurrentTime);
             insertNodeParameter.setLastUpdateOper(operId);
@@ -86,7 +88,6 @@ public class NodeParameterMgr extends BaseMgr {
 
         try {
             WfFlowNodeParameter recoverNodeParameter = new WfFlowNodeParameter();
-            recoverNodeParameter.setIsGlobalParameter(IsGlobalParameterEnum.NO.getMark());
             recoverNodeParameter.setStatus(DataStatusEnum.NORMAL.getStatus());
             recoverNodeParameter.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             recoverNodeParameter.setLastUpdateOper(operId);
@@ -110,7 +111,6 @@ public class NodeParameterMgr extends BaseMgr {
         }
 
         if(nodeParameter.isCharValueNotColoured() &&
-                nodeParameter.isIsGlobalParameterNotColoured() &&
                 nodeParameter.isWarningMsgNotColoured() &&
                 nodeParameter.isDescriptionNotColoured()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node parameter failed -- invalid update data.", "无效更新内容");
@@ -120,8 +120,6 @@ public class NodeParameterMgr extends BaseMgr {
         try {
             if(nodeParameter.isCharValueColoured())
                 updateNodeParameter.setCharValue(nodeParameter.getCharValue());
-            if(nodeParameter.isIsGlobalParameterColoured())
-                updateNodeParameter.setIsGlobalParameter(nodeParameter.getIsGlobalParameter());
             if(nodeParameter.isWarningMsgColoured())
                 updateNodeParameter.setWarningMsg(nodeParameter.getWarningMsg());
             if(nodeParameter.isDescriptionColoured())
@@ -195,7 +193,7 @@ public class NodeParameterMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-/*    public boolean existsNodeParameter(Long nodeId, String charId) {
+    public boolean existsNodeParameter(Long nodeId, String charId) {
         if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(charId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter exists failed -- invalid check condition.", "无效检查条件");
         }
@@ -207,5 +205,5 @@ public class NodeParameterMgr extends BaseMgr {
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node parameter exists failed.", "检查节点参数是否已存在失败", e);
         }
-    }*/
+    }
 }

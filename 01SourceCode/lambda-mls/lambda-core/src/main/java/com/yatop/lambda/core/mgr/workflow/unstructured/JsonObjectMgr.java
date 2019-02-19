@@ -29,12 +29,10 @@ public class JsonObjectMgr extends BaseMgr {
         if( DataUtil.isNull(jsonObject) ||
                 jsonObject.isObjectNameNotColoured() ||
                 jsonObject.isObjectTypeNotColoured() ||
-                jsonObject.isObjectSrcNotColoured() ||
                 jsonObject.isOwnerProjectIdNotColoured() ||
                 jsonObject.isRelFlowIdNotColoured() ||
                 jsonObject.isRelNodeIdNotColoured() ||
                 jsonObject.isRelCharIdNotColoured() ||
-                jsonObject.isRelTaskIdNotColoured() ||
                 jsonObject.isStorageLocationNotColoured() ||
                 jsonObject.isObjectStateNotColoured() ||
                 DataUtil.isEmpty(operId) ) {

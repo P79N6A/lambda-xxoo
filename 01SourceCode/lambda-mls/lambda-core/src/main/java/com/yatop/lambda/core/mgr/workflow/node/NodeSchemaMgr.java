@@ -4,6 +4,7 @@ import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.base.model.WfFlowNodeSchema;
 import com.yatop.lambda.base.model.WfFlowNodeSchemaExample;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.enums.SchemaStateEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
 import com.yatop.lambda.core.exception.LambdaException;
@@ -62,6 +63,8 @@ public class NodeSchemaMgr extends BaseMgr {
 
         try {
             WfFlowNodeSchema deleteSchema = new WfFlowNodeSchema();
+            //deleteSchema.setSchemaContent();
+            //deleteSchema.setSchemaState();
             deleteSchema.setStatus(DataStatusEnum.INVALID.getStatus());
             deleteSchema.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteSchema.setLastUpdateOper(operId);
@@ -117,6 +120,8 @@ public class NodeSchemaMgr extends BaseMgr {
         try {
             WfFlowNodeSchema updateSchema= new WfFlowNodeSchema();
             updateSchema.setNodePortId(schema.getNodePortId());
+            if(schema.isSchemaContentColoured())
+                updateSchema.setSchemaContent(schema.getSchemaContent());
             if(schema.isSchemaStateColoured())
                 updateSchema.setSchemaState(schema.getSchemaState());
             if(schema.isDescriptionColoured())
@@ -172,7 +177,7 @@ public class NodeSchemaMgr extends BaseMgr {
             WfFlowNodeSchemaExample example = new WfFlowNodeSchemaExample();
             example.createCriteria().andOwnerNodeIdEqualTo(nodeId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
-            return wfFlowNodeSchemaMapper.selectByExample(example);
+            return wfFlowNodeSchemaMapper.selectByExampleWithBLOBs(example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed.", "查询节点Schema失败", e);
         }

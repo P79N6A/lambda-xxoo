@@ -42,15 +42,6 @@ public class BaseMgr {
     protected WfExecutionTaskMapper wfExecutionTaskMapper;
 
     @Autowired
-    protected WfExecutionTaskOutputMapper wfExecutionTaskOutputMapper;
-
-    @Autowired
-    protected WfExecutionTaskQueueMapper wfExecutionTaskQueueMapper;
-
-    @Autowired
-    protected WfFlowGlobalParameterMapper wfFlowGlobalParameterMapper;
-
-    @Autowired
     protected WfFlowMapper wfFlowMapper;
 
     @Autowired
@@ -67,6 +58,9 @@ public class BaseMgr {
 
     @Autowired
     protected WfFlowNodeParameterMapper wfFlowNodeParameterMapper;
+
+    @Autowired
+    protected WfFlowNodeOutputMapper wfFlowNodeOutputMapper;
 
     @Autowired
     protected WfFlowNodePortMapper wfFlowNodePortMapper;

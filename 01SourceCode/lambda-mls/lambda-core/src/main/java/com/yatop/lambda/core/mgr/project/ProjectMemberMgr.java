@@ -76,7 +76,7 @@ public class ProjectMemberMgr extends BaseMgr {
 
         PrProjectMember ownerMember = queryProjectOwner(projectId);
         long allCount = countProjectMember(projectId);
-        if(ownerMember.getProjectRole() == ProjectRoleEnum.PROJECT_OWNER.getRole() && allCount > 1) {
+        if(memberId.equals(ownerMember.getMemberUser()) && allCount > 1) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Delete project member failed -- owner should transfer before delete.", "项目转出后再操作删除");
         }
 

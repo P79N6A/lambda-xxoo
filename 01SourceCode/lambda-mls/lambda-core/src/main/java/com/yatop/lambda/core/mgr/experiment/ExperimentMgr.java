@@ -5,7 +5,6 @@ import com.yatop.lambda.base.model.EmExperimentExample;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
-import com.yatop.lambda.core.enums.ExperimentTypeEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
@@ -27,21 +26,9 @@ public class ExperimentMgr extends BaseMgr {
     public EmExperiment insertExperiment(EmExperiment experiment, String operId) {
         if( DataUtil.isNull(experiment) ||
                 experiment.isExperimentNameNotColoured() ||
-                experiment.isExperimentTypeNotColoured() ||
                 experiment.isOwnerProjectIdNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Insert experiment info failed -- invalid insert data.", "无效插入数据");
-        }
-
-        if(experiment.getExperimentType() == ExperimentTypeEnum.PREDICTION.getType()) {
-            if(experiment.isMainExperimentIdNotColoured())
-                throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Insert experiment info failed -- missing main-experiment-id.", "主实验ID缺失");
-
-            if(experiment.isMainExperimentIdColoured() && existsPredictionExperiment(experiment.getOwnerProjectId(), experiment.getMainExperimentId())) {
-                throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Insert experiment info failed -- prediction experiment existed.", "预测实验已存在");
-            } else if(experiment.isMainExperimentIdColoured() && !existsProjectMember(experiment.getMainExperimentId())) {
-                throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Insert experiment info failed -- main experiment not exists.", "主实验信息不存在");
-            }
         }
 
         EmExperiment insertExperiment = new EmExperiment();
@@ -55,13 +42,6 @@ public class ExperimentMgr extends BaseMgr {
             insertExperiment.setCreateTime(dtCurrentTime);
             insertExperiment.setCreateOper(operId);
             emExperimentMapper.insertSelective(insertExperiment);
-
-            if(experiment.getExperimentType() == ExperimentTypeEnum.MAIN.getType()) {
-                EmExperiment updateExperiment = new EmExperiment();
-                updateExperiment.setExperimentId(insertExperiment.getExperimentId());
-                updateExperiment.setMainExperimentId(insertExperiment.getExperimentId());
-                emExperimentMapper.updateByPrimaryKeySelective(updateExperiment);
-            }
             return insertExperiment;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Insert experiment info failed.", "插入实验信息失败", e);
@@ -155,7 +135,7 @@ public class ExperimentMgr extends BaseMgr {
 
     /*
      *
-     *   查询实验信息（仅主实验类型）
+     *   查询实验信息（按项目）
      *   返回结果集
      *
      * */
@@ -167,7 +147,7 @@ public class ExperimentMgr extends BaseMgr {
         try {
             PagerUtil.startPage(pager);
             EmExperimentExample example = new EmExperimentExample();
-            example.createCriteria().andOwnerProjectIdEqualTo(projectId).andExperimentTypeEqualTo(ExperimentTypeEnum.MAIN.getType()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andOwnerProjectIdEqualTo(projectId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return emExperimentMapper.selectByExample(example);
         } catch (Throwable e) {
@@ -178,7 +158,7 @@ public class ExperimentMgr extends BaseMgr {
 
     /*
      *
-     *   查询实验信息（仅主实验类型）（按关键字）
+     *   查询实验信息（按项目+关键字）
      *   返回结果集
      *
      * */
@@ -191,33 +171,12 @@ public class ExperimentMgr extends BaseMgr {
             PagerUtil.startPage(pager);
             String keywordLike = "%" + keyword + "%";
             EmExperimentExample example = new EmExperimentExample();
-            example.createCriteria().andOwnerProjectIdEqualTo(projectId).andExperimentTypeEqualTo(ExperimentTypeEnum.MAIN.getType()).andExperimentNameLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andOwnerProjectIdEqualTo(projectId).andExperimentNameLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return emExperimentMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed.", "查询实验信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   查询预测实验信息
-     *   返回结果集
-     *
-     * */
-    public EmExperiment queryPredictionExperiment(Long projectId, Long mainExperimentId) {
-        if(DataUtil.isNull(projectId) || DataUtil.isNull(mainExperimentId)){
-            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query prediction experiment info failed -- invalid query condition.", "无效查询条件");
-        }
-
-        try {
-            EmExperimentExample example = new EmExperimentExample();
-            example.createCriteria().andOwnerProjectIdEqualTo(projectId).andExperimentTypeEqualTo(ExperimentTypeEnum.PREDICTION.getType()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            List<EmExperiment> resultList = emExperimentMapper.selectByExample(example);
-            return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query prediction experiment info failed.", "查询预测实验信息失败", e);
         }
     }
 
@@ -237,26 +196,6 @@ public class ExperimentMgr extends BaseMgr {
             return emExperimentMapper.countByExample(example) > 0 ? true : false;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Check experiment exists failed.", "检查已存在实验失败", e);
-        }
-    }
-
-    /*
-     *
-     *   检查预测实验是否已存在
-     *   返回是否存在
-     *
-     * */
-    public boolean existsPredictionExperiment(Long projectId, Long mainExperimentId)  {
-        if(DataUtil.isNull(projectId) && DataUtil.isNull(mainExperimentId))
-            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Check prediction experiment exists failed -- invalid check condition.", "无效检查条件");
-
-        try {
-            EmExperimentExample example = new EmExperimentExample();
-            example.createCriteria().andOwnerProjectIdEqualTo(projectId)
-                    .andMainExperimentIdEqualTo(mainExperimentId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            return emExperimentMapper.countByExample(example) > 0 ? true : false;
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Check prediction experiment exists failed.", "检查已存在预测实验失败", e);
         }
     }
 }
