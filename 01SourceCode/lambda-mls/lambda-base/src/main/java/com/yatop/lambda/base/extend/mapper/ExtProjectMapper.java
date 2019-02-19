@@ -22,8 +22,8 @@ public interface ExtProjectMapper {
               "         x.`CREATE_TIME` as createTime,                                                                 " +
               "         x.`CREATE_OPER` as createOper                                                                  " +
               "     FROM                                                                                               " +
-              "         PR_PROJECT x,                                                                                  " +
-              "         PR_PROJECT_MEMBER y                                                                            " +
+              "         pr_project x,                                                                                  " +
+              "         pr_project_member y                                                                            " +
               "     WHERE                                                                                              " +
               "           y.MEMBER_USER = #{user}                                                                      " +
             "         AND y.`STATUS` = #{status}                                                                       " +
@@ -45,8 +45,8 @@ public interface ExtProjectMapper {
             "         x.`CREATE_TIME` as createTime,                                                                 " +
             "         x.`CREATE_OPER` as createOper                                                                  " +
             "     FROM                                                                                               " +
-            "         PR_PROJECT x,                                                                                  " +
-            "         PR_PROJECT_MEMBER y                                                                            " +
+            "         pr_project x,                                                                                  " +
+            "         pr_project_member y                                                                            " +
             "     WHERE                                                                                              " +
             "           y.MEMBER_USER = #{user}                                                                      " +
             "         AND y.`STATUS` = #{status}                                                                     " +
