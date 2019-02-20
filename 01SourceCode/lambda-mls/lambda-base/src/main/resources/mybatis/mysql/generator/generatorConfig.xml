@@ -102,10 +102,6 @@
 			<property name="ignoreQualifiersAtRuntime" value="true" />
 			<generatedKey column="FLOW_ID" sqlStatement="Mysql" identity="true"/>
 		</table>
-		<table tableName="WF_FLOW_GLOBAL_PARAMETER" >
-			<property name="ignoreQualifiersAtRuntime" value="true" />
-			<generatedKey column="GLOBAL_PARAM_ID" sqlStatement="Mysql" identity="true"/>
-		</table>
 		<table tableName="WF_FLOW_NODE" >
 			<property name="ignoreQualifiersAtRuntime" value="true" />
 			<generatedKey column="NODE_ID" sqlStatement="Mysql" identity="true"/>

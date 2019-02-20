@@ -39,7 +39,6 @@ public class Snapshot extends RichModel<WfSnapshot> {
     private Workflow workflow;
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();
     private TreeMap<Long, NodeLink> links = new TreeMap<Long, NodeLink>();
-    //private TreeMap<Long, GlobalParameter> globalParameters = new TreeMap<Long, GlobalParameter>();
 
     //用于快照创建
     public static Snapshot BuildSnapshot4Create(WfSnapshot data) {
@@ -92,7 +91,6 @@ public class Snapshot extends RichModel<WfSnapshot> {
         workflow = null;
         CollectionUtil.clear(nodes);
         CollectionUtil.clear(links);
-        //CollectionUtil.clear(globalParameters);
         super.clear(clearData);
     }
 
@@ -120,8 +118,6 @@ public class Snapshot extends RichModel<WfSnapshot> {
                     workflowContext.putLink(link);
                 }
             }
-
-            //TODO synchronize global parameters
         }
     }
 
@@ -143,8 +139,6 @@ public class Snapshot extends RichModel<WfSnapshot> {
                     }
                 }
             }
-
-            //TODO synchronize global parameters
         }
     }
 
@@ -210,8 +204,6 @@ public class Snapshot extends RichModel<WfSnapshot> {
                     jsonLinks.add(jsonLink);
                 }
             }
-
-            //TODO add global parameters
         }
 
         jsonContent.put(SNAPSHOT_CONTENT_KEY_EXPERIMENT, jsonExperiment);
@@ -262,7 +254,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
                             WfFlowNodeParameter wfFlowNodeParameter = jsonParameters.getJSONObject(i).toJavaObject(WfFlowNodeParameter.class);
                             CharValue charValue = new CharValue(ComponentConfigHelper.getCharacteristic(wfFlowNodeParameter.getCharId()));
                             if(charValue.isJsonDataType() || charValue.isScriptDataType()) {
-                                charValue.setOutParamText(wfFlowNodeParameter.getCharValue());
+                                charValue.setParamValue(wfFlowNodeParameter.getCharValue());
                                 wfFlowNodeParameter.setCharValue(null);
                             } else {
                                 charValue.setCharValue(wfFlowNodeParameter.getCharValue());
@@ -276,7 +268,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
                             WfFlowNodeParameter wfFlowNodeParameter = jsonOptimizeParameters.getJSONObject(i).toJavaObject(WfFlowNodeParameter.class);
                             CharValue charValue = new CharValue(ComponentConfigHelper.getCharacteristic(wfFlowNodeParameter.getCharId()));
                             if(charValue.isJsonDataType() || charValue.isScriptDataType()) {
-                                charValue.setOutParamText(wfFlowNodeParameter.getCharValue());
+                                charValue.setParamValue(wfFlowNodeParameter.getCharValue());
                                 wfFlowNodeParameter.setCharValue(null);
                             } else {
                                 charValue.setCharValue(wfFlowNodeParameter.getCharValue());
@@ -310,8 +302,6 @@ public class Snapshot extends RichModel<WfSnapshot> {
                         this.putLink(link);
                     }
                 }
-
-                //TODO add global parameters
             }
 
             jsonContent.clear();
@@ -367,20 +357,6 @@ public class Snapshot extends RichModel<WfSnapshot> {
     public void putLink(NodeLink link) {
         CollectionUtil.put(links, link.data().getLinkId(), link);
     }
-
-/*    public GlobalParameter getGlobalParameter(Long globalParameterId) {
-        return globalParameters.get(globalParameterId);
-    }
-
-    public List<GlobalParameter> getGlobalParameters() {
-        return CollectionUtil.toList(globalParameters);
-    }
-
-    public void putGlobalParameter(GlobalParameter globalParameter) {
-        CollectionUtil.put(globalParameters, globalParameter.data().getGlobalParamId(), globalParameter);
-
-    }
-*/
 
     public void changeState2Finished() {
         this.changeSnapshotState(SnapshotStateEnum.FINISHED);

@@ -10,7 +10,6 @@ ALTER TABLE wf_code_script auto_increment = 1000000;
 ALTER TABLE wf_execution_job auto_increment = 1000000;
 ALTER TABLE wf_execution_task auto_increment = 1000000;
 ALTER TABLE wf_flow auto_increment = 1000000;
-ALTER TABLE wf_flow_global_parameter auto_increment = 1000000;
 ALTER TABLE wf_flow_node auto_increment = 1000000;
 ALTER TABLE wf_flow_node_link auto_increment = 1000000;
 ALTER TABLE wf_flow_node_port auto_increment = 1000000;

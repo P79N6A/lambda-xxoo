@@ -177,7 +177,6 @@ public class WorkflowContext implements IWorkContext {
         CollectionUtil.clear(outputLinks);
         CollectionUtil.clear(inputPorts);
         CollectionUtil.clear(outputPorts);
-        //CollectionUtil.clear(globalParameters);
 
         CollectionUtil.enhancedClear(dataWarehouses, clearData);
         CollectionUtil.clear(dataWarehousesOrderByCode);
@@ -897,20 +896,6 @@ public class WorkflowContext implements IWorkContext {
 
         CollectionUtil.put(outputPorts, outputPort.data().getNodePortId(), outputPort);
     }
-
-/*    public GlobalParameter getGlobalParameter(Long globalParameterId) {
-        return globalParameters.get(globalParameterId);
-    }
-
-    public List<GlobalParameter> getGlobalParameters() {
-        return CollectionUtil.toList(globalParameters);
-    }
-
-    public void putGlobalParameter(GlobalParameter globalParameter) {
-        CollectionUtil.put(globalParameters, globalParameter.data().getGlobalParamId(), globalParameter);
-
-    }
-*/
 
     /*
      *

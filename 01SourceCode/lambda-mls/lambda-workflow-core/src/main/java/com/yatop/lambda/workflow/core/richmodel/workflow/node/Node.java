@@ -32,7 +32,6 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     private TreeMap<String, NodeOutputPort> outputNodePortsOrderByCharId = new TreeMap<String, NodeOutputPort>();                //输出节点端口，key=charId
     private TreeMap<String, NodeOutputPort> outputNodePortsOrderByCharCode = new TreeMap<String, NodeOutputPort>();                //输出节点端口，key=charCode
     private TreeMap<Integer, NodeOutputPort> outputNodePortsOrderBySequence = new TreeMap<Integer, NodeOutputPort>();//输出节点端口按序号排序
-  //private TreeMap<String, GlobalParameter> globalParameters = new TreeMap<String, GlobalParameter>();  //操作关联节点参数，key=charId
     private int indegree;
     private boolean deleted;
     private boolean analyzed;
@@ -58,7 +57,6 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
         CollectionUtil.clear(inputNodePortsOrderBySequence);
         CollectionUtil.enhancedClear(outputNodePorts, clearData);
         CollectionUtil.clear(outputNodePortsOrderBySequence);
-      //CollectionUtil.enhancedClear(globalParameters, clearData);
         super.clear(clearData);
     }
 
@@ -376,29 +374,6 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
         }
         return nodeSchemas;
     }
-
-/*
-
-    public int globalParameterCount() {
-        return globalParameters.size();
-    }
-
-    public GlobalParameter getGlobalParameter(String charId) {
-        return globalParameters.get(charId);
-    }
-
-    public List<GlobalParameter> getGlobalParameters() {
-        return CollectionUtil.toList(globalParameters);
-    }
-
-    public void putGlobalParameter(GlobalParameter globalParameter) {
-        CollectionUtil.put(globalParameters, globalParameter.data().getRelCharId(), globalParameter);
-    }
-
-    public void removeGlobalParameter(String charId) {
-        CollectionUtil.remove(globalParameters, charId);
-    }
-*/
 
     public boolean isDeleted() {
         return deleted;
