@@ -2,13 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    
+
     <parent>
         <artifactId>lambda-mls</artifactId>
         <groupId>com.yatop.lambda</groupId>
         <version>1.0.0</version>
     </parent>
-    
+
     <artifactId>lambda-manager</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
@@ -94,14 +94,8 @@
                 <configuration>
                     <mainClass>com.yatop.lambda.LambdaApplication</mainClass>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -133,14 +127,12 @@
                 <executions>
                     <execution>
                         <id>make-zip</id>
-                        <!-- 绑定到package生命周期阶段上 -->
                         <phase>package</phase>
                         <goals>
-                            <!-- 绑定到package生命周期阶段上 -->
                             <goal>single</goal>
                         </goals>
                         <configuration>
-                            <descriptors> <!--描述文件路径 -->
+                            <descriptors>
                                 <descriptor>src/main/resources/assembly.xml</descriptor>
                             </descriptors>
                         </configuration>
