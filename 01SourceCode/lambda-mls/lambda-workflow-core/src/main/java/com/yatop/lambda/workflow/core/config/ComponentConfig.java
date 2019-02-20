@@ -109,7 +109,7 @@ public class ComponentConfig implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        //loadComponentConfiguration();
+        loadComponentConfiguration();
     }
 
     private void loadComponentConfiguration() {

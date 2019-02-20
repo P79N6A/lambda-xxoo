@@ -32,11 +32,11 @@ management:
         include: ['httptrace', 'metrics']
 
 
-lambda-portal:
+lambda-framework:
   #数据源配置
   log4jdbc.enable: false
   datasource:
-    jdbcUrl: jdbc:mysql://47.106.71.105:3306/lambda-mls?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useAffectedRows=true&useSSL=false
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/test_mls?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useAffectedRows=true&useSSL=false
     username: root
     password: root
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -49,6 +49,7 @@ lambda-portal:
       connection-timeout: 30000
       pool-name: Lambda-Framework-HikariCP
 
+lambda-portal:
   # 是否在控制台打印 SQL
   #showsql: false
   # 是否异步记录用户操作日志

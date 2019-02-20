@@ -28,29 +28,12 @@ import java.util.Properties;
 
 @Configuration("portalMybatisConfig")
 @EnableTransactionManagement
-/*@MapperScan(
-        basePackages = {"com.yatop.lambda.portal.*.dao"},
-        sqlSessionFactoryRef = "portalSqlSessionFactory"
-)*/
 public class MyBatisConfig {
-
-    @Value("${lambda-portal.log4jdbc.enable:false}")
-    private boolean enableLog4jdbc;
 
     @Bean("portalDataSource")
     @Primary
-    public DataSource portalDataSource(@Qualifier("orignalPortalDataSource") DataSource orignalPortalDataSource) {
-        if(enableLog4jdbc) {
-            return new DataSourceSpy(orignalPortalDataSource);
-        } else {
-            return orignalPortalDataSource;
-        }
-    }
-
-    @Bean("orignalPortalDataSource")
-    @ConfigurationProperties(prefix = "lambda-portal.datasource")
-    public DataSource orignalPortalDataSource(){
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
+    public DataSource portalDataSource(@Qualifier("frameworkDataSource") DataSource frameworkDataSource) {
+            return frameworkDataSource;
     }
 
     @Bean("portalJdbcTemplate")
@@ -74,27 +57,14 @@ public class MyBatisConfig {
         configuration.setJdbcTypeForNull(JdbcType.NULL);
         bean.setConfiguration(configuration);
 
-        bean.setPlugins(new Interceptor[]{ getPageInterceptor()} );
+        bean.setPlugins(new Interceptor[]{ com.yatop.lambda.framework.config.MyBatisConfig.getPageInterceptor()} );
         return bean.getObject();
     }
 
-    @Bean("portalTransactionManager")
+    /*@Bean("portalTransactionManager")
     public PlatformTransactionManager platformTransactionManager(@Qualifier("portalDataSource") DataSource portalDataSource) {
         return new DataSourceTransactionManager(portalDataSource);
-    }
-
-    //PageHelper: https://github.com/pagehelper/Mybatis-PageHelper/blob/v5.1.6/wikis/zh/HowToUse.md
-    static public PageInterceptor getPageInterceptor() {
-        PageInterceptor pageInterceptor = new PageInterceptor();
-        Properties properties = new Properties();
-        properties.setProperty("helperDialect", "mysql");
-        properties.setProperty("pageSizeZero", "true");
-        properties.setProperty("reasonable", "true");
-        properties.setProperty("supportMethodsArguments", "true");
-        properties.setProperty("params", "pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero");
-        pageInterceptor.setProperties(properties);
-        return pageInterceptor;
-    }
+    }*/
 
     /**
      * 配置 sql打印拦截器
