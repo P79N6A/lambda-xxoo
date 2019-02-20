@@ -6,16 +6,11 @@
 !/lambda-workflow-module/
 !/lambda-workflow-engine/
 !/lambda-manager/
-!/lambda-manager-ui/
 !/lambda-open/
 !/lambda-decision/
 !/lambda-cluster-adapter/
 !/lambda-framework/
 !/lambda-portal/
-!/lambda-portal-backup/
 !/lambda-mybatis-generator/
-!/lambda-component/
-!/lambda-component-python/
-!/lambda-component-r/
 !pom.xml
 !.gitignore
