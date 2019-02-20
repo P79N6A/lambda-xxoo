@@ -2,13 +2,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    
-    <parent>
-        <artifactId>lambda-mls</artifactId>
-        <groupId>com.yatop.lambda</groupId>
-        <version>1.0.0</version>
-    </parent>
-    
+
+	<groupId>com.yatop.lambda</groupId>
     <artifactId>lambda-component</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
@@ -16,6 +11,30 @@
     <name>lambda-component</name>
     <url>http://maven.apache.org</url>
 
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <jdk.tool.version>1.8</jdk.tool.version>
+        <jar.source>1.8</jar.source>
+        <jar.target>1.8</jar.target>
+        <maven.compiler.state>1.8</maven.compiler.state>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.plugin.version>3.6.2</maven.compiler.plugin.version>
+
+        <hadoop.version>2.7.3</hadoop.version>
+        <parquet.avro.version>1.9.0</parquet.avro.version>
+        <parquet.hadoop.version>1.9.0</parquet.hadoop.version>
+        <avro.version>1.8.1</avro.version>
+        
+        <spark.version>2.1.0</spark.version>
+        <scala.version>2.11.8</scala.version>
+        <scala.tools.version>2.11</scala.tools.version>
+        <scala.binary.version>2.11</scala.binary.version>
+		
+        <fastjson.version>1.2.32</fastjson.version>
+    </properties>
 
     <dependencies>
 		    <!-- https://mvnrepository.com/artifact/net.alchim31.maven/scala-maven-plugin -->
@@ -58,16 +77,12 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>1.18</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -124,10 +139,6 @@
             <groupId>org.codehaus.janino</groupId>
             <artifactId>commons-compiler</artifactId>
             <version>2.7.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
         </dependency>
     </dependencies>
 
