@@ -1,80 +1,55 @@
 package com.yatop.lambda.workflow.core.config;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.LambdaApplication;
-import com.yatop.lambda.core.concurrent.workflow.WorkflowNamedLockService;
+import com.yatop.lambda.core.utils.DataUtil;
+import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCharType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LambdaApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ComponentConfigTest implements Runnable {
+public class ComponentConfigTest {
+
 
     @Autowired
-    WorkflowNamedLockService workflowNamedLock;
+    ComponentConfig componentConfig;
 
-    private int generator = 0;
+    private JSONObject toJSON(CmptCharType charType) {
 
-    @Override
-    public void run(){
-
-        try {
-            Thread.sleep(500);
-        } catch (Throwable e) {
-
-        }
-
-        long[] testArray = {11L, 22L, 33L, 44L, 55L, 66L, 77L, 88L};
-        Random random =  new Random(++generator);
-        int success = 0;
-        int failed = 0;
-        int iterator = 0;
-        Long startm = System.currentTimeMillis();
-        Date start = new Date(startm);
-
-        for(int i = 0; i < 8192; i++){
-            try {
-                ++iterator;
-
-                long resource = testArray[Math.abs(random.nextInt()%8)];
-                if(workflowNamedLock.requestResource(resource))
-                    ++success;
-                 else
-                     ++failed;
-                //System.out.println("Request " + resource + " -- " +  (workflowNamedLock.requestResource(resource) ? "success" : "failed"));
-
-                //this.wait(188);
-                workflowNamedLock.releaseResource();
-            }catch (Throwable e) {
-                e.printStackTrace();
-                System.exit(-1);
-            }
-        }
-        ;
-        Long endm = System.currentTimeMillis();
-        Date end = new Date(endm);
-        float cost = endm - startm;
-        cost = cost / 1000;
-        System.out.println("Iterator " + iterator + " -- " +"Success " + success + " -- " + "failed " + failed + " -- " + "cost " + cost + "second");
+        JSONObject jsonObj = new JSONObject(32, true);
+        jsonObj.put("charTypeId", charType.data().getCharTypeId());
+        jsonObj.put("charTypeCode", charType.data().getCharTypeCode());
+        jsonObj.put("charTypeName", charType.data().getCharTypeName());
+        return jsonObj;
     }
 
     @Test
     public void testWorkflowNamedLock(){
-        try {
-            for(int i = 0; i < 20; i++) {
-                Thread thread = new Thread(this);
-                thread.start();
-            }
-            synchronized (this) {
-                this.wait(10 * 1000);
-            }
-        } catch (Throwable e) {
 
+        List<CmptCharType> portTypes = componentConfig.getPortCharacteristicTypes();
+
+        JSONArray jsonArray = new JSONArray(portTypes.size());
+        for(CmptCharType portType : portTypes) {
+            JSONObject jsonObject = this.toJSON(portType);
+            JSONArray matchTypes = new JSONArray(portType.matchTargetTypeCount());
+
+            for(CmptCharType matchType : portType.getMatchTargetTypes()) {
+                matchTypes.add(this.toJSON(matchType));
+            }
+
+            jsonObject.put("matchTypes", matchTypes);
+            jsonArray.add(jsonObject);
         }
+
+        System.out.println(DataUtil.prettyFormat(jsonArray));
     }
 }

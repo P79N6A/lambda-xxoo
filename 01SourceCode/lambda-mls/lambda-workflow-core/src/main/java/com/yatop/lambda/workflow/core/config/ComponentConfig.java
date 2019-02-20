@@ -127,7 +127,7 @@ public class ComponentConfig implements InitializingBean {
         loadComponentConfig();
 
         //校验相关
-        checkConfiguration();
+        //checkConfiguration();
     }
 
     private void loadCmptCharTypeConfig() {
@@ -198,7 +198,7 @@ public class ComponentConfig implements InitializingBean {
         HashMap<Integer, TreeMap<Integer, CmptCharType>> expandedTargetCharTypesCache = new HashMap<Integer, TreeMap<Integer, CmptCharType>>();
         for(Map.Entry<Integer, CmptCharType> entry: ALL_CHARACTERISTIC_TYPES.entrySet()) {
             CmptCharType sourceCharType = entry.getValue();
-            if(!SpecMaskEnum.matchInputAndOutput(sourceCharType.data().getSpecMask())) {
+            if(SpecMaskEnum.matchInputAndOutput(sourceCharType.data().getSpecMask())) {
                 ALL_PORT_CHARACTERISTIC_TYPES.put(sourceCharType.data().getCharTypeId(), sourceCharType);
 
                 TreeMap<Integer, CmptCharType> expandedTargetCharTypes = new TreeMap<Integer, CmptCharType>();

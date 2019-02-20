@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class NodeSchema extends RichModel<WfFlowNodeSchema> {
 
     private CmptChar cmptChar;
