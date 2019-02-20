@@ -46,30 +46,42 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
     //
 
     @Override
-    public TreeMap<CmptChar, String> checkParameter(WorkflowContext workflowContext, Node node) {
+    public TreeMap<CmptChar, String> checkParameters(WorkflowContext workflowContext, Node node) {
         return null;
     }
 
     @Override
-    public void exploreOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
+    public void exploreOutputResource(WorkflowContext workflowContext, Node node) {
         //TODO query task output resource
         return;
     }
 
     @Override
-    public void prepareOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
+    public void prepareOutputResource(WorkflowContext workflowContext, Node node) {
         //TODO prepare task output resource
         return;
     }
 
     @Override
-    public void completeOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
+    public void completeOutputResource(WorkflowContext workflowContext, Node node) {
         //TODO complete task output resource
         return;
     }
 
     @Override
-    public void clearOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
+    public void clearOutputResource(WorkflowContext workflowContext, Node node) {
+        //TODO clear task output resource
+        return;
+    }
+
+    @Override
+    public void deleteOutputResource(WorkflowContext workflowContext, Node node) {
+        //TODO complete task output resource
+        return;
+    }
+
+    @Override
+    public void recoverOutputResource(WorkflowContext workflowContext, Node node) {
         //TODO clear task output resource
         return;
     }

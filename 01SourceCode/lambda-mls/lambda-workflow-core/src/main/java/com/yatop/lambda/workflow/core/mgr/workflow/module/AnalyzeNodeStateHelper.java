@@ -68,7 +68,7 @@ public class AnalyzeNodeStateHelper {
 
             if (DataUtil.isEmpty(missingParameters)) {
                 try {
-                    TreeMap<CmptChar, String> warningMessages = node.getModuleClazzBean().checkParameter(workflowContext, node);
+                    TreeMap<CmptChar, String> warningMessages = node.getModuleClazzBean().checkParameters(workflowContext, node);
                     for (NodeParameter parameter : node.getParameters()) {
                         String warningMessage = CollectionUtil.get(warningMessages, parameter.getCmptChar());
                         if (DataUtil.isNotEmpty(warningMessage)) {

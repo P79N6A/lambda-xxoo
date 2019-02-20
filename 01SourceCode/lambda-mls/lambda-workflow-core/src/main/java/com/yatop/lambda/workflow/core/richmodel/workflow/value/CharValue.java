@@ -1,7 +1,6 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.value;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yatop.lambda.base.utils.LambdaRootModel;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.CharTypeAlgorithmGeneric;
@@ -13,6 +12,7 @@ import com.yatop.lambda.workflow.core.framework.chartype.clazz.script.CharTypeSc
 import com.yatop.lambda.workflow.core.framework.chartype.clazz.table.CharTypeTableGeneric;
 import com.yatop.lambda.workflow.core.framework.chartype.clazz.tune.CharTypeTuneGeneric;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
+import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.model.Model;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataTable;
@@ -23,8 +23,8 @@ public class CharValue implements IRichModel {
     private String charValue;	    //特征值内容
     private String inText;		    //传入文本内容，仅限组件参数、调用执行、运行调优参数，以文本内容方式进行传入传出
     private String outText;		    //传出文本内容
-    private IRichModel inObject;    //传入对象内容，仅限输入内容、输出内容，以对象内容方式进行传入传出（算法参数、数据表、模型、报告）
-    private IRichModel outObject;	//传出对象内容
+    private RichModel inObject;    //传入对象内容，仅限输入内容、输出内容，以对象内容方式进行传入传出（算法参数、数据表、模型、报告）
+    private RichModel outObject;	//传出对象内容
 
     public CharValue(CmptChar cmptChar) {
         this(cmptChar, null);
@@ -91,20 +91,20 @@ public class CharValue implements IRichModel {
         this.outText = outText;
     }
 
-    public IRichModel getInObject() {
+    public RichModel getInObject() {
         return inObject;
     }
 
-    public void setInObject(IRichModel inObject) {
+    public void setInObject(RichModel inObject) {
         this.setOutObject(null);
         this.inObject = inObject;
     }
 
-    public IRichModel getOutObject() {
+    public RichModel getOutObject() {
         return outObject;
     }
 
-    public void setOutObject(IRichModel outObject) {
+    public void setOutObject(RichModel outObject) {
         this.outObject = outObject;
     }
 
@@ -148,7 +148,7 @@ public class CharValue implements IRichModel {
         return DataUtil.isNotNull(getOutText()) ? getOutText() : getInText();
     }
 
-    public IRichModel getObjectValue() {
+    public RichModel getObjectValue() {
         return DataUtil.isNotNull(getOutObject()) ? getOutObject() : getInObject();
     }
 

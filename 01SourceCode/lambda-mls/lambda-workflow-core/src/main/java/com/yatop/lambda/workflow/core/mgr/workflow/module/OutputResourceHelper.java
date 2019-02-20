@@ -10,14 +10,12 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
-@Service
 public class OutputResourceHelper {
 
     public static Logger logger = LoggerFactory.getLogger(OutputResourceHelper.class);
 
-    public static void prepareOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
+    /*public static void prepareOutputResource(WorkflowContext workflowContext, ExecutionTask task) {
 
         IModuleClazz moduleClazz = task.getNode().getModuleClazzBean();
         try {
@@ -64,5 +62,5 @@ public class OutputResourceHelper {
             //task.setOccuredWarning("探测输出资源时发生错误");
             return false;
         }
-    }
+    }*/
 }
