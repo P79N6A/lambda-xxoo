@@ -4,7 +4,7 @@ import com.yatop.lambda.base.model.WfFlowNodeOutput;
 import com.yatop.lambda.core.enums.OutputStateEnum;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 
 public class NodeOutput extends RichModel<WfFlowNodeOutput> {
 

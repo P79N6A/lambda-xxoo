@@ -71,7 +71,7 @@
     </properties>
 
     <modules>
-        <module>lambda-mybatis-generator</module>
+        <!--<module>lambda-mybatis-generator</module>-->
         <module>lambda-framework</module>
         <module>lambda-portal</module>
         <module>lambda-base</module>
@@ -98,38 +98,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!--=========================hadoop==========-->
-            <dependency>
-                <groupId>org.apache.avro</groupId>
-                <artifactId>avro</artifactId>
-                <version>${avro.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.parquet</groupId>
-                <artifactId>parquet-avro</artifactId>
-                <version>${parquet.avro.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-common</artifactId>
-                <version>${hadoop.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.hadoop</groupId>
-                <artifactId>hadoop-hdfs</artifactId>
-                <version>${hadoop.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.parquet</groupId>
-                <artifactId>parquet-tools</artifactId>
-                <version>${parquet.hadoop.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.parquet</groupId>
-                <artifactId>parquet-hadoop</artifactId>
-                <version>${parquet.hadoop.version}</version>
-            </dependency>
-            
             <!-- =====================swagger===================== -->
             <!--<dependency>
                 <groupId>io.springfox</groupId>
@@ -167,11 +135,6 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.univocity</groupId>
-                <artifactId>univocity-parsers</artifactId>
-                <version>${univocity-parsers}</version>
             </dependency>
 
             <dependency>

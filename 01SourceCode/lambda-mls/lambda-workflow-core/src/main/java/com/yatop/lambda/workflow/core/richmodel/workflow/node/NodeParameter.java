@@ -7,7 +7,7 @@ import com.yatop.lambda.workflow.core.mgr.workflow.node.parameter.ParameterHelpe
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 
 public class NodeParameter extends RichModel<WfFlowNodeParameter> implements Comparable<NodeParameter> {
 
@@ -50,11 +50,11 @@ public class NodeParameter extends RichModel<WfFlowNodeParameter> implements Com
     }
 
     public String getTextValue() {
-        return this.getCharValue().getTextValue();
+        return this.getCharValue().getParamValue();
     }
 
     public IRichModel getObjectValue() {
-        return this.getCharValue().getObjectValue();
+        return this.getCharValue().getOutputValue();
     }
 
     public boolean isSimulateParameter() {

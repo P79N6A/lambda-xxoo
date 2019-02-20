@@ -6,7 +6,7 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutput;
-import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.ArrayList;

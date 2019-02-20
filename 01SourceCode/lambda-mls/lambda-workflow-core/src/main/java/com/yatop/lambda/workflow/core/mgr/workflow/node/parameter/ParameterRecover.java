@@ -6,11 +6,11 @@ import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueHelper;
+import com.yatop.lambda.workflow.core.mgr.workflow.charvalue.ParamCharValueHelper;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
-import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +29,11 @@ public class ParameterRecover {
 
         if(cmptChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource() && DataUtil.isNotNull(parameter)) {
             CharValue charValue = new CharValue(cmptChar, parameter.getCharValue());
-            CharValueHelper.recoverCharValue(workflowContext, node, charValue);
+            ParamCharValueHelper.recoverParamCharValue(workflowContext, node, charValue);
             return new NodeParameter(parameter, charValue);
         } else {
             CharValue charValue = new CharValue(cmptChar);
-            CharValueHelper.queryCharValue(workflowContext, node, charValue);
+            ParamCharValueHelper.queryParamCharValue(workflowContext, node, charValue);
             return ParameterHelper.simulateParameter(workflowContext, node, charValue);
         }
     }

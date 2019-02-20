@@ -6,9 +6,9 @@ import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueHelper;
+import com.yatop.lambda.workflow.core.mgr.workflow.charvalue.ParamCharValueHelper;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +47,10 @@ public class ParameterHelper {
         return new NodeParameter(parameter, charValue, true);
     }
 
-    public static boolean validateUpdateNodeParameter(WorkflowContext workflowContext, Node node, NodeParameter nodeParameter, String charValueText) {
+    public static boolean validateUpdateNodeParameter(WorkflowContext workflowContext, Node node, NodeParameter nodeParameter, String paramValue) {
         CharValue charValue = nodeParameter.getCharValue();
-        charValue.setInText(charValueText);
-        return CharValueHelper.validateCharValue(workflowContext, node, charValue);
+        charValue.setParamValue(paramValue);
+        return ParamCharValueHelper.validateParamCharValue(workflowContext, node, charValue);
     }
 
     public static void updateNodeParameter(NodeParameter parameter, String operId) {

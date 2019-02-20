@@ -73,30 +73,55 @@ public class ComponentConfig implements InitializingBean {
     private CmptCharTypeWildMgr cmptCharTypeWildMgr;
 
     private HashMap<Long, CmptAlgorithm> ALL_ALGORITHMS = new HashMap<Long, CmptAlgorithm>();   //计算组件算法
+    private HashMap<String, CmptAlgorithm> ALL_ALGORITHMS_BY_CODE = new HashMap<String, CmptAlgorithm>();   //计算组件算法（按算法代码）
     private HashMap<String, Component> ALL_COMPONENTS = new HashMap<String, Component>();    //计算组件
+    private HashMap<String, Component> ALL_COMPONENTS_BY_CODE = new HashMap<String, Component>();    //计算组件（按组件代码）
     private HashMap<String, CmptSpec> ALL_SPECIFICATIONS = new HashMap<String, CmptSpec>();  //计算组件规格
+    private HashMap<String, CmptSpec> ALL_SPECIFICATIONS_BY_CODE = new HashMap<String, CmptSpec>();  //计算组件规格（按规格代码）
     private HashMap<String, CmptChar> ALL_CHARACTERISTICS = new HashMap<String, CmptChar>(); //计算组件特征
+    private HashMap<String, CmptChar> ALL_CHARACTERISTICS_BY_CODE = new HashMap<String, CmptChar>(); //计算组件特征（按特征代码）
     private HashMap<Integer, CmptCharType> ALL_CHARACTERISTIC_TYPES = new HashMap<Integer, CmptCharType>(); //计算组件特征类型
+    private HashMap<String, CmptCharType> ALL_CHARACTERISTIC_TYPES_BY_CODE = new HashMap<String, CmptCharType>(); //计算组件特征类型（按类型代码）
     private HashMap<Integer, CmptCharType> ALL_PORT_CHARACTERISTIC_TYPES = new HashMap<Integer, CmptCharType>(); //计算组件绑定到端口的特征类型
 
     public CmptAlgorithm getAlgorithm(Long algorithmId) {
         return CollectionUtil.get(ALL_ALGORITHMS, algorithmId);
     }
 
+    public CmptAlgorithm getAlgorithmByCode(String algorithmCode) {
+        return CollectionUtil.get(ALL_ALGORITHMS_BY_CODE, algorithmCode);
+    }
+
     public Component getComponent(String cmptId) {
         return CollectionUtil.get(ALL_COMPONENTS, cmptId);
+    }
+
+    public Component getComponentByCode(String cmptCode) {
+        return CollectionUtil.get(ALL_COMPONENTS_BY_CODE, cmptCode);
     }
 
     public CmptSpec getSpecification(String specId) {
         return CollectionUtil.get(ALL_SPECIFICATIONS, specId);
     }
 
+    public CmptSpec getSpecificationByCode(String specCode) {
+        return CollectionUtil.get(ALL_SPECIFICATIONS_BY_CODE, specCode);
+    }
+
     public CmptChar getCharacteristic(String charId) {
         return CollectionUtil.get(ALL_CHARACTERISTICS, charId);
     }
 
+    public CmptChar getCharacteristicByCode(String charCode) {
+        return CollectionUtil.get(ALL_CHARACTERISTICS_BY_CODE, charCode);
+    }
+
     public CmptCharType getCharacteristicType(Integer typeId) {
         return CollectionUtil.get(ALL_CHARACTERISTIC_TYPES, typeId);
+    }
+
+    public CmptCharType getCharacteristicTypeByCode(String typeCode) {
+        return CollectionUtil.get(ALL_CHARACTERISTIC_TYPES_BY_CODE, typeCode);
     }
 
     public CmptCharType getPortCharacteristicType(Integer typeId) {
@@ -155,6 +180,7 @@ public class ComponentConfig implements InitializingBean {
             }
 
             ALL_CHARACTERISTIC_TYPES.put(richType.data().getCharTypeId(), richType);
+            ALL_CHARACTERISTIC_TYPES_BY_CODE.put(richType.data().getCharTypeCode(), richType);
         }
         typeList.clear();
 
@@ -244,6 +270,7 @@ public class ComponentConfig implements InitializingBean {
 
             CmptChar richChar = new CmptChar(cmptChar, charType);
             ALL_CHARACTERISTICS.put(richChar.data().getCharId(), richChar);
+            ALL_CHARACTERISTICS_BY_CODE.put(richChar.data().getCharCode(), richChar);
 
             SpecTypeEnum typeEnum = SpecTypeEnum.valueOf(richChar.data().getSpecType());
             if(DataUtil.isNull(typeEnum)) {
@@ -323,6 +350,7 @@ public class ComponentConfig implements InitializingBean {
             }
 
             ALL_SPECIFICATIONS.put(richSpec.data().getSpecId(), richSpec);
+            ALL_SPECIFICATIONS_BY_CODE.put(richSpec.data().getSpecCode(), richSpec);
         }
         specList.clear();
 
@@ -400,6 +428,7 @@ public class ComponentConfig implements InitializingBean {
                 System.exit(-1);
             }
             ALL_ALGORITHMS.put(richAlgorithm.data().getAlgorithmId(), richAlgorithm);
+            ALL_ALGORITHMS_BY_CODE.put(richAlgorithm.data().getAlgorithmCode(), richAlgorithm);
         }
         algorithmList.clear();
 
@@ -425,6 +454,7 @@ public class ComponentConfig implements InitializingBean {
                 richComponent.setAlgorithm(algorithm);
             }
             ALL_COMPONENTS.put(richComponent.data().getCmptId(), richComponent);
+            ALL_COMPONENTS_BY_CODE.put(richComponent.data().getCmptCode(), richComponent);
         }
         componentList.clear();
 

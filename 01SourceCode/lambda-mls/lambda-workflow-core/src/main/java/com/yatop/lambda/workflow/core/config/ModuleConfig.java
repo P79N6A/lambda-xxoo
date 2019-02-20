@@ -45,13 +45,13 @@ public class ModuleConfig implements InitializingBean {
     @Autowired
     private ComponentConfig componentConfig;
 
-    private TreeMultimap<Integer, ModuleCatalog> FIRST_LEVEL_MODULE_CATALOGS = TreeMultimap.create();    //一级工作流组件目录按序号排序
     private HashMap<Long, ModuleCatalog> ALL_MODULE_CATALOGS = new HashMap<Long, ModuleCatalog>();       //工作流组件目录
     private HashMap<Long, Module> ALL_MODULES = new HashMap<Long, Module>();                             //工作流组件
+    private HashMap<String, Module> ALL_MODULES_BY_CODE = new HashMap<String, Module>();                             //工作流组件（按组件代码）
     private HashMap<Long, ModulePort> ALL_MODULE_PORTS = new HashMap<Long, ModulePort>();         //工作流组件端口
 
-    public List<ModuleCatalog> getFirstLevelCatalogs() {
-        return CollectionUtil.toList(FIRST_LEVEL_MODULE_CATALOGS);
+    public ModuleCatalog getRootCatalog() {
+        return getCatalog(0L);
     }
 
     public ModuleCatalog getCatalog(Long catalogId) {
@@ -60,6 +60,10 @@ public class ModuleConfig implements InitializingBean {
 
     public Module getModule(Long moduleId) {
         return CollectionUtil.get(ALL_MODULES, moduleId);
+    }
+
+    public Module getModuleByCode(String moduleCode) {
+        return CollectionUtil.get(ALL_MODULES_BY_CODE, moduleCode);
     }
 
     public ModulePort getModulePort(Long portId) {
@@ -87,11 +91,9 @@ public class ModuleConfig implements InitializingBean {
             catalogList.clear();
 
             for (Map.Entry<Long, ModuleCatalog>  entry : ALL_MODULE_CATALOGS.entrySet()) {
-                if(entry.getValue().data().getParentCatalogId() == 0) {
-                    FIRST_LEVEL_MODULE_CATALOGS.put(entry.getValue().data().getSequence(), entry.getValue());
-                } else {
+                if(entry.getValue().data().getParentCatalogId() >= 0) {
                     ModuleCatalog parentCatalog = ALL_MODULE_CATALOGS.get(entry.getValue().data().getParentCatalogId());
-                    if(DataUtil.isNotNull(parentCatalog)) {
+                    if (DataUtil.isNotNull(parentCatalog)) {
                         parentCatalog.putChildCatalog(entry.getValue());
                     } else {
                         logger.error(String.format("Loading module configuration occurs fatal error -- Parent module catalog not found:\n%s", DataUtil.prettyFormat(entry.getValue().data())));
@@ -129,6 +131,7 @@ public class ModuleConfig implements InitializingBean {
 
                 Module richModule = new Module(module, component);
                 ALL_MODULES.put(richModule.data().getModuleId(), richModule);
+                ALL_MODULES_BY_CODE.put(richModule.data().getModuleCode(), richModule);
 
                 if(richModule.data().getCatalogId() > 0) {
                     ModuleCatalog catalog = ALL_MODULE_CATALOGS.get(richModule.data().getCatalogId());

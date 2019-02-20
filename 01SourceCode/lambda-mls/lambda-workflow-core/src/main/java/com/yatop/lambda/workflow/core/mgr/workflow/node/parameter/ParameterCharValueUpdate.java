@@ -6,9 +6,8 @@ import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.mgr.workflow.module.AnalyzeNodeStateHelper;
-import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueHelper;
-import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
+import com.yatop.lambda.workflow.core.mgr.workflow.charvalue.ParamCharValueHelper;
+import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,8 @@ public class ParameterCharValueUpdate {
                     return targetParameter;
 
                 CharValue charValue = targetParameter.getCharValue();
-                charValue.setInText(charValueText);
-                CharValueHelper.updateCharValue(workflowContext, node, charValue);
+                charValue.setParamValue(charValueText);
+                ParamCharValueHelper.updateParamCharValue(workflowContext, node, charValue);
 
                 targetParameter.data().setCharValue(DataUtil.isNotEmpty(charValue.getCharValue()) ? charValue.getCharValue() : null);
                 return targetParameter;

@@ -347,9 +347,9 @@ public class EditorService {
             workflowEditUtil.requestWorkflowResource(richExperiment);
             workflowEditUtil.detectWorkflowShareLock(richExperiment);
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(richExperiment, operId, false);
-            boolean passed = linkValidate.validateLink(workflowContext, srcNodeId, dstNodeId, srcNodePortId, dstNodePortId);
+            boolean isPassValidate = linkValidate.validateLink(workflowContext, srcNodeId, dstNodeId, srcNodePortId, dstNodePortId);
             workflowContext.clearAll();
-            return passed;
+            return isPassValidate;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
             throw exception;
@@ -443,9 +443,9 @@ public class EditorService {
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(richExperiment, operId);
             Node node = workflowContext.fetchNode(nodeId);
             NodeParameter nodeParameter = workflowEditUtil.findWorkflowNodeParameter(node, paramCode);
-            boolean passed = ParameterHelper.validateUpdateNodeParameter(workflowContext, node, nodeParameter, paramValue);
+            boolean isPassValidate = ParameterHelper.validateUpdateNodeParameter(workflowContext, node, nodeParameter, paramValue);
             workflowContext.clearAll();
-            return passed;
+            return isPassValidate;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
             throw exception;

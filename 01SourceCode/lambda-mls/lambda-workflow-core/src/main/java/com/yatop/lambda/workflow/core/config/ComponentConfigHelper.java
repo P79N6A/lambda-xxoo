@@ -23,20 +23,40 @@ public class ComponentConfigHelper {
         return COMPONENT_CONFIG.getAlgorithm(algorithmId);
     }
 
+    public static CmptAlgorithm getAlgorithmByCode(String algorithmCode) {
+        return COMPONENT_CONFIG.getAlgorithmByCode(algorithmCode);
+    }
+
     public static com.yatop.lambda.workflow.core.richmodel.component.Component getComponent(String cmptId) {
         return COMPONENT_CONFIG.getComponent(cmptId);
+    }
+
+    public static com.yatop.lambda.workflow.core.richmodel.component.Component getComponentByCode(String cmptCode) {
+        return COMPONENT_CONFIG.getComponentByCode(cmptCode);
     }
 
     public static CmptSpec getSpecification(String specId) {
         return COMPONENT_CONFIG.getSpecification(specId);
     }
 
+    public static CmptSpec getSpecificationByCode(String specCode) {
+        return COMPONENT_CONFIG.getSpecificationByCode(specCode);
+    }
+
     public static CmptChar getCharacteristic(String charId) {
         return COMPONENT_CONFIG.getCharacteristic(charId);
     }
 
+    public static CmptChar getCharacteristicByCode(String charCode) {
+        return COMPONENT_CONFIG.getCharacteristicByCode(charCode);
+    }
+
     public static CmptCharType getCharacteristicType(Integer typeId) {
         return COMPONENT_CONFIG.getCharacteristicType(typeId);
+    }
+
+    public static CmptCharType getCharacteristicTypeByCode(String typeCode) {
+        return COMPONENT_CONFIG.getCharacteristicTypeByCode(typeCode);
     }
 
     public static CmptCharType getPortCharacteristicType(Integer typeId) {

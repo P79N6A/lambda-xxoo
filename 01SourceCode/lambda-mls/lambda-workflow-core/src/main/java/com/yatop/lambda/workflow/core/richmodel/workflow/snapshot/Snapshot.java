@@ -17,7 +17,7 @@ import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
 import com.yatop.lambda.workflow.core.richmodel.project.Project;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.*;
-import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.List;
@@ -167,7 +167,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
                     for(NodeParameter parameter : node.getParameters()) {
                         JSONObject jsonParameter = parameter.toJSON();
                         if(parameter.getCharValue().isJsonDataType() || parameter.getCharValue().isScriptDataType())
-                            jsonParameter.put(SNAPSHOT_CONTENT_KEY_NODE_PARAMETER_CHAR_VALUE_ATTRIBUTE, parameter.getCharValue().getTextValue());
+                            jsonParameter.put(SNAPSHOT_CONTENT_KEY_NODE_PARAMETER_CHAR_VALUE_ATTRIBUTE, parameter.getCharValue().getParamValue());
 
                         jsonParameters.add(jsonParameter);
                     }
@@ -177,7 +177,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
                     for(NodeParameter parameter : node.getOptimizeParameters()) {
                         JSONObject jsonParameter = parameter.toJSON();
                         if(parameter.getCharValue().isJsonDataType() || parameter.getCharValue().isScriptDataType())
-                            jsonParameter.put(SNAPSHOT_CONTENT_KEY_NODE_PARAMETER_CHAR_VALUE_ATTRIBUTE, parameter.getCharValue().getTextValue());
+                            jsonParameter.put(SNAPSHOT_CONTENT_KEY_NODE_PARAMETER_CHAR_VALUE_ATTRIBUTE, parameter.getCharValue().getParamValue());
 
                         jsonOptimizeParameters.add(jsonParameter);
                     }
@@ -262,7 +262,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
                             WfFlowNodeParameter wfFlowNodeParameter = jsonParameters.getJSONObject(i).toJavaObject(WfFlowNodeParameter.class);
                             CharValue charValue = new CharValue(ComponentConfigHelper.getCharacteristic(wfFlowNodeParameter.getCharId()));
                             if(charValue.isJsonDataType() || charValue.isScriptDataType()) {
-                                charValue.setOutText(wfFlowNodeParameter.getCharValue());
+                                charValue.setOutParamText(wfFlowNodeParameter.getCharValue());
                                 wfFlowNodeParameter.setCharValue(null);
                             } else {
                                 charValue.setCharValue(wfFlowNodeParameter.getCharValue());
@@ -276,7 +276,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
                             WfFlowNodeParameter wfFlowNodeParameter = jsonOptimizeParameters.getJSONObject(i).toJavaObject(WfFlowNodeParameter.class);
                             CharValue charValue = new CharValue(ComponentConfigHelper.getCharacteristic(wfFlowNodeParameter.getCharId()));
                             if(charValue.isJsonDataType() || charValue.isScriptDataType()) {
-                                charValue.setOutText(wfFlowNodeParameter.getCharValue());
+                                charValue.setOutParamText(wfFlowNodeParameter.getCharValue());
                                 wfFlowNodeParameter.setCharValue(null);
                             } else {
                                 charValue.setCharValue(wfFlowNodeParameter.getCharValue());

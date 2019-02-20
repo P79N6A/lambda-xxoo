@@ -18,8 +18,8 @@ public class ModuleConfigHelper {
         MODULE_CONFIG = moduleConfig;
     }
 
-    public static List<ModuleCatalog> getFirstLevelCatalogs() {
-        return MODULE_CONFIG.getFirstLevelCatalogs();
+    public static ModuleCatalog getRootCatalog() {
+        return MODULE_CONFIG.getRootCatalog();
     }
 
     public static ModuleCatalog getCatalog(Long catalogId) {
@@ -28,6 +28,10 @@ public class ModuleConfigHelper {
 
     public static Module getModule(Long moduleId) {
         return MODULE_CONFIG.getModule(moduleId);
+    }
+
+    public static Module getModuleByCode(String moduleCode) {
+        return MODULE_CONFIG.getModuleByCode(moduleCode);
     }
 
     public static ModulePort getModulePort(Long portId) {

@@ -5,11 +5,11 @@ import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.mgr.workflow.value.CharValueHelper;
+import com.yatop.lambda.workflow.core.mgr.workflow.charvalue.ParamCharValueHelper;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
-import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeParameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +25,12 @@ public class ParameterCreate {
         return createParameter(workflowContext, node, cmptChar, null);
     }
 
-    protected NodeParameter createParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, String charValueText) {
+    protected NodeParameter createParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, String paramValue) {
 
         if(cmptChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
             CharValue charValue = new CharValue(cmptChar);
-            charValue.setInText(charValueText);
-            CharValueHelper.createCharValue(workflowContext, node, charValue);
+            charValue.setParamValue(paramValue);
+            ParamCharValueHelper.createParamCharValue(workflowContext, node, charValue);
 
             WfFlowNodeParameter parameter = new WfFlowNodeParameter();
             parameter.setNodeId(node.data().getNodeId());
@@ -45,7 +45,7 @@ public class ParameterCreate {
             return richParameter;
         } else {
             CharValue charValue = new CharValue(cmptChar);
-            CharValueHelper.queryCharValue(workflowContext, node, charValue);
+            ParamCharValueHelper.queryParamCharValue(workflowContext, node, charValue);
             return ParameterHelper.simulateParameter(workflowContext, node, charValue);
         }
     }
@@ -79,7 +79,7 @@ public class ParameterCreate {
         CmptSpec paramSpec = component.getParameter();
         if(paramSpec.cmptCharCount() > 0) {
             for (CmptChar cmptChar : paramSpec.getCmptChars()) {
-                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getParameter(cmptChar.data().getCharId()).getCharValue().getOutText());
+                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getParameter(cmptChar.data().getCharId()).getCharValue().getParamValue());
                 node.putParameter(parameter);
             }
         }
@@ -88,7 +88,7 @@ public class ParameterCreate {
         CmptSpec optimizeSpec = component.getOptimizeExecution();
         if(optimizeSpec.cmptCharCount() > 0) {
             for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
-                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getOptimizeParameter(cmptChar.data().getCharId()).getCharValue().getOutText());
+                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getOptimizeParameter(cmptChar.data().getCharId()).getCharValue().getParamValue());
                 node.putOptimizeParameter(parameter);
             }
         }

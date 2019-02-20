@@ -5,15 +5,12 @@ import com.yatop.lambda.workflow.core.config.ModuleConfig;
 import com.yatop.lambda.workflow.core.context.ExecutionTaskContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
-import com.yatop.lambda.workflow.core.richmodel.workflow.value.CharValue;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -46,7 +43,7 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
     //
 
     @Override
-    public TreeMap<CmptChar, String> checkParameters(WorkflowContext workflowContext, Node node) {
+    public TreeMap<CmptChar, String> validateParameters(WorkflowContext workflowContext, Node node) {
         return null;
     }
 

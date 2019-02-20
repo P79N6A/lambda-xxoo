@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : 127.0.0.1
 Source Server Version : 50724
 Source Host           : 127.0.0.1:3306
-Source Database       : test_mls
+Source Database       : lambda_mls
 
 Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-02-20 13:34:25
+Date: 2019-02-21 02:48:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1682,7 +1682,7 @@ CREATE TABLE `wf_module_catalog` (
 -- ----------------------------
 -- Records of wf_module_catalog
 -- ----------------------------
-INSERT INTO `wf_module_catalog` VALUES ('0', 'RootCategory', '根目录', '-1', '0', '0', 'menu', '节点目录根目录', '0', '2017-06-06 16:09:16', 'admin', '2017-06-06 16:09:16', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('0', 'RootCategory', '根目录', '-1', '0', '0', 'menu', '根目录', '0', '2017-06-06 16:09:16', 'admin', '2017-06-06 16:09:16', 'admin');
 INSERT INTO `wf_module_catalog` VALUES ('1', 'SourceDestination', '源 / 目标', '0', '0', '0', 'source_destination', '数据表的输入源和输出目标', '0', '2017-05-27 15:08:17', 'admin', '2017-05-27 15:08:17', 'admin');
 INSERT INTO `wf_module_catalog` VALUES ('2', 'UserCode', '脚本工具', '0', '1', '0', 'user_code', 'SQL、Python、R等多种脚本支持', '0', '2017-05-27 15:18:10', 'admin', '2017-05-27 15:18:03', 'admin');
 INSERT INTO `wf_module_catalog` VALUES ('3', 'DataPreprocessing', '数据预处理', '0', '2', '0', 'process', '数据预处理', '-1', '2017-05-27 15:25:40', 'admin', '2017-05-27 15:25:40', 'admin');
