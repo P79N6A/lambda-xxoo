@@ -134,7 +134,7 @@ public class ComponentConfig implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        loadComponentConfiguration();
+        //loadComponentConfiguration();
     }
 
     private void loadComponentConfiguration() {
@@ -152,7 +152,7 @@ public class ComponentConfig implements InitializingBean {
         loadComponentConfig();
 
         //校验相关
-        //checkConfiguration();
+        checkConfiguration();
     }
 
     private void loadCmptCharTypeConfig() {

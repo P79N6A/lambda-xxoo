@@ -3,70 +3,26 @@ package com.yatop.lambda.manager.api.response;
 import com.yatop.lambda.core.exception.LambdaException;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 
-@SuppressWarnings("unused")
-public class JsonResponse implements Serializable{
+public class JsonResponse extends LinkedHashMap<String, Object> implements Serializable {
 
-    private Boolean success;
-
-    private Object data;
-
-	private String errorCode;
-
-    private String errorMessage;
-
-    private String errorHint;
+    private static final String JSON_KEY_SUCCESS = "success";
+    private static final String JSON_KEY_DATA = "data";
+    private static final String JSON_KEY_ERROR_CODE = "errorCode";
+    private static final String JSON_KEY_ERROR_MESSAGE = "errorMessage";
+    private static final String JSON_KEY_ERROR_HINT = "errorHint";
 
     private JsonResponse(Object data) {
-        this.success = true;
-        this.data = data;
+        this.put(JSON_KEY_SUCCESS, true);
+        this.put(JSON_KEY_DATA, data);
     }
 
     private JsonResponse(LambdaException e) {
-        this.success = false;
-        this.errorCode = e.getCode();
-        this.errorMessage = e.getMessage();
-        this.errorHint = e.getHint();
-    }
-
-    public Boolean getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    public String getErrorHint() {
-        return errorHint;
-    }
-
-    public void setErrorHint(String errorHint) {
-        this.errorHint = errorHint;
+        this.put(JSON_KEY_SUCCESS, false);
+        this.put(JSON_KEY_ERROR_CODE, e.getCode());
+        this.put(JSON_KEY_ERROR_MESSAGE, e.getMessage());
+        this.put(JSON_KEY_ERROR_HINT, e.getHint());
     }
 
     public static JsonResponse build(Object data) {
