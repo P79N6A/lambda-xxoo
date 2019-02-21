@@ -26,7 +26,7 @@ public class LinkCreate {
     public NodeLink createLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodeOutputPort srcNodePort, NodeInputPort dstNodePort) {
 
         if(!linkValidate.validateLink(workflowContext, srcNode, dstNode, srcNodePort, dstNodePort)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- validation failed for establishing link.", "输出端口和输入端口间链接建立验证失败", srcNodePort.data(), dstNodePort.data());
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- validation failed for establishing link.", "链接建立验证失败", srcNodePort.data(), dstNodePort.data());
         }
 
         WfFlowNodeLink nodeLink = new WfFlowNodeLink();

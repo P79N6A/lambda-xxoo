@@ -15,21 +15,14 @@ public class LinkValidate {
 
     public boolean validateLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodeOutputPort srcNodePort, NodeInputPort dstNodePort) {
 
+        if(srcNode.data().getNodeId().equals(dstNode.data().getNodeId()))
+            return false;
+
         if(DataUtil.isNull(srcNode.getOutputNodePort(srcNodePort.data().getNodePortId())))
             return false;
 
         if(DataUtil.isNull(dstNode.getInputNodePort(dstNodePort.data().getNodePortId())))
             return false;
-
-        /*if(srcNode.isWebNode()) {
-            NodeLink link = workflowContext.fetchWebInLink(dstNodePort.data().getNodePortId());
-            if (DataUtil.isNotNull(link))
-                return false;
-        } else {
-            NodeLink link = workflowContext.fetchNonWebInLink(dstNodePort.data().getNodePortId());
-            if (DataUtil.isNotNull(link))
-                return false;
-        }*/
 
         NodeLink link = workflowContext.fetchInLink(dstNodePort.data().getNodePortId());
         if (DataUtil.isNotNull(link))
