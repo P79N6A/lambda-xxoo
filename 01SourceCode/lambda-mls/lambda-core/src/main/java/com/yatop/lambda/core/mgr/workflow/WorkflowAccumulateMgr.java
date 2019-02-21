@@ -31,6 +31,10 @@ public class WorkflowAccumulateMgr extends BaseMgr {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert workflow accumulate failed -- invalid insert data.", "无效插入数据");
         }
 
+        if(existsFlowAccumulate(flowAccumulate.getFlowId(), flowAccumulate.getModuleId())) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert workflow accumulate failed -- flow module conflict.", "工作流累计组件冲突");
+        }
+
         WfFlowAccumulate insertFlowAccumulate = new WfFlowAccumulate();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
@@ -114,12 +118,23 @@ public class WorkflowAccumulateMgr extends BaseMgr {
      *
      * */
     public List<WfFlowAccumulate> queryFlowAccumulate(Long workflowId) {
-        return queryFlowAccumulateExt(workflowId, null);
+        if(DataUtil.isNull(workflowId)){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow accumulate failed -- invalid query condition.", "无效查询条件");
+        }
+
+        try {
+            WfFlowAccumulateExample example = new WfFlowAccumulateExample();
+            example.createCriteria().andFlowIdEqualTo(workflowId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.setOrderByClause("CREATE_TIME ASC");
+            return wfFlowAccumulateMapper.selectByExample(example);
+        } catch (Throwable e) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow accumulate failed.", "查询工作流累计信息失败", e);
+        }
     }
 
     /*
      *
-     *   查询工作流累计信息（按工作流ID + [工作流组件ID]）
+     *   查询工作流累计信息（按工作流ID + 工作流组件ID）
      *   返回结果
      *
      * */
@@ -128,29 +143,12 @@ public class WorkflowAccumulateMgr extends BaseMgr {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow accumulate failed -- invalid query condition.", "无效查询条件");
         }
 
-        List<WfFlowAccumulate> resultList = queryFlowAccumulateExt(workflowId, moduleId);
-        return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
-    }
-
-    /*
-     *
-     *   查询工作流累计信息（按工作流ID + [工作流组件ID]）
-     *   返回结果
-     *
-     * */
-    public List<WfFlowAccumulate> queryFlowAccumulateExt(Long workflowId, Long moduleId) {
-        if(DataUtil.isNull(workflowId)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow accumulate failed -- invalid query condition.", "无效查询条件");
-        }
-
         try {
             WfFlowAccumulateExample example = new WfFlowAccumulateExample();
-            WfFlowAccumulateExample.Criteria cond = example.createCriteria().andFlowIdEqualTo(workflowId);
-            if(DataUtil.isNotNull(moduleId))
-                cond.andModuleIdEqualTo(moduleId);
-            cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andFlowIdEqualTo(workflowId).andModuleIdEqualTo(moduleId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
-            return wfFlowAccumulateMapper.selectByExample(example);
+            List<WfFlowAccumulate> resultList = wfFlowAccumulateMapper.selectByExample(example);
+            return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow accumulate failed.", "查询工作流累计信息失败", e);
         }
@@ -162,7 +160,7 @@ public class WorkflowAccumulateMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-/*    public boolean existsFlowAccumulate(Long workflowId, Long moduleId) {
+    public boolean existsFlowAccumulate(Long workflowId, Long moduleId) {
         if(DataUtil.isNull(workflowId) || DataUtil.isNull(moduleId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check workflow accumulate exists failed -- invalid check condition.", "无效检查条件");
         }
@@ -174,5 +172,5 @@ public class WorkflowAccumulateMgr extends BaseMgr {
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check workflow accumulate exists failed.", "检查工作流累计信息是否已存在失败", e);
         }
-    }*/
+    }
 }

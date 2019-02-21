@@ -166,7 +166,7 @@ public class WorkflowMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(workflow) || (workflow.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow info failed -- invalid status or not found.", "工作流信息不存在");
 
         return workflow;
     }

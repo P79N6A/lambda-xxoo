@@ -153,7 +153,7 @@ public class DataWarehouseMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(warehouse) || (warehouse.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed -- invalid status or not found.", "数据库信息不存在");
 
         return warehouse;
     }
@@ -181,66 +181,36 @@ public class DataWarehouseMgr extends BaseMgr {
 
     /*
      *
-     *   查询数据仓库信息（所有）
+     *   查询数据仓库信息（按[仓库类型] + [关键字]）
      *   返回结果集
      *
      * */
-    public List<DwDataWarehouse> queryDataWarehouse(PagerUtil pager) {
+    public List<DwDataWarehouse> queryDataWarehouse(DataWarehouseTypeEnum type, String keyword, PagerUtil pager) {
+
         try {
             PagerUtil.startPage(pager);
             DwDataWarehouseExample example = new DwDataWarehouseExample();
-            example.createCriteria().andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+
+            if(DataUtil.isEmpty(keyword)) {
+                DwDataWarehouseExample.Criteria cond = example.createCriteria();
+                if(DataUtil.isNotNull(type))
+                    cond.andDwTypeEqualTo(type.getType());
+                cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+
+            } else {
+                DwDataWarehouseExample.Criteria condA = example.createCriteria();
+                DwDataWarehouseExample.Criteria condB = example.createCriteria();
+                if(DataUtil.isNotNull(type)) {
+                    condA.andDwTypeEqualTo(type.getType());
+                    condB.andDwTypeEqualTo(type.getType());
+                }
+                condA.andDwCodeLike(DataUtil.likeKeyword(keyword)).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+                condA.andDwNameLike(DataUtil.likeKeyword(keyword)).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+                example.or(condB);
+            }
+            
             example.setOrderByClause("CREATE_TIME ASC");
             return dwDataWarehouseMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed.", "查询数据库信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   查询数据仓库信息（按关键字）
-     *   返回结果集
-     *
-     * */
-    public List<DwDataWarehouse> queryDataWarehouse(String keyword, PagerUtil pager) {
-        if(DataUtil.isEmpty(keyword)){
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed -- invalid query condition.", "无效查询条件");
-        }
-
-        try {
-            PagerUtil.startPage(pager);
-            String keywordLike = "%" + keyword + "%";
-            DwDataWarehouseExample example = new DwDataWarehouseExample();
-            example.createCriteria().andDwCodeLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.or().andDwNameLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            return dwDataWarehouseMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed.", "查询数据库信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   查询数据仓库信息（按类型）
-     *   返回结果集
-     *
-     * */
-    public List<DwDataWarehouse> queryDataWarehouse(DataWarehouseTypeEnum type, PagerUtil pager) {
-        if(DataUtil.isNull(type)){
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed -- invalid query condition.", "无效查询条件");
-        }
-
-        try {
-            PagerUtil.startPage(pager);
-            DwDataWarehouseExample example = new DwDataWarehouseExample();
-            example.createCriteria().andDwTypeEqualTo(type.getType()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            List<DwDataWarehouse> resultList = dwDataWarehouseMapper.selectByExample(example);
-            return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed.", "查询数据库信息失败", e);

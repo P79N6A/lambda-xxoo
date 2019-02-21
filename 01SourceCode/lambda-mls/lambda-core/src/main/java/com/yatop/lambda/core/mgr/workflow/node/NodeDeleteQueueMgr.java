@@ -31,7 +31,7 @@ public class NodeDeleteQueueMgr extends BaseMgr {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node delete failed -- invalid insert data.", "无效插入数据");
         }
 
-        if(checkNodeDelete(nodeDelete.getFlowId(), nodeDelete.getNodeId())) {
+        if(existsNodeDelete(nodeDelete.getFlowId(), nodeDelete.getNodeId())) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node delete failed -- system error<node already in delete queue>.", "系统错误<节点已在删除队列中>");
         }
 
@@ -136,7 +136,7 @@ public class NodeDeleteQueueMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public boolean checkNodeDelete(Long flowId, Long nodeId) {
+    public boolean existsNodeDelete(Long flowId, Long nodeId) {
         if(DataUtil.isNull(flowId) || DataUtil.isNull(nodeId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Check node delete exists failed -- invalid check condition.", "无效检查条件");
         }

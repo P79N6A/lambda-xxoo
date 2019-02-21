@@ -145,12 +145,23 @@ public class NodeParameterMgr extends BaseMgr {
      *
      * */
     public List<WfFlowNodeParameter> queryNodeParameter(Long nodeId) {
-        return queryNodeParameterExt(nodeId, null);
+        if(DataUtil.isNull(nodeId)){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node parameter failed -- invalid query condition.", "无效查询条件");
+        }
+
+        try {
+            WfFlowNodeParameterExample example = new WfFlowNodeParameterExample();
+            example.createCriteria().andNodeIdEqualTo(nodeId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.setOrderByClause("CREATE_TIME ASC");
+            return wfFlowNodeParameterMapper.selectByExample(example);
+        } catch (Throwable e) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node parameter failed.", "查询节点参数失败", e);
+        }
     }
 
     /*
      *
-     *   查询节点参数（按节点ID + [特征ID]）
+     *   查询节点参数（按节点ID + 特征ID）
      *   返回结果
      *
      * */
@@ -159,29 +170,12 @@ public class NodeParameterMgr extends BaseMgr {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node parameter failed -- invalid query condition.", "无效查询条件");
         }
 
-        List<WfFlowNodeParameter> resultList = queryNodeParameterExt(nodeId, charId);
-        return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
-    }
-
-    /*
-     *
-     *   查询节点参数（按节点ID + [特征ID]）
-     *   返回结果
-     *
-     * */
-    public List<WfFlowNodeParameter> queryNodeParameterExt(Long nodeId, String charId) {
-        if(DataUtil.isNull(nodeId)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node parameter failed -- invalid query condition.", "无效查询条件");
-        }
-
         try {
             WfFlowNodeParameterExample example = new WfFlowNodeParameterExample();
-            WfFlowNodeParameterExample.Criteria cond = example.createCriteria().andNodeIdEqualTo(nodeId);
-            if(DataUtil.isNotEmpty(charId))
-                cond.andCharIdEqualTo(charId);
-            cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andNodeIdEqualTo(nodeId).andCharIdEqualTo(charId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
-            return wfFlowNodeParameterMapper.selectByExample(example);
+            List<WfFlowNodeParameter> resultList = wfFlowNodeParameterMapper.selectByExample(example);
+            return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node parameter failed.", "查询节点参数失败", e);
         }

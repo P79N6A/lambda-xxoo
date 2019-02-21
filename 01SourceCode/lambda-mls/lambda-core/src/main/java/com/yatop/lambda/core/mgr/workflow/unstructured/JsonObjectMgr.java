@@ -21,7 +21,7 @@ public class JsonObjectMgr extends BaseMgr {
 
     /*
      *
-     *   插入新Json对象（名称、对象类型、来源、所属项目ID、关联实验ID、关联工作流ID、关联运行作业ID、关联节点ID、关联特征ID、存储位置、对象状态 ...）
+     *   插入新Json对象（名称、对象类型、来源、所属项目ID、关联实验ID、关联工作流ID、关联节点ID、关联特征ID、存储位置、对象状态 ...）
      *   返回插入记录
      *
      * */
@@ -176,7 +176,7 @@ public class JsonObjectMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(jsonObject) || (jsonObject.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query json object failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query json object failed -- invalid status or not found.", "Json对象不存在");
 
         return jsonObject;
     }

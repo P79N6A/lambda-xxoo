@@ -110,7 +110,7 @@ public class ProjectMemberMgr extends BaseMgr {
         }
 
         List<PrProjectMember> resultList;
-        resultList = queryProjectMember(projectId, new ArrayList<String>(Arrays.asList(srcOwner, dstOwner)), null);
+        resultList = queryProjectMember(projectId, null, new ArrayList<String>(Arrays.asList(srcOwner, dstOwner)), null);
 
         if(DataUtil.isEmpty(resultList) || resultList.size() < 2)
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Change project member failed -- project member missing", "转出或转入成员记录缺失");
@@ -151,42 +151,11 @@ public class ProjectMemberMgr extends BaseMgr {
 
     /*
      *
-     *   查询项目成员记录（所有）
+     *   查询项目成员记录（按[项目角色] + [用户列表]）
      *   返回结果集
      *
      * */
-    public List<PrProjectMember> queryProjectMember(PagerUtil pager) {
-        try {
-            PagerUtil.startPage(pager);
-            PrProjectMemberExample example = new PrProjectMemberExample();
-            example.createCriteria().andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            return prProjectMemberMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project member failed.", "查询项目成员记录失败", e);
-        }
-    }
-
-    /*
-     *
-     *   查询项目成员记录（按项目ID）
-     *   返回结果集
-     *
-     * */
-    public List<PrProjectMember> queryProjectMember(Long projectId, PagerUtil pager) {
-        return queryProjectMember(projectId, new ArrayList<String>(), pager);
-    }
-
-    /*
-     *
-     *   查询项目成员记录（按项目ID, 成员用户）
-     *   1.项目所有成员（用户列表null）
-     *   2.项目下对应成员
-     *   返回结果集
-     *
-     * */
-    public List<PrProjectMember> queryProjectMember(Long projectId, List<String> memberUsers, PagerUtil pager) {
+    public List<PrProjectMember> queryProjectMember(Long projectId, ProjectRoleEnum projectRole, List<String> memberUsers, PagerUtil pager) {
         if(DataUtil.isNull(projectId)){
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project member failed -- invalid query condition.", "无效查询条件");
         }
@@ -195,6 +164,8 @@ public class ProjectMemberMgr extends BaseMgr {
             PagerUtil.startPage(pager);
             PrProjectMemberExample example = new  PrProjectMemberExample();
             PrProjectMemberExample.Criteria cond = example.createCriteria().andProjectIdEqualTo(projectId);
+            if(DataUtil.isNotNull(projectRole))
+                cond.andProjectRoleEqualTo(projectRole.getRole());
             if(DataUtil.isNotEmpty(memberUsers))
                 cond.andMemberUserIn(memberUsers);
             cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());

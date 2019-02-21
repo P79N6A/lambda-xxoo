@@ -175,7 +175,7 @@ public class NodeMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(node) || (node.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node info failed -- invalid status or not found.", "节点信息不存在");
 
         return node;
     }

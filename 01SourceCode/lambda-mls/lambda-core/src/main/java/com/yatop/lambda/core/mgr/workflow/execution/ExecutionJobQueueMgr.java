@@ -128,7 +128,7 @@ public class ExecutionJobQueueMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(jobQueue))
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job queue failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job queue failed -- invalid status or not found.", "队列中不存在作业信息");
 
         return jobQueue;
     }

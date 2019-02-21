@@ -133,4 +133,8 @@ public class DataUtil {
     public static String format(String message, LambdaRootModel m1, LambdaRootModel m2) {
         return String.format("%s\n%s\n%s",message, DataUtil.prettyFormat(m1), DataUtil.prettyFormat(m2));
     }
+
+    public static String likeKeyword(String keyword) {
+        return String.format("%%%s%%", keyword);
+    }
 }

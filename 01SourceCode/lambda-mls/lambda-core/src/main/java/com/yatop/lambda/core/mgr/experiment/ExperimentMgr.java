@@ -128,7 +128,7 @@ public class ExperimentMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(experiment) || (experiment.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed -- invalid status or not found.", "实验信息不存在");
 
         return experiment;
     }
@@ -169,33 +169,13 @@ public class ExperimentMgr extends BaseMgr {
 
         try {
             PagerUtil.startPage(pager);
-            String keywordLike = "%" + keyword + "%";
             EmExperimentExample example = new EmExperimentExample();
-            example.createCriteria().andOwnerProjectIdEqualTo(projectId).andExperimentNameLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andOwnerProjectIdEqualTo(projectId).andExperimentNameLike(DataUtil.likeKeyword(keyword)).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return emExperimentMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed.", "查询实验信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   检查实验是否已存在
-     *   返回是否已存在
-     *
-     * */
-    public boolean existsProjectMember(Long ExperimentId)  {
-        if(DataUtil.isNull(ExperimentId))
-            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Check experiment exists failed -- invalid check condition.", "无效检查条件");
-
-        try {
-            EmExperimentExample example = new EmExperimentExample();
-            example.createCriteria().andExperimentIdEqualTo(ExperimentId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            return emExperimentMapper.countByExample(example) > 0 ? true : false;
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Check experiment exists failed.", "检查已存在实验失败", e);
         }
     }
 }

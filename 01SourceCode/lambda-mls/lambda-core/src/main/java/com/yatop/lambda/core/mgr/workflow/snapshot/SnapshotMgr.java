@@ -109,7 +109,7 @@ public class SnapshotMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
-/*    public int deleteSnapshotByWorkflowId(Long workflowId, String operId) {
+    public int deleteSnapshotByWorkflowId(Long workflowId, String operId) {
         if(DataUtil.isNull(workflowId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete snapshot info -- invalid delete condition.", "无效删除条件");
         }
@@ -126,7 +126,6 @@ public class SnapshotMgr extends BaseMgr {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete snapshot info failed.", "删除快照信息失败", e);
         }
     }
-*/
 
     /*
      *
@@ -188,7 +187,7 @@ public class SnapshotMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(snapshot) || (snapshot.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query snapshot info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query snapshot info failed -- invalid status or not found.", "快照信息不存在");
 
         return snapshot;
     }

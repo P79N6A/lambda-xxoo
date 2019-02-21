@@ -69,9 +69,9 @@ public class ProjectService {
         return projectMgr.existsProject(projectCode, projectName, projectId);
     }
 
-    public List<PrProject> queryProjectExt(Integer pageNum, Integer pageSize, String keyword, String operUser) {
+    public List<PrProject> queryProject(Integer pageNum, Integer pageSize, String keyword, String operUser) {
         PagerUtil pager = new PagerUtil(pageNum, pageSize);
-        return projectMgr.queryProjectExt(keyword, operUser, pager);
+        return projectMgr.queryProject(keyword, operUser, pager);
     }
 
 }

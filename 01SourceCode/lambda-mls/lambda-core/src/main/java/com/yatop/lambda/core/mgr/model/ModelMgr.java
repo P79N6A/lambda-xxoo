@@ -148,18 +148,18 @@ public class ModelMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(model) || (model.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed -- invalid status or not found.", "模型信息不存在");
 
         return model;
     }
 
     /*
      *
-     *   查询模型信息
+     *   查询模型信息（按[类型] + [关键字]）
      *   返回结果集
      *
      * */
-    public List<MwModel> queryModel(Long warehouseId, PagerUtil pager) {
+    public List<MwModel> queryModel(Long warehouseId, ModelTypeEnum modelTypeEnum, String keyword, PagerUtil pager) {
         if(DataUtil.isNull(warehouseId)){
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed -- invalid query condition.", "无效查询条件");
         }
@@ -167,57 +167,15 @@ public class ModelMgr extends BaseMgr {
         try {
             PagerUtil.startPage(pager);
             MwModelExample example = new MwModelExample();
-            example.createCriteria().andOwnerMwIdEqualTo(warehouseId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            MwModelExample.Criteria cond = example.createCriteria();
+            cond.andOwnerMwIdEqualTo(warehouseId);
+            if(DataUtil.isNotNull(modelTypeEnum))
+                cond.andModelTypeEqualTo(modelTypeEnum.getType());
+            if(DataUtil.isNotEmpty(keyword))
+                cond.andModelNameLike(DataUtil.likeKeyword(keyword));
+            cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return mwModelMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed.", "查询模型信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   查询模型信息（按关键字）
-     *   返回结果集
-     *
-     * */
-    public List<MwModel> queryModel(Long warehouseId, String keyword, PagerUtil pager) {
-        if(DataUtil.isNull(warehouseId) || DataUtil.isEmpty(keyword)){
-            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed -- invalid query condition.", "无效查询条件");
-        }
-
-        try {
-            PagerUtil.startPage(pager);
-            String keywordLike = "%" + keyword + "%";
-            MwModelExample example = new MwModelExample();
-            example.createCriteria().andOwnerMwIdEqualTo(warehouseId).andModelNameLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            return mwModelMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed.", "查询模型信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   查询模型信息（按类型）
-     *   返回结果集
-     *
-     * */
-    public List<MwModel> queryModel(Long warehouseId, ModelTypeEnum modelTypeEnum, PagerUtil pager) {
-        if(DataUtil.isNull(warehouseId) || DataUtil.isNull(modelTypeEnum)){
-            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed -- invalid query condition.", "无效查询条件");
-        }
-
-        try {
-            PagerUtil.startPage(pager);
-            MwModelExample example = new MwModelExample();
-            example.createCriteria().andOwnerMwIdEqualTo(warehouseId).andModelTypeEqualTo(modelTypeEnum.getType()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            List<MwModel> resultList = mwModelMapper.selectByExample(example);
-            return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed.", "查询模型信息失败", e);

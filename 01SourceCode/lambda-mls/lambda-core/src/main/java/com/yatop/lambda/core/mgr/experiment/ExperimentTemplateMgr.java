@@ -130,7 +130,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
      *   返回结果
      *
      * */
-    public EmExperimentTemplate queryDataTemplate(Long id) {
+    public EmExperimentTemplate queryExperimentTemplate(Long id) {
         if(DataUtil.isNull(id)){
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment template info failed -- invalid query condition.", "无效查询条件");
         }
@@ -143,7 +143,7 @@ public class ExperimentTemplateMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(template) || (template.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment template info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment template info failed -- invalid status or not found.", "实验模版信息不存在");
 
         return template;
     }
@@ -154,16 +154,15 @@ public class ExperimentTemplateMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public List<EmExperimentTemplate> queryDataTemplate(String keyword, PagerUtil pager) {
+    public List<EmExperimentTemplate> queryExperimentTemplate(String keyword, PagerUtil pager) {
         if(DataUtil.isEmpty(keyword)){
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment template info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
             PagerUtil.startPage(pager);
-            String keywordLike = "%" + keyword + "%";
             EmExperimentTemplateExample example = new EmExperimentTemplateExample();
-            example.createCriteria().andTemplateNameLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andTemplateNameLike(DataUtil.likeKeyword(keyword)).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return emExperimentTemplateMapper.selectByExample(example);
         } catch (Throwable e) {

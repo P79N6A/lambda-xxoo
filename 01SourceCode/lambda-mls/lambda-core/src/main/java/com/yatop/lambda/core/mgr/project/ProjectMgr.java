@@ -148,54 +148,9 @@ public class ProjectMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(project) || (project.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project info failed -- invalid status or not found.", "项目信息不存在");
 
         return project;
-    }
-
-    /*
-     *
-     *   查询项目信息（所有）
-     *   返回结果集
-     *
-     * */
-    public List<PrProject> queryProject(PagerUtil pager) {
-        try {
-            PagerUtil.startPage(pager);
-            PrProjectExample example = new PrProjectExample();
-            example.createCriteria().andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            return prProjectMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project info failed.", "查询项目信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   查询项目信息（按用户）
-     *   返回结果集
-     *
-     * */
-    public List<PrProject> queryProjectByUser(String user, PagerUtil pager) {
-        if(DataUtil.isEmpty(user))
-            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project failed -- invalid query condition.", "无效查询条件");
-
-        return queryProjectExt(null, user, pager);
-    }
-
-    /*
-     *
-     *   查询项目信息（按关键字）
-     *   返回结果集
-     *
-     * */
-    public List<PrProject> queryProjectByKeyword(String keyword, PagerUtil pager) {
-        if(DataUtil.isEmpty(keyword))
-            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project failed -- invalid query condition.", "无效查询条件");
-
-        return queryProjectExt(keyword, null, pager);
     }
 
     /*
@@ -208,11 +163,11 @@ public class ProjectMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public List<PrProject> queryProjectExt(String keyword, String user, PagerUtil pager) {
+    public List<PrProject> queryProject(String keyword, String user, PagerUtil pager) {
 
         try {
             PagerUtil.startPage(pager);
-            String keywordLike = "%" + keyword + "%";
+            String keywordLike = DataUtil.likeKeyword(keyword);
 
             //查询所有
             if(DataUtil.isEmpty(keyword) && DataUtil.isEmpty(user)) {

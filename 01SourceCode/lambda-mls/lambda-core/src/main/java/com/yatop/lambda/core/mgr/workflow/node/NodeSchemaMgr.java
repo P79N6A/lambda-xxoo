@@ -20,7 +20,7 @@ public class NodeSchemaMgr extends BaseMgr {
 
     /*
      *
-     *   插入新节点Schema（节点端口Id、Schema名称、Schema状态 ...）
+     *   插入新节点端口Schema（节点端口Id、Schema名称、Schema状态 ...）
      *   返回插入记录
      *
      * */
@@ -46,13 +46,13 @@ public class NodeSchemaMgr extends BaseMgr {
             wfFlowNodeSchemaMapper.insertSelective(insertSchema);
             return insertSchema;
         } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node schema failed.", "插入节点Schema失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node schema failed.", "插入节点端口Schema失败", e);
         }
     }
 
     /*
      *
-     *   逻辑删除节点Schema
+     *   逻辑删除节点端口Schema
      *   返回删除数量
      *
      * */
@@ -72,13 +72,13 @@ public class NodeSchemaMgr extends BaseMgr {
             example.createCriteria().andOwnerNodeIdEqualTo(nodeId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             return wfFlowNodeSchemaMapper.updateByExampleSelective(deleteSchema, example);
         } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node schema failed.", "删除节点Schema失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node schema failed.", "删除节点端口Schema失败", e);
         }
     }
 
     /*
      *
-     *   恢复节点Schema
+     *   恢复节点端口Schema
      *   返回恢复数量
      *
      * */
@@ -96,14 +96,14 @@ public class NodeSchemaMgr extends BaseMgr {
             example.createCriteria().andOwnerNodeIdEqualTo(nodeId).andStatusEqualTo(DataStatusEnum.INVALID.getStatus());
             return wfFlowNodeSchemaMapper.updateByExampleSelective(recoverSchema, example);
         } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node schema failed.", "恢复节点Schema失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node schema failed.", "恢复节点端口Schema失败", e);
         }
     }
 
 
     /*
      *
-     *   更新节点Schema（schema状态）
+     *   更新节点端口Schema（schema状态）
      *   返回恢复数量
      *
      * */
@@ -134,13 +134,13 @@ public class NodeSchemaMgr extends BaseMgr {
             schema.setLastUpdateOper(updateSchema.getLastUpdateOper());
             return wfFlowNodeSchemaMapper.updateByPrimaryKeySelective(updateSchema);
         } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node schema failed.", "更新节点Schema失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node schema failed.", "更新节点端口Schema失败", e);
         }
     }
 
     /*
      *
-     *   查询节点Schema（按节点端口ID）
+     *   查询节点端口Schema（按节点端口ID）
      *   返回结果
      *
      * */
@@ -153,18 +153,18 @@ public class NodeSchemaMgr extends BaseMgr {
         try {
             schema = wfFlowNodeSchemaMapper.selectByPrimaryKey(nodePortId);
         } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed.", "查询节点Schema失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed.", "查询节点端口Schema失败", e);
         }
 
         if(DataUtil.isNull(schema) || (schema.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed -- invalid status or not found.", "节点端口Schema不存在");
 
         return schema;
     }
 
     /*
      *
-     *   查询节点Schema（按节点ID）
+     *   查询节点端口Schema（按节点ID）
      *   返回结果集
      *
      * */
@@ -179,7 +179,7 @@ public class NodeSchemaMgr extends BaseMgr {
             example.setOrderByClause("CREATE_TIME ASC");
             return wfFlowNodeSchemaMapper.selectByExampleWithBLOBs(example);
         } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed.", "查询节点Schema失败", e);
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query node schema failed.", "查询节点端口Schema失败", e);
         }
     }
 }

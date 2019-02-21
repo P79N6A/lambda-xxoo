@@ -25,7 +25,7 @@ public class ProjectController extends BaseController {
                                        @RequestParam("pageSize")Integer pageSize,
                                        @RequestParam("keyword")String keyword,
                                        @RequestParam("operUser")String operUser){
-        return JsonResponse.build(projectService.queryProjectExt(pageNum, pageSize, keyword, operUser));
+        return JsonResponse.build(projectService.queryProject(pageNum, pageSize, keyword, operUser));
     }
 
     // 新建项目

@@ -163,7 +163,7 @@ public class DataTableMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(table) || (table.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed -- invalid status or not found.", "数据表信息不存在");
 
         return table;
     }
@@ -180,8 +180,7 @@ public class DataTableMgr extends BaseMgr {
 
         try {
             DwDataTableExample example = new DwDataTableExample();
-            DwDataTableExample.Criteria criteria = example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableTypeEqualTo(DataTableTypeEnum.GENERAL.getType())
-                    .andTableNameEqualTo(tableName).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableNameEqualTo(tableName).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             List<DwDataTable> resultList = dwDataTableMapper.selectByExample(example);
             return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
         } catch (Throwable e) {
@@ -191,11 +190,11 @@ public class DataTableMgr extends BaseMgr {
 
     /*
      *
-     *   查询数据表信息
+     *   查询数据表信息（按[类型] + [关键字] + [表状态]）
      *   返回结果集
      *
      * */
-    public List<DwDataTable> queryDataTable(Long warehouseId, PagerUtil pager) {
+    public List<DwDataTable> queryDataTable(Long warehouseId, DataTableTypeEnum typeEnum, String keyword, DataTableStateEnum stateEnum, PagerUtil pager) {
         if(DataUtil.isNull(warehouseId)){
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed -- invalid query condition.", "无效查询条件");
         }
@@ -203,56 +202,17 @@ public class DataTableMgr extends BaseMgr {
         try {
             PagerUtil.startPage(pager);
             DwDataTableExample example = new DwDataTableExample();
-            example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableTypeEqualTo(DataTableTypeEnum.GENERAL.getType()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            return dwDataTableMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed.", "查询数据表信息失败", e);
-        }
-    }
+            DwDataTableExample.Criteria cond = example.createCriteria();
+            cond.andOwnerDwIdEqualTo(warehouseId);
 
-    /*
-     *
-     *   查询数据表信息（按关键字）
-     *   返回结果集
-     *
-     * */
-    public List<DwDataTable> queryDataTable(Long warehouseId, String keyword, PagerUtil pager) {
-        if(DataUtil.isNull(warehouseId) || DataUtil.isEmpty(keyword)){
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed -- invalid query condition.", "无效查询条件");
-        }
+            if(DataUtil.isNotNull(typeEnum))
+                cond.andTableTypeEqualTo(typeEnum.getType());
+            if(DataUtil.isNotEmpty(keyword))
+                cond.andTableNameLike(DataUtil.likeKeyword(keyword));
+            if(DataUtil.isNotNull(stateEnum))
+                cond.andTableStateEqualTo(stateEnum.getState());
 
-        try {
-            PagerUtil.startPage(pager);
-            String keywordLike = "%" + keyword + "%";
-            DwDataTableExample example = new DwDataTableExample();
-            example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableTypeEqualTo(DataTableTypeEnum.GENERAL.getType())
-                    .andTableNameLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            return dwDataTableMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed.", "查询数据表信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   查询数据表信息（按类型）
-     *   返回结果集
-     *
-     * */
-    public List<DwDataTable> queryDataTable(Long warehouseId, DataTableTypeEnum typeEnum, DataTableStateEnum stateEnum, PagerUtil pager) {
-        if(DataUtil.isNull(warehouseId) || DataUtil.isNull(typeEnum) || DataUtil.isNull(stateEnum)){
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed -- invalid query condition.", "无效查询条件");
-        }
-
-        try {
-            PagerUtil.startPage(pager);
-            DwDataTableExample example = new DwDataTableExample();
-            example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableTypeEqualTo(typeEnum.getType()).andTableStateEqualTo(stateEnum.getState())
-                    .andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             List<DwDataTable> resultList = dwDataTableMapper.selectByExample(example);
             return resultList;

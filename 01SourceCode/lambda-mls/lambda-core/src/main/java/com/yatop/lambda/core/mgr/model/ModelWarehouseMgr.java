@@ -153,7 +153,7 @@ public class ModelWarehouseMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(warehouse) || (warehouse.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed -- invalid status or not found.", "模型库信息不存在");
 
         return warehouse;
     }
@@ -181,66 +181,36 @@ public class ModelWarehouseMgr extends BaseMgr {
 
     /*
      *
-     *   查询模型仓库信息（所有）
+     *   查询模型仓库信息（按[仓库类型] + [关键字]）
      *   返回结果集
      *
      * */
-    public List<MwModelWarehouse> queryModelWarehouse(PagerUtil pager) {
+    public List<MwModelWarehouse> queryModelWarehouse(ModelWarehouseTypeEnum type, String keyword, PagerUtil pager) {
+
         try {
             PagerUtil.startPage(pager);
             MwModelWarehouseExample example = new MwModelWarehouseExample();
-            example.createCriteria().andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+
+            if(DataUtil.isEmpty(keyword)) {
+                MwModelWarehouseExample.Criteria cond = example.createCriteria();
+                if(DataUtil.isNotNull(type))
+                    cond.andMwTypeEqualTo(type.getType());
+                cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+
+            } else {
+                MwModelWarehouseExample.Criteria condA = example.createCriteria();
+                MwModelWarehouseExample.Criteria condB = example.createCriteria();
+                if(DataUtil.isNotNull(type)) {
+                    condA.andMwTypeEqualTo(type.getType());
+                    condB.andMwTypeEqualTo(type.getType());
+                }
+                condA.andMwCodeLike(DataUtil.likeKeyword(keyword)).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+                condB.andMwNameLike(DataUtil.likeKeyword(keyword)).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+                example.or(condB);
+            }
+
             example.setOrderByClause("CREATE_TIME ASC");
             return mwModelWarehouseMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed.", "查询模型库信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   查询模型仓库信息（按关键字）
-     *   返回结果集
-     *
-     * */
-    public List<MwModelWarehouse> queryModelWarehouse(String keyword, PagerUtil pager) {
-        if(DataUtil.isEmpty(keyword)){
-            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed -- invalid query condition.", "无效查询条件");
-        }
-
-        try {
-            PagerUtil.startPage(pager);
-            String keywordLike = "%" + keyword + "%";
-            MwModelWarehouseExample example = new MwModelWarehouseExample();
-            example.createCriteria().andMwCodeLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.or().andMwNameLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            return mwModelWarehouseMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed.", "查询模型库信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   查询模型仓库信息（按类型）
-     *   返回结果集
-     *
-     * */
-    public List<MwModelWarehouse> queryModelWarehouse(ModelWarehouseTypeEnum type, PagerUtil pager) {
-        if(DataUtil.isNull(type)){
-            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed -- invalid query condition.", "无效查询条件");
-        }
-
-        try {
-            PagerUtil.startPage(pager);
-            MwModelWarehouseExample example = new MwModelWarehouseExample();
-            example.createCriteria().andMwTypeEqualTo(type.getType()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            List<MwModelWarehouse> resultList = mwModelWarehouseMapper.selectByExample(example);
-            return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed.", "查询模型库信息失败", e);

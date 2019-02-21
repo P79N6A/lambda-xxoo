@@ -158,49 +158,34 @@ public class ExecutionJobMgr extends BaseMgr {
         }
 
         if(DataUtil.isNull(job) || (job.getStatus() == DataStatusEnum.INVALID.getStatus()))
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed -- invalid status or not found.", "已删除或未查找到");
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed -- invalid status or not found.", "作业信息不存在");
 
         return job;
     }
 
     /*
      *
-     *   查询作业信息（按项目ID + 工作流ID）
+     *   查询作业信息（按[工作流ID] + [作业类型]）
      *   返回结果集
      *
      * */
-    public List<WfExecutionJob> queryJob(Long projectId, Long flowId, PagerUtil pager) {
-        if(DataUtil.isNull(projectId) || DataUtil.isNull(flowId)){
+    public List<WfExecutionJob> queryJob(Long projectId, Long flowId, JobTypeEnum typeEnum, PagerUtil pager) {
+        if(DataUtil.isNull(projectId)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
             PagerUtil.startPage(pager);
             WfExecutionJobExample example = new WfExecutionJobExample();
-            example.createCriteria().andOwnerProjectIdEqualTo(projectId).andRelFlowIdEqualTo(flowId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            return wfExecutionJobMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed.", "查询作业信息失败", e);
-        }
-    }
+            WfExecutionJobExample.Criteria cond = example.createCriteria();
+            cond.andOwnerProjectIdEqualTo(projectId);
 
-    /*
-     *
-     *   查询作业信息（按项目ID + 作业类型）
-     *   返回结果集
-     *
-     * */
-    public List<WfExecutionJob> queryJob(Long projectId, JobTypeEnum typeEnum, PagerUtil pager) {
-        if(DataUtil.isNull(projectId) || DataUtil.isNull(typeEnum)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed -- invalid query condition.", "无效查询条件");
-        }
+            if(DataUtil.isNotNull(typeEnum))
+                cond.andJobTypeEqualTo(typeEnum.getType());
+            if(DataUtil.isNotNull(flowId))
+                cond.andRelFlowIdEqualTo(flowId);
 
-        try {
-            PagerUtil.startPage(pager);
-            WfExecutionJobExample example = new WfExecutionJobExample();
-            example.createCriteria().andOwnerProjectIdEqualTo(projectId).andJobTypeEqualTo(typeEnum.getType()).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return wfExecutionJobMapper.selectByExample(example);
         } catch (Throwable e) {

@@ -16,6 +16,6 @@ public class ExperimentTemplateHelper {
     }
 
     public static ExperimentTemplate queryExperimentTemplate(Long templateId) {
-        return new ExperimentTemplate(EXPERIMENT_TEMPLATE_MGR.queryDataTemplate(templateId));
+        return new ExperimentTemplate(EXPERIMENT_TEMPLATE_MGR.queryExperimentTemplate(templateId));
     }
 }
