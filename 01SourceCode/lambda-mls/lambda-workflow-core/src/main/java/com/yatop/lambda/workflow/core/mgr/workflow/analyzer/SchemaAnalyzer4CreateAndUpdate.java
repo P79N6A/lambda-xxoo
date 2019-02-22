@@ -19,11 +19,11 @@ public class SchemaAnalyzer4CreateAndUpdate {
             return;
 
         if(!currentNode.isHeadNode()) {
-            TreeMap<Long, NodeOutputPort> upstreamNonWebPorts = workflowContext.fetchUpstreamPorts(currentNode);
+            TreeMap<Long, NodeOutputPort> upstreamPorts = workflowContext.fetchUpstreamPorts(currentNode);
             for (NodeInputPort inputDataPort : currentNode.getInputDataTablePorts()) {
                 //仅对必须输入端口的上游端口状态做分析判断
                 if (inputDataPort.getCmptChar().isRequired()) {
-                    NodeOutputPort upstreamDataPort = CollectionUtil.get(upstreamNonWebPorts, inputDataPort.data().getNodePortId());
+                    NodeOutputPort upstreamDataPort = CollectionUtil.get(upstreamPorts, inputDataPort.data().getNodePortId());
                     if (DataUtil.isNotNull(upstreamDataPort)) {
                         if (!upstreamDataPort.isDataTablePort())
                             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Schema Analyzer error -- Illegal upstream node port.", "系统数据异常，请联系管理员", upstreamDataPort.data(), inputDataPort.data());

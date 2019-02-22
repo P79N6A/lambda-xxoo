@@ -51,7 +51,7 @@ public class SchemaAnalyzerHelper {
             }
         }
         {
-            //required inputDataTablePort -> nonWebUpstreamPort's schema state is normal
+            //required inputDataTablePort -> upstreamPort's schema state is normal
             if(!node.isHeadNode()) {
                 if(!node.haveOutputDataTablePort())
                     return false;

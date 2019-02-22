@@ -159,7 +159,7 @@ public class WorkflowContextHelper {
         }
     }
 
-    //检测是否存在有向循环图，排除web工作流节点
+    //检测是否存在有向循环图
     public static boolean existDirectedCyclicGraph(WorkflowContext workflowContext) {
 
         if(workflowContext.nodeCount() == 0)
