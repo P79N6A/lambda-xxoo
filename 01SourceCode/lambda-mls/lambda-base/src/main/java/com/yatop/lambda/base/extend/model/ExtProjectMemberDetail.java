@@ -44,4 +44,6 @@ public class ExtProjectMemberDetail extends PrProjectMember {
     public void setUserStatus(String userStatus) {
         this.userStatus = userStatus;
     }
+
+
 }

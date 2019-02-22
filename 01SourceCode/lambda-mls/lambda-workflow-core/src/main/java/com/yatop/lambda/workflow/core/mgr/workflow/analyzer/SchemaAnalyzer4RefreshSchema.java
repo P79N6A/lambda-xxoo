@@ -4,6 +4,7 @@ import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.module.AnalyzeNodeStateHelper;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
@@ -17,6 +18,8 @@ public class SchemaAnalyzer4RefreshSchema {
 
         if(DataUtil.isNull(currentNode) || !currentNode.needAnalyzeSchema())
             return;
+
+        AnalyzeNodeStateHelper.analyzeInputPortAndParameter(workflowContext, currentNode);
 
         if(!currentNode.isHeadNode()) {
             TreeMap<Long, NodeOutputPort> upstreamPorts = workflowContext.fetchUpstreamPorts(currentNode);

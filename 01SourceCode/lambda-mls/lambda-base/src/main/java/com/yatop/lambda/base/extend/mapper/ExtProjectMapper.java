@@ -53,5 +53,5 @@ public interface ExtProjectMapper {
             "         AND x.PROJECT_ID = y.PROJECT_ID                                                                " +
             "         AND x.`STATUS` = #{status}                                                                     " +
             "         AND (x.PROJECT_CODE LIKE #{keyword} or x.PROJECT_NAME LIKE #{keyword})")
-    List<PrProject> getProjectMixed4Keyword(@Param("keyword") String keyword, @Param("user") String operId, @Param("status") Integer status);
+    List<PrProject> getProject4UserByKeyword(@Param("keyword") String keyword, @Param("user") String operId, @Param("status") Integer status);
 }

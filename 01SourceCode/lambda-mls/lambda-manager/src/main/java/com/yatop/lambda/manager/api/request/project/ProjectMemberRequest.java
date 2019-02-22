@@ -1,17 +1,17 @@
 package com.yatop.lambda.manager.api.request.project;
 
+import com.yatop.lambda.core.utils.PagerUtil;
+
 import java.util.List;
 
 /**
  * Created by 19016 on 2019/2/14.
  */
-public class ProjectMemberRequest {
+public class ProjectMemberRequest extends PagerUtil {
     private Long projectId;
     private List<String> memberUsers;
     private String operUser;
     private String memberUser;
-    private Integer pageNum;
-    private Integer pageSize;
     private String srcOwner;
     private String dstOwner;
 
@@ -29,22 +29,6 @@ public class ProjectMemberRequest {
 
     public void setDstOwner(String dstOwner) {
         this.dstOwner = dstOwner;
-    }
-
-    public Integer getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(Integer pageNum) {
-        this.pageNum = pageNum;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
     }
 
     public Long getProjectId() {

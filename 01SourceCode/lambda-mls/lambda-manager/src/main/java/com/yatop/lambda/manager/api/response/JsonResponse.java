@@ -1,9 +1,12 @@
 package com.yatop.lambda.manager.api.response;
 
+import com.yatop.lambda.base.utils.LambdaRootModel;
 import com.yatop.lambda.core.exception.LambdaException;
+import com.yatop.lambda.core.utils.DataUtil;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class JsonResponse extends LinkedHashMap<String, Object> implements Serializable {
 
@@ -27,6 +30,14 @@ public class JsonResponse extends LinkedHashMap<String, Object> implements Seria
 
     public static JsonResponse build(Object data) {
         return new JsonResponse(data);
+    }
+
+    public static <M extends Map<K, V>, K, V extends LambdaRootModel> JsonResponse build(M data) {
+        return new JsonResponse(DataUtil.toJSONObject(data));
+    }
+
+    public static JsonResponse build(LambdaRootModel data) {
+        return new JsonResponse(data.toJSON());
     }
 
     public static JsonResponse build(LambdaException e) {

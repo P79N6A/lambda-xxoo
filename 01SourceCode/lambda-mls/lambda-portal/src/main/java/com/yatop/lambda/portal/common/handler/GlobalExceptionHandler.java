@@ -23,18 +23,18 @@ import java.util.List;
 import java.util.Set;
 
 @Slf4j
-@RestControllerAdvice
-@Order(value = Ordered.HIGHEST_PRECEDENCE)
+//@RestControllerAdvice
+//@Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public PortalResponse handleException(Exception e) {
         log.error("系统内部错误：", e);
         return new PortalResponse().message("系统内部错误");
     }
 
-    @ExceptionHandler(value = PortalException.class)
+    @ExceptionHandler(PortalException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public PortalResponse handleParamsInvalidException(PortalException e) {
         log.debug("业务请求失败：{}", e);
@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
      * @param e ConstraintViolationException
      * @return PortalResponse
      */
-    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public PortalResponse handleConstraintViolationException(ConstraintViolationException e) {
         StringBuilder message = new StringBuilder();
@@ -78,14 +78,14 @@ public class GlobalExceptionHandler {
         return new PortalResponse().message(message.toString());
     }
 
-    @ExceptionHandler(value = LimitAccessException.class)
+    @ExceptionHandler(LimitAccessException.class)
     @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
     public PortalResponse handleLimitAccessException(LimitAccessException e) {
         log.warn(e.getMessage());
         return new PortalResponse().message(e.getMessage());
     }
 
-    @ExceptionHandler(value = UnauthorizedException.class)
+    @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public PortalResponse handleUnauthorizedException(UnauthorizedException e) {
         log.debug("无访问权限，{}", e.getMessage());
@@ -95,7 +95,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthenticatedException.class)
     public PortalResponse handleUnauthenticatedException(UnauthenticatedException e) {
-        log.debug("未认证请求，{}", e.getMessage());
+        log.debug("用户未认证或已过期，{}", e.getMessage());
         return new PortalResponse().message("请先登录");
     }
 }

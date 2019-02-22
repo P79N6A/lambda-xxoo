@@ -3,6 +3,7 @@ package com.yatop.lambda.workflow.core.mgr.workflow.analyzer;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContextHelper;
+import com.yatop.lambda.workflow.core.mgr.workflow.module.AnalyzeNodeStateHelper;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
 
@@ -94,8 +95,11 @@ public class SchemaAnalyzer {
         List<Node> headNodes = searchReadTableHeadNodes(workflowContext);
         if(DataUtil.isNotEmpty(headNodes)) {
             for(Node headNode : headNodes) {
-                if(SchemaAnalyzerHelper.needAnalyzeNode(headNode))
+                if(SchemaAnalyzerHelper.needAnalyzeNode(headNode)) {
                     SchemaAnalyzer4RefreshSchema.analyzeStartNode(workflowContext, headNode);
+                } else {
+                    AnalyzeNodeStateHelper.analyzeInputPortAndParameter(workflowContext, headNode);
+                }
             }
         }
     }

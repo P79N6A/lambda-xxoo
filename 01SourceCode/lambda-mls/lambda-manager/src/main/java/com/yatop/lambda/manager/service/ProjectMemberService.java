@@ -1,32 +1,41 @@
 package com.yatop.lambda.manager.service;
 
+import com.yatop.lambda.base.extend.mapper.ExtProjectMemberMapper;
+import com.yatop.lambda.base.extend.model.ExtProjectMemberDetail;
+import com.yatop.lambda.base.model.PrProjectMember;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.enums.ProjectRoleEnum;
+import com.yatop.lambda.core.exception.LambdaException;
+import com.yatop.lambda.core.mgr.project.ProjectMemberMgr;
+import com.yatop.lambda.core.utils.PagerUtil;
+import com.yatop.lambda.manager.api.request.project.ProjectMemberRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProjectMemberService {
 
-    /*@Autowired
+    @Autowired
     private ExtProjectMemberMapper extProjectMemberMapper;
 
     @Autowired
     private ProjectMemberMgr projectMemberMgr;
 
-    public List<ExtProjectMemberDetail> getProjectMemberList( ProjectMemberRequest request) {
-        PagerUtil pager=new PagerUtil();
+    public List<ExtProjectMemberDetail> getProjectMemberList(ProjectMemberRequest request) {
+        PagerUtil.startPage(request);
        try{
-           pager.setPageNum(request.getPageNum());
-           pager.setPageSize(request.getPageSize());
-           PagerUtil.startPage(pager);
            if(request.getMemberUser()==null){
                request.setMemberUser("");
            }
            String memberUser="%"+request.getMemberUser()+"%";
            return this.extProjectMemberMapper.queryProjectMemberList(request.getProjectId(),memberUser);
        }catch (Exception e){
-           PagerUtil.clearPage(pager);
+           PagerUtil.clearPage(request);
            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR,"查询项目成员列表异常",e);
        }
-    }*/
+    }
 
     /**
      *
@@ -34,7 +43,7 @@ public class ProjectMemberService {
      * 项目成员状态，最近更新时间，最近更新用户，创建时间，创建用户。
      */
 
-    /*public int addProjectMembers(ProjectMemberRequest request) {
+    public int addProjectMembers(ProjectMemberRequest request) {
         List<String> memberUsers=request.getMemberUsers();
         int count=0;
         if(memberUsers!=null){
@@ -51,7 +60,7 @@ public class ProjectMemberService {
             }
         }
         return count;
-    }*/
+    }
 
 
     /**
@@ -60,8 +69,7 @@ public class ProjectMemberService {
      * @param request  请求，项目ID，成员用户列表，操作用户
      * @return 删除数量
      */
-
-    /*public int deleteProjectMembers(ProjectMemberRequest request) {
+    public int deleteProjectMembers(ProjectMemberRequest request) {
         List<String> memberUsers=request.getMemberUsers();
         int counts=0;
         if(memberUsers!=null){
@@ -75,5 +83,5 @@ public class ProjectMemberService {
     public int changeProjectOwner(ProjectMemberRequest request){
         return projectMemberMgr.changeProjectOwner(request.getProjectId(),
                 request.getSrcOwner(),request.getDstOwner(),request.getOperUser());
-    }*/
+    }
 }

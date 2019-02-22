@@ -12,10 +12,7 @@ public class ProjectRequest extends PagerUtil {
     private String projectName;
     private String projectDesc;
     private int cacheExpireDays;
-    private String operUser;
     private String keyword;
-    private Integer pageNum;
-    private Integer pageSize;
 
     public Long getProjectId() {
         return projectId;
@@ -57,14 +54,6 @@ public class ProjectRequest extends PagerUtil {
         this.cacheExpireDays = cacheExpireDays;
     }
 
-    public String getOperUser() {
-        return operUser;
-    }
-
-    public void setOperUser(String operUser) {
-        this.operUser = operUser;
-    }
-
     public String getKeyword() {
         return keyword;
     }
@@ -73,23 +62,4 @@ public class ProjectRequest extends PagerUtil {
         this.keyword = keyword;
     }
 
-    @Override
-    public Integer getPageNum() {
-        return pageNum;
-    }
-
-    @Override
-    public void setPageNum(Integer pageNum) {
-        this.pageNum = pageNum;
-    }
-
-    @Override
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    @Override
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
 }

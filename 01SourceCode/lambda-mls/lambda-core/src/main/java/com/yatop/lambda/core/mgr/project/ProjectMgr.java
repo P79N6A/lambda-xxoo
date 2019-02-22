@@ -191,7 +191,7 @@ public class ProjectMgr extends BaseMgr {
 
              //关键字和用户混合查询
             } else {
-                return extProjectMapper.getProjectMixed4Keyword(keywordLike, user, DataStatusEnum.NORMAL.getStatus());
+                return extProjectMapper.getProject4UserByKeyword(keywordLike, user, DataStatusEnum.NORMAL.getStatus());
             }
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
