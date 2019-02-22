@@ -169,29 +169,7 @@ public class ProjectMemberMgr extends BaseMgr {
             if(DataUtil.isNotEmpty(memberUsers))
                 cond.andMemberUserIn(memberUsers);
             cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            return prProjectMemberMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project member failed.", "查询项目成员记录失败", e);
-        }
-    }
-
-    /*
-     *
-     *   查询项目成员记录（按角色）
-     *   返回结果集
-     *
-     * */
-    public List<PrProjectMember> queryProjectMember(Long projectId, ProjectRoleEnum role, PagerUtil pager) {
-        if(DataUtil.isNull(projectId) || DataUtil.isNull(role)) {
-            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project member failed -- invalid query condition.", "无效查询条件");
-        }
-
-        try {
-            PagerUtil.startPage(pager);
-            PrProjectMemberExample example = new  PrProjectMemberExample();
-            example.createCriteria().andProjectIdEqualTo(projectId).andProjectRoleEqualTo(role.getRole())
-                    .andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            example.setOrderByClause("CREATE_TIME ASC");
             return prProjectMemberMapper.selectByExample(example);
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
@@ -206,7 +184,7 @@ public class ProjectMemberMgr extends BaseMgr {
      *
      * */
     public PrProjectMember queryProjectOwner(Long projectId) {
-        List<PrProjectMember> resultList = queryProjectMember(projectId, ProjectRoleEnum.PROJECT_OWNER, null);
+        List<PrProjectMember> resultList = queryProjectMember(projectId, ProjectRoleEnum.PROJECT_OWNER, null, null);
         if(DataUtil.isEmpty(resultList)) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project Owner failed -- project owner not found.", "项目所有者未找到");
         }
