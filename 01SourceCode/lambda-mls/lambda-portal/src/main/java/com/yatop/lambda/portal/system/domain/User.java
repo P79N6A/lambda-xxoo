@@ -53,6 +53,11 @@ public class User implements Serializable {
     @ExcelField(value = "用户名")
     private String username;
 
+    @Column(name = "REALNAME")
+    @NotBlank(message = "{required}")
+    @ExcelField(value = "真实姓名")
+    private String realname;
+
     @Column(name = "PASSWORD")
     private String password;
 

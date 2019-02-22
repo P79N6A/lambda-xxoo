@@ -1,11 +1,11 @@
-package com.yatop.lambda.manager.api.request.member;
+package com.yatop.lambda.manager.api.request.project;
 
 import java.util.List;
 
 /**
  * Created by 19016 on 2019/2/14.
  */
-public class MemberRequest {
+public class ProjectMemberRequest {
     private Long projectId;
     private List<String> memberUsers;
     private String operUser;

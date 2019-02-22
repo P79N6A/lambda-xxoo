@@ -9,7 +9,7 @@ import com.yatop.lambda.portal.job.service.JobService;
 import com.wuwenze.poi.ExcelKit;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.quartz.CronExpression;
+//import org.quartz.CronExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +21,14 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Validated
-@RestController
-@RequestMapping("job")
+//@Validated
+//@RestController
+//@RequestMapping("job")
 public class JobController extends BaseController {
 
     private String message;
 
-    @Autowired
+    /*@Autowired
     private JobService jobService;
 
     @GetMapping
@@ -136,5 +136,5 @@ public class JobController extends BaseController {
             log.error(message, e);
             throw new PortalException(message);
         }
-    }
+    }*/
 }

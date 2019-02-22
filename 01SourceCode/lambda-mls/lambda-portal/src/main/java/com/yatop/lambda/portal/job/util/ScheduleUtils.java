@@ -2,7 +2,7 @@ package com.yatop.lambda.portal.job.util;
 
 import com.yatop.lambda.portal.job.domain.Job;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.*;
+//import org.quartz.*;
 
 /**
  * 定时任务工具类
@@ -19,33 +19,33 @@ public class ScheduleUtils {
     /**
      * 获取触发器key
      */
-    private static TriggerKey getTriggerKey(Long jobId) {
+    /*private static TriggerKey getTriggerKey(Long jobId) {
         return TriggerKey.triggerKey(JOB_NAME + jobId);
-    }
+    }*/
 
     /**
      * 获取jobKey
      */
-    private static JobKey getJobKey(Long jobId) {
+    /*private static JobKey getJobKey(Long jobId) {
         return JobKey.jobKey(JOB_NAME + jobId);
-    }
+    }*/
 
     /**
      * 获取表达式触发器
      */
-    public static CronTrigger getCronTrigger(Scheduler scheduler, Long jobId) {
+    /*public static CronTrigger getCronTrigger(Scheduler scheduler, Long jobId) {
         try {
             return (CronTrigger) scheduler.getTrigger(getTriggerKey(jobId));
         } catch (SchedulerException e) {
             log.error("获取Cron表达式失败", e);
         }
         return null;
-    }
+    }*/
 
     /**
      * 创建定时任务
      */
-    public static void createScheduleJob(Scheduler scheduler, com.yatop.lambda.portal.job.domain.Job scheduleJob) {
+    /*public static void createScheduleJob(Scheduler scheduler, com.yatop.lambda.portal.job.domain.Job scheduleJob) {
         try {
             // 构建job信息
             JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class).withIdentity(getJobKey(scheduleJob.getJobId()))
@@ -71,12 +71,12 @@ public class ScheduleUtils {
         } catch (SchedulerException e) {
             log.error("创建定时任务失败", e);
         }
-    }
+    }*/
 
     /**
      * 更新定时任务
      */
-    public static void updateScheduleJob(Scheduler scheduler, com.yatop.lambda.portal.job.domain.Job scheduleJob) {
+    /*public static void updateScheduleJob(Scheduler scheduler, com.yatop.lambda.portal.job.domain.Job scheduleJob) {
         try {
             TriggerKey triggerKey = getTriggerKey(scheduleJob.getJobId());
 
@@ -105,12 +105,12 @@ public class ScheduleUtils {
         } catch (SchedulerException e) {
             log.error("更新定时任务失败", e);
         }
-    }
+    }*/
 
     /**
      * 立即执行任务
      */
-    public static void run(Scheduler scheduler, com.yatop.lambda.portal.job.domain.Job scheduleJob) {
+    /*public static void run(Scheduler scheduler, com.yatop.lambda.portal.job.domain.Job scheduleJob) {
         try {
             // 参数
             JobDataMap dataMap = new JobDataMap();
@@ -120,38 +120,38 @@ public class ScheduleUtils {
         } catch (SchedulerException e) {
             log.error("执行定时任务失败", e);
         }
-    }
+    }*/
 
     /**
      * 暂停任务
      */
-    public static void pauseJob(Scheduler scheduler, Long jobId) {
+    /*public static void pauseJob(Scheduler scheduler, Long jobId) {
         try {
             scheduler.pauseJob(getJobKey(jobId));
         } catch (SchedulerException e) {
             log.error("暂停定时任务失败", e);
         }
-    }
+    }*/
 
     /**
      * 恢复任务
      */
-    public static void resumeJob(Scheduler scheduler, Long jobId) {
+    /*public static void resumeJob(Scheduler scheduler, Long jobId) {
         try {
             scheduler.resumeJob(getJobKey(jobId));
         } catch (SchedulerException e) {
             log.error("恢复定时任务失败", e);
         }
-    }
+    }*/
 
     /**
      * 删除定时任务
      */
-    public static void deleteScheduleJob(Scheduler scheduler, Long jobId) {
+    /*public static void deleteScheduleJob(Scheduler scheduler, Long jobId) {
         try {
             scheduler.deleteJob(getJobKey(jobId));
         } catch (SchedulerException e) {
             log.error("删除定时任务失败", e);
         }
-    }
+    }*/
 }

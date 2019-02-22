@@ -18,14 +18,14 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Validated
-@RestController
-@RequestMapping("job/log")
+//@Validated
+//@RestController
+//@RequestMapping("job/log")
 public class JobLogController extends BaseController {
 
     private String message;
 
-    @Autowired
+    /*@Autowired
     private JobLogService jobLogService;
 
     @GetMapping
@@ -58,5 +58,5 @@ public class JobLogController extends BaseController {
             log.error(message, e);
             throw new PortalException(message);
         }
-    }
+    }*/
 }

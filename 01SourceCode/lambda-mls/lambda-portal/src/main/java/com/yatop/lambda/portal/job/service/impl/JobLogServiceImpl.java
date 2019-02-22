@@ -18,10 +18,10 @@ import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
-@Service("JobLogService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class JobLogServiceImpl extends BaseService<JobLog> implements JobLogService {
-
+//@Service("JobLogService")
+//@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
+public class JobLogServiceImpl /*extends BaseService<JobLog> implements JobLogService*/ {
+/*
     @Override
     public List<JobLog> findJobLogs(QueryRequest request, JobLog jobLog) {
         try {
@@ -63,6 +63,6 @@ public class JobLogServiceImpl extends BaseService<JobLog> implements JobLogServ
     public void deleteJobLogs(String[] jobLogIds) {
         List<String> list = Arrays.asList(jobLogIds);
         this.batchDelete(list, "logId", JobLog.class);
-    }
+    }*/
 
 }

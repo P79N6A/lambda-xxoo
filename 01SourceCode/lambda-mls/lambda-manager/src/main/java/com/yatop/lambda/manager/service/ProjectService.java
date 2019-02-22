@@ -19,17 +19,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * 〈一句话功能简述〉<br> 
- * 〈〉
- *
- * @author Administrator
- * @create 2019/2/13
- * @since 1.0.0
- */
+
 @Service
 public class ProjectService {
-    @Autowired
+    /*@Autowired
     private ExtProjectMapper extProjectMapper;
 
     @Autowired
@@ -69,9 +62,9 @@ public class ProjectService {
         return projectMgr.existsProject(projectCode, projectName, projectId);
     }
 
-    public List<PrProject> queryProject(Integer pageNum, Integer pageSize, String keyword, String operUser) {
+    public List<PrProject> queryProjectExt(Integer pageNum, Integer pageSize, String keyword, String operUser) {
         PagerUtil pager = new PagerUtil(pageNum, pageSize);
-        return projectMgr.queryProject(keyword, operUser, pager);
-    }
+        return projectMgr.queryProjectExt(keyword, operUser, pager);
+    }*/
 
 }

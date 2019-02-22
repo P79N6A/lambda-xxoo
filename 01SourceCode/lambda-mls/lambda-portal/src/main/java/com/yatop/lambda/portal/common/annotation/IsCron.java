@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = CronValidator.class)
+//@Constraint(validatedBy = CronValidator.class)
 public @interface IsCron {
 
     String message();

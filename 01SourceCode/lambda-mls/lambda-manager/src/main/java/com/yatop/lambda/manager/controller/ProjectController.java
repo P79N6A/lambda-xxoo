@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Created by 19016 on 2019/1/28.
- */
-@RestController
+
+//@RestController
 public class ProjectController extends BaseController {
 
+    /*
     @Autowired
     private ProjectService projectService;
 
@@ -25,7 +24,7 @@ public class ProjectController extends BaseController {
                                        @RequestParam("pageSize")Integer pageSize,
                                        @RequestParam("keyword")String keyword,
                                        @RequestParam("operUser")String operUser){
-        return JsonResponse.build(projectService.queryProject(pageNum, pageSize, keyword, operUser));
+        return JsonResponse.build(projectService.queryProjectExt(pageNum, pageSize, keyword, operUser));
     }
 
     // 新建项目
@@ -75,6 +74,6 @@ public class ProjectController extends BaseController {
     @RequiresPermissions("project:query")
     public JsonResponse queryProject(@RequestParam("projectId") Long projectId) {
         return JsonResponse.build(projectService.queryProject(projectId));
-    }
+    }*/
 
 }

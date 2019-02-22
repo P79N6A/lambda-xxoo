@@ -25,24 +25,24 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 @Slf4j
-@RestController
-@RequestMapping("test")
+//@RestController
+//@RequestMapping("test")
 public class TestController extends BaseController {
 
     private String message;
 
-    @Autowired
+    /*@Autowired
     private TestService testService;
 
     @GetMapping
     public Map<String, Object> findTests(QueryRequest request) {
         return super.selectByPageNumSize(request, () -> this.testService.findTests());
-    }
+    }*/
 
     /**
      * 生成 Excel导入模板
      */
-    @PostMapping("template")
+    /*@PostMapping("template")
     public void generateImportTemplate(HttpServletResponse response) {
         // 构建数据
         List<Test> list = new ArrayList<>();
@@ -55,12 +55,12 @@ public class TestController extends BaseController {
         });
         // 构建模板
         ExcelKit.$Export(Test.class, response).downXlsx(list, true);
-    }
+    }*/
 
     /**
      * 导入Excel数据，并批量插入 T_TEST表
      */
-    @PostMapping("import")
+    /*@PostMapping("import")
     public PortalResponse importExcels(@RequestParam("file") MultipartFile file) throws PortalException {
         try {
             if (file.isEmpty()) {
@@ -103,12 +103,12 @@ public class TestController extends BaseController {
             log.error(message);
             throw new PortalException(message);
         }
-    }
+    }*/
 
     /**
      * 导出 Excel
      */
-    @PostMapping("export")
+    /*@PostMapping("export")
     public void export(HttpServletResponse response) throws PortalException {
         try {
             List<Test> list = this.testService.findTests();
@@ -118,5 +118,5 @@ public class TestController extends BaseController {
             log.error(message, e);
             throw new PortalException(message);
         }
-    }
+    }*/
 }

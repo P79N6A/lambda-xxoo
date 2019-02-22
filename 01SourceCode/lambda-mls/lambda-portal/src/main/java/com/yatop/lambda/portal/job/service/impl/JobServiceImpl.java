@@ -9,8 +9,8 @@ import com.yatop.lambda.portal.job.service.JobService;
 import com.yatop.lambda.portal.job.util.ScheduleUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.quartz.CronTrigger;
-import org.quartz.Scheduler;
+//import org.quartz.CronTrigger;
+//import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,20 +25,20 @@ import java.util.Date;
 import java.util.List;
 
 @Slf4j
-@Service("JobService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class JobServiceImpl extends BaseService<Job> implements JobService {
+//@Service("JobService")
+//@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
+public class JobServiceImpl /*extends BaseService<Job> implements JobService*/ {
 
-    @Autowired
+    /*@Autowired
     private Scheduler scheduler;
 
     @Autowired
-    private JobMapper jobMapper;
+    private JobMapper jobMapper;*/
 
     /**
      * 项目启动时，初始化定时器
      */
-    @PostConstruct
+    /*@PostConstruct
     public void init() {
         List<Job> scheduleJobList = this.jobMapper.queryList();
         // 如果不存在，则创建
@@ -146,5 +146,5 @@ public class JobServiceImpl extends BaseService<Job> implements JobService {
         String[] list = jobIds.split(",");
         Arrays.stream(list).forEach(jobId -> ScheduleUtils.resumeJob(scheduler, Long.valueOf(jobId)));
         this.updateBatch(jobIds, Job.ScheduleStatus.NORMAL.getValue());
-    }
+    }*/
 }

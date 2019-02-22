@@ -13,11 +13,11 @@ import java.util.Properties;
  * 定时任务配置
  *
  */
-@Configuration
-@EnableScheduling
+//@Configuration
+//@EnableScheduling
 public class ScheduleConfig {
 
-	@Bean
+ 	/*@Bean
 	public SchedulerFactoryBean schedulerFactoryBean(@Qualifier("portalDataSource")DataSource portalDataSource) {
 		SchedulerFactoryBean factory = new SchedulerFactoryBean();
 		factory.setDataSource(portalDataSource);
@@ -52,5 +52,5 @@ public class ScheduleConfig {
 		factory.setAutoStartup(true);
 
 		return factory;
-	}
+	}*/
 }

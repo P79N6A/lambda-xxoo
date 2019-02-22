@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@Service("testService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
-public class TestServiceImpl extends BaseService<Test> implements TestService {
+//@Service("testService")
+//@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
+public class TestServiceImpl /*extends BaseService<Test> implements TestService*/ {
 
-    @Value("${lambda-portal.max.batch.insert.num:100}")
+    /*@Value("${lambda-portal.max.batch.insert.num:100}")
     private int batchInsertMaxNum;
 
     @Autowired
@@ -60,5 +60,5 @@ public class TestServiceImpl extends BaseService<Test> implements TestService {
                 this.testMapper.insertList(list.subList(start, end));
             }
         }
-    }
+    }*/
 }

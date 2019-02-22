@@ -6,7 +6,7 @@ import com.yatop.lambda.portal.job.domain.JobLog;
 import com.yatop.lambda.portal.job.service.JobLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.quartz.JobExecutionContext;
+//import org.quartz.JobExecutionContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.util.Date;
@@ -19,9 +19,9 @@ import java.util.concurrent.Future;
  *
  */
 @Slf4j
-public class ScheduleJob extends QuartzJobBean {
+public class ScheduleJob /*extends QuartzJobBean*/ {
     
-    private ExecutorService service = Executors.newSingleThreadExecutor();
+    /*private ExecutorService service = Executors.newSingleThreadExecutor();
 
     @Override
     protected void executeInternal(JobExecutionContext context) {
@@ -62,5 +62,5 @@ public class ScheduleJob extends QuartzJobBean {
         } finally {
             scheduleJobLogService.saveJobLog(jobLog);
         }
-    }
+    }*/
 }
