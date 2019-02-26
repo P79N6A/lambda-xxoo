@@ -5,7 +5,6 @@ import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.framework.chartype.clazz.table.CharTypeTableGeneric;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 
 public class ModulePort extends RichModel<WfModulePort> {
 
@@ -17,9 +16,9 @@ public class ModulePort extends RichModel<WfModulePort> {
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
         cmptChar = null;
-        super.clear(clearData);
+        super.clear();
     }
 
     public CmptChar getCmptChar() {

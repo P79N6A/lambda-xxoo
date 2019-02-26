@@ -30,9 +30,10 @@ public class NodeParameter extends RichModel<WfFlowNodeParameter> implements Com
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
+        charValue.clear();
         charValue = null;
-        super.clear(clearData);
+        super.clear();
     }
 
     protected void flush(String operId) {

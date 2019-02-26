@@ -39,8 +39,8 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     public Node(WfFlowNode data, Module module) {
         super(data);
         this.module = module;
-        //this.deleted = false;
-        //this.analyzed = false;
+        this.deleted = false;
+        this.analyzed = false;
     }
 
     @Override
@@ -49,15 +49,15 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
         module = null;
-        CollectionUtil.enhancedClear(parameters, clearData);
-        CollectionUtil.enhancedClear(optimizeParameters, clearData);
-        CollectionUtil.enhancedClear(inputNodePorts, clearData);
+        CollectionUtil.enhancedClear(parameters);
+        CollectionUtil.enhancedClear(optimizeParameters);
+        CollectionUtil.enhancedClear(inputNodePorts);
         CollectionUtil.clear(inputNodePortsOrderBySequence);
-        CollectionUtil.enhancedClear(outputNodePorts, clearData);
+        CollectionUtil.enhancedClear(outputNodePorts);
         CollectionUtil.clear(outputNodePortsOrderBySequence);
-        super.clear(clearData);
+        super.clear();
     }
 
     public void flush(boolean flushNodeParameter, String operId) {
@@ -388,11 +388,11 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     }
 
     public void markAnalyzed() {
-        if(!this.isHeadNode()) {
+        /*if(!this.isHeadNode()) {
             for (NodeInputPort inputNodePort : this.getInputNodePorts()) {
                 inputNodePort.markAnalyzed();
             }
-        }
+        }*/
         if(!this.isTailNode()) {
             for (NodeOutputPort outputNodePort : this.getOutputNodePorts()) {
                 outputNodePort.markAnalyzed();

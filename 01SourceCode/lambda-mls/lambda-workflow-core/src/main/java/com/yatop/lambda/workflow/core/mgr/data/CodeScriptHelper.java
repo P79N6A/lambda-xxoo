@@ -9,6 +9,7 @@ import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.unstructured.CodeScript;
+import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class CodeScriptHelper {
         CODE_SCRIPT_MGR = codeScriptMgr;
     }
 
-    public static CodeScript createCodeScript4Sql(CharValueContext context, String defaultScriptContent) {
+    public static void createCodeScript4Sql(CharValueContext context, String defaultScriptContent) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         Node node = context.getNode();
         CmptChar cmptChar = context.getCmptChar();
@@ -43,29 +44,35 @@ public class CodeScriptHelper {
         codeScript = CODE_SCRIPT_MGR.insertCodeScript(codeScript, workflowContext.getOperId());
         CodeScript richCodeScript = new CodeScript(codeScript);
 
+        context.getCharValue().setCharValue(String.valueOf(richCodeScript.data().getScriptId()));
         context.getCharValue().setObjectValue(richCodeScript);
         context.getCharValue().setTextValue(defaultScriptContent);
-        return richCodeScript;
     }
 
-    public static void deleteCodeScript(CharValueContext context, CodeScript codeScript) {
+    public static void deleteCodeScript(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        CODE_SCRIPT_MGR.deleteCodeScript(codeScript.data().getScriptId(), workflowContext.getOperId());
+        CODE_SCRIPT_MGR.deleteCodeScript(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
     }
 
-    public static CodeScript recoverCodeScript(CharValueContext context, Long codeScriptId) {
+    public static void recoverCodeScript(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        CODE_SCRIPT_MGR.recoverCodeScript(codeScriptId, workflowContext.getOperId());
+        CODE_SCRIPT_MGR.recoverCodeScript(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
 
-        return queryCodeScript(context);
+        queryCodeScript(context.getCharValue());
     }
 
-    public static void updateCodeScript(CharValueContext context, CodeScript codeScript) {
+    public static void updateCodeScript(CharValueContext context, String updateScriptContent) {
         WorkflowContext workflowContext = context.getWorkflowContext();
+        CodeScript codeScript = queryCodeScript(context.getCharValue());
 
-        if(DataUtil.isNotEmpty(codeScript.data().getScriptContent())) {
+        if(DataUtil.equals(codeScript.data().getScriptContent(), updateScriptContent))
+            return;
+
+        if(DataUtil.isNotEmpty(updateScriptContent)) {
+            codeScript.data().setScriptContent(updateScriptContent);
             codeScript.data().setScriptState(CodeScriptStateEnum.NORMAL.getState());
         } else {
+            codeScript.data().setScriptContent(null);
             codeScript.data().setScriptState(CodeScriptStateEnum.EMPTY.getState());
         }
         CODE_SCRIPT_MGR.updateCodeScript(codeScript.data(), workflowContext.getOperId());
@@ -74,13 +81,17 @@ public class CodeScriptHelper {
         context.getCharValue().setTextValue(codeScript.data().getScriptContent());
     }
 
-    public static CodeScript queryCodeScript(CharValueContext context) {
-        Long codeScriptId = Long.parseLong(context.getCharValue().getCharValue());
-        WfCodeScript codeScript = CODE_SCRIPT_MGR.queryCodeScript(codeScriptId);
-        CodeScript richCodeScript = new CodeScript(codeScript);
+    public static void clearCodeScript(CharValueContext context) {
+        updateCodeScript(context, null);
+    }
 
-        context.getCharValue().setObjectValue(richCodeScript);
-        context.getCharValue().setTextValue(codeScript.getScriptContent());
+    public static CodeScript queryCodeScript(CharValue charValue) {
+
+        WfCodeScript codeScript = CODE_SCRIPT_MGR.queryCodeScript(Long.parseLong(charValue.getCharValue()));
+
+        CodeScript richCodeScript = new CodeScript(codeScript);
+        charValue.setObjectValue(richCodeScript);
+        charValue.setTextValue(codeScript.getScriptContent());
         return richCodeScript;
     }
 }

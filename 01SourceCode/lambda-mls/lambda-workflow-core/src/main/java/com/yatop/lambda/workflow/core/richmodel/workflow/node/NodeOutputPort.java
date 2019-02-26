@@ -18,14 +18,16 @@ public class NodeOutputPort extends RichModel<WfFlowNodePort> {
     public NodeOutputPort(WfFlowNodePort data, ModulePort modulePort) {
         super(data);
         this.modulePort = modulePort;
-        //this.analyzed = false;
+        this.analyzed = false;
     }
 
     @Override
-    public void clear(boolean clearData) {
-        if(DataUtil.isNotNull(schema))
-            schema.clear(clearData);
-        super.clear(clearData);
+    public void clear() {
+        if(DataUtil.isNotNull(schema)) {
+            schema.clear();
+            schema = null;
+        }
+        super.clear();
     }
 
     protected void flush(String operId) {

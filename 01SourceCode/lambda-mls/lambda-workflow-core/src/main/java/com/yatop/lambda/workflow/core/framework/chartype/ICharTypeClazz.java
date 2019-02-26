@@ -1,48 +1,32 @@
 package com.yatop.lambda.workflow.core.framework.chartype;
 
 import com.yatop.lambda.workflow.core.context.CharValueContext;
+import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import org.springframework.beans.factory.InitializingBean;
 
 public interface ICharTypeClazz extends InitializingBean {
     //方法失败或异常抛出Exception，CharType类实现该接口，适当封装一些中间abstract组件类以便复用
 
-    //创建节点参数特征值内容
-    void createParamCharValue(CharValueContext context);
+    //创建节点特征值内容
+    void createCharValue(CharValueContext context);
 
-    //删除节点参数特征值内容
-    void deleteParamCharValue(CharValueContext context);
+    //删除节点特征值内容
+    void deleteCharValue(CharValueContext context);
 
-    //恢复节点参数特征值内容
-    void recoverParamCharValue(CharValueContext context);
+    //恢复节点特征值内容
+    void recoverCharValue(CharValueContext context);
 
-    //查询节点参数特征值内容
-    void queryParamCharValue(CharValueContext context);
+    //清除节点特征值内容
+    void clearCharValue(CharValueContext context);
 
-    //更新节点参数特征值内容
-    void updateParamCharValue(CharValueContext context);
+    //更新节点特征值内容
+    void updateCharValue(CharValueContext context);
 
-    //校验节点参数特征值内容
+    //查询节点特征值内容
+    void queryCharValue(CharValue charValue);
+
+    //校验节点特征值内容
     //返回false，不通过
     //返回true，通过
-    boolean validateParamCharValue(CharValueContext context);
-
-    ////////////////////////////////////////////////////////////////////////////
-
-    //探测节点输出特征值内容
-    void exploreOutputCharValue(CharValueContext context);
-
-    //准备节点输出特征值内容
-    void prepareOutputCharValue(CharValueContext context);
-
-    //完成节点输出特征值内容
-    void completeOutputCharValue(CharValueContext context);
-
-    //清理节点输出特征值内容
-    void clearOutputCharValue(CharValueContext context);
-
-    //删除节点输出特征值内容
-    void deleteOutputCharValue(CharValueContext context);
-
-    //恢复节点输出特征值内容
-    void recoverOutputCharValue(CharValueContext context);
+    boolean validateCharValue(CharValue charValue);
 }

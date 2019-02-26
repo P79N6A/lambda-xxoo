@@ -48,38 +48,38 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
     }
 
     @Override
-    public void exploreOutputResource(WorkflowContext workflowContext, Node node) {
-        //TODO query task output resource
+    public void exploreOutputResource(Node node) {
+        //TODO query node output resource
         return;
     }
 
     @Override
     public void prepareOutputResource(WorkflowContext workflowContext, Node node) {
-        //TODO prepare task output resource
+        //TODO prepare node output resource
         return;
     }
 
     @Override
     public void completeOutputResource(WorkflowContext workflowContext, Node node) {
-        //TODO complete task output resource
+        //TODO complete node output resource
         return;
     }
 
     @Override
     public void clearOutputResource(WorkflowContext workflowContext, Node node) {
-        //TODO clear task output resource
+        //TODO clear node output resource
         return;
     }
 
     @Override
     public void deleteOutputResource(WorkflowContext workflowContext, Node node) {
-        //TODO complete task output resource
+        //TODO complete node output resource
         return;
     }
 
     @Override
     public void recoverOutputResource(WorkflowContext workflowContext, Node node) {
-        //TODO clear task output resource
+        //TODO clear node output resource
         return;
     }
 

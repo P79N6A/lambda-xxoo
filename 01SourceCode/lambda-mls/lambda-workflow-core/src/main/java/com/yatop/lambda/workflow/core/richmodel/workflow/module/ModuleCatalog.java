@@ -51,9 +51,9 @@ public class ModuleCatalog extends RichModel<WfModuleCatalog> implements Compara
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
         CollectionUtil.clear(childCatalogs);
         CollectionUtil.clear(childModules);
-        super.clear(clearData);
+        super.clear();
     }
 }

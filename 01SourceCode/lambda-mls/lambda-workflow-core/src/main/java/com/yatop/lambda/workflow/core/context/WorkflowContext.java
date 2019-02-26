@@ -1,18 +1,17 @@
 package com.yatop.lambda.workflow.core.context;
 
 import com.yatop.lambda.core.enums.*;
-import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.mgr.warehouse.DataWarehouseHelper;
 import com.yatop.lambda.workflow.core.mgr.warehouse.ModelWarehouseHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzer;
 import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzerHelper;
-import com.yatop.lambda.workflow.core.mgr.workflow.execution.job.JobHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.module.AnalyzeNodeStateHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.snapshot.SnapshotHelper;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.data.model.ModelWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
+import com.yatop.lambda.workflow.core.richmodel.experiment.ExperimentTemplate;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJob;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionTask;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.*;
@@ -43,7 +42,6 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, ModelWarehouse> modelWarehouses = new TreeMap<Long, ModelWarehouse>();  //操作关联模型仓库，key=mwId
 
     private ExecutionJob currentJob;        //操作关联的当前运行作业
-    private TreeMap<Long, ExecutionJob> jobs = new TreeMap<Long, ExecutionJob>();   //操作关联运行作业
     private TreeMap<Long, ExecutionTask> tasks = new TreeMap<Long, ExecutionTask>();    //操作关联运行任务
 
     private TreeMap<Long, Node> deleteNodes = new TreeMap<Long, Node>();      //删除节点，key=nodeId
@@ -54,30 +52,30 @@ public class WorkflowContext implements IWorkContext {
     private String operId;
 
     //工作流创建使用（无需加载）
-    public static WorkflowContext BuildWorkflowContext4Create(Experiment experiment, String operId) {
-        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
+    public static WorkflowContext BuildWorkflowContext4Create(Workflow workflow, String operId) {
+        WorkflowContext context = new WorkflowContext(workflow, operId);
         return context;
     }
 
     //工作流编辑使用（懒加载）
-    public static WorkflowContext BuildWorkflowContext4Lazyload(Experiment experiment, String operId) {
-        return BuildWorkflowContext4Lazyload(experiment, operId, true);
+    public static WorkflowContext BuildWorkflowContext4Lazyload(Workflow workflow, String operId) {
+        return BuildWorkflowContext4Lazyload(workflow, operId, true);
     }
 
-    public static WorkflowContext BuildWorkflowContext4Lazyload(Experiment experiment, String operId, boolean loadNodeParameter) {
-        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
+    public static WorkflowContext BuildWorkflowContext4Lazyload(Workflow workflow, String operId, boolean loadNodeParameter) {
+        WorkflowContext context = new WorkflowContext(workflow, operId);
         context.lazyLoadMode = true;
         context.loadNodeParameter = loadNodeParameter;
         return context;
     }
 
     //工作流编辑使用（预加载）
-    public static WorkflowContext BuildWorkflowContext4Preload(Experiment experiment, String operId) {
-        return BuildWorkflowContext4Preload(experiment, operId, true);
+    public static WorkflowContext BuildWorkflowContext4Preload(Workflow workflow, String operId) {
+        return BuildWorkflowContext4Preload(workflow, operId, true);
     }
 
-    public static WorkflowContext BuildWorkflowContext4Preload(Experiment experiment, String operId, boolean loadNodeParameter) {
-        WorkflowContext context = new WorkflowContext(experiment.getWorkflow(), operId);
+    public static WorkflowContext BuildWorkflowContext4Preload(Workflow workflow, String operId, boolean loadNodeParameter) {
+        WorkflowContext context = new WorkflowContext(workflow, operId);
         context.lazyLoadMode = false;
         context.loadNodeParameter = loadNodeParameter;
         context.preloadWorkflowContent();
@@ -86,27 +84,21 @@ public class WorkflowContext implements IWorkContext {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //工作流快照使用
-    private static WorkflowContext BuildWorkflowContext4Snapshot(Snapshot snapshot, String operId) {
+    //工作流快照查看使用
+    public static WorkflowContext BuildWorkflowContext4ViewSnapshot(Snapshot snapshot, String operId) {
         WorkflowContext context = new WorkflowContext(snapshot.getWorkflow(), operId);
         context.initializeWithSnapshot(snapshot);
         return context;
     }
 
     //实验模版查看使用
-    public static WorkflowContext BuildWorkflowContext4ViewTemplate(Long templateId, String operId) {
-        return BuildWorkflowContext4Snapshot(SnapshotHelper.simulateSnapshot4Template(templateId), operId);
-    }
-
-    //快照查看查看使用
-    public static WorkflowContext BuildWorkflowContext4ViewSnapshot(Long snapshotId, String operId) {
-        return BuildWorkflowContext4Snapshot(SnapshotHelper.querySnapshot4View(snapshotId), operId);
+    public static WorkflowContext BuildWorkflowContext4ViewTemplate(ExperimentTemplate template, String operId) {
+        return BuildWorkflowContext4ViewSnapshot(SnapshotHelper.simulateSnapshot4Template(template), operId);
     }
 
     //作业运行调度使用
-    public static WorkflowContext BuildWorkflowContext4ExecutionSchedule(Long jobId, String operId) {
-        ExecutionJob job = JobHelper.queryExecutionJob4Execution(jobId);
-        WorkflowContext context = BuildWorkflowContext4Snapshot(job.getSnapshot(), operId);
+    public static WorkflowContext BuildWorkflowContext4ExecutionSchedule(ExecutionJob job, String operId) {
+        WorkflowContext context = BuildWorkflowContext4ViewSnapshot(job.getSnapshot(), operId);
         context.initializeWithExecution(job);
         return context;
     }
@@ -141,7 +133,6 @@ public class WorkflowContext implements IWorkContext {
         this.executionWorkMode = true;
         this.enableFlushWorkflow = currentJob.enableFlushWorkflow();
         this.currentJob = currentJob;
-        this.putExecutionJob(currentJob);
         currentJob.parseJobContent(this);
 
         /*if(!currentJob.enableFlushSnapshot()) {
@@ -156,39 +147,53 @@ public class WorkflowContext implements IWorkContext {
 
     @Override
     public void clear() {
+        clear(false, false);
+    }
+
+    public void clearSkipNodes() {
+        clear(true, false);
+    }
+
+    public void clearSkipNodeLinks() {
         clear(false, true);
     }
 
-    public void clearAll() {
+    public void clearSkipNodesAndNodeLinks() {
         clear(true, true);
     }
 
-    public void clear(boolean clearData, boolean clearNodeContent) {
-        workflow.clear(clearData);
+    private void clear(boolean excludeNode, boolean excludeNodeLink) {
+        workflow.clear();
         workflow = null;
         operId = null;
-        if(clearNodeContent) {
-            CollectionUtil.enhancedClear(nodes, clearData);
+
+        if(excludeNode) {
+            CollectionUtil.enhancedClear(nodes);
         } else {
            CollectionUtil.clear(nodes);
         }
-        CollectionUtil.enhancedClear(links, clearData);
+
+        if(excludeNodeLink) {
+            CollectionUtil.enhancedClear(links);
+        } else {
+            CollectionUtil.clear(links);
+        }
+
         CollectionUtil.clear(inputLinks);
         CollectionUtil.clear(outputLinks);
         CollectionUtil.clear(inputPorts);
         CollectionUtil.clear(outputPorts);
 
-        CollectionUtil.enhancedClear(dataWarehouses, clearData);
+        CollectionUtil.enhancedClear(dataWarehouses);
         CollectionUtil.clear(dataWarehousesOrderByCode);
-        CollectionUtil.enhancedClear(modelWarehouses, clearData);
+        CollectionUtil.enhancedClear(modelWarehouses);
 
         if(DataUtil.isNotNull(currentJob)) {
-            currentJob.clear(clearData);
+            currentJob.clear();
             currentJob = null;
         }
 
-        CollectionUtil.enhancedClear(jobs, clearData);
-        CollectionUtil.enhancedClear(tasks, clearData);
+        CollectionUtil.enhancedClear(tasks);
 
         CollectionUtil.clear(deleteNodes);
         CollectionUtil.clear(deleteLinks);
@@ -463,20 +468,6 @@ public class WorkflowContext implements IWorkContext {
         }*/
 
         return currentJob;
-    }
-
-    public ExecutionJob getExecutionJob(Long jobId) {
-        ExecutionJob job = CollectionUtil.get(jobs, jobId);
-        if(DataUtil.isNull(job)) {
-            //TODO query job
-            //job = xxx
-            this.putExecutionJob(job);
-        }
-        return job;
-    }
-
-    public ExecutionJob getExecutionJob(ExecutionTask task) {
-        return getExecutionJob(task.data().getOwnerJobId());
     }
 
     public ExecutionTask getExecutionTask(Node node) {
@@ -825,10 +816,6 @@ public class WorkflowContext implements IWorkContext {
 
     public void putModelWarehouse(ModelWarehouse warehouse) {
         CollectionUtil.put(modelWarehouses, warehouse.data().getMwId(), warehouse);
-    }
-
-    public void putExecutionJob(ExecutionJob job) {
-        CollectionUtil.put(jobs, job.data().getJobId(), job);
     }
 
     public void putExecutionTask(ExecutionTask task) {

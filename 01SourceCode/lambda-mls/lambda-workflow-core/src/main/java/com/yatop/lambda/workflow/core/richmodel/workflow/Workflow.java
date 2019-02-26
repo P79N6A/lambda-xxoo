@@ -29,10 +29,10 @@ public class Workflow extends RichModel<WfFlow> {
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
         experiment = null;
-        CollectionUtil.enhancedClear(accumulates, clearData);
-        super.clear(clearData);
+        CollectionUtil.enhancedClear(accumulates);
+        super.clear();
     }
 
     public void flush(String operId) {

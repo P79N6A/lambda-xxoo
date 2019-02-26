@@ -17,7 +17,7 @@ public class FieldAttribute implements IRichModel {
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
         name = null;
         type = null;
     }

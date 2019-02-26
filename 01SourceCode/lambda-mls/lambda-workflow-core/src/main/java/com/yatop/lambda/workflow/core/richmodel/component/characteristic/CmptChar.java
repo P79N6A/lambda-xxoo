@@ -2,7 +2,6 @@ package com.yatop.lambda.workflow.core.richmodel.component.characteristic;
 
 import com.yatop.lambda.base.model.CfCmptChar;
 import com.yatop.lambda.core.enums.IsRequiredEnum;
-import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
@@ -28,13 +27,13 @@ public class CmptChar extends RichModel<CfCmptChar> implements Comparable<CmptCh
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
         type = null;
-        CollectionUtil.enhancedClear(enums, clearData);
+        CollectionUtil.enhancedClear(enums);
         enums = null;
-        CollectionUtil.enhancedClear(enumsOrderbySequence, clearData);
+        CollectionUtil.enhancedClear(enumsOrderbySequence);
         enumsOrderbySequence = null;
-        super.clear(clearData);
+        super.clear();
     }
 
     public CmptCharType getType() {

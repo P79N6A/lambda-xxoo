@@ -47,10 +47,10 @@ public class ParameterHelper {
         return new NodeParameter(parameter, charValue, true);
     }
 
-    public static boolean validateUpdateNodeParameter(WorkflowContext workflowContext, Node node, NodeParameter nodeParameter, String paramValue) {
-        CharValue charValue = nodeParameter.getCharValue();
+    public static boolean validateUpdateNodeParameter(Node node, NodeParameter nodeParameter, String paramValue) {
+        CharValue charValue = new CharValue(nodeParameter.getCmptChar(), nodeParameter.data().getCharValue());
         charValue.setTextValue(paramValue);
-        return ParamCharValueHelper.validateParamCharValue(workflowContext, node, charValue);
+        return ParamCharValueHelper.validateParamCharValue(node, charValue);
     }
 
     public static void updateNodeParameter(NodeParameter parameter, String operId) {

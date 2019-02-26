@@ -13,7 +13,6 @@ import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCha
 import com.yatop.lambda.workflow.core.richmodel.data.table.field.FieldAttribute;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.schema.NodeSchemaHelper;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -31,9 +30,9 @@ public class NodeSchema extends RichModel<WfFlowNodeSchema> {
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
         CollectionUtil.clear(fieldAttributes);
-        super.clear(clearData);
+        super.clear();
     }
 
     protected void flush(String operId) {

@@ -11,7 +11,6 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
 public class Experiment extends RichModel<EmExperiment> {
 
     private Project project;
-    private Workflow workflow;
 
     public Experiment(EmExperiment data) {
         this(data, ProjectHelper.queryProject(data.getOwnerProjectId()));
@@ -23,10 +22,9 @@ public class Experiment extends RichModel<EmExperiment> {
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
         project = null;
-        workflow = null;
-        super.clear(clearData);
+        super.clear();
     }
 
     public Project getProject() {
@@ -38,13 +36,6 @@ public class Experiment extends RichModel<EmExperiment> {
     }
 
     public Workflow getWorkflow() {
-        if(DataUtil.isNull(workflow)) {
-            workflow = WorkflowHelper.queryWorkflow(this);
-        }
-        return workflow;
-    }
-
-    public void setWorkflow(Workflow workflow) {
-        this.workflow = workflow;
+        return WorkflowHelper.queryWorkflow(this);
     }
 }

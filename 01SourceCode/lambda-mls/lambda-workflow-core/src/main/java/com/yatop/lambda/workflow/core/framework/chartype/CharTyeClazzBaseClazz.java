@@ -35,18 +35,18 @@ public abstract class CharTyeClazzBaseClazz implements ICharTypeClazz {
     //
 
     @Override
-    public void createParamCharValue(CharValueContext context) {
+    public void createCharValue(CharValueContext context) {
         CharValue charValue = context.getCharValue();
         charValue.setCharValue(charValue.getTextValue());
     }
 
     @Override
-    public void deleteParamCharValue(CharValueContext context) {
+    public void deleteCharValue(CharValueContext context) {
         return;
     }
 
     @Override
-    public void recoverParamCharValue(CharValueContext context) {
+    public void recoverCharValue(CharValueContext context) {
         CharValue charValue = context.getCharValue();
         if(DataUtil.isNotEmpty(charValue.getCharValue())) {
             charValue.setTextValue(charValue.getCharValue());
@@ -54,60 +54,25 @@ public abstract class CharTyeClazzBaseClazz implements ICharTypeClazz {
     }
 
     @Override
-    public void queryParamCharValue(CharValueContext context) {
-        CharValue charValue = context.getCharValue();
-        if(DataUtil.isNotEmpty(charValue.getCharValue())) {
-            charValue.setTextValue(charValue.getCharValue());
-        }
-    }
-
-    @Override
-    public void updateParamCharValue(CharValueContext context) {
+    public void updateCharValue(CharValueContext context) {
         CharValue charValue = context.getCharValue();
         charValue.setCharValue(charValue.getTextValue());
     }
 
     @Override
-    public boolean validateParamCharValue(CharValueContext context) {
+    public void clearCharValue(CharValueContext context) {
+        return;
+    }
+
+    @Override
+    public void queryCharValue(CharValue charValue) {
+        if(DataUtil.isNotEmpty(charValue.getCharValue())) {
+            charValue.setTextValue(charValue.getCharValue());
+        }
+    }
+
+    @Override
+    public boolean validateCharValue(CharValue charValue) {
         return false;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    private void missingOutputCharValueImplement(CharValueContext context) {
-        CharValue charValue = context.getCharValue();
-        LambdaException e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Char-Type-Clazz occur error.\n" + charValue, "计算组件错误", context.getNode().data(), charValue.getCmptChar().getType().data());
-        logger.error("系统内部发生错误", e);
-        throw e;
-    }
-
-    @Override
-    public void exploreOutputCharValue(CharValueContext context) {
-        missingOutputCharValueImplement(context);
-    }
-
-    @Override
-    public void prepareOutputCharValue(CharValueContext context) {
-        missingOutputCharValueImplement(context);
-    }
-
-    @Override
-    public void completeOutputCharValue(CharValueContext context) {
-        missingOutputCharValueImplement(context);
-    }
-
-    @Override
-    public void clearOutputCharValue(CharValueContext context) {
-        missingOutputCharValueImplement(context);
-    }
-
-    @Override
-    public void deleteOutputCharValue(CharValueContext context) {
-        missingOutputCharValueImplement(context);
-    }
-
-    @Override
-    public void recoverOutputCharValue(CharValueContext context) {
-        missingOutputCharValueImplement(context);
     }
 }

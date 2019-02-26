@@ -32,7 +32,6 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     private static String JOB_CONTENT_KEY_ERROR_NODES = "@@@ErrorNodes";
     private static String JOB_CONTENT_KEY_TERMINATED_NODES = "@@@TerminatedNodes";
 
-    //private boolean isViewMode;
     private Snapshot snapshot;
 
     private TreeSet<Node> waitHeadNodes = new TreeSet<Node>();
@@ -46,18 +45,18 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     private TreeMap<Node, Long> terminatedNodes = new TreeMap<Node, Long>();
 
     public static ExecutionJob BuildExecutionJob4Create(WfExecutionJob data, WorkflowContext workflowContext, Snapshot snapShot, List<TreeSet<Node>> jobContent) {
-        ExecutionJob job = new ExecutionJob(data, false);
+        ExecutionJob job = new ExecutionJob(data);
         job.snapshot = snapShot;
         job.initJobContent(workflowContext, jobContent);
         return job;
     }
 
-    public static ExecutionJob BuildExecutionJob4Execution(WfExecutionJob data) {
-        ExecutionJob job = new ExecutionJob(data, false);
+    public static ExecutionJob BuildExecutionJob(WfExecutionJob data) {
+        ExecutionJob job = new ExecutionJob(data);
         return job;
     }
 
-    private ExecutionJob(WfExecutionJob data, boolean isViewMode) {
+    private ExecutionJob(WfExecutionJob data) {
         super(data);
     }
 
@@ -72,9 +71,9 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     }
 
     @Override
-    public void clear(boolean clearData) {
-        snapshot.clear(clearData);
-        super.clear(clearData);
+    public void clear() {
+        snapshot.clear();
+        super.clear();
     }
 
     private void initJobContent(WorkflowContext workflowContext, List<TreeSet<Node>> jobContent) {
@@ -203,7 +202,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
 
     public Snapshot getSnapshot() {
         if(DataUtil.isNull(snapshot)) {
-            snapshot = SnapshotHelper.querySnapshot4Execution(this.data().getRelSnapshotId(), this.enableFlushSnapshot());
+            snapshot = SnapshotHelper.querySnapshot4Execution(this);
             this.syncJobState2SnapshotAndWorkflow();
         }
         return snapshot;

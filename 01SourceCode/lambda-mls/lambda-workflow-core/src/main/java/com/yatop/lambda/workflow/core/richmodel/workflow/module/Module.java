@@ -34,7 +34,7 @@ public class Module extends RichModel<WfModule> implements Comparable<Module> {
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
         component = null;
         CollectionUtil.clear(inputPorts);
         CollectionUtil.clear(inputPortsOrderByCharId);
@@ -44,7 +44,7 @@ public class Module extends RichModel<WfModule> implements Comparable<Module> {
         CollectionUtil.clear(outputPortsOrderBySequence);
         inputDataTablePortCount = 0;
         outputDataTablePortCount = 0;
-        super.clear(clearData);
+        super.clear();
     }
 
     public void initializeDataPortCount() {

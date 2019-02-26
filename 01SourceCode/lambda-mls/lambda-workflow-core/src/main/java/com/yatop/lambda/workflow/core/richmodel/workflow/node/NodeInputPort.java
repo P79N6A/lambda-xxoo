@@ -10,7 +10,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
 public class NodeInputPort extends RichModel<WfFlowNodePort> implements Comparable<NodeInputPort> {
 
     private ModulePort modulePort;
-    private boolean analyzed;
+    //private boolean analyzed;
 
     public NodeInputPort(WfFlowNodePort data, ModulePort modulePort) {
         super(data);
@@ -24,9 +24,9 @@ public class NodeInputPort extends RichModel<WfFlowNodePort> implements Comparab
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
         modulePort = null;
-        super.clear(clearData);
+        super.clear();
     }
 
     public ModulePort getModulePort() {
@@ -41,13 +41,13 @@ public class NodeInputPort extends RichModel<WfFlowNodePort> implements Comparab
         return modulePort.isDataTablePort();
     }
 
-    public boolean isAnalyzed() {
+    /*public boolean isAnalyzed() {
         return analyzed;
     }
 
     protected void markAnalyzed() {
         this.analyzed = true;
-    }
+    }*/
 
     public CmptCharType getType() {
         return this.getCmptChar().getType();

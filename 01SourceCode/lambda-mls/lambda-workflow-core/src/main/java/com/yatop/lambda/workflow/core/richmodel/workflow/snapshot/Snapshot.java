@@ -25,6 +25,7 @@ import java.util.TreeMap;
 
 public class Snapshot extends RichModel<WfSnapshot> {
 
+    private static String SNAPSHOT_CONTENT_KEY_PROJECT = "@@@Project";
     private static String SNAPSHOT_CONTENT_KEY_EXPERIMENT = "@@@Experiment";
     private static String SNAPSHOT_CONTENT_KEY_WORKFLOW = "@@@Workflow";
     private static String SNAPSHOT_CONTENT_KEY_NODES = "@@@Nodes";
@@ -36,7 +37,9 @@ public class Snapshot extends RichModel<WfSnapshot> {
     private static String SNAPSHOT_CONTENT_KEY_LINKS = "@@@Links";
 
     private boolean enableFlushSnapshot;
-    private Workflow workflow;
+    private JSONObject project = new JSONObject(true);
+    private JSONObject experiment = new JSONObject(true);
+    private JSONObject workflow = new JSONObject(true);
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();
     private TreeMap<Long, NodeLink> links = new TreeMap<Long, NodeLink>();
 
@@ -46,24 +49,13 @@ public class Snapshot extends RichModel<WfSnapshot> {
         return snapshot;
     }
 
-    //用于快照查看
-    public static Snapshot BuildSnapshot4View(WfSnapshot data) {
-        Snapshot snapshot = new Snapshot(data);
-        snapshot.parseSnapshotContent();
-        return snapshot;
+    public static Snapshot BuildSnapshot(WfSnapshot data) {
+        return BuildSnapshot(data, false);
     }
 
-    //用于作业运行和作业查看
-    public static Snapshot BuildSnapshot4Execution(WfSnapshot data, boolean viewMode) {
-        Snapshot snapshot = new Snapshot(data, !viewMode);
+    public static Snapshot BuildSnapshot(WfSnapshot data, boolean enableFlushSnapshot) {
+        Snapshot snapshot = new Snapshot(data, enableFlushSnapshot);
         snapshot.parseSnapshotContent();
-        return snapshot;
-    }
-
-    //用于实验模版查看
-    public static Snapshot BuildSnapshot4Template(WfSnapshot data, Project simulationProject) {
-        Snapshot snapshot = new Snapshot(data);
-        snapshot.parseSnapshotContent(simulationProject);
         return snapshot;
     }
 
@@ -87,11 +79,13 @@ public class Snapshot extends RichModel<WfSnapshot> {
     }
 
     @Override
-    public void clear(boolean clearData) {
-        workflow = null;
+    public void clear() {
+        project.clear();
+        experiment.clear();
+        workflow.clear();
         CollectionUtil.clear(nodes);
         CollectionUtil.clear(links);
-        super.clear(clearData);
+        super.clear();
     }
 
     public void syncSnapshot2WorkflowContext(WorkflowContext workflowContext) {
@@ -122,8 +116,9 @@ public class Snapshot extends RichModel<WfSnapshot> {
     }
 
     public void syncWorkflowContext2Snapshot(WorkflowContext workflowContext) {
-        if(DataUtil.isNull(this.workflow) || this.workflow != workflowContext.getWorkflow())
-            this.workflow = workflowContext.getWorkflow();
+        this.project = workflowContext.getProject().toJSON();
+        this.experiment = workflowContext.getExperiment().toJSON();
+        this.workflow = workflowContext.getWorkflow().toJSON();
 
         if(workflowContext.nodeCount() > 0) {
             for(Node node : workflowContext.getNodes()) {
@@ -144,8 +139,6 @@ public class Snapshot extends RichModel<WfSnapshot> {
 
     public void flushSnapshotContent() {
         JSONObject jsonContent = new JSONObject(8, true);
-        JSONObject jsonExperiment = getWorkflow().getExperiment().toJSON();
-        JSONObject jsonWorkflow = getWorkflow().toJSON();
         JSONArray jsonNodes = new JSONArray();
         JSONArray jsonLinks = new JSONArray();
 
@@ -206,8 +199,9 @@ public class Snapshot extends RichModel<WfSnapshot> {
             }
         }
 
-        jsonContent.put(SNAPSHOT_CONTENT_KEY_EXPERIMENT, jsonExperiment);
-        jsonContent.put(SNAPSHOT_CONTENT_KEY_WORKFLOW, jsonWorkflow);
+        jsonContent.put(SNAPSHOT_CONTENT_KEY_PROJECT, project);
+        jsonContent.put(SNAPSHOT_CONTENT_KEY_EXPERIMENT, experiment);
+        jsonContent.put(SNAPSHOT_CONTENT_KEY_WORKFLOW, workflow);
         jsonContent.put(SNAPSHOT_CONTENT_KEY_NODES, jsonNodes);
         jsonContent.put(SNAPSHOT_CONTENT_KEY_LINKS, jsonLinks);
         this.data().setSnapshotContent(DataUtil.prettyFormat(jsonContent));
@@ -216,24 +210,18 @@ public class Snapshot extends RichModel<WfSnapshot> {
     }
 
     private void parseSnapshotContent() {
-        parseSnapshotContent(null);
-    }
-
-    private void parseSnapshotContent(Project simulationProject) {
 
         if(DataUtil.isEmpty(this.data().getSnapshotContent())) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Parse snapshot content failed -- empty content error.", "快照内容为空", this.data());
         }
 
-        Project project = DataUtil.isNotNull(simulationProject) ? simulationProject : ProjectHelper.queryProject(this.data().getOwnerProjectId());
         try {
             JSONObject jsonContent = JSONObject.parseObject(this.data().getSnapshotContent());
-            JSONObject jsonExperiment = jsonContent.getJSONObject(SNAPSHOT_CONTENT_KEY_EXPERIMENT);
-            JSONObject jsonWorkflow = jsonContent.getJSONObject(SNAPSHOT_CONTENT_KEY_WORKFLOW);
+            this.project = jsonContent.getJSONObject(SNAPSHOT_CONTENT_KEY_PROJECT);
+            this.experiment = jsonContent.getJSONObject(SNAPSHOT_CONTENT_KEY_EXPERIMENT);
+            this.workflow = jsonContent.getJSONObject(SNAPSHOT_CONTENT_KEY_WORKFLOW);
             JSONArray jsonNodes = jsonContent.getJSONArray(SNAPSHOT_CONTENT_KEY_NODES);
             JSONArray jsonLinks = jsonContent.getJSONArray(SNAPSHOT_CONTENT_KEY_LINKS);
-
-            this.workflow = new Workflow(jsonWorkflow.toJavaObject(WfFlow.class), new Experiment(jsonExperiment.toJavaObject(EmExperiment.class), project));
 
             if(!jsonNodes.isEmpty()) {
                 for (int idx = 0; idx < jsonNodes.size(); idx++) {
@@ -314,16 +302,8 @@ public class Snapshot extends RichModel<WfSnapshot> {
         return enableFlushSnapshot;
     }
 
-    public Project getProject() {
-        return workflow.getProject();
-    }
-
-    public Experiment getExperiment() {
-        return workflow.getExperiment();
-    }
-
     public Workflow getWorkflow() {
-        return workflow;
+        return new Workflow(workflow.toJavaObject(WfFlow.class), new Experiment(experiment.toJavaObject(EmExperiment.class), new Project(project.toJavaObject(PrProject.class))));
     }
 
     public int nodeCount() {

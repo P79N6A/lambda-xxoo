@@ -11,7 +11,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 public class OutputCharValueHelper {
 
     //适用输出内容
-    public void exploreOutputCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
+    public static void exploreOutputCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
         if(DataUtil.isEmpty(charValue.getCharValue())) {
             return;
@@ -19,7 +19,7 @@ public class OutputCharValueHelper {
 
         try {
             CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            charValue.getCharTypeClazzBean().exploreOutputCharValue(charValueContext);
+            charValue.getCharTypeClazzBean().queryCharValue(charValue);
             charValueContext.clear();
             return;
         } catch (Throwable e) {
@@ -28,11 +28,11 @@ public class OutputCharValueHelper {
     }
 
     //适用输出内容
-    public void prepareOutputCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
+    public static void prepareOutputCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
         try {
             CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            charValue.getCharTypeClazzBean().prepareOutputCharValue(charValueContext);
+            charValue.getCharTypeClazzBean().createCharValue(charValueContext);
             charValueContext.clear();
             return;
         } catch (Throwable e) {
@@ -49,7 +49,7 @@ public class OutputCharValueHelper {
 
         try {
             CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            charValue.getCharTypeClazzBean().completeOutputCharValue(charValueContext);
+            charValue.getCharTypeClazzBean().updateCharValue(charValueContext);
             charValueContext.clear();
             return;
         } catch (Throwable e) {
@@ -66,7 +66,7 @@ public class OutputCharValueHelper {
 
         try {
             CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            charValue.getCharTypeClazzBean().clearOutputCharValue(charValueContext);
+            charValue.getCharTypeClazzBean().clearCharValue(charValueContext);
             charValueContext.clear();
             return;
         } catch (Throwable e) {
@@ -75,7 +75,7 @@ public class OutputCharValueHelper {
     }
 
     //适用输出内容
-    public void deleteOutputCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
+    public static void deleteOutputCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
         if(DataUtil.isEmpty(charValue.getCharValue())) {
             return;
@@ -83,7 +83,7 @@ public class OutputCharValueHelper {
 
         try {
             CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            charValue.getCharTypeClazzBean().deleteOutputCharValue(charValueContext);
+            charValue.getCharTypeClazzBean().deleteCharValue(charValueContext);
             charValueContext.clear();
             return;
         } catch (Throwable e) {
@@ -92,7 +92,7 @@ public class OutputCharValueHelper {
     }
 
     //适用输出内容
-    public void recoverOutputCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
+    public static void recoverOutputCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
 
         if(DataUtil.isEmpty(charValue.getCharValue())) {
             return;
@@ -100,7 +100,7 @@ public class OutputCharValueHelper {
 
         try {
             CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            charValue.getCharTypeClazzBean().recoverOutputCharValue(charValueContext);
+            charValue.getCharTypeClazzBean().recoverCharValue(charValueContext);
             charValueContext.clear();
             return;
         } catch (Throwable e) {

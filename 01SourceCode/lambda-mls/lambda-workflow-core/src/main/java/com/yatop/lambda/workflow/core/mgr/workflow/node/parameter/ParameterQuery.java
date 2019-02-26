@@ -29,11 +29,11 @@ public class ParameterQuery {
 
         if(cmptChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource() && DataUtil.isNotNull(parameter)) {
             CharValue charValue = new CharValue(cmptChar, parameter.getCharValue());
-            ParamCharValueHelper.queryParamCharValue(workflowContext, node, charValue);
+            ParamCharValueHelper.queryParamCharValue(node, charValue);
             return new NodeParameter(parameter, charValue);
         } else {
             CharValue charValue = new CharValue(cmptChar);
-            ParamCharValueHelper.queryParamCharValue(workflowContext, node, charValue);
+            ParamCharValueHelper.queryParamCharValue(node, charValue);
             return ParameterHelper.simulateParameter(workflowContext, node, charValue);
         }
     }

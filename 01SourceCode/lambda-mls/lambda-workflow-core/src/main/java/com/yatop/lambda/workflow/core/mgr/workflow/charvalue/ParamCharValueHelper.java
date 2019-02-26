@@ -25,13 +25,13 @@ public class ParamCharValueHelper {
         if (DataUtil.isEmpty(charValue.getTextValue()))
             charValue.setTextValue(node.getComponent().getConfigCharValue(charValue.getCmptChar()));
 
-        if (!validateParamCharValue(workflowContext, node, charValue)){
+        if (!validateParamCharValue(node, charValue)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create param value failed -- char-value validation failed.\n" + charValue, "节点参数内容错误", node.data());
         }
 
         try {
             CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            charValue.getCharTypeClazzBean().createParamCharValue(charValueContext);
+            charValue.getCharTypeClazzBean().createCharValue(charValueContext);
             charValueContext.clear();
             return;
         } catch (Throwable e) {
@@ -52,31 +52,12 @@ public class ParamCharValueHelper {
 
         try {
             CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            charValue.getCharTypeClazzBean().deleteParamCharValue(charValueContext);
+            charValue.getCharTypeClazzBean().deleteCharValue(charValueContext);
             charValueContext.clear();
             return;
         } catch (Throwable e) {
             e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete param value failed -- Char-Type-Clazz occur error.\n" + charValue, "节点参数删除出错", e, node.data());
             logger.error("系统内部发生错误", e);
-        }
-    }
-
-    //适用组件参数、执行调优参数、调用执行参数
-    public static void queryParamCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
-
-        if (DataUtil.isEmpty(charValue.getCharValue()))
-            charValue.setCharValue(node.getComponent().getConfigCharValue(charValue.getCmptChar()));
-
-        if(DataUtil.isEmpty(charValue.getCharValue())) {
-            return;
-        }
-
-        try {
-            CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            charValue.getCharTypeClazzBean().queryParamCharValue(charValueContext);
-            charValueContext.clear();
-        } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query param value failed -- Char-Type-Clazz occur error.\n" + charValue, "节点参数查询出错", e, node.data());
         }
     }
 
@@ -93,7 +74,7 @@ public class ParamCharValueHelper {
 
         try {
             CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            charValue.getCharTypeClazzBean().recoverParamCharValue(charValueContext);
+            charValue.getCharTypeClazzBean().recoverCharValue(charValueContext);
             charValueContext.clear();
             return;
         } catch (Throwable e) {
@@ -108,7 +89,7 @@ public class ParamCharValueHelper {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update param value failed -- update non-workflow source level char-value.\n" + charValue, "节点参数级别异常", node.data());
         }
 
-        if (validateParamCharValue(workflowContext, node, charValue)){
+        if (validateParamCharValue(node, charValue)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update param value failed -- char-value validation failed.\n" + charValue, "节点参数内容错误", node.data());
 
             //特征值和更新参数值内容都为空时
@@ -118,7 +99,7 @@ public class ParamCharValueHelper {
 
         try {
             CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            charValue.getCharTypeClazzBean().updateParamCharValue(charValueContext);
+            charValue.getCharTypeClazzBean().updateCharValue(charValueContext);
             charValueContext.clear();
             return;
         } catch (Throwable e) {
@@ -127,12 +108,27 @@ public class ParamCharValueHelper {
     }
 
     //适用组件参数、执行调优参数、调用执行参数
-    public static boolean validateParamCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
+    public static void queryParamCharValue(Node node, CharValue charValue) {
+
+        if (DataUtil.isEmpty(charValue.getCharValue()))
+            charValue.setCharValue(node.getComponent().getConfigCharValue(charValue.getCmptChar()));
+
+        if(DataUtil.isEmpty(charValue.getCharValue())) {
+            return;
+        }
 
         try {
-            CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            boolean isPassValidate = charValue.getCharTypeClazzBean().validateParamCharValue(charValueContext);
-            charValueContext.clear();
+            charValue.getCharTypeClazzBean().queryCharValue(charValue);
+        } catch (Throwable e) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query param value failed -- Char-Type-Clazz occur error.\n" + charValue, "节点参数查询出错", e, node.data());
+        }
+    }
+
+    //适用组件参数、执行调优参数、调用执行参数
+    public static boolean validateParamCharValue(Node node, CharValue charValue) {
+
+        try {
+            boolean isPassValidate = charValue.getCharTypeClazzBean().validateCharValue(charValue);
             return isPassValidate;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Validate param value failed -- Char-Type-Clazz occur error.\n" + charValue, "节点参数校验出错", e, node.data());

@@ -48,11 +48,14 @@ public class CharValue implements IRichModel {
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
         cmptChar = null;
         charValue = null;
         textValue = null;
-        objectValue = null;
+        if(DataUtil.isNotNull(objectValue)) {
+            objectValue.clear();
+            objectValue = null;
+        }
     }
 
     public CmptChar getCmptChar() {

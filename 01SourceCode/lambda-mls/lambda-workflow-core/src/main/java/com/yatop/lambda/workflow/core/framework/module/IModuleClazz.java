@@ -17,15 +17,13 @@ public interface IModuleClazz extends InitializingBean {
     //key:CmptChar, warningMessage
     TreeMap<CmptChar, String> validateParameters(WorkflowContext workflowContext, Node node);
 
-/*
     //生成摘要内容
-    String generateSummary(Node node);
-*/
+    //String generateSummary(Node node);
 
     //////////////////////////////////////////////////////
 
     //探测节点输出
-    void exploreOutputResource(WorkflowContext workflowContext, Node node);
+    void exploreOutputResource(Node node);
 
     //准备节点输出
     void prepareOutputResource(WorkflowContext workflowContext, Node node);
@@ -33,7 +31,7 @@ public interface IModuleClazz extends InitializingBean {
     //完成节点输出
     void completeOutputResource(WorkflowContext workflowContext, Node node);
 
-    //清理节点输出
+    //清除节点输出
     void clearOutputResource(WorkflowContext workflowContext, Node node);
 
     //删除节点输出

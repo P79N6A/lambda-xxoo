@@ -33,7 +33,7 @@ public class ParameterRecover {
             return new NodeParameter(parameter, charValue);
         } else {
             CharValue charValue = new CharValue(cmptChar);
-            ParamCharValueHelper.queryParamCharValue(workflowContext, node, charValue);
+            ParamCharValueHelper.queryParamCharValue(node, charValue);
             return ParameterHelper.simulateParameter(workflowContext, node, charValue);
         }
     }

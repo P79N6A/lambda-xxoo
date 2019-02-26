@@ -45,7 +45,7 @@ public class ParameterCreate {
             return richParameter;
         } else {
             CharValue charValue = new CharValue(cmptChar);
-            ParamCharValueHelper.queryParamCharValue(workflowContext, node, charValue);
+            ParamCharValueHelper.queryParamCharValue(node, charValue);
             return ParameterHelper.simulateParameter(workflowContext, node, charValue);
         }
     }

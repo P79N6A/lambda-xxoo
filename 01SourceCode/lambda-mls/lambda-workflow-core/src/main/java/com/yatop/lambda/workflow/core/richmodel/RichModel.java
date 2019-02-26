@@ -31,10 +31,8 @@ public abstract class RichModel<T extends LambdaRootModel> implements IRichModel
     }
 
     @Override
-    public void clear(boolean clearData) {
-        if(clearData) {
-            data.clear();
-        }
+    public void clear() {
+        data.clear();
     }
 
     public void clearColoured() {

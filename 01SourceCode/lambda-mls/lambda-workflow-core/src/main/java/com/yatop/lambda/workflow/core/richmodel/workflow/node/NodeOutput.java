@@ -9,6 +9,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 public class NodeOutput extends RichModel<WfFlowNodeOutput> {
 
     private CharValue charValue;
+    private boolean simulateParameter;  //标记来自OutputHelper.simulateOutput构建的模拟节点输出
 
     public NodeOutput(WfFlowNodeOutput data, CharValue charValue) {
         super(data);
@@ -22,9 +23,9 @@ public class NodeOutput extends RichModel<WfFlowNodeOutput> {
     }
 
     @Override
-    public void clear(boolean clearData) {
+    public void clear() {
         charValue = null;
-        super.clear(clearData);
+        super.clear();
     }
 
     public CmptChar getCmptChar() {

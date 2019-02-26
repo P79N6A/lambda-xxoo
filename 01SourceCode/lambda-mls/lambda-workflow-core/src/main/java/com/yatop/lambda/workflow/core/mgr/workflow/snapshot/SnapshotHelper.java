@@ -29,19 +29,19 @@ public class SnapshotHelper {
     }
 
     public static Snapshot querySnapshot4View(Long snapShotId) {
-        return Snapshot.BuildSnapshot4View(querySnapshot(snapShotId));
+        return Snapshot.BuildSnapshot(querySnapshot(snapShotId));
     }
 
-    public static Snapshot querySnapshot4Execution(Long snapShotId, boolean viewMode) {
-        return Snapshot.BuildSnapshot4Execution(querySnapshot(snapShotId), viewMode);
+    public static Snapshot querySnapshot4Execution(ExecutionJob job) {
+        return Snapshot.BuildSnapshot(querySnapshot(job.data().getRelSnapshotId()), job.enableFlushSnapshot());
     }
 
-    public static Snapshot simulateSnapshot4Template(Long templateId) {
-        return simulateSnapshot4Template(ExperimentTemplateHelper.queryExperimentTemplate(templateId));
+    public static Snapshot simulateSnapshot4Template(ExperimentTemplate template) {
+        return simulateSnapshot(template);
     }
 
-    private static Snapshot simulateSnapshot4Template(ExperimentTemplate template) {
-        PrProject dataProject = new PrProject();
+    private static Snapshot simulateSnapshot(ExperimentTemplate template) {
+       /* PrProject dataProject = new PrProject();
         dataProject.setProjectId(-1L);
         dataProject.setProjectCode("SIMULATION_PROJECT");
         dataProject.setProjectName("模拟项目-实验模版");
@@ -54,13 +54,13 @@ public class SnapshotHelper {
         dataProject.setLastUpdateOper(template.data().getCreateOper());
         dataProject.setCreateTime(template.data().getCreateTime());
         dataProject.setCreateOper(template.data().getCreateOper());
-        Project simulationProject = new Project(dataProject);
+        Project simulationProject = new Project(dataProject);*/
 
         WfSnapshot dataSnapshot = new WfSnapshot();
         dataSnapshot.setSnapshotId(-1L);
         dataSnapshot.setSnapshotName(template.data().getTemplateName());
         dataSnapshot.setSnapshotType(SnapshotTypeEnum.TEMPLATE.getType());
-        dataSnapshot.setOwnerProjectId(simulationProject.data().getProjectId());
+        dataSnapshot.setOwnerProjectId(-1L);
         dataSnapshot.setOwnerFlowId(-1L);
         dataSnapshot.setSnapshotContent(template.data().getTemplateContent());
         dataSnapshot.setSnapshotVersion(-1L);
@@ -71,7 +71,7 @@ public class SnapshotHelper {
         dataSnapshot.setLastUpdateOper(template.data().getCreateOper());
         dataSnapshot.setCreateTime(template.data().getCreateTime());
         dataSnapshot.setCreateOper(template.data().getCreateOper());
-        return Snapshot.BuildSnapshot4Template(dataSnapshot, simulationProject);
+        return Snapshot.BuildSnapshot(dataSnapshot);
     }
 
     public static void updateSnapshot(Snapshot snapshot, String operId) {
