@@ -37,7 +37,7 @@ public abstract class CharTyeClazzBaseClazz implements ICharTypeClazz {
     @Override
     public void createParamCharValue(CharValueContext context) {
         CharValue charValue = context.getCharValue();
-        charValue.setCharValue(charValue.getParamValue());
+        charValue.setCharValue(charValue.getTextValue());
     }
 
     @Override
@@ -49,7 +49,7 @@ public abstract class CharTyeClazzBaseClazz implements ICharTypeClazz {
     public void recoverParamCharValue(CharValueContext context) {
         CharValue charValue = context.getCharValue();
         if(DataUtil.isNotEmpty(charValue.getCharValue())) {
-            charValue.setParamValue(charValue.getCharValue());
+            charValue.setTextValue(charValue.getCharValue());
         }
     }
 
@@ -57,14 +57,14 @@ public abstract class CharTyeClazzBaseClazz implements ICharTypeClazz {
     public void queryParamCharValue(CharValueContext context) {
         CharValue charValue = context.getCharValue();
         if(DataUtil.isNotEmpty(charValue.getCharValue())) {
-            charValue.setParamValue(charValue.getCharValue());
+            charValue.setTextValue(charValue.getCharValue());
         }
     }
 
     @Override
     public void updateParamCharValue(CharValueContext context) {
         CharValue charValue = context.getCharValue();
-        charValue.setCharValue(charValue.getParamValue());
+        charValue.setCharValue(charValue.getTextValue());
     }
 
     @Override

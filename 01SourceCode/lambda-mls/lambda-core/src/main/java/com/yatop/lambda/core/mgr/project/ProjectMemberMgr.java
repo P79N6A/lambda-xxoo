@@ -46,7 +46,7 @@ public class ProjectMemberMgr extends BaseMgr {
         PrProjectMember insertMember = new PrProjectMember();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
-            insertMember.copyProperties(insertMember);
+            insertMember.copyProperties(member);
             insertMember.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertMember.setLastUpdateTime(dtCurrentTime);
             insertMember.setLastUpdateOper(operId);

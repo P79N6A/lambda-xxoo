@@ -458,9 +458,9 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public ExecutionJob getCurrentJob() {
-        if(DataUtil.isNull(currentJob)){
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Missing current execution job.", "系统内部发生错误，请联系管理员");
-        }
+        /*if(DataUtil.isNull(currentJob)){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Workflow context error -- Missing current execution job.", "系统内部发生错误");
+        }*/
 
         return currentJob;
     }

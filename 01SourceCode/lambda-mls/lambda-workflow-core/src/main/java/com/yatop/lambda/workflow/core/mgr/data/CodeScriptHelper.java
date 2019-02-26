@@ -41,7 +41,11 @@ public class CodeScriptHelper {
             codeScript.setScriptState(CodeScriptStateEnum.EMPTY.getState());
         }
         codeScript = CODE_SCRIPT_MGR.insertCodeScript(codeScript, workflowContext.getOperId());
-        return new CodeScript(codeScript);
+        CodeScript richCodeScript = new CodeScript(codeScript);
+
+        context.getCharValue().setObjectValue(richCodeScript);
+        context.getCharValue().setTextValue(defaultScriptContent);
+        return richCodeScript;
     }
 
     public static void deleteCodeScript(CharValueContext context, CodeScript codeScript) {
@@ -49,9 +53,11 @@ public class CodeScriptHelper {
         CODE_SCRIPT_MGR.deleteCodeScript(codeScript.data().getScriptId(), workflowContext.getOperId());
     }
 
-    public static void recoverCodeScript(CharValueContext context, Long codeScriptId) {
+    public static CodeScript recoverCodeScript(CharValueContext context, Long codeScriptId) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         CODE_SCRIPT_MGR.recoverCodeScript(codeScriptId, workflowContext.getOperId());
+
+        return queryCodeScript(context);
     }
 
     public static void updateCodeScript(CharValueContext context, CodeScript codeScript) {
@@ -63,10 +69,18 @@ public class CodeScriptHelper {
             codeScript.data().setScriptState(CodeScriptStateEnum.EMPTY.getState());
         }
         CODE_SCRIPT_MGR.updateCodeScript(codeScript.data(), workflowContext.getOperId());
+
+        context.getCharValue().setObjectValue(codeScript);
+        context.getCharValue().setTextValue(codeScript.data().getScriptContent());
     }
 
-    public static CodeScript queryCodeScript(Long codeScriptId) {
+    public static CodeScript queryCodeScript(CharValueContext context) {
+        Long codeScriptId = Long.parseLong(context.getCharValue().getCharValue());
         WfCodeScript codeScript = CODE_SCRIPT_MGR.queryCodeScript(codeScriptId);
-        return new CodeScript(codeScript);
+        CodeScript richCodeScript = new CodeScript(codeScript);
+
+        context.getCharValue().setObjectValue(richCodeScript);
+        context.getCharValue().setTextValue(codeScript.getScriptContent());
+        return richCodeScript;
     }
 }

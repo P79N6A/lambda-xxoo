@@ -22,8 +22,8 @@ public class ParamCharValueHelper {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create param value failed -- create non-workflow source level char-value.\n" + charValue, "节点参数级别异常", node.data());
         }
 
-        if (DataUtil.isEmpty(charValue.getParamValue()))
-            charValue.setParamValue(node.getComponent().getConfigCharValue(charValue.getCmptChar()));
+        if (DataUtil.isEmpty(charValue.getTextValue()))
+            charValue.setTextValue(node.getComponent().getConfigCharValue(charValue.getCmptChar()));
 
         if (!validateParamCharValue(workflowContext, node, charValue)){
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create param value failed -- char-value validation failed.\n" + charValue, "节点参数内容错误", node.data());
@@ -112,7 +112,7 @@ public class ParamCharValueHelper {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update param value failed -- char-value validation failed.\n" + charValue, "节点参数内容错误", node.data());
 
             //特征值和更新参数值内容都为空时
-        } else if(DataUtil.isEmpty(charValue.getCharValue()) && DataUtil.isEmpty(charValue.getParamValue())) {
+        } else if(DataUtil.isEmpty(charValue.getCharValue()) && DataUtil.isEmpty(charValue.getTextValue())) {
             return;
         }
 

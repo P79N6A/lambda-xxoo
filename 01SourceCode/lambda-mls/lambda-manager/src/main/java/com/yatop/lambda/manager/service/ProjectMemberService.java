@@ -9,6 +9,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.project.ProjectMemberMgr;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.manager.api.request.project.ProjectMemberRequest;
+import com.yatop.lambda.portal.common.utils.PortalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,19 @@ public class ProjectMemberService {
        }
     }
 
+    public List<ExtProjectMemberDetail> getUserListNotInProject(ProjectMemberRequest request) {
+        PagerUtil.startPage(request);
+        try{
+            if(request.getMemberUser()==null){
+                request.setMemberUser("");
+            }
+            String memberUser="%"+request.getMemberUser()+"%";
+            return this.extProjectMemberMapper.queryUserListNotInProject(request.getProjectId(),memberUser);
+        }catch (Exception e){
+            PagerUtil.clearPage(request);
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR,"查询用户列表异常",e);
+        }
+    }
     /**
      *
      * @param request 请求 ，项目ID，成员用户列表，操作用户
@@ -54,7 +68,7 @@ public class ProjectMemberService {
                 prProjectMember.setProjectRole(ProjectRoleEnum.PROJECT_DEVELOPER.getRole());
                 boolean flag=projectMemberMgr.existsProjectMember(prProjectMember.getProjectId(),memberUsers.get(i));
                 if(!flag){
-                    projectMemberMgr.insertProjectMember(prProjectMember,request.getOperUser());
+                    projectMemberMgr.insertProjectMember(prProjectMember,PortalUtil.getCurrentUser().getUsername());
                     count+=1;
                 }
             }
@@ -75,13 +89,13 @@ public class ProjectMemberService {
         if(memberUsers!=null){
             for(int i=0;i<memberUsers.size();i++){
                 counts+=projectMemberMgr.deleteProjectMember(request.getProjectId(),
-                        memberUsers.get(i),request.getOperUser());
+                        memberUsers.get(i), PortalUtil.getCurrentUser().getUsername());
             }
         }
         return counts;
     }
     public int changeProjectOwner(ProjectMemberRequest request){
         return projectMemberMgr.changeProjectOwner(request.getProjectId(),
-                request.getSrcOwner(),request.getDstOwner(),request.getOperUser());
+                PortalUtil.getCurrentUser().getUsername(), request.getDstOwner(), PortalUtil.getCurrentUser().getUsername());
     }
 }

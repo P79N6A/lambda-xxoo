@@ -50,11 +50,11 @@ public class NodeParameter extends RichModel<WfFlowNodeParameter> implements Com
     }
 
     public String getTextValue() {
-        return this.getCharValue().getParamValue();
+        return this.getCharValue().getTextValue();
     }
 
     public IRichModel getObjectValue() {
-        return this.getCharValue().getOutputValue();
+        return this.getCharValue().getObjectValue();
     }
 
     public boolean isSimulateParameter() {

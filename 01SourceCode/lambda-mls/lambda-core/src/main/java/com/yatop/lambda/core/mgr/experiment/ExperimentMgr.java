@@ -135,11 +135,11 @@ public class ExperimentMgr extends BaseMgr {
 
     /*
      *
-     *   查询实验信息（按项目）
+     *   查询实验信息（按项目+[关键字]）
      *   返回结果集
      *
      * */
-    public List<EmExperiment> queryExperiment(Long projectId, PagerUtil pager) {
+    public List<EmExperiment> queryExperiment(Long projectId, String keyword, PagerUtil pager) {
         if(DataUtil.isNull(projectId)){
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed -- invalid query condition.", "无效查询条件");
         }
@@ -147,30 +147,10 @@ public class ExperimentMgr extends BaseMgr {
         try {
             PagerUtil.startPage(pager);
             EmExperimentExample example = new EmExperimentExample();
-            example.createCriteria().andOwnerProjectIdEqualTo(projectId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            return emExperimentMapper.selectByExample(example);
-        } catch (Throwable e) {
-            PagerUtil.clearPage(pager);
-            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed.", "查询实验信息失败", e);
-        }
-    }
-
-    /*
-     *
-     *   查询实验信息（按项目+关键字）
-     *   返回结果集
-     *
-     * */
-    public List<EmExperiment> queryExperiment(Long projectId, String keyword, PagerUtil pager) {
-        if(DataUtil.isNull(projectId) || DataUtil.isEmpty(keyword)){
-            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed -- invalid query condition.", "无效查询条件");
-        }
-
-        try {
-            PagerUtil.startPage(pager);
-            EmExperimentExample example = new EmExperimentExample();
-            example.createCriteria().andOwnerProjectIdEqualTo(projectId).andExperimentNameLike(DataUtil.likeKeyword(keyword)).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            EmExperimentExample.Criteria cond = example.createCriteria().andOwnerProjectIdEqualTo(projectId);
+            if(DataUtil.isNotEmpty(keyword))
+                cond.andExperimentNameLike(DataUtil.likeKeyword(keyword));
+            cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return emExperimentMapper.selectByExample(example);
         } catch (Throwable e) {

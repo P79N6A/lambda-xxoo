@@ -49,7 +49,7 @@ public class ParameterHelper {
 
     public static boolean validateUpdateNodeParameter(WorkflowContext workflowContext, Node node, NodeParameter nodeParameter, String paramValue) {
         CharValue charValue = nodeParameter.getCharValue();
-        charValue.setParamValue(paramValue);
+        charValue.setTextValue(paramValue);
         return ParamCharValueHelper.validateParamCharValue(workflowContext, node, charValue);
     }
 

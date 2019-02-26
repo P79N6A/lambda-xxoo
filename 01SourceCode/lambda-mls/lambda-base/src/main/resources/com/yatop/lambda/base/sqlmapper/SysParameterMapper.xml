@@ -12,7 +12,7 @@
     <result column="PARAM_NAME" jdbcType="VARCHAR" property="paramName" />
     <result column="PARAM_CLASS" jdbcType="INTEGER" property="paramClass" />
     <result column="PARAM_SUB_CLASS" jdbcType="INTEGER" property="paramSubClass" />
-    <result column="PARAM_VALUE" jdbcType="VARCHAR" property="paramValue" />
+    <result column="PARAM_VALUE" jdbcType="VARCHAR" property="textValue" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
     <result column="STATUS" jdbcType="INTEGER" property="status" />
     <result column="LAST_UPDATE_TIME" jdbcType="TIMESTAMP" property="lastUpdateTime" />
@@ -161,7 +161,7 @@
       STATUS, LAST_UPDATE_TIME, LAST_UPDATE_OPER, 
       CREATE_TIME, CREATE_OPER)
     values (#{paramCode,jdbcType=VARCHAR}, #{paramName,jdbcType=VARCHAR}, #{paramClass,jdbcType=INTEGER}, 
-      #{paramSubClass,jdbcType=INTEGER}, #{paramValue,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{paramSubClass,jdbcType=INTEGER}, #{textValue,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
       #{status,jdbcType=INTEGER}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{lastUpdateOper,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{createOper,jdbcType=VARCHAR})
   </insert>
@@ -224,7 +224,7 @@
         #{paramSubClass,jdbcType=INTEGER},
       </if>
       <if test="paramValueColoured">
-        #{paramValue,jdbcType=VARCHAR},
+        #{textValue,jdbcType=VARCHAR},
       </if>
       <if test="descriptionColoured">
         #{description,jdbcType=VARCHAR},
@@ -281,7 +281,7 @@
         PARAM_SUB_CLASS = #{record.paramSubClass,jdbcType=INTEGER},
       </if>
       <if test="record.paramValueColoured">
-        PARAM_VALUE = #{record.paramValue,jdbcType=VARCHAR},
+        PARAM_VALUE = #{record.textValue,jdbcType=VARCHAR},
       </if>
       <if test="record.descriptionColoured">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
@@ -318,7 +318,7 @@
       PARAM_NAME = #{record.paramName,jdbcType=VARCHAR},
       PARAM_CLASS = #{record.paramClass,jdbcType=INTEGER},
       PARAM_SUB_CLASS = #{record.paramSubClass,jdbcType=INTEGER},
-      PARAM_VALUE = #{record.paramValue,jdbcType=VARCHAR},
+      PARAM_VALUE = #{record.textValue,jdbcType=VARCHAR},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=INTEGER},
       LAST_UPDATE_TIME = #{record.lastUpdateTime,jdbcType=TIMESTAMP},
@@ -350,7 +350,7 @@
         PARAM_SUB_CLASS = #{paramSubClass,jdbcType=INTEGER},
       </if>
       <if test="paramValueColoured">
-        PARAM_VALUE = #{paramValue,jdbcType=VARCHAR},
+        PARAM_VALUE = #{textValue,jdbcType=VARCHAR},
       </if>
       <if test="descriptionColoured">
         DESCRIPTION = #{description,jdbcType=VARCHAR},
@@ -384,7 +384,7 @@
       PARAM_NAME = #{paramName,jdbcType=VARCHAR},
       PARAM_CLASS = #{paramClass,jdbcType=INTEGER},
       PARAM_SUB_CLASS = #{paramSubClass,jdbcType=INTEGER},
-      PARAM_VALUE = #{paramValue,jdbcType=VARCHAR},
+      PARAM_VALUE = #{textValue,jdbcType=VARCHAR},
       DESCRIPTION = #{description,jdbcType=VARCHAR},
       STATUS = #{status,jdbcType=INTEGER},
       LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=TIMESTAMP},

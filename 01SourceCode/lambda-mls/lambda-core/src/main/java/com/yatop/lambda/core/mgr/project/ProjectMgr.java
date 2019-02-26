@@ -1,17 +1,14 @@
 package com.yatop.lambda.core.mgr.project;
 
 import com.yatop.lambda.base.extend.mapper.ExtProjectMapper;
+import com.yatop.lambda.base.model.DwDataWarehouse;
+import com.yatop.lambda.base.model.MwModelWarehouse;
 import com.yatop.lambda.base.model.PrProject;
 import com.yatop.lambda.base.model.PrProjectExample;
-import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.enums.*;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
-import com.yatop.lambda.core.enums.DataStatusEnum;
-import com.yatop.lambda.core.enums.SystemParameterEnum;
 import com.yatop.lambda.core.exception.LambdaException;
-import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.core.utils.PagerUtil;
-import com.yatop.lambda.core.utils.SystemParameterUtil;
-import com.yatop.lambda.core.utils.SystemTimeUtil;
+import com.yatop.lambda.core.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +42,8 @@ public class ProjectMgr extends BaseMgr {
         }
 
         PrProject insertProject = new PrProject();
+        DwDataWarehouse insertDataWarehouse = new DwDataWarehouse();
+        MwModelWarehouse insertModelWarehouse = new MwModelWarehouse();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertProject.copyProperties(project);
@@ -57,6 +56,31 @@ public class ProjectMgr extends BaseMgr {
             insertProject.setCreateTime(dtCurrentTime);
             insertProject.setCreateOper(operId);
             prProjectMapper.insertSelective(insertProject);
+
+            insertDataWarehouse.setDwCode("$"+insertProject.getProjectId());
+            insertDataWarehouse.setDwName(insertProject.getProjectName());
+            insertDataWarehouse.setDwType(DataWarehouseTypeEnum.PROJECT.getType());
+            insertDataWarehouse.setOwnerProjectId(insertProject.getProjectId());
+            insertDataWarehouse.setStatus(DataStatusEnum.NORMAL.getStatus());
+            insertDataWarehouse.setCreateTime(dtCurrentTime);
+            insertDataWarehouse.setCreateOper(operId);
+            dwDataWarehouseMapper.insertSelective(insertDataWarehouse);
+            insertDataWarehouse.setDataDfsDir(WorkDirectoryUtil.getDataWarehouseDfsDirectory(insertDataWarehouse.getDwId()));
+            insertDataWarehouse.setDataLocalDir(WorkDirectoryUtil.getDataWarehouseLocalDirectory(insertDataWarehouse.getDwId()));
+
+            insertModelWarehouse.setMwCode("$"+insertProject.getProjectId());
+            insertModelWarehouse.setMwName(insertProject.getProjectName());
+            insertModelWarehouse.setMwType(ModelWarehouseTypeEnum.PROJECT.getType());
+            insertModelWarehouse.setOwnerProjectId(insertProject.getProjectId());
+            insertModelWarehouse.setStatus(ModelStateEnum.NORMAL.getState());
+            insertModelWarehouse.setCreateTime(dtCurrentTime);
+            insertModelWarehouse.setCreateOper(operId);
+            mwModelWarehouseMapper.insert(insertModelWarehouse);
+            insertModelWarehouse.setModelDfsDir(WorkDirectoryUtil.getModelWarehouseDfsDirectory(insertModelWarehouse.getMwId()));
+            insertModelWarehouse.setModelLocalDir(WorkDirectoryUtil.getModelWarehouseLocalDirectory(insertModelWarehouse.getMwId()));
+
+            insertProject.setMwId(insertModelWarehouse.getMwId());
+            insertProject.setDwId(insertDataWarehouse.getDwId());
             return insertProject;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Insert project info failed.", "插入项目信息失败", e);

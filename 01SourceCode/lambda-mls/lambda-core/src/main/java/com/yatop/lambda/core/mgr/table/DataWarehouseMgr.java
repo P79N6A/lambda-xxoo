@@ -30,8 +30,6 @@ public class DataWarehouseMgr extends BaseMgr {
                 warehouse.isDwNameNotColoured() ||
                 warehouse.isDwTypeNotColoured() ||
                 warehouse.isOwnerProjectIdNotColoured() ||
-                warehouse.isDataDfsDirNotColoured() ||
-                warehouse.isDataLocalDirNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Insert data warehouse info failed -- invalid insert data.", "无效插入数据");
         }

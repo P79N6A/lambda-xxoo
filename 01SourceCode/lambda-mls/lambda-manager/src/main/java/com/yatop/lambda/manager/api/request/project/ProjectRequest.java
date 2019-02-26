@@ -2,6 +2,8 @@ package com.yatop.lambda.manager.api.request.project;
 
 import com.yatop.lambda.core.utils.PagerUtil;
 
+import java.util.Date;
+
 /**
  * Created by 19016 on 2019/2/1.
  */
@@ -13,6 +15,7 @@ public class ProjectRequest extends PagerUtil {
     private String projectDesc;
     private int cacheExpireDays;
     private String keyword;
+    private Date clearDate;
 
     public Long getProjectId() {
         return projectId;
@@ -62,4 +65,11 @@ public class ProjectRequest extends PagerUtil {
         this.keyword = keyword;
     }
 
+    public Date getClearDate() {
+        return clearDate;
+    }
+
+    public void setClearDate(Date clearDate) {
+        this.clearDate = clearDate;
+    }
 }

@@ -17,13 +17,12 @@ import com.yatop.lambda.portal.common.utils.PortalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 
 @Service
 public class ProjectService {
-//    @Autowired
-//    private ExtProjectMapper extProjectMapper;
 
     @Autowired
     private ProjectMgr projectMgr;
@@ -33,25 +32,22 @@ public class ProjectService {
         project.setProjectCode(vo.getProjectCode());
         project.setProjectName(vo.getProjectName());
         project.setDescription(vo.getProjectDesc());
-        //TODO 创建项目下模型仓库, 表仓库
-        project.setDwId(999L);
-        project.setMwId(999L);
         return projectMgr.insertProject(project, PortalUtil.getCurrentUser().getUsername());
     }
 
 
-    public int deleteProject(Long projectId){
+    public int deleteProject(Long projectId) {
         return projectMgr.deleteProject(projectId, PortalUtil.getCurrentUser().getUsername());
     }
 
     public int updateProject(ProjectRequest vo) {
-      PrProject project = new PrProject();
-      project.setProjectId(vo.getProjectId());
-      project.setProjectCode(vo.getProjectCode());
-      project.setProjectName(vo.getProjectName());
-      project.setDescription(vo.getProjectDesc());
-      project.setCacheExpireDays(vo.getCacheExpireDays());
-      return projectMgr.updateProject(project, PortalUtil.getCurrentUser().getUsername());
+        PrProject project = new PrProject();
+        project.setProjectId(vo.getProjectId());
+        project.setProjectCode(vo.getProjectCode());
+        project.setProjectName(vo.getProjectName());
+        project.setDescription(vo.getProjectDesc());
+        project.setCacheExpireDays(vo.getCacheExpireDays());
+        return projectMgr.updateProject(project, PortalUtil.getCurrentUser().getUsername());
     }
 
     public PrProject queryProject(Long projectId) {
@@ -66,4 +62,11 @@ public class ProjectService {
         return projectMgr.queryProject(vo.getKeyword(), PortalUtil.getCurrentUser().getUsername(), vo);
     }
 
+    /**
+     * 手动清理临时表
+     * @return
+     */
+    public String clearTemporaryTable(Date date) {
+        return date+" 清理成功！";
+    }
 }

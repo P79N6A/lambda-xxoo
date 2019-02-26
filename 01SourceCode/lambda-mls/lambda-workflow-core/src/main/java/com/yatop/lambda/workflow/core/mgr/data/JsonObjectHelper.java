@@ -128,7 +128,7 @@ public class JsonObjectHelper {
         JSON_OBJECT_MGR.recoverJsonObject(jsonObjectId, workflowContext.getOperId());
     }
 
-    public static void completeJsonObject(CharValueContext context, JsonObject jsonObject) {
+    public static void updateJsonObject(CharValueContext context, JsonObject jsonObject) {
         WorkflowContext workflowContext = context.getWorkflowContext();
 
         if(jsonObject.data().getStorageLocation() == StorageLocationEnum.TABLE_FIELD.getLocation()) {

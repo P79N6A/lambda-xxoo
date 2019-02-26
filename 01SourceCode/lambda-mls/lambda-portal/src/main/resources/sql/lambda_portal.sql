@@ -157,15 +157,7 @@ INSERT INTO `t_menu` VALUES ('135', '3', '密码重置', null, null, 'user:reset
 INSERT INTO `t_menu` VALUES ('136', '10', '导出Excel', null, null, 'log:export', null, '1', null, '2019-01-23 06:37:27', null);
 INSERT INTO `t_menu` VALUES ('137', '102', '导出Excel', null, null, 'job:export', null, '1', null, '2019-01-23 06:37:59', null);
 INSERT INTO `t_menu` VALUES ('138', '109', '导出Excel', null, null, 'jobLog:export', null, '1', null, '2019-01-23 06:38:32', null);
-INSERT INTO `t_menu` VALUES ('140', '0', '项目管理', '/project', 'project/Project', 'project:view', 'coffee', '0', '3', '2019-02-18 12:03:04', '2019-02-19 02:28:07');
-INSERT INTO `t_menu` VALUES ('141', '140', '新增项目', null, null, 'project:add', null, '1', '1', '2019-02-18 12:03:59', null);
-INSERT INTO `t_menu` VALUES ('142', '140', '删除项目', null, null, 'project:delete', null, '1', '2', '2019-02-18 12:03:59', null);
-INSERT INTO `t_menu` VALUES ('143', '140', '修改项目', null, null, 'project:update', null, '1', '3', '2019-02-18 12:03:59', null);
-INSERT INTO `t_menu` VALUES ('144', '140', '项目查重', null, null, 'project:exists', null, '1', '4', '2019-02-18 12:03:59', null);
-INSERT INTO `t_menu` VALUES ('145', '140', '成员列表', null, null, 'project:memberView', null, '1', '5', '2019-02-18 12:03:59', null);
-INSERT INTO `t_menu` VALUES ('146', '140', '成员增加', null, null, 'project:memberAdd', null, '1', '6', '2019-02-18 12:03:59', null);
-INSERT INTO `t_menu` VALUES ('147', '140', '成员删除', null, null, 'project:memberDelete', null, '1', '7', '2019-02-18 12:03:59', null);
-INSERT INTO `t_menu` VALUES ('148', '140', '项目转让', null, null, 'project:ownerTransfer', null, '1', '8', '2019-02-18 12:03:59', null);
+INSERT INTO `t_menu` VALUES ('140', '0', '项目管理', '/project', 'project/Project', 'project:operate', 'coffee', '0', '3', '2019-02-18 12:03:04', '2019-02-19 02:28:07');
 
 -- ----------------------------
 -- Table structure for t_role

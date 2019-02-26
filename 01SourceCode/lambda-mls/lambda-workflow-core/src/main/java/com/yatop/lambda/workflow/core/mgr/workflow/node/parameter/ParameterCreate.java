@@ -25,11 +25,11 @@ public class ParameterCreate {
         return createParameter(workflowContext, node, cmptChar, null);
     }
 
-    protected NodeParameter createParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, String paramValue) {
+    protected NodeParameter createParameter(WorkflowContext workflowContext, Node node, CmptChar cmptChar, String defaultParamValue) {
 
         if(cmptChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
             CharValue charValue = new CharValue(cmptChar);
-            charValue.setParamValue(paramValue);
+            charValue.setTextValue(defaultParamValue);
             ParamCharValueHelper.createParamCharValue(workflowContext, node, charValue);
 
             WfFlowNodeParameter parameter = new WfFlowNodeParameter();
@@ -79,7 +79,7 @@ public class ParameterCreate {
         CmptSpec paramSpec = component.getParameter();
         if(paramSpec.cmptCharCount() > 0) {
             for (CmptChar cmptChar : paramSpec.getCmptChars()) {
-                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getParameter(cmptChar.data().getCharId()).getCharValue().getParamValue());
+                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getParameter(cmptChar.data().getCharId()).getCharValue().getTextValue());
                 node.putParameter(parameter);
             }
         }
@@ -88,7 +88,7 @@ public class ParameterCreate {
         CmptSpec optimizeSpec = component.getOptimizeExecution();
         if(optimizeSpec.cmptCharCount() > 0) {
             for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
-                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getOptimizeParameter(cmptChar.data().getCharId()).getCharValue().getParamValue());
+                NodeParameter parameter = createParameter(workflowContext, node, cmptChar, otherNode.getOptimizeParameter(cmptChar.data().getCharId()).getCharValue().getTextValue());
                 node.putOptimizeParameter(parameter);
             }
         }

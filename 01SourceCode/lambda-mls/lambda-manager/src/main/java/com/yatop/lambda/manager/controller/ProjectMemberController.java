@@ -21,25 +21,31 @@ public class ProjectMemberController extends BaseController {
     private ProjectMemberService projectMemberService;
 
     @RequestMapping("member/list")
-    @RequiresPermissions("member:list")
+    @RequiresPermissions("project:operate")
     public JsonResponse getProjectMemberList(@RequestBody ProjectMemberRequest request){
         return PagerResponse.build(projectMemberService.getProjectMemberList(request), request);
     }
 
+    @RequestMapping("member/userListNotInProject")
+    @RequiresPermissions("project:operate")
+    public JsonResponse getUserListNotInProject(@RequestBody ProjectMemberRequest request){
+        return JsonResponse.build(projectMemberService.getUserListNotInProject(request));
+    }
+
     @RequestMapping("member/addProjectMembers")
-    @RequiresPermissions("member:add")
-    public JsonResponse addProjectMembers(ProjectMemberRequest request){
+    @RequiresPermissions("project:operate")
+    public JsonResponse addProjectMembers(@RequestBody ProjectMemberRequest request){
         return JsonResponse.build(projectMemberService.addProjectMembers(request));
     }
 
     @RequestMapping("member/deleteProjectMembers")
-    @RequiresPermissions("member:delete")
-    public JsonResponse deleteProjectMembers( ProjectMemberRequest request){
+    @RequiresPermissions("project:operate")
+    public JsonResponse deleteProjectMembers(@RequestBody ProjectMemberRequest request){
         return JsonResponse.build(projectMemberService.deleteProjectMembers(request));
     }
     @RequestMapping("member/changeProjectOwner")
-    @RequiresPermissions("member:changeProjectOwner")
-    public JsonResponse changeProjectOwner( ProjectMemberRequest request){
+    @RequiresPermissions("project:operate")
+    public JsonResponse changeProjectOwner(@RequestBody ProjectMemberRequest request){
         return JsonResponse.build(projectMemberService.changeProjectOwner(request));
     }
 }

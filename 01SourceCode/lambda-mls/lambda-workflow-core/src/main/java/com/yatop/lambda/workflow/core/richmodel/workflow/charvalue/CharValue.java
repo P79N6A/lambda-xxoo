@@ -14,12 +14,16 @@ import com.yatop.lambda.workflow.core.framework.chartype.clazz.tune.CharTypeTune
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.data.model.Model;
+import com.yatop.lambda.workflow.core.richmodel.data.table.DataTable;
+import com.yatop.lambda.workflow.core.richmodel.data.unstructured.CodeScript;
+import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonObject;
 
 public class CharValue implements IRichModel {
     private CmptChar cmptChar;
     private String charValue;	    //特征值
-    private String paramValue;	    //参数特征值内容
-    private RichModel outputValue;  //输出特征值内容
+    private String textValue;	    //特征值-文本内容
+    private RichModel objectValue;  //特征值-关联对象
 
     public CharValue(CmptChar cmptChar) {
         this(cmptChar, null);
@@ -31,10 +35,10 @@ public class CharValue implements IRichModel {
     }
 
     public JSONObject toJSON() {
-        JSONObject jsonObject = cmptChar.toJSON();
-        jsonObject.put("charValue", charValue);
-        jsonObject.put("paramValue", getParamValue());
-        jsonObject.put("outputValue", getOutputValue());
+        JSONObject jsonObject = this.cmptChar.toJSON();
+        jsonObject.put("charValue", this.charValue);
+        jsonObject.put("textValue", getTextValue());
+        jsonObject.put("objectValue", getObjectValue());
         return jsonObject;
     }
 
@@ -47,8 +51,8 @@ public class CharValue implements IRichModel {
     public void clear(boolean clearData) {
         cmptChar = null;
         charValue = null;
-        paramValue = null;
-        outputValue = null;
+        textValue = null;
+        objectValue = null;
     }
 
     public CmptChar getCmptChar() {
@@ -67,20 +71,20 @@ public class CharValue implements IRichModel {
         this.charValue = charValue;
     }
 
-    public String getParamValue() {
-        return paramValue;
+    public String getTextValue() {
+        return textValue;
     }
 
-    public void setParamValue(String paramValue) {
-        this.paramValue = paramValue;
+    public void setTextValue(String textValue) {
+        this.textValue = textValue;
     }
 
-    public RichModel getOutputValue() {
-        return outputValue;
+    public RichModel getObjectValue() {
+        return objectValue;
     }
 
-    public void setOutputValue(RichModel outputValue) {
-        this.outputValue = outputValue;
+    public void setObjectValue(RichModel objectValue) {
+        this.objectValue = objectValue;
     }
 
     public ICharTypeClazz getCharTypeClazzBean() {
@@ -118,36 +122,41 @@ public class CharValue implements IRichModel {
     public boolean isModelDataType() {
         return getCharTypeClazzBean() instanceof CharTypeModelGeneric;
     }
-
-    /*public String getBasicParamValue() {
-        return isBasicDataType() ? getParamValue() : null;
+/*
+    public String getBasicDataValue() {
+        return isBasicDataType() ? getTextValue() : null;
     }
 
     public String getTuneParamValue() {
-        return isTuneDataType() ? getParamValue() : null;
+        return isTuneDataType() ? getTextValue() : null;
     }
 
     public String getScriptParamValue() {
-        return isScriptDataType() ? getParamValue() : null;
+        return isScriptDataType() ? getTextValue() : null;
     }
 
     public String getJsonParamValue() {
-        return isJsonDataType() ? getParamValue() : null;
+        return isJsonDataType() ? getTextValue() : null;
     }
 
-    public JsonObject getAlgorithmOutputValue() {
-        return isAlgorithmDataType() ? (JsonObject) getOutputValue() : null;
+    public JsonObject getJsonAlgorithm() {
+        return isAlgorithmDataType() ? (JsonObject) getObjectValue() : null;
+    }
+    */
+
+    public CodeScript getCodeScript() {
+        return isScriptDataType() ? (CodeScript) getObjectValue() : null;
     }
 
-    public JsonObject getReportOutputValue() {
-        return isReportDataType() ? (JsonObject) getOutputValue() : null;
+    public JsonObject getJsonObject() {
+        return isJsonDataType() || isAlgorithmDataType() || isReportDataType() ? (JsonObject) getObjectValue() : null;
     }
 
-    public DataTable getTableOutputValue() {
-        return isTableDataType() ? (DataTable) getOutputValue() : null;
+    public DataTable getDataTable() {
+        return isTableDataType() ? (DataTable) getObjectValue() : null;
     }
 
-    public Model getModelOutputValue() {
-        return isModelDataType() ? (Model) getOutputValue() : null;
-    }*/
+    public Model getModel() {
+        return isModelDataType() ? (Model) getObjectValue() : null;
+    }
 }

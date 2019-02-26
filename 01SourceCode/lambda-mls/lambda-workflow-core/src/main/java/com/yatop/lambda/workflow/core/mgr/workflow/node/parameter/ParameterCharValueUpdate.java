@@ -19,37 +19,37 @@ public class ParameterCharValueUpdate {
     @Autowired
     private ParameterCreate parameterCreate;
 
-    private NodeParameter updateParameter(WorkflowContext workflowContext, Node node, NodeParameter targetParameter, String charValueText, Class<ParameterCharValueUpdate> none) {
+    private NodeParameter updateParameter(WorkflowContext workflowContext, Node node, NodeParameter targetParameter, String paramValue, Class<ParameterCharValueUpdate> none) {
 
         if(targetParameter.getCmptChar().data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
             if(!targetParameter.isSimulateParameter()) {
-                if(DataUtil.isEmpty(targetParameter.data().getCharValue()) && DataUtil.isEmpty(charValueText))
+                if(DataUtil.isEmpty(targetParameter.data().getCharValue()) && DataUtil.isEmpty(paramValue))
                     return targetParameter;
 
                 CharValue charValue = targetParameter.getCharValue();
-                charValue.setParamValue(charValueText);
+                charValue.setTextValue(paramValue);
                 ParamCharValueHelper.updateParamCharValue(workflowContext, node, charValue);
 
                 targetParameter.data().setCharValue(DataUtil.isNotEmpty(charValue.getCharValue()) ? charValue.getCharValue() : null);
                 return targetParameter;
             } else {
-                return parameterCreate.createParameter(workflowContext, node, targetParameter.getCmptChar(), charValueText);
+                return parameterCreate.createParameter(workflowContext, node, targetParameter.getCmptChar(), paramValue);
             }
         } else {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node parameter failed -- error source-level.", "节点参数来源级别不允许更新", node.data(), targetParameter.data());
         }
     }
 
-    public void updateParameter(WorkflowContext workflowContext, Node node, NodeParameter targetParameter, String charValueText) {
+    public void updateParameter(WorkflowContext workflowContext, Node node, NodeParameter targetParameter, String paramValue) {
 
         switch (SpecTypeEnum.valueOf(targetParameter.data().getSpecType())) {
             case PARAMETER: {
-                NodeParameter parameter = updateParameter(workflowContext, node, targetParameter, charValueText, ParameterCharValueUpdate.class);
+                NodeParameter parameter = updateParameter(workflowContext, node, targetParameter, paramValue, ParameterCharValueUpdate.class);
                 node.putParameter(parameter);
                 break;
             }
             case OPTIMIZE_EXECUTION: {
-                NodeParameter parameter = updateParameter(workflowContext, node, targetParameter, charValueText, ParameterCharValueUpdate.class);
+                NodeParameter parameter = updateParameter(workflowContext, node, targetParameter, paramValue, ParameterCharValueUpdate.class);
                 node.putOptimizeParameter(parameter);
                 break;
             }

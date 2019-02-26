@@ -30,8 +30,6 @@ public class ModelWarehouseMgr extends BaseMgr {
                 warehouse.isMwNameNotColoured() ||
                 warehouse.isMwTypeNotColoured() ||
                 warehouse.isOwnerProjectIdNotColoured() ||
-                warehouse.isModelDfsDirNotColoured() ||
-                warehouse.isModelLocalDirNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Insert model warehouse info failed -- invalid insert data.", "无效插入数据");
         }

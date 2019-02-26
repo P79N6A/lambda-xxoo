@@ -2,9 +2,11 @@ package com.yatop.lambda.portal.system.controller;
 
 import com.yatop.lambda.portal.common.annotation.Log;
 import com.yatop.lambda.portal.common.controller.BaseController;
+import com.yatop.lambda.portal.common.domain.PortalResponse;
 import com.yatop.lambda.portal.common.domain.QueryRequest;
 import com.yatop.lambda.portal.common.exception.PortalException;
 import com.yatop.lambda.portal.common.utils.MD5Util;
+import com.yatop.lambda.portal.common.utils.PortalUtil;
 import com.yatop.lambda.portal.system.domain.User;
 import com.yatop.lambda.portal.system.domain.UserConfig;
 import com.yatop.lambda.portal.system.service.UserConfigService;
@@ -176,5 +178,11 @@ public class UserController extends BaseController {
             log.error(message, e);
             throw new PortalException(message);
         }
+    }
+
+    @Log("通过token获得当前用户信息")
+    @GetMapping("currentUser")
+    public PortalResponse getCurrentUser() {
+        return new PortalResponse().data(PortalUtil.getCurrentUser());
     }
 }

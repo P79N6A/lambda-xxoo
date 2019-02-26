@@ -84,7 +84,8 @@ public class DataTableHelper {
         return new DataTable(table);
     }
 
-    public static void deleteTable(WorkflowContext workflowContext, DataTable table) {
+    public static void deleteTable(CharValueContext context, DataTable table) {
+        WorkflowContext workflowContext = context.getWorkflowContext();
         DATA_TABLE_MGR.deleteDataTable(table.data().getTableId(), workflowContext.getOperId());
 
         if(true) {
@@ -93,7 +94,9 @@ public class DataTableHelper {
         }
     }
 
-    public static void completeTable(WorkflowContext workflowContext, DataTable table) {
+    public static void updateTable(CharValueContext context, DataTable table) {
+        WorkflowContext workflowContext = context.getWorkflowContext();
+
         table.data().setTableRowsColoured(true);
         table.data().setTableColumnsColoured(true);
         table.data().setDataFileSizeColoured(true);
