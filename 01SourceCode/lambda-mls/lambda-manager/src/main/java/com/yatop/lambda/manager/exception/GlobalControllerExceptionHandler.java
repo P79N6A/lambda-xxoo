@@ -26,7 +26,7 @@ public class GlobalControllerExceptionHandler extends GlobalExceptionHandler {
 
     @ExceptionHandler(value = LambdaException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Object requestParamErrorHandler(HttpServletRequest req, LambdaException lambdaException) throws Exception {
         logger.info("业务异常错误", lambdaException);
         return JsonResponse.build(lambdaException);
