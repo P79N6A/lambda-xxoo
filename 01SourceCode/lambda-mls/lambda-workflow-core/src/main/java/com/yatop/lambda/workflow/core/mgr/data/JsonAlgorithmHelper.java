@@ -51,41 +51,39 @@ public class JsonAlgorithmHelper {
 
     public static void deleteJsonAlgorithm(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
+        clearJsonAlgorithm(context);
         JSON_OBJECT_MGR.deleteJsonObject(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
     }
 
     public static void recoverJsonAlgorithm(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         JSON_OBJECT_MGR.recoverJsonObject(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
-
-        clearJsonAlgorithm(context);
+        queryJsonAlgorithm(context.getCharValue());
     }
 
-    public static void updateJsonAlgorithm(CharValueContext context, JsonObject updateJsonObject) {
+    public static void updateJsonAlgorithm(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        JsonObject jsonObject = queryJsonAlgorithm(context.getCharValue());
+        JsonObject jsonObject = context.getCharValue().getJsonObject();
 
-        if(DataUtil.isNotNull(updateJsonObject) && DataUtil.equals(jsonObject.data().getObjectContent(), updateJsonObject.data().getObjectContent()))
-            return;
-
-        if(DataUtil.isNotNull(updateJsonObject) && DataUtil.isNotEmpty(updateJsonObject.data().getObjectContent())) {
-            jsonObject.data().setObjectContent(updateJsonObject.data().getObjectContent());
-            jsonObject.data().setObjectState(JsonObjectStateEnum.NORMAL.getState());
-        } else {
-            jsonObject.data().setObjectContent(null);
-            jsonObject.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
-        }
+        jsonObject.data().setObjectContentColoured(true);
+        jsonObject.data().setObjectStateColoured(true);
         JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
-
-        context.getCharValue().setObjectValue(jsonObject);
     }
 
     public static void clearJsonAlgorithm(CharValueContext context) {
-        updateJsonAlgorithm(context, null);
+        WorkflowContext workflowContext = context.getWorkflowContext();
+        JsonObject jsonObject = context.getCharValue().getJsonObject();
+
+        jsonObject.data().setObjectContent(null);
+        jsonObject.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
+        JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
     }
 
     public static JsonObject queryJsonAlgorithm(CharValue charValue) {
+        WfJsonObject jsonObject = JSON_OBJECT_MGR.queryJsonObject(Long.parseLong(charValue.getCharValue()));
 
-        return JsonObjectHelper.queryJsonObject(charValue);
+        JsonObject richJsonObject = new JsonObject(jsonObject);
+        charValue.setObjectValue(richJsonObject);
+        return richJsonObject;
     }
 }

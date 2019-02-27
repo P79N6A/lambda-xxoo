@@ -25,10 +25,11 @@ public class JsonObjectHelper {
         JSON_OBJECT_MGR = jsonObjectMgr;
     }
 
-    public static void createJsonObject(CharValueContext context, String defaultObjectContent) {
+    public static void createJsonObject(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         Node node = context.getNode();
         CmptChar cmptChar = context.getCmptChar();
+        String defaultObjectContent = context.getCharValue().getTextValue();
 
         WfJsonObject jsonObject = new WfJsonObject();
         jsonObject.setObjectName(String.format("general_%d_%s", node.data().getNodeId(), cmptChar.data().getCharId()));
@@ -60,13 +61,13 @@ public class JsonObjectHelper {
     public static void recoverJsonObject(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         JSON_OBJECT_MGR.recoverJsonObject(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
-
         queryJsonObject(context.getCharValue());
     }
 
-    public static void updateJsonObject(CharValueContext context, String updateObjectContent) {
+    public static void updateJsonObject(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        JsonObject jsonObject = queryJsonObject(context.getCharValue());
+        String updateObjectContent = context.getCharValue().getTextValue();
+        JsonObject jsonObject = context.getCharValue().getJsonObject();
 
         if(DataUtil.equals(jsonObject.data().getObjectContent(), updateObjectContent))
             return;
@@ -80,16 +81,15 @@ public class JsonObjectHelper {
         }
         JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
 
-        context.getCharValue().setObjectValue(jsonObject);
         context.getCharValue().setTextValue(jsonObject.data().getObjectContent());
     }
 
-    public static void clearJsonObject(CharValueContext context) {
-        updateJsonObject(context, null);
-    }
+    /*public static void clearJsonObject(CharValueContext context) {
+        context.getCharValue().setTextValue(null);
+        updateJsonObject(context);
+    }*/
 
     public static JsonObject queryJsonObject(CharValue charValue) {
-
         WfJsonObject jsonObject = JSON_OBJECT_MGR.queryJsonObject(Long.parseLong(charValue.getCharValue()));
 
         JsonObject richJsonObject = new JsonObject(jsonObject);

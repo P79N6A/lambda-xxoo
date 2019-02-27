@@ -9,6 +9,7 @@ import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.model.Model;
+import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,24 +49,50 @@ public class ModelHelper {
         return new Model(model);
     }
 
-    public static void deleteModel(WorkflowContext workflowContext, Model model) {
-        MODEL_MGR.deleteModel(model.data().getModelId(), workflowContext.getOperId());
-
-        //TODO ignore model state
-        //TODO clear modelFile & summaryDataFile
+    public static void deleteCachedModel(CharValueContext context) {
+        WorkflowContext workflowContext = context.getWorkflowContext();
+        clearCachedModel(context);
+        MODEL_MGR.deleteModel(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
     }
 
-    public static void completeModel(WorkflowContext workflowContext, Model model) {
+    public static void recoverCachedModel(CharValueContext context) {
+        WorkflowContext workflowContext = context.getWorkflowContext();
+        MODEL_MGR.deleteModel(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
+        queryCachedModel(context.getCharValue());
+    }
+
+    public static void updateCachedModel(CharValueContext context) {
+        WorkflowContext workflowContext = context.getWorkflowContext();
+        Model model = context.getCharValue().getModel();
+
         model.data().setModelNameColoured(true);
         model.data().setModelFileSizeColoured(true);
         model.data().setTrainTableIdColoured(true);
         model.data().setTrainCostTimeColoured(true);
         model.data().setModelState(ModelStateEnum.NORMAL.getState());
         MODEL_MGR.updateModel(model.data(), workflowContext.getOperId());
+
+        //TODO synchronize dfs model file to local filesystem
     }
 
-    public static Model queryModel(Long modelId) {
-        MwModel model = MODEL_MGR.queryModel(modelId);
-        return new Model(model);
+    public static void clearCachedModel(CharValueContext context) {
+        WorkflowContext workflowContext = context.getWorkflowContext();
+        Model model = context.getCharValue().getModel();
+
+        model.data().setModelFileSize(null);
+        model.data().setTrainTableId(null);
+        model.data().setTrainCostTime(null);
+        model.data().setModelState(ModelStateEnum.EMPTY.getState());
+        MODEL_MGR.updateModel(model.data(), workflowContext.getOperId());
+
+        //TODO remove dfs & local model file
+    }
+
+    public static Model queryCachedModel(CharValue charValue) {
+        MwModel model = MODEL_MGR.queryModel(Long.parseLong(charValue.getCharValue()));
+
+        Model richModel = new Model(model);
+        charValue.setObjectValue(richModel);
+        return richModel;
     }
 }

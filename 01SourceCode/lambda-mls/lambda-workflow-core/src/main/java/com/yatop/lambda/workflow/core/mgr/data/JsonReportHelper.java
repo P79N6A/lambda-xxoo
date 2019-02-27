@@ -75,45 +75,41 @@ public class JsonReportHelper {
 
     public static void deleteJsonReport(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        JsonObject jsonObject = queryJsonReport(context.getCharValue());
+        clearJsonReport(context);
         JSON_OBJECT_MGR.deleteJsonObject(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
-
-        //TODO remove dfs & local json object file
     }
 
     public static void recoverJsonReport(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         JSON_OBJECT_MGR.recoverJsonObject(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
-
-        clearJsonReport(context);
+        queryJsonReport(context.getCharValue());
     }
 
     public static void updateJsonReport(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        JsonObject jsonObject = queryJsonReport(context.getCharValue());
+        JsonObject jsonObject = context.getCharValue().getJsonObject();
 
-        if(jsonObject.data().getObjectState() != JsonObjectStateEnum.NORMAL.getState()) {
-            jsonObject.data().setObjectState(JsonObjectStateEnum.NORMAL.getState());
-            JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
-        }
+        jsonObject.data().setObjectState(JsonObjectStateEnum.NORMAL.getState());
+        JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
 
-        context.getCharValue().setObjectValue(jsonObject);
+        //TODO synchronize dfs report file to local filesystem
     }
 
     public static void clearJsonReport(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        JsonObject jsonObject = queryJsonReport(context.getCharValue());
+        JsonObject jsonObject = context.getCharValue().getJsonObject();
 
-        if(jsonObject.data().getObjectState() != JsonObjectStateEnum.EMPTY.getState()) {
-            jsonObject.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
-            JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
-        }
+        jsonObject.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
+        JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
 
-        context.getCharValue().setObjectValue(jsonObject);
+        //TODO remove dfs & local report file
     }
 
     public static JsonObject queryJsonReport(CharValue charValue) {
+        WfJsonObject jsonObject = JSON_OBJECT_MGR.queryJsonObject(Long.parseLong(charValue.getCharValue()));
 
-        return JsonObjectHelper.queryJsonObject(charValue);
+        JsonObject richJsonObject = new JsonObject(jsonObject);
+        charValue.setObjectValue(richJsonObject);
+        return richJsonObject;
     }
 }

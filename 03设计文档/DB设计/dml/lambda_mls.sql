@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-02-21 02:54:19
+Date: 2019-02-28 03:12:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -950,8 +950,8 @@ CREATE TABLE `dw_data_warehouse` (
   `DW_NAME` varchar(200) NOT NULL COMMENT '数据库名',
   `DW_TYPE` int(11) NOT NULL COMMENT '数据库类型\r\n            0：公共数据库，仅有一个，用于存放实验模版所预置的数据表\r\n            1：项目数据库，随项目创建同时生成，存放项目中产生的数据表',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID，数据库类型为公共数据库时设为-1',
-  `DATA_DFS_DIR` varchar(800) NOT NULL COMMENT 'DFS数据目录，存放普通数据表的数据文件和数据概要文件\r\n            \r\n            ${HDFS_SITE}/${DFS_WORK_ROOT}/dw_data/<dw_code>',
-  `DATA_LOCAL_DIR` varchar(800) NOT NULL COMMENT '本地数据目录，缓存普通数据表的数据概要文件\r\n            \r\n            ${LOCAL_WORK_ROOT}/dw_data/<dw_code>',
+  `DATA_DFS_DIR` varchar(800) DEFAULT NULL COMMENT 'DFS数据目录，存放普通数据表的数据文件和数据概要文件\r\n            \r\n            ${HDFS_SITE}/${DFS_WORK_ROOT}/dw_data/<dw_code>',
+  `DATA_LOCAL_DIR` varchar(800) DEFAULT NULL COMMENT '本地数据目录，缓存普通数据表的数据概要文件\r\n            \r\n            ${LOCAL_WORK_ROOT}/dw_data/<dw_code>',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -1065,8 +1065,8 @@ CREATE TABLE `mw_model_warehouse` (
   `MW_NAME` varchar(200) NOT NULL COMMENT '模型库名',
   `MW_TYPE` int(11) NOT NULL COMMENT '数据库类型\r\n            0：公共模型库（长期建议不支持）\r\n            1：项目模型库，随项目创建同时生成，存放项目中产生的模型',
   `OWNER_PROJECT_ID` bigint(20) DEFAULT NULL COMMENT '所属项目ID，模型库类型为公共模型库时设为-1',
-  `MODEL_DFS_DIR` varchar(800) NOT NULL COMMENT 'DFS模型目录，存放普通模型的模型文件和模型概要文件\r\n            \r\n            ${HDFS_SITE}/${DFS_WORK_ROOT}/mw_model/<mw_code>',
-  `MODEL_LOCAL_DIR` varchar(800) NOT NULL COMMENT '本地模型目录，缓存普通模型的模型概要文件\r\n            \r\n            ${LOCAL_WORK_ROOT}/mw_model/<mw_code>',
+  `MODEL_DFS_DIR` varchar(800) DEFAULT NULL COMMENT 'DFS模型目录，存放普通模型的模型文件和模型概要文件\r\n            \r\n            ${HDFS_SITE}/${DFS_WORK_ROOT}/mw_model/<mw_code>',
+  `MODEL_LOCAL_DIR` varchar(800) DEFAULT NULL COMMENT '本地模型目录，缓存普通模型的模型概要文件\r\n            \r\n            ${LOCAL_WORK_ROOT}/mw_model/<mw_code>',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
@@ -1314,9 +1314,9 @@ CREATE TABLE `wf_execution_task` (
   `ENGINE_TYPE` varchar(200) DEFAULT 'unknown' COMMENT '计算引擎',
   `EXTERNAL_ID` varchar(800) DEFAULT NULL COMMENT '外部任务ID，比如yarn的application id',
   `TASK_CONTENT` mediumtext COMMENT '任务内容',
-  `SUBMIT_FILE` varchar(800) DEFAULT NULL COMMENT '提交文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/submit_<task_id>_<module_code>.json',
-  `RETURN_FILE` varchar(800) DEFAULT NULL COMMENT '返回文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/return_<task_id>_<module_code>.json',
-  `LOG_FILE` varchar(800) DEFAULT NULL COMMENT '日志文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/log_<task_id>_<module_code>.log',
+  `SUBMIT_FILE` varchar(800) DEFAULT NULL COMMENT '提交文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/submit_<job_id>_<task_id>.json',
+  `RETURN_FILE` varchar(800) DEFAULT NULL COMMENT '返回文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/return_<job_id>_<task_id>.json',
+  `LOG_FILE` varchar(800) DEFAULT NULL COMMENT '日志文件名，存放在运行目录下\r\n            \r\n            ${JOB_DIR}/log_<job_id>_<task_id>.log',
   `COST_TIME` bigint(20) DEFAULT NULL COMMENT '运行耗时，单位毫秒',
   `TASK_START_TIME` datetime DEFAULT NULL COMMENT '任务开始时间',
   `TASK_END_TIME` datetime DEFAULT NULL COMMENT '任务结束时间',
@@ -1333,7 +1333,7 @@ CREATE TABLE `wf_execution_task` (
   UNIQUE KEY `Index_1` (`OWNER_JOB_ID`,`REL_NODE_ID`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_JOB_ID`,`TASK_STATE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_PROJECT_ID`,`TASK_STATE`,`STATUS`,`CREATE_TIME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='工作流运行任务表';
 
 -- ----------------------------
 -- Records of wf_execution_task

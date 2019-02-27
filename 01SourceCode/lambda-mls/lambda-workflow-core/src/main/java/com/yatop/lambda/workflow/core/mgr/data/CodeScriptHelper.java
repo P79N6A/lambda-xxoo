@@ -23,10 +23,11 @@ public class CodeScriptHelper {
         CODE_SCRIPT_MGR = codeScriptMgr;
     }
 
-    public static void createCodeScript4Sql(CharValueContext context, String defaultScriptContent) {
+    public static void createCodeScript4Sql(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         Node node = context.getNode();
         CmptChar cmptChar = context.getCmptChar();
+        String defaultScriptContent = context.getCharValue().getTextValue();
 
         WfCodeScript codeScript = new WfCodeScript();
         codeScript.setScriptName(String.format("sql_%d_%s", node.data().getNodeId(), cmptChar.data().getCharId()));
@@ -57,13 +58,13 @@ public class CodeScriptHelper {
     public static void recoverCodeScript(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         CODE_SCRIPT_MGR.recoverCodeScript(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
-
         queryCodeScript(context.getCharValue());
     }
 
-    public static void updateCodeScript(CharValueContext context, String updateScriptContent) {
+    public static void updateCodeScript(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        CodeScript codeScript = queryCodeScript(context.getCharValue());
+        String updateScriptContent = context.getCharValue().getTextValue();
+        CodeScript codeScript = context.getCharValue().getCodeScript();
 
         if(DataUtil.equals(codeScript.data().getScriptContent(), updateScriptContent))
             return;
@@ -77,13 +78,13 @@ public class CodeScriptHelper {
         }
         CODE_SCRIPT_MGR.updateCodeScript(codeScript.data(), workflowContext.getOperId());
 
-        context.getCharValue().setObjectValue(codeScript);
         context.getCharValue().setTextValue(codeScript.data().getScriptContent());
     }
 
-    public static void clearCodeScript(CharValueContext context) {
-        updateCodeScript(context, null);
-    }
+    /*public static void clearCodeScript(CharValueContext context) {
+        context.getCharValue().setTextValue(null);
+        updateCodeScript(context);
+    }*/
 
     public static CodeScript queryCodeScript(CharValue charValue) {
 

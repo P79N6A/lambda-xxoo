@@ -73,6 +73,6 @@ public abstract class CharTyeClazzBaseClazz implements ICharTypeClazz {
 
     @Override
     public boolean validateCharValue(CharValue charValue) {
-        return false;
+        return true;
     }
 }
