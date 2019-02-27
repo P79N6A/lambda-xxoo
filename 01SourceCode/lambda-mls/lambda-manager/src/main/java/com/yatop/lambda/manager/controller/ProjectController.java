@@ -5,6 +5,9 @@ import com.yatop.lambda.manager.api.response.JsonResponse;
 import com.yatop.lambda.manager.api.response.PagerResponse;
 import com.yatop.lambda.manager.service.ProjectService;
 import com.yatop.lambda.portal.common.controller.BaseController;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 
-
+@Api(value="项目管理")
 @RestController
 public class ProjectController extends BaseController {
 
@@ -24,7 +27,8 @@ public class ProjectController extends BaseController {
     // 项目列表
     @RequestMapping("project/list")
     @RequiresPermissions("project:operate")
-    public JsonResponse getProjectList(@RequestBody ProjectRequest vo) {
+    @ApiOperation(value = "查询项目列表", httpMethod = "POST")
+    public JsonResponse getProjectList(@ApiParam(value = "必填项:pageSize,pageNum查询分页,可选项:keyword查询关键字", required = true)@RequestBody ProjectRequest vo) {
         return PagerResponse.build(projectService.queryProjectExt(vo), vo);
     }
 
@@ -82,9 +86,9 @@ public class ProjectController extends BaseController {
      * 调度清空临时表
      * @result
      */
-    @RequestMapping("project/timingClearTemporaryTable")
+    @RequestMapping("project/timingClearTemporaryTable/{saveTime}")
     @RequiresPermissions("project:operate")
-    public JsonResponse timingClearTemporaryTable(){
+    public JsonResponse timingClearTemporaryTable(@PathVariable Integer saveTime){
         return JsonResponse.build("保存成功！");
     }
 }

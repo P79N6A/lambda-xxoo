@@ -36,7 +36,7 @@ lambda-framework:
   #数据源配置
   log4jdbc.enable: false
   datasource:
-    jdbcUrl: jdbc:mysql://127.0.0.1:3306/test_mls?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useAffectedRows=true&useSSL=false
+    jdbcUrl: jdbc:mysql://47.106.71.105:3306/lambda-mls?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useAffectedRows=true&useSSL=false
     username: root
     password: root
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -57,7 +57,7 @@ lambda-portal:
 
   shiro:
     # 后端免认证接口 url
-    anonUrl: /login,/logout/**,/regist,/user/check/**
+    anonUrl: /login,/logout/**,/regist,/user/check/**,/swagger-ui.html,/swagger-resources/**,/webjars/**,/images/**,/v2/api-docs**,/configuration/ui,/configuration/security
     # token有效期，单位秒
     jwtTimeOut: 3600
 
@@ -65,3 +65,6 @@ lambda-workflow-engine:
   daemon:
     enable: true
     maxRunningJobs: 8
+
+## table 上传文件接口
+uploadFileDir: ./uploadFile/
