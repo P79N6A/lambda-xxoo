@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-02-28 03:12:33
+Date: 2019-02-28 16:02:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1344,7 +1344,7 @@ CREATE TABLE `wf_execution_task` (
 -- ----------------------------
 DROP TABLE IF EXISTS `wf_flow`;
 CREATE TABLE `wf_flow` (
-  `FLOW_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '工作流ID，同实验ID值',
+  `FLOW_ID` bigint(20) NOT NULL COMMENT '工作流ID，同实验ID值',
   `FLOW_NAME` varchar(200) NOT NULL COMMENT '工作流名称，自动生成',
   `OWNER_PROJECT_ID` bigint(20) NOT NULL COMMENT '所属项目ID',
   `SHARE_LOCK_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '共享锁状态，实验运行和快照期间加锁\r\n            \r\n            0：未加锁\r\n            1：已加锁',

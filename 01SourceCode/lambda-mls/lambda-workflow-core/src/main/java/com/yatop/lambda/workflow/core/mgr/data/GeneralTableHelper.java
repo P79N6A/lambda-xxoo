@@ -9,11 +9,13 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.table.DataTableMgr;
 import com.yatop.lambda.core.utils.DataTableFileUtil;
 import com.yatop.lambda.core.utils.DataTableNameUtil;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataTable;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
+import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,10 +30,10 @@ public class GeneralTableHelper {
         DATA_TABLE_MGR = dataTableMgr;
     }
 
-    public static DataTable createGeneralTable4Import(WorkflowContext workflowContext, String tableName) {
-        if(existsTable(workflowContext, tableName))
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create general table failed -- table name already existed.", String.format("表名已存在:%s", tableName));
+    public static DataTable createGeneralTable(WorkflowContext workflowContext, String tableName) {
 
+        if(existsGeneralTable(workflowContext, tableName))
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create general table failed -- table name already existed.", String.format("表名已存在:%s", tableName));
 
         DataWarehouse dataWarehouse = null;
         if(DataTableNameUtil.existsDatabaseName(tableName)) {
@@ -62,18 +64,16 @@ public class GeneralTableHelper {
         return new DataTable(table);
     }
 
-    public static void deleteTable(CharValueContext context, DataTable table) {
+    public static void deleteGeneralTable(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        DATA_TABLE_MGR.deleteDataTable(table.data().getTableId(), workflowContext.getOperId());
+        DATA_TABLE_MGR.deleteDataTable(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
 
-        if(true) {
-            //TODO ignore table state
-            //TODO clear dataFile & summaryDataFile
-        }
+        //TODO remove dfs & local table file
     }
 
-    public static void updateTable(CharValueContext context, DataTable table) {
+    public static void updateGeneralTable(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
+        DataTable table = context.getCharValue().getDataTable();
 
         table.data().setTableRowsColoured(true);
         table.data().setTableColumnsColoured(true);
@@ -82,12 +82,15 @@ public class GeneralTableHelper {
         DATA_TABLE_MGR.updateDataTable(table.data(), workflowContext.getOperId());
     }
 
-    public static DataTable queryTable(Long tableId) {
-        DwDataTable table = DATA_TABLE_MGR.queryDataTable(tableId);
-        return new DataTable(table);
+    public static DataTable queryGeneralTable(CharValue charValue) {
+        DwDataTable table = DATA_TABLE_MGR.queryDataTable(Long.parseLong(charValue.getCharValue()));
+
+        DataTable richTable = new DataTable(table);
+        charValue.setObjectValue(richTable);
+        return richTable;
     }
 
-    public static DataTable queryTable(WorkflowContext workflowContext, String tableName) {
+    public static DataTable queryGeneralTable(WorkflowContext workflowContext, String tableName) {
         DataWarehouse dataWarehouse = null;
         if(DataTableNameUtil.existsDatabaseName(tableName)) {
             String[] partitions = DataTableNameUtil.parseTableFullName(tableName);
@@ -98,10 +101,13 @@ public class GeneralTableHelper {
         }
 
         DwDataTable table = DATA_TABLE_MGR.queryDataTable(dataWarehouse.data().getDwId(), tableName);
+        if(DataUtil.isNull(table))
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query data table info failed -- invalid status or not found.", "数据表信息不存在");
+
         return new DataTable(table);
     }
 
-    public static boolean existsTable(WorkflowContext workflowContext, String tableName) {
+    public static boolean existsGeneralTable(WorkflowContext workflowContext, String tableName) {
         DataWarehouse dataWarehouse = null;
         if(DataTableNameUtil.existsDatabaseName(tableName)) {
             String[] partitions = DataTableNameUtil.parseTableFullName(tableName);
