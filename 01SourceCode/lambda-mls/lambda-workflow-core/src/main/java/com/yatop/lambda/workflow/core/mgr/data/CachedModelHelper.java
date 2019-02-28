@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ModelHelper {
+public class CachedModelHelper {
 
     private static ModelMgr MODEL_MGR;
 
@@ -57,7 +57,7 @@ public class ModelHelper {
 
     public static void recoverCachedModel(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        MODEL_MGR.deleteModel(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
+        MODEL_MGR.recoverModel(Long.parseLong(context.getCharValue().getCharValue()), workflowContext.getOperId());
         queryCachedModel(context.getCharValue());
     }
 

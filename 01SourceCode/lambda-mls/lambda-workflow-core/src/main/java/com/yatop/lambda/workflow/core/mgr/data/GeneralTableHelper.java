@@ -1,7 +1,10 @@
 package com.yatop.lambda.workflow.core.mgr.data;
 
 import com.yatop.lambda.base.model.DwDataTable;
-import com.yatop.lambda.core.enums.*;
+import com.yatop.lambda.core.enums.DataFileTypeEnum;
+import com.yatop.lambda.core.enums.DataTableStateEnum;
+import com.yatop.lambda.core.enums.DataTableTypeEnum;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.table.DataTableMgr;
 import com.yatop.lambda.core.utils.DataTableFileUtil;
@@ -16,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DataTableHelper {
+public class GeneralTableHelper {
 
     private static DataTableMgr DATA_TABLE_MGR;
 
@@ -55,31 +58,6 @@ public class DataTableHelper {
         table.setDataFile(DataTableFileUtil.getFilePath4General(dataWarehouseDfsDir, table.getTableId()));
         table.setSummaryDfsFile(DataTableFileUtil.getSummaryFilePath4General(dataWarehouseDfsDir, table.getTableId()));
         table.setSummaryLocalFile(DataTableFileUtil.getSummaryFilePath4General(dataWarehouseLocalDir, table.getTableId()));
-        DATA_TABLE_MGR.updateDataTable(table, workflowContext.getOperId());
-        return new DataTable(table);
-    }
-
-    public static DataTable createCachedTable(CharValueContext context) {
-        WorkflowContext workflowContext = context.getWorkflowContext();
-        Node node = context.getNode();
-        CmptChar cmptChar = context.getCmptChar();
-
-        DwDataTable table = new DwDataTable();
-        table.setTableName(String.format("tmp$%d_%d_%s", node.data().getOwnerFlowId(), node.data().getNodeId(), cmptChar.data().getCharId()));
-        table.setTableType(DataTableTypeEnum.CACHED.getType());
-        table.setOwnerDwId(workflowContext.getDataWarehouse().data().getDwId());
-        table.setRelFlowId(workflowContext.getWorkflow().data().getFlowId());
-        table.setRelNodeId(node.data().getNodeId());
-        table.setRelCharId(cmptChar.data().getCharId());
-        table.setDataFileType(DataFileTypeEnum.PARQUET.getType());
-        table.setTableState(DataTableStateEnum.EMPTY.getState());
-        table = DATA_TABLE_MGR.insertDataTable(table, workflowContext.getOperId());
-
-        String flowDfsDir = workflowContext.getWorkflow().data().getFlowDfsDir();
-        String flowLocalDir = workflowContext.getWorkflow().data().getFlowLocalDir();
-        table.setDataFile(DataTableFileUtil.getFilePath4Cached(flowDfsDir, node.data().getNodeId(), table.getTableId()));
-        table.setSummaryDfsFile(DataTableFileUtil.getSummaryFilePath4Cached(flowDfsDir, node.data().getNodeId(), table.getTableId()));
-        table.setSummaryLocalFile(DataTableFileUtil.getSummaryFilePath4Cached(flowLocalDir, node.data().getNodeId(), table.getTableId()));
         DATA_TABLE_MGR.updateDataTable(table, workflowContext.getOperId());
         return new DataTable(table);
     }

@@ -79,8 +79,7 @@ public class EditorService {
         Experiment richExperiment = new Experiment(experiment);
         WorkflowContext workflowContext = workflowCreate.createWorkflow(richExperiment, operId);
 
-        WfFlow flow = new WfFlow();
-        flow.copyProperties(workflowContext.getWorkflow().data());
+        WfFlow flow = workflowContext.getWorkflow().data().makeCopy();
         workflowContext.clear();
         return flow;
     }
@@ -97,8 +96,7 @@ public class EditorService {
             WorkflowContext copyWorkflowContext = WorkflowContext.BuildWorkflowContext4Preload(copyWorkflow, operId);
             WorkflowContext thisWorkflowContext = workflowCreate.createWorkflow(richExperiment, copyWorkflowContext, operId);
 
-            WfFlow flow = new WfFlow();
-            flow.copyProperties(thisWorkflowContext.getWorkflow().data());
+            WfFlow flow = thisWorkflowContext.getWorkflow().data().makeCopy();
             thisWorkflowContext.clear();
             return flow;
         } catch (Throwable exception) {
@@ -115,8 +113,7 @@ public class EditorService {
         WorkflowContext snapshotWorkflowContext = WorkflowContext.BuildWorkflowContext4ViewSnapshot(Snapshot.BuildSnapshot(snapshot), operId);
         WorkflowContext thisWorkflowContext = workflowCreate.createWorkflow(richExperiment, snapshotWorkflowContext, operId);
 
-        WfFlow flow = new WfFlow();
-        flow.copyProperties(thisWorkflowContext.getWorkflow().data());
+        WfFlow flow = thisWorkflowContext.getWorkflow().data().makeCopy();
         thisWorkflowContext.clear();
         return flow;
     }
@@ -130,8 +127,7 @@ public class EditorService {
         WorkflowContext thisWorkflowContext = workflowCreate.createWorkflow(richExperiment, templateWorkflowContext, operId);
         experimentTemplateMgr.increaseTemplateCount(template.getTemplateId(), operId);
 
-        WfFlow flow = new WfFlow();
-        flow.copyProperties(thisWorkflowContext.getWorkflow().data());
+        WfFlow flow = thisWorkflowContext.getWorkflow().data().makeCopy();
         thisWorkflowContext.clear();
         return flow;
     }

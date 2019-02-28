@@ -4,6 +4,7 @@ import com.yatop.lambda.manager.api.request.project.ProjectRequest;
 import com.yatop.lambda.manager.api.response.JsonResponse;
 import com.yatop.lambda.manager.api.response.PagerResponse;
 import com.yatop.lambda.manager.service.ProjectService;
+import com.yatop.lambda.portal.common.annotation.Log;
 import com.yatop.lambda.portal.common.controller.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,22 +25,28 @@ public class ProjectController extends BaseController {
     @Autowired
     private ProjectService projectService;
 
-    // 项目列表
+    @Log("项目列表分页查询")
     @RequestMapping("project/list")
     @RequiresPermissions("project:operate")
-    @ApiOperation(value = "查询项目列表", httpMethod = "POST")
-    public JsonResponse getProjectList(@ApiParam(value = "必填项:pageSize,pageNum查询分页,可选项:keyword查询关键字", required = true)@RequestBody ProjectRequest vo) {
+    public JsonResponse getProjectList(@RequestBody ProjectRequest vo) {
         return PagerResponse.build(projectService.queryProjectExt(vo), vo);
     }
 
-    // 新建项目
+    @Log("新建项目")
     @RequestMapping("project/add")
     @RequiresPermissions("project:operate")
     public JsonResponse addProject(@RequestBody ProjectRequest vo) {
         return JsonResponse.build(projectService.addProject(vo));
     }
 
-    // 删除项目
+    @Log("当前用户相关项目列表")
+    @RequestMapping("project/listByMember")
+    @RequiresPermissions("project:operate")
+    public JsonResponse getProjectListByMember() {
+        return JsonResponse.build(projectService.queryProject4CurrentUser());
+    }
+
+    @Log("删除项目")
     @RequestMapping("project/delete")
     @RequiresPermissions("project:operate")
     public JsonResponse deleteProject(@RequestBody ProjectRequest vo) {
@@ -47,31 +54,29 @@ public class ProjectController extends BaseController {
     }
 
 
-    // 修改项目
+    @Log("修改项目")
     @RequestMapping("project/update")
     @RequiresPermissions("project:operate")
     public JsonResponse Project(@RequestBody ProjectRequest vo) {
         return JsonResponse.build(projectService.updateProject(vo));
     }
 
-    // 检查项目是否存在
+    @Log("检查项目是否存在")
     @RequestMapping("project/exists")
     @RequiresPermissions("project:operate")
     public JsonResponse existsProject(@RequestBody ProjectRequest vo) {
         return JsonResponse.build(projectService.existsProject(vo));
     }
 
-    // 查看项目
+    @Log("查看项目")
     @RequestMapping("project/query")
     @RequiresPermissions("project:operate")
     public JsonResponse queryProject(@RequestBody ProjectRequest vo) {
         return JsonResponse.build(projectService.queryProject(vo.getProjectId()));
     }
 
-    /**
-     * 手动清理临时表
-     * @result
-     */
+
+    @Log("手动清理临时表")
     @RequestMapping("project/clearTemporaryTable")
     @RequiresPermissions("project:operate")
     public JsonResponse clearTemporaryTable(@RequestBody ProjectRequest vo){
@@ -82,10 +87,7 @@ public class ProjectController extends BaseController {
     }
 
 
-    /**
-     * 调度清空临时表
-     * @result
-     */
+    @Log("调度清理临时表")
     @RequestMapping("project/timingClearTemporaryTable/{saveTime}")
     @RequiresPermissions("project:operate")
     public JsonResponse timingClearTemporaryTable(@PathVariable Integer saveTime){

@@ -86,6 +86,29 @@ public class DataTableMgr extends BaseMgr {
 
     /*
      *
+     *   恢复模型信息
+     *   返回恢复数量
+     *
+     * */
+    public int recoverDataTable(Long id, String operId) {
+        if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover data table info  -- invalid recover condition.", "无效恢复条件");
+        }
+
+        try {
+            DwDataTable recoverTable = new DwDataTable();
+            recoverTable.setTableId(id);
+            recoverTable.setStatus(DataStatusEnum.NORMAL.getStatus());
+            recoverTable.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            recoverTable.setLastUpdateOper(operId);
+            return dwDataTableMapper.updateByPrimaryKeySelective(recoverTable);
+        } catch (Throwable e) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover data table info  failed.", "恢复数据表信息失败", e);
+        }
+    }
+
+    /*
+     *
      *   更新数据表信息（表名、列数、行数、数据文件大小、数据文件名、DFS概要文件名、本地概要文件名、数据表状态、描述）
      *   返回更新数量
      *

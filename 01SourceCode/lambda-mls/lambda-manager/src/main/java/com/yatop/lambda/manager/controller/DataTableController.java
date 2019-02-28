@@ -6,6 +6,7 @@ import com.yatop.lambda.manager.api.request.dataTable.*;
 import com.yatop.lambda.manager.api.response.JsonResponse;
 import com.yatop.lambda.manager.api.response.PagerResponse;
 import com.yatop.lambda.manager.service.DataTableService;
+import com.yatop.lambda.portal.common.annotation.Log;
 import com.yatop.lambda.portal.common.controller.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,23 +30,23 @@ public class DataTableController extends BaseController {
     @Autowired
     private DataTableService dataTableService;
 
+    @Log("数据表分页查询")
     @RequestMapping("dataTable/list")
     @RequiresPermissions("project:operate")
-    @ApiOperation(value = "查询数据表列表", httpMethod = "POST")
-    public JsonResponse getDataTableList(@ApiParam(value = "必填项:pageSize,pageNum查询分页,可选项:keyword查询关键字", required = true)@RequestBody TableRequest vo) {
+    public JsonResponse getDataTableList(@RequestBody TableRequest vo) {
         return PagerResponse.build(dataTableService.getDataTableList(vo), vo);
     }
 
+    @Log("删除数据表")
     @RequestMapping("dataTable/delete")
     @RequiresPermissions("project:operate")
-    @ApiOperation(value = "删除数据表", httpMethod = "POST")
     public JsonResponse deleteDataTable(@RequestBody DeleteTableRequest vo) {
         return JsonResponse.build(dataTableService.deleteDataTable(vo));
     }
 
+    @Log("上传数据表文件")
     @RequestMapping("dataTable/upload")
     @RequiresPermissions("project:operate")
-    @ApiOperation(value = "上传数据表文件", httpMethod = "POST")
     public JsonResponse uploadTable(@RequestParam MultipartFile file) throws Throwable {
         if (file.getSize() > 500 * 1024 * 1024) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "The file can't be larger than 500Mb", "文件大小不能超过500Mb");
@@ -70,10 +71,9 @@ public class DataTableController extends BaseController {
         return JsonResponse.build(dwTableUpload);
     }
 
-
+    @Log("预览表数据")
     @RequestMapping("dataTable/preview")
     @RequiresPermissions("project:operate")
-    @ApiOperation(value = "预览表数据", httpMethod = "POST")
     public JsonResponse previewTable(@RequestBody DwTablePreviewRequest request) throws Throwable {
         DwTablePreview tablePreview = dataTableService.previewTableFromExt(request.getFilePath(), request.getFileType(),
                 request.getEncodingFormat(), request.getExistsHeader(),request.getLimit());

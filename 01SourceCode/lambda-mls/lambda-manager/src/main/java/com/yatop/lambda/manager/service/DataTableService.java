@@ -4,7 +4,8 @@ import com.yatop.lambda.base.model.DwDataTable;
 import com.yatop.lambda.core.enums.FieldDataTypeEnum;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
-import com.yatop.lambda.core.exception.ResourceNotFoundException;
+import com.yatop.lambda.manager.exception.InternalServerException;
+import com.yatop.lambda.manager.exception.ResourceNotFoundException;
 import com.yatop.lambda.core.mgr.table.DataTableMgr;
 import com.yatop.lambda.manager.api.request.dataTable.*;
 import com.yatop.lambda.portal.common.utils.PortalUtil;
@@ -102,7 +103,7 @@ public class DataTableService {
                 idx++;
             }
         } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "error", e);
+            throw new InternalServerException("error", "error", e);
         } finally {
             LineIterator.closeQuietly(it);
         }
@@ -127,7 +128,7 @@ public class DataTableService {
                 CSVFormat formater = CSVFormat.newFormat('\t');// 制表符
                 parser = formater.parse(in);
             } else {
-                throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR,"Unsupported fileType =" + fileType);
+                throw new InternalServerException("Unsupported fileType =" + fileType);
             }
 
             if (idx == 0) {

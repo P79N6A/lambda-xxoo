@@ -22,6 +22,14 @@ public class ExperimentTemplateMgr extends BaseMgr {
     @Autowired
     ExtExperimentTemplateMapper extExperimentTemplateMapper;
 
+    /**
+     * 查询实验中最大数量
+     * @return
+     */
+    public int selectMaxTemplateCount(Long templateId){
+        return extExperimentTemplateMapper.selectMaxTemplateCount(templateId);
+    }
+
     /*
      *
      *   插入新实验模版信息（名称、序号、内容、概要、描述）
@@ -188,4 +196,5 @@ public class ExperimentTemplateMgr extends BaseMgr {
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Experiment template count plus one.", "实验模版计数加一失败", e);
         }
     }
+
 }

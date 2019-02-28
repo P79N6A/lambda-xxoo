@@ -1,5 +1,5 @@
 /**
- *    Copyright 2006-2018 the original author or authors.
+ *    Copyright 2006-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -65,6 +65,7 @@ public class LambdaEnhancedPlugin extends PluginAdapter {
         }
 
         generateLambdaCopyProperties(topLevelClass, columns, introspectedTable);
+        generateLambdaMakeCopy(topLevelClass, columns, introspectedTable);
         generateLambdaToJSON(topLevelClass, columns, introspectedTable);
         generateLambdaClear(topLevelClass, columns, introspectedTable);
         generateLambdaClearColoured(topLevelClass, columns, introspectedTable);
@@ -88,6 +89,7 @@ public class LambdaEnhancedPlugin extends PluginAdapter {
     public boolean modelRecordWithBLOBsClassGenerated(
             TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         generateLambdaCopyProperties(topLevelClass, introspectedTable.getAllColumns(), introspectedTable);
+        generateLambdaMakeCopy(topLevelClass, introspectedTable.getAllColumns(), introspectedTable);
         generateLambdaToJSON(topLevelClass, introspectedTable.getAllColumns(), introspectedTable);
         generateLambdaClear(topLevelClass, introspectedTable.getAllColumns(), introspectedTable);
         generateLambdaClearColoured(topLevelClass, introspectedTable.getAllColumns(), introspectedTable);
@@ -153,6 +155,46 @@ public class LambdaEnhancedPlugin extends PluginAdapter {
         }
 
         method.addBodyLine("return;");
+        topLevelClass.addMethod(method);
+    }
+
+    /**
+     *
+     * @param topLevelClass
+     *            the class to which the method will be added
+     * @param introspectedColumns
+     *            column definitions of this class and any superclass of this
+     *            class
+     * @param introspectedTable
+     *            the table corresponding to this class
+     */
+    protected void generateLambdaMakeCopy(TopLevelClass topLevelClass,
+                                                List<IntrospectedColumn> introspectedColumns,
+                                                IntrospectedTable introspectedTable) {
+        Method method = new Method();
+        method.setVisibility(JavaVisibility.PUBLIC);
+        method.setName("makeCopy");
+        method.setReturnType(topLevelClass.getType());
+        context.getCommentGenerator().addGeneralMethodComment(method, introspectedTable);
+
+        String typeShortName = topLevelClass.getType().getShortName();
+        StringBuilder sb = new StringBuilder();
+        sb.append(typeShortName).append(" copy = new ").append(typeShortName).append("();");
+        method.addBodyLine(sb.toString());
+
+        Iterator<IntrospectedColumn> iter = introspectedColumns.iterator();
+        while (iter.hasNext()) {
+            IntrospectedColumn introspectedColumn = iter.next();
+
+            String fieldName = introspectedColumn.getJavaProperty();
+
+            sb.setLength(0);
+            sb.append("if(this.").append(fieldName).append(" != null )");
+            sb.append(" {copy.").append(fieldName).append(" = ").append("this.").append(fieldName).append(";}");
+            method.addBodyLine(sb.toString());
+        }
+
+        method.addBodyLine("return copy;");
         topLevelClass.addMethod(method);
     }
 

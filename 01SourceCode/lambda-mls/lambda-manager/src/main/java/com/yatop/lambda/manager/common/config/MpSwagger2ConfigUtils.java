@@ -38,7 +38,7 @@ public class MpSwagger2ConfigUtils extends Swagger2Config {
     public Docket project() {
         ParameterBuilder tokenPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<>();
-        tokenPar.name("Authorization").description("token令牌").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+        tokenPar.name("Authentication").description("token令牌").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
         pars.add(tokenPar.build());
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("Manager-Api")

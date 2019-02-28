@@ -84,6 +84,29 @@ public class ModelMgr extends BaseMgr {
 
     /*
      *
+     *   恢复模型信息
+     *   返回恢复数量
+     *
+     * */
+    public int recoverModel(Long id, String operId) {
+        if(DataUtil.isNull(id) || DataUtil.isEmpty(operId)){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover model info -- invalid recover condition.", "无效恢复条件");
+        }
+
+        try {
+            MwModel recoverModel = new MwModel();
+            recoverModel.setModelId(id);
+            recoverModel.setStatus(DataStatusEnum.NORMAL.getStatus());
+            recoverModel.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            recoverModel.setLastUpdateOper(operId);
+            return mwModelMapper.updateByPrimaryKeySelective(recoverModel);
+        } catch (Throwable e) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover model info failed.", "恢复模型信息失败", e);
+        }
+    }
+
+    /*
+     *
      *   更新模型信息（模型文件大小、模型文件名、模型概要文件名、模型状态、描述）
      *   返回更新数量
      *

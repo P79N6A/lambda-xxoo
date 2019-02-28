@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.engine.service;
 
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.execution.job.JobHelper;
 import com.yatop.lambda.workflow.core.richmodel.workflow.execution.ExecutionJobQueue;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,7 @@ public class ExecutionScheduleService {
     }
 
     public void processRunningJob(ExecutionJobQueue jobQueue) {
-        WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4ExecutionSchedule(jobQueue.data().getJobId(), jobQueue.data().getCreateOper());
+        WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4ExecutionSchedule(JobHelper.queryExecutionJob(jobQueue), jobQueue.data().getCreateOper());
 
         monitorRunningJob(jobQueue);
 

@@ -1,6 +1,7 @@
 package com.yatop.lambda.core.mgr.project;
 
 import com.yatop.lambda.base.extend.mapper.ExtProjectMapper;
+import com.yatop.lambda.base.extend.model.ExtProjectDetail;
 import com.yatop.lambda.base.model.DwDataWarehouse;
 import com.yatop.lambda.base.model.MwModelWarehouse;
 import com.yatop.lambda.base.model.PrProject;
@@ -36,14 +37,10 @@ public class ProjectMgr extends BaseMgr {
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Insert project info failed -- invalid insert data.", "无效插入数据");
         }
-
         if(existsProject(project.getProjectCode(), project.getProjectName(), null)) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Insert project info failed -- code or name conflict.", "代码或名称冲突");
         }
-
         PrProject insertProject = new PrProject();
-        DwDataWarehouse insertDataWarehouse = new DwDataWarehouse();
-        MwModelWarehouse insertModelWarehouse = new MwModelWarehouse();
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertProject.copyProperties(project);
@@ -56,31 +53,6 @@ public class ProjectMgr extends BaseMgr {
             insertProject.setCreateTime(dtCurrentTime);
             insertProject.setCreateOper(operId);
             prProjectMapper.insertSelective(insertProject);
-
-            insertDataWarehouse.setDwCode("$"+insertProject.getProjectId());
-            insertDataWarehouse.setDwName(insertProject.getProjectName());
-            insertDataWarehouse.setDwType(DataWarehouseTypeEnum.PROJECT.getType());
-            insertDataWarehouse.setOwnerProjectId(insertProject.getProjectId());
-            insertDataWarehouse.setStatus(DataStatusEnum.NORMAL.getStatus());
-            insertDataWarehouse.setCreateTime(dtCurrentTime);
-            insertDataWarehouse.setCreateOper(operId);
-            dwDataWarehouseMapper.insertSelective(insertDataWarehouse);
-            insertDataWarehouse.setDataDfsDir(WorkDirectoryUtil.getDataWarehouseDfsDirectory(insertDataWarehouse.getDwId()));
-            insertDataWarehouse.setDataLocalDir(WorkDirectoryUtil.getDataWarehouseLocalDirectory(insertDataWarehouse.getDwId()));
-
-            insertModelWarehouse.setMwCode("$"+insertProject.getProjectId());
-            insertModelWarehouse.setMwName(insertProject.getProjectName());
-            insertModelWarehouse.setMwType(ModelWarehouseTypeEnum.PROJECT.getType());
-            insertModelWarehouse.setOwnerProjectId(insertProject.getProjectId());
-            insertModelWarehouse.setStatus(ModelStateEnum.NORMAL.getState());
-            insertModelWarehouse.setCreateTime(dtCurrentTime);
-            insertModelWarehouse.setCreateOper(operId);
-            mwModelWarehouseMapper.insert(insertModelWarehouse);
-            insertModelWarehouse.setModelDfsDir(WorkDirectoryUtil.getModelWarehouseDfsDirectory(insertModelWarehouse.getMwId()));
-            insertModelWarehouse.setModelLocalDir(WorkDirectoryUtil.getModelWarehouseLocalDirectory(insertModelWarehouse.getMwId()));
-
-            insertProject.setMwId(insertModelWarehouse.getMwId());
-            insertProject.setDwId(insertDataWarehouse.getDwId());
             return insertProject;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Insert project info failed.", "插入项目信息失败", e);
@@ -187,30 +159,14 @@ public class ProjectMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public List<PrProject> queryProject(String keyword, String user, PagerUtil pager) {
+    public List<ExtProjectDetail> queryProject(String keyword, String user, PagerUtil pager) {
 
         try {
             PagerUtil.startPage(pager);
             String keywordLike = DataUtil.likeKeyword(keyword);
 
-            //查询所有
-            if(DataUtil.isEmpty(keyword) && DataUtil.isEmpty(user)) {
-                PrProjectExample example = new PrProjectExample();
-                example.createCriteria().andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-                return prProjectMapper.selectByExample(example);
-            }
-
-            //按关键字查询
-            else if(DataUtil.isNotEmpty(keyword) && DataUtil.isEmpty(user)) {
-                PrProjectExample example = new PrProjectExample();
-                example.createCriteria().andProjectCodeLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-                example.or().andProjectNameLike(keywordLike).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-                example.setOrderByClause("CREATE_TIME ASC");
-                return prProjectMapper.selectByExample(example);
-            }
-
             //按用户查询
-            else if(DataUtil.isEmpty(keyword)) {
+            if(DataUtil.isEmpty(keyword)) {
                 return extProjectMapper.getProject4User(user, DataStatusEnum.NORMAL.getStatus());
 
              //关键字和用户混合查询
@@ -221,6 +177,11 @@ public class ProjectMgr extends BaseMgr {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project info failed.", "查询项目信息失败", e);
         }
+    }
+
+
+    public List<PrProject> queryProject4CurrentUser(String user) {
+        return extProjectMapper.getProject4Member(user, DataStatusEnum.NORMAL.getStatus());
     }
 
     /*

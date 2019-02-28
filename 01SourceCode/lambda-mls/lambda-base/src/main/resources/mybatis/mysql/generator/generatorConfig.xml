@@ -82,10 +82,6 @@
 			<property name="ignoreQualifiersAtRuntime" value="true" />
 			<generatedKey column="PROJECT_ID" sqlStatement="Mysql" identity="true"/>
 		</table>
-		<table tableName="SYS_PARAMETER" >
-			<property name="ignoreQualifiersAtRuntime" value="true" />
-			<generatedKey column="PARAM_ID" sqlStatement="Mysql" identity="true"/>
-		</table>
 		<table tableName="WF_CODE_SCRIPT" >
 			<property name="ignoreQualifiersAtRuntime" value="true" />
 			<generatedKey column="SCRIPT_ID" sqlStatement="Mysql" identity="true"/>
@@ -97,10 +93,6 @@
 		<table tableName="WF_EXECUTION_TASK" >
 			<property name="ignoreQualifiersAtRuntime" value="true" />
 			<generatedKey column="TASK_ID" sqlStatement="Mysql" identity="true"/>
-		</table>
-		<table tableName="WF_FLOW" >
-			<property name="ignoreQualifiersAtRuntime" value="true" />
-			<generatedKey column="FLOW_ID" sqlStatement="Mysql" identity="true"/>
 		</table>
 		<table tableName="WF_FLOW_NODE" >
 			<property name="ignoreQualifiersAtRuntime" value="true" />
