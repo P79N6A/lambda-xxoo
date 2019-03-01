@@ -1,6 +1,6 @@
 package com.yatop.lambda.workflow.core.richmodel.component.specification;
 
-import com.yatop.lambda.base.model.CfCmptSpec;
+import com.yatop.lambda.base.model.CfSpecification;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
@@ -8,12 +8,12 @@ import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import java.util.List;
 import java.util.TreeMap;
 
-public class CmptSpec extends RichModel<CfCmptSpec> {
+public class CmptSpec extends RichModel<CfSpecification> {
 
     private TreeMap<String, CmptChar> cmptChars = new TreeMap<String, CmptChar>();              //规格关联特征
-    private TreeMap<String, CmptSpecCharValue> charValues = new TreeMap<String, CmptSpecCharValue>();    //规格配置特征值
+    private TreeMap<String, SpecCharValue> charValues = new TreeMap<String, SpecCharValue>();    //规格配置特征值
 
-    public CmptSpec(CfCmptSpec data) {
+    public CmptSpec(CfSpecification data) {
         super(data);
     }
 
@@ -46,11 +46,11 @@ public class CmptSpec extends RichModel<CfCmptSpec> {
         return charValues.size();
     }
 
-    public CmptSpecCharValue getCharValue(String charId) {
+    public SpecCharValue getCharValue(String charId) {
         return CollectionUtil.get(charValues, charId);
     }
 
-    public void putCharValue(CmptSpecCharValue charValue) {
+    public void putCharValue(SpecCharValue charValue) {
         CollectionUtil.put(charValues, charValue.data().getCharId(), charValue);
     }
 }

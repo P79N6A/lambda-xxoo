@@ -1,8 +1,8 @@
 package com.yatop.lambda.workflow.core.config;
 
 import com.yatop.lambda.workflow.core.richmodel.component.CmptAlgorithm;
+import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CharType;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCharType;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,19 +51,19 @@ public class ComponentConfigHelper {
         return COMPONENT_CONFIG.getCharacteristicByCode(charCode);
     }
 
-    public static CmptCharType getCharacteristicType(Integer typeId) {
+    public static CharType getCharacteristicType(Integer typeId) {
         return COMPONENT_CONFIG.getCharacteristicType(typeId);
     }
 
-    public static CmptCharType getCharacteristicTypeByCode(String typeCode) {
+    public static CharType getCharacteristicTypeByCode(String typeCode) {
         return COMPONENT_CONFIG.getCharacteristicTypeByCode(typeCode);
     }
 
-    public static CmptCharType getPortCharacteristicType(Integer typeId) {
+    public static CharType getPortCharacteristicType(Integer typeId) {
         return COMPONENT_CONFIG.getPortCharacteristicType(typeId);
     }
 
-    public static List<CmptCharType> getPortCharacteristicTypes() {
+    public static List<CharType> getPortCharacteristicTypes() {
         return COMPONENT_CONFIG.getPortCharacteristicTypes();
     }
 }

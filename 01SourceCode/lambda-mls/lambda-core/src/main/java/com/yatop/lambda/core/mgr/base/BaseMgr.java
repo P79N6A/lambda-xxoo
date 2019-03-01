@@ -1,5 +1,7 @@
 package com.yatop.lambda.core.mgr.base;
 
+import com.yatop.lambda.base.model.CfCharEnum;
+import com.yatop.lambda.base.model.CfCmptSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.yatop.lambda.base.mapper.*;
 
@@ -86,44 +88,36 @@ public class BaseMgr {
     protected SysParameterMapper sysParameterMapper;
 
     @Autowired
-    protected CfCmptAlgorithmMapper cfCmptAlgorithmMapper;
+    protected CfAlgorithmMapper cfAlgorithmMapper;
 
     @Autowired
-    protected CfCmptCharEnumMapper cfCmptCharEnumMapper;
+    protected CfCharTypeMapper cfCharTypeMapper;
+    @Autowired
+    protected CfCharTypeWildMapper cfCharTypeWildMapper;
 
     @Autowired
-    protected CfCmptCharMapper cfCmptCharMapper;
+    protected CfCharEnumMapper cfCharEnumMapper;
+    @Autowired
+    protected CfCharacteristicMapper cfCharacteristicMapper;
 
     @Autowired
-    protected CfCmptCharTypeMapper cfCmptCharTypeMapper;
-
+    protected CfSpecCharMapper cfSpecCharMapper;
     @Autowired
-    protected CfCmptCharTypeWildMapper cfCmptCharTypeWildMapper;
-
+    protected CfSpecCharValueMapper cfSpecCharValueMapper;
     @Autowired
-    protected CfCmptCharValueMapper cfCmptCharValueMapper;
-
-    @Autowired
-    protected CfCmptSpecCharRelMapper cfCmptSpecCharRelMapper;
-
-    @Autowired
-    protected CfCmptSpecCharValueMapper cfCmptSpecCharValueMapper;
+    protected CfSpecificationMapper cfSpecificationMapper;
 
     @Autowired
     protected CfCmptSpecMapper cfCmptSpecMapper;
-
     @Autowired
-    protected CfCmptSpecRelMapper cfCmptSpecRelMapper;
-
+    protected CfCmptCharValueMapper cfCmptCharValueMapper;
     @Autowired
     protected CfComponentMapper cfComponentMapper;
 
     @Autowired
     protected WfModuleCatalogMapper wfModuleCatalogMapper;
-
     @Autowired
     protected WfModuleMapper wfModuleMapper;
-
     @Autowired
     protected WfModulePortMapper wfModulePortMapper;
 }

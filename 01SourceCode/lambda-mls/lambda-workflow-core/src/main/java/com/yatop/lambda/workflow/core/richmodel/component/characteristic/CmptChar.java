@@ -1,6 +1,6 @@
 package com.yatop.lambda.workflow.core.richmodel.component.characteristic;
 
-import com.yatop.lambda.base.model.CfCmptChar;
+import com.yatop.lambda.base.model.CfCharacteristic;
 import com.yatop.lambda.core.enums.IsRequiredEnum;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.TreeMap;
 
-public class CmptChar extends RichModel<CfCmptChar> implements Comparable<CmptChar> {
+public class CmptChar extends RichModel<CfCharacteristic> implements Comparable<CmptChar> {
 
-    private CmptCharType type;      //特征类型
-    private TreeMap<String, CmptCharEnum> enums = new TreeMap<String, CmptCharEnum>();  //特征枚举值
-    private TreeMap<Integer, CmptCharEnum> enumsOrderbySequence = new TreeMap<Integer, CmptCharEnum>();     //特征枚举值按序号排序
+    private CharType type;      //特征类型
+    private TreeMap<String, CharEnum> enums = new TreeMap<String, CharEnum>();  //特征枚举值
+    private TreeMap<Integer, CharEnum> enumsOrderbySequence = new TreeMap<Integer, CharEnum>();     //特征枚举值按序号排序
 
-    public CmptChar(CfCmptChar data, CmptCharType type) {
+    public CmptChar(CfCharacteristic data, CharType type) {
         super(data);
         this.type = type;
     }
@@ -36,7 +36,7 @@ public class CmptChar extends RichModel<CfCmptChar> implements Comparable<CmptCh
         super.clear();
     }
 
-    public CmptCharType getType() {
+    public CharType getType() {
         return type;
     }
 
@@ -48,11 +48,11 @@ public class CmptChar extends RichModel<CfCmptChar> implements Comparable<CmptCh
         return enums.size();
     }
 
-    public List<CmptCharEnum> getEnums() {
+    public List<CharEnum> getEnums() {
         return CollectionUtil.toList(enumsOrderbySequence);
     }
 
-    public void putEnum(CmptCharEnum charEnum) {
+    public void putEnum(CharEnum charEnum) {
         CollectionUtil.put(enums, charEnum.data().getEnumValue(), charEnum);
         CollectionUtil.put(enumsOrderbySequence, charEnum.data().getSequence(), charEnum);
     }

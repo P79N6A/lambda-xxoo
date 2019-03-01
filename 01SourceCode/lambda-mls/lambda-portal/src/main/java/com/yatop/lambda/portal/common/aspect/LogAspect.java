@@ -41,14 +41,17 @@ public class LogAspect {
     }
 
     @Around("pointcut()")
-    public Object around(ProceedingJoinPoint point) throws JsonProcessingException {
+    public Object around(ProceedingJoinPoint point) throws Throwable {
         Object result = null;
         long beginTime = System.currentTimeMillis();
+        Throwable catchException = null;
+
         try {
             // 执行方法
             result = point.proceed();
         } catch (Throwable e) {
-            log.error(e.getMessage());
+            catchException = e;
+            //log.error(e.getMessage());
         }
         // 获取 request
         HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
@@ -61,12 +64,21 @@ public class LogAspect {
             String token = (String) SecurityUtils.getSubject().getPrincipal();
             String username = JWTUtil.getUsername(token);
 
-            SysLog log = new SysLog();
-            log.setUsername(username);
-            log.setIp(ip);
-            log.setTime(time);
-            logService.saveLog(point, log);
+            SysLog sysLog = new SysLog();
+            sysLog.setUsername(username);
+            sysLog.setIp(ip);
+            sysLog.setTime(time);
+
+            try {
+                logService.saveLog(point, sysLog);
+            } catch (JsonProcessingException e) {
+                log.error("系统日志写入出错", e);
+            }
         }
+
+        if(catchException != null)
+            throw catchException;
+
         return result;
     }
 }

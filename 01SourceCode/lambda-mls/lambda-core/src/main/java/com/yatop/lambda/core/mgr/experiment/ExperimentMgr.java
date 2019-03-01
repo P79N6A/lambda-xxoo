@@ -1,14 +1,16 @@
 package com.yatop.lambda.core.mgr.experiment;
 
+import com.yatop.lambda.base.extend.mapper.ExtExperimentMapper;
+import com.yatop.lambda.base.extend.model.ExtEmExperiment;
 import com.yatop.lambda.base.model.EmExperiment;
-import com.yatop.lambda.base.model.EmExperimentExample;
-import com.yatop.lambda.core.enums.LambdaExceptionEnum;
-import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
+import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -16,6 +18,10 @@ import java.util.List;
 
 @Service
 public class ExperimentMgr extends BaseMgr {
+
+    @Autowired
+    private ExtExperimentMapper extExperimentMapper;
+
 
     /*
      *
@@ -139,23 +145,24 @@ public class ExperimentMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public List<EmExperiment> queryExperiment(Long projectId, String keyword, PagerUtil pager) {
+    public List<ExtEmExperiment> queryExperiment(Long projectId, String keyword, PagerUtil pager) {
         if(DataUtil.isNull(projectId)){
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed -- invalid query condition.", "无效查询条件");
         }
 
         try {
             PagerUtil.startPage(pager);
-            EmExperimentExample example = new EmExperimentExample();
-            EmExperimentExample.Criteria cond = example.createCriteria().andOwnerProjectIdEqualTo(projectId);
-            if(DataUtil.isNotEmpty(keyword))
-                cond.andExperimentNameLike(DataUtil.likeKeyword(keyword));
-            cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            return emExperimentMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(keyword)) {
+                return extExperimentMapper.queryExperiment(projectId, DataUtil.likeKeyword(keyword),DataStatusEnum.NORMAL.getStatus());
+            } else {
+                return extExperimentMapper.queryExperimentByProjectId(projectId,DataStatusEnum.NORMAL.getStatus());
+            }
+
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment info failed.", "查询实验信息失败", e);
         }
     }
+
 }

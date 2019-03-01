@@ -7,7 +7,7 @@ import com.yatop.lambda.core.utils.SystemParameterUtil;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
-import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpecCharValue;
+import com.yatop.lambda.workflow.core.richmodel.component.specification.SpecCharValue;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.TreeMap;
@@ -111,7 +111,7 @@ public class Component extends RichModel<CfComponent> {
             }
         }
 
-        CmptSpecCharValue specCharValue = null;
+        SpecCharValue specCharValue = null;
         switch (SpecTypeEnum.valueOf(cmptChar.data().getSpecType())) {
             case INPUT:
                 if(DataUtil.isNotNull(input)) {
