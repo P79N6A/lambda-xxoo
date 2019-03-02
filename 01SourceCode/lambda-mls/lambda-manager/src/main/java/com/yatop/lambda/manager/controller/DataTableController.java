@@ -30,7 +30,7 @@ public class DataTableController extends BaseController {
     @Autowired
     private DataTableService dataTableService;
 
-    @Log("数据表分页查询")
+    @Log("查询数据表")
     @RequestMapping("dataTable/list")
     @RequiresPermissions("project:operate")
     public JsonResponse getDataTableList(@RequestBody TableRequest vo) {
@@ -80,4 +80,18 @@ public class DataTableController extends BaseController {
         return JsonResponse.build(tablePreview);
     }
 
+    @Log("查看数据表（概要报告）")
+    @RequestMapping("dataTable/view")
+    public JsonResponse viewModel(@RequestBody TableRequest vo) {
+        //return JsonResponse.build(dataTableService.viewDataTable(vo));
+        //check table state, Read summary file, and return json content
+        return null;
+    }
+
+    @Log("保存临时表")
+    @RequestMapping("dataTable/saveTempTable")
+    @RequiresPermissions("project:operate")
+    public JsonResponse saveTempTable(@RequestBody TableRequest request){
+        return JsonResponse.build(dataTableService.saveTempTable(request));
+    }
 }

@@ -1,9 +1,12 @@
 package com.yatop.lambda.manager.service;
 
 import com.yatop.lambda.base.model.DwDataTable;
-import com.yatop.lambda.core.enums.FieldDataTypeEnum;
-import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.base.model.DwDataWarehouse;
+import com.yatop.lambda.base.model.PrProject;
+import com.yatop.lambda.core.enums.*;
 import com.yatop.lambda.core.exception.LambdaException;
+import com.yatop.lambda.core.mgr.table.DataWarehouseMgr;
+import com.yatop.lambda.core.utils.DataTableFileUtil;
 import com.yatop.lambda.manager.exception.InternalServerException;
 import com.yatop.lambda.manager.exception.ResourceNotFoundException;
 import com.yatop.lambda.core.mgr.table.DataTableMgr;
@@ -17,6 +20,7 @@ import org.apache.commons.io.LineIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -37,18 +41,33 @@ public class DataTableService {
 
     @Autowired
     private DataTableMgr dataTableMgr;
+    @Autowired
+    private ProjectService projectService;
+    @Autowired
+    private DataWarehouseMgr dataWarehouseMgr;
 
     @Value("${uploadFileDir:./uploadFile/}")
     private String uploadFileDir;
 
     public List<DwDataTable> getDataTableList(TableRequest request) {
-        return dataTableMgr.queryDataTable(request.getWarehouseId(), null, request.getKeyword(), null, request);
+        //判断项目是否存在
+        PrProject prProject = projectService.queryProject(request.getProjectId());
+        return dataTableMgr.queryDataTable(prProject.getDwId(), request.getKeyword(), DataTableTypeEnum.GENERAL, DataTableStateEnum.NORMAL, request);
     }
 
+    @Transactional
     public int deleteDataTable(DeleteTableRequest request) {
         int count = 0;
-        String username = PortalUtil.getCurrentUser().getUsername();
+        String username = PortalUtil.getCurrentUserName();
         for (Long tableId : request.getTableIdList()) {
+            DwDataTable dwDataTable = dataTableMgr.queryDataTable(tableId);
+            if(dwDataTable.getTableState() != DataTableStateEnum.EMPTY.getState()){
+                //TODO 清理相关的文件 根据 dfs 和 本地 路径清理文件
+//                dwDataTable.getDataFile();
+//                dwDataTable.getSummaryDfsFile();
+//                dwDataTable.getSummaryLocalFile();
+                //TODO 封装一个工具类 清理文件
+            }
             count += dataTableMgr.deleteDataTable(tableId, username);
         }
         return count;
@@ -223,5 +242,44 @@ public class DataTableService {
         } else {
             return newType;
         }
+    }
+
+    @Transactional
+    public DwDataTable saveTempTable(TableRequest request) {
+        PrProject prProject = projectService.queryProject(request.getProjectId());
+        DwDataWarehouse dataWarehouse = dataWarehouseMgr.queryDataWarehouse(prProject.getDwId());
+        DwDataTable tempTable = dataTableMgr.queryDataTable(request.getTableId());
+
+        if(tempTable.getTableState() == DataTableStateEnum.EMPTY.getState()) {
+            //TODO throw 要保存的临时表为空
+        }
+
+        DwDataTable dataTable = new DwDataTable();
+        dataTable.setTableName(request.getTableName());
+        dataTable.setOwnerDwId(dataWarehouse.getDwId());
+        dataTable.setRelFlowId(-1L);
+        dataTable.setRelNodeId(-1L);
+        dataTable.setRelCharId("-1");
+        dataTable.setDataFileType(tempTable.getDataFileType());
+        dataTable.setTableState(tempTable.getTableState());
+        dataTable.setTableRows(tempTable.getTableRows());
+        dataTable.setTableColumns(tempTable.getTableColumns());
+        dataTable.setDataFileSize(tempTable.getDataFileSize());
+        dataTable = dataTableMgr.insertDataTable(dataTable, PortalUtil.getCurrentUserName());
+
+        String dataWarehouseDfsDir = dataWarehouse.getDataDfsDir();
+        String dataWarehouseLocalDir = dataWarehouse.getDataLocalDir();
+        dataTable.setDataFile(DataTableFileUtil.getFilePath4General(dataWarehouseDfsDir, dataTable.getTableId()));
+        dataTable.setSummaryDfsFile(DataTableFileUtil.getSummaryFilePath4General(dataWarehouseDfsDir, dataTable.getTableId()));
+        dataTable.setSummaryLocalFile(DataTableFileUtil.getSummaryFilePath4General(dataWarehouseLocalDir, dataTable.getTableId()));
+        dataTableMgr.updateDataTable(dataTable, PortalUtil.getCurrentUserName());
+
+        // copy file from temp table to destination table
+        //tempTable.getDataFile() copy to dataTable.getDataFile();
+//                dwDataTable.getDataFile();
+//                dwDataTable.getSummaryDfsFile();
+//                dwDataTable.getSummaryLocalFile();
+
+        return dataTable;
     }
 }

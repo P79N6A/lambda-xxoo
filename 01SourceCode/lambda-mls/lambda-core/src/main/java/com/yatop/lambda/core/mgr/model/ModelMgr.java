@@ -1,5 +1,7 @@
 package com.yatop.lambda.core.mgr.model;
 
+import com.yatop.lambda.base.extend.mapper.ExtMwModelMapper;
+import com.yatop.lambda.base.extend.model.ExtMwModel;
 import com.yatop.lambda.base.model.MwModel;
 import com.yatop.lambda.base.model.MwModelExample;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
@@ -10,6 +12,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,6 +20,9 @@ import java.util.List;
 
 @Service
 public class ModelMgr extends BaseMgr {
+
+    @Autowired
+    private ExtMwModelMapper extMwModelMapper;
 
     /*
      *
@@ -182,26 +188,35 @@ public class ModelMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public List<MwModel> queryModel(Long warehouseId, ModelTypeEnum modelTypeEnum, String keyword, PagerUtil pager) {
+    public List<ExtMwModel> queryModel(Long warehouseId, ModelTypeEnum modelTypeEnum, String keyword, PagerUtil pager) {
         if(DataUtil.isNull(warehouseId)){
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed -- invalid query condition.", "无效查询条件");
         }
-
         try {
             PagerUtil.startPage(pager);
-            MwModelExample example = new MwModelExample();
-            MwModelExample.Criteria cond = example.createCriteria();
-            cond.andOwnerMwIdEqualTo(warehouseId);
-            if(DataUtil.isNotNull(modelTypeEnum))
-                cond.andModelTypeEqualTo(modelTypeEnum.getType());
-            if(DataUtil.isNotEmpty(keyword))
-                cond.andModelNameLike(DataUtil.likeKeyword(keyword));
-            cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            example.setOrderByClause("CREATE_TIME ASC");
-            return mwModelMapper.selectByExample(example);
+            if(DataUtil.isEmpty(keyword)){
+                return extMwModelMapper.findModelInfo(warehouseId,modelTypeEnum.getType(),DataStatusEnum.NORMAL.getStatus());
+            }else {
+                return extMwModelMapper.findModelInfoBykeyWord(warehouseId,DataUtil.likeKeyword(keyword),modelTypeEnum.getType(),DataStatusEnum.NORMAL.getStatus());
+            }
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed.", "查询模型信息失败", e);
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

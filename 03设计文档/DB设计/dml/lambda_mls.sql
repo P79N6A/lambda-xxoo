@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-03-02 00:43:44
+Date: 2019-03-02 18:47:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -79,8 +79,8 @@ CREATE TABLE `cf_characteristic` (
   `CREATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`CHAR_ID`),
-  KEY `Index_1` (`CHAR_CODE`) USING BTREE,
-  KEY `Index_2` (`CHAR_NAME`) USING BTREE
+  UNIQUE KEY `Index_2` (`CHAR_NAME`) USING BTREE,
+  KEY `Index_1` (`CHAR_CODE`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件特征表，配置组件相关的一系列特征参数项';
 
 -- ----------------------------
@@ -90,69 +90,69 @@ INSERT INTO `cf_characteristic` VALUES ('com-exec.char.0001', 'engineType', '调
 INSERT INTO `cf_characteristic` VALUES ('com-exec.char.0002', 'jarDir', '调用执行 | spark组件jar库目录', 'jarDir', 'spark组件jar库目录', '3', '7', '2', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-exec.char.0003', 'jarFile', '调用执行 | spark组件jar包文件名', 'jarFile', 'spark组件jar包文件名', '3', '7', '2', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-exec.char.0004', 'Class', '调用执行 | spark组件类', 'class', 'spark组件类', '3', '7', '2', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0001', 't1', '输入内容 | 数据表t1<M>', 't1', '数据表t1<M>', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0002', 't2', '输入内容 | 数据表t2<M>', 't2', '数据表t2<M>', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0003', 't2', '输入内容 | 数据表t2<O>', 't2', '数据表t2<O>', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0004', 't3', '输入内容 | 数据表t3<M>', 't3', '数据表t3<M>', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0005', 't3', '输入内容 | 数据表t3<O>', 't3', '数据表t3<O>', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0006', 't4', '输入内容 | 数据表t4<M>', 't4', '数据表t4<M>', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0007', 't4', '输入内容 | 数据表t4<O>', 't4', '数据表t4<O>', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0008', 't5', '输入内容 | 数据表t5<M>', 't5', '数据表t5<M>', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0009', 't5', '输入内容 | 数据表t5<O>', 't5', '数据表t5<O>', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0010', 't6', '输入内容 | 数据表t6<M>', 't6', '数据表t6<M>', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0011', 't6', '输入内容 | 数据表t6<O>', 't6', '数据表t6<O>', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0012', 'a1', '输入内容 | 单分类算法a1<M>', 'a1', '单分类算法a1<M>', '1', '4001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0013', 'a1', '输入内容 | 二分类算法a1<M>', 'a1', '二分类算法a1<M>', '1', '4002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0014', 'a1', '输入内容 | 多分类算法a1<M>', 'a1', '多分类算法a1<M>', '1', '4003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0015', 'a1', '输入内容 | 通配分类算法a1<M>', 'a1', '通配分类算法a1<M>', '1', '4004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0016', 'a1', '输入内容 | 聚类算法a1<M>', 'a1', '聚类算法a1<M>', '1', '4005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0017', 'a1', '输入内容 | 回归算法a1<M>', 'a1', '回归算法a1<M>', '1', '4006', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0018', 'a1', '输入内容 | 通配分类&回归算法a1<M>', 'a1', '通配分类&回归算法a1<M>', '1', '4007', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0019', 'm1', '输入内容 | 单分类模型m1<M>', 'm1', '单分类模型m1<M>', '1', '2001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0020', 'm1', '输入内容 | 二分类模型m1<M>', 'm1', '二分类模型m1<M>', '1', '2002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0021', 'm1', '输入内容 | 多分类模型m1<M>', 'm1', '多分类模型m1<M>', '1', '2003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0022', 'm1', '输入内容 | 通配分类模型m1<M>', 'm1', '通配分类模型m1<M>', '1', '2004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0023', 'm1', '输入内容 | 聚类模型m1<M>', 'm1', '聚类模型m1<M>', '1', '2005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0024', 'm1', '输入内容 | 回归模型m1<M>', 'm1', '回归模型m1<M>', '1', '2006', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0025', 'm1', '输入内容 | 通配分类&回归模型m1<M>', 'm1', '通配分类&回归模型m1<M>', '1', '2007', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-input.char.0026', 'm1', '输入内容 | 协同过滤模型m1<M>', 'm1', '协同过滤模型m1<M>', '1', '2008', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0001', 't1', '输入内容 | 数据表t1<M>', 't1', '数据表t1', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0002', 't2', '输入内容 | 数据表t2<M>', 't2', '数据表t2', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0003', 't2', '输入内容 | 数据表t2<O>', 't2', '数据表t2', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0004', 't3', '输入内容 | 数据表t3<M>', 't3', '数据表t3', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0005', 't3', '输入内容 | 数据表t3<O>', 't3', '数据表t3', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0006', 't4', '输入内容 | 数据表t4<M>', 't4', '数据表t4', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0007', 't4', '输入内容 | 数据表t4<O>', 't4', '数据表t4', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0008', 't5', '输入内容 | 数据表t5<M>', 't5', '数据表t5', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0009', 't5', '输入内容 | 数据表t5<O>', 't5', '数据表t5', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0010', 't6', '输入内容 | 数据表t6<M>', 't6', '数据表t6', '1', '1000', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0011', 't6', '输入内容 | 数据表t6<O>', 't6', '数据表t6', '1', '1000', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0012', 'a1', '输入内容 | 单分类算法a1<M>', 'a1', '单分类算法a1', '1', '4001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0013', 'a1', '输入内容 | 二分类算法a1<M>', 'a1', '二分类算法a1', '1', '4002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0014', 'a1', '输入内容 | 多分类算法a1<M>', 'a1', '多分类算法a1', '1', '4003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0015', 'a1', '输入内容 | 通配分类算法a1<M>', 'a1', '通配分类算法a1', '1', '4004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0016', 'a1', '输入内容 | 聚类算法a1<M>', 'a1', '聚类算法a1', '1', '4005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0017', 'a1', '输入内容 | 回归算法a1<M>', 'a1', '回归算法a1', '1', '4006', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0018', 'a1', '输入内容 | 通配分类&回归算法a1<M>', 'a1', '通配分类&回归算法a1', '1', '4007', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0019', 'm1', '输入内容 | 单分类模型m1<M>', 'm1', '单分类模型m1', '1', '2001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0020', 'm1', '输入内容 | 二分类模型m1<M>', 'm1', '二分类模型m1', '1', '2002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0021', 'm1', '输入内容 | 多分类模型m1<M>', 'm1', '多分类模型m1', '1', '2003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0022', 'm1', '输入内容 | 通配分类模型m1<M>', 'm1', '通配分类模型m1', '1', '2004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0023', 'm1', '输入内容 | 聚类模型m1<M>', 'm1', '聚类模型m1', '1', '2005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0024', 'm1', '输入内容 | 回归模型m1<M>', 'm1', '回归模型m1', '1', '2006', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0025', 'm1', '输入内容 | 通配分类&回归模型m1<M>', 'm1', '通配分类&回归模型m1', '1', '2007', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-input.char.0026', 'm1', '输入内容 | 协同过滤模型m1<M>', 'm1', '协同过滤模型m1', '1', '2008', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-o-exec.char.0001', 'spark.executor.number', '执行调优 | spark.executor.number', 'spark.executor.number', 'spark.executor.number', '4', '3', '3', '0', '0', null, '1', '1', '100', '2', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-o-exec.char.0002', 'spark.executor.cores', '执行调优 | spark.executor.cores', 'spark.executor.cores', 'spark.executor.cores', '4', '3', '3', '0', '0', null, '1', '1', '100', '8', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-o-exec.char.0003', 'spark.executor.memory', '执行调优 | spark.executor.memory', 'spark.executor.memory', 'spark.executor.memory', '4', '3', '3', '0', '0', null, '1', '256', '131072', '2048', '内存单位MB，最多128GB', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-o-exec.char.0004', 'spark.driver.cores', '执行调优 | spark.driver.cores', 'spark.driver.cores', 'spark.driver.cores', '4', '3', '3', '0', '0', null, '1', '1', '100', '8', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-o-exec.char.0005', 'spark.driver.memory', '执行调优 | spark.driver.memory', 'spark.driver.memory', 'spark.driver.memory', '4', '3', '3', '0', '0', null, '1', '256', '262144', '1024', '内存单位MB，最多256GB', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-o-exec.char.0006', 'spark.extra.configuration', '执行调优 | spark.extra.configuration（待定）', 'spark.extra.configuration', 'spark.extra.configuration', '4', '7', '3', '0', '0', null, null, null, null, null, null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0001', 't1', '输出内容 | 数据表t1<M>', 't1', '数据表t1<M>', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0002', 't2', '输出内容 | 数据表t2<M>', 't2', '数据表t2<M>', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0003', 't2', '输出内容 | 数据表t2<O>', 't2', '数据表t2<O>', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0004', 't3', '输出内容 | 数据表t3<M>', 't3', '数据表t3<M>', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0005', 't3', '输出内容 | 数据表t3<O>', 't3', '数据表t3<O>', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0006', 't4', '输出内容 | 数据表t4<M>', 't4', '数据表t4<M>', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0007', 't4', '输出内容 | 数据表t4<O>', 't4', '数据表t4<O>', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0008', 't5', '输出内容 | 数据表t5<M>', 't5', '数据表t5<M>', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0009', 't5', '输出内容 | 数据表t5<O>', 't5', '数据表t5<O>', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0010', 't6', '输出内容 | 数据表t6<M>', 't6', '数据表t6<M>', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0011', 't6', '输出内容 | 数据表t6<O>', 't6', '数据表t6<O>', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0012', 'a1', '输出内容 | 单分类算法a1<M>', 'a1', '单分类算法a1<M>', '2', '4001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0013', 'a1', '输出内容 | 二分类算法a1<M>', 'a1', '二分类算法a1<M>', '2', '4002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0014', 'a1', '输出内容 | 多分类算法a1<M>', 'a1', '多分类算法a1<M>', '2', '4003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0015', 'a1', '输出内容 | 聚类算法a1<M>', 'a1', '聚类算法a1<M>', '2', '4005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0016', 'a1', '输出内容 | 回归算法a1<M>', 'a1', '回归算法a1<M>', '2', '4006', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0017', 'a1', '输出内容 | 通配分类算法a1<M>', 'a1', '通配分类算法a1<M>', '2', '4004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0018', 'a1', '输出内容 | 通配分类&回归算法a1<M>', 'a1', '通配分类&回归算法a1<M>', '2', '4007', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0019', 'm1', '输出内容 | 单分类模型m1<M>', 'm1', '单分类模型m1<M>', '2', '2001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0020', 'm1', '输出内容 | 二分类模型m1<M>', 'm1', '二分类模型m1<M>', '2', '2002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0021', 'm1', '输出内容 | 多分类模型m1<M>', 'm1', '多分类模型m1<M>', '2', '2003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0022', 'm1', '输出内容 | 聚类模型m1<M>', 'm1', '聚类模型m1<M>', '2', '2005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0023', 'm1', '输出内容 | 回归模型m1<M>', 'm1', '回归模型m1<M>', '2', '2006', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0024', 'm1', '输出内容 | 协同过滤模型m1<M>', 'm1', '协同过滤模型m1<M>', '2', '2008', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0025', 'm1', '输出内容 | 通配分类模型m1<M>', 'm1', '通配分类模型m1<M>', '2', '2004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0026', 'm1', '输出内容 | 通配分类&回归模型m1<M>', 'm1', '通配分类&回归模型m1<M>', '2', '2007', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0027', 'r1', '输出内容 | 模型评估报告r1<M>', 'r1', '模型评估报告r1<M>', '2', '5001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0028', 'r1', '输出内容 | 统计分析报告r1<M>', 'r1', '统计分析报告r1<M>', '2', '5002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0029', 'r1', '输出内容 | 交叉验证报告r1<M>', 'r1', '交叉验证报告r1<M>', '2', '5003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0030', 'r1', '输出内容 | 自动调参报告r1<M>', 'r1', '自动调参报告r1<M>', '2', '5004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-output.char.0031', 'r1', '输出内容 | 生成规则报告r1<M>', 'r1', '生成规则报告r1<M>', '2', '5005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0001', 't1', '输出内容 | 数据表t1<M>', 't1', '数据表t1', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0002', 't2', '输出内容 | 数据表t2<M>', 't2', '数据表t2', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0003', 't2', '输出内容 | 数据表t2<O>', 't2', '数据表t2', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0004', 't3', '输出内容 | 数据表t3<M>', 't3', '数据表t3', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0005', 't3', '输出内容 | 数据表t3<O>', 't3', '数据表t3', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0006', 't4', '输出内容 | 数据表t4<M>', 't4', '数据表t4', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0007', 't4', '输出内容 | 数据表t4<O>', 't4', '数据表t4', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0008', 't5', '输出内容 | 数据表t5<M>', 't5', '数据表t5', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0009', 't5', '输出内容 | 数据表t5<O>', 't5', '数据表t5', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0010', 't6', '输出内容 | 数据表t6<M>', 't6', '数据表t6', '2', '1001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0011', 't6', '输出内容 | 数据表t6<O>', 't6', '数据表t6', '2', '1001', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0012', 'a1', '输出内容 | 单分类算法a1<M>', 'a1', '单分类算法a1', '2', '4001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0013', 'a1', '输出内容 | 二分类算法a1<M>', 'a1', '二分类算法a1', '2', '4002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0014', 'a1', '输出内容 | 多分类算法a1<M>', 'a1', '多分类算法a1', '2', '4003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0015', 'a1', '输出内容 | 聚类算法a1<M>', 'a1', '聚类算法a1', '2', '4005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0016', 'a1', '输出内容 | 回归算法a1<M>', 'a1', '回归算法a1', '2', '4006', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0017', 'a1', '输出内容 | 通配分类算法a1<M>', 'a1', '通配分类算法a1', '2', '4004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0018', 'a1', '输出内容 | 通配分类&回归算法a1<M>', 'a1', '通配分类&回归算法a1', '2', '4007', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0019', 'm1', '输出内容 | 单分类模型m1<M>', 'm1', '单分类模型m1', '2', '2001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0020', 'm1', '输出内容 | 二分类模型m1<M>', 'm1', '二分类模型m1', '2', '2002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0021', 'm1', '输出内容 | 多分类模型m1<M>', 'm1', '多分类模型m1', '2', '2003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0022', 'm1', '输出内容 | 聚类模型m1<M>', 'm1', '聚类模型m1', '2', '2005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0023', 'm1', '输出内容 | 回归模型m1<M>', 'm1', '回归模型m1', '2', '2006', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0024', 'm1', '输出内容 | 协同过滤模型m1<M>', 'm1', '协同过滤模型m1', '2', '2008', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0025', 'm1', '输出内容 | 通配分类模型m1<M>', 'm1', '通配分类模型m1', '2', '2004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0026', 'm1', '输出内容 | 通配分类&回归模型m1<M>', 'm1', '通配分类&回归模型m1', '2', '2007', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0027', 'r1', '输出内容 | 模型评估报告r1<M>', 'r1', '模型评估报告r1', '2', '5001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0028', 'r1', '输出内容 | 统计分析报告r1<M>', 'r1', '统计分析报告r1', '2', '5002', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0029', 'r1', '输出内容 | 交叉验证报告r1<M>', 'r1', '交叉验证报告r1', '2', '5003', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0030', 'r1', '输出内容 | 自动调参报告r1<M>', 'r1', '自动调参报告r1', '2', '5004', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-output.char.0031', 'r1', '输出内容 | 生成规则报告r1<M>', 'r1', '生成规则报告r1', '2', '5005', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.$.0001', 'labelColumnName', '组件参数 | 标签列的列名', 'labelColumnName', '标签列的列名', '5', '7', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.$.0002', 'positiveLabel', '组件参数 | 正样本标签', 'positiveLabel', '正样本标签', '5', '7', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.$.0003', 'weightColumnName', '组件参数 | 权重列的列名', 'weightColumnName', '权重列的列名', '5', '7', '3', '0', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
@@ -208,7 +208,7 @@ INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.$.0408', 'minLeafSamp
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.$.0409', 'featureSplitValueMaxSize', '组件参数 | 机器学习 | GBDT二分类 | 一个特征分裂的最大数量', null, '一个特征分裂的最大数量', '5', '3', '3', '0', '2', null, '1', '1', '1000', '500', null, '-1', '2017-05-18 13:07:24', 'admin', '2017-05-18 13:07:24', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.$.0500', 'positiveCost', '组件参数 | 机器学习 | 线性支持向量机 | 正例惩罚因子', null, '正例惩罚因子', '5', '5', '3', '0', '1', null, null, '0', null, '1.0', null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.$.0501', 'negativeCost', '组件参数 | 机器学习 | 线性支持向量机 | 负例惩罚因子', null, '负例惩罚因子', '5', '5', '3', '0', '1', null, null, '0', null, '1.0', null, '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.$.0700', 'kNumber', '组件参数 | 机器学习 | M-KNN | 近邻个数', null, '近邻个数', '5', '3', '3', '1', '2', null, '1', '1', '1000', '100', null, '-1', '2017-05-17 20:41:30', 'admin', '2017-05-17 20:41:30', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.$.0700', 'kNumber', '组件参数 | 机器学习 | KNN | 近邻个数', null, '近邻个数', '5', '3', '3', '1', '2', null, '1', '1', '1000', '100', null, '-1', '2017-05-17 20:41:30', 'admin', '2017-05-17 20:41:30', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.$.9999', 'binCount', '组件参数 | 机器学习 | 预测 | 计算评价指标时阈值按等频/等宽分成多少个桶', null, '计算评价指标时阈值按等频/等宽分成多少个桶', '5', '3', '3', '1', '2', null, '1000', '1000', null, '1000', null, '-1', '2017-05-18 17:20:21', 'admin', '2017-05-18 17:20:21', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.st.0001.01', 'sqlScript', '组件参数 | 脚本工具 | SQL脚本 | SQL脚本', 'sqlScript', 'SQL脚本', '5', '3001', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 
@@ -383,10 +383,10 @@ CREATE TABLE `cf_cmpt_char_value` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for cf_cmpt_spec
+-- Table structure for cf_cmpt_spec_rel
 -- ----------------------------
-DROP TABLE IF EXISTS `cf_cmpt_spec`;
-CREATE TABLE `cf_cmpt_spec` (
+DROP TABLE IF EXISTS `cf_cmpt_spec_rel`;
+CREATE TABLE `cf_cmpt_spec_rel` (
   `CMPT_ID` varchar(200) NOT NULL COMMENT '组件ID',
   `SPEC_ID` varchar(200) NOT NULL COMMENT '规格ID',
   `SPEC_TYPE` int(11) NOT NULL COMMENT '组件规格类型',
@@ -397,98 +397,98 @@ CREATE TABLE `cf_cmpt_spec` (
   `CREATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
   PRIMARY KEY (`CMPT_ID`,`SPEC_TYPE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件使用规格表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件使用规格表，要求同一组件下组件参数与执行调优的特征代码唯一';
 
 -- ----------------------------
--- Records of cf_cmpt_spec
+-- Records of cf_cmpt_spec_rel
 -- ----------------------------
-INSERT INTO `cf_cmpt_spec` VALUES ('com.io.0001', 'com-output.spec.0001', '2', '输入输出 | 数据表读取，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.io.0001', 'com-param.spec.io.0001', '5', '输入输出 | 数据表读取，组件参数', '0', '2018-11-21 21:30:46', 'admin', '2018-11-21 21:30:46', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.io.0002', 'com-output.spec.0013', '2', '输入输出 | 模型读取，输出内容', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.io.0002', 'com-param.spec.io.0002', '5', '输入输出 | 模型读取，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.io.0003', 'com-output.spec.0016', '2', '输入输出 | 聚类模型读取，输出内容', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.io.0003', 'com-param.spec.io.0003', '5', '输入输出 | 聚类模型读取，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.io.1001', 'com-input.spec.0001', '1', '输入输出 | 数据表写入，输入内容', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.io.1001', 'com-param.spec.io.1001', '5', '输入输出 | 数据表写入，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.io.9001', 'com-output.spec.0001', '2', '输入输出 | 数据文件导入，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.io.9001', 'com-param.spec.io.9001', '5', '输入输出 | 数据文件导入，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0001', 'com-output.spec.0009', '2', '机器学习 | 逻辑回归二分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0001', 'com-param.spec.ml.0001', '5', '机器学习 | 逻辑回归二分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0002', 'com-output.spec.0010', '2', '机器学习 | 逻辑回归多分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0002', 'com-param.spec.ml.0002', '5', '机器学习 | 逻辑回归多分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0003', 'com-output.spec.0009', '2', '机器学习 | 随机森林二分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0003', 'com-param.spec.ml.0003', '5', '机器学习 | 随机森林二分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0004', 'com-output.spec.0010', '2', '机器学习 | 随机森林多分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0004', 'com-param.spec.ml.0004', '5', '机器学习 | 随机森林多分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0005', 'com-output.spec.0009', '2', '机器学习 | GBDT二分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0005', 'com-param.spec.ml.0005', '5', '机器学习 | GBDT二分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0006', 'com-output.spec.0009', '2', '机器学习 | 线性SVM二分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0006', 'com-param.spec.ml.0006', '5', '机器学习 | 线性SVM二分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0007', 'com-output.spec.0010', '2', '机器学习 | 朴素贝叶斯多分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0007', 'com-param.spec.ml.0007', '5', '机器学习 | 朴素贝叶斯多分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0008', 'com-output.spec.0010', '2', '机器学习 | K近邻多分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0008', 'com-param.spec.ml.0008', '5', '机器学习 | K近邻多分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0009', 'com-output.spec.0011', '2', '机器学习 | K均值聚类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0009', 'com-param.spec.ml.0009', '5', '机器学习 | K均值聚类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0010', 'com-output.spec.0012', '2', '机器学习 | 线性回归算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0010', 'com-param.spec.ml.0010', '5', '机器学习 | 线性回归算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0011', 'com-output.spec.0012', '2', '机器学习 | GBDT回归算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.0011', 'com-param.spec.ml.0011', '5', '机器学习 | GBDT回归算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3001', 'com-input.spec.0023', '1', '机器学习 | 模型训练，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3001', 'com-output.spec.0020', '2', '机器学习 | 模型训练，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3001', 'com-exec.spec.0001', '3', '机器学习 | 模型训练，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3001', 'com-o-exec.spec.0001', '4', '机器学习 | 模型训练，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3001', 'com-param.spec.ml.3001', '5', '机器学习 | 模型训练，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3002', 'com-input.spec.0024', '1', '机器学习 | 模型自动调参，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3002', 'com-output.spec.0021', '2', '机器学习 | 模型自动调参，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3002', 'com-exec.spec.0001', '3', '机器学习 | 模型自动调参，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3002', 'com-o-exec.spec.0001', '4', '机器学习 | 模型自动调参，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3002', 'com-param.spec.ml.3002', '5', '机器学习 | 模型自动调参，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3003', 'com-input.spec.0023', '1', '机器学习 | 交叉验证，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3003', 'com-output.spec.0027', '2', '机器学习 | 交叉验证，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3003', 'com-exec.spec.0001', '3', '机器学习 | 交叉验证，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3003', 'com-o-exec.spec.0001', '4', '机器学习 | 交叉验证，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3003', 'com-param.spec.ml.3003', '5', '机器学习 | 交叉验证，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3004', 'com-input.spec.0025', '1', '机器学习 | 聚类模型训练，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3004', 'com-output.spec.0022', '2', '机器学习 | 聚类模型训练，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3004', 'com-exec.spec.0001', '3', '机器学习 | 聚类模型训练，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3004', 'com-o-exec.spec.0001', '4', '机器学习 | 聚类模型训练，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.3004', 'com-param.spec.ml.3004', '5', '机器学习 | 聚类模型训练，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.8001', 'com-input.spec.0026', '1', '机器学习 | 预测，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.8001', 'com-output.spec.0001', '2', '机器学习 | 预测，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.8001', 'com-exec.spec.0001', '3', '机器学习 | 预测，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.8001', 'com-o-exec.spec.0001', '4', '机器学习 | 预测，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.8001', 'com-param.spec.ml.8001', '5', '机器学习 | 预测，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.8002', 'com-input.spec.0027', '1', '机器学习 | 聚类预测，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.8002', 'com-output.spec.0001', '2', '机器学习 | 聚类预测，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.8002', 'com-exec.spec.0001', '3', '机器学习 | 聚类预测，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.8002', 'com-o-exec.spec.0001', '4', '机器学习 | 聚类预测，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.8002', 'com-param.spec.ml.8002', '5', '机器学习 | 聚类预测，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9001', 'com-input.spec.0001', '1', '机器学习 | 二分类模型评估，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9001', 'com-output.spec.0025', '2', '机器学习 | 二分类模型评估，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9001', 'com-exec.spec.0001', '3', '机器学习 | 二分类模型评估，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9001', 'com-o-exec.spec.0001', '4', '机器学习 | 二分类模型评估，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9001', 'com-param.spec.ml.9001', '5', '机器学习 | 二分类模型评估，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9002', 'com-input.spec.0001', '1', '机器学习 | 多分类模型评估，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9002', 'com-output.spec.0024', '2', '机器学习 | 多分类模型评估，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9002', 'com-exec.spec.0001', '3', '机器学习 | 多分类模型评估，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9002', 'com-o-exec.spec.0001', '4', '机器学习 | 多分类模型评估，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9002', 'com-param.spec.ml.9002', '5', '机器学习 | 多分类模型评估，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9003', 'com-input.spec.0001', '1', '机器学习 | 聚类模型评估，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9003', 'com-output.spec.0024', '2', '机器学习 | 聚类模型评估，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9003', 'com-exec.spec.0001', '3', '机器学习 | 聚类模型评估，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9003', 'com-o-exec.spec.0001', '4', '机器学习 | 聚类模型评估，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9003', 'com-param.spec.ml.9003', '5', '机器学习 | 聚类模型评估，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9004', 'com-input.spec.0001', '1', '机器学习 | 回归模型评估，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9004', 'com-output.spec.0024', '2', '机器学习 | 回归模型评估，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9004', 'com-exec.spec.0001', '3', '机器学习 | 回归模型评估，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9004', 'com-o-exec.spec.0001', '4', '机器学习 | 回归模型评估，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.ml.9004', 'com-param.spec.ml.9004', '5', '机器学习 | 回归模型评估，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.st.0001', 'com-input.spec.0005', '1', '机器学习 | SQL脚本，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.st.0001', 'com-output.spec.0001', '2', '机器学习 | SQL脚本，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.st.0001', 'com-exec.spec.0001', '3', '机器学习 | SQL脚本，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.st.0001', 'com-o-exec.spec.0001', '4', '机器学习 | SQL脚本，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
-INSERT INTO `cf_cmpt_spec` VALUES ('com.st.0001', 'com-param.spec.st.0001', '5', '机器学习 | SQL脚本，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.io.0001', 'com-output.spec.0001', '2', '输入输出 | 数据表读取，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.io.0001', 'com-param.spec.io.0001', '5', '输入输出 | 数据表读取，组件参数', '0', '2018-11-21 21:30:46', 'admin', '2018-11-21 21:30:46', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.io.0002', 'com-output.spec.0013', '2', '输入输出 | 模型读取，输出内容', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.io.0002', 'com-param.spec.io.0002', '5', '输入输出 | 模型读取，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.io.0003', 'com-output.spec.0016', '2', '输入输出 | 聚类模型读取，输出内容', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.io.0003', 'com-param.spec.io.0003', '5', '输入输出 | 聚类模型读取，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.io.1001', 'com-input.spec.0001', '1', '输入输出 | 数据表写入，输入内容', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.io.1001', 'com-param.spec.io.1001', '5', '输入输出 | 数据表写入，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.io.9001', 'com-output.spec.0001', '2', '输入输出 | 数据文件导入，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.io.9001', 'com-param.spec.io.9001', '5', '输入输出 | 数据文件导入，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0001', 'com-output.spec.0009', '2', '机器学习 | 逻辑回归二分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0001', 'com-param.spec.ml.0001', '5', '机器学习 | 逻辑回归二分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0002', 'com-output.spec.0010', '2', '机器学习 | 逻辑回归多分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0002', 'com-param.spec.ml.0002', '5', '机器学习 | 逻辑回归多分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0003', 'com-output.spec.0009', '2', '机器学习 | 随机森林二分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0003', 'com-param.spec.ml.0003', '5', '机器学习 | 随机森林二分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0004', 'com-output.spec.0010', '2', '机器学习 | 随机森林多分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0004', 'com-param.spec.ml.0004', '5', '机器学习 | 随机森林多分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0005', 'com-output.spec.0009', '2', '机器学习 | GBDT二分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0005', 'com-param.spec.ml.0005', '5', '机器学习 | GBDT二分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0006', 'com-output.spec.0009', '2', '机器学习 | 线性SVM二分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0006', 'com-param.spec.ml.0006', '5', '机器学习 | 线性SVM二分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0007', 'com-output.spec.0010', '2', '机器学习 | 朴素贝叶斯多分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0007', 'com-param.spec.ml.0007', '5', '机器学习 | 朴素贝叶斯多分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0008', 'com-output.spec.0010', '2', '机器学习 | K近邻多分类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0008', 'com-param.spec.ml.0008', '5', '机器学习 | K近邻多分类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0009', 'com-output.spec.0011', '2', '机器学习 | K均值聚类算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0009', 'com-param.spec.ml.0009', '5', '机器学习 | K均值聚类算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0010', 'com-output.spec.0012', '2', '机器学习 | 线性回归算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0010', 'com-param.spec.ml.0010', '5', '机器学习 | 线性回归算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0011', 'com-output.spec.0012', '2', '机器学习 | GBDT回归算法，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.0011', 'com-param.spec.ml.0011', '5', '机器学习 | GBDT回归算法，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3001', 'com-input.spec.0023', '1', '机器学习 | 模型训练，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3001', 'com-output.spec.0020', '2', '机器学习 | 模型训练，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3001', 'com-exec.spec.0001', '3', '机器学习 | 模型训练，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3001', 'com-o-exec.spec.0001', '4', '机器学习 | 模型训练，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3001', 'com-param.spec.ml.3001', '5', '机器学习 | 模型训练，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3002', 'com-input.spec.0024', '1', '机器学习 | 模型自动调参，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3002', 'com-output.spec.0021', '2', '机器学习 | 模型自动调参，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3002', 'com-exec.spec.0001', '3', '机器学习 | 模型自动调参，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3002', 'com-o-exec.spec.0001', '4', '机器学习 | 模型自动调参，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3002', 'com-param.spec.ml.3002', '5', '机器学习 | 模型自动调参，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3003', 'com-input.spec.0023', '1', '机器学习 | 交叉验证，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3003', 'com-output.spec.0027', '2', '机器学习 | 交叉验证，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3003', 'com-exec.spec.0001', '3', '机器学习 | 交叉验证，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3003', 'com-o-exec.spec.0001', '4', '机器学习 | 交叉验证，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3003', 'com-param.spec.ml.3003', '5', '机器学习 | 交叉验证，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3004', 'com-input.spec.0025', '1', '机器学习 | 聚类模型训练，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3004', 'com-output.spec.0022', '2', '机器学习 | 聚类模型训练，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3004', 'com-exec.spec.0001', '3', '机器学习 | 聚类模型训练，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3004', 'com-o-exec.spec.0001', '4', '机器学习 | 聚类模型训练，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.3004', 'com-param.spec.ml.3004', '5', '机器学习 | 聚类模型训练，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.8001', 'com-input.spec.0026', '1', '机器学习 | 预测，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.8001', 'com-output.spec.0001', '2', '机器学习 | 预测，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.8001', 'com-exec.spec.0001', '3', '机器学习 | 预测，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.8001', 'com-o-exec.spec.0001', '4', '机器学习 | 预测，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.8001', 'com-param.spec.ml.8001', '5', '机器学习 | 预测，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.8002', 'com-input.spec.0027', '1', '机器学习 | 聚类预测，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.8002', 'com-output.spec.0001', '2', '机器学习 | 聚类预测，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.8002', 'com-exec.spec.0001', '3', '机器学习 | 聚类预测，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.8002', 'com-o-exec.spec.0001', '4', '机器学习 | 聚类预测，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.8002', 'com-param.spec.ml.8002', '5', '机器学习 | 聚类预测，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9001', 'com-input.spec.0001', '1', '机器学习 | 二分类模型评估，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9001', 'com-output.spec.0025', '2', '机器学习 | 二分类模型评估，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9001', 'com-exec.spec.0001', '3', '机器学习 | 二分类模型评估，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9001', 'com-o-exec.spec.0001', '4', '机器学习 | 二分类模型评估，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9001', 'com-param.spec.ml.9001', '5', '机器学习 | 二分类模型评估，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9002', 'com-input.spec.0001', '1', '机器学习 | 多分类模型评估，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9002', 'com-output.spec.0024', '2', '机器学习 | 多分类模型评估，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9002', 'com-exec.spec.0001', '3', '机器学习 | 多分类模型评估，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9002', 'com-o-exec.spec.0001', '4', '机器学习 | 多分类模型评估，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9002', 'com-param.spec.ml.9002', '5', '机器学习 | 多分类模型评估，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9003', 'com-input.spec.0001', '1', '机器学习 | 聚类模型评估，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9003', 'com-output.spec.0024', '2', '机器学习 | 聚类模型评估，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9003', 'com-exec.spec.0001', '3', '机器学习 | 聚类模型评估，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9003', 'com-o-exec.spec.0001', '4', '机器学习 | 聚类模型评估，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9003', 'com-param.spec.ml.9003', '5', '机器学习 | 聚类模型评估，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9004', 'com-input.spec.0001', '1', '机器学习 | 回归模型评估，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9004', 'com-output.spec.0024', '2', '机器学习 | 回归模型评估，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9004', 'com-exec.spec.0001', '3', '机器学习 | 回归模型评估，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9004', 'com-o-exec.spec.0001', '4', '机器学习 | 回归模型评估，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.ml.9004', 'com-param.spec.ml.9004', '5', '机器学习 | 回归模型评估，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.st.0001', 'com-input.spec.0005', '1', '机器学习 | SQL脚本，输入内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.st.0001', 'com-output.spec.0001', '2', '机器学习 | SQL脚本，输出内容', '0', '2018-11-21 21:33:52', 'admin', '2018-11-21 21:33:52', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.st.0001', 'com-exec.spec.0001', '3', '机器学习 | SQL脚本，调用执行', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.st.0001', 'com-o-exec.spec.0001', '4', '机器学习 | SQL脚本，执行调优', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
+INSERT INTO `cf_cmpt_spec_rel` VALUES ('com.st.0001', 'com-param.spec.st.0001', '5', '机器学习 | SQL脚本，组件参数', '0', '2018-11-23 17:32:57', 'admin', '2018-11-23 17:32:57', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_component
@@ -661,10 +661,10 @@ INSERT INTO `cf_specification` VALUES ('com-param.spec.ml.9004', '组件参数 |
 INSERT INTO `cf_specification` VALUES ('com-param.spec.st.0001', '组件参数 | 脚本工具 | SQL脚本', '5', null, '0', '2017-05-17 16:40:23', 'admin', '2017-05-17 16:40:23', 'admin');
 
 -- ----------------------------
--- Table structure for cf_spec_char
+-- Table structure for cf_spec_char_rel
 -- ----------------------------
-DROP TABLE IF EXISTS `cf_spec_char`;
-CREATE TABLE `cf_spec_char` (
+DROP TABLE IF EXISTS `cf_spec_char_rel`;
+CREATE TABLE `cf_spec_char_rel` (
   `SPEC_ID` varchar(200) NOT NULL COMMENT '规格ID',
   `CHAR_ID` varchar(200) NOT NULL COMMENT '特征ID',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
@@ -677,83 +677,83 @@ CREATE TABLE `cf_spec_char` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算组件规格使用特征表，要求同一规格下特征代码唯一';
 
 -- ----------------------------
--- Records of cf_spec_char
+-- Records of cf_spec_char_rel
 -- ----------------------------
-INSERT INTO `cf_spec_char` VALUES ('com-exec.spec.0001', 'com-exec.char.0001', '调用执行 | 计算引擎', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-exec.spec.0001', 'com-exec.char.0002', '调用执行 | spark组件jar库目录', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-exec.spec.0001', 'com-exec.char.0003', '调用执行 | spark组件jar包文件名', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-exec.spec.0001', 'com-exec.char.0004', '调用执行 | spark组件class路径', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0001', 'com-input.char.0001', '输入内容 | 一个数据表t1<M>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0005', 'com-input.char.0001', '输入内容 | 五个数据表t1<M>,t2<O>,t3<O>,t4<O>,t5<O>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0005', 'com-input.char.0003', '输入内容 | 五个数据表t1<M>,t2<O>,t3<O>,t4<O>,t5<O>，输入数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0005', 'com-input.char.0005', '输入内容 | 五个数据表t1<M>,t2<O>,t3<O>,t4<O>,t5<O>，输入数据表t3', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0005', 'com-input.char.0007', '输入内容 | 五个数据表t1<M>,t2<O>,t3<O>,t4<O>,t5<O>，输入数据表t4', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0005', 'com-input.char.0009', '输入内容 | 五个数据表t1<M>,t2<O>,t3<O>,t4<O>,t5<O>，输入数据表t5', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0023', 'com-input.char.0001', '输入内容 | 一个通配分类和回归算法a1<M> + 一个数据表t1<M>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0023', 'com-input.char.0018', '输入内容 | 一个通配分类和回归算法a1<M> + 一个数据表t1<M>，输入算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0024', 'com-input.char.0001', '输入内容 | 一个通配分类和回归算法a1<M> + 两个数据表t1<M>,t2<O>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0024', 'com-input.char.0003', '输入内容 | 一个通配分类和回归算法a1<M> + 两个数据表t1<M>,t2<O>，输入数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0024', 'com-input.char.0018', '输入内容 | 一个通配分类和回归算法a1<M> + 两个数据表t1<M>,t2<O>，输入算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0025', 'com-input.char.0001', '输入内容 | 一个聚类算法a1<M> + + 两个数据表t1<M>,t2<O>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0025', 'com-input.char.0003', '输入内容 | 一个聚类算法a1<M> + + 两个数据表t1<M>,t2<O>，输入数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0025', 'com-input.char.0016', '输入内容 | 一个聚类算法a1<M> + + 两个数据表t1<M>,t2<O>，输入算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0026', 'com-input.char.0001', '输入内容 | 一个通配分类和回归模型m1<M> + 一个数据表t1<M>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0026', 'com-input.char.0025', '输入内容 | 一个通配分类和回归模型m1<M> + 一个数据表t1<M>，输入模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0027', 'com-input.char.0001', '输入内容 | 一个聚类模型m1<M> + 一个数据表t1<M>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-input.spec.0027', 'com-input.char.0023', '输入内容 | 一个聚类模型m1<M> + 一个数据表t1<M>，输入模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-o-exec.spec.0001', 'com-o-exec.char.0001', '执行调优 | Spark执行优化，spark.executor.number', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-o-exec.spec.0001', 'com-o-exec.char.0002', '执行调优 | Spark执行优化，spark.executor.cores', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-o-exec.spec.0001', 'com-o-exec.char.0003', '执行调优 | Spark执行优化，spark.executor.memory', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-o-exec.spec.0001', 'com-o-exec.char.0004', '执行调优 | Spark执行优化，spark.driver.cores', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-o-exec.spec.0001', 'com-o-exec.char.0005', '执行调优 | Spark执行优化，spark.driver.memory', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-o-exec.spec.0001', 'com-o-exec.char.0006', '执行调优 | Spark执行优化，spark.extra.configuration', '-1', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0001', 'com-output.char.0001', '输出内容 | 一个数据表t1<M>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0009', 'com-output.char.0013', '输出内容 | 一个二分类算法a1<M>，输出算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0010', 'com-output.char.0014', '输出内容 | 一个多分类算法a1<M>，输出算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0011', 'com-output.char.0015', '输出内容 | 一个聚类算法a1<M>，输出算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0012', 'com-output.char.0016', '输出内容 | 一个回归算法a1<M>，输出算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0013', 'com-output.char.0019', '输出内容 | 一个单分类模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0014', 'com-output.char.0020', '输出内容 | 一个二分类模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0015', 'com-output.char.0021', '输出内容 | 一个多分类模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0016', 'com-output.char.0022', '输出内容 | 一个聚类模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0017', 'com-output.char.0023', '输出内容 | 一个回归模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0018', 'com-output.char.0024', '输出内容 | 一个协同过滤模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0020', 'com-output.char.0026', '输出内容 | 一个通配分类和回归模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0021', 'com-output.char.0001', '输出内容 | 一个通配分类和回归模型m1<M> + 一个数据表t1<M> + 调参报告<r1>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0021', 'com-output.char.0026', '输出内容 | 一个通配分类和回归模型m1<M> + 一个数据表t1<M> + 调参报告<r1>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0021', 'com-output.char.0030', '输出内容 | 一个通配分类和回归模型m1<M> + 一个数据表t1<M> + 调参报告<r1>，输出报告r1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0022', 'com-output.char.0001', '输出内容 | 一个聚类模型m1<M> + 一个数据表t1<M>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0022', 'com-output.char.0022', '输出内容 | 一个聚类模型m1<M> + 一个数据表t1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0023', 'com-output.char.0001', '输出内容 | 一个聚类模型m1<M> + 二个数据表t1<M>,t2<M> + 调参报告<r1>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0023', 'com-output.char.0002', '输出内容 | 一个聚类模型m1<M> + 二个数据表t1<M>,t2<M> + 调参报告<r1>，输出数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0023', 'com-output.char.0026', '输出内容 | 一个聚类模型m1<M> + 二个数据表t1<M>,t2<M> + 调参报告<r1>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0023', 'com-output.char.0030', '输出内容 | 一个聚类模型m1<M> + 二个数据表t1<M>,t2<M> + 调参报告<r1>，输出报告r1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0024', 'com-output.char.0001', '输出内容 | 一个模型评估报告 + 一个数据表t1<M>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0024', 'com-output.char.0027', '输出内容 | 一个模型评估报告 + 一个数据表t1<M>，输出报告r1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0025', 'com-output.char.0001', '输出内容 | 一个模型评估报告 + 三个数据表t1<M>,t2<M>,t3<M>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0025', 'com-output.char.0002', '输出内容 | 一个模型评估报告 + 三个数据表t1<M>,t2<M>,t3<M>，输出数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0025', 'com-output.char.0004', '输出内容 | 一个模型评估报告 + 三个数据表t1<M>,t2<M>,t3<M>，输出数据表t3', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0025', 'com-output.char.0027', '输出内容 | 一个模型评估报告 + 三个数据表t1<M>,t2<M>,t3<M>，输出报告r1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0027', 'com-output.char.0001', '输出内容 | 一个交叉验证报告 + 二个数据表t1<M>,t2<M>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0027', 'com-output.char.0002', '输出内容 | 一个交叉验证报告 + 二个数据表t1<M>,t2<M>，输出数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-output.spec.0027', 'com-output.char.0029', '输出内容 | 一个交叉验证报告 + 二个数据表t1<M>,t2<M>，输出报告r1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.0001', 'com-param.char.io.$.0001', '组件参数 | 输入输出 | 数据表读取，数据表名', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.0002', 'com-param.char.io.$.0002', '组件参数 | 输入输出 | 模型读取，模型ID', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.0003', 'com-param.char.io.$.0002', '组件参数 | 输入输出 | 聚类模型读取，模型ID', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.1001', 'com-param.char.io.$.0001', '组件参数 | 输入输出 | 数据表写入，数据表名', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.9001', 'com-param.char.io.$.0001', '组件参数 | 输入输出 | 数据文件导入，数据表名', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.01', '组件参数 | 输入输出 | 数据文件导入，文件类型', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.02', '组件参数 | 输入输出 | 数据文件导入，文件路径', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.03', '组件参数 | 输入输出 | 数据文件导入，列分隔符', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.04', '组件参数 | 输入输出 | 数据文件导入，行分隔符', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.05', '组件参数 | 输入输出 | 数据文件导入，字符编码', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.06', '组件参数 | 输入输出 | 数据文件导入，首行是否为字段标题', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.07', '组件参数 | 输入输出 | 数据文件导入，字段描述列表', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.08', '组件参数 | 输入输出 | 数据文件导入，日期格式', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.09', '组件参数 | 输入输出 | 数据文件导入，时间格式', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.10', '组件参数 | 输入输出 | 数据文件导入，字段类型异常处理', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.11', '组件参数 | 输入输出 | 数据文件导入，列数异常处理', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
-INSERT INTO `cf_spec_char` VALUES ('com-param.spec.st.0001', 'com-param.char.st.0001.01', '组件参数 | 脚本工具 | SQL脚本，sql脚本', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-exec.spec.0001', 'com-exec.char.0001', '调用执行 | 计算引擎', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-exec.spec.0001', 'com-exec.char.0002', '调用执行 | spark组件jar库目录', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-exec.spec.0001', 'com-exec.char.0003', '调用执行 | spark组件jar包文件名', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-exec.spec.0001', 'com-exec.char.0004', '调用执行 | spark组件class路径', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0001', 'com-input.char.0001', '输入内容 | 一个数据表t1<M>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0005', 'com-input.char.0001', '输入内容 | 五个数据表t1<M>,t2<O>,t3<O>,t4<O>,t5<O>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0005', 'com-input.char.0003', '输入内容 | 五个数据表t1<M>,t2<O>,t3<O>,t4<O>,t5<O>，输入数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0005', 'com-input.char.0005', '输入内容 | 五个数据表t1<M>,t2<O>,t3<O>,t4<O>,t5<O>，输入数据表t3', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0005', 'com-input.char.0007', '输入内容 | 五个数据表t1<M>,t2<O>,t3<O>,t4<O>,t5<O>，输入数据表t4', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0005', 'com-input.char.0009', '输入内容 | 五个数据表t1<M>,t2<O>,t3<O>,t4<O>,t5<O>，输入数据表t5', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0023', 'com-input.char.0001', '输入内容 | 一个通配分类和回归算法a1<M> + 一个数据表t1<M>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0023', 'com-input.char.0018', '输入内容 | 一个通配分类和回归算法a1<M> + 一个数据表t1<M>，输入算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0024', 'com-input.char.0001', '输入内容 | 一个通配分类和回归算法a1<M> + 两个数据表t1<M>,t2<O>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0024', 'com-input.char.0003', '输入内容 | 一个通配分类和回归算法a1<M> + 两个数据表t1<M>,t2<O>，输入数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0024', 'com-input.char.0018', '输入内容 | 一个通配分类和回归算法a1<M> + 两个数据表t1<M>,t2<O>，输入算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0025', 'com-input.char.0001', '输入内容 | 一个聚类算法a1<M> + + 两个数据表t1<M>,t2<O>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0025', 'com-input.char.0003', '输入内容 | 一个聚类算法a1<M> + + 两个数据表t1<M>,t2<O>，输入数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0025', 'com-input.char.0016', '输入内容 | 一个聚类算法a1<M> + + 两个数据表t1<M>,t2<O>，输入算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0026', 'com-input.char.0001', '输入内容 | 一个通配分类和回归模型m1<M> + 一个数据表t1<M>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0026', 'com-input.char.0025', '输入内容 | 一个通配分类和回归模型m1<M> + 一个数据表t1<M>，输入模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0027', 'com-input.char.0001', '输入内容 | 一个聚类模型m1<M> + 一个数据表t1<M>，输入数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-input.spec.0027', 'com-input.char.0023', '输入内容 | 一个聚类模型m1<M> + 一个数据表t1<M>，输入模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-o-exec.spec.0001', 'com-o-exec.char.0001', '执行调优 | Spark执行优化，spark.executor.number', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-o-exec.spec.0001', 'com-o-exec.char.0002', '执行调优 | Spark执行优化，spark.executor.cores', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-o-exec.spec.0001', 'com-o-exec.char.0003', '执行调优 | Spark执行优化，spark.executor.memory', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-o-exec.spec.0001', 'com-o-exec.char.0004', '执行调优 | Spark执行优化，spark.driver.cores', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-o-exec.spec.0001', 'com-o-exec.char.0005', '执行调优 | Spark执行优化，spark.driver.memory', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-o-exec.spec.0001', 'com-o-exec.char.0006', '执行调优 | Spark执行优化，spark.extra.configuration', '-1', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0001', 'com-output.char.0001', '输出内容 | 一个数据表t1<M>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0009', 'com-output.char.0013', '输出内容 | 一个二分类算法a1<M>，输出算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0010', 'com-output.char.0014', '输出内容 | 一个多分类算法a1<M>，输出算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0011', 'com-output.char.0015', '输出内容 | 一个聚类算法a1<M>，输出算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0012', 'com-output.char.0016', '输出内容 | 一个回归算法a1<M>，输出算法a1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0013', 'com-output.char.0019', '输出内容 | 一个单分类模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0014', 'com-output.char.0020', '输出内容 | 一个二分类模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0015', 'com-output.char.0021', '输出内容 | 一个多分类模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0016', 'com-output.char.0022', '输出内容 | 一个聚类模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0017', 'com-output.char.0023', '输出内容 | 一个回归模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0018', 'com-output.char.0024', '输出内容 | 一个协同过滤模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0020', 'com-output.char.0026', '输出内容 | 一个通配分类和回归模型m1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0021', 'com-output.char.0001', '输出内容 | 一个通配分类和回归模型m1<M> + 一个数据表t1<M> + 调参报告<r1>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0021', 'com-output.char.0026', '输出内容 | 一个通配分类和回归模型m1<M> + 一个数据表t1<M> + 调参报告<r1>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0021', 'com-output.char.0030', '输出内容 | 一个通配分类和回归模型m1<M> + 一个数据表t1<M> + 调参报告<r1>，输出报告r1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0022', 'com-output.char.0001', '输出内容 | 一个聚类模型m1<M> + 一个数据表t1<M>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0022', 'com-output.char.0022', '输出内容 | 一个聚类模型m1<M> + 一个数据表t1<M>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0023', 'com-output.char.0001', '输出内容 | 一个聚类模型m1<M> + 二个数据表t1<M>,t2<M> + 调参报告<r1>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0023', 'com-output.char.0002', '输出内容 | 一个聚类模型m1<M> + 二个数据表t1<M>,t2<M> + 调参报告<r1>，输出数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0023', 'com-output.char.0026', '输出内容 | 一个聚类模型m1<M> + 二个数据表t1<M>,t2<M> + 调参报告<r1>，输出模型m1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0023', 'com-output.char.0030', '输出内容 | 一个聚类模型m1<M> + 二个数据表t1<M>,t2<M> + 调参报告<r1>，输出报告r1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0024', 'com-output.char.0001', '输出内容 | 一个模型评估报告 + 一个数据表t1<M>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0024', 'com-output.char.0027', '输出内容 | 一个模型评估报告 + 一个数据表t1<M>，输出报告r1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0025', 'com-output.char.0001', '输出内容 | 一个模型评估报告 + 三个数据表t1<M>,t2<M>,t3<M>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0025', 'com-output.char.0002', '输出内容 | 一个模型评估报告 + 三个数据表t1<M>,t2<M>,t3<M>，输出数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0025', 'com-output.char.0004', '输出内容 | 一个模型评估报告 + 三个数据表t1<M>,t2<M>,t3<M>，输出数据表t3', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0025', 'com-output.char.0027', '输出内容 | 一个模型评估报告 + 三个数据表t1<M>,t2<M>,t3<M>，输出报告r1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0027', 'com-output.char.0001', '输出内容 | 一个交叉验证报告 + 二个数据表t1<M>,t2<M>，输出数据表t1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0027', 'com-output.char.0002', '输出内容 | 一个交叉验证报告 + 二个数据表t1<M>,t2<M>，输出数据表t2', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-output.spec.0027', 'com-output.char.0029', '输出内容 | 一个交叉验证报告 + 二个数据表t1<M>,t2<M>，输出报告r1', '0', '2018-11-21 21:36:55', 'admin', '2018-11-21 21:36:55', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.0001', 'com-param.char.io.$.0001', '组件参数 | 输入输出 | 数据表读取，数据表名', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.0002', 'com-param.char.io.$.0002', '组件参数 | 输入输出 | 模型读取，模型ID', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.0003', 'com-param.char.io.$.0002', '组件参数 | 输入输出 | 聚类模型读取，模型ID', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.1001', 'com-param.char.io.$.0001', '组件参数 | 输入输出 | 数据表写入，数据表名', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.9001', 'com-param.char.io.$.0001', '组件参数 | 输入输出 | 数据文件导入，数据表名', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.01', '组件参数 | 输入输出 | 数据文件导入，文件类型', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.02', '组件参数 | 输入输出 | 数据文件导入，文件路径', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.03', '组件参数 | 输入输出 | 数据文件导入，列分隔符', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.04', '组件参数 | 输入输出 | 数据文件导入，行分隔符', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.05', '组件参数 | 输入输出 | 数据文件导入，字符编码', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.06', '组件参数 | 输入输出 | 数据文件导入，首行是否为字段标题', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.07', '组件参数 | 输入输出 | 数据文件导入，字段描述列表', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.08', '组件参数 | 输入输出 | 数据文件导入，日期格式', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.09', '组件参数 | 输入输出 | 数据文件导入，时间格式', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.10', '组件参数 | 输入输出 | 数据文件导入，字段类型异常处理', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.io.9001', 'com-param.char.io.9001.11', '组件参数 | 输入输出 | 数据文件导入，列数异常处理', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
+INSERT INTO `cf_spec_char_rel` VALUES ('com-param.spec.st.0001', 'com-param.char.st.0001.01', '组件参数 | 脚本工具 | SQL脚本，sql脚本', '0', '2018-11-21 21:32:32', 'admin', '2018-11-21 21:32:32', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_spec_char_value
@@ -908,7 +908,7 @@ DROP TABLE IF EXISTS `mw_model`;
 CREATE TABLE `mw_model` (
   `MODEL_ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '模型ID',
   `MODEL_NAME` varchar(200) NOT NULL COMMENT '模型名称\r\n            \r\n            普通模型：由字符和数字组成，无特殊字符\r\n            临时模型：组件名称 - 同组件节点序号 - Model [ - 评估指标 - 排名序号]',
-  `MODEL_TYPE` int(11) NOT NULL COMMENT '模型类型\r\n            0：普通模型\r\n            1：临时模型\r\n            2：外部模型（预留）',
+  `MODEL_TYPE` int(11) NOT NULL COMMENT '模型类型\r\n            0：普通模型\r\n            1：临时模型',
   `OWNER_MW_ID` bigint(20) NOT NULL COMMENT '所属模型库ID',
   `REL_FLOW_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联工作流ID，无关联实验设为-1',
   `REL_NODE_ID` bigint(20) NOT NULL DEFAULT '-1' COMMENT '关联节点ID，创建模型的工作流节点，无关联则设为-1',
@@ -919,7 +919,6 @@ CREATE TABLE `mw_model` (
   `SUMMARY_DFS_FILE` varchar(800) DEFAULT NULL COMMENT 'DFS模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息\r\n            \r\n            普通模型：${MODEL_DIR}/model_summary_<model_id>.json\r\n            临时模型：${FLOW_DIR}/model_summary_<node_id>_<model_id>.json',
   `SUMMARY_LOCAL_FILE` varchar(800) DEFAULT NULL COMMENT '本地模型概要文件名，普通模型存放于模型目录下，临时模型存放于作业目录下，记录训练算法参数，训练收敛过程（e.g. LogLoss，AUC），以及其他模型训练相关可以收集到的所有信息\r\n            \r\n            普通模型：${MODEL_DIR}/model_summary_<model_id>.json\r\n            临时模型：${FLOW_DIR}/model_summary_<node_id>_<model_id>.json',
   `MODEL_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '模型状态\r\n            0：空模型\r\n            1：正常',
-  `TRAIN_TABLE_ID` bigint(20) DEFAULT NULL COMMENT '训练集数据表ID',
   `TRAIN_COST_TIME` bigint(20) DEFAULT NULL COMMENT '训练运行时间，单位毫秒',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
@@ -931,7 +930,7 @@ CREATE TABLE `mw_model` (
   KEY `Index_1` (`OWNER_MW_ID`,`MODEL_TYPE`,`MODEL_NAME`,`STATUS`,`CREATE_TIME`),
   KEY `Index_2` (`OWNER_MW_ID`,`MODEL_TYPE`,`STATUS`,`CREATE_TIME`),
   KEY `Index_3` (`OWNER_MW_ID`,`MODEL_STATE`,`STATUS`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除';
+) ENGINE=InnoDB AUTO_INCREMENT=1000000 DEFAULT CHARSET=utf8 COMMENT='模型表，导入外部模型待暂不考虑\r\n\r\n逻辑删除';
 
 -- ----------------------------
 -- Records of mw_model

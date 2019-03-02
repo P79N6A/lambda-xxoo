@@ -1,6 +1,7 @@
 package com.yatop.lambda.manager.controller;
 
 
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.manager.api.request.project.ProjectMemberRequest;
 import com.yatop.lambda.manager.api.response.JsonResponse;
 import com.yatop.lambda.manager.api.response.PagerResponse;
@@ -25,6 +26,9 @@ public class ProjectMemberController extends BaseController {
     @RequestMapping("member/list")
     @RequiresPermissions("project:operate")
     public JsonResponse getProjectMemberList(@RequestBody ProjectMemberRequest request){
+        if(DataUtil.isNull(request.getProjectId())){
+            return JsonResponse.build("项目Id为空！");
+        }
         return PagerResponse.build(projectMemberService.getProjectMemberList(request), request);
     }
 
@@ -32,6 +36,9 @@ public class ProjectMemberController extends BaseController {
     @RequestMapping("member/userListNotInProject")
     @RequiresPermissions("project:operate")
     public JsonResponse getUserListNotInProject(@RequestBody ProjectMemberRequest request){
+        if(DataUtil.isNull(request.getProjectId())){
+            return JsonResponse.build("项目Id为空！");
+        }
         return JsonResponse.build(projectMemberService.getUserListNotInProject(request));
     }
 
@@ -39,6 +46,9 @@ public class ProjectMemberController extends BaseController {
     @RequestMapping("member/addProjectMembers")
     @RequiresPermissions("project:operate")
     public JsonResponse addProjectMembers(@RequestBody ProjectMemberRequest request){
+        if(DataUtil.isNull(request.getProjectId())){
+            return JsonResponse.build("项目Id为空！");
+        }
         return JsonResponse.build(projectMemberService.addProjectMembers(request));
     }
 
@@ -46,6 +56,9 @@ public class ProjectMemberController extends BaseController {
     @RequestMapping("member/deleteProjectMembers")
     @RequiresPermissions("project:operate")
     public JsonResponse deleteProjectMembers(@RequestBody ProjectMemberRequest request){
+        if(DataUtil.isNull(request.getProjectId())){
+            return JsonResponse.build("项目Id为空！");
+        }
         return JsonResponse.build(projectMemberService.deleteProjectMembers(request));
     }
 
@@ -53,6 +66,9 @@ public class ProjectMemberController extends BaseController {
     @RequestMapping("member/changeProjectOwner")
     @RequiresPermissions("project:operate")
     public JsonResponse changeProjectOwner(@RequestBody ProjectMemberRequest request){
+        if(DataUtil.isNull(request.getProjectId())){
+            return JsonResponse.build("项目Id为空！");
+        }
         return JsonResponse.build(projectMemberService.changeProjectOwner(request));
     }
 }

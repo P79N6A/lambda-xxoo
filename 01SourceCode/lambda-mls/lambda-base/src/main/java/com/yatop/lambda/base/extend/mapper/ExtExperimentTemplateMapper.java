@@ -14,9 +14,4 @@ public interface ExtExperimentTemplateMapper {
             "       LAST_UPDATE_OPER = #{oper}          " +
             "       WHERE TEMPLATE_ID = #{id}")
     int increaseTemplateCount(@Param("id") Long id, @Param("time") Date time, @Param("oper") String oper);
-
-    @Select("SELECT IFNULL(MAX(TEMPLATE_COUNT),1000) AS TEMPLATE_COUNT " +
-            "FROM em_experiment_template " +
-            "WHERE STATUS ='0' AND TEMPLATE_ID =#{templateId}")
-    int selectMaxTemplateCount(@Param("templateId") Long templateId);
 }

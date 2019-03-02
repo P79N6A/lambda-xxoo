@@ -11,6 +11,7 @@ public class DwTablePreviewRequest {
     private Boolean existsHeader;
     private Integer limit;
 
+
     public String getFilePath() {
         return filePath;
     }

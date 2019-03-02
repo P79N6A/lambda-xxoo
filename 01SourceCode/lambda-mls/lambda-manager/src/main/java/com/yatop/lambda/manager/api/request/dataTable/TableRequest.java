@@ -16,6 +16,9 @@ public class TableRequest extends PagerUtil {
     private Long warehouseId;
     @ApiModelProperty(value = "关键字",required = false)
     private String keyword;
+    private Long projectId;
+    private String tableName;
+
 
     public Long getWarehouseId() {
         return warehouseId;
@@ -39,5 +42,21 @@ public class TableRequest extends PagerUtil {
 
     public void setTableId(Long tableId) {
         this.tableId = tableId;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 }

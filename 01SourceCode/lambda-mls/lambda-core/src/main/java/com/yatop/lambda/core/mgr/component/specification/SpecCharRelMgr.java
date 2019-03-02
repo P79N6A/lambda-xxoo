@@ -1,7 +1,7 @@
 package com.yatop.lambda.core.mgr.component.specification;
 
-import com.yatop.lambda.base.model.CfSpecChar;
-import com.yatop.lambda.base.model.CfSpecCharExample;
+import com.yatop.lambda.base.model.CfSpecCharRel;
+import com.yatop.lambda.base.model.CfSpecCharRelExample;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SpecCharMgr extends BaseMgr {
+public class SpecCharRelMgr extends BaseMgr {
 
     /*
      *
@@ -19,12 +19,12 @@ public class SpecCharMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public List<CfSpecChar> querySpecCharRel() {
+    public List<CfSpecCharRel> querySpecCharRel() {
 
         try {
-            CfSpecCharExample example = new CfSpecCharExample();
+            CfSpecCharRelExample example = new CfSpecCharRelExample();
             example.createCriteria().andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            return  cfSpecCharMapper.selectByExample(example);
+            return  cfSpecCharRelMapper.selectByExample(example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.G_COMPUTE_DEFAULT_ERROR, "Query specification characteristic relation failed.", "查询规格使用特征失败", e);
         }

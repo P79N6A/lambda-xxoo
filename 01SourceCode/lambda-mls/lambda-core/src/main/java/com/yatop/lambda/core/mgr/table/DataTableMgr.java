@@ -217,8 +217,8 @@ public class DataTableMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public List<DwDataTable> queryDataTable(Long warehouseId, DataTableTypeEnum typeEnum, String keyword, DataTableStateEnum stateEnum, PagerUtil pager) {
-        if(DataUtil.isNull(warehouseId)){
+    public List<DwDataTable> queryDataTable(Long ownerDwId,String keyword, DataTableTypeEnum typeEnum,  DataTableStateEnum stateEnum, PagerUtil pager) {
+        if(DataUtil.isNull(ownerDwId)){
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed -- invalid query condition.", "无效查询条件");
         }
 
@@ -226,7 +226,7 @@ public class DataTableMgr extends BaseMgr {
             PagerUtil.startPage(pager);
             DwDataTableExample example = new DwDataTableExample();
             DwDataTableExample.Criteria cond = example.createCriteria();
-            cond.andOwnerDwIdEqualTo(warehouseId);
+            cond.andOwnerDwIdEqualTo(ownerDwId);
 
             if(DataUtil.isNotNull(typeEnum))
                 cond.andTableTypeEqualTo(typeEnum.getType());

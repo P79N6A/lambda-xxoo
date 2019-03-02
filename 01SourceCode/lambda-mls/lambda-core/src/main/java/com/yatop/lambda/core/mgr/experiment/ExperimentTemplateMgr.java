@@ -22,13 +22,6 @@ public class ExperimentTemplateMgr extends BaseMgr {
     @Autowired
     ExtExperimentTemplateMapper extExperimentTemplateMapper;
 
-    /**
-     * 查询实验中最大数量
-     * @return
-     */
-    public int selectMaxTemplateCount(Long templateId){
-        return extExperimentTemplateMapper.selectMaxTemplateCount(templateId);
-    }
 
     /*
      *
@@ -163,14 +156,15 @@ public class ExperimentTemplateMgr extends BaseMgr {
      *
      * */
     public List<EmExperimentTemplate> queryExperimentTemplate(String keyword, PagerUtil pager) {
-        if(DataUtil.isEmpty(keyword)){
-            throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Query experiment template info failed -- invalid query condition.", "无效查询条件");
-        }
 
         try {
             PagerUtil.startPage(pager);
             EmExperimentTemplateExample example = new EmExperimentTemplateExample();
-            example.createCriteria().andTemplateNameLike(DataUtil.likeKeyword(keyword)).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            EmExperimentTemplateExample.Criteria cond = example.createCriteria();
+            if(DataUtil.isNotEmpty(keyword)) {
+                cond.andTemplateNameLike(DataUtil.likeKeyword(keyword));
+            }
+            cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             return emExperimentTemplateMapper.selectByExample(example);
         } catch (Throwable e) {
@@ -196,5 +190,4 @@ public class ExperimentTemplateMgr extends BaseMgr {
             throw new LambdaException(LambdaExceptionEnum.C_EXPERMNT_DEFAULT_ERROR, "Experiment template count plus one.", "实验模版计数加一失败", e);
         }
     }
-
 }

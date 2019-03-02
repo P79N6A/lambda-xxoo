@@ -13,6 +13,8 @@ public class ModelRequest extends PagerUtil {
     private String keyword;
     private Long modelId;
     private String filePath;
+    private Long projectId;
+    private String modelName;
 
     public Long getOwnerMwId() {
         return ownerMwId;
@@ -44,5 +46,21 @@ public class ModelRequest extends PagerUtil {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
     }
 }

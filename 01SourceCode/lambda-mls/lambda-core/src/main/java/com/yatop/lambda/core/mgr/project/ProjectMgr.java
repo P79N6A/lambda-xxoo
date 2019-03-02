@@ -29,15 +29,15 @@ public class ProjectMgr extends BaseMgr {
     *
     * */
     public PrProject insertProject(PrProject project, String operId) {
-        if( DataUtil.isNull(project) ||
+        if (DataUtil.isNull(project) ||
                 project.isProjectCodeNotColoured() ||
                 project.isProjectNameNotColoured() ||
                 project.isDwIdNotColoured() ||
                 project.isMwIdNotColoured() ||
-                DataUtil.isEmpty(operId) ) {
+                DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Insert project info failed -- invalid insert data.", "无效插入数据");
         }
-        if(existsProject(project.getProjectCode(), project.getProjectName(), null)) {
+        if (existsProject(project.getProjectCode(), project.getProjectName(), null)) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Insert project info failed -- code or name conflict.", "代码或名称冲突");
         }
         PrProject insertProject = new PrProject();
@@ -45,7 +45,7 @@ public class ProjectMgr extends BaseMgr {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertProject.copyProperties(project);
             insertProject.setProjectIdColoured(false);
-            if(insertProject.isCacheExpireDaysNotColoured())
+            if (insertProject.isCacheExpireDaysNotColoured())
                 insertProject.setCacheExpireDays(SystemParameterUtil.find4Integer(SystemParameterEnum.PR_CACHE_DATA_EXPIRE_DAYS, -1));
             insertProject.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertProject.setLastUpdateTime(dtCurrentTime);
@@ -66,7 +66,7 @@ public class ProjectMgr extends BaseMgr {
      *
      * */
     public int deleteProject(Long projectId, String operId) {
-        if(DataUtil.isNull(projectId) || DataUtil.isEmpty(operId)){
+        if (DataUtil.isNull(projectId) || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Delete project info failed -- invalid delete condition.", "无效删除条件");
         }
 
@@ -84,39 +84,41 @@ public class ProjectMgr extends BaseMgr {
 
     /*
      *
-     *   更新项目信息（代码、名称、缓存数据过期天数、描述）
+     *   更新项目信息（数据仓库Id、模型仓库Id、名称、缓存数据过期天数、描述）
      *   返回更新数量
      *
      * */
     public int updateProject(PrProject project, String operId) {
-        if( DataUtil.isNull(project) || DataUtil.isNull(project.getProjectId()) || DataUtil.isEmpty(operId)) {
+        if (DataUtil.isNull(project) || DataUtil.isNull(project.getProjectId()) || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Update project info failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(project.isProjectCodeNotColoured() &&
-            project.isProjectNameNotColoured() &&
-            project.isCacheExpireDaysNotColoured() &&
-            project.isDescriptionNotColoured()) {
+        if (project.isProjectNameNotColoured() &&
+                project.isCacheExpireDaysNotColoured() &&
+                project.isDescriptionNotColoured() &&
+                project.isDwIdNotColoured() &&
+                project.isMwIdNotColoured()) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Update project info failed -- invalid update data.", "无效更新数据");
         }
 
-        if((project.isProjectCodeColoured() || project.isProjectNameColoured()) &&
-                existsProject(project.getProjectCode(), project.getProjectName(), project.getProjectId())) {
+        if ((project.isProjectNameColoured()) &&
+                existsProject(null, project.getProjectName(), project.getProjectId())) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Update project info failed -- code or name conflict.", "代码或名称冲突");
         }
 
         PrProject updateProject = new PrProject();
         try {
-                updateProject.setProjectId(project.getProjectId());
-            if(project.isProjectCodeColoured())
-                updateProject.setProjectCode(project.getProjectCode());
-            if(project.isProjectNameColoured())
+            updateProject.setProjectId(project.getProjectId());
+            if (project.isProjectNameColoured())
                 updateProject.setProjectName(project.getProjectName());
-            if(project.isCacheExpireDaysColoured())
+            if (project.isCacheExpireDaysColoured())
                 updateProject.setCacheExpireDays(project.getCacheExpireDays());
-            if(project.isDescriptionColoured())
+            if (project.isDescriptionColoured())
                 updateProject.setDescription(project.getDescription());
-
+            if (project.isDwIdColoured())
+                updateProject.setDwId(project.getDwId());
+            if(project.isMwIdColoured())
+                updateProject.setMwId(project.getMwId());
             updateProject.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             updateProject.setLastUpdateOper((operId));
             return prProjectMapper.updateByPrimaryKeySelective(updateProject);
@@ -132,7 +134,7 @@ public class ProjectMgr extends BaseMgr {
      *
      * */
     public PrProject queryProject(Long id) {
-        if(DataUtil.isNull(id)){
+        if (DataUtil.isNull(id)) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project info failed -- invalid query condition.", "无效查询条件");
         }
 
@@ -143,7 +145,7 @@ public class ProjectMgr extends BaseMgr {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project info failed.", "查询项目信息失败", e);
         }
 
-        if(DataUtil.isNull(project) || (project.getStatus() == DataStatusEnum.INVALID.getStatus()))
+        if (DataUtil.isNull(project) || (project.getStatus() == DataStatusEnum.INVALID.getStatus()))
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Query project info failed -- invalid status or not found.", "项目信息不存在");
 
         return project;
@@ -166,10 +168,10 @@ public class ProjectMgr extends BaseMgr {
             String keywordLike = DataUtil.likeKeyword(keyword);
 
             //按用户查询
-            if(DataUtil.isEmpty(keyword)) {
+            if (DataUtil.isEmpty(keyword)) {
                 return extProjectMapper.getProject4User(user, DataStatusEnum.NORMAL.getStatus());
 
-             //关键字和用户混合查询
+                //关键字和用户混合查询
             } else {
                 return extProjectMapper.getProject4UserByKeyword(keywordLike, user, DataStatusEnum.NORMAL.getStatus());
             }
@@ -190,26 +192,26 @@ public class ProjectMgr extends BaseMgr {
      *   返回是否存在
      *
      * */
-    public boolean existsProject(String code, String name, Long originalId)  {
-        if(DataUtil.isEmpty(code) && DataUtil.isEmpty(code))
+    public boolean existsProject(String code, String name, Long originalId) {
+        if (DataUtil.isEmpty(code) && DataUtil.isEmpty(code))
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Check project exists failed -- invalid check condition.", "无效检查条件");
 
         try {
             PrProjectExample example = new PrProjectExample();
-            if(DataUtil.isNotEmpty(code)) {
+            if (DataUtil.isNotEmpty(code)) {
                 PrProjectExample.Criteria criteria = example.createCriteria().andProjectCodeEqualTo(code).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-                if(DataUtil.isNotNull(originalId))
+                if (DataUtil.isNotNull(originalId))
                     criteria.andProjectIdNotEqualTo(originalId);
-                if(prProjectMapper.countByExample(example) > 0)
+                if (prProjectMapper.countByExample(example) > 0)
                     return true;
             }
 
             example.clear();
-            if(DataUtil.isNotEmpty(name)) {
+            if (DataUtil.isNotEmpty(name)) {
                 PrProjectExample.Criteria criteria = example.createCriteria().andProjectNameEqualTo(name).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-                if(DataUtil.isNotNull(originalId))
+                if (DataUtil.isNotNull(originalId))
                     criteria.andProjectIdNotEqualTo(originalId);
-                if(prProjectMapper.countByExample(example) > 0)
+                if (prProjectMapper.countByExample(example) > 0)
                     return true;
             }
 

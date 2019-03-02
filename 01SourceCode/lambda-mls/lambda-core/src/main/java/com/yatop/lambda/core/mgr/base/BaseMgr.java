@@ -1,7 +1,5 @@
 package com.yatop.lambda.core.mgr.base;
 
-import com.yatop.lambda.base.model.CfCharEnum;
-import com.yatop.lambda.base.model.CfCmptSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.yatop.lambda.base.mapper.*;
 
@@ -101,14 +99,14 @@ public class BaseMgr {
     protected CfCharacteristicMapper cfCharacteristicMapper;
 
     @Autowired
-    protected CfSpecCharMapper cfSpecCharMapper;
+    protected CfSpecCharRelMapper cfSpecCharRelMapper;
     @Autowired
     protected CfSpecCharValueMapper cfSpecCharValueMapper;
     @Autowired
     protected CfSpecificationMapper cfSpecificationMapper;
 
     @Autowired
-    protected CfCmptSpecMapper cfCmptSpecMapper;
+    protected CfCmptSpecRelMapper cfCmptSpecRelMapper;
     @Autowired
     protected CfCmptCharValueMapper cfCmptCharValueMapper;
     @Autowired

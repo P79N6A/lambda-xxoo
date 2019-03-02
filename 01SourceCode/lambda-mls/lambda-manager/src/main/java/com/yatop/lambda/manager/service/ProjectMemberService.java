@@ -12,6 +12,7 @@ import com.yatop.lambda.manager.api.request.project.ProjectMemberRequest;
 import com.yatop.lambda.portal.common.utils.PortalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,8 +24,13 @@ public class ProjectMemberService {
 
     @Autowired
     private ProjectMemberMgr projectMemberMgr;
+    @Autowired
+    private ProjectService projectService;
 
     public List<ExtProjectMemberDetail> getProjectMemberList(ProjectMemberRequest request) {
+        //判断项目是否存在
+        projectService.queryProject(request.getProjectId());
+
         PagerUtil.startPage(request);
        try{
            if(request.getMemberUser()==null){
@@ -39,6 +45,8 @@ public class ProjectMemberService {
     }
 
     public List<ExtProjectMemberDetail> getUserListNotInProject(ProjectMemberRequest request) {
+        //判断项目是否存在
+        projectService.queryProject(request.getProjectId());
         PagerUtil.startPage(request);
         try{
             if(request.getMemberUser()==null){
@@ -56,8 +64,10 @@ public class ProjectMemberService {
      * @param request 请求 ，项目ID，成员用户列表，操作用户
      * 项目成员状态，最近更新时间，最近更新用户，创建时间，创建用户。
      */
-
+    @Transactional
     public int addProjectMembers(ProjectMemberRequest request) {
+        //判断项目是否存在
+        projectService.queryProject(request.getProjectId());
         List<String> memberUsers=request.getMemberUsers();
         int count=0;
         if(memberUsers!=null){
@@ -68,7 +78,7 @@ public class ProjectMemberService {
                 prProjectMember.setProjectRole(ProjectRoleEnum.PROJECT_DEVELOPER.getRole());
                 boolean flag=projectMemberMgr.existsProjectMember(prProjectMember.getProjectId(),memberUsers.get(i));
                 if(!flag){
-                    projectMemberMgr.insertProjectMember(prProjectMember,PortalUtil.getCurrentUser().getUsername());
+                    projectMemberMgr.insertProjectMember(prProjectMember,PortalUtil.getCurrentUserName());
                     count+=1;
                 }
             }
@@ -83,19 +93,27 @@ public class ProjectMemberService {
      * @param request  请求，项目ID，成员用户列表，操作用户
      * @return 删除数量
      */
+    @Transactional
     public int deleteProjectMembers(ProjectMemberRequest request) {
+        //判断项目是否存在
+        projectService.queryProject(request.getProjectId());
+
         List<String> memberUsers=request.getMemberUsers();
         int counts=0;
         if(memberUsers!=null){
             for(int i=0;i<memberUsers.size();i++){
                 counts+=projectMemberMgr.deleteProjectMember(request.getProjectId(),
-                        memberUsers.get(i), PortalUtil.getCurrentUser().getUsername());
+                        memberUsers.get(i), PortalUtil.getCurrentUserName());
             }
         }
         return counts;
     }
+    @Transactional
     public int changeProjectOwner(ProjectMemberRequest request){
+        //判断项目是否存在
+        projectService.queryProject(request.getProjectId());
+
         return projectMemberMgr.changeProjectOwner(request.getProjectId(),
-                PortalUtil.getCurrentUser().getUsername(), request.getDstOwner(), PortalUtil.getCurrentUser().getUsername());
+                PortalUtil.getCurrentUserName(), request.getDstOwner(), PortalUtil.getCurrentUserName());
     }
 }

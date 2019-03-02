@@ -17,18 +17,22 @@ import com.yatop.lambda.base.model.DwDataWarehouse;
 import com.yatop.lambda.base.model.MwModelWarehouse;
 import com.yatop.lambda.base.model.PrProject;
 import com.yatop.lambda.base.model.PrProjectMember;
-import com.yatop.lambda.core.enums.*;
-import com.yatop.lambda.core.mgr.model.ModelMgr;
+import com.yatop.lambda.core.enums.DataWarehouseTypeEnum;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.enums.ModelWarehouseTypeEnum;
+import com.yatop.lambda.core.enums.ProjectRoleEnum;
+import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.model.ModelWarehouseMgr;
 import com.yatop.lambda.core.mgr.project.ProjectMemberMgr;
 import com.yatop.lambda.core.mgr.project.ProjectMgr;
-import com.yatop.lambda.core.mgr.table.DataTableMgr;
 import com.yatop.lambda.core.mgr.table.DataWarehouseMgr;
 import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import com.yatop.lambda.manager.api.request.project.ProjectRequest;
 import com.yatop.lambda.portal.common.utils.PortalUtil;
+import org.assertj.core.internal.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -50,9 +54,11 @@ public class ProjectService {
     @Autowired
     private ProjectMemberMgr projectMemberMgr;
 
+    @Transactional
     public PrProject addProject(ProjectRequest vo) {
-        String currentUsername = PortalUtil.getCurrentUser().getUsername();
+        String currentUsername = PortalUtil.getCurrentUserName();
         PrProject project = new PrProject();
+        //TODO 加入校验 不能出现特殊符号 只能数字英文以及下划线构成 下划线不能第一个 长度限制64个字符
         project.setProjectCode(vo.getProjectCode());
         project.setProjectName(vo.getProjectName());
         project.setDescription(vo.getProjectDesc());
@@ -62,24 +68,19 @@ public class ProjectService {
 
         DwDataWarehouse dataWarehouse = new DwDataWarehouse();
         MwModelWarehouse modelWarehouse = new MwModelWarehouse();
-
-        dataWarehouse.setDwCode("$"+project.getProjectId());
+        dataWarehouse.setDwCode("$"+project.getProjectCode());
         dataWarehouse.setDwName(project.getProjectName());
         dataWarehouse.setDwType(DataWarehouseTypeEnum.PROJECT.getType());
         dataWarehouse.setOwnerProjectId(project.getProjectId());
-        dataWarehouse.setDataDfsDir("-1");
-        dataWarehouse.setDataLocalDir("-1");
         dataWarehouse = dataWarehouseMgr.insertDataWarehouse(dataWarehouse, currentUsername);
         dataWarehouse.setDataDfsDir(WorkDirectoryUtil.getDataWarehouseDfsDirectory(dataWarehouse.getDwId()));
         dataWarehouse.setDataLocalDir(WorkDirectoryUtil.getDataWarehouseLocalDirectory(dataWarehouse.getDwId()));
         dataWarehouseMgr.updateDataWarehouse(dataWarehouse, currentUsername);
 
-        modelWarehouse.setMwCode("$"+project.getProjectId());
+        modelWarehouse.setMwCode("$"+project.getProjectCode());
         modelWarehouse.setMwName(project.getProjectName());
         modelWarehouse.setMwType(ModelWarehouseTypeEnum.PROJECT.getType());
         modelWarehouse.setOwnerProjectId(project.getProjectId());
-        modelWarehouse.setModelDfsDir("-1");
-        modelWarehouse.setModelLocalDir("-1");
         modelWarehouse = modelWarehouseMgr.insertModelWarehouse(modelWarehouse, currentUsername);
         modelWarehouse.setModelDfsDir(WorkDirectoryUtil.getModelWarehouseDfsDirectory(modelWarehouse.getMwId()));
         modelWarehouse.setModelLocalDir(WorkDirectoryUtil.getModelWarehouseLocalDirectory(modelWarehouse.getMwId()));
@@ -97,19 +98,21 @@ public class ProjectService {
         return project;
     }
 
-
+    @Transactional
     public int deleteProject(Long projectId) {
-        return projectMgr.deleteProject(projectId, PortalUtil.getCurrentUser().getUsername());
+        //TODO 清理项目下所有的 关联数据（实验，普通表，普通模型）
+        //TODO 实验中的分配的资源 生命周期随着实验的删除而清除
+        //TODO 清除所有成员
+        return projectMgr.deleteProject(projectId, PortalUtil.getCurrentUserName());
     }
-
+    @Transactional
     public int updateProject(ProjectRequest vo) {
         PrProject project = new PrProject();
         project.setProjectId(vo.getProjectId());
-        project.setProjectCode(vo.getProjectCode());
         project.setProjectName(vo.getProjectName());
         project.setDescription(vo.getProjectDesc());
         project.setCacheExpireDays(vo.getCacheExpireDays());
-        return projectMgr.updateProject(project, PortalUtil.getCurrentUser().getUsername());
+        return projectMgr.updateProject(project, PortalUtil.getCurrentUserName());
     }
 
     public PrProject queryProject(Long projectId) {
@@ -121,18 +124,18 @@ public class ProjectService {
     }
 
     public List<ExtProjectDetail> queryProjectExt(ProjectRequest vo) {
-        return projectMgr.queryProject(vo.getKeyword(), PortalUtil.getCurrentUser().getUsername(), vo);
+        return projectMgr.queryProject(vo.getKeyword(), PortalUtil.getCurrentUserName(), vo);
     }
 
     public List<PrProject> queryProject4CurrentUser() {
-        return projectMgr.queryProject4CurrentUser(PortalUtil.getCurrentUser().getUsername());
+        return projectMgr.queryProject4CurrentUser(PortalUtil.getCurrentUserName());
     }
 
     /**
      * 手动清理临时表
      * @return
      */
-    public String clearTemporaryTable(Date date) {
-        return date+" 清理成功！";
+    public String clearTemporaryTable(Date date){
+        throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "internal error", "接口未实现");
     }
 }

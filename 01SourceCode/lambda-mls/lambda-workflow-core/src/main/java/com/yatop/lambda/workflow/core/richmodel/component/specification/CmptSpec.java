@@ -11,7 +11,8 @@ import java.util.TreeMap;
 public class CmptSpec extends RichModel<CfSpecification> {
 
     private TreeMap<String, CmptChar> cmptChars = new TreeMap<String, CmptChar>();              //规格关联特征
-    private TreeMap<String, SpecCharValue> charValues = new TreeMap<String, SpecCharValue>();    //规格配置特征值
+    private TreeMap<String, CmptChar> cmptCharsOrderByCode = new TreeMap<String, CmptChar>();   //规格关联特征，key=charCode
+    private TreeMap<String, SpecCharValue> charValues = new TreeMap<String, SpecCharValue>();   //规格配置特征值
 
     public CmptSpec(CfSpecification data) {
         super(data);
@@ -34,12 +35,17 @@ public class CmptSpec extends RichModel<CfSpecification> {
         return CollectionUtil.get(cmptChars, charId);
     }
 
+    public CmptChar getCmptCharByCode(String charCode) {
+        return CollectionUtil.get(cmptCharsOrderByCode, charCode);
+    }
+
     public List<CmptChar> getCmptChars() {
         return CollectionUtil.toList(cmptChars);
     }
 
     public void putCmptChar(CmptChar cmptChar) {
         CollectionUtil.put(cmptChars, cmptChar.data().getCharId(), cmptChar);
+        CollectionUtil.put(cmptCharsOrderByCode, cmptChar.data().getCharCode(), cmptChar);
     }
 
     public int charValueCount() {

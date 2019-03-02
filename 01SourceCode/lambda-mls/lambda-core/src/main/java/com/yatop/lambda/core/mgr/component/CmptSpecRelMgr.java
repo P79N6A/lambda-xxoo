@@ -1,7 +1,7 @@
 package com.yatop.lambda.core.mgr.component;
 
-import com.yatop.lambda.base.model.CfCmptSpec;
-import com.yatop.lambda.base.model.CfCmptSpecExample;
+import com.yatop.lambda.base.model.CfCmptSpecRel;
+import com.yatop.lambda.base.model.CfCmptSpecRelExample;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CmptSpecMgr extends BaseMgr {
+public class CmptSpecRelMgr extends BaseMgr {
 
     /*
      *
@@ -19,12 +19,12 @@ public class CmptSpecMgr extends BaseMgr {
      *   返回结果集
      *
      * */
-    public List<CfCmptSpec> queryCmptSpecRel() {
+    public List<CfCmptSpecRel> queryCmptSpecRel() {
 
         try {
-            CfCmptSpecExample example = new CfCmptSpecExample();
+            CfCmptSpecRelExample example = new CfCmptSpecRelExample();
             example.createCriteria().andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-            return  cfCmptSpecMapper.selectByExample(example);
+            return  cfCmptSpecRelMapper.selectByExample(example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.G_COMPUTE_DEFAULT_ERROR, "Query component specification relation failed.", "查询组件使用规格失败", e);
         }

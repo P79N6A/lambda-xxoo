@@ -5,6 +5,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -29,6 +30,10 @@ public class JsonResponse extends LinkedHashMap<String, Object> implements Seria
     }
 
     public static JsonResponse build(Object data) {
+        if(data instanceof LambdaRootModel) {
+            return build(((LambdaRootModel) data));
+        }
+
         return new JsonResponse(data);
     }
 

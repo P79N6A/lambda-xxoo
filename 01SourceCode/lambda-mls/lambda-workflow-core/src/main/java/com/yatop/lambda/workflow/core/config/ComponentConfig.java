@@ -4,13 +4,13 @@ import com.yatop.lambda.base.model.*;
 import com.yatop.lambda.core.enums.*;
 import com.yatop.lambda.core.mgr.component.AlgorithmMgr;
 import com.yatop.lambda.core.mgr.component.CmptCharValueMgr;
-import com.yatop.lambda.core.mgr.component.CmptSpecMgr;
+import com.yatop.lambda.core.mgr.component.CmptSpecRelMgr;
 import com.yatop.lambda.core.mgr.component.ComponentMgr;
 import com.yatop.lambda.core.mgr.component.characteristic.CharEnumMgr;
 import com.yatop.lambda.core.mgr.component.characteristic.CharacteristicMgr;
 import com.yatop.lambda.core.mgr.component.characteristic.CharTypeMgr;
 import com.yatop.lambda.core.mgr.component.characteristic.CharTypeWildMgr;
-import com.yatop.lambda.core.mgr.component.specification.SpecCharMgr;
+import com.yatop.lambda.core.mgr.component.specification.SpecCharRelMgr;
 import com.yatop.lambda.core.mgr.component.specification.SpecCharValueMgr;
 import com.yatop.lambda.core.mgr.component.specification.SpecificationMgr;
 import com.yatop.lambda.core.utils.DataUtil;
@@ -46,7 +46,7 @@ public class ComponentConfig implements InitializingBean {
     private AlgorithmMgr algorithmMgr;
 
     @Autowired
-    private CmptSpecMgr cmptSpecMgr;
+    private CmptSpecRelMgr cmptSpecRelMgr;
 
     @Autowired
     private CmptCharValueMgr cmptCharValueMgr;
@@ -55,7 +55,7 @@ public class ComponentConfig implements InitializingBean {
     private SpecificationMgr specificationMgr;
 
     @Autowired
-    private SpecCharMgr specCharMgr;
+    private SpecCharRelMgr specCharRelMgr;
 
     @Autowired
     private SpecCharValueMgr specCharValueMgr;
@@ -77,9 +77,7 @@ public class ComponentConfig implements InitializingBean {
     private HashMap<String, Component> ALL_COMPONENTS = new HashMap<String, Component>();    //计算组件
     private HashMap<String, Component> ALL_COMPONENTS_BY_CODE = new HashMap<String, Component>();    //计算组件（按组件代码）
     private HashMap<String, CmptSpec> ALL_SPECIFICATIONS = new HashMap<String, CmptSpec>();  //计算组件规格
-    private HashMap<String, CmptSpec> ALL_SPECIFICATIONS_BY_CODE = new HashMap<String, CmptSpec>();  //计算组件规格（按规格代码）
     private HashMap<String, CmptChar> ALL_CHARACTERISTICS = new HashMap<String, CmptChar>(); //计算组件特征
-    private HashMap<String, CmptChar> ALL_CHARACTERISTICS_BY_CODE = new HashMap<String, CmptChar>(); //计算组件特征（按特征代码）
     private HashMap<Integer, CharType> ALL_CHARACTERISTIC_TYPES = new HashMap<Integer, CharType>(); //计算组件特征类型
     private HashMap<String, CharType> ALL_CHARACTERISTIC_TYPES_BY_CODE = new HashMap<String, CharType>(); //计算组件特征类型（按类型代码）
     private HashMap<Integer, CharType> ALL_PORT_CHARACTERISTIC_TYPES = new HashMap<Integer, CharType>(); //计算组件绑定到端口的特征类型
@@ -104,17 +102,11 @@ public class ComponentConfig implements InitializingBean {
         return CollectionUtil.get(ALL_SPECIFICATIONS, specId);
     }
 
-    public CmptSpec getSpecificationByCode(String specCode) {
-        return CollectionUtil.get(ALL_SPECIFICATIONS_BY_CODE, specCode);
-    }
 
     public CmptChar getCharacteristic(String charId) {
         return CollectionUtil.get(ALL_CHARACTERISTICS, charId);
     }
 
-    public CmptChar getCharacteristicByCode(String charCode) {
-        return CollectionUtil.get(ALL_CHARACTERISTICS_BY_CODE, charCode);
-    }
 
     public CharType getCharacteristicType(Integer typeId) {
         return CollectionUtil.get(ALL_CHARACTERISTIC_TYPES, typeId);
@@ -140,13 +132,13 @@ public class ComponentConfig implements InitializingBean {
     private void loadComponentConfiguration() {
 
         //特征类型相关
-        loadCmptCharTypeConfig();
+        loadCharTypeConfig();
 
         //特征相关
-        loadCmptCharConfig();
+        loadCharacteristicConfig();
 
         //规格相关
-        loadCmptSpecConfig();
+        loadSpecificationConfig();
 
         //组件相关
         loadComponentConfig();
@@ -155,7 +147,7 @@ public class ComponentConfig implements InitializingBean {
         checkConfiguration();
     }
 
-    private void loadCmptCharTypeConfig() {
+    private void loadCharTypeConfig() {
         long wildTypeCounter = 0;
         List<CfCharType> typeList = charTypeMgr.queryCharType();
         if(DataUtil.isEmpty(typeList)) {
@@ -251,7 +243,7 @@ public class ComponentConfig implements InitializingBean {
         }
     }
 
-    private void loadCmptCharConfig() {
+    private void loadCharacteristicConfig() {
         long enumCharCounter = 0L;
 
         List<CfCharacteristic> charList = characteristicMgr.queryCharacteristic();
@@ -270,7 +262,6 @@ public class ComponentConfig implements InitializingBean {
 
             CmptChar richChar = new CmptChar(cmptChar, charType);
             ALL_CHARACTERISTICS.put(richChar.data().getCharId(), richChar);
-            ALL_CHARACTERISTICS_BY_CODE.put(richChar.data().getCharCode(), richChar);
 
             SpecTypeEnum typeEnum = SpecTypeEnum.valueOf(richChar.data().getSpecType());
             if(DataUtil.isNull(typeEnum)) {
@@ -335,7 +326,7 @@ public class ComponentConfig implements InitializingBean {
         }
     }
 
-    private void loadCmptSpecConfig() {
+    private void loadSpecificationConfig() {
         List<CfSpecification> specList = specificationMgr.querySpecification();
         if(DataUtil.isEmpty(specList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty specification configuration."));
@@ -350,17 +341,16 @@ public class ComponentConfig implements InitializingBean {
             }
 
             ALL_SPECIFICATIONS.put(richSpec.data().getSpecId(), richSpec);
-            ALL_SPECIFICATIONS_BY_CODE.put(richSpec.data().getSpecCode(), richSpec);
         }
         specList.clear();
 
-        List<CfSpecChar> specCharList = specCharMgr.querySpecCharRel();
-        if(DataUtil.isEmpty(specCharList)) {
+        List<CfSpecCharRel> specCharRelList = specCharRelMgr.querySpecCharRel();
+        if(DataUtil.isEmpty(specCharRelList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty Spec-Char-Rel configuration."));
             System.exit(-1);
         }
 
-        for(CfSpecChar rel : specCharList) {
+        for(CfSpecCharRel rel : specCharRelList) {
             CmptSpec cmptSpec = ALL_SPECIFICATIONS.get(rel.getSpecId());
             if(DataUtil.isNull(cmptSpec)) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.prettyFormat(rel)));
@@ -376,9 +366,15 @@ public class ComponentConfig implements InitializingBean {
                 System.exit(-1);
             }
 
+            CmptChar findChar = cmptSpec.getCmptCharByCode(cmptChar.data().getCharCode());
+            if(DataUtil.isNotNull(findChar)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic code conflict:\n===Specification===%s\n===This Characteristic===%s\n===That Characteristic===%s.", DataUtil.prettyFormat(cmptSpec.data()),DataUtil.prettyFormat(findChar.data()), DataUtil.prettyFormat(cmptChar.data())));
+                System.exit(-1);
+            }
+
             cmptSpec.putCmptChar(cmptChar);
         }
-        specCharList.clear();
+        specCharRelList.clear();
 
         List<CfSpecCharValue> charValueList = specCharValueMgr.querySpecCharValue();
         if (DataUtil.isNotEmpty(charValueList)) {
@@ -455,13 +451,13 @@ public class ComponentConfig implements InitializingBean {
         }
         componentList.clear();
 
-        List<CfCmptSpec> cmptSpecList = cmptSpecMgr.queryCmptSpecRel();
-        if(DataUtil.isEmpty(cmptSpecList)) {
+        List<CfCmptSpecRel> cmptSpecRelList = cmptSpecRelMgr.queryCmptSpecRel();
+        if(DataUtil.isEmpty(cmptSpecRelList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty Cmpt-Spec-Rel configuration."));
             System.exit(-1);
         }
 
-        for(CfCmptSpec rel : cmptSpecList) {
+        for(CfCmptSpecRel rel : cmptSpecRelList) {
             Component component = ALL_COMPONENTS.get(rel.getCmptId());
             if(DataUtil.isNull(component)) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Component not found:\n%s.", DataUtil.prettyFormat(rel)));
@@ -485,7 +481,7 @@ public class ComponentConfig implements InitializingBean {
 
             component.setCmptSpec(cmptSpec);
         }
-        cmptSpecList.clear();
+        cmptSpecRelList.clear();
 
         List<CfCmptCharValue> charValueList = cmptCharValueMgr.queryCmptCharValue();
         if (DataUtil.isNotEmpty(charValueList)) {
@@ -527,8 +523,10 @@ public class ComponentConfig implements InitializingBean {
         //if SrcLevel < WorkFlow && IsRequired == Yes, Config-Char-Value must be existed in component
         for(Map.Entry<String, Component> cmptEntry : ALL_COMPONENTS.entrySet()) {
             Component component = cmptEntry.getValue();
+
             //execution
-            if(component.getExecution().cmptCharCount()> 0) {
+            CmptSpec execSpec = component.getOptimizeExecution();
+            if(DataUtil.isNotNull(execSpec) && execSpec.cmptCharCount()> 0) {
                 for (CmptChar cmptChar : component.getExecution().getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
                         logger.error(String.format("Check execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
@@ -538,7 +536,8 @@ public class ComponentConfig implements InitializingBean {
             }
 
             //optimize execution
-            if(component.getOptimizeExecution().cmptCharCount()> 0) {
+            CmptSpec o$execSpec = component.getOptimizeExecution();
+            if(DataUtil.isNotNull(o$execSpec) && o$execSpec.cmptCharCount()> 0) {
                 for (CmptChar cmptChar : component.getOptimizeExecution().getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
                         logger.error(String.format("Check optimize execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
@@ -548,10 +547,16 @@ public class ComponentConfig implements InitializingBean {
             }
 
             //parameter
-            if(component.getParameter().cmptCharCount()> 0) {
+            CmptSpec paramSpec = component.getParameter();
+            if(DataUtil.isNotNull(paramSpec) && paramSpec.cmptCharCount()> 0) {
                 for (CmptChar cmptChar : component.getParameter().getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
                         logger.error(String.format("Check parameter config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
+                        System.exit(-1);
+                    }
+
+                    if(DataUtil.isNotNull(o$execSpec) && DataUtil.isNotNull(o$execSpec.getCmptCharByCode(cmptChar.data().getCharCode()))) {
+                        logger.error(String.format("Check parameter config occurs fatal error -- parameter char-code conflict vs optimize execution parameter:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
                         System.exit(-1);
                     }
                 }

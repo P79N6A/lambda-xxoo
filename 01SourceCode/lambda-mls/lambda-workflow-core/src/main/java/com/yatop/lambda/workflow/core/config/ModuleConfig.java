@@ -169,7 +169,7 @@ public class ModuleConfig implements InitializingBean {
                     System.exit(-1);
                 }
                 if(!SpecMaskEnum.matchInputAndOutput(cmptChar.getType().data().getSpecMask())) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- port => char-type.spec-mask must be also support input & output:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar.data())));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Port => char-type.spec-mask must be also support input & output:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar.data())));
                     System.exit(-1);
                 }
                 Module module =  ALL_MODULES.get(port.getOwnerModuleId());
@@ -179,6 +179,10 @@ public class ModuleConfig implements InitializingBean {
                 }
                 if(module.data().getModuleType() == ModuleTypeEnum.NON_WORKFLOW_MODULE.getType()) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Forbid non-workflow-module hold input/output port:\n%s.", DataUtil.prettyFormat(port)));
+                    System.exit(-1);
+                }
+                if(!module.getComponent().existsCmptChar(cmptChar)) {
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Port-Char not found in Module's Package-Component :\n%s\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar.data()), DataUtil.prettyFormat(module.data())));
                     System.exit(-1);
                 }
 
@@ -203,8 +207,9 @@ public class ModuleConfig implements InitializingBean {
             for(Map.Entry<Long, Module> moduleEntry : ALL_MODULES.entrySet()) {
                 Module module = moduleEntry.getValue();
                 Component component = module.getComponent();
-                if(module.inputPortCount() > 0) {
-                    if (module.getInputPorts().size() != component.getInput().cmptCharCount()) {
+
+                if(component.haveInputContent()) {
+                    if (module.inputPortCount() != component.getInput().cmptCharCount()) {
                         logger.error(String.format("Check module configuration occurs fatal error -- Inconsistent number of input-port vs input-char:\n%s\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(module.data())));
                         System.exit(-1);
                     }

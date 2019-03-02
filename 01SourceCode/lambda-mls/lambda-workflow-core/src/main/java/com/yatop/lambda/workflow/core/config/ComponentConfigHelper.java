@@ -39,16 +39,8 @@ public class ComponentConfigHelper {
         return COMPONENT_CONFIG.getSpecification(specId);
     }
 
-    public static CmptSpec getSpecificationByCode(String specCode) {
-        return COMPONENT_CONFIG.getSpecificationByCode(specCode);
-    }
-
     public static CmptChar getCharacteristic(String charId) {
         return COMPONENT_CONFIG.getCharacteristic(charId);
-    }
-
-    public static CmptChar getCharacteristicByCode(String charCode) {
-        return COMPONENT_CONFIG.getCharacteristicByCode(charCode);
     }
 
     public static CharType getCharacteristicType(Integer typeId) {

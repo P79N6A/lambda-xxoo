@@ -20,7 +20,7 @@ public class ExperimentRequest extends PagerUtil {
     private String description;
     private Long experimentId;
     private Long templateId;
-
+    private Long snapshotId;
 
     private String keyword;
 
@@ -78,6 +78,14 @@ public class ExperimentRequest extends PagerUtil {
 
     public void setTemplateId(Long templateId) {
         this.templateId = templateId;
+    }
+
+    public Long getSnapshotId() {
+        return snapshotId;
+    }
+
+    public void setSnapshotId(Long snapshotId) {
+        this.snapshotId = snapshotId;
     }
 }
 

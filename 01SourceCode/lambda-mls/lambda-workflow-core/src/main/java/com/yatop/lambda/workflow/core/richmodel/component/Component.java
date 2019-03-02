@@ -39,6 +39,26 @@ public class Component extends RichModel<CfComponent> {
         super.clear();
     }
 
+    public boolean haveInputContent() {
+        return DataUtil.isNotNull(getInput()) && getInput().cmptCharCount() > 0;
+    }
+
+    public boolean haveOutputContent() {
+        return DataUtil.isNotNull(getOutput()) && getOutput().cmptCharCount() > 0;
+    }
+
+    public boolean haveExecutionContent() {
+        return DataUtil.isNull(getExecution()) && getExecution().cmptCharCount() > 0;
+    }
+
+    public boolean haveOptimizeExecutionContent() {
+        return DataUtil.isNull(getOptimizeExecution()) && getOptimizeExecution().cmptCharCount() > 0;
+    }
+
+    public boolean haveParameterContnent() {
+        return DataUtil.isNull(getParameter()) && getParameter().cmptCharCount() > 0;
+    }
+
     public CmptAlgorithm getAlgorithm() {
         return algorithm;
     }
@@ -65,10 +85,6 @@ public class Component extends RichModel<CfComponent> {
 
     public CmptSpec getExecution() {
         return execution;
-    }
-
-    public boolean isNoExecuionRequired() {
-        return DataUtil.isNull(getExecution());
     }
 
     private void setExecution(CmptSpec execution) {
@@ -114,27 +130,27 @@ public class Component extends RichModel<CfComponent> {
         SpecCharValue specCharValue = null;
         switch (SpecTypeEnum.valueOf(cmptChar.data().getSpecType())) {
             case INPUT:
-                if(DataUtil.isNotNull(input)) {
+                if(haveInputContent()) {
                     specCharValue = this.input.getCharValue(cmptChar.data().getCharId());
                 }
                 break;
             case OUTPUT:
-                if(DataUtil.isNotNull(output)) {
+                if(haveOutputContent()) {
                     specCharValue = this.output.getCharValue(cmptChar.data().getCharId());
                 }
                 break;
             case EXECUTION:
-                if(DataUtil.isNotNull(execution)) {
+                if(haveExecutionContent()) {
                     specCharValue = this.execution.getCharValue(cmptChar.data().getCharId());
                 }
                 break;
             case OPTIMIZE_EXECUTION:
-                if(DataUtil.isNotNull(optimizeExecution)) {
+                if(haveOptimizeExecutionContent()) {
                     specCharValue = this.optimizeExecution.getCharValue(cmptChar.data().getCharId());
                 }
                 break;
             case PARAMETER:
-                if(DataUtil.isNotNull(parameter)) {
+                if(haveParameterContnent()) {
                     specCharValue = this.parameter.getCharValue(cmptChar.data().getCharId());
                 }
                 break;
@@ -191,15 +207,15 @@ public class Component extends RichModel<CfComponent> {
     public boolean existsCmptChar(CmptChar cmptChar) {
         switch (SpecTypeEnum.valueOf(cmptChar.data().getSpecType())) {
             case INPUT:
-                return DataUtil.isNotNull(this.getInput().getCmptChar(cmptChar.data().getCharId()));
+                return this.haveInputContent() && DataUtil.isNotNull(this.getInput().getCmptChar(cmptChar.data().getCharId()));
             case OUTPUT:
-                return DataUtil.isNotNull(this.getOutput().getCmptChar(cmptChar.data().getCharId()));
+                return this.haveOutputContent() && DataUtil.isNotNull(this.getOutput().getCmptChar(cmptChar.data().getCharId()));
             case EXECUTION:
-                return DataUtil.isNotNull(this.getExecution().getCmptChar(cmptChar.data().getCharId()));
+                return this.haveExecutionContent() && DataUtil.isNotNull(this.getExecution().getCmptChar(cmptChar.data().getCharId()));
             case OPTIMIZE_EXECUTION:
-                return DataUtil.isNotNull(this.getOptimizeExecution().getCmptChar(cmptChar.data().getCharId()));
+                return this.haveOptimizeExecutionContent() && DataUtil.isNotNull(this.getOptimizeExecution().getCmptChar(cmptChar.data().getCharId()));
             case PARAMETER:
-                return DataUtil.isNotNull(this.getParameter().getCmptChar(cmptChar.data().getCharId()));
+                return this.haveParameterContnent() && DataUtil.isNotNull(this.getParameter().getCmptChar(cmptChar.data().getCharId()));
         }
         return false;
     }

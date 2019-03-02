@@ -25,7 +25,7 @@ public class ProjectController extends BaseController {
     @Autowired
     private ProjectService projectService;
 
-    @Log("项目列表分页查询")
+    @Log("查询项目列表")
     @RequestMapping("project/list")
     @RequiresPermissions("project:operate")
     public JsonResponse getProjectList(@RequestBody ProjectRequest vo) {
@@ -57,7 +57,7 @@ public class ProjectController extends BaseController {
     @Log("修改项目")
     @RequestMapping("project/update")
     @RequiresPermissions("project:operate")
-    public JsonResponse Project(@RequestBody ProjectRequest vo) {
+    public JsonResponse updateProject(@RequestBody ProjectRequest vo) {
         return JsonResponse.build(projectService.updateProject(vo));
     }
 
@@ -91,6 +91,8 @@ public class ProjectController extends BaseController {
     @RequestMapping("project/timingClearTemporaryTable/{saveTime}")
     @RequiresPermissions("project:operate")
     public JsonResponse timingClearTemporaryTable(@PathVariable Integer saveTime){
+        //TODO 更新项目中的 过期字段
         return JsonResponse.build("保存成功！");
     }
+
 }

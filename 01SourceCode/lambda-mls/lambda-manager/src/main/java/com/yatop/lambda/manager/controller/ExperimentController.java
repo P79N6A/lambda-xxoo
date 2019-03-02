@@ -34,7 +34,7 @@ public class ExperimentController{
     @RequiresPermissions("project:operate")
     public JsonResponse queryExperiment(@RequestBody ExperimentRequest vo){
         if(DataUtil.isNull(vo.getProjectId())){
-            return JsonResponse.build("无项目ID无法创建实验！");
+            return JsonResponse.build("项目Id为空！");
         }
         List<ExtEmExperiment> emExperiments = experimentService.queryExperiment(vo);
         return PagerResponse.build(emExperiments,vo);
@@ -44,6 +44,9 @@ public class ExperimentController{
     @RequestMapping("/create")
     @RequiresPermissions("project:operate")
     public JsonResponse createExperiment(@RequestBody ExperimentRequest vo){
+        if(DataUtil.isNull(vo.getProjectId())){
+            return JsonResponse.build("项目Id为空！");
+        }
         return JsonResponse.build(experimentService.createExperiment(vo));
     }
 
@@ -68,23 +71,44 @@ public class ExperimentController{
     }
 
     @Log("创建实验(从模板创建)")
-    @RequestMapping("/createTemplate")
+    @RequestMapping("/createByTemplate")
     @RequiresPermissions("project:operate")
-    public JsonResponse createTemplate(@RequestBody ExperimentRequest vo ){
-        return JsonResponse.build(experimentService.createTemplate(vo));
+    public JsonResponse createExperimentByTemplate(@RequestBody ExperimentRequest vo ){
+        if(DataUtil.isNull(vo.getProjectId())){
+            return JsonResponse.build("项目Id为空！");
+        }
+        return JsonResponse.build(experimentService.createExperimentByTemplate(vo));
     }
 
     @Log("创建实验(复制)")
     @RequestMapping("/copy")
     public JsonResponse copyExperiment(@RequestBody ExperimentRequest vo ){
-        //TODO 待完善
-        return JsonResponse.build("复制成功");
-    }
-    @Log("创建实验(运行历史创建)")
-    @RequestMapping("/createHistory")
-    public JsonResponse createHistory(@RequestBody ExperimentRequest vo ){
-        //TODO 待完善
-        return JsonResponse.build("创建成功");
+        return JsonResponse.build(experimentService.copyExperiment(vo));
     }
 
+    @Log("创建实验(从快照创建)")
+    @RequestMapping("/createBySnapshot")
+    public JsonResponse createExperimentBySnapshot(@RequestBody ExperimentRequest vo ){
+        return JsonResponse.build(experimentService.createExperimentBySnapshot(vo));
+    }
+
+    @Log("创建实验(打开)")
+    @RequestMapping("/open")
+    public JsonResponse openExperiment(@RequestBody ExperimentRequest vo ){
+        //TODO 打开上次未关闭的实验
+        return JsonResponse.build("打开实验");
+    }
+
+    @Log("创建实验(关闭)")
+    @RequestMapping("/close")
+    public JsonResponse closeExperiment(@RequestBody ExperimentRequest vo ){
+        //TODO 待完善
+        return JsonResponse.build("关闭实验");
+    }
+
+    @Log("查询实验模板")
+    @RequestMapping("/queryTemplate")
+    public JsonResponse queryAllExperimentTemplate(){
+        return JsonResponse.build(experimentService.queryExperimentTemplate());
+    }
 }

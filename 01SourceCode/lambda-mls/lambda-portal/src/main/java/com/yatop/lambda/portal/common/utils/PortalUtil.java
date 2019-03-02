@@ -57,6 +57,15 @@ public class PortalUtil {
     }
 
     /**
+     * 获取当前操作用户名
+     *
+     * @return 用户信息
+     */
+    public static String getCurrentUserName() {
+        return getCurrentUser().getUsername();
+    }
+
+    /**
      * token 加密
      *
      * @param token token

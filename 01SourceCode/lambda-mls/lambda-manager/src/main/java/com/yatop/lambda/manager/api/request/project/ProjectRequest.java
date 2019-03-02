@@ -4,6 +4,7 @@ import com.yatop.lambda.core.utils.PagerUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -26,6 +27,8 @@ public class ProjectRequest extends PagerUtil {
     private String keyword;
     @ApiModelProperty(value = "清除日期",required = false)
     private Date clearDate;
+    private Timestamp createTime;
+
 
     public Long getProjectId() {
         return projectId;
@@ -81,5 +84,13 @@ public class ProjectRequest extends PagerUtil {
 
     public void setClearDate(Date clearDate) {
         this.clearDate = clearDate;
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 }

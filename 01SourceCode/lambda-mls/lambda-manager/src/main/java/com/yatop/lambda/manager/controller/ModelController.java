@@ -26,19 +26,25 @@ public class ModelController {
 
     @Log("查询模型（分页）")
     @RequestMapping("/query")
-    public JsonResponse query(@RequestBody ModelRequest vo) {
-        return PagerResponse.build(modelService.query(vo), vo);
+    public JsonResponse queryModel(@RequestBody ModelRequest vo) {
+        return PagerResponse.build(modelService.queryModel(vo), vo);
     }
 
     @Log("模型删除")
     @RequestMapping("/delete")
-    public JsonResponse delete(@RequestBody List<Long> modelIds) {
-        return JsonResponse.build(modelService.delete(modelIds));
+    public JsonResponse deleteModel(@RequestBody List<Long> modelIds) {
+        return JsonResponse.build(modelService.deleteModel(modelIds));
     }
 
-    @Log("查询模型（概述和分析报告）")
-    @RequestMapping("/queryModelInfo")
-    public JsonResponse queryModelInfo(@RequestBody ModelRequest vo) {
-        return JsonResponse.build(modelService.queryModelInfo(vo));
+    @Log("查看模型（概要报告）")
+    @RequestMapping("/view")
+    public JsonResponse viewModel(@RequestBody ModelRequest vo) {
+        return JsonResponse.build(modelService.viewModel(vo));
+    }
+
+    @Log("保存临时模型")
+    @RequestMapping("/saveTempModel")
+    public JsonResponse saveTempModel(@RequestBody ModelRequest vo) {
+        return JsonResponse.build(modelService.saveTempModel(vo));
     }
 }
