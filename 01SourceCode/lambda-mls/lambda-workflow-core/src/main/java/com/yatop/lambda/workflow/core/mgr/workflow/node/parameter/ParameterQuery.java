@@ -1,8 +1,10 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node.parameter;
 
 import com.yatop.lambda.base.model.WfFlowNodeParameter;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SourceLevelEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
+import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.node.NodeParameterMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
@@ -39,8 +41,12 @@ public class ParameterQuery {
     }
 
     public void queryParameters(WorkflowContext workflowContext, Node node) {
-        List<WfFlowNodeParameter> nodeParameters = nodeParameterMgr.queryNodeParameter(node.data().getNodeId());
 
+        Component component = node.getComponent();
+        if(!component.haveParameterContnent() && !component.haveOptimizeExecutionContent())
+            return;
+
+        List<WfFlowNodeParameter> nodeParameters = nodeParameterMgr.queryNodeParameter(node.data().getNodeId());
         TreeMap<String, WfFlowNodeParameter> parameterMap = new TreeMap<String, WfFlowNodeParameter>();
         TreeMap<String, WfFlowNodeParameter> optimizeMap = new TreeMap<String, WfFlowNodeParameter>();
 
@@ -59,19 +65,18 @@ public class ParameterQuery {
             }
         }
 
-        Component component = node.getComponent();
-        //组件参数
-        CmptSpec paramSpec = component.getParameter();
-        if(paramSpec.cmptCharCount() > 0) {
+        if(component.haveParameterContnent()) {
+            //组件参数
+            CmptSpec paramSpec = component.getParameter();
             for (CmptChar cmptChar : paramSpec.getCmptChars()) {
                 NodeParameter parameter = queryParameter(workflowContext, node, cmptChar, parameterMap.get(cmptChar.data().getCharId()));
                 node.putParameter(parameter);
             }
         }
 
-        //执行调优参数
-        CmptSpec optimizeSpec = component.getOptimizeExecution();
-        if(optimizeSpec.cmptCharCount() > 0) {
+        if(component.haveOptimizeExecutionContent()) {
+            //执行调优参数
+            CmptSpec optimizeSpec = component.getOptimizeExecution();
             for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
                 NodeParameter parameter = queryParameter(workflowContext, node, cmptChar, optimizeMap.get(cmptChar.data().getCharId()));
                 node.putOptimizeParameter(parameter);

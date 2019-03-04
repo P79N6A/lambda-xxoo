@@ -20,7 +20,12 @@ public class Model extends RichModel<MwModel> {
     }
 
     @Override
-    public boolean isDataStateEmpty() {
+    public boolean isResourceStateEmpty() {
         return data().getModelState() == ModelStateEnum.EMPTY.getState();
+    }
+
+    @Override
+    public Long getResourceId() {
+        return data().getModelId();
     }
 }

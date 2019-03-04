@@ -33,7 +33,12 @@ public class JsonObject extends RichModel<WfJsonObject> {
     }
 
     @Override
-    public boolean isDataStateEmpty() {
+    public boolean isResourceStateEmpty() {
         return data().getObjectState() == JsonObjectStateEnum.EMPTY.getState();
+    }
+
+    @Override
+    public Long getResourceId() {
+        return data().getObjectId();
     }
 }

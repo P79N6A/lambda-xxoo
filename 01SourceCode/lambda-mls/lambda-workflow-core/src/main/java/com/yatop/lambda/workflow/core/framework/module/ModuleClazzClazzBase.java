@@ -4,6 +4,9 @@ import com.yatop.lambda.workflow.core.config.ComponentConfig;
 import com.yatop.lambda.workflow.core.config.ModuleConfig;
 import com.yatop.lambda.workflow.core.context.ExecutionTaskContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.output.OutputAndResourceCreate;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.output.OutputAndResourceDelete;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.output.OutputAndResourceQuery;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
@@ -38,6 +41,15 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
     @Autowired
     ModuleConfig moduleConfig;
 
+    @Autowired
+    OutputAndResourceCreate outputAndResourceCreate;
+
+    @Autowired
+    OutputAndResourceQuery outputAndResourceQuery;
+
+    @Autowired
+    OutputAndResourceDelete outputAndResourceDelete;
+
     //
     //接口方法默认实现
     //
@@ -48,37 +60,34 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
     }
 
     @Override
-    public void exploreOutputResource(Node node) {
-        //TODO query node output resource
-        return;
+    public void exploreOutputAndResource(Node node) {
+        outputAndResourceQuery.queryOutputAndResources(node);
     }
 
     @Override
-    public void prepareOutputResource(WorkflowContext workflowContext, Node node) {
-        //TODO prepare node output resource
-        return;
+    public void prepareOutputAndResource(WorkflowContext workflowContext, Node node) {
+        outputAndResourceCreate.createOutputAndResources(workflowContext, node);
     }
 
     @Override
-    public void completeOutputResource(WorkflowContext workflowContext, Node node) {
-        //TODO complete node output resource
-        return;
+    public void completeOutputAndResource(WorkflowContext workflowContext, Node node) {
+        outputAndResourceDelete.deleteOutputAndResources(workflowContext, node);
     }
 
     @Override
-    public void clearOutputResource(WorkflowContext workflowContext, Node node) {
+    public void clearOutputAndResource(WorkflowContext workflowContext, Node node) {
         //TODO clear node output resource
         return;
     }
 
     @Override
-    public void deleteOutputResource(WorkflowContext workflowContext, Node node) {
+    public void deleteOutputAndResource(WorkflowContext workflowContext, Node node) {
         //TODO complete node output resource
         return;
     }
 
     @Override
-    public void recoverOutputResource(WorkflowContext workflowContext, Node node) {
+    public void recoverOutputAndResource(WorkflowContext workflowContext, Node node) {
         //TODO clear node output resource
         return;
     }

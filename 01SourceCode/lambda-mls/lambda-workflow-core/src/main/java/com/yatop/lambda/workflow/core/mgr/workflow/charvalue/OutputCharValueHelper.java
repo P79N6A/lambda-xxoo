@@ -15,16 +15,14 @@ public class OutputCharValueHelper {
     public static Logger logger = LoggerFactory.getLogger(OutputCharValueHelper.class);
 
     //适用输出内容
-    public static void exploreOutputCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
+    public static void exploreOutputCharValue(Node node, CharValue charValue) {
 
         if(DataUtil.isEmpty(charValue.getCharValue())) {
             return;
         }
 
         try {
-            CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
             charValue.getCharTypeClazzBean().queryCharValue(charValue);
-            charValueContext.clear();
             return;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Explore output value failed -- Char-Type-Clazz occur error.\n" + charValue, "节点输出探测出错", e, node.data());

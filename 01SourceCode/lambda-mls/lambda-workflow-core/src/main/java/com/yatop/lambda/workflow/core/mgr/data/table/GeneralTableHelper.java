@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.core.mgr.data;
+package com.yatop.lambda.workflow.core.mgr.data.table;
 
 import com.yatop.lambda.base.model.DwDataTable;
 import com.yatop.lambda.core.enums.DataFileTypeEnum;

@@ -15,7 +15,9 @@ public class NodePortDelete {
 
     public void deleteNodePorts(WorkflowContext workflowContext, Node node) {
 
-        NodeSchemaHelper.deleteSchemas(workflowContext, node);
-        nodePortMgr.deleteNodePort(node.data().getNodeId(), workflowContext.getOperId());
+        if(node.getModule().inputPortCount() > 0 || node.getModule().outputPortCount() > 0) {
+            NodeSchemaHelper.deleteSchemas(workflowContext, node);
+            nodePortMgr.deleteNodePort(node.data().getNodeId(), workflowContext.getOperId());
+        }
     }
 }

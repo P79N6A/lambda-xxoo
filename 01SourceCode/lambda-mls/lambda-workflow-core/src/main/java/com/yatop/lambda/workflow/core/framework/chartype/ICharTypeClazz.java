@@ -29,4 +29,7 @@ public interface ICharTypeClazz extends InitializingBean {
     //返回false，不通过
     //返回true，通过
     boolean validateCharValue(CharValue charValue);
+
+    //格式化节点特征值为Object对象，用于特征值json内容生成
+    Object formatCharValue(CharValue charValue);
 }

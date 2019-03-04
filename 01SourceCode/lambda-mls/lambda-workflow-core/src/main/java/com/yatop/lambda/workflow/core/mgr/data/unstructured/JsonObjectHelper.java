@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.core.mgr.data;
+package com.yatop.lambda.workflow.core.mgr.data.unstructured;
 
 import com.yatop.lambda.base.model.WfJsonObject;
 import com.yatop.lambda.core.enums.*;

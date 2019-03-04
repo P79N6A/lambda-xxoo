@@ -379,22 +379,30 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
         return nodeSchemas;
     }
 
-    public int nodeOutputCount() {
+    private void loadOutputAndResources() {
+
+        if(outputs.isEmpty() && getComponent().haveOutputContent()) {
+            this.getModuleClazzBean().exploreOutputAndResource(this);
+        }
+    }
+
+    public int outputCount() {
+        loadOutputAndResources();
         return outputs.size();
     }
 
     public List<NodeOutput> getOutputs() {
-        //TODO outputs loaded
+        loadOutputAndResources();
         return CollectionUtil.toList(outputs);
     }
 
     public NodeOutput getutput(String charId) {
-        //TODO outputs loaded
+        loadOutputAndResources();
         return CollectionUtil.get(outputs, charId);
     }
 
     public NodeOutput getOutputByCode(String charCode) {
-        //TODO outputs loaded
+        loadOutputAndResources();
         return CollectionUtil.get(outputs, charCode);
     }
 

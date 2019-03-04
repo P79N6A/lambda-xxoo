@@ -1,6 +1,7 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.module;
 
 import com.yatop.lambda.base.model.WfModule;
+import com.yatop.lambda.core.enums.PortTypeEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
@@ -117,7 +118,15 @@ public class Module extends RichModel<WfModule> implements Comparable<Module> {
     }
 
     public boolean existsModulePort(ModulePort modulePort) {
-        return DataUtil.isNotNull(this.getInputPort(modulePort.data().getPortId())) || DataUtil.isNotNull(this.getOutputPort(modulePort.data().getPortId()));
+
+        switch (PortTypeEnum.valueOf(modulePort.data().getPortType())) {
+            case INPUT_PORT:
+                return CollectionUtil.containsKey(inputPorts, modulePort.data().getPortId());
+            case OUTPUT_PORT:
+                return CollectionUtil.containsKey(outputPorts, modulePort.data().getPortId());
+            default:
+                return false;
+        }
     }
 
     public int inputDataTablePortCount() {

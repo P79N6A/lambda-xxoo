@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNodeOutput;
 import com.yatop.lambda.core.enums.OutputStateEnum;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.output.OutputAndResourceHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
@@ -23,8 +24,9 @@ public class NodeOutput extends RichModel<WfFlowNodeOutput> {
 
     public void flush(String operId) {
 
-        if (this.isColoured() && !simulateOutput)
-            ;//NodeHelper.updateNode(this, operId);
+        if (this.isColoured() && !simulateOutput) {
+            OutputAndResourceHelper.updateOutput(this, operId);
+        }
     }
 
     @Override

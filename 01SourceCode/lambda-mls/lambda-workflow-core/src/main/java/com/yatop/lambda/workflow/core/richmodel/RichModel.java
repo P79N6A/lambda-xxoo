@@ -16,8 +16,12 @@ public abstract class RichModel<T extends LambdaRootModel> implements IRichModel
         return data;
     }
 
-    public boolean isDataStateEmpty() {
+    public boolean isResourceStateEmpty() {
         return true;
+    }
+
+    public Long getResourceId() {
+        return -1L;
     }
 
     @Override

@@ -524,9 +524,9 @@ public class ComponentConfig implements InitializingBean {
         for(Map.Entry<String, Component> cmptEntry : ALL_COMPONENTS.entrySet()) {
             Component component = cmptEntry.getValue();
 
-            //execution
-            CmptSpec execSpec = component.getOptimizeExecution();
-            if(DataUtil.isNotNull(execSpec) && execSpec.cmptCharCount()> 0) {
+            if(component.haveExecutionContent()) {
+                //execution
+                CmptSpec execSpec = component.getOptimizeExecution();
                 for (CmptChar cmptChar : component.getExecution().getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
                         logger.error(String.format("Check execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
@@ -537,7 +537,7 @@ public class ComponentConfig implements InitializingBean {
 
             //optimize execution
             CmptSpec o$execSpec = component.getOptimizeExecution();
-            if(DataUtil.isNotNull(o$execSpec) && o$execSpec.cmptCharCount()> 0) {
+            if(component.haveOptimizeExecutionContent()) {
                 for (CmptChar cmptChar : component.getOptimizeExecution().getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
                         logger.error(String.format("Check optimize execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
@@ -546,9 +546,9 @@ public class ComponentConfig implements InitializingBean {
                 }
             }
 
-            //parameter
-            CmptSpec paramSpec = component.getParameter();
-            if(DataUtil.isNotNull(paramSpec) && paramSpec.cmptCharCount()> 0) {
+            if(component.haveParameterContnent()) {
+                //parameter
+                CmptSpec paramSpec = component.getParameter();
                 for (CmptChar cmptChar : component.getParameter().getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
                         logger.error(String.format("Check parameter config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));

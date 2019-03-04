@@ -25,21 +25,29 @@ public class ParameterDelete {
 
     public void deleteParameters(WorkflowContext workflowContext, Node node) {
 
+        int deleteCount = 0;
+
         //组件参数
         if(node.parameterCount() > 0) {
             for (NodeParameter parameter : node.getParameters()) {
-                deleteParameter(workflowContext, node, parameter);
+                if(!parameter.isSimulateParameter()) {
+                    deleteParameter(workflowContext, node, parameter);
+                    deleteCount++;
+                }
             }
         }
 
         //执行调优参数
         if(node.optimizeParameterCount() > 0) {
             for (NodeParameter parameter : node.getOptimizeParameters()) {
-                deleteParameter(workflowContext, node, parameter);
+                if(!parameter.isSimulateParameter()) {
+                    deleteParameter(workflowContext, node, parameter);
+                    deleteCount++;
+                }
             }
         }
 
-        if(node.parameterCount() > 0 && node.optimizeParameterCount() > 0)
+        if(deleteCount > 0 )
             nodeParameterMgr.deleteNodeParameter(node.data().getNodeId(), workflowContext.getOperId());
     }
 }

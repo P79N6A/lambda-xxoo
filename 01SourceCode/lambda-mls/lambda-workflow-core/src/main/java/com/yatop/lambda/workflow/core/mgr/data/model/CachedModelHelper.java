@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.core.mgr.data;
+package com.yatop.lambda.workflow.core.mgr.data.model;
 
 import com.yatop.lambda.base.model.MwModel;
 import com.yatop.lambda.core.enums.ModelStateEnum;

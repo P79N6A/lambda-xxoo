@@ -53,18 +53,19 @@ public class ParameterCreate {
     public void createParameters(WorkflowContext workflowContext, Node node) {
 
         Component component = node.getComponent();
-        //组件参数
-        CmptSpec paramSpec = component.getParameter();
-        if(DataUtil.isNotNull(paramSpec) && paramSpec.cmptCharCount() > 0) {
+        if(component.haveParameterContnent()) {
+            //组件参数
+            CmptSpec paramSpec = component.getParameter();
             for (CmptChar cmptChar : paramSpec.getCmptChars()) {
                 NodeParameter parameter = createParameter(workflowContext, node, cmptChar);
                 node.putParameter(parameter);
             }
         }
 
-        //执行调优参数
-        CmptSpec optimizeSpec = component.getOptimizeExecution();
-        if(DataUtil.isNotNull(optimizeSpec) && optimizeSpec.cmptCharCount() > 0) {
+
+        if(component.haveOptimizeExecutionContent()) {
+            //执行调优参数
+            CmptSpec optimizeSpec = component.getOptimizeExecution();
             for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
                 NodeParameter parameter = createParameter(workflowContext, node, cmptChar);
                 node.putOptimizeParameter(parameter);
@@ -75,9 +76,9 @@ public class ParameterCreate {
     public void createParameters(WorkflowContext workflowContext, Node node, Node otherNode) {
 
         Component component = node.getComponent();
-        //组件参数
-        CmptSpec paramSpec = component.getParameter();
-        if(DataUtil.isNotNull(paramSpec) && paramSpec.cmptCharCount() > 0) {
+        if(component.haveParameterContnent()) {
+            //组件参数
+            CmptSpec paramSpec = component.getParameter();
             for (CmptChar cmptChar : paramSpec.getCmptChars()) {
                 NodeParameter otherParameter = otherNode.getParameter(cmptChar.data().getCharId());
                 NodeParameter parameter = createParameter(workflowContext, node, cmptChar, (DataUtil.isNotNull(otherParameter) ? otherParameter.getCharValue().getTextValue() : null));
@@ -85,9 +86,9 @@ public class ParameterCreate {
             }
         }
 
-        //执行调优参数
-        CmptSpec optimizeSpec = component.getOptimizeExecution();
-        if(DataUtil.isNotNull(optimizeSpec) && optimizeSpec.cmptCharCount() > 0) {
+        if(component.haveOptimizeExecutionContent()) {
+            //执行调优参数
+            CmptSpec optimizeSpec = component.getOptimizeExecution();
             for (CmptChar cmptChar : optimizeSpec.getCmptChars()) {
                 NodeParameter otherParameter = otherNode.getOptimizeParameter(cmptChar.data().getCharId());
                 NodeParameter parameter = createParameter(workflowContext, node, cmptChar, (DataUtil.isNotNull(otherParameter) ? otherParameter.getCharValue().getTextValue() : null));

@@ -16,7 +16,7 @@ import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.model.Model;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataTable;
-import com.yatop.lambda.workflow.core.richmodel.data.unstructured.CodeScript;
+import com.yatop.lambda.workflow.core.richmodel.data.script.CodeScript;
 import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonObject;
 
 public class CharValue implements IRichModel {

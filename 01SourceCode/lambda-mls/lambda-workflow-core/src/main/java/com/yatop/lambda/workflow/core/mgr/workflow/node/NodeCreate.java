@@ -8,7 +8,6 @@ import com.yatop.lambda.core.mgr.workflow.node.NodeMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.SystemParameterUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.mgr.workflow.module.AnalyzeNodeStateHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.parameter.ParameterCreate;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.port.NodePortCreate;
 import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
@@ -66,6 +65,7 @@ public class NodeCreate {
             parameterCreate.createParameters(workflowContext, richNode, otherNode);
         }
 
+        richNode.getModuleClazzBean().prepareOutputAndResource(workflowContext, richNode);
         workflowContext.doneCreateNode(richNode);
         return richNode;
     }

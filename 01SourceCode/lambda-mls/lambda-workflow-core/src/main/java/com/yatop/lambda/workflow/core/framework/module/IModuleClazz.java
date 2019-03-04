@@ -23,22 +23,22 @@ public interface IModuleClazz extends InitializingBean {
     //////////////////////////////////////////////////////
 
     //探测节点输出
-    void exploreOutputResource(Node node);
+    void exploreOutputAndResource(Node node);
 
     //准备节点输出
-    void prepareOutputResource(WorkflowContext workflowContext, Node node);
+    void prepareOutputAndResource(WorkflowContext workflowContext, Node node);
 
     //完成节点输出
-    void completeOutputResource(WorkflowContext workflowContext, Node node);
+    void completeOutputAndResource(WorkflowContext workflowContext, Node node);
 
     //清除节点输出
-    void clearOutputResource(WorkflowContext workflowContext, Node node);
+    void clearOutputAndResource(WorkflowContext workflowContext, Node node);
 
     //删除节点输出
-    void deleteOutputResource(WorkflowContext workflowContext, Node node);
+    void deleteOutputAndResource(WorkflowContext workflowContext, Node node);
 
     //恢复节点输出
-    void recoverOutputResource(WorkflowContext workflowContext, Node node);
+    void recoverOutputAndResource(WorkflowContext workflowContext, Node node);
 
     //////////////////////////////////////////////////////
 

@@ -5,6 +5,7 @@ import com.yatop.lambda.core.enums.OutputStateEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeOutputMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.mgr.workflow.charvalue.OutputCharValueHelper;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
@@ -15,33 +16,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OutputCreate {
+public class OutputAndResourceCreate {
 
     @Autowired
     private NodeOutputMgr nodeOutputMgr;
 
-    private NodeOutput createOutput(WorkflowContext workflowContext, Node node, CmptChar cmptChar) {
+    private NodeOutput createOutputAndResource(WorkflowContext workflowContext, Node node, CmptChar cmptChar) {
+
+        CharValue charValue = new CharValue(cmptChar);
+        OutputCharValueHelper.prepareOutputCharValue(workflowContext, node, charValue);
 
         WfFlowNodeOutput output = new WfFlowNodeOutput();
         output.setNodeId(node.data().getNodeId());
         output.setCharId(cmptChar.data().getCharId());
-        nodeOutputMgr.insertNodeOutput(output, workflowContext.getOperId());
+        output = nodeOutputMgr.insertNodeOutput(output, workflowContext.getOperId());
 
-        return new NodeOutput(output, new CharValue(cmptChar));
+        return new NodeOutput(output, charValue);
     }
 
-    public void createOutputs(WorkflowContext workflowContext, Node node) {
+    public void createOutputAndResources(WorkflowContext workflowContext, Node node) {
 
         Component component = node.getComponent();
-        //组件输出
-        CmptSpec outputSpec = component.getOutput();
-        if(DataUtil.isNotNull(outputSpec) && outputSpec.cmptCharCount() > 0) {
+        if(component.haveOutputContent()) {
+            //组件输出
+            CmptSpec outputSpec = component.getOutput();
             for (CmptChar cmptChar : outputSpec.getCmptChars()) {
-                NodeOutput output = createOutput(workflowContext, node, cmptChar);
+                NodeOutput output = createOutputAndResource(workflowContext, node, cmptChar);
                 node.putOutput(output);
             }
-
-            node.getModuleClazzBean().prepareOutputResource(workflowContext, node);
         }
     }
 }

@@ -24,7 +24,12 @@ public class DataTable extends RichModel<DwDataTable> {
     }
 
     @Override
-    public boolean isDataStateEmpty() {
+    public boolean isResourceStateEmpty() {
         return data().getTableState() == DataTableStateEnum.EMPTY.getState();
+    }
+
+    @Override
+    public Long getResourceId() {
+        return data().getTableId();
     }
 }
