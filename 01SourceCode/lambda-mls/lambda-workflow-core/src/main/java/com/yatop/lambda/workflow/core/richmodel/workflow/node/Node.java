@@ -32,6 +32,10 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     private TreeMap<String, NodeOutputPort> outputNodePortsOrderByCharId = new TreeMap<String, NodeOutputPort>();                //输出节点端口，key=charId
     private TreeMap<String, NodeOutputPort> outputNodePortsOrderByCharCode = new TreeMap<String, NodeOutputPort>();                //输出节点端口，key=charCode
     private TreeMap<Integer, NodeOutputPort> outputNodePortsOrderBySequence = new TreeMap<Integer, NodeOutputPort>();//输出节点端口按序号排序
+
+    private TreeMap<String, NodeOutput> outputs = new TreeMap<String, NodeOutput>(); //节点输出，key=charId
+    private TreeMap<String, NodeOutput> outputsOrderByCharCode = new TreeMap<String, NodeOutput>(); //节点输出，key=charCode
+
     private int indegree;
     private boolean deleted;
     private boolean analyzed;
@@ -373,6 +377,30 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
             }
         }
         return nodeSchemas;
+    }
+
+    public int nodeOutputCount() {
+        return outputs.size();
+    }
+
+    public List<NodeOutput> getOutputs() {
+        //TODO outputs loaded
+        return CollectionUtil.toList(outputs);
+    }
+
+    public NodeOutput getutput(String charId) {
+        //TODO outputs loaded
+        return CollectionUtil.get(outputs, charId);
+    }
+
+    public NodeOutput getOutputByCode(String charCode) {
+        //TODO outputs loaded
+        return CollectionUtil.get(outputs, charCode);
+    }
+
+    public void putOutput(NodeOutput nodeOutput) {
+        CollectionUtil.put(outputs, nodeOutput.data().getCharId(), nodeOutput);
+        CollectionUtil.put(outputsOrderByCharCode, nodeOutput.getCmptChar().data().getCharCode(), nodeOutput);
     }
 
     public boolean isDeleted() {

@@ -118,7 +118,7 @@ public class ModuleConfig implements InitializingBean {
                     System.exit(-1);
                 }
 
-                if(moduleTypeEnum == ModuleTypeEnum.NON_WORKFLOW_MODULE || module.getCatalogId() > 0) {
+                if(moduleTypeEnum == ModuleTypeEnum.NON_WORKFLOW_MODULE && module.getCatalogId() > 0) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Error module-type vs catalog-id:\n%s.", DataUtil.prettyFormat(module)));
                     System.exit(-1);
                 }
@@ -126,6 +126,11 @@ public class ModuleConfig implements InitializingBean {
                 Component component =  componentConfig.getComponent(module.getPkgCmptId());
                 if(DataUtil.isNull(component)) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Component not found:\n%s.", DataUtil.prettyFormat(module)));
+                    System.exit(-1);
+                }
+
+                if(moduleTypeEnum == ModuleTypeEnum.NON_WORKFLOW_MODULE && component.haveInputContent()) {
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Forbid have input content:\n%s.", DataUtil.prettyFormat(module)));
                     System.exit(-1);
                 }
 

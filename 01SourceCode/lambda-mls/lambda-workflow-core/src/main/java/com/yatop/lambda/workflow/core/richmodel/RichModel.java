@@ -16,6 +16,10 @@ public abstract class RichModel<T extends LambdaRootModel> implements IRichModel
         return data;
     }
 
+    public boolean isDataStateEmpty() {
+        return true;
+    }
+
     @Override
     public boolean equals(Object that) {
         return data.equals(that);

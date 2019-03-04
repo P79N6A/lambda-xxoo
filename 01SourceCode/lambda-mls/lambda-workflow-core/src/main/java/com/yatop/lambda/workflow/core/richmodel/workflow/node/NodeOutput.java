@@ -9,23 +9,33 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 public class NodeOutput extends RichModel<WfFlowNodeOutput> {
 
     private CharValue charValue;
-    private boolean simulateParameter;  //标记来自OutputHelper.simulateOutput构建的模拟节点输出
+    private boolean simulateOutput;  //标记来自OutputHelper.simulateOutput构建的模拟节点输出
 
     public NodeOutput(WfFlowNodeOutput data, CharValue charValue) {
+        this(data, charValue, false);
+    }
+
+    public NodeOutput(WfFlowNodeOutput data, CharValue charValue, boolean simulateOutput) {
         super(data);
         this.charValue = charValue;
+        this.simulateOutput = simulateOutput;
     }
 
     public void flush(String operId) {
 
-        if (this.isColoured())
+        if (this.isColoured() && !simulateOutput)
             ;//NodeHelper.updateNode(this, operId);
     }
 
     @Override
     public void clear() {
+        charValue.clear();
         charValue = null;
         super.clear();
+    }
+
+    public boolean isSimulateOutput() {
+        return simulateOutput;
     }
 
     public CmptChar getCmptChar() {

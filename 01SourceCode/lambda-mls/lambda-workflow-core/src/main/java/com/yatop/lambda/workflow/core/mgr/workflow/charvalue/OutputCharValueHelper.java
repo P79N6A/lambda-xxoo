@@ -7,8 +7,12 @@ import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OutputCharValueHelper {
+
+    public static Logger logger = LoggerFactory.getLogger(OutputCharValueHelper.class);
 
     //适用输出内容
     public static void exploreOutputCharValue(WorkflowContext workflowContext, Node node, CharValue charValue) {
@@ -87,7 +91,8 @@ public class OutputCharValueHelper {
             charValueContext.clear();
             return;
         } catch (Throwable e) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete output value failed -- Char-Type-Clazz occur error.\n" + charValue, "节点输出删除出错", e, node.data());
+            e = new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete output value failed -- Char-Type-Clazz occur error.\n" + charValue, "节点输出删除出错", e, node.data());
+            logger.error("系统内部发生错误", e);
         }
     }
 

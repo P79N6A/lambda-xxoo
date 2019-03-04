@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.richmodel.data.table;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.base.model.DwDataTable;
+import com.yatop.lambda.core.enums.DataTableStateEnum;
 import com.yatop.lambda.workflow.core.serialize.TaskContentSerializer;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 
@@ -20,5 +21,10 @@ public class DataTable extends RichModel<DwDataTable> {
         JSONObject jsonObject = super.toJSON();
         jsonObject.put(TaskContentSerializer.JSON_CLASS_NAME_KEY, DataTable.class.getName());
         return jsonObject;
+    }
+
+    @Override
+    public boolean isDataStateEmpty() {
+        return data().getTableState() == DataTableStateEnum.EMPTY.getState();
     }
 }

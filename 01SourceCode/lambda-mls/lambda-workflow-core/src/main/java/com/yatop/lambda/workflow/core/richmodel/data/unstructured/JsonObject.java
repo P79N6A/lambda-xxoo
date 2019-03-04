@@ -31,4 +31,9 @@ public class JsonObject extends RichModel<WfJsonObject> {
             this.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
         }
     }
+
+    @Override
+    public boolean isDataStateEmpty() {
+        return data().getObjectState() == JsonObjectStateEnum.EMPTY.getState();
+    }
 }
