@@ -7,12 +7,11 @@ import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.StorageLocationEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.unstructured.JsonObjectMgr;
-import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.JsonObjectFileUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonObject;
+import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonReport;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,10 +66,10 @@ public class JsonReportHelper {
         jsonObject.setObjectDfsFile(JsonObjectFileUtil.getFilePath4Report(flowDfsDir, reportNamePrefix, node.data().getNodeId(), jsonObject.getObjectId()));
         jsonObject.setObjectLocalFile(JsonObjectFileUtil.getFilePath4Report(flowLocalDir, reportNamePrefix, node.data().getNodeId(), jsonObject.getObjectId()));
         JSON_OBJECT_MGR.updateJsonObject(jsonObject, workflowContext.getOperId());
-        JsonObject richJsonObject = new JsonObject(jsonObject);
+        JsonReport richJsonReport = new JsonReport(jsonObject);
 
-        context.getCharValue().setCharValue(String.valueOf(richJsonObject.data().getObjectId()));
-        context.getCharValue().setObjectValue(richJsonObject);
+        context.getCharValue().setCharValue(String.valueOf(richJsonReport.data().getObjectId()));
+        context.getCharValue().setObjectValue(richJsonReport);
     }
 
     public static void deleteJsonReport(CharValueContext context) {
@@ -87,7 +86,7 @@ public class JsonReportHelper {
 
     public static void updateJsonReport(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        JsonObject jsonObject = context.getCharValue().getJsonObject();
+        JsonReport jsonObject = context.getCharValue().getJsonReport();
 
         jsonObject.data().setObjectState(JsonObjectStateEnum.NORMAL.getState());
         JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
@@ -97,7 +96,7 @@ public class JsonReportHelper {
 
     public static void clearJsonReport(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        JsonObject jsonObject = context.getCharValue().getJsonObject();
+        JsonReport jsonObject = context.getCharValue().getJsonReport();
 
         jsonObject.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
         JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
@@ -105,11 +104,11 @@ public class JsonReportHelper {
         //TODO remove dfs & local report file
     }
 
-    public static JsonObject queryJsonReport(CharValue charValue) {
+    public static JsonReport queryJsonReport(CharValue charValue) {
         WfJsonObject jsonObject = JSON_OBJECT_MGR.queryJsonObject(Long.parseLong(charValue.getCharValue()));
 
-        JsonObject richJsonObject = new JsonObject(jsonObject);
-        charValue.setObjectValue(richJsonObject);
-        return richJsonObject;
+        JsonReport richJsonReport = new JsonReport(jsonObject);
+        charValue.setObjectValue(richJsonReport);
+        return richJsonReport;
     }
 }

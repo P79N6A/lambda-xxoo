@@ -105,6 +105,8 @@ public enum JobTypeEnum {
             case RUN_END_HERE:
             case RUN_THIS_NODE:
                 return true;
+            case RUN_DATAFILE_IMPORT:
+                return false;
             default:
                 return false;
         }

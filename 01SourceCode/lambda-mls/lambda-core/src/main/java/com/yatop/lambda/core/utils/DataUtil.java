@@ -55,12 +55,12 @@ public class DataUtil {
         return StringUtils.trimToNull(str);
     }
 
-    public static boolean isNumberic(String str) {
-        return NumberUtils.isDigits(str);
+    public static boolean isNumber(String str) {
+        return NumberUtils.isNumber(str);
     }
 
-    public static boolean isNotNumberic(String str) {
-        return !NumberUtils.isDigits(str);
+    public static boolean isNotNumber(String str) {
+        return !NumberUtils.isNumber(str);
     }
 
     public static boolean isDigits(String str) {

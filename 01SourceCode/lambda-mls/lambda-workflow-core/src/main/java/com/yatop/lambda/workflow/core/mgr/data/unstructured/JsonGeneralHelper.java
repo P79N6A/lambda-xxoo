@@ -2,21 +2,19 @@ package com.yatop.lambda.workflow.core.mgr.data.unstructured;
 
 import com.yatop.lambda.base.model.WfJsonObject;
 import com.yatop.lambda.core.enums.*;
-import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.unstructured.JsonObjectMgr;
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.core.utils.JsonObjectFileUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonObject;
+import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonGeneral;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JsonObjectHelper {
+public class JsonGeneralHelper {
 
     private static JsonObjectMgr JSON_OBJECT_MGR;
 
@@ -46,10 +44,10 @@ public class JsonObjectHelper {
             jsonObject.setObjectState(JsonObjectStateEnum.EMPTY.getState());
         }
         jsonObject = JSON_OBJECT_MGR.insertJsonObject(jsonObject, workflowContext.getOperId());
-        JsonObject richJsonObject = new JsonObject(jsonObject);
+        JsonGeneral richJsonGeneral = new JsonGeneral(jsonObject);
 
-        context.getCharValue().setCharValue(String.valueOf(richJsonObject.data().getObjectId()));
-        context.getCharValue().setObjectValue(richJsonObject);
+        context.getCharValue().setCharValue(String.valueOf(richJsonGeneral.data().getObjectId()));
+        context.getCharValue().setObjectValue(richJsonGeneral);
         context.getCharValue().setTextValue(defaultObjectContent);
     }
 
@@ -67,21 +65,21 @@ public class JsonObjectHelper {
     public static void updateJsonObject(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         String updateObjectContent = context.getCharValue().getTextValue();
-        JsonObject jsonObject = context.getCharValue().getJsonObject();
+        JsonGeneral jsonGeneral = context.getCharValue().getJsonGeneral();
 
-        if(DataUtil.equals(jsonObject.data().getObjectContent(), updateObjectContent))
+        if(DataUtil.equals(jsonGeneral.data().getObjectContent(), updateObjectContent))
             return;
 
         if(DataUtil.isNotEmpty(updateObjectContent)) {
-            jsonObject.data().setObjectContent(updateObjectContent);
-            jsonObject.data().setObjectState(JsonObjectStateEnum.NORMAL.getState());
+            jsonGeneral.data().setObjectContent(updateObjectContent);
+            jsonGeneral.data().setObjectState(JsonObjectStateEnum.NORMAL.getState());
         } else {
-            jsonObject.data().setObjectContent(null);
-            jsonObject.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
+            jsonGeneral.data().setObjectContent(null);
+            jsonGeneral.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
         }
-        JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
+        JSON_OBJECT_MGR.updateJsonObject(jsonGeneral.data(), workflowContext.getOperId());
 
-        context.getCharValue().setTextValue(jsonObject.data().getObjectContent());
+        context.getCharValue().setTextValue(jsonGeneral.data().getObjectContent());
     }
 
     /*public static void clearJsonObject(CharValueContext context) {
@@ -89,12 +87,12 @@ public class JsonObjectHelper {
         updateJsonObject(context);
     }*/
 
-    public static JsonObject queryJsonObject(CharValue charValue) {
+    public static JsonGeneral queryJsonObject(CharValue charValue) {
         WfJsonObject jsonObject = JSON_OBJECT_MGR.queryJsonObject(Long.parseLong(charValue.getCharValue()));
 
-        JsonObject richJsonObject = new JsonObject(jsonObject);
-        charValue.setObjectValue(richJsonObject);
+        JsonGeneral richJsonGeneral = new JsonGeneral(jsonObject);
+        charValue.setObjectValue(richJsonGeneral);
         charValue.setTextValue(jsonObject.getObjectContent());
-        return richJsonObject;
+        return richJsonGeneral;
     }
 }

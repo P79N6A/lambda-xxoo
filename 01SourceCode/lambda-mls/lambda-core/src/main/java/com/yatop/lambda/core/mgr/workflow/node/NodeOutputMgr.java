@@ -19,7 +19,7 @@ public class NodeOutputMgr extends BaseMgr {
 
     /*
      *
-     *   插入新节点输出（任务ID、特征ID、特征值 ...）
+     *   插入新节点输出（节点ID、特征ID、特征值 ...）
      *   返回插入记录
      *
      * */
@@ -54,7 +54,7 @@ public class NodeOutputMgr extends BaseMgr {
 
     /*
      *
-     *   逻辑删除节点输出（按任务删除，删除实验是否需要删除运行信息待定）
+     *   逻辑删除节点输出（按节点删除，删除实验是否需要删除运行信息待定）
      *   返回删除数量
      *
      * */
@@ -69,10 +69,34 @@ public class NodeOutputMgr extends BaseMgr {
             deleteNodeOutput.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
             deleteNodeOutput.setLastUpdateOper(operId);
             WfFlowNodeOutputExample example = new WfFlowNodeOutputExample();
-            example.createCriteria().andNodeIdEqualTo(nodeId);
+            example.createCriteria().andNodeIdEqualTo(nodeId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());;
             return wfFlowNodeOutputMapper.updateByExampleSelective(deleteNodeOutput, example);
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node output failed.", "删除节点输出失败", e);
+        }
+    }
+
+    /*
+     *
+     *   恢复节点输出（按节点恢复）
+     *   返回恢复数量
+     *
+     * */
+    public int recoverNodeOutput(Long nodeId, String operId) {
+        if(DataUtil.isNull(nodeId) || DataUtil.isEmpty(operId)){
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node output -- invalid delete condition.", "无效恢复条件");
+        }
+
+        try {
+            WfFlowNodeOutput recoverNodeOutput = new WfFlowNodeOutput();
+            recoverNodeOutput.setStatus(DataStatusEnum.NORMAL.getStatus());
+            recoverNodeOutput.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            recoverNodeOutput.setLastUpdateOper(operId);
+            WfFlowNodeOutputExample example = new WfFlowNodeOutputExample();
+            example.createCriteria().andNodeIdEqualTo(nodeId).andStatusEqualTo(DataStatusEnum.INVALID.getStatus());;
+            return wfFlowNodeOutputMapper.updateByExampleSelective(recoverNodeOutput, example);
+        } catch (Throwable e) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node output failed.", "恢复节点输出失败", e);
         }
     }
 
@@ -117,7 +141,7 @@ public class NodeOutputMgr extends BaseMgr {
 
     /*
      *
-     *   查询节点输出（按任务ID）
+     *   查询节点输出（按节点ID）
      *   返回结果
      *
      * */
@@ -138,7 +162,7 @@ public class NodeOutputMgr extends BaseMgr {
 
     /*
      *
-     *   查询节点输出（按任务ID + 特征ID）
+     *   查询节点输出（按节点ID + 特征ID）
      *   返回结果
      *
      * */

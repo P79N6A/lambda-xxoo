@@ -84,6 +84,13 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
                     }
                 }
             }
+
+            if(this.outputs.size() > 0) {
+                for (NodeOutput output : this.getOutputs()) {
+                    output.flush(operId);
+                }
+            }
+
             if (this.isColoured() && this.data().getNodeId() > 0)
                 NodeHelper.updateNode(this, operId);
         }

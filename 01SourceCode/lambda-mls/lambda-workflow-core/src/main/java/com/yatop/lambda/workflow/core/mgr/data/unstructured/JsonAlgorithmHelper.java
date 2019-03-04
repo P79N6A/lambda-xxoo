@@ -3,16 +3,12 @@ package com.yatop.lambda.workflow.core.mgr.data.unstructured;
 import com.yatop.lambda.base.model.WfJsonObject;
 import com.yatop.lambda.core.enums.JsonObjectStateEnum;
 import com.yatop.lambda.core.enums.JsonObjectTypeEnum;
-import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.StorageLocationEnum;
-import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.unstructured.JsonObjectMgr;
-import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.core.utils.JsonObjectFileUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonObject;
+import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonAlgorithm;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +39,10 @@ public class JsonAlgorithmHelper {
         jsonObject.setStorageLocation(StorageLocationEnum.TABLE_FIELD.getLocation());
         jsonObject.setObjectState(JsonObjectStateEnum.EMPTY.getState());
         jsonObject = JSON_OBJECT_MGR.insertJsonObject(jsonObject, workflowContext.getOperId());
-        JsonObject richJsonObject = new JsonObject(jsonObject);
+        JsonAlgorithm richJsonAlgorithm = new JsonAlgorithm(jsonObject);
 
-        context.getCharValue().setCharValue(String.valueOf(richJsonObject.data().getObjectId()));
-        context.getCharValue().setObjectValue(richJsonObject);
+        context.getCharValue().setCharValue(String.valueOf(richJsonAlgorithm.data().getObjectId()));
+        context.getCharValue().setObjectValue(richJsonAlgorithm);
     }
 
     public static void deleteJsonAlgorithm(CharValueContext context) {
@@ -63,27 +59,27 @@ public class JsonAlgorithmHelper {
 
     public static void updateJsonAlgorithm(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        JsonObject jsonObject = context.getCharValue().getJsonObject();
+        JsonAlgorithm jsonAlgorithm = context.getCharValue().getJsonAlgorithm();
 
-        jsonObject.data().setObjectContentColoured(true);
-        jsonObject.data().setObjectStateColoured(true);
-        JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
+        jsonAlgorithm.data().setObjectContentColoured(true);
+        jsonAlgorithm.data().setObjectStateColoured(true);
+        JSON_OBJECT_MGR.updateJsonObject(jsonAlgorithm.data(), workflowContext.getOperId());
     }
 
     public static void clearJsonAlgorithm(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
-        JsonObject jsonObject = context.getCharValue().getJsonObject();
+        JsonAlgorithm jsonAlgorithm = context.getCharValue().getJsonAlgorithm();
 
-        jsonObject.data().setObjectContent(null);
-        jsonObject.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
-        JSON_OBJECT_MGR.updateJsonObject(jsonObject.data(), workflowContext.getOperId());
+        jsonAlgorithm.data().setObjectContent(null);
+        jsonAlgorithm.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
+        JSON_OBJECT_MGR.updateJsonObject(jsonAlgorithm.data(), workflowContext.getOperId());
     }
 
-    public static JsonObject queryJsonAlgorithm(CharValue charValue) {
+    public static JsonAlgorithm queryJsonAlgorithm(CharValue charValue) {
         WfJsonObject jsonObject = JSON_OBJECT_MGR.queryJsonObject(Long.parseLong(charValue.getCharValue()));
 
-        JsonObject richJsonObject = new JsonObject(jsonObject);
-        charValue.setObjectValue(richJsonObject);
-        return richJsonObject;
+        JsonAlgorithm richJsonAlgorithm = new JsonAlgorithm(jsonObject);
+        charValue.setObjectValue(richJsonAlgorithm);
+        return richJsonAlgorithm;
     }
 }

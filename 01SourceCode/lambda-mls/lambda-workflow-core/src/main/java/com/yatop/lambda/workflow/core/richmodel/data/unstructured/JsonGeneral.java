@@ -7,16 +7,16 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.serialize.TaskContentSerializer;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 
-public class JsonObject extends RichModel<WfJsonObject> {
+public class JsonGeneral extends RichModel<WfJsonObject> {
 
-    public JsonObject(WfJsonObject data) {
+    public JsonGeneral(WfJsonObject data) {
         super(data);
     }
 
     @Override
     public JSONObject toJSON() {
         JSONObject jsonObject = super.toJSON();
-        jsonObject.put(TaskContentSerializer.JSON_CLASS_NAME_KEY, JsonObject.class.getName());
+        jsonObject.put(TaskContentSerializer.JSON_CLASS_NAME_KEY, JsonGeneral.class.getName());
         return jsonObject;
     }
 

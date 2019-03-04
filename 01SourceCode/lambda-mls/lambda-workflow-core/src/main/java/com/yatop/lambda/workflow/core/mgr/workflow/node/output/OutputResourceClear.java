@@ -9,31 +9,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OutputAndResourceDelete {
+public class OutputResourceClear {
 
     @Autowired
     private NodeOutputMgr nodeOutputMgr;
 
-    private void deleteOutputResource(WorkflowContext workflowContext, Node node, NodeOutput output) {
+    private void clearOutputResource(WorkflowContext workflowContext, Node node, NodeOutput output) {
 
-        OutputCharValueHelper.deleteOutputCharValue(workflowContext, node, output.getCharValue());
+        OutputCharValueHelper.clearOutputCharValue(workflowContext, node, output.getCharValue());
         output.changeState2Empty();
-        output.flush(workflowContext.getOperId());
     }
 
-    public void deleteOutputAndResources(WorkflowContext workflowContext, Node node) {
+    public void clearOutputResource(WorkflowContext workflowContext, Node node) {
 
         if(node.outputCount() > 0) {
-            int deleteCount = 0;
             for (NodeOutput output : node.getOutputs()) {
                 if(!output.isSimulateOutput()) {
-                    deleteOutputResource(workflowContext, node, output);
-                    deleteCount++;
+                    clearOutputResource(workflowContext, node, output);
                 }
-            }
-
-            if(deleteCount > 0) {
-                nodeOutputMgr.deleteNodeOutput(node.data().getNodeId(), workflowContext.getOperId());
             }
         }
     }

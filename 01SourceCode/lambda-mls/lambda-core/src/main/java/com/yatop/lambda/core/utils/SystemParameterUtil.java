@@ -114,7 +114,7 @@ public class SystemParameterUtil implements InitializingBean {
     public static Float find4Float(SystemParameterEnum paramEnum) {
         String value = SystemParameterUtil.find(paramEnum);
 
-        if(DataUtil.isNotNumberic(value))
+        if(DataUtil.isNotNumber(value))
             return null;
 
         return Float.parseFloat(value);
@@ -128,7 +128,7 @@ public class SystemParameterUtil implements InitializingBean {
     public static Double find4Double(SystemParameterEnum paramEnum) {
         String value = SystemParameterUtil.find(paramEnum);
 
-        if(DataUtil.isNotNumberic(value))
+        if(DataUtil.isNotNumber(value))
             return null;
 
         return Double.parseDouble(value);

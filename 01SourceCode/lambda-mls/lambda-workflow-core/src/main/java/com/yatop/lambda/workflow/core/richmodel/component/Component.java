@@ -59,6 +59,10 @@ public class Component extends RichModel<CfComponent> {
         return DataUtil.isNull(getParameter()) && getParameter().cmptCharCount() > 0;
     }
 
+    public boolean isAlgorithmComponent() {
+        return DataUtil.isNotNull(algorithm);
+    }
+
     public CmptAlgorithm getAlgorithm() {
         return algorithm;
     }

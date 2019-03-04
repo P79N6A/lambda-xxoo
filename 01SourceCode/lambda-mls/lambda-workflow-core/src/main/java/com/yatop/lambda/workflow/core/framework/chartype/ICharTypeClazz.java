@@ -4,7 +4,7 @@ import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import org.springframework.beans.factory.InitializingBean;
 
-public interface ICharTypeClazz extends InitializingBean {
+public interface ICharTypeClazz /*extends InitializingBean*/ {
     //方法失败或异常抛出Exception，CharType类实现该接口，适当封装一些中间abstract组件类以便复用
 
     //创建节点特征值内容
@@ -30,6 +30,9 @@ public interface ICharTypeClazz extends InitializingBean {
     //返回true，通过
     boolean validateCharValue(CharValue charValue);
 
-    //格式化节点特征值为Object对象，用于特征值json内容生成
-    Object formatCharValue(CharValue charValue);
+    //转换节点特征值，用于json对象的特征值内容生成
+    Object toJSONValue(CharValue charValue);
+
+    //解析节点特征值，用于json对象的特征值内容解析
+    void parseJSONValue(CharValue charValue, Object obj);
 }

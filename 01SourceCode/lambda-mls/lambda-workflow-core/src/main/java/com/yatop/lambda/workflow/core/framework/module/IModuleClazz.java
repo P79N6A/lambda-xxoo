@@ -10,7 +10,7 @@ import org.springframework.beans.factory.InitializingBean;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-public interface IModuleClazz extends InitializingBean {
+public interface IModuleClazz /*extends InitializingBean*/ {
     //方法失败或异常抛出Exception，Module类实现该接口，适当封装一些中间abstract组件类以便复用
 
     //校验参数逻辑，例如：数据表读取组件需要校验对应的数据表是否正常

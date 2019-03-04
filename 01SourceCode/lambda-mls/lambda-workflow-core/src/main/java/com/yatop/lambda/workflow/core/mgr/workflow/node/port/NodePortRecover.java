@@ -32,8 +32,8 @@ public class NodePortRecover {
 
         Module module = node.getModule();
         if(module.inputPortCount() > 0 || module.outputPortCount() > 0) {
-            nodePortMgr.recoverNodePort(node.data().getNodeId(), workflowContext.getOperId());
 
+            nodePortMgr.recoverNodePort(node.data().getNodeId(), workflowContext.getOperId());
             List<WfFlowNodePort> nodePortList = nodePortMgr.queryNodePortByNodeId(node.data().getNodeId());
             if (DataUtil.isEmpty(nodePortList)) {
                 throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Recover node port failed -- node port list empty.", "节点端口信息缺失", node.data());

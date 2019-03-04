@@ -57,6 +57,7 @@ public class NodeRecover {
         Node richNode = new Node(node, module);
         nodePortRecover.recoverNodePorts(workflowContext, richNode);
         parameterRecover.recoverParameters(workflowContext, richNode);
+        richNode.getModuleClazzBean().recoverOutputAndResource(workflowContext, richNode);
         workflowContext.doneRecoverNode(richNode);
         return richNode;
     }

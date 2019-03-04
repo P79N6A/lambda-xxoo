@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.snapshot;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
 import com.yatop.lambda.base.model.*;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.enums.SnapshotStateEnum;
@@ -10,7 +11,6 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.config.ComponentConfigHelper;
 import com.yatop.lambda.workflow.core.config.ModuleConfigHelper;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.mgr.project.ProjectHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.snapshot.SnapshotHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
@@ -153,7 +153,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
                 if(node.parameterCount() > 0) {
                     for(NodeParameter parameter : node.getParameters()) {
                         JSONObject jsonParameter = parameter.toJSON();
-                        if(parameter.getCharValue().isJsonDataType() || parameter.getCharValue().isScriptDataType())
+                        if(parameter.getCharValue().isJsonType() || parameter.getCharValue().isScriptType())
                             jsonParameter.put(SNAPSHOT_CONTENT_KEY_NODE_PARAMETER_CHAR_VALUE_ATTRIBUTE, parameter.getCharValue().getTextValue());
 
                         jsonParameters.add(jsonParameter);
@@ -163,7 +163,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
                 if(node.optimizeParameterCount() > 0) {
                     for(NodeParameter parameter : node.getOptimizeParameters()) {
                         JSONObject jsonParameter = parameter.toJSON();
-                        if(parameter.getCharValue().isJsonDataType() || parameter.getCharValue().isScriptDataType())
+                        if(parameter.getCharValue().isJsonType() || parameter.getCharValue().isScriptType())
                             jsonParameter.put(SNAPSHOT_CONTENT_KEY_NODE_PARAMETER_CHAR_VALUE_ATTRIBUTE, parameter.getCharValue().getTextValue());
 
                         jsonOptimizeParameters.add(jsonParameter);
@@ -216,7 +216,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
         }
 
         try {
-            JSONObject jsonContent = JSONObject.parseObject(this.data().getSnapshotContent());
+            JSONObject jsonContent = JSONObject.parseObject(this.data().getSnapshotContent(), Feature.OrderedField);
             this.project = jsonContent.getJSONObject(SNAPSHOT_CONTENT_KEY_PROJECT);
             this.experiment = jsonContent.getJSONObject(SNAPSHOT_CONTENT_KEY_EXPERIMENT);
             this.workflow = jsonContent.getJSONObject(SNAPSHOT_CONTENT_KEY_WORKFLOW);
@@ -241,7 +241,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
                         for (int i = 0; i < jsonParameters.size(); i++) {
                             WfFlowNodeParameter wfFlowNodeParameter = jsonParameters.getJSONObject(i).toJavaObject(WfFlowNodeParameter.class);
                             CharValue charValue = new CharValue(ComponentConfigHelper.getCharacteristic(wfFlowNodeParameter.getCharId()));
-                            if(charValue.isJsonDataType() || charValue.isScriptDataType()) {
+                            if(charValue.isJsonType() || charValue.isScriptType()) {
                                 charValue.setTextValue(wfFlowNodeParameter.getCharValue());
                                 wfFlowNodeParameter.setCharValue(null);
                             } else {
@@ -255,7 +255,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
                         for (int i = 0; i < jsonOptimizeParameters.size(); i++) {
                             WfFlowNodeParameter wfFlowNodeParameter = jsonOptimizeParameters.getJSONObject(i).toJavaObject(WfFlowNodeParameter.class);
                             CharValue charValue = new CharValue(ComponentConfigHelper.getCharacteristic(wfFlowNodeParameter.getCharId()));
-                            if(charValue.isJsonDataType() || charValue.isScriptDataType()) {
+                            if(charValue.isJsonType() || charValue.isScriptType()) {
                                 charValue.setTextValue(wfFlowNodeParameter.getCharValue());
                                 wfFlowNodeParameter.setCharValue(null);
                             } else {

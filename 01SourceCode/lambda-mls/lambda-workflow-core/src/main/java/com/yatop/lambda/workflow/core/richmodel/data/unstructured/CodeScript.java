@@ -1,4 +1,4 @@
-package com.yatop.lambda.workflow.core.richmodel.data.script;
+package com.yatop.lambda.workflow.core.richmodel.data.unstructured;
 
 import com.yatop.lambda.base.model.WfCodeScript;
 import com.yatop.lambda.core.enums.CodeScriptStateEnum;

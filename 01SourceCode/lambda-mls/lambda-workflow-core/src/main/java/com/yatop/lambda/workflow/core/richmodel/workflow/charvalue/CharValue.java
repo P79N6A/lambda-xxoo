@@ -16,8 +16,10 @@ import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.model.Model;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataTable;
-import com.yatop.lambda.workflow.core.richmodel.data.script.CodeScript;
-import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonObject;
+import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonAlgorithm;
+import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonReport;
+import com.yatop.lambda.workflow.core.richmodel.data.unstructured.CodeScript;
+import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonGeneral;
 
 public class CharValue implements IRichModel {
     private CmptChar cmptChar;
@@ -37,8 +39,7 @@ public class CharValue implements IRichModel {
     public JSONObject toJSON() {
         JSONObject jsonObject = this.cmptChar.toJSON();
         jsonObject.put("charValue", this.charValue);
-        jsonObject.put("textValue", getTextValue());
-        jsonObject.put("objectValue", getObjectValue());
+        jsonObject.put("JSONValue", this.toJSONValue());
         return jsonObject;
     }
 
@@ -94,72 +95,67 @@ public class CharValue implements IRichModel {
         return this.cmptChar.getCharTypeClazzBean();
     }
 
-    public boolean isBasicDataType() {
+    public Object toJSONValue() {
+        return getCharTypeClazzBean().toJSONValue(this);
+    }
+
+    public void parseJSONValue(Object obj) {
+        getCharTypeClazzBean().parseJSONValue(this, obj);
+    }
+
+    public boolean isBasicType() {
         return getCharTypeClazzBean() instanceof CharTypeBasicGeneric;
     }
 
-    public boolean isTuneDataType() {
+    public boolean isTuneType() {
         return getCharTypeClazzBean() instanceof CharTypeTuneGeneric;
     }
 
-    public boolean isJsonDataType() {
+    public boolean isJsonType() {
         return getCharTypeClazzBean() instanceof CharTypeJsonGeneric;
     }
 
-    public boolean isScriptDataType() {
+    public boolean isScriptType() {
         return getCharTypeClazzBean() instanceof CharTypeScriptGeneric;
     }
 
-    public boolean isAlgorithmDataType() {
+    public boolean isAlgorithmType() {
         return getCharTypeClazzBean() instanceof CharTypeAlgorithmGeneric;
     }
 
-    public boolean isReportDataType() {
+    public boolean isReportType() {
         return getCharTypeClazzBean() instanceof CharTypeReportGeneric;
     }
 
-    public boolean isTableDataType() {
+    public boolean isTableType() {
         return getCharTypeClazzBean() instanceof CharTypeTableGeneric;
     }
 
-    public boolean isModelDataType() {
+    public boolean isModelType() {
         return getCharTypeClazzBean() instanceof CharTypeModelGeneric;
     }
-/*
-    public String getBasicDataValue() {
-        return isBasicDataType() ? getTextValue() : null;
-    }
-
-    public String getTuneParamValue() {
-        return isTuneDataType() ? getTextValue() : null;
-    }
-
-    public String getScriptParamValue() {
-        return isScriptDataType() ? getTextValue() : null;
-    }
-
-    public String getJsonParamValue() {
-        return isJsonDataType() ? getTextValue() : null;
-    }
-
-    public JsonObject getJsonAlgorithm() {
-        return isAlgorithmDataType() ? (JsonObject) getObjectValue() : null;
-    }
-    */
 
     public CodeScript getCodeScript() {
-        return isScriptDataType() ? (CodeScript) getObjectValue() : null;
+        return isScriptType() ? (CodeScript) getObjectValue() : null;
     }
 
-    public JsonObject getJsonObject() {
-        return isJsonDataType() || isAlgorithmDataType() || isReportDataType() ? (JsonObject) getObjectValue() : null;
+    public JsonGeneral getJsonGeneral() {
+        return isJsonType() ? (JsonGeneral) getObjectValue() : null;
+    }
+
+    public JsonAlgorithm getJsonAlgorithm() {
+        return isAlgorithmType() ? (JsonAlgorithm) getObjectValue() : null;
+    }
+
+    public JsonReport getJsonReport() {
+        return isReportType() ? (JsonReport) getObjectValue() : null;
     }
 
     public DataTable getDataTable() {
-        return isTableDataType() ? (DataTable) getObjectValue() : null;
+        return isTableType() ? (DataTable) getObjectValue() : null;
     }
 
     public Model getModel() {
-        return isModelDataType() ? (Model) getObjectValue() : null;
+        return isModelType() ? (Model) getObjectValue() : null;
     }
 }

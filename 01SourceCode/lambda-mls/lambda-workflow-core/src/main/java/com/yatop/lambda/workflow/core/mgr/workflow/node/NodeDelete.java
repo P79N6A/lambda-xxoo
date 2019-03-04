@@ -42,6 +42,8 @@ public class NodeDelete {
         if(DataUtil.isNull(workflowContext.getWorkflow().data().getFlowId() != node.data().getOwnerFlowId())) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Delete node failed -- flow-id vs owner-flow-id inconsistent.", "节点信息错误", workflowContext.getWorkflow().data(), node.data());
         }
+
+        node.getModuleClazzBean().deleteOutputAndResource(workflowContext, node);
         nodePortDelete.deleteNodePorts(workflowContext, node);
         parameterDelete.deleteParameters(workflowContext, node);
         nodeMgr.deleteNode(node.data().getNodeId(), workflowContext.getOperId());
