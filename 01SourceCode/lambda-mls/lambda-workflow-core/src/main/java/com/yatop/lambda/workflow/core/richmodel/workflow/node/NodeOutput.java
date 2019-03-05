@@ -1,7 +1,6 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNodeOutput;
-import com.yatop.lambda.core.enums.OutputStateEnum;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.output.OutputAndResourceHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
@@ -46,20 +45,5 @@ public class NodeOutput extends RichModel<WfFlowNodeOutput> {
 
     public CharValue getCharValue() {
         return charValue;
-    }
-
-    public void changeState2Empty() {
-        this.changeOutputState(OutputStateEnum.EMPTY);
-    }
-
-    public void changeState2Normal() {
-        this.changeOutputState(OutputStateEnum.NORMAL);
-    }
-
-    private void changeOutputState(OutputStateEnum stateEnum) {
-        if(this.data().getOutputState() == stateEnum.getState())
-            return;
-
-        this.data().setOutputState(stateEnum.getState());
     }
 }

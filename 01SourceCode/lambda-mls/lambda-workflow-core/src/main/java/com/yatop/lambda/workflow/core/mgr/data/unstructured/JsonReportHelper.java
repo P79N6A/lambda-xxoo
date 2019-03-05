@@ -84,7 +84,7 @@ public class JsonReportHelper {
         queryJsonReport(context.getCharValue());
     }
 
-    public static void updateJsonReport(CharValueContext context) {
+    public static void completeJsonReport(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         JsonReport jsonObject = context.getCharValue().getJsonReport();
 

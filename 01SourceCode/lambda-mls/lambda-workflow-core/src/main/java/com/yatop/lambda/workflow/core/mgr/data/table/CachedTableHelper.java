@@ -63,7 +63,7 @@ public class CachedTableHelper {
         queryCachedTable(context.getCharValue());
     }
 
-    public static void updateCachedTable(CharValueContext context) {
+    public static void completeCachedTable(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         DataTable table = context.getCharValue().getDataTable();
 

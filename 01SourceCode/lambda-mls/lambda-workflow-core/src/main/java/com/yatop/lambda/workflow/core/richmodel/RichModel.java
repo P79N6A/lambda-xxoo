@@ -16,14 +16,6 @@ public abstract class RichModel<T extends LambdaRootModel> implements IRichModel
         return data;
     }
 
-    public boolean isResourceStateEmpty() {
-        return false;
-    }
-
-    public Long getResourceId() {
-        return -1L;
-    }
-
     @Override
     public boolean equals(Object that) {
         return data.equals(that);

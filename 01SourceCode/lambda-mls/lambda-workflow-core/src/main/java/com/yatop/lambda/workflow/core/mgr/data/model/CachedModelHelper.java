@@ -61,7 +61,7 @@ public class CachedModelHelper {
         queryCachedModel(context.getCharValue());
     }
 
-    public static void updateCachedModel(CharValueContext context) {
+    public static void completeCachedModel(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         Model model = context.getCharValue().getModel();
 

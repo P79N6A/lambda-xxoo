@@ -23,13 +23,11 @@ public class DataTable extends RichModel<DwDataTable> {
         return jsonObject;
     }
 
-    @Override
-    public boolean isResourceStateEmpty() {
-        return data().getTableState() == DataTableStateEnum.EMPTY.getState();
+    public boolean isStateEmpty() {
+        return this.data().getTableState() == DataTableStateEnum.EMPTY.getState();
     }
 
-    @Override
-    public Long getResourceId() {
-        return data().getTableId();
+    public boolean isStateNormal() {
+        return this.data().getTableState() == DataTableStateEnum.NORMAL.getState();
     }
 }

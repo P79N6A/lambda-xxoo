@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-03-02 18:47:23
+Date: 2019-03-05 13:44:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1363,7 +1363,6 @@ CREATE TABLE `wf_flow_node_output` (
   `CHAR_ID` varchar(200) NOT NULL COMMENT '组件特征ID',
   `CHAR_VALUE` varchar(2000) DEFAULT NULL COMMENT '特征值',
   `WARNING_MSG` varchar(512) DEFAULT NULL COMMENT '警告消息',
-  `OUTPUT_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '输出状态\r\n            0：空输出\r\n            1：正常',
   `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
   `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
   `LAST_UPDATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',

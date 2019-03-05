@@ -11,13 +11,11 @@ public class CodeScript extends RichModel<WfCodeScript> {
         super(data);
     }
 
-    @Override
-    public boolean isResourceStateEmpty() {
-        return data().getScriptState() == CodeScriptStateEnum.EMPTY.getState();
+    public boolean isStateEmpty() {
+        return this.data().getScriptState() == CodeScriptStateEnum.EMPTY.getState();
     }
 
-    @Override
-    public Long getResourceId() {
-        return data().getScriptId();
+    public boolean isStateNormal() {
+        return this.data().getScriptState() == CodeScriptStateEnum.NORMAL.getState();
     }
 }

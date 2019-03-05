@@ -51,7 +51,7 @@ public class OutputCharValueHelper {
 
         try {
             CharValueContext charValueContext = new CharValueContext(workflowContext, node, charValue);
-            charValue.getCharTypeClazzBean().updateCharValue(charValueContext);
+            charValue.getCharTypeClazzBean().completeCharValue(charValueContext);
             charValueContext.clear();
             return;
         } catch (Throwable e) {

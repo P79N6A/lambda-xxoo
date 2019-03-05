@@ -1,9 +1,7 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.node.output;
 
 import com.yatop.lambda.base.model.WfFlowNodeOutput;
-import com.yatop.lambda.core.enums.OutputStateEnum;
 import com.yatop.lambda.core.mgr.workflow.node.NodeOutputMgr;
-import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.mgr.workflow.charvalue.OutputCharValueHelper;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
@@ -29,6 +27,7 @@ public class OutputAndResourceCreate {
         WfFlowNodeOutput output = new WfFlowNodeOutput();
         output.setNodeId(node.data().getNodeId());
         output.setCharId(cmptChar.data().getCharId());
+        output.setCharValue(charValue.getCharValue());
         output = nodeOutputMgr.insertNodeOutput(output, workflowContext.getOperId());
 
         return new NodeOutput(output, charValue);

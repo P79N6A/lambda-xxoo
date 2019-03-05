@@ -20,13 +20,11 @@ public class JsonReport extends RichModel<WfJsonObject> {
         return jsonObject;
     }
 
-    @Override
-    public boolean isResourceStateEmpty() {
-        return data().getObjectState() == JsonObjectStateEnum.EMPTY.getState();
+    public boolean isStateEmpty() {
+        return this.data().getObjectState() == JsonObjectStateEnum.EMPTY.getState();
     }
 
-    @Override
-    public Long getResourceId() {
-        return data().getObjectId();
+    public boolean isStateNormal() {
+        return this.data().getObjectState() == JsonObjectStateEnum.NORMAL.getState();
     }
 }

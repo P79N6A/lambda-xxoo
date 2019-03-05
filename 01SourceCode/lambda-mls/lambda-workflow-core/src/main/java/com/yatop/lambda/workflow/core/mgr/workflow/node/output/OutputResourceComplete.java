@@ -17,7 +17,6 @@ public class OutputResourceComplete {
     private void completeOutputResource(WorkflowContext workflowContext, Node node, NodeOutput output) {
 
         OutputCharValueHelper.completeOutputCharValue(workflowContext, node, output.getCharValue());
-        output.changeState2Normal();
     }
 
     public void completeOutputResource(WorkflowContext workflowContext, Node node) {

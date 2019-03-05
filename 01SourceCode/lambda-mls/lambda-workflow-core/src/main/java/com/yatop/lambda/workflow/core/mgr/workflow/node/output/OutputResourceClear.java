@@ -17,7 +17,6 @@ public class OutputResourceClear {
     private void clearOutputResource(WorkflowContext workflowContext, Node node, NodeOutput output) {
 
         OutputCharValueHelper.clearOutputCharValue(workflowContext, node, output.getCharValue());
-        output.changeState2Empty();
     }
 
     public void clearOutputResource(WorkflowContext workflowContext, Node node) {

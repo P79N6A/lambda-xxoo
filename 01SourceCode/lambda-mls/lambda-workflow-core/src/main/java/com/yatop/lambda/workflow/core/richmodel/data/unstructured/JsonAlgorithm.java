@@ -23,22 +23,24 @@ public class JsonAlgorithm extends RichModel<WfJsonObject> {
     public void setObjectContent(JSONObject jsonObject) {
 
         if(DataUtil.isNotEmpty(jsonObject)) {
-            String jsonObjectContent = jsonObject.toJSONString();
-            this.data().setObjectContent(jsonObjectContent);
-            this.data().setObjectState(JsonObjectStateEnum.NORMAL.getState());
+            String jsonString = jsonObject.toJSONString();
+            if(this.isStateEmpty() || !DataUtil.equals(jsonString, this.data().getObjectContent())) {
+                this.data().setObjectContent(jsonString);
+                this.data().setObjectState(JsonObjectStateEnum.NORMAL.getState());
+            }
         } else {
-            this.data().setObjectContent(null);
-            this.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
+            if(this.isStateNormal()) {
+                this.data().setObjectContent(null);
+                this.data().setObjectState(JsonObjectStateEnum.EMPTY.getState());
+            }
         }
     }
 
-    @Override
-    public boolean isResourceStateEmpty() {
-        return data().getObjectState() == JsonObjectStateEnum.EMPTY.getState();
+    public boolean isStateEmpty() {
+        return this.data().getObjectState() == JsonObjectStateEnum.EMPTY.getState();
     }
 
-    @Override
-    public Long getResourceId() {
-        return data().getObjectId();
+    public boolean isStateNormal() {
+        return this.data().getObjectState() == JsonObjectStateEnum.NORMAL.getState();
     }
 }

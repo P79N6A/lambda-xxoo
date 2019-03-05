@@ -19,13 +19,11 @@ public class Model extends RichModel<MwModel> {
         return jsonObject;
     }
 
-    @Override
-    public boolean isResourceStateEmpty() {
-        return data().getModelState() == ModelStateEnum.EMPTY.getState();
+    public boolean isStateEmpty() {
+        return this.data().getModelState() == ModelStateEnum.EMPTY.getState();
     }
 
-    @Override
-    public Long getResourceId() {
-        return data().getModelId();
+    public boolean isStateNormal() {
+        return this.data().getModelState() == ModelStateEnum.NORMAL.getState();
     }
 }

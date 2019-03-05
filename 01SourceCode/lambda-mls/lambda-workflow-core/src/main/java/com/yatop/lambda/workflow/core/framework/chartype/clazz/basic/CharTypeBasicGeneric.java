@@ -43,9 +43,19 @@ public abstract class CharTypeBasicGeneric extends CharTypeClazzBaseClazz {
     }
 
     @Override
+    public void completeCharValue(CharValueContext context) {
+        return;
+    }
+
+    @Override
     public void queryCharValue(CharValue charValue) {
         if(DataUtil.isNotEmpty(charValue.getCharValue())) {
             charValue.setTextValue(charValue.getCharValue());
         }
+    }
+
+    @Override
+    public boolean isEmptyCharValue(CharValue charValue) {
+        return DataUtil.isEmpty(charValue.getCharValue());
     }
 }

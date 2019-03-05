@@ -5,7 +5,6 @@ import com.yatop.lambda.base.model.WfFlowNodeOutputExample;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.enums.DataStatusEnum;
-import com.yatop.lambda.core.enums.OutputStateEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
@@ -27,6 +26,7 @@ public class NodeOutputMgr extends BaseMgr {
         if( DataUtil.isNull(nodeOutput) ||
                 nodeOutput.isNodeIdNotColoured() ||
                 nodeOutput.isCharIdNotColoured() ||
+                nodeOutput.isCharValueNotColoured() ||
                 DataUtil.isEmpty(operId) ) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert node output failed -- invalid insert data.", "无效插入数据");
         }
@@ -39,7 +39,6 @@ public class NodeOutputMgr extends BaseMgr {
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertNodeOutput.copyProperties(nodeOutput);
-            insertNodeOutput.setOutputState(OutputStateEnum.EMPTY.getState());
             insertNodeOutput.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertNodeOutput.setLastUpdateTime(dtCurrentTime);
             insertNodeOutput.setLastUpdateOper(operId);
@@ -102,27 +101,27 @@ public class NodeOutputMgr extends BaseMgr {
 
     /*
      *
-     *   更新节点输出（特征值、输出状态、描述）
+     *   更新节点输出（警告消息、描述）
      *   返回更新数量
      *
      * */
     public int updateNodeOutput(WfFlowNodeOutput nodeOutput, String operId) {
-        if( DataUtil.isNull(nodeOutput) || nodeOutput.isNodeIdNotColoured() || nodeOutput.isCharIdNotColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(nodeOutput)
+                || nodeOutput.isNodeIdNotColoured()
+                || nodeOutput.isCharIdNotColoured()
+                || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node output failed -- invalid update condition.", "无效更新条件");
         }
 
-        if(nodeOutput.isCharValueNotColoured() &&
-                nodeOutput.isOutputStateNotColoured() &&
+        if( nodeOutput.isWarningMsgNotColoured() &&
                 nodeOutput.isDescriptionNotColoured()) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node output failed -- invalid update data.", "无效更新内容");
         }
 
         WfFlowNodeOutput updateNodeOutput = new WfFlowNodeOutput();
         try {
-            if(nodeOutput.isCharValueColoured())
-                updateNodeOutput.setCharValue(nodeOutput.getCharValue());
-            if(nodeOutput.isOutputStateColoured())
-                updateNodeOutput.setOutputState(nodeOutput.getOutputState());
+            if(nodeOutput.isWarningMsgColoured())
+                updateNodeOutput.setWarningMsg(nodeOutput.getWarningMsg());
             if(nodeOutput.isDescriptionColoured())
                 updateNodeOutput.setDescription(nodeOutput.getDescription());
             updateNodeOutput.setLastUpdateTime(SystemTimeUtil.getCurrentTime());

@@ -71,7 +71,7 @@ public class GeneralTableHelper {
         //TODO remove dfs & local table file
     }
 
-    public static void updateGeneralTable(CharValueContext context) {
+    public static void completeGeneralTable(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         DataTable table = context.getCharValue().getDataTable();
 
@@ -80,6 +80,8 @@ public class GeneralTableHelper {
         table.data().setDataFileSizeColoured(true);
         table.data().setTableState(DataTableStateEnum.NORMAL.getState());
         DATA_TABLE_MGR.updateDataTable(table.data(), workflowContext.getOperId());
+
+        //TODO synchronize dfs table file to local filesystem
     }
 
     public static DataTable queryGeneralTable(CharValue charValue) {

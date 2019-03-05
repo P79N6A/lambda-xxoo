@@ -57,13 +57,14 @@ public class JsonAlgorithmHelper {
         queryJsonAlgorithm(context.getCharValue());
     }
 
-    public static void updateJsonAlgorithm(CharValueContext context) {
+    public static void completeJsonAlgorithm(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         JsonAlgorithm jsonAlgorithm = context.getCharValue().getJsonAlgorithm();
 
-        jsonAlgorithm.data().setObjectContentColoured(true);
-        jsonAlgorithm.data().setObjectStateColoured(true);
-        JSON_OBJECT_MGR.updateJsonObject(jsonAlgorithm.data(), workflowContext.getOperId());
+        if(jsonAlgorithm.isColoured()) {
+            JSON_OBJECT_MGR.updateJsonObject(jsonAlgorithm.data(), workflowContext.getOperId());
+            jsonAlgorithm.clearColoured();
+        }
     }
 
     public static void clearJsonAlgorithm(CharValueContext context) {

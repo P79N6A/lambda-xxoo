@@ -17,8 +17,6 @@ public class OutputAndResourceDelete {
     private void deleteOutputResource(WorkflowContext workflowContext, Node node, NodeOutput output) {
 
         OutputCharValueHelper.deleteOutputCharValue(workflowContext, node, output.getCharValue());
-        output.changeState2Empty();
-        output.flush(workflowContext.getOperId());
     }
 
     public void deleteOutputAndResources(WorkflowContext workflowContext, Node node) {

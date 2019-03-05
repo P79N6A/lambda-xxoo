@@ -65,6 +65,31 @@ public class ProjectMemberMgr extends BaseMgr {
      *   返回删除数量
      *
      * */
+    public int deleteProjectMember(Long projectId, String operId)  {
+        if(DataUtil.isNull(projectId) || DataUtil.isEmpty(operId)){
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Delete project member failed -- invalid delete condition.", "无效删除条件");
+        }
+
+        try {
+            PrProjectMember deleteMember = new PrProjectMember();
+            deleteMember.setStatus(DataStatusEnum.INVALID.getStatus());
+            deleteMember.setLastUpdateTime(SystemTimeUtil.getCurrentTime());
+            deleteMember.setLastUpdateOper(operId);
+
+            PrProjectMemberExample example = new PrProjectMemberExample();
+            example.createCriteria().andProjectIdEqualTo(projectId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+            return prProjectMemberMapper.updateByExampleSelective(deleteMember, example);
+        } catch (Throwable e) {
+            throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Delete project member exists failed.", "删除项目成员记录失败", e);
+        }
+    }
+
+    /*
+     *
+     *   逻辑删除项目成员记录
+     *   返回删除数量
+     *
+     * */
     public int deleteProjectMember(Long projectId, String memberId, String operId)  {
         if(DataUtil.isNull(projectId) || DataUtil.isEmpty(memberId) || DataUtil.isEmpty(operId)){
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Delete project member failed -- invalid delete condition.", "无效删除条件");
