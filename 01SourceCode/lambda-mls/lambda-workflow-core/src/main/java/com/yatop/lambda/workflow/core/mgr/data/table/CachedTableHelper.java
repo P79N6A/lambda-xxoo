@@ -26,7 +26,7 @@ public class CachedTableHelper {
         DATA_TABLE_MGR = dataTableMgr;
     }
 
-    public static DataTable createCachedTable(CharValueContext context) {
+    public static DataTable createCachedTable4Parquet(CharValueContext context) {
         WorkflowContext workflowContext = context.getWorkflowContext();
         Node node = context.getNode();
         CmptChar cmptChar = context.getCmptChar();

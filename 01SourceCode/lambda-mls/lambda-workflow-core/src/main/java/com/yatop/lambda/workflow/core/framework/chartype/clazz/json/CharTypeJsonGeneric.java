@@ -7,6 +7,10 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 
 public abstract class CharTypeJsonGeneric extends CharTypeClazzBaseClazz {
 
+    //
+    //普通JSON类型接口方法默认实现
+    //
+
     @Override
     public void createCharValue(CharValueContext context) {
         JsonGeneralHelper.createJsonObject(context);

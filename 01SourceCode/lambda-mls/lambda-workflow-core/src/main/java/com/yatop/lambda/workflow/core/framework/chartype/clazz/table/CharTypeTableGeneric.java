@@ -8,12 +8,12 @@ import com.yatop.lambda.workflow.core.mgr.data.table.CachedTableHelper;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataTable;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 
-public class CharTypeTableGeneric extends CharTypeClazzBaseClazz {
+public abstract class CharTypeTableGeneric extends CharTypeClazzBaseClazz {
 
-    @Override
-    public void createCharValue(CharValueContext context) {
-        CachedTableHelper.createCachedTable(context);
-    }
+
+    //
+    //数据表类型接口方法默认实现
+    //
 
     @Override
     public void deleteCharValue(CharValueContext context) {

@@ -10,6 +10,11 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 
 public abstract class CharTypeAlgorithmGeneric extends CharTypeClazzBaseClazz {
 
+
+    //
+    //算法（未训练模型）类型接口方法默认实现
+    //
+
     private static String FIELD_OBJECT_CONTENT = "objectContent";
 
     @Override

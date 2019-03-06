@@ -5,7 +5,6 @@ import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptCha
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
