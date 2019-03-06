@@ -251,7 +251,7 @@ public class DataTableService {
         DwDataTable tempTable = dataTableMgr.queryDataTable(request.getTableId());
 
         if(tempTable.getTableState() == DataTableStateEnum.EMPTY.getState()) {
-            //TODO throw 要保存的临时表为空
+            throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Insert node info failed -- invalid insert data.", "无效插入数据");
         }
 
         DwDataTable dataTable = new DwDataTable();

@@ -116,7 +116,7 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
         jsonContent.put(JOB_CONTENT_KEY_SUCCESS_NODES, jsonSuccessNodes);
         jsonContent.put(JOB_CONTENT_KEY_ERROR_NODES, jsonErrorNodes);
         jsonContent.put(JOB_CONTENT_KEY_TERMINATED_NODES, jsonTerminatedNodes);
-        this.data().setJobContent(DataUtil.prettyFormat(jsonContent));
+        this.data().setJobContent(DataUtil.toPrettyJSONString(jsonContent));
 
         jsonContent.clear();
     }

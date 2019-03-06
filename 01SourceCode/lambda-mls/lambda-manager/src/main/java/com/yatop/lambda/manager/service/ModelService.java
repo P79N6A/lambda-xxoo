@@ -12,7 +12,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.model.ModelMgr;
 import com.yatop.lambda.core.mgr.model.ModelWarehouseMgr;
 import com.yatop.lambda.core.utils.ModelFileUtil;
-import com.yatop.lambda.manager.api.request.project.ModelRequest;
+import com.yatop.lambda.manager.api.request.model.ModelRequest;
 import com.yatop.lambda.portal.common.utils.PortalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

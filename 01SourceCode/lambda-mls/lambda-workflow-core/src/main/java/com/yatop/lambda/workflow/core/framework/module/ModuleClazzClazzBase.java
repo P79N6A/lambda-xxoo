@@ -32,7 +32,6 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
         ModuleClazzClazzBase.putClazzBean(this.getClass().getName(), this);
     }
 
-
     @Autowired
     ComponentConfig componentConfig;
 
@@ -61,10 +60,12 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
     //接口方法默认实现
     //
 
+/*
     @Override
     public TreeMap<CmptChar, String> validateParameters(WorkflowContext workflowContext, Node node) {
         return null;
     }
+*/
 
     @Override
     public void exploreOutputAndResource(Node node) {
@@ -102,6 +103,7 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
         return;
     }
 
+/*
     @Override
     public boolean supportAnalyzeSchema() {
         return false;
@@ -116,4 +118,6 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
     public TreeMap<CmptChar, NodeSchema> analyzeSchema(WorkflowContext workflowContext, Node node) {
         return null;
     }
+*/
+
 }

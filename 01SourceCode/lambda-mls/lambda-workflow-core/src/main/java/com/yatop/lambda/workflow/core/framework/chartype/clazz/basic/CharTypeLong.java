@@ -18,7 +18,7 @@ public final class CharTypeLong extends CharTypeBasicGeneric {
         }
 
         try {
-            Long value = Long.valueOf(textValue);
+            Long value = DataUtil.toLong(textValue);
         } catch (Throwable e) {
             return false;
         }
@@ -27,20 +27,20 @@ public final class CharTypeLong extends CharTypeBasicGeneric {
     }
 
     @Override
-    public Object toJSONValue(CharValue charValue) {
+    public Object toJsonValue(CharValue charValue) {
         String textValue = charValue.getTextValue();
 
         if(DataUtil.isEmpty(textValue)) {
             return null;
         }
 
-        return Long.valueOf(textValue);
+        return DataUtil.toLong(textValue);
     }
 
     @Override
-    public void parseJSONValue(CharValue charValue, Object obj) {
+    public void parseJsonValue(CharValue charValue, Object obj) {
 
-        if(obj == null) {
+        /*if(obj == null) {
             charValue.setCharValue(null);
             charValue.setTextValue(null);
         }
@@ -48,6 +48,6 @@ public final class CharTypeLong extends CharTypeBasicGeneric {
             String value = String.valueOf(obj);
             charValue.setCharValue(value);
             charValue.setTextValue(value);
-        }
+        }*/
     }
 }

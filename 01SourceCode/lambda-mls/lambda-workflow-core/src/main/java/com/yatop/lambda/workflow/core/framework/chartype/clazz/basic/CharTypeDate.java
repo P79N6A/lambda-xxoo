@@ -22,8 +22,12 @@ public final class CharTypeDate extends CharTypeBasicGeneric {
             return false;
         }
 
+        if(DataUtil.isNotEmpty(textValue) && textValue.length() != DATE_FORMAT.length()) {
+            return false;
+        }
+
         try {
-            Date value = new SimpleDateFormat(DATE_FORMAT).parse(textValue);
+            Date value = DataUtil.toDate(textValue, DATE_FORMAT);
         } catch (Throwable e) {
             return false;
         }
@@ -32,7 +36,7 @@ public final class CharTypeDate extends CharTypeBasicGeneric {
     }
 
     @Override
-    public Object toJSONValue(CharValue charValue) {
+    public Object toJsonValue(CharValue charValue) {
         String textValue = charValue.getTextValue();
 
         if(DataUtil.isEmpty(textValue)) {
@@ -43,9 +47,9 @@ public final class CharTypeDate extends CharTypeBasicGeneric {
     }
 
     @Override
-    public void parseJSONValue(CharValue charValue, Object obj) {
+    public void parseJsonValue(CharValue charValue, Object obj) {
 
-        if(obj == null) {
+        /*if(obj == null) {
             charValue.setCharValue(null);
             charValue.setTextValue(null);
         }
@@ -53,6 +57,6 @@ public final class CharTypeDate extends CharTypeBasicGeneric {
             String value = (String)obj;
             charValue.setCharValue(value);
             charValue.setTextValue(value);
-        }
+        }*/
     }
 }

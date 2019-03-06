@@ -45,7 +45,7 @@ public class CharValue implements IRichModel {
 
     @Override
     public String toString() {
-        return DataUtil.prettyFormat(toJSON());
+        return DataUtil.toPrettyJSONString(toJSON());
     }
 
     @Override
@@ -96,11 +96,15 @@ public class CharValue implements IRichModel {
     }
 
     public Object toJSONValue() {
-        return getCharTypeClazzBean().toJSONValue(this);
+        return getCharTypeClazzBean().toJsonValue(this);
     }
 
     public void parseJSONValue(Object obj) {
-        getCharTypeClazzBean().parseJSONValue(this, obj);
+        getCharTypeClazzBean().parseJsonValue(this, obj);
+    }
+
+    public boolean isEmptyCharValue() {
+        return getCharTypeClazzBean().isEmptyCharValue(this);
     }
 
     public boolean isBasicType() {

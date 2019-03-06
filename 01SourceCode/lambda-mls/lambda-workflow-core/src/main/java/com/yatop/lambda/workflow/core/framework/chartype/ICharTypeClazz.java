@@ -28,16 +28,18 @@ public interface ICharTypeClazz /*extends InitializingBean*/ {
     //查询节点特征值内容
     void queryCharValue(CharValue charValue);
 
+
     //校验节点特征值内容
     //返回false，不通过
     //返回true，通过
     boolean validateCharValue(CharValue charValue);
 
+
     //转换节点特征值内容，用于填写json:value值内容
-    Object toJSONValue(CharValue charValue);
+    Object toJsonValue(CharValue charValue);
 
     //解析节点特征值内容，用于对json-value值内容解析（输出特征用）
-    void parseJSONValue(CharValue charValue, Object obj);
+    void parseJsonValue(CharValue charValue, Object obj);
 
     //判断特征值内容是否为空
     boolean isEmptyCharValue(CharValue charValue);

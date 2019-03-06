@@ -23,7 +23,7 @@ public class JsonAlgorithm extends RichModel<WfJsonObject> {
     public void setObjectContent(JSONObject jsonObject) {
 
         if(DataUtil.isNotEmpty(jsonObject)) {
-            String jsonString = jsonObject.toJSONString();
+            String jsonString = DataUtil.toJSONString(jsonObject);
             if(this.isStateEmpty() || !DataUtil.equals(jsonString, this.data().getObjectContent())) {
                 this.data().setObjectContent(jsonString);
                 this.data().setObjectState(JsonObjectStateEnum.NORMAL.getState());

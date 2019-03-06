@@ -76,7 +76,7 @@
         <module>lambda-portal</module>
         <module>lambda-base</module>
         <module>lambda-core</module>
-        <!--<module>lambda-tools</module>-->
+        <module>lambda-tools</module>
         <module>lambda-workflow-core</module>
         <module>lambda-workflow-engine</module>
         <module>lambda-workflow-module</module>

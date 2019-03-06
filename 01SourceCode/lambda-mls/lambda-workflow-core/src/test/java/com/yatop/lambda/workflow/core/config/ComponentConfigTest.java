@@ -48,6 +48,6 @@ public class ComponentConfigTest {
             jsonArray.add(jsonObject);
         }
 
-        System.out.println(DataUtil.prettyFormat(jsonArray));
+        System.out.println(DataUtil.toPrettyJSONString(jsonArray));
     }
 }

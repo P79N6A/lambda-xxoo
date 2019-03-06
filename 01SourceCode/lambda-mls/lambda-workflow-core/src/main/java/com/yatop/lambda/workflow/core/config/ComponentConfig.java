@@ -160,14 +160,14 @@ public class ComponentConfig implements InitializingBean {
 
             IsWildTypeEnum wildTypeEnum = IsWildTypeEnum.valueOf(richType.data().getIsWildtype());
             if(DataUtil.isNull(wildTypeEnum)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Error Is-WildType:\n%s.", DataUtil.prettyFormat(type)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Error Is-WildType:\n%s.", DataUtil.toPrettyJSONString(type)));
                 System.exit(-1);
             }
             if(wildTypeEnum.getMark() == IsWildTypeEnum.YES.getMark()) {
                 wildTypeCounter++;
             }
             if(!SpecMaskEnum.isCorrectMask(richType.data().getSpecMask())) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Error Spec-Mask:\n%s.", DataUtil.prettyFormat(type)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Error Spec-Mask:\n%s.", DataUtil.toPrettyJSONString(type)));
                 System.exit(-1);
             }
 
@@ -186,24 +186,24 @@ public class ComponentConfig implements InitializingBean {
             for (CfCharTypeWild match : matchTypeList) {
                 CharType targetCharType = ALL_CHARACTERISTIC_TYPES.get(match.getDstCharTypeId());
                 if (DataUtil.isNull(targetCharType)) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type not found:\n%s.", DataUtil.prettyFormat(match)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type not found:\n%s.", DataUtil.toPrettyJSONString(match)));
                     System.exit(-1);
                 }
                 if (targetCharType.data().getIsWildtype() != IsWildTypeEnum.YES.getMark()) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type info error:\n%s.", DataUtil.prettyFormat(match)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type info error:\n%s.", DataUtil.toPrettyJSONString(match)));
                     System.exit(-1);
                 }
                 if (!SpecMaskEnum.matchInputAndOutput(targetCharType.data().getSpecMask())) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type must be also support input & output:\n%s.", DataUtil.prettyFormat(match)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type must be also support input & output:\n%s.", DataUtil.toPrettyJSONString(match)));
                     System.exit(-1);
                 }
                 CharType sourceCharType = ALL_CHARACTERISTIC_TYPES.get(match.getSrcCharTypeId());
                 if (DataUtil.isNull(sourceCharType)) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Source port characteristic type not found:\n%s.", DataUtil.prettyFormat(match)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Source port characteristic type not found:\n%s.", DataUtil.toPrettyJSONString(match)));
                     System.exit(-1);
                 }
                 if (!SpecMaskEnum.matchInputAndOutput(sourceCharType.data().getSpecMask())) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Source port characteristic type must be also support input & output:\n%s.", DataUtil.prettyFormat(match)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Source port characteristic type must be also support input & output:\n%s.", DataUtil.toPrettyJSONString(match)));
                     System.exit(-1);
                 }
 
@@ -256,7 +256,7 @@ public class ComponentConfig implements InitializingBean {
 
             CharType charType =  ALL_CHARACTERISTIC_TYPES.get(cmptChar.getCharType());
             if(DataUtil.isNull(charType)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic type not found:\n%s.", DataUtil.prettyFormat(cmptChar)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic type not found:\n%s.", DataUtil.toPrettyJSONString(cmptChar)));
                 System.exit(-1);
             }
 
@@ -265,38 +265,38 @@ public class ComponentConfig implements InitializingBean {
 
             SpecTypeEnum typeEnum = SpecTypeEnum.valueOf(richChar.data().getSpecType());
             if(DataUtil.isNull(typeEnum)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Spec-Type:\n%s.", DataUtil.prettyFormat(cmptChar)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Spec-Type:\n%s.", DataUtil.toPrettyJSONString(cmptChar)));
                 System.exit(-1);
             }
 
             if(!SpecMaskEnum.isCorrectFitSpecType(charType.data().getSpecMask(), typeEnum)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Incorrect Spec-Type:\n%s.", DataUtil.prettyFormat(cmptChar)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Incorrect Spec-Type:\n%s.", DataUtil.toPrettyJSONString(cmptChar)));
                 System.exit(-1);
             }
 
             if(DataUtil.isNull(SourceLevelEnum.valueOf(richChar.data().getSrcLevel()))) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Src-Level:\n%s.", DataUtil.prettyFormat(cmptChar)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Src-Level:\n%s.", DataUtil.toPrettyJSONString(cmptChar)));
                 System.exit(-1);
             }
 
             if((typeEnum.getType() == SpecTypeEnum.INPUT.getType() || typeEnum.getType() == SpecTypeEnum.OUTPUT.getType())
                     && richChar.data().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Error Src-Level(input & output must be workflow-source-level):\n%s.", DataUtil.prettyFormat(cmptChar)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Error Src-Level(input & output must be workflow-source-level):\n%s.", DataUtil.toPrettyJSONString(cmptChar)));
                 System.exit(-1);
             }
 
             if(typeEnum.getType() == SpecTypeEnum.EXECUTION.getType() && richChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Error Src-Level(forbid execution to be workflow-source-level):\n%s.", DataUtil.prettyFormat(cmptChar)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Error Src-Level(forbid execution to be workflow-source-level):\n%s.", DataUtil.toPrettyJSONString(cmptChar)));
                 System.exit(-1);
             }
 
             if(DataUtil.isNull(IsRequiredEnum.valueOf(richChar.data().getIsRequired()))) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-Required:\n%s.", DataUtil.prettyFormat(cmptChar)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-Required:\n%s.", DataUtil.toPrettyJSONString(cmptChar)));
                 System.exit(-1);
             }
 
             if(DataUtil.isNull(IsLimitedEnum.valueOf(richChar.data().getIsLimited()))) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-Limited:\n%s.", DataUtil.prettyFormat(cmptChar)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-Limited:\n%s.", DataUtil.toPrettyJSONString(cmptChar)));
                 System.exit(-1);
             }
 
@@ -318,7 +318,7 @@ public class ComponentConfig implements InitializingBean {
                 if(DataUtil.isNotNull(cmptChar)) {
                     cmptChar.putEnum(richCharEnum);
                 } else {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Owner characteristic not found:\n%s.", DataUtil.prettyFormat(charEnum)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Owner characteristic not found:\n%s.", DataUtil.toPrettyJSONString(charEnum)));
                     System.exit(-1);
                 }
             }
@@ -336,7 +336,7 @@ public class ComponentConfig implements InitializingBean {
         for(CfSpecification cmptSpec : specList) {
             CmptSpec richSpec = new CmptSpec(cmptSpec);
             if(DataUtil.isNull(SpecTypeEnum.valueOf(richSpec.data().getSpecType()))) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Spec-Type:\n%s.", DataUtil.prettyFormat(cmptSpec)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Spec-Type:\n%s.", DataUtil.toPrettyJSONString(cmptSpec)));
                 System.exit(-1);
             }
 
@@ -353,22 +353,22 @@ public class ComponentConfig implements InitializingBean {
         for(CfSpecCharRel rel : specCharRelList) {
             CmptSpec cmptSpec = ALL_SPECIFICATIONS.get(rel.getSpecId());
             if(DataUtil.isNull(cmptSpec)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.prettyFormat(rel)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.toPrettyJSONString(rel)));
                 System.exit(-1);
             }
             CmptChar cmptChar = ALL_CHARACTERISTICS.get(rel.getCharId());
             if(DataUtil.isNull(cmptChar)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.prettyFormat(rel)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.toPrettyJSONString(rel)));
                 System.exit(-1);
             }
             if(cmptChar.data().getSpecType() != cmptChar.data().getSpecType()) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Error Spec-Char-Rel:\n%s.", DataUtil.prettyFormat(rel)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Error Spec-Char-Rel:\n%s.", DataUtil.toPrettyJSONString(rel)));
                 System.exit(-1);
             }
 
             CmptChar findChar = cmptSpec.getCmptCharByCode(cmptChar.data().getCharCode());
             if(DataUtil.isNotNull(findChar)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic code conflict:\n===Specification===%s\n===This Characteristic===%s\n===That Characteristic===%s.", DataUtil.prettyFormat(cmptSpec.data()),DataUtil.prettyFormat(findChar.data()), DataUtil.prettyFormat(cmptChar.data())));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic code conflict:\n===Specification===%s\n===This Characteristic===%s\n===That Characteristic===%s.", DataUtil.toPrettyJSONString(cmptSpec.data()),DataUtil.toPrettyJSONString(findChar.data()), DataUtil.toPrettyJSONString(cmptChar.data())));
                 System.exit(-1);
             }
 
@@ -382,22 +382,22 @@ public class ComponentConfig implements InitializingBean {
             for (CfSpecCharValue value : charValueList) {
                 CmptSpec cmptSpec = ALL_SPECIFICATIONS.get(value.getSpecId());
                 if (DataUtil.isNull(cmptSpec)) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.prettyFormat(value)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.toPrettyJSONString(value)));
                     System.exit(-1);
                 }
 
                 if(cmptSpec.data().getSpecType() == SpecTypeEnum.INPUT.getType() || cmptSpec.data().getSpecType() == SpecTypeEnum.OUTPUT.getType()) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Spec-Char-Value error(forbid input & output value):\n%s.", DataUtil.prettyFormat(value)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Spec-Char-Value error(forbid input & output value):\n%s.", DataUtil.toPrettyJSONString(value)));
                     System.exit(-1);
                 }
 
                 CmptChar cmptChar = cmptSpec.getCmptChar(value.getCharId());
                 if (DataUtil.isNull(cmptChar)) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Spec-Char-Rel not found:\n%s.", DataUtil.prettyFormat(value)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Spec-Char-Rel not found:\n%s.", DataUtil.toPrettyJSONString(value)));
                     System.exit(-1);
                 }
                 if (DataUtil.isNull(IsSystemParamEnum.valueOf(value.getIsSystemParam()))) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-System-Param:\n%s.", DataUtil.prettyFormat(value)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-System-Param:\n%s.", DataUtil.toPrettyJSONString(value)));
                     System.exit(-1);
                 }
 
@@ -416,7 +416,7 @@ public class ComponentConfig implements InitializingBean {
         for(CfAlgorithm algorithm : algorithmList) {
             CmptAlgorithm richAlgorithm = new CmptAlgorithm(algorithm);
             if (DataUtil.isNull(AlgorithmTypeEnum.valueOf(richAlgorithm.data().getAlgorithmType()))) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Algorithm-Type:\n%s.", DataUtil.prettyFormat(algorithm)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Algorithm-Type:\n%s.", DataUtil.toPrettyJSONString(algorithm)));
                 System.exit(-1);
             }
 
@@ -434,14 +434,14 @@ public class ComponentConfig implements InitializingBean {
         for(CfComponent component : componentList) {
             Component richComponent = new Component(component);
             if (DataUtil.isNull(CmptTypeEnum.valueOf(richComponent.data().getCmptType()))) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Cmpt-Type:\n%s.", DataUtil.prettyFormat(component)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Cmpt-Type:\n%s.", DataUtil.toPrettyJSONString(component)));
                 System.exit(-1);
             }
 
             if(richComponent.data().getRelAlgorithmId() > 0) {
                 CmptAlgorithm algorithm = ALL_ALGORITHMS.get(richComponent.data().getRelAlgorithmId());
                 if (DataUtil.isNull(algorithm)) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Algorithm not found:\n%s.", DataUtil.prettyFormat(component)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Algorithm not found:\n%s.", DataUtil.toPrettyJSONString(component)));
                     System.exit(-1);
                 }
                 richComponent.setAlgorithm(algorithm);
@@ -460,22 +460,22 @@ public class ComponentConfig implements InitializingBean {
         for(CfCmptSpecRel rel : cmptSpecRelList) {
             Component component = ALL_COMPONENTS.get(rel.getCmptId());
             if(DataUtil.isNull(component)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Component not found:\n%s.", DataUtil.prettyFormat(rel)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Component not found:\n%s.", DataUtil.toPrettyJSONString(rel)));
                 System.exit(-1);
             }
             CmptSpec cmptSpec = ALL_SPECIFICATIONS.get(rel.getSpecId());
             if(DataUtil.isNull(cmptSpec)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.prettyFormat(rel)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.toPrettyJSONString(rel)));
                 System.exit(-1);
             }
 
             if(DataUtil.isNull(SpecTypeEnum.valueOf(rel.getSpecType()))) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Spec-Type:\n%s.", DataUtil.prettyFormat(rel)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Spec-Type:\n%s.", DataUtil.toPrettyJSONString(rel)));
                 System.exit(-1);
             }
 
             if(rel.getSpecType() != cmptSpec.data().getSpecType()) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Error Spec-Type:\n%s.", DataUtil.prettyFormat(rel)));
+                logger.error(String.format("Loading component configuration occurs fatal error -- Error Spec-Type:\n%s.", DataUtil.toPrettyJSONString(rel)));
                 System.exit(-1);
             }
 
@@ -489,27 +489,27 @@ public class ComponentConfig implements InitializingBean {
             for (CfCmptCharValue value : charValueList) {
                 Component component = ALL_COMPONENTS.get(value.getCmptId());
                 if (DataUtil.isNull(component)) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Component not found:\n%s.", DataUtil.prettyFormat(value)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Component not found:\n%s.", DataUtil.toPrettyJSONString(value)));
                     System.exit(-1);
                 }
                 CmptChar cmptChar = ALL_CHARACTERISTICS.get(value.getCharId());
                 if (DataUtil.isNull(cmptChar)) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.prettyFormat(value)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.toPrettyJSONString(value)));
                     System.exit(-1);
                 }
                 CmptSpec cmptSpec = component.getCmptSpec(SpecTypeEnum.valueOf(cmptChar.data().getSpecType()));
                 if (DataUtil.isNull(cmptSpec)) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Spec-Char-Rel not found:\n%s.", DataUtil.prettyFormat(value)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Spec-Char-Rel not found:\n%s.", DataUtil.toPrettyJSONString(value)));
                     System.exit(-1);
                 }
 
                 if(cmptSpec.data().getSpecType() == SpecTypeEnum.INPUT.getType() || cmptSpec.data().getSpecType() == SpecTypeEnum.OUTPUT.getType()) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Cmpt-Char-Value error(forbid input & output value):\n%s.", DataUtil.prettyFormat(value)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Cmpt-Char-Value error(forbid input & output value):\n%s.", DataUtil.toPrettyJSONString(value)));
                     System.exit(-1);
                 }
 
                 if (DataUtil.isNull(IsSystemParamEnum.valueOf(value.getIsSystemParam()))) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-System-Param:\n%s.", DataUtil.prettyFormat(value)));
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Is-System-Param:\n%s.", DataUtil.toPrettyJSONString(value)));
                     System.exit(-1);
                 }
 
@@ -529,7 +529,7 @@ public class ComponentConfig implements InitializingBean {
                 CmptSpec execSpec = component.getOptimizeExecution();
                 for (CmptChar cmptChar : component.getExecution().getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
-                        logger.error(String.format("Check execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
+                        logger.error(String.format("Check execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.toPrettyJSONString(component.data()), DataUtil.toPrettyJSONString(cmptChar.data())));
                         System.exit(-1);
                     }
                 }
@@ -540,7 +540,7 @@ public class ComponentConfig implements InitializingBean {
             if(component.haveOptimizeExecutionContent()) {
                 for (CmptChar cmptChar : component.getOptimizeExecution().getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
-                        logger.error(String.format("Check optimize execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
+                        logger.error(String.format("Check optimize execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.toPrettyJSONString(component.data()), DataUtil.toPrettyJSONString(cmptChar.data())));
                         System.exit(-1);
                     }
                 }
@@ -551,12 +551,12 @@ public class ComponentConfig implements InitializingBean {
                 CmptSpec paramSpec = component.getParameter();
                 for (CmptChar cmptChar : component.getParameter().getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
-                        logger.error(String.format("Check parameter config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
+                        logger.error(String.format("Check parameter config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.toPrettyJSONString(component.data()), DataUtil.toPrettyJSONString(cmptChar.data())));
                         System.exit(-1);
                     }
 
                     if(DataUtil.isNotNull(o$execSpec) && DataUtil.isNotNull(o$execSpec.getCmptCharByCode(cmptChar.data().getCharCode()))) {
-                        logger.error(String.format("Check parameter config occurs fatal error -- parameter char-code conflict vs optimize execution parameter:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(cmptChar.data())));
+                        logger.error(String.format("Check parameter config occurs fatal error -- parameter char-code conflict vs optimize execution parameter:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.toPrettyJSONString(component.data()), DataUtil.toPrettyJSONString(cmptChar.data())));
                         System.exit(-1);
                     }
                 }

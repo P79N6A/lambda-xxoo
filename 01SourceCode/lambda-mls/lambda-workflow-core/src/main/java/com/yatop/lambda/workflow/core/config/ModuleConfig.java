@@ -1,6 +1,5 @@
 package com.yatop.lambda.workflow.core.config;
 
-import com.google.common.collect.TreeMultimap;
 import com.yatop.lambda.base.model.WfModule;
 import com.yatop.lambda.base.model.WfModuleCatalog;
 import com.yatop.lambda.base.model.WfModulePort;
@@ -96,7 +95,7 @@ public class ModuleConfig implements InitializingBean {
                     if (DataUtil.isNotNull(parentCatalog)) {
                         parentCatalog.putChildCatalog(entry.getValue());
                     } else {
-                        logger.error(String.format("Loading module configuration occurs fatal error -- Parent module catalog not found:\n%s", DataUtil.prettyFormat(entry.getValue().data())));
+                        logger.error(String.format("Loading module configuration occurs fatal error -- Parent module catalog not found:\n%s", DataUtil.toPrettyJSONString(entry.getValue().data())));
                         System.exit(-1);
                     }
                 }
@@ -114,23 +113,23 @@ public class ModuleConfig implements InitializingBean {
 
                 ModuleTypeEnum moduleTypeEnum = ModuleTypeEnum.valueOf(module.getModuleType());
                 if(DataUtil.isNull(moduleTypeEnum)) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Unknown module type:\n%s.", DataUtil.prettyFormat(module)));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Unknown module type:\n%s.", DataUtil.toPrettyJSONString(module)));
                     System.exit(-1);
                 }
 
                 if(moduleTypeEnum == ModuleTypeEnum.NON_WORKFLOW_MODULE && module.getCatalogId() > 0) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Error module-type vs catalog-id:\n%s.", DataUtil.prettyFormat(module)));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Error module-type vs catalog-id:\n%s.", DataUtil.toPrettyJSONString(module)));
                     System.exit(-1);
                 }
 
                 Component component =  componentConfig.getComponent(module.getPkgCmptId());
                 if(DataUtil.isNull(component)) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Component not found:\n%s.", DataUtil.prettyFormat(module)));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Component not found:\n%s.", DataUtil.toPrettyJSONString(module)));
                     System.exit(-1);
                 }
 
                 if(moduleTypeEnum == ModuleTypeEnum.NON_WORKFLOW_MODULE && component.haveInputContent()) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Forbid have input content:\n%s.", DataUtil.prettyFormat(module)));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Forbid have input content:\n%s.", DataUtil.toPrettyJSONString(module)));
                     System.exit(-1);
                 }
 
@@ -143,7 +142,7 @@ public class ModuleConfig implements InitializingBean {
                     if(DataUtil.isNotNull(catalog)) {
                         catalog.putChildModule(richModule);
                     } else {
-                        logger.error(String.format("Loading module configuration occurs fatal error -- Owner module catalog not found:\n%s", DataUtil.prettyFormat(richModule.data())));
+                        logger.error(String.format("Loading module configuration occurs fatal error -- Owner module catalog not found:\n%s", DataUtil.toPrettyJSONString(richModule.data())));
                         System.exit(-1);
                     }
                 }
@@ -161,33 +160,33 @@ public class ModuleConfig implements InitializingBean {
             for (WfModulePort port : portList) {
                 PortTypeEnum portTypeEnum = PortTypeEnum.valueOf(port.getPortType());
                 if(DataUtil.isNull(portTypeEnum)) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Error port type:\n%s.", DataUtil.prettyFormat(port)));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Error port type:\n%s.", DataUtil.toPrettyJSONString(port)));
                     System.exit(-1);
                 }
                 CmptChar cmptChar =  componentConfig.getCharacteristic(port.getBindCharId());
                 if(DataUtil.isNull(cmptChar)) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.prettyFormat(port)));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Characteristic not found:\n%s.", DataUtil.toPrettyJSONString(port)));
                     System.exit(-1);
                 }
                 if(!portTypeEnum.isCorrectPortType(SpecTypeEnum.valueOf(cmptChar.data().getSpecType()))) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Error port-type vs spec-type:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar.data())));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Error port-type vs spec-type:\n%s\n%s.", DataUtil.toPrettyJSONString(port), DataUtil.toPrettyJSONString(cmptChar.data())));
                     System.exit(-1);
                 }
                 if(!SpecMaskEnum.matchInputAndOutput(cmptChar.getType().data().getSpecMask())) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Port => char-type.spec-mask must be also support input & output:\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar.data())));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Port => char-type.spec-mask must be also support input & output:\n%s\n%s.", DataUtil.toPrettyJSONString(port), DataUtil.toPrettyJSONString(cmptChar.data())));
                     System.exit(-1);
                 }
                 Module module =  ALL_MODULES.get(port.getOwnerModuleId());
                 if(DataUtil.isNull(module)) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Module not found:\n%s.", DataUtil.prettyFormat(port)));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Module not found:\n%s.", DataUtil.toPrettyJSONString(port)));
                     System.exit(-1);
                 }
                 if(module.data().getModuleType() == ModuleTypeEnum.NON_WORKFLOW_MODULE.getType()) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Forbid non-workflow-module hold input/output port:\n%s.", DataUtil.prettyFormat(port)));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Forbid non-workflow-module hold input/output port:\n%s.", DataUtil.toPrettyJSONString(port)));
                     System.exit(-1);
                 }
                 if(!module.getComponent().existsCmptChar(cmptChar)) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Port-Char not found in Module's Package-Component :\n%s\n%s\n%s.", DataUtil.prettyFormat(port), DataUtil.prettyFormat(cmptChar.data()), DataUtil.prettyFormat(module.data())));
+                    logger.error(String.format("Loading module configuration occurs fatal error -- Port-Char not found in Module's Package-Component :\n%s\n%s\n%s.", DataUtil.toPrettyJSONString(port), DataUtil.toPrettyJSONString(cmptChar.data()), DataUtil.toPrettyJSONString(module.data())));
                     System.exit(-1);
                 }
 
@@ -215,7 +214,7 @@ public class ModuleConfig implements InitializingBean {
 
                 if(component.haveInputContent()) {
                     if (module.inputPortCount() != component.getInput().cmptCharCount()) {
-                        logger.error(String.format("Check module configuration occurs fatal error -- Inconsistent number of input-port vs input-char:\n%s\n%s.", DataUtil.prettyFormat(component.data()), DataUtil.prettyFormat(module.data())));
+                        logger.error(String.format("Check module configuration occurs fatal error -- Inconsistent number of input-port vs input-char:\n%s\n%s.", DataUtil.toPrettyJSONString(component.data()), DataUtil.toPrettyJSONString(module.data())));
                         System.exit(-1);
                     }
                 }
@@ -224,7 +223,7 @@ public class ModuleConfig implements InitializingBean {
                 if(module.inputPortCount() > 0) {
                     for (ModulePort modulePort : module.getInputPorts()) {
                         if (modulePort.data().getSequence() != sequence) {
-                            logger.error(String.format("Check module configuration occurs fatal error -- Error input port sequence number:\n%s.", DataUtil.prettyFormat(modulePort.data())));
+                            logger.error(String.format("Check module configuration occurs fatal error -- Error input port sequence number:\n%s.", DataUtil.toPrettyJSONString(modulePort.data())));
                             System.exit(-1);
                         }
                         sequence++;
@@ -233,7 +232,7 @@ public class ModuleConfig implements InitializingBean {
                 if(module.outputPortCount() > 0) {
                     for (ModulePort modulePort : module.getOutputPorts()) {
                         if (modulePort.data().getSequence() != sequence) {
-                            logger.error(String.format("Check module configuration occurs fatal error -- Error output port sequence number:\n%s.", DataUtil.prettyFormat(modulePort.data())));
+                            logger.error(String.format("Check module configuration occurs fatal error -- Error output port sequence number:\n%s.", DataUtil.toPrettyJSONString(modulePort.data())));
                             System.exit(-1);
                         }
                         sequence++;

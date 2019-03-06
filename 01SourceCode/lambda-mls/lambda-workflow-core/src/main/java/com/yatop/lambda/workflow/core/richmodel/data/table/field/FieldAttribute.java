@@ -56,6 +56,7 @@ public class FieldAttribute implements IRichModel {
 
     public String getSparkType() {
         FieldDataTypeEnum dataTypeEnum = FieldDataTypeEnum.valueOfPlatform(type);
-        return DataUtil.isNotNull(dataTypeEnum) ? dataTypeEnum.getSpark() : null;
+        //return DataUtil.isNotNull(dataTypeEnum) ? dataTypeEnum.getSpark() : null;
+        return dataTypeEnum.getSpark();
     }
 }

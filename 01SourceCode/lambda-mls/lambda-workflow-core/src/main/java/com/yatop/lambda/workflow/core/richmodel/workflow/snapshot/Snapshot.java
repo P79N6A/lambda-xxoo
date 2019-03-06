@@ -204,7 +204,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
         jsonContent.put(SNAPSHOT_CONTENT_KEY_WORKFLOW, workflow);
         jsonContent.put(SNAPSHOT_CONTENT_KEY_NODES, jsonNodes);
         jsonContent.put(SNAPSHOT_CONTENT_KEY_LINKS, jsonLinks);
-        this.data().setSnapshotContent(DataUtil.prettyFormat(jsonContent));
+        this.data().setSnapshotContent(DataUtil.toPrettyJSONString(jsonContent));
 
         jsonContent.clear();
     }

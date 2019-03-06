@@ -18,7 +18,7 @@ public final class CharTypeDouble extends CharTypeBasicGeneric {
         }
 
         try {
-            Double value = Double.valueOf(textValue);
+            Double value = DataUtil.toDouble(textValue);
         } catch (Throwable e) {
             return false;
         }
@@ -27,7 +27,7 @@ public final class CharTypeDouble extends CharTypeBasicGeneric {
     }
 
     @Override
-    public Object toJSONValue(CharValue charValue) {
+    public Object toJsonValue(CharValue charValue) {
         String textValue = charValue.getTextValue();
 
         if(DataUtil.isEmpty(textValue)) {
@@ -38,9 +38,9 @@ public final class CharTypeDouble extends CharTypeBasicGeneric {
     }
 
     @Override
-    public void parseJSONValue(CharValue charValue, Object obj) {
+    public void parseJsonValue(CharValue charValue, Object obj) {
 
-        if(obj == null) {
+        /*if(obj == null) {
             charValue.setCharValue(null);
             charValue.setTextValue(null);
         }
@@ -48,6 +48,6 @@ public final class CharTypeDouble extends CharTypeBasicGeneric {
             String value = (String)obj;
             charValue.setCharValue(value);
             charValue.setTextValue(value);
-        }
+        }*/
     }
 }

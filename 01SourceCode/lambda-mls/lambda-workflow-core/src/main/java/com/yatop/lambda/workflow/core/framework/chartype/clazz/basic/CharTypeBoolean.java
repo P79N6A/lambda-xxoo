@@ -17,28 +17,34 @@ public final class CharTypeBoolean extends CharTypeBasicGeneric {
             return false;
         }
 
-        if(!textValue.equals("true") && !textValue.equals("false")) {
+        try {
+            Boolean value = DataUtil.toBoolean(textValue);
+        } catch (Throwable e) {
             return false;
         }
+
+        /*if(!textValue.equals("true") && !textValue.equals("false")) {
+            return false;
+        }*/
 
         return true;
     }
 
     @Override
-    public Object toJSONValue(CharValue charValue) {
+    public Object toJsonValue(CharValue charValue) {
         String textValue = charValue.getTextValue();
 
         if(DataUtil.isEmpty(textValue)) {
             return null;
         }
 
-        return Boolean.valueOf(textValue);
+        return DataUtil.toBoolean(textValue);
     }
 
     @Override
-    public void parseJSONValue(CharValue charValue, Object obj) {
+    public void parseJsonValue(CharValue charValue, Object obj) {
 
-        if(obj == null) {
+        /*if(obj == null) {
             charValue.setCharValue(null);
             charValue.setTextValue(null);
         }
@@ -46,6 +52,6 @@ public final class CharTypeBoolean extends CharTypeBasicGeneric {
             String value = String.valueOf(obj);
             charValue.setCharValue(value);
             charValue.setTextValue(value);
-        }
+        }*/
     }
 }

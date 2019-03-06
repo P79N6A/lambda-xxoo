@@ -21,14 +21,14 @@ public final class CharTypeString extends CharTypeBasicGeneric {
     }
 
     @Override
-    public Object toJSONValue(CharValue charValue) {
+    public Object toJsonValue(CharValue charValue) {
         return charValue.getTextValue();
     }
 
     @Override
-    public void parseJSONValue(CharValue charValue, Object obj) {
+    public void parseJsonValue(CharValue charValue, Object obj) {
 
-        if(obj == null) {
+        /*if(obj == null) {
             charValue.setCharValue(null);
             charValue.setTextValue(null);
         }
@@ -36,6 +36,6 @@ public final class CharTypeString extends CharTypeBasicGeneric {
             String value = (String)obj;
             charValue.setCharValue(value);
             charValue.setTextValue(value);
-        }
+        }*/
     }
 }

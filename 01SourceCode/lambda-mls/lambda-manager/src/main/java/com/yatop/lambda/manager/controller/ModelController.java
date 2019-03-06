@@ -1,6 +1,6 @@
 package com.yatop.lambda.manager.controller;
 
-import com.yatop.lambda.manager.api.request.project.ModelRequest;
+import com.yatop.lambda.manager.api.request.model.ModelRequest;
 import com.yatop.lambda.manager.api.response.JsonResponse;
 import com.yatop.lambda.manager.api.response.PagerResponse;
 import com.yatop.lambda.manager.service.ModelService;

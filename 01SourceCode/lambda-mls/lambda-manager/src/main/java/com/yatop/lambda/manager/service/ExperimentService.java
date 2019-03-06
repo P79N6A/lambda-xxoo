@@ -6,9 +6,15 @@ import com.yatop.lambda.base.model.EmExperimentTemplate;
 import com.yatop.lambda.base.model.WfSnapshot;
 import com.yatop.lambda.core.mgr.experiment.ExperimentMgr;
 import com.yatop.lambda.core.mgr.experiment.ExperimentTemplateMgr;
+import com.yatop.lambda.core.mgr.table.DataTableMgr;
+import com.yatop.lambda.core.mgr.workflow.WorkflowMgr;
 import com.yatop.lambda.core.mgr.workflow.snapshot.SnapshotMgr;
-import com.yatop.lambda.manager.api.request.project.ExperimentRequest;
+import com.yatop.lambda.manager.api.request.experiment.ExperimentRequest;
+import com.yatop.lambda.manager.api.response.experiment.AddExperimentNodeResponse;
+import com.yatop.lambda.manager.api.response.experiment.ExperimentCanvasResponse;
 import com.yatop.lambda.portal.common.utils.PortalUtil;
+import com.yatop.lambda.workflow.core.context.WorkflowContext;
+import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeLink;
 import com.yatop.lambda.workflow.engine.service.EditorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +40,6 @@ public class ExperimentService {
     private ProjectService projectService;
     @Autowired
     private SnapshotMgr snapshotMgr;
-
 
     @Transactional
     public EmExperiment createExperiment(ExperimentRequest vo) {
@@ -67,10 +72,10 @@ public class ExperimentService {
 
     @Transactional
     public int updateExperiment(ExperimentRequest vo) {
-        EmExperiment emExperiment = new EmExperiment();
+        projectService.queryProject(vo.getProjectId());
+        EmExperiment emExperiment = experimentMgr.queryExperiment(vo.getExperimentId());
         emExperiment.setExperimentName(vo.getExperimentName());
         emExperiment.setDescription(vo.getDescription());
-        emExperiment.setExperimentId(vo.getExperimentId());
         return experimentMgr.updateExperiment(emExperiment, PortalUtil.getCurrentUserName());
     }
 
@@ -128,6 +133,79 @@ public class ExperimentService {
     }
 
     public List<EmExperimentTemplate> queryExperimentTemplate() {
-        return experimentTemplateMgr.queryExperimentTemplate("",null);
+        return experimentTemplateMgr.queryExperimentTemplate("", null);
     }
+
+
+    public ExperimentCanvasResponse queryExperimentCanvas(ExperimentRequest vo) {
+        projectService.queryProject(vo.getProjectId());
+        EmExperiment emExperiment = experimentMgr.queryExperiment(vo.getExperimentId());
+        WorkflowContext workflowContext = editorService.queryWorkflowGraph(emExperiment, PortalUtil.getCurrentUserName());
+        ExperimentCanvasResponse response = new ExperimentCanvasResponse(workflowContext);
+        return response;
+    }
+
+
+    public AddExperimentNodeResponse addExperimentNode(ExperimentRequest vo) {
+        projectService.queryProject(vo.getProjectId());
+        EmExperiment emExperiment = experimentMgr.queryExperiment(vo.getExperimentId());
+        editorService.createWorkflowNode(emExperiment, vo.getModuleId(), vo.getPosX(), vo.getPosY(),
+                PortalUtil.getCurrentUserName());
+
+        WorkflowContext context = editorService.queryWorkflowGraph(emExperiment,
+                PortalUtil.getCurrentUserName());
+        return new AddExperimentNodeResponse(context);
+    }
+
+    public AddExperimentNodeResponse addExperimentNode4Model(ExperimentRequest vo) {
+        projectService.queryProject(vo.getProjectId());
+        EmExperiment experiment = experimentMgr.queryExperiment(vo.getExperimentId());
+
+        editorService.createWorkflowNode4ReadModel(experiment, vo.getModelId(),
+                vo.getPosX(), vo.getPosY(), PortalUtil.getCurrentUserName());
+        WorkflowContext context = editorService.queryWorkflowGraph(experiment,
+                PortalUtil.getCurrentUserName());
+        return new AddExperimentNodeResponse(context);
+
+    }
+
+    public AddExperimentNodeResponse addExperimentNode4Table(ExperimentRequest vo) {
+        projectService.queryProject(vo.getProjectId());
+        EmExperiment experiment = experimentMgr.queryExperiment(vo.getExperimentId());
+
+        editorService.createWorkflowNode4ReadTable(experiment, vo.getTableName(),
+                vo.getPosX(), vo.getPosY(), PortalUtil.getCurrentUserName());
+        WorkflowContext context = editorService.queryWorkflowGraph(experiment,
+                PortalUtil.getCurrentUserName());
+        return new AddExperimentNodeResponse(context);
+    }
+
+    public Object updateExperimentNodeLocation(ExperimentRequest vo) {
+        editorService.batchUpdateWorkflowNodePostion(vo.getNodeIds(), vo.getPosXs(), vo.getPosYs(), PortalUtil.getCurrentUserName());
+        return "已更改位置！";
+    }
+
+    public Object validateExperimentNodeLink(ExperimentRequest vo) {
+        projectService.queryProject(vo.getProjectId());
+        experimentMgr.queryExperiment(vo.getExperimentId());
+
+        EmExperiment emExperiment = new EmExperiment();
+        emExperiment.setOwnerProjectId(vo.getProjectId());
+        emExperiment.setExperimentId(vo.getExperimentId());
+        editorService.validateCreateWorkflowNodeLink(emExperiment, vo.getSrcNodeId(), vo.getDstNodeId(),
+                vo.getSrcNodePortId(), vo.getSrcNodePortId(), PortalUtil.getCurrentUserName());
+        return null;
+    }
+
+    public NodeLink addExperimentNodeLink(ExperimentRequest vo) {
+        projectService.queryProject(vo.getProjectId());
+        EmExperiment emExperiment = experimentMgr.queryExperiment(vo.getExperimentId());
+
+        NodeLink links = editorService.createWorkflowNodeLink(emExperiment, vo.getSrcNodeId(), vo.getDstNodeId(),
+                vo.getSrcNodePortId(), vo.getSrcNodePortId(), PortalUtil.getCurrentUserName());
+
+
+        return links;
+    }
+
 }
