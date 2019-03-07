@@ -23,8 +23,7 @@ public enum FieldDataTypeEnum {
     FLOAT   (5,  "Float",       "float"),
     DOUBLE  (6,  "Double",      "double"),
     STRING  (7,  "String",      "string"),
-    DATE    (8,  "Date",        "date"),
-    DATETIME(9,  "Datetime",    "date");
+    DATE    (8,  "Date",        "date");
 
     private int type;
     private String platform;    //platform field type name
@@ -70,32 +69,47 @@ public enum FieldDataTypeEnum {
             case 6: return DOUBLE;
             case 7: return STRING;
             case 8: return DATE;
-            case 9: return DATETIME;
             default: return null;
         }
     }
 
-    private static TreeMap<String, FieldDataTypeEnum> FIELD_DATA_TYPES = new TreeMap<String, FieldDataTypeEnum>();
+    private static TreeMap<String, FieldDataTypeEnum> PLATFORM_FIELD_DATA_TYPES = new TreeMap<String, FieldDataTypeEnum>();
     static {
-        FIELD_DATA_TYPES.put(BOOLEAN.getPlatform(), BOOLEAN);
-        FIELD_DATA_TYPES.put(SHORT.getPlatform(), SHORT);
-        FIELD_DATA_TYPES.put(INTEGER.getPlatform(), INTEGER);
-        FIELD_DATA_TYPES.put(LONG.getPlatform(), LONG);
-        FIELD_DATA_TYPES.put(FLOAT.getPlatform(), FLOAT);
-        FIELD_DATA_TYPES.put(DOUBLE.getPlatform(), DOUBLE);
-        FIELD_DATA_TYPES.put(STRING.getPlatform(), STRING);
-        FIELD_DATA_TYPES.put(DATE.getPlatform(), DATE);
-        FIELD_DATA_TYPES.put(DATETIME.getPlatform(), DATETIME);
+        PLATFORM_FIELD_DATA_TYPES.put(BOOLEAN.getPlatform(), BOOLEAN);
+        PLATFORM_FIELD_DATA_TYPES.put(SHORT.getPlatform(), SHORT);
+        PLATFORM_FIELD_DATA_TYPES.put(INTEGER.getPlatform(), INTEGER);
+        PLATFORM_FIELD_DATA_TYPES.put(LONG.getPlatform(), LONG);
+        PLATFORM_FIELD_DATA_TYPES.put(FLOAT.getPlatform(), FLOAT);
+        PLATFORM_FIELD_DATA_TYPES.put(DOUBLE.getPlatform(), DOUBLE);
+        PLATFORM_FIELD_DATA_TYPES.put(STRING.getPlatform(), STRING);
+        PLATFORM_FIELD_DATA_TYPES.put(DATE.getPlatform(), DATE);
 
     }
 
-    public static FieldDataTypeEnum valueOfPlatform(String platform) {
-        return FIELD_DATA_TYPES.get(platform);
+    public static FieldDataTypeEnum valueOfPlatform(String platformType) {
+        return PLATFORM_FIELD_DATA_TYPES.get(platformType);
+    }
+
+    private static TreeMap<String, FieldDataTypeEnum> SPARK_FIELD_DATA_TYPES = new TreeMap<String, FieldDataTypeEnum>();
+    static {
+        PLATFORM_FIELD_DATA_TYPES.put(BOOLEAN.getSpark(), BOOLEAN);
+        PLATFORM_FIELD_DATA_TYPES.put(SHORT.getSpark(), SHORT);
+        PLATFORM_FIELD_DATA_TYPES.put(INTEGER.getSpark(), INTEGER);
+        PLATFORM_FIELD_DATA_TYPES.put(LONG.getSpark(), LONG);
+        PLATFORM_FIELD_DATA_TYPES.put(FLOAT.getSpark(), FLOAT);
+        PLATFORM_FIELD_DATA_TYPES.put(DOUBLE.getSpark(), DOUBLE);
+        PLATFORM_FIELD_DATA_TYPES.put(STRING.getSpark(), STRING);
+        PLATFORM_FIELD_DATA_TYPES.put(DATE.getSpark(), DATE);
+
+    }
+
+    public static FieldDataTypeEnum valueOfSpark(String sparkType) {
+        return SPARK_FIELD_DATA_TYPES.get(sparkType);
     }
 
     public static List<FieldDataTypeEnum> toList() {
         List<FieldDataTypeEnum> dataTypeEnums = new ArrayList<FieldDataTypeEnum>();
-        for(Map.Entry<String, FieldDataTypeEnum> entry : FIELD_DATA_TYPES.entrySet()) {
+        for(Map.Entry<String, FieldDataTypeEnum> entry : PLATFORM_FIELD_DATA_TYPES.entrySet()) {
             dataTypeEnums.add(entry.getValue());
         }
 

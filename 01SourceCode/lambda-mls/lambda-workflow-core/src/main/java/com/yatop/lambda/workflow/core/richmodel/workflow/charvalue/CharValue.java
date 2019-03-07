@@ -3,14 +3,14 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.charvalue;
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
-import com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.CharTypeAlgorithmGeneric;
-import com.yatop.lambda.workflow.core.framework.chartype.clazz.basic.CharTypeBasicGeneric;
-import com.yatop.lambda.workflow.core.framework.chartype.clazz.json.CharTypeJsonGeneric;
-import com.yatop.lambda.workflow.core.framework.chartype.clazz.model.CharTypeModelGeneric;
-import com.yatop.lambda.workflow.core.framework.chartype.clazz.report.CharTypeReportGeneric;
-import com.yatop.lambda.workflow.core.framework.chartype.clazz.script.CharTypeScriptGeneric;
-import com.yatop.lambda.workflow.core.framework.chartype.clazz.table.CharTypeTableGeneric;
-import com.yatop.lambda.workflow.core.framework.chartype.clazz.tune.CharTypeTuneGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.basic.BasicGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.json.JsonGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.report.ReportGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.script.ScriptGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.table.TableGeneric;
+import com.yatop.lambda.workflow.core.framework.chartype.clazz.tune.TuneGeneric;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
@@ -108,35 +108,35 @@ public class CharValue implements IRichModel {
     }
 
     public boolean isBasicType() {
-        return getCharTypeClazzBean() instanceof CharTypeBasicGeneric;
+        return getCharTypeClazzBean() instanceof BasicGeneric;
     }
 
     public boolean isTuneType() {
-        return getCharTypeClazzBean() instanceof CharTypeTuneGeneric;
+        return getCharTypeClazzBean() instanceof TuneGeneric;
     }
 
     public boolean isJsonType() {
-        return getCharTypeClazzBean() instanceof CharTypeJsonGeneric;
+        return getCharTypeClazzBean() instanceof JsonGeneric;
     }
 
     public boolean isScriptType() {
-        return getCharTypeClazzBean() instanceof CharTypeScriptGeneric;
+        return getCharTypeClazzBean() instanceof ScriptGeneric;
     }
 
     public boolean isAlgorithmType() {
-        return getCharTypeClazzBean() instanceof CharTypeAlgorithmGeneric;
+        return getCharTypeClazzBean() instanceof AlgorithmGeneric;
     }
 
     public boolean isReportType() {
-        return getCharTypeClazzBean() instanceof CharTypeReportGeneric;
+        return getCharTypeClazzBean() instanceof ReportGeneric;
     }
 
     public boolean isTableType() {
-        return getCharTypeClazzBean() instanceof CharTypeTableGeneric;
+        return getCharTypeClazzBean() instanceof TableGeneric;
     }
 
     public boolean isModelType() {
-        return getCharTypeClazzBean() instanceof CharTypeModelGeneric;
+        return getCharTypeClazzBean() instanceof ModelGeneric;
     }
 
     public CodeScript getCodeScript() {

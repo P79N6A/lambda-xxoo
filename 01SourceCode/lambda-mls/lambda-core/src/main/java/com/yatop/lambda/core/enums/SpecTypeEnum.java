@@ -5,27 +5,27 @@ public enum SpecTypeEnum {
     /**
      * 输入规格
      */
-    INPUT(1, "Input Specification"),
+    INPUT(0, "Input Specification"),
 
     /**
      * 输出规格
      */
-    OUTPUT(2, "Output Specification"),
+    OUTPUT(1, "Output Specification"),
 
     /**
      * 调用执行规格
      */
-    EXECUTION(3, "Execution Specification"),
+    EXECUTION(2, "Execution Specification"),
 
     /**
      * 执行优化规格
      */
-    OPTIMIZE_EXECUTION(4, "Optimze Execution Specification"),
+    OPTIMIZE_EXECUTION(3, "Optimze Execution Specification"),
 
     /**
      * 组件参数规格
      */
-    PARAMETER(5, "Parameter Specification");
+    PARAMETER(4, "Parameter Specification");
 
     private int type;
     private String name;
@@ -53,11 +53,11 @@ public enum SpecTypeEnum {
 
     public static SpecTypeEnum valueOf(int type) {
         switch (type) {
-            case 1: return INPUT;
-            case 2: return OUTPUT;
-            case 3: return EXECUTION;
-            case 4: return OPTIMIZE_EXECUTION;
-            case 5: return PARAMETER;
+            case 0: return INPUT;
+            case 1: return OUTPUT;
+            case 2: return EXECUTION;
+            case 3: return OPTIMIZE_EXECUTION;
+            case 4: return PARAMETER;
             default: return null;
         }
     }
