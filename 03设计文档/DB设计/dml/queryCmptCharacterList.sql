@@ -37,4 +37,13 @@ select IF(@last4cmpt = t1.cmpt_id, @rank4cmpt:= @rank4cmpt + 1, @rank4cmpt := 0)
 	 and t4.char_id = t5.char_id
 	 and t5.char_type = t6.char_type_id
  order by t1.cmpt_id, t3.spec_type, t5.char_id
-) t
+) t;
+
+
+
+
+
+
+select C.spec_id, C.char_id, concat(B.SPEC_NAME, '£¬', SUBSTRING_INDEX(A.CHAR_NAME, ' | ', -1)) tmpd, 0, SYSDATE() s1 , 'admin' d1, SYSDATE() s2, 'admin' d2 
+from cf_characteristic A, cf_specification B, cf_spec_char_rel_copy C 
+where C.char_id = A.char_id and C.spec_id = B.SPEC_ID
