@@ -14,9 +14,9 @@ public class JsonArray extends JsonGeneric {
         CmptChar cmptChar = charValue.getCmptChar();
         String textValue = charValue.getTextValue();
 
-        /*if(cmptChar.isRequired() && DataUtil.isEmpty(textValue)) {
-            return false;
-        }*/
+        if(DataUtil.isEmpty(textValue)) {
+            return true;
+        }
 
         try {
             JSONArray.parseArray(charValue.getTextValue());

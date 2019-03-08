@@ -2,8 +2,10 @@
 select (case rank4cmpt when 0 then concat(t.cmpt_id, '【', t.cmpt_name, '】') else '-' end) 组件,
 			 (case rank4spec when 0 then t.spec_name else '-' end) 规格,
 			  -- (case rank4spec when 0 then concat(t.spec_type, '【', t.spec_name, '】') else '-' end) 规格,
-			 concat(t.char_code, '【', t.char_name, '】') 特征,
-			 concat(t.char_type_code, '【', t.char_type_name, '】') 特征类型
+			 t.char_code 特征代码,
+			 t.char_name 特征名称,
+			 t.char_type_code 特征类型代码,
+			 t.char_type_name 特征类型名称
 from 
 (
 select IF(@last4cmpt = t1.cmpt_id, @rank4cmpt:= @rank4cmpt + 1, @rank4cmpt := 0) rank4cmpt,
@@ -20,10 +22,10 @@ select IF(@last4cmpt = t1.cmpt_id, @rank4cmpt:= @rank4cmpt + 1, @rank4cmpt := 0)
 			 t6.char_type_name
 	from cf_component t1,
 			 cf_cmpt_spec_rel t2,
-			 cf_cmpt_spec t3,
-			 cf_cmpt_spec_char_rel t4,
-			 cf_cmpt_char t5,
-			 cf_cmpt_char_type t6,
+			 cf_specification t3,
+			 cf_spec_char_rel t4,
+			 cf_characteristic t5,
+			 cf_char_type t6,
 			 (SELECT @last4cmpt:= -1) v1,
 			 (SELECT @rank4cmpt:= 0) v2,
 			 (SELECT @last4spec:= -1) v3,

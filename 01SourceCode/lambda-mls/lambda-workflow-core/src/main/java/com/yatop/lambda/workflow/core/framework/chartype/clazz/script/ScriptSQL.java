@@ -25,9 +25,9 @@ public class ScriptSQL extends ScriptGeneric {
         CmptChar cmptChar = charValue.getCmptChar();
         String textValue = charValue.getTextValue();
 
-        /*if(cmptChar.isRequired() && DataUtil.isEmpty(textValue)) {
-            return false;
-        }*/
+        if(DataUtil.isEmpty(textValue)) {
+            return true;
+        }
 
         return true;
     }

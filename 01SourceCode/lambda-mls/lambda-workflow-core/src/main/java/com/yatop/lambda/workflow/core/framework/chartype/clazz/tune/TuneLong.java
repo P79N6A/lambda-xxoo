@@ -79,6 +79,10 @@ public class TuneLong extends TuneGeneric {
         CmptChar cmptChar = charValue.getCmptChar();
         String textValue = charValue.getTextValue();
 
+        if(DataUtil.isEmpty(textValue)) {
+            return true;
+        }
+
         TuneParameter tuneParameter = JSONObject.parseObject(textValue, TuneParameter.class);
         if(DataUtil.isNull(tuneParameter) || DataUtil.isNull(tuneParameter.tuneRange) || DataUtil.isNull(tuneParameter.tuneUdps))
             //TODO throw exception ???

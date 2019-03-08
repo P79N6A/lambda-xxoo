@@ -14,9 +14,9 @@ public class JsonObject extends JsonGeneric {
         CmptChar cmptChar = charValue.getCmptChar();
         String textValue = charValue.getTextValue();
 
-        /*if(cmptChar.isRequired() && DataUtil.isEmpty(textValue)) {
-            return false;
-        }*/
+        if(DataUtil.isEmpty(textValue)) {
+            return true;
+        }
 
         try {
             JSONObject.parseObject(charValue.getTextValue());
