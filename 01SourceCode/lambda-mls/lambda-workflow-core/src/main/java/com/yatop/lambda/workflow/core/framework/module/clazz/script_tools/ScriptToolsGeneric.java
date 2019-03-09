@@ -9,7 +9,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class ModuleScriptToolsGeneric extends ModuleClazzClazzBase {
+public class ScriptToolsGeneric extends ModuleClazzClazzBase {
 
     @Override
     public TreeMap<CmptChar, String> validateParameters(WorkflowContext workflowContext, Node node) {

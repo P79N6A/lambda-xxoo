@@ -12,6 +12,11 @@ public abstract class AlgorithmGeneric extends CharTypeClazzBaseClazz {
 
     private static String FIELD_OBJECT_CONTENT = "objectContent";
 
+
+    //
+    //算法参数类型接口方法默认实现
+    //
+
     @Override
     public void createCharValue(CharValueContext context) {
         JsonAlgorithmHelper.createJsonAlgorithm(context);

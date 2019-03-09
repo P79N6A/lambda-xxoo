@@ -1,6 +1,7 @@
-package com.yatop.lambda.workflow.core.framework.module.clazz.script_tools;
+package com.yatop.lambda.workflow.core.framework.module.clazz.script_tools.sql;
 
 import com.yatop.lambda.core.utils.DataUtil;
+import com.yatop.lambda.workflow.core.framework.module.clazz.script_tools.ScriptToolsGeneric;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -9,7 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 @Service
-public class ModuleSqlScript extends ModuleScriptToolsGeneric {
+public class SqlScript extends ScriptToolsGeneric {
 
     private static String SELECT_KEYWORD = "SELECT";
 

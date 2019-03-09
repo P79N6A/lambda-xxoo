@@ -37,8 +37,8 @@ public class JsonReportHelper {
             case MODEL_EVALUATION_REPORT:
                 reportNamePrefix = "model_evaluation_report";
                 break;
-            case STATISTICAL_ANALYSIS_REPORT:
-                reportNamePrefix = "statistical_analysis_report";
+            case STATISTICAL_ANALYTICS_REPORT:
+                reportNamePrefix = "statistical_analytics_report";
                 break;
             case TUNE_PARAMETERS_REPORT:
                 reportNamePrefix = "tune_parameters_report";

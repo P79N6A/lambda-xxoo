@@ -7,6 +7,11 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 
 public abstract class ScriptGeneric extends CharTypeClazzBaseClazz {
 
+
+    //
+    //基本脚本类型接口方法默认实现
+    //
+
     @Override
     public void deleteCharValue(CharValueContext context) {
         CodeScriptHelper.deleteCodeScript(context);

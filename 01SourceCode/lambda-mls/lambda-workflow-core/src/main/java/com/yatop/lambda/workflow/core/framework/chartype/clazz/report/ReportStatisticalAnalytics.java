@@ -6,10 +6,10 @@ import com.yatop.lambda.workflow.core.mgr.data.unstructured.JsonReportHelper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ReportGenerateRules extends ReportGeneric {
+public class ReportStatisticalAnalytics extends ReportGeneric {
 
     @Override
     public void createCharValue(CharValueContext context) {
-        JsonReportHelper.createJsonReport(context, JsonObjectTypeEnum.GENERATE_RULES_REPORT);
+        JsonReportHelper.createJsonReport(context, JsonObjectTypeEnum.STATISTICAL_ANALYTICS_REPORT);
     }
 }

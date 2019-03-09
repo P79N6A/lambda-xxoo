@@ -25,7 +25,7 @@ public enum CmptTypeEnum {
     /**
      * 统计分析组件
      */
-    STATISTICAL_CMPT(4, "Statistical Analysis Component"),
+    STATISTICAL_CMPT(4, "Statistical Analytics Component"),
 
     /**
      * 机器学习组件
@@ -40,12 +40,12 @@ public enum CmptTypeEnum {
     /**
      * 文本分析组件
      */
-    TEXT_CMPT(7, "Text Analysis Component"),
+    TEXT_CMPT(7, "Text Analytics Component"),
 
     /**
      * 网络分析组件
      */
-    NETWORK_CMPT(8, "Network Analysis Component"),
+    NETWORK_CMPT(8, "Network Analytics Component"),
 
     /**
      * 时间序列组件

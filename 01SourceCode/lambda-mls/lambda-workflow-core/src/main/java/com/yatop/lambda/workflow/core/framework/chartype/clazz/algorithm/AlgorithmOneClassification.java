@@ -3,5 +3,5 @@ package com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AlgorithmMultipleClass extends AlgorithmGeneric {
+public class AlgorithmOneClassification extends AlgorithmGeneric {
 }
