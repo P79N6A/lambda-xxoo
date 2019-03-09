@@ -1,11 +1,11 @@
 package com.yatop.lambda.tools.sql
 
-import org.apache.spark.sql.catalyst.CatalystConf
 import org.apache.spark.sql.catalyst.analysis.{Analyzer, EliminateSubqueryAliases, FunctionRegistry}
 import org.apache.spark.sql.catalyst.catalog.{InMemoryCatalog, SessionCatalog}
 import org.apache.spark.sql.catalyst.expressions.AttributeReference
 import org.apache.spark.sql.catalyst.parser.CatalystSqlParser
 import org.apache.spark.sql.catalyst.plans.logical.{LocalRelation, LogicalPlan}
+import org.apache.spark.sql.internal.SQLConf
 import org.apache.spark.sql.types._
 
 import scala.collection.mutable.ArrayBuffer
@@ -22,8 +22,8 @@ class ParseProjection() {
 
   def analyze(catalog: SessionCatalog, unresolvedPlan: LogicalPlan): LogicalPlan = {
 
-    val analyzer = new Analyzer(catalog, ParseHelper.catalystConf) {
-//    override val extendedResolutionRules = EliminateSubqueryAliases :: Nil
+    val analyzer = new Analyzer(catalog, ParseHelper.sqlConf) {
+      /*override val extendedResolutionRules = EliminateSubqueryAliases :: Nil*/
     }
 
     analyzer.execute(unresolvedPlan)
@@ -47,6 +47,8 @@ object ParseHelper {
     }
   }
 
+/*
+  for spark 2.1.x
   val catalystConf = new CatalystConf {
     def caseSensitiveAnalysis: Boolean = false
     def orderByOrdinal: Boolean = true
@@ -60,10 +62,31 @@ object ParseHelper {
     def cboEnabled: Boolean = true
     def warehousePath: String = "/user/hive/warehouse"
     def sessionLocalTimeZone: String = java.util.TimeZone.getDefault.getID
+  }*/
+
+  val sqlConf = new SQLConf {
+    override def caseSensitiveAnalysis: Boolean = false
+    override def orderByOrdinal: Boolean = true
+    override def groupByOrdinal: Boolean = true
+    override def optimizerMaxIterations: Int = 100
+    override def optimizerInSetConversionThreshold: Int = 10
+    override def tableRelationCacheSize: Int = 1000
+    override def runSQLonFile: Boolean = true
+    override def crossJoinEnabled: Boolean = true
+    override def cboEnabled: Boolean = true
+    override def warehousePath: String = "/user/hive/warehouse"
+    override def sessionLocalTimeZone: String = java.util.TimeZone.getDefault.getID
   }
 
+/*
+  for spark 2.1.x
   def makeSessionCatalog(): SessionCatalog = {
     new SessionCatalog(new InMemoryCatalog, FunctionRegistry.builtin, catalystConf)
+  }
+*/
+
+  def makeSessionCatalog(): SessionCatalog = {
+    new SessionCatalog(new InMemoryCatalog, FunctionRegistry.builtin, sqlConf)
   }
 
   def makeAttributeArray(): ArrayBuffer[AttributeReference] = {
