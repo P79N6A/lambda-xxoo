@@ -10,174 +10,10 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-03-09 03:39:55
+Date: 2019-03-09 18:06:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for bak_wf_module
--- ----------------------------
-DROP TABLE IF EXISTS `bak_wf_module`;
-CREATE TABLE `bak_wf_module` (
-  `MODULE_ID` bigint(20) NOT NULL COMMENT '组件ID',
-  `MODULE_CODE` varchar(200) NOT NULL COMMENT '组件代码',
-  `MODULE_NAME` varchar(200) NOT NULL COMMENT '组件名称',
-  `MODULE_TYPE` int(11) NOT NULL COMMENT '组件类型\r\n0：普通工作流组件（可拖拽到画布中）\r\n1：不进工作流组件（不可托到画布中，封装的计算组件无输入内容，无输出端口）',
-  `CATALOG_ID` bigint(20) NOT NULL DEFAULT '0' COMMENT '所属目录ID，不进目录设为-1',
-  `SEQUENCE` int(11) NOT NULL COMMENT '排序序号',
-  `CATEGORY` varchar(200) DEFAULT NULL COMMENT '组件类别（预留），自定义类别',
-  `ICON_TYPE` int(11) NOT NULL COMMENT '图标类型',
-  `CLAZZ_PATH` varchar(200) NOT NULL COMMENT '组件java类class path',
-  `PKG_CMPT_ID` varchar(200) NOT NULL COMMENT '所封装的计算组件ID',
-  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
-  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
-  `LAST_UPDATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
-  `CREATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`MODULE_ID`),
-  UNIQUE KEY `Index_1` (`MODULE_CODE`),
-  KEY `Index_2` (`CATALOG_ID`,`SEQUENCE`),
-  KEY `Index_3` (`PKG_CMPT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流组件表';
-
--- ----------------------------
--- Records of bak_wf_module
--- ----------------------------
-INSERT INTO `bak_wf_module` VALUES ('1', 'ReadDataTable', '读数据表', '0', '1', '0', 'source', '0', 'ReadDataTable.class', '1', null, '0', '2017-05-27 16:11:04', 'admin', '2017-05-27 16:11:04', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('2', 'ReadModel', '读模型', '0', '1', '1', 'source', '0', 'ReadModel.class', '2', null, '0', '2017-05-27 16:13:58', 'admin', '2017-05-27 16:13:58', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('3', 'WriteDataTable', '写数据表', '0', '1', '2', 'destination', '0', 'WriteDataTable.class', '3', null, '0', '2017-05-27 16:11:04', 'admin', '2017-05-27 16:11:04', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('4', 'SqlScript', 'SQL脚本', '0', '2', '0', 'user_code', '0', 'SqlScript.class', '1000', null, '0', '2017-05-27 16:18:13', 'admin', '2017-05-27 16:18:13', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('5', 'LogisticRegression_Binary', '逻辑回归二分类', '0', '11', '0', 'training', '0', 'LogisticRegressionBinaryClassification.class', '5001', null, '0', '2017-05-27 16:43:05', 'admin', '2017-05-27 16:43:05', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('6', 'RandomForest_Binary', '随机森林二分类', '0', '11', '1', 'training', '0', 'RandomForestClassification.class', '5003', null, '0', '2017-05-27 16:49:30', 'admin', '2017-05-27 16:49:30', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('7', 'GBDT_Binary', 'GBDT二分类', '0', '11', '2', 'training', '0', 'GradientBoostingDecisionTreeBinaryClassification.class', '5004', null, '0', '2017-05-27 16:50:15', 'admin', '2017-05-27 16:50:15', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('8', 'LinearSVM', '线性支持向量机', '0', '11', '3', 'training', '0', 'LinearSupportVectorMachineBinaryClassification.class', '5005', null, '0', '2017-05-27 16:51:14', 'admin', '2017-05-27 16:51:14', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('9', 'LogisticRegression_Multiple', '逻辑回归多分类', '0', '12', '4', 'training', '0', 'LogisticRegressionMultipleClassification.class', '5002', null, '0', '2017-05-27 16:44:06', 'admin', '2017-05-27 16:44:06', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('10', 'RandomForest_Multiple', '随机森林多分类', '0', '12', '1', 'training', '0', 'RandomForestClassification.class', '5003', null, '0', '2017-05-27 16:49:30', 'admin', '2017-05-27 16:49:30', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('11', 'NaiveBayesian', '朴素贝叶斯', '0', '12', '2', 'training', '0', 'NaiveBayesianMultipleClassification.class', '5006', null, '0', '2017-05-27 16:52:06', 'admin', '2017-05-27 16:52:06', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('12', 'KNN', 'K近邻（无模型保存，直接预测）', '0', '12', '3', 'training', '0', 'KNearestNeighborsMultipleClassification.class', '5007', null, '-1', '2017-05-27 16:53:28', 'admin', '2017-05-27 16:53:28', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('13', 'KMeans', 'K均值（输入输出项待定）', '0', '13', '0', 'training', '0', 'KMeansClustering.class', '5100', null, '-1', '2017-05-27 17:25:18', 'admin', '2017-05-27 17:25:18', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('14', 'Linear_Regression', '线性回归', '0', '14', '0', 'training', '0', 'LinearRegression.class', '5200', null, '0', '2017-05-27 17:26:08', 'admin', '2017-05-27 17:26:08', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('15', 'GBDT_Regression', 'GBDT回归', '0', '14', '1', 'training', '0', 'GradientBoostingDecisionTreeRegression.class', '5201', null, '0', '2017-05-27 17:27:30', 'admin', '2017-05-27 17:27:30', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('16', 'BinaryClassificationEvaluation', '二分类评估', '0', '17', '0', 'evaluation', '0', 'BinaryClassificationEvaluation', '5901', null, '0', '2017-05-27 17:38:00', 'admin', '2017-05-27 17:38:00', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('17', 'MultipleClassificationEvaluation', '多分类评估', '0', '17', '1', 'evaluation', '0', 'MultipleClassificationEvaluation', '5902', null, '0', '2017-05-27 17:38:38', 'admin', '2017-05-27 17:38:38', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('18', 'ClusteringEvaluation', '聚类模型评估', '0', '17', '2', 'evaluation', '0', 'ClusteringEvaluation', '5903', null, '0', '2017-05-27 17:39:13', 'admin', '2017-05-27 17:39:13', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('19', 'RegressionEvaluation', '回归模型评估', '0', '17', '3', 'evaluation', '0', 'RegressionEvaluation', '5904', null, '0', '2017-05-27 17:39:48', 'admin', '2017-05-27 17:39:48', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('20', 'Prediction', '预测', '0', '6', '0', 'prediction', '0', 'Prediction', '5900', null, '0', '2017-05-27 17:37:12', 'admin', '2017-05-27 17:37:12', 'admin');
-INSERT INTO `bak_wf_module` VALUES ('21', 'SmartRules', '智能规则', '0', '6', '1', '0', '0', 'SmartRules', '5999', null, '0', '2017-05-27 17:42:51', 'admin', '2017-05-27 17:42:51', 'admin');
-
--- ----------------------------
--- Table structure for bak_wf_module_catalog
--- ----------------------------
-DROP TABLE IF EXISTS `bak_wf_module_catalog`;
-CREATE TABLE `bak_wf_module_catalog` (
-  `CATALOG_ID` bigint(20) NOT NULL COMMENT '目录ID',
-  `CATALOG_CODE` varchar(200) NOT NULL COMMENT '目录代码',
-  `CATALOG_NAME` varchar(200) NOT NULL COMMENT '目录名称',
-  `PARENT_CATALOG_ID` bigint(20) NOT NULL COMMENT '上级目录ID，一级目录设为0',
-  `SEQUENCE` int(11) NOT NULL COMMENT '排序序号',
-  `ICON_TYPE` int(11) NOT NULL COMMENT '图标类型',
-  `CATEGORY` varchar(200) DEFAULT NULL COMMENT '组件类别（预留），自定义类别',
-  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
-  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '状态\r\n            0：正常\r\n            1：失效',
-  `LAST_UPDATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
-  `CREATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`CATALOG_ID`),
-  UNIQUE KEY `Index_1` (`CATALOG_CODE`),
-  KEY `Index_2` (`PARENT_CATALOG_ID`,`SEQUENCE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流组件目录表，用于定义工作流组件目录结构';
-
--- ----------------------------
--- Records of bak_wf_module_catalog
--- ----------------------------
-INSERT INTO `bak_wf_module_catalog` VALUES ('0', 'RootCategory', '根目录', '-1', '0', '0', 'root_menu', '根菜单', '0', '2017-06-06 16:09:16', 'admin', '2017-06-06 16:09:16', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('1', 'SourceDestination', '源 / 目标', '0', '0', '0', 'source_destination', '数据表的输入源和输出目标', '0', '2017-05-27 15:08:17', 'admin', '2017-05-27 15:08:17', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('2', 'ScriptTools', '脚本工具', '0', '1', '0', 'user_code', 'SQL、Python、R等多种脚本支持', '0', '2017-05-27 15:18:10', 'admin', '2017-05-27 15:18:03', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('3', 'DataPreprocessing', '数据预处理', '0', '2', '0', 'process', '数据预处理', '-1', '2017-05-27 15:25:40', 'admin', '2017-05-27 15:25:40', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('4', 'FeatureEngineering', '特征工程', '0', '3', '0', 'process', '特征工程', '-1', '2017-05-27 15:27:10', 'admin', '2017-05-27 15:27:10', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('5', 'StatisticalAnalysis', '统计分析', '0', '4', '0', 'analytics', '统计分析', '-1', '2017-05-27 15:28:10', 'admin', '2017-05-27 15:28:10', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('6', 'MachineLearning', '机器学习', '0', '5', '0', 'training', '算法建模', '0', '2017-05-27 17:55:44', 'admin', '2017-05-27 17:55:41', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('7', 'DeepLearning', '深度学习', '0', '6', '0', 'process', '深度学习', '-1', '2017-05-27 17:56:16', 'admin', '2017-05-27 17:56:16', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('8', 'TextAnalysis', '文本分析', '0', '7', '0', 'process', '文本分析', '-1', '2017-05-27 17:56:55', 'admin', '2017-05-27 17:56:55', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('9', 'NetworkAnalysis', '网络分析', '0', '8', '0', 'process', '网络分析', '-1', '2017-05-27 17:57:23', 'admin', '2017-05-27 17:57:23', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('11', 'BinaryClassification', '二分类', '6', '0', '0', 'training', '二分类算法', '0', '2017-05-31 14:32:08', 'admin', '2017-05-31 14:32:08', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('12', 'MultipleClassification', '多分类', '6', '1', '0', 'training', '多分类算法', '0', '2017-05-31 14:33:41', 'admin', '2017-05-31 14:33:41', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('13', 'Clustering', '聚类', '6', '2', '0', 'training', '聚类算法', '0', '2017-05-31 14:34:41', 'admin', '2017-05-31 14:34:41', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('14', 'Regression', '回归', '6', '3', '0', 'training', '回归算法', '0', '2017-05-31 14:58:30', 'admin', '2017-05-31 14:58:30', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('15', 'AssociationRules', '关联规则', '6', '4', '0', 'process', '关联规则算法', '0', '2017-05-31 15:05:25', 'admin', '2017-05-31 15:05:25', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('16', 'CollaborativeFiltering', '协同过滤', '6', '5', '0', 'training', '协同过滤算法', '0', '2017-05-31 15:06:19', 'admin', '2017-05-31 15:06:19', 'admin');
-INSERT INTO `bak_wf_module_catalog` VALUES ('17', 'Evaluation', '评估', '6', '6', '0', 'evaluation', '评估模型效果', '0', '2017-05-31 15:14:49', 'admin', '2017-05-31 15:14:49', 'admin');
-
--- ----------------------------
--- Table structure for bak_wf_module_port
--- ----------------------------
-DROP TABLE IF EXISTS `bak_wf_module_port`;
-CREATE TABLE `bak_wf_module_port` (
-  `PORT_ID` bigint(20) NOT NULL COMMENT '端口ID，组件的同一类型端口数最多6个\r\n            端口ID值组成：工作流组件ID * 100 + 一位节点端口类型 * 10 + 一位端口序号',
-  `PORT_NAME` varchar(200) NOT NULL COMMENT '端口名称',
-  `PORT_TYPE` int(11) NOT NULL COMMENT '端口类型\r\n            1：输入端口\r\n            2：输出端口',
-  `OWNER_MODULE_ID` bigint(20) NOT NULL COMMENT '所属工作流组件ID',
-  `BIND_CHAR_ID` varchar(200) NOT NULL COMMENT '绑定计算组件输入输出特征ID',
-  `SEQUENCE` int(11) NOT NULL COMMENT '端口序号',
-  `DESCRIPTION` varchar(800) DEFAULT NULL COMMENT '描述',
-  `STATUS` int(11) NOT NULL DEFAULT '0' COMMENT '端口状态\r\n            0：正常\r\n            1：失效',
-  `LAST_UPDATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '最后更新时间',
-  `LAST_UPDATE_OPER` varchar(100) NOT NULL COMMENT '最后更新用户',
-  `CREATE_TIME` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `CREATE_OPER` varchar(100) NOT NULL COMMENT '创建用户',
-  PRIMARY KEY (`PORT_ID`),
-  UNIQUE KEY `Index_2` (`OWNER_MODULE_ID`,`BIND_CHAR_ID`),
-  KEY `Index_1` (`OWNER_MODULE_ID`,`PORT_TYPE`,`SEQUENCE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流组件端口表，映射计算组件输入输出内容到工作流组件端口上';
-
--- ----------------------------
--- Records of bak_wf_module_port
--- ----------------------------
-INSERT INTO `bak_wf_module_port` VALUES ('110', '读数据表的输出', '1', '1', '10001', '0', '数据输出', '0', '2017-05-27 20:12:15', 'admin', '2017-05-27 20:12:15', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('210', '读模型的输出', '1', '2', '10011', '0', '模型输出', '0', '2017-05-27 20:21:59', 'admin', '2017-05-27 20:21:59', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('300', '写数据表的输入', '0', '3', '1', '0', '数据输入', '0', '2017-06-06 17:53:42', 'admin', '2017-06-06 17:53:42', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('310', '写数据表的输出', '1', '3', '10001', '0', '数据输出', '0', '2017-06-06 17:53:42', 'admin', '2017-06-06 17:53:42', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('400', 'SQL脚本的输入t1', '0', '4', '1', '0', 'SQL脚本的输入', '0', '2017-05-27 20:44:40', 'admin', '2017-05-27 20:44:40', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('401', 'SQL脚本的输入t2', '0', '4', '2', '1', 'SQL脚本的输入', '0', '2017-05-27 20:48:13', 'admin', '2017-05-27 20:48:13', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('402', 'SQL脚本的输入t3', '0', '4', '3', '2', 'SQL脚本的输入', '0', '2017-05-27 20:48:51', 'admin', '2017-05-27 20:48:51', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('403', 'SQL脚本的输入t4', '0', '4', '4', '3', 'SQL脚本的输入', '0', '2017-05-27 20:49:21', 'admin', '2017-05-27 20:49:21', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('404', 'SQL脚本的输入t5', '0', '4', '5', '4', 'SQL脚本的输入', '0', '2017-05-27 20:49:51', 'admin', '2017-05-27 20:49:51', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('405', 'SQL脚本的输入t6', '0', '4', '6', '5', 'SQL脚本的输入', '0', '2017-05-27 20:50:12', 'admin', '2017-05-27 20:50:12', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('410', 'SQL脚本的输出', '1', '4', '10001', '0', 'SQL脚本的输出', '0', '2017-05-27 20:55:27', 'admin', '2017-05-27 20:55:27', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('500', '逻辑回归二分类的输入', '0', '5', '1', '0', '训练数据输入', '0', '2017-05-31 15:03:21', 'admin', '2017-05-31 15:03:21', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('510', '逻辑回归二分类的输出', '1', '5', '10011', '0', '模型输出', '0', '2017-05-31 15:09:31', 'admin', '2017-05-31 15:09:31', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('600', '随机森林二分类的输入', '0', '6', '1', '0', '训练数据输入', '0', '2017-05-31 15:27:23', 'admin', '2017-05-31 15:27:23', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('610', '随机森林二分类的输出', '1', '6', '10011', '0', '模型输出', '0', '2017-05-31 15:28:16', 'admin', '2017-05-31 15:28:16', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('700', 'GBDT二分类的输入', '0', '7', '1', '0', '训练数据输入', '0', '2017-05-31 15:28:49', 'admin', '2017-05-31 15:28:49', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('710', 'GBDT二分类的输出', '1', '7', '10011', '0', '模型输出', '0', '2017-05-31 15:29:46', 'admin', '2017-05-31 15:29:46', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('800', '线性支持向量机二分类的输入', '0', '8', '1', '0', '训练数据输入', '0', '2017-05-31 15:30:14', 'admin', '2017-05-31 15:30:14', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('810', '线性支持向量机二分类的输出', '1', '8', '10011', '0', '模型输出', '0', '2017-05-31 15:30:46', 'admin', '2017-05-31 15:30:46', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('900', '逻辑回归多分类的输入', '0', '9', '1', '0', '训练数据输入', '0', '2017-05-31 15:21:20', 'admin', '2017-05-31 15:21:20', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('910', '逻辑回归多分类的输出', '1', '9', '10011', '0', '模型输出', '0', '2017-05-31 15:22:14', 'admin', '2017-05-31 15:22:14', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1000', '随机森林多分类的输入', '0', '10', '1', '0', '训练数据输入', '0', '2017-05-31 15:27:23', 'admin', '2017-05-31 15:27:23', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1010', '随机森林多分类的输出', '1', '10', '10011', '0', '模型输出', '0', '2017-05-31 15:28:16', 'admin', '2017-05-31 15:28:16', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1100', '朴素贝叶斯多分类的输入', '0', '11', '1', '0', '训练数据输入', '0', '2017-05-31 15:31:54', 'admin', '2017-05-31 15:31:54', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1110', '朴素贝叶斯多分类的输出', '1', '11', '10011', '0', '模型输出', '0', '2017-05-31 15:32:40', 'admin', '2017-05-31 15:32:40', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1200', 'K近邻多分类的输入（*）', '0', '12', '1', '0', '训练数据输入', '0', '2017-05-31 15:33:42', 'admin', '2017-05-31 15:33:42', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1210', 'K近邻多分类的输出（*）', '1', '12', '10011', '0', '模型输出', '0', '2017-05-31 15:34:12', 'admin', '2017-05-31 15:34:12', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1300', 'K均值聚类的输入（*）', '0', '13', '1', '0', '训练数据输入', '0', '2017-05-31 15:34:48', 'admin', '2017-05-31 15:34:48', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1310', 'K均值聚类的输出（*）', '1', '13', '10011', '0', '模型输出', '0', '2017-05-31 15:35:54', 'admin', '2017-05-31 15:35:54', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1400', '线性回归的输入', '0', '14', '1', '0', '训练数据输入', '0', '2017-05-31 15:36:24', 'admin', '2017-05-31 15:36:24', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1410', '线性回归的输出', '1', '14', '10011', '0', '模型输出', '0', '2017-05-31 15:36:48', 'admin', '2017-05-31 15:36:48', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1500', 'GBDT回归的输入', '0', '15', '1', '0', '训练数据输入', '0', '2017-05-31 15:37:43', 'admin', '2017-05-31 15:37:43', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1510', 'GBDT回归的输出', '1', '15', '10011', '0', '模型输出', '0', '2017-05-31 15:38:08', 'admin', '2017-05-31 15:38:08', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1600', '二分类评估的输入', '0', '16', '1', '0', '预测结果输入', '0', '2017-05-31 15:39:42', 'admin', '2017-05-31 15:39:42', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1610', '二分类评估的输出', '1', '16', '10011', '1', '评估输出', '0', '2017-06-21 12:01:30', 'admin', '2017-06-21 12:01:30', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1700', '多分类评估的输入', '0', '17', '1', '0', '预测结果输入', '0', '2017-05-31 15:49:06', 'admin', '2017-05-31 15:49:06', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1800', '聚类模型评估的输入', '0', '18', '1', '0', '预测结果输入', '0', '2017-05-31 15:54:04', 'admin', '2017-05-31 15:54:04', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('1900', '回归模型评估的输入', '0', '19', '1', '0', '预测结果输入', '0', '2017-05-31 15:55:05', 'admin', '2017-05-31 15:55:05', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('2000', '预测的输入m1', '0', '20', '11', '0', '模型输入', '0', '2017-05-31 15:38:49', 'admin', '2017-05-31 15:38:49', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('2001', '预测的输入t1', '0', '20', '1', '1', '测试数据输入', '0', '2017-05-31 15:38:49', 'admin', '2017-05-31 15:38:49', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('2010', '预测的输出', '1', '20', '10001', '0', '预测结果输出', '0', '2017-05-31 15:39:14', 'admin', '2017-05-31 15:39:14', 'admin');
-INSERT INTO `bak_wf_module_port` VALUES ('2100', '智能规则的输入（*）', '0', '21', '1', '0', '训练数据输入', '0', '2017-05-31 15:57:35', 'admin', '2017-05-31 15:57:35', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_algorithm
@@ -521,24 +357,24 @@ INSERT INTO `cf_char_type` VALUES ('106', 'Tuning-Parameter<Double>', '双精度
 INSERT INTO `cf_char_type` VALUES ('1000', 'Data Table<?>', '通配任何数据表', '1', '1', 'only-for-input', '数据表', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('1001', 'Data Table<Parquet>', 'Parquet数据表', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.table.TableParquet', '数据表', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('2000', 'Trained Model<?>', '通配任何模型', '1', '1', 'only-for-input', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_char_type` VALUES ('2001', 'Trained Model<OneClass-Classification>', '单分类模型', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelOneClass', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_char_type` VALUES ('2002', 'Trained Model<TwoClass-Classification>', '二分类模型', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelTwoClass', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_char_type` VALUES ('2003', 'Trained Model<MultipleClass-Classification>', '多分类模型', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelMultipleClass', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_char_type` VALUES ('2001', 'Trained Model<OneClass-Classification>', '单分类模型', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelOneClassification', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_char_type` VALUES ('2002', 'Trained Model<TwoClass-Classification>', '二分类模型', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelTwoClassification', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_char_type` VALUES ('2003', 'Trained Model<MultipleClass-Classification>', '多分类模型', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelMultipleClassification', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('2004', 'Trained Model<Classification>', '通配分类模型', '1', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelClassification', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('2005', 'Trained Model<Clustering>', '聚类模型', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelClustering', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('2006', 'Trained Model<Regression>', '回归模型', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelRegression', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('2007', 'Trained Model<Classification,Regression>', '通配分类和回归模型', '1', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelClassification$Regression', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('2008', 'Trained Model<Classification,Clustering,Regression>', '通配分类，聚类和回归模型', '1', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelClassification$Clustering$Regression', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('3001', 'SQL Script', 'SQL脚本', '0', '16', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.script.ScriptSQL', 'SQL脚本', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_char_type` VALUES ('4001', 'Algorithm Parameters<OneClass-Classification>', '单分类算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmOneClass', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
-INSERT INTO `cf_char_type` VALUES ('4002', 'Algorithm Parameters<TwoClass-Classification>', '二分类算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmTwoClass', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
-INSERT INTO `cf_char_type` VALUES ('4003', 'Algorithm Parameters<MultipleClass-Classification>', '多分类算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmMultipleClass', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_char_type` VALUES ('4001', 'Algorithm Parameters<OneClass-Classification>', '单分类算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmOneClassification', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_char_type` VALUES ('4002', 'Algorithm Parameters<TwoClass-Classification>', '二分类算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmTwoClassification', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_char_type` VALUES ('4003', 'Algorithm Parameters<MultipleClass-Classification>', '多分类算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmMultipleClassification', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
 INSERT INTO `cf_char_type` VALUES ('4004', 'Algorithm Parameters<Classification>', '通配分类算法（未训练模型）', '1', '1', 'only-for-input', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
 INSERT INTO `cf_char_type` VALUES ('4005', 'Algorithm Parameters<Clustering>', '聚类算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmClustering', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
 INSERT INTO `cf_char_type` VALUES ('4006', 'Algorithm Parameters<Regression>', '回归算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmRegression', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
 INSERT INTO `cf_char_type` VALUES ('4007', 'Algorithm Parameters<Classification,Regression>', '通配分类和回归算法（未训练模型）', '1', '1', 'only-for-input', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
 INSERT INTO `cf_char_type` VALUES ('5001', 'Model Evaluation Report', '模型评估报告', '0', '2', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.report.ReportModelEvaluation', '输出报告', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_char_type` VALUES ('5002', 'Statistical Analysis Report', '统计分析报告', '0', '2', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.report.ReportStatisticalAnalysis', '输出报告', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_char_type` VALUES ('5002', 'Statistical Analysis Report', '统计分析报告', '0', '2', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.report.ReportStatisticalAnalytics', '输出报告', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('5003', 'Cross Validation Report', '交叉验证报告', '0', '2', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.report.ReportCrossValidation', '输出报告', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('5004', 'Tune Parameters Report', '自动调参报告', '0', '2', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.report.ReportTuneParameters', '输出报告', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('5005', 'Generate Rules Report', '生成规则报告', '0', '2', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.report.ReportGenerateRules', '输出报告', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
@@ -1889,24 +1725,25 @@ CREATE TABLE `wf_module_catalog` (
 -- ----------------------------
 -- Records of wf_module_catalog
 -- ----------------------------
-INSERT INTO `wf_module_catalog` VALUES ('0', 'RootCategory', '根目录', '-1', '0', '0', 'menu', '根目录', '0', '2017-06-06 16:09:16', 'admin', '2017-06-06 16:09:16', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('1', 'SourceDestination', '源 / 目标', '0', '0', '0', 'source_destination', '数据表的输入源和输出目标', '0', '2017-05-27 15:08:17', 'admin', '2017-05-27 15:08:17', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('2', 'UserCode', '脚本工具', '0', '1', '0', 'user_code', 'SQL、Python、R等多种脚本支持', '0', '2017-05-27 15:18:10', 'admin', '2017-05-27 15:18:03', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('3', 'DataPreprocessing', '数据预处理', '0', '2', '0', 'process', '数据预处理', '-1', '2017-05-27 15:25:40', 'admin', '2017-05-27 15:25:40', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('0', 'RootCategory', '根目录', '-1', '0', '0', '', '根目录', '0', '2017-06-06 16:09:16', 'admin', '2017-06-06 16:09:16', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('1', 'SourceDestination', '源 / 目标', '0', '0', '0', 'read-write', '数据表读写', '0', '2017-05-27 15:08:17', 'admin', '2017-05-27 15:08:17', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('2', 'ScriptTools', '脚本工具', '0', '1', '0', 'user-code', 'SQL、Python、R等多种脚本支持', '0', '2017-05-27 15:18:10', 'admin', '2017-05-27 15:18:03', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('3', 'DataPreprocessing', '数据预处理', '0', '2', '0', 'process', '数据预处理', '0', '2017-05-27 15:25:40', 'admin', '2017-05-27 15:25:40', 'admin');
 INSERT INTO `wf_module_catalog` VALUES ('4', 'FeatureEngineering', '特征工程', '0', '3', '0', 'process', '特征工程', '-1', '2017-05-27 15:27:10', 'admin', '2017-05-27 15:27:10', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('5', 'Analytics', '统计分析', '0', '4', '0', 'analytics', '统计分析', '-1', '2017-05-27 15:28:10', 'admin', '2017-05-27 15:28:10', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('5', 'StatisticalAnalysis', '统计分析', '0', '4', '0', 'analysis', '统计分析', '-1', '2017-05-27 15:28:10', 'admin', '2017-05-27 15:28:10', 'admin');
 INSERT INTO `wf_module_catalog` VALUES ('6', 'MachineLearning', '机器学习', '0', '5', '0', 'training', '算法建模', '0', '2017-05-27 17:55:44', 'admin', '2017-05-27 17:55:41', 'admin');
 INSERT INTO `wf_module_catalog` VALUES ('7', 'DeepLearning', '深度学习', '0', '6', '0', 'process', '深度学习', '-1', '2017-05-27 17:56:16', 'admin', '2017-05-27 17:56:16', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('8', 'NaturalLanguageProcessing', '文本分析', '0', '7', '0', 'process', '文本分析', '-1', '2017-05-27 17:56:55', 'admin', '2017-05-27 17:56:55', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('8', 'TextAnalysis', '文本分析', '0', '7', '0', 'process', '文本分析', '-1', '2017-05-27 17:56:55', 'admin', '2017-05-27 17:56:55', 'admin');
 INSERT INTO `wf_module_catalog` VALUES ('9', 'NetworkAnalysis', '网络分析', '0', '8', '0', 'process', '网络分析', '-1', '2017-05-27 17:57:23', 'admin', '2017-05-27 17:57:23', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('10', 'StreamProcessing', '流式处理', '0', '9', '0', 'process', '流式处理', '-1', '2017-05-27 17:57:53', 'admin', '2017-05-27 17:57:53', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('11', 'BinaryClassification', '二分类', '6', '0', '0', 'training', '二分类算法', '0', '2017-05-31 14:32:08', 'admin', '2017-05-31 14:32:08', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('12', 'MultipleClassification', '多分类', '6', '1', '0', 'training', '多分类算法', '0', '2017-05-31 14:33:41', 'admin', '2017-05-31 14:33:41', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('13', 'Clustering', '聚类', '6', '2', '0', 'training', '聚类算法', '0', '2017-05-31 14:34:41', 'admin', '2017-05-31 14:34:41', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('14', 'Regression', '回归', '6', '3', '0', 'training', '回归算法', '0', '2017-05-31 14:58:30', 'admin', '2017-05-31 14:58:30', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('15', 'AssociationRules', '关联规则', '6', '4', '0', 'process', '关联规则算法', '0', '2017-05-31 15:05:25', 'admin', '2017-05-31 15:05:25', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('16', 'CollaborativeFiltering', '协同过滤', '6', '5', '0', 'training', '协同过滤算法', '0', '2017-05-31 15:06:19', 'admin', '2017-05-31 15:06:19', 'admin');
-INSERT INTO `wf_module_catalog` VALUES ('17', 'Evaluation', '评估', '6', '6', '0', 'evaluation', '评估模型效果', '0', '2017-05-31 15:14:49', 'admin', '2017-05-31 15:14:49', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('10', 'BinaryClassification', '二分类', '6', '0', '0', 'training', '二分类算法', '0', '2017-05-31 14:32:08', 'admin', '2017-05-31 14:32:08', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('11', 'MultipleClassification', '多分类', '6', '1', '0', 'training', '多分类算法', '-1', '2017-05-31 14:33:41', 'admin', '2017-05-31 14:33:41', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('12', 'Regression', '回归', '6', '2', '0', 'training', '回归算法', '0', '2017-05-31 14:58:30', 'admin', '2017-05-31 14:58:30', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('13', 'Clustering', '聚类', '6', '3', '0', 'training', '聚类训练', '-1', '2017-05-31 14:34:41', 'admin', '2017-05-31 14:34:41', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('14', 'AssociationRules', '关联规则', '6', '4', '0', 'process', '关联规则算法', '-1', '2017-05-31 15:05:25', 'admin', '2017-05-31 15:05:25', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('15', 'CollaborativeFiltering', '协同过滤', '6', '5', '0', 'training', '协同过滤算法', '-1', '2017-05-31 15:06:19', 'admin', '2017-05-31 15:06:19', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('16', 'Evaluation', '评估', '6', '6', '0', 'evaluation', '评估模型效果', '0', '2017-05-31 15:14:49', 'admin', '2017-05-31 15:14:49', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('17', 'DataSampling', '数据采样', '3', '0', '0', 'process', '数据采样', '0', '2017-05-31 15:14:49', 'admin', '2017-05-31 15:14:49', 'admin');
+INSERT INTO `wf_module_catalog` VALUES ('18', 'DataMerging', '数据合并', '3', '0', '0', 'process', '数据合并', '-1', '2017-05-31 15:14:49', 'admin', '2017-05-31 15:14:49', 'admin');
 
 -- ----------------------------
 -- Table structure for wf_module_port
@@ -1941,8 +1778,6 @@ INSERT INTO `wf_module_port` VALUES ('400', 'SQL脚本的输入t1', '0', '4', '1
 INSERT INTO `wf_module_port` VALUES ('401', 'SQL脚本的输入t2', '0', '4', '2', '1', 'SQL脚本的输入', '0', '2017-05-27 20:48:13', 'admin', '2017-05-27 20:48:13', 'admin');
 INSERT INTO `wf_module_port` VALUES ('402', 'SQL脚本的输入t3', '0', '4', '3', '2', 'SQL脚本的输入', '0', '2017-05-27 20:48:51', 'admin', '2017-05-27 20:48:51', 'admin');
 INSERT INTO `wf_module_port` VALUES ('403', 'SQL脚本的输入t4', '0', '4', '4', '3', 'SQL脚本的输入', '0', '2017-05-27 20:49:21', 'admin', '2017-05-27 20:49:21', 'admin');
-INSERT INTO `wf_module_port` VALUES ('404', 'SQL脚本的输入t5', '0', '4', '5', '4', 'SQL脚本的输入', '0', '2017-05-27 20:49:51', 'admin', '2017-05-27 20:49:51', 'admin');
-INSERT INTO `wf_module_port` VALUES ('405', 'SQL脚本的输入t6', '0', '4', '6', '5', 'SQL脚本的输入', '0', '2017-05-27 20:50:12', 'admin', '2017-05-27 20:50:12', 'admin');
 INSERT INTO `wf_module_port` VALUES ('410', 'SQL脚本的输出', '1', '4', '10001', '0', 'SQL脚本的输出', '0', '2017-05-27 20:55:27', 'admin', '2017-05-27 20:55:27', 'admin');
 INSERT INTO `wf_module_port` VALUES ('500', '逻辑回归二分类的输入', '0', '5', '1', '0', '训练数据输入', '0', '2017-05-31 15:03:21', 'admin', '2017-05-31 15:03:21', 'admin');
 INSERT INTO `wf_module_port` VALUES ('510', '逻辑回归二分类的输出', '1', '5', '10011', '0', '模型输出', '0', '2017-05-31 15:09:31', 'admin', '2017-05-31 15:09:31', 'admin');
