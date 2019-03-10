@@ -1,12 +1,12 @@
 
-select (case rank4cmpt when 0 then concat(t.cmpt_id, '¡¾', t.cmpt_name, '¡¿') else '-' end) ×é¼ş,
-			 (case rank4spec when 0 then t.spec_name else '-' end) ¹æ¸ñ,
-			  -- (case rank4spec when 0 then concat(t.spec_type, '¡¾', t.spec_name, '¡¿') else '-' end) ¹æ¸ñ,
-			 t.char_id ÌØÕ÷ID,
-			 t.char_code ÌØÕ÷´úÂë,
-			 t.char_name ÌØÕ÷Ãû³Æ,
-			 -- t.char_type_code ÌØÕ÷ÀàĞÍ´úÂë,
-			 t.char_type_name ÌØÕ÷ÀàĞÍÃû³Æ
+select (case rank4cmpt when 0 then concat(t.cmpt_id, 'ã€', t.cmpt_name, 'ã€‘') else '-' end) ç»„ä»¶,
+			 (case rank4spec when 0 then t.spec_name else '-' end) è§„æ ¼,
+			  -- (case rank4spec when 0 then concat(t.spec_type, 'ã€', t.spec_name, 'ã€‘') else '-' end) è§„æ ¼,
+			 t.char_id ç‰¹å¾ID,
+			 t.char_code ç‰¹å¾ä»£ç ,
+			 t.char_name ç‰¹å¾åç§°,
+			 -- t.char_type_code ç‰¹å¾ç±»å‹ä»£ç ,
+			 t.char_type_name ç‰¹å¾ç±»å‹åç§°
 from 
 (
 select IF(@last4cmpt = t1.cmpt_id, @rank4cmpt:= @rank4cmpt + 1, @rank4cmpt := 0) rank4cmpt,
@@ -15,7 +15,7 @@ select IF(@last4cmpt = t1.cmpt_id, @rank4cmpt:= @rank4cmpt + 1, @rank4cmpt := 0)
 			 t1.cmpt_name,
 			 IF(@last4spec = t3.spec_id and @rank4cmpt != 0, @rank4spec:= @rank4spec + 1, @rank4spec := 0) rank4spec,
 			 @last4spec := t3.spec_id spec_id,
-			 -- (case t3.spec_type when 1 then 'ÊäÈëÄÚÈİ' when 2 then 'Êä³öÄÚÈİ' when 3 then 'µ÷ÓÃÖ´ĞĞ' when 4 then 'Ö´ĞĞµ÷ÓÅ' else '×é¼ş²ÎÊı' end) spec_type,
+			 -- (case t3.spec_type when 1 then 'è¾“å…¥å†…å®¹' when 2 then 'è¾“å‡ºå†…å®¹' when 3 then 'è°ƒç”¨æ‰§è¡Œ' when 4 then 'æ‰§è¡Œè°ƒä¼˜' else 'ç»„ä»¶å‚æ•°' end) spec_type,
 			 t3.spec_name,
 			 t5.char_id,
 			 t5.char_code,
@@ -45,6 +45,6 @@ select IF(@last4cmpt = t1.cmpt_id, @rank4cmpt:= @rank4cmpt + 1, @rank4cmpt := 0)
 
 
 
-select C.spec_id, C.char_id, concat(B.SPEC_NAME, '£¬', SUBSTRING_INDEX(A.CHAR_NAME, ' | ', -1)) tmpd, 0, SYSDATE() s1 , 'admin' d1, SYSDATE() s2, 'admin' d2 
+select C.spec_id, C.char_id, concat(B.SPEC_NAME, 'ï¼Œ', SUBSTRING_INDEX(A.CHAR_NAME, ' | ', -1)) tmpd, 0, SYSDATE() s1 , 'admin' d1, SYSDATE() s2, 'admin' d2 
 from cf_characteristic A, cf_specification B, cf_spec_char_rel_copy C 
 where C.char_id = A.char_id and C.spec_id = B.SPEC_ID

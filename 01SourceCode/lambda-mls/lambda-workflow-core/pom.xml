@@ -21,6 +21,22 @@
             <groupId>com.yatop.lambda</groupId>
             <artifactId>lambda-core</artifactId>
             <version>${yatop.lambda.core}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.yatop.lambda</groupId>
+            <artifactId>lambda-tools</artifactId>
+            <version>${yatop.lambda.tools}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
 
         <!-- =========================================spring================= -->
@@ -44,10 +60,6 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
         </dependency>
     </dependencies>
     <build>

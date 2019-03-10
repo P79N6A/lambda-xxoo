@@ -14,6 +14,10 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class LinkCreate {
 
@@ -65,5 +69,31 @@ public class LinkCreate {
         }
 
         return createLink(workflowContext, srcNode, dstNode, srcNodePort, dstNodePort);
+    }
+
+    public void createLink4CopyNodes(WorkflowContext workflowContext, HashMap<Long, Node> nodeIndexTable) {
+
+        if(nodeIndexTable.size() < 2)
+            return;
+
+        for(Map.Entry<Long, Node> entry : nodeIndexTable.entrySet()) {
+            Long copyNodeId = entry.getKey();
+            Node copyNode = workflowContext.getNode(copyNodeId);
+            List<NodeLink> outLinks = workflowContext.fetchOutLinks(copyNode);
+
+            if(DataUtil.isNotEmpty(outLinks)) {
+                for(NodeLink copyLink : outLinks) {
+                    Node downstreamNode = nodeIndexTable.get(copyLink.data().getDstNodeId());
+                    if(DataUtil.isNotNull(downstreamNode)) {
+                        Node dstCopyNode = workflowContext.getNode(copyLink.data().getDstNodeId());
+
+                        Node upstreamNode = entry.getValue();
+                        NodeOutputPort upstreamPort = upstreamNode.getOutputNodePort(copyNode.getOutputNodePort(copyLink.data().getSrcPortId()).getCmptChar().data().getCharId());
+                        NodeInputPort downstreamPort = downstreamNode.getInputNodePort(dstCopyNode.getInputNodePort(copyLink.data().getDstPortId()).getCmptChar().data().getCharId());
+                        this.createLink(workflowContext, upstreamNode, downstreamNode, upstreamPort, downstreamPort);
+                    }
+                }
+            }
+        }
     }
 }

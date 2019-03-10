@@ -10293,7 +10293,7 @@ ${LOCAL_WORK_ROOT}/flow_data/&lt;project_id&gt;/&lt;flow_id&gt;</a:Comment>
 普通对象：general_&lt;node_id&gt;_&lt;char_id&gt; 
 算法参数：algorithm_parameters_&lt;node_id&gt;_&lt;char_id&gt;
 模型评估报告：model_evaluation_report_&lt;node_id&gt;_&lt;char_id&gt;
-统计分析报告：statistical_analysis_report_&lt;node_id&gt;_&lt;char_id&gt;
+统计分析报告：statistical_analytics_report_&lt;node_id&gt;_&lt;char_id&gt;
 自动调参报告：tune_parameters_report_&lt;node_id&gt;_&lt;char_id&gt;
 生成规则报告：generate_rules_report_&lt;node_id&gt;_&lt;char_id&gt;</a:Comment>
 <a:DataType>varchar(200)</a:DataType>
@@ -10408,7 +10408,7 @@ ${LOCAL_WORK_ROOT}/flow_data/&lt;project_id&gt;/&lt;flow_id&gt;</a:Comment>
 <a:Comment>DFS对象文件名
 
 模型评估报告：${FLOW_DIR}/model_evaluation_report_&lt;node_id&gt;_&lt;json_id&gt;.json
-统计分析报告：${FLOW_DIR}/statistical_analysis_report_&lt;node_id&gt;_&lt;json_id&gt;.json
+统计分析报告：${FLOW_DIR}/statistical_analytics_report_&lt;node_id&gt;_&lt;json_id&gt;.json
 自动调参报告：${FLOW_DIR}/tune_parameters_report_&lt;node_id&gt;_&lt;json_id&gt;.json
 生成规则报告：${FLOW_DIR}/generate_rules_report_&lt;node_id&gt;_&lt;json_id&gt;.json</a:Comment>
 <a:DataType>varchar(800)</a:DataType>
@@ -10425,7 +10425,7 @@ ${LOCAL_WORK_ROOT}/flow_data/&lt;project_id&gt;/&lt;flow_id&gt;</a:Comment>
 <a:Comment>本地对象文件名
 
 模型评估报告：${FLOW_DIR}/model_evaluation_report_&lt;node_id&gt;_&lt;json_id&gt;.json
-统计分析报告：${FLOW_DIR}/statistical_analysis_report_&lt;node_id&gt;_&lt;json_id&gt;.json
+统计分析报告：${FLOW_DIR}/statistical_analytics_report_&lt;node_id&gt;_&lt;json_id&gt;.json
 自动调参报告：${FLOW_DIR}/tune_parameters_report_&lt;node_id&gt;_&lt;json_id&gt;.json
 生成规则报告：${FLOW_DIR}/generate_rules_report_&lt;node_id&gt;_&lt;json_id&gt;.json</a:Comment>
 <a:DataType>varchar(800)</a:DataType>
@@ -14044,7 +14044,7 @@ BINARY -&gt; String
 4007：Algorithm Parameters&lt;Classification,Regression&gt;，通配分类&amp;回归算法
 
 5001：Model Evaluation Report，模型评估报告
-5002：Statistical Analysis Report，统计分析报告
+5002：Statistical Analytics Report，统计分析报告
 5003：Cross Validation Report，交叉验证报告
 5004：Tune Parameter Report，自动调参报告 
 5005：Generate Rules Report，生成规则报告

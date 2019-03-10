@@ -2,9 +2,8 @@ package com.yatop.lambda.workflow.core.framework.chartype;
 
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
-import org.springframework.beans.factory.InitializingBean;
 
-public interface ICharTypeClazz /*extends InitializingBean*/ {
+public interface ICharTypeClazz {
     //方法失败或异常抛出Exception，CharType类实现该接口，适当封装一些中间abstract组件类以便复用
 
     //创建节点特征值内容

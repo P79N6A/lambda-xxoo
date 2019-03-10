@@ -47,6 +47,9 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, Node> deleteNodes = new TreeMap<Long, Node>();      //删除节点，key=nodeId
     private TreeMap<Long, NodeLink> deleteLinks = new TreeMap<Long, NodeLink>();  //删除节点链接，key=linkId
 
+    private TreeMap<Long, Node> addNodes = new TreeMap<Long, Node>();      //删除节点，key=nodeId
+    private TreeMap<Long, NodeLink> addLinks = new TreeMap<Long, NodeLink>();  //删除节点链接，key=linkId
+
     private Deque<Node> analyzeNodes = new LinkedList<Node>();      //待分析节点，key=nodeId
     private Deque<NodeLink> analyzeLinks = new LinkedList<NodeLink>();  //待分析节点链接，key=linkId
     private String operId;
@@ -198,6 +201,9 @@ public class WorkflowContext implements IWorkContext {
         CollectionUtil.clear(deleteNodes);
         CollectionUtil.clear(deleteLinks);
 
+        CollectionUtil.clear(addNodes);
+        CollectionUtil.clear(addLinks);
+
         CollectionUtil.clear(analyzeNodes);
         CollectionUtil.clear(analyzeLinks);
     }
@@ -241,6 +247,7 @@ public class WorkflowContext implements IWorkContext {
     public void doneCreateNode(Node node) {
         node.downgradeState2Ready();
         this.putNode(node);
+        this.putAddNode(node);
         this.workflow.changeState2Draft();
         this.markAnalyzeWithCreateNode(node);
         AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, node, true);
@@ -248,6 +255,7 @@ public class WorkflowContext implements IWorkContext {
 
     public void doneCreateLink(NodeLink link) {
         this.putLink(link);
+        this.putAddLink(link);
         this.workflow.changeState2Draft();
         this.markAnalyzeWithCreateLink(link);
         AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, this.fetchDownstreamNode(link));
@@ -864,6 +872,28 @@ public class WorkflowContext implements IWorkContext {
     }
 
     private void putDeleteLink(NodeLink link) {
+        if(CollectionUtil.containsKey(deleteLinks, link.data().getLinkId()))
+            return;
+
+        CollectionUtil.put(deleteLinks, link.data().getLinkId(), link);
+    }
+
+    public List<Node> getAddNodes() {
+        return CollectionUtil.toList(deleteNodes);
+    }
+
+    private void putAddNode(Node node) {
+        if(CollectionUtil.containsKey(deleteNodes, node.data().getNodeId()))
+            return;
+
+        CollectionUtil.put(deleteNodes, node.data().getNodeId(), node);
+    }
+
+    public List<NodeLink> getAddLinks() {
+        return CollectionUtil.toList(deleteLinks);
+    }
+
+    private void putAddLink(NodeLink link) {
         if(CollectionUtil.containsKey(deleteLinks, link.data().getLinkId()))
             return;
 

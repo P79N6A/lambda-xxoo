@@ -26,6 +26,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.Workflow;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.*;
 import com.yatop.lambda.workflow.core.richmodel.workflow.snapshot.Snapshot;
+import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import com.yatop.lambda.workflow.core.utils.WorkflowEditUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -271,7 +272,7 @@ public class EditorService {
 
     //拷贝实验工作流节点
     @Transactional
-    public List<Node> copyWorkflowNodes(EmExperiment experiment, Long[] copyNodeIds, Long[] posXs, Long[] posYs, String operId) {
+    public WorkflowContext copyWorkflowNodes(EmExperiment experiment, Long[] copyNodeIds, Long[] posXs, Long[] posYs, String operId) {
 
         Workflow workflow = WorkflowHelper.queryWorkflow(new Experiment(experiment));
 
@@ -280,16 +281,17 @@ public class EditorService {
             workflowEditUtil.detectWorkflowShareLock(workflow);
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(workflow, operId);
 
-            List<Node> newNodes = new ArrayList<>(copyNodeIds.length);
+            HashMap<Long, Node> nodeIndexTable = new HashMap<Long, Node>(copyNodeIds.length);
             for(int i = 0; i < copyNodeIds.length; i++) {
                 Node copyNode = workflowContext.fetchNode(copyNodeIds[i]);
                 Node newNode = nodeCreate.copyNode4SameWorkflow(workflowContext, copyNode, posXs[i], posYs[i]);
-                newNodes.add(newNode);
+                CollectionUtil.put(nodeIndexTable, copyNode.data().getNodeId(), newNode);
             }
 
+            linkCreate.createLink4CopyNodes(workflowContext, nodeIndexTable);
             workflowContext.flush();
-            workflowContext.clearSkipNodes();
-            return newNodes;
+            //workflowContext.clearSkipNodes();
+            return workflowContext;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
             throw exception;
@@ -298,7 +300,7 @@ public class EditorService {
 
     //删除实验工作流节点，返回删除关联的节点链接
     @Transactional
-    public List<NodeLink> deleteWorkflowNodes(EmExperiment experiment, Long[] nodeIds, String operId) {
+    public WorkflowContext deleteWorkflowNodes(EmExperiment experiment, Long[] nodeIds, String operId) {
 
         Workflow workflow = WorkflowHelper.queryWorkflow(new Experiment(experiment));
 
@@ -317,8 +319,8 @@ public class EditorService {
             workflowContext.flush();
 
             List<NodeLink> deleteNodeLinks = workflowContext.getDeleteLinks();
-            workflowContext.clearSkipNodeLinks();
-            return deleteNodeLinks;
+            //workflowContext.clearSkipNodeLinks();
+            return workflowContext;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
             throw exception;
@@ -386,7 +388,7 @@ public class EditorService {
 
     //移除实验工作流节点链接
     @Transactional
-    public void removeWorkflowNodeLink(EmExperiment experiment, Long srcNodeId, Long dstNodeId, Long srcNodePortId, Long dstNodePortId, String operId) {
+    public WorkflowContext removeWorkflowNodeLink(EmExperiment experiment, Long srcNodeId, Long dstNodeId, Long srcNodePortId, Long dstNodePortId, String operId) {
 
         Workflow workflow = WorkflowHelper.queryWorkflow(new Experiment(experiment));
 
@@ -423,7 +425,8 @@ public class EditorService {
 
             linkDelete.deleteLink(workflowContext, targetLink);
             workflowContext.flush();
-            workflowContext.clear();
+            //workflowContext.clear();
+            return workflowContext;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
             throw exception;
