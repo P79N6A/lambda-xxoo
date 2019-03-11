@@ -46,7 +46,7 @@ public class DataTableService {
     @Autowired
     private DataWarehouseMgr dataWarehouseMgr;
 
-    @Value("${uploadFileDir:./uploadFile/}")
+    @Value("${lambda-manager.dataTableService.uploadFileDir:./uploadFile/}")
     private String uploadFileDir;
 
     public List<DwDataTable> getDataTableList(TableRequest request) {

@@ -1,5 +1,6 @@
 package com.yatop.lambda.portal.common.utils;
 
+import com.yatop.lambda.portal.system.domain.User;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
@@ -23,7 +24,7 @@ public class MD5Util {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(encrypt("mrbird","1234qwer"));
+		System.out.println(encrypt("admin", User.DEFAULT_PASSWORD));
 	}
 
 }

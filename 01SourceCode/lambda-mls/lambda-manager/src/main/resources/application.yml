@@ -49,6 +49,7 @@ lambda-framework:
       connection-timeout: 30000
       pool-name: Lambda-Framework-HikariCP
 
+
 lambda-portal:
   # 是否在控制台打印 SQL
   #showsql: false
@@ -61,10 +62,14 @@ lambda-portal:
     # token有效期，单位秒
     jwtTimeOut: 3600
 
+
 lambda-workflow-engine:
   daemon:
     enable: true
     maxRunningJobs: 8
 
-## table 上传文件接口
-uploadFileDir: ./uploadFile/
+
+lambda-manager:
+  dataTableService:
+    # 数据文件上传缓存目录
+    uploadFileDir: ./uploadFile/
