@@ -38,7 +38,7 @@ public interface ExtMwModelMapper {
             " b.ALGORITHM_LABELS algorithmLabels " +
             "FROM  " +
             " mw_model a ,  " +
-            " cf_cmpt_algorithm b " +
+            " cf_algorithm b " +
             " WHERE  " +
             "  a.REF_ALGORITHM_ID = b.ALGORITHM_ID " +
             "  and a.OWNER_MW_ID = #{ownerMwId}  " +
@@ -74,7 +74,7 @@ public interface ExtMwModelMapper {
             " b.ALGORITHM_LABELS algorithmLabels " +
             "FROM  " +
             " mw_model a ,  " +
-            " cf_cmpt_algorithm b " +
+            " cf_algorithm b " +
             " WHERE  " +
             "  a.REF_ALGORITHM_ID = b.ALGORITHM_ID " +
             "  AND a.OWNER_MW_ID = #{ownerMwId}  " +

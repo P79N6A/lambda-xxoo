@@ -21,7 +21,7 @@ public class NodeResponse {
      * @param context 工作流上下文
      * @param nodes   节点
      */
-    public void addNodes(WorkflowContext context, JSONArray nodes, Boolean flag) {
+    public static void dumpNodes(WorkflowContext context, JSONArray nodes, Boolean flag) {
         if (context.nodeCount() > 0) {
             for (Node node : context.getNodes()) {
                 JSONObject jnode = node.toJSON();

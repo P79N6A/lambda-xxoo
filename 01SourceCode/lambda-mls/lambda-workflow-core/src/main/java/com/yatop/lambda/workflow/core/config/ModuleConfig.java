@@ -12,6 +12,7 @@ import com.yatop.lambda.core.mgr.workflow.module.ModuleMgr;
 import com.yatop.lambda.core.mgr.workflow.module.ModulePortMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.component.Component;
+import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CharType;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModuleCatalog;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class ModuleConfig implements InitializingBean {
@@ -48,6 +50,7 @@ public class ModuleConfig implements InitializingBean {
     private HashMap<Long, Module> ALL_MODULES = new HashMap<Long, Module>();                             //工作流组件
     private HashMap<String, Module> ALL_MODULES_BY_CODE = new HashMap<String, Module>();                             //工作流组件（按组件代码）
     private HashMap<Long, ModulePort> ALL_MODULE_PORTS = new HashMap<Long, ModulePort>();         //工作流组件端口
+    private TreeMap<Integer, CharType> ALL_OUTPUT_PORTS_MATCH = new TreeMap<Integer, CharType>();   //key: charTypeId, 工作流组件输出端口特征类型的输入输出匹配
 
     public ModuleCatalog getRootCatalog() {
         return getCatalog(0L);
@@ -69,9 +72,13 @@ public class ModuleConfig implements InitializingBean {
         return CollectionUtil.get(ALL_MODULE_PORTS, portId);
     }
 
+    public List<CharType> getOutputPortsMatch() {
+        return CollectionUtil.toList(ALL_OUTPUT_PORTS_MATCH);
+    }
+
     @Override
     public void afterPropertiesSet() throws Exception {
-        //loadModuleConfiguration();
+        loadModuleConfiguration();
     }
 
     public void loadModuleConfiguration() {
@@ -134,6 +141,7 @@ public class ModuleConfig implements InitializingBean {
                 }
 
                 Module richModule = new Module(module, component);
+                richModule.getModuleClazzBean();
                 ALL_MODULES.put(richModule.data().getModuleId(), richModule);
                 ALL_MODULES_BY_CODE.put(richModule.data().getModuleCode(), richModule);
 
@@ -172,10 +180,6 @@ public class ModuleConfig implements InitializingBean {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Error port-type vs spec-type:\n%s\n%s.", DataUtil.toPrettyJSONString(port), DataUtil.toPrettyJSONString(cmptChar.data())));
                     System.exit(-1);
                 }
-                if(!SpecMaskEnum.matchInputAndOutput(cmptChar.getType().data().getSpecMask())) {
-                    logger.error(String.format("Loading module configuration occurs fatal error -- Port => char-type.spec-mask must be also support input & output:\n%s\n%s.", DataUtil.toPrettyJSONString(port), DataUtil.toPrettyJSONString(cmptChar.data())));
-                    System.exit(-1);
-                }
                 Module module =  ALL_MODULES.get(port.getOwnerModuleId());
                 if(DataUtil.isNull(module)) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Module not found:\n%s.", DataUtil.toPrettyJSONString(port)));
@@ -194,11 +198,22 @@ public class ModuleConfig implements InitializingBean {
                 ALL_MODULE_PORTS.put(port.getPortId(), richPort);
                 switch (portTypeEnum) {
                     case INPUT_PORT: {
+                        if(!SpecMaskEnum.matchInput(cmptChar.getType().data().getSpecMask())) {
+                            logger.error(String.format("Loading module configuration occurs fatal error -- port-char-type not match input mask:\n%s\n%s.", DataUtil.toPrettyJSONString(port), DataUtil.toPrettyJSONString(cmptChar.data())));
+                            System.exit(-1);
+                        }
                         module.putInputPort(richPort);
                         break;
                     }
                     case OUTPUT_PORT: {
+                        if(!SpecMaskEnum.matchOutput(cmptChar.getType().data().getSpecMask())) {
+                            logger.error(String.format("Loading module configuration occurs fatal error -- port-char-type not match output mask:\n%s\n%s.", DataUtil.toPrettyJSONString(port), DataUtil.toPrettyJSONString(cmptChar.data())));
+                            System.exit(-1);
+                        }
                         module.putOutputPort(richPort);
+                        if(!CollectionUtil.containsKey(ALL_OUTPUT_PORTS_MATCH, richPort.getCmptChar().getType().data().getCharTypeId())) {
+                            ALL_OUTPUT_PORTS_MATCH.put(richPort.getCmptChar().getType().data().getCharTypeId(), richPort.getCmptChar().getType());
+                        }
                         break;
                     }
                 }
@@ -219,8 +234,8 @@ public class ModuleConfig implements InitializingBean {
                     }
                 }
 
-                int sequence = 0;
                 if(module.inputPortCount() > 0) {
+                    int sequence = 0;
                     for (ModulePort modulePort : module.getInputPorts()) {
                         if (modulePort.data().getSequence() != sequence) {
                             logger.error(String.format("Check module configuration occurs fatal error -- Error input port sequence number:\n%s.", DataUtil.toPrettyJSONString(modulePort.data())));
@@ -229,7 +244,9 @@ public class ModuleConfig implements InitializingBean {
                         sequence++;
                     }
                 }
+
                 if(module.outputPortCount() > 0) {
+                    int sequence = 0;
                     for (ModulePort modulePort : module.getOutputPorts()) {
                         if (modulePort.data().getSequence() != sequence) {
                             logger.error(String.format("Check module configuration occurs fatal error -- Error output port sequence number:\n%s.", DataUtil.toPrettyJSONString(modulePort.data())));

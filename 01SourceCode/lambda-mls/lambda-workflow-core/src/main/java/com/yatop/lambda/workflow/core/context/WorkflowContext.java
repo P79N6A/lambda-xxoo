@@ -171,15 +171,15 @@ public class WorkflowContext implements IWorkContext {
         operId = null;
 
         if(excludeNode) {
-            CollectionUtil.enhancedClear(nodes);
+            CollectionUtil.clear(nodes);
         } else {
-           CollectionUtil.clear(nodes);
+            CollectionUtil.enhancedClear(nodes);
         }
 
         if(excludeNodeLink) {
-            CollectionUtil.enhancedClear(links);
-        } else {
             CollectionUtil.clear(links);
+        } else {
+            CollectionUtil.enhancedClear(links);
         }
 
         CollectionUtil.clear(inputLinks);

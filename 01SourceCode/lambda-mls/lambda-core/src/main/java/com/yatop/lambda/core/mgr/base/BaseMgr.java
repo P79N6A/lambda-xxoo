@@ -18,6 +18,9 @@ public class BaseMgr {
     protected EmExperimentTemplateMapper emExperimentTemplateMapper;
 
     @Autowired
+    protected EmExperimentOpenMapper emExperimentOpenMapper;
+
+    @Autowired
     protected MwModelMapper mwModelMapper;
 
     @Autowired

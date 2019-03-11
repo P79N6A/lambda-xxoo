@@ -1,5 +1,6 @@
 package com.yatop.lambda.workflow.core.config;
 
+import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CharType;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModuleCatalog;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
@@ -36,5 +37,9 @@ public class ModuleConfigHelper {
 
     public static ModulePort getModulePort(Long portId) {
         return MODULE_CONFIG.getModulePort(portId);
+    }
+
+    public static List<CharType> getOutputPortsMatch() {
+        return MODULE_CONFIG.getOutputPortsMatch();
     }
 }

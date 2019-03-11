@@ -80,7 +80,6 @@ public class ComponentConfig implements InitializingBean {
     private HashMap<String, CmptChar> ALL_CHARACTERISTICS = new HashMap<String, CmptChar>(); //计算组件特征
     private HashMap<Integer, CharType> ALL_CHARACTERISTIC_TYPES = new HashMap<Integer, CharType>(); //计算组件特征类型
     private HashMap<String, CharType> ALL_CHARACTERISTIC_TYPES_BY_CODE = new HashMap<String, CharType>(); //计算组件特征类型（按类型代码）
-    private HashMap<Integer, CharType> ALL_PORT_CHARACTERISTIC_TYPES = new HashMap<Integer, CharType>(); //计算组件绑定到端口的特征类型
 
     public CmptAlgorithm getAlgorithm(Long algorithmId) {
         return CollectionUtil.get(ALL_ALGORITHMS, algorithmId);
@@ -116,17 +115,9 @@ public class ComponentConfig implements InitializingBean {
         return CollectionUtil.get(ALL_CHARACTERISTIC_TYPES_BY_CODE, typeCode);
     }
 
-    public CharType getPortCharacteristicType(Integer typeId) {
-        return CollectionUtil.get(ALL_PORT_CHARACTERISTIC_TYPES, typeId);
-    }
-
-    public List<CharType> getPortCharacteristicTypes() {
-        return CollectionUtil.toList(ALL_PORT_CHARACTERISTIC_TYPES);
-    }
-
     @Override
     public void afterPropertiesSet() throws Exception {
-        //loadComponentConfiguration();
+        loadComponentConfiguration();
     }
 
     private void loadComponentConfiguration() {
@@ -171,6 +162,7 @@ public class ComponentConfig implements InitializingBean {
                 System.exit(-1);
             }
 
+            richType.getCharTypeClazzBean();
             ALL_CHARACTERISTIC_TYPES.put(richType.data().getCharTypeId(), richType);
             ALL_CHARACTERISTIC_TYPES_BY_CODE.put(richType.data().getCharTypeCode(), richType);
         }
@@ -193,8 +185,8 @@ public class ComponentConfig implements InitializingBean {
                     logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type info error:\n%s.", DataUtil.toPrettyJSONString(match)));
                     System.exit(-1);
                 }
-                if (!SpecMaskEnum.matchInputAndOutput(targetCharType.data().getSpecMask())) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type must be also support input & output:\n%s.", DataUtil.toPrettyJSONString(match)));
+                if (!SpecMaskEnum.matchInput(targetCharType.data().getSpecMask())) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type's spec-mask error:\n%s.", DataUtil.toPrettyJSONString(match)));
                     System.exit(-1);
                 }
                 CharType sourceCharType = ALL_CHARACTERISTIC_TYPES.get(match.getSrcCharTypeId());
@@ -202,8 +194,10 @@ public class ComponentConfig implements InitializingBean {
                     logger.error(String.format("Loading component configuration occurs fatal error -- Source port characteristic type not found:\n%s.", DataUtil.toPrettyJSONString(match)));
                     System.exit(-1);
                 }
-                if (!SpecMaskEnum.matchInputAndOutput(sourceCharType.data().getSpecMask())) {
-                    logger.error(String.format("Loading component configuration occurs fatal error -- Source port characteristic type must be also support input & output:\n%s.", DataUtil.toPrettyJSONString(match)));
+                if ( targetCharType.data().getIsWildtype() != IsWildTypeEnum.YES.getMark()
+                        ? !SpecMaskEnum.matchOutput(sourceCharType.data().getSpecMask())
+                        : !SpecMaskEnum.matchInputOrOutput(sourceCharType.data().getSpecMask())) {
+                    logger.error(String.format("Loading component configuration occurs fatal error -- Source port characteristic type's spec-mask error:\n%s.", DataUtil.toPrettyJSONString(match)));
                     System.exit(-1);
                 }
 
@@ -216,8 +210,7 @@ public class ComponentConfig implements InitializingBean {
         HashMap<Integer, TreeMap<Integer, CharType>> expandedTargetCharTypesCache = new HashMap<Integer, TreeMap<Integer, CharType>>();
         for(Map.Entry<Integer, CharType> entry: ALL_CHARACTERISTIC_TYPES.entrySet()) {
             CharType sourceCharType = entry.getValue();
-            if(SpecMaskEnum.matchInputAndOutput(sourceCharType.data().getSpecMask())) {
-                ALL_PORT_CHARACTERISTIC_TYPES.put(sourceCharType.data().getCharTypeId(), sourceCharType);
+            if(SpecMaskEnum.matchOutput(sourceCharType.data().getSpecMask())) {
 
                 TreeMap<Integer, CharType> expandedTargetCharTypes = new TreeMap<Integer, CharType>();
                 expandedTargetCharTypes.put(sourceCharType.data().getCharTypeId(), sourceCharType);
@@ -228,7 +221,7 @@ public class ComponentConfig implements InitializingBean {
         }
 
         for(Map.Entry<Integer, TreeMap<Integer, CharType>> entry : expandedTargetCharTypesCache.entrySet()) {
-            CharType sourceCharType = ALL_PORT_CHARACTERISTIC_TYPES.get(entry.getKey());
+            CharType sourceCharType = ALL_CHARACTERISTIC_TYPES.get(entry.getKey());
             sourceCharType.replaceMatchTargetTypes(entry.getValue());
         }
         expandedTargetCharTypesCache.clear();
@@ -263,13 +256,13 @@ public class ComponentConfig implements InitializingBean {
             CmptChar richChar = new CmptChar(cmptChar, charType);
             ALL_CHARACTERISTICS.put(richChar.data().getCharId(), richChar);
 
-            SpecTypeEnum typeEnum = SpecTypeEnum.valueOf(richChar.data().getSpecType());
-            if(DataUtil.isNull(typeEnum)) {
+            SpecTypeEnum specType = SpecTypeEnum.valueOf(richChar.data().getSpecType());
+            if(DataUtil.isNull(specType)) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Spec-Type:\n%s.", DataUtil.toPrettyJSONString(cmptChar)));
                 System.exit(-1);
             }
 
-            if(!SpecMaskEnum.isCorrectFitSpecType(charType.data().getSpecMask(), typeEnum)) {
+            if(!SpecMaskEnum.isCorrectFitSpecType(charType.data().getSpecMask(), specType)) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Incorrect Spec-Type:\n%s.", DataUtil.toPrettyJSONString(cmptChar)));
                 System.exit(-1);
             }
@@ -279,13 +272,13 @@ public class ComponentConfig implements InitializingBean {
                 System.exit(-1);
             }
 
-            if((typeEnum.getType() == SpecTypeEnum.INPUT.getType() || typeEnum.getType() == SpecTypeEnum.OUTPUT.getType())
+            if((specType.getType() == SpecTypeEnum.INPUT.getType() || specType.getType() == SpecTypeEnum.OUTPUT.getType())
                     && richChar.data().getSrcLevel() != SourceLevelEnum.WORKFLOW.getSource()) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Error Src-Level(input & output must be workflow-source-level):\n%s.", DataUtil.toPrettyJSONString(cmptChar)));
                 System.exit(-1);
             }
 
-            if(typeEnum.getType() == SpecTypeEnum.EXECUTION.getType() && richChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
+            if(specType.getType() == SpecTypeEnum.EXECUTION.getType() && richChar.data().getSrcLevel() == SourceLevelEnum.WORKFLOW.getSource()) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Error Src-Level(forbid execution to be workflow-source-level):\n%s.", DataUtil.toPrettyJSONString(cmptChar)));
                 System.exit(-1);
             }
@@ -527,7 +520,7 @@ public class ComponentConfig implements InitializingBean {
             if(component.haveExecutionContent()) {
                 //execution
                 CmptSpec execSpec = component.getOptimizeExecution();
-                for (CmptChar cmptChar : component.getExecution().getCmptChars()) {
+                for (CmptChar cmptChar : execSpec.getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
                         logger.error(String.format("Check execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.toPrettyJSONString(component.data()), DataUtil.toPrettyJSONString(cmptChar.data())));
                         System.exit(-1);
@@ -538,7 +531,7 @@ public class ComponentConfig implements InitializingBean {
             //optimize execution
             CmptSpec o$execSpec = component.getOptimizeExecution();
             if(component.haveOptimizeExecutionContent()) {
-                for (CmptChar cmptChar : component.getOptimizeExecution().getCmptChars()) {
+                for (CmptChar cmptChar : o$execSpec.getCmptChars()) {
                     if (component.missingConfigCharValue(cmptChar)) {
                         logger.error(String.format("Check optimize execution config occurs fatal error -- config-char-value not found:\n===Component===\n%s\n===CmptChar===\n%s.", DataUtil.toPrettyJSONString(component.data()), DataUtil.toPrettyJSONString(cmptChar.data())));
                         System.exit(-1);

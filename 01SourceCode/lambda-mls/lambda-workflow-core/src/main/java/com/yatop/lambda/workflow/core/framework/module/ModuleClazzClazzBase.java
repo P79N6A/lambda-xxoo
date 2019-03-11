@@ -1,5 +1,8 @@
 package com.yatop.lambda.workflow.core.framework.module;
 
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.exception.LambdaException;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.config.ComponentConfig;
 import com.yatop.lambda.workflow.core.config.ModuleConfig;
 import com.yatop.lambda.workflow.core.context.ExecutionTaskContext;
@@ -21,7 +24,19 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
     private static final HashMap<String, IModuleClazz> CLAZZ_BEANS = new HashMap<String, IModuleClazz>();
 
     public static IModuleClazz getClazzBean(String clazzPath) {
-        return CollectionUtil.get(CLAZZ_BEANS, clazzPath);
+        IModuleClazz clazzBean = CollectionUtil.get(CLAZZ_BEANS, clazzPath);
+        if(DataUtil.isNull(clazzBean)) {
+
+            try {
+                Class.forName(clazzPath).newInstance();
+            } catch (Throwable e) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Initialize Char-Type-Clazz bean failed.", "工作流组件配置错误，请联系管理员", e);
+            }
+
+            clazzBean = CollectionUtil.get(CLAZZ_BEANS, clazzPath);
+        }
+
+        return clazzBean;
     }
 
     private static void putClazzBean(String clazzPath, IModuleClazz moduleBean) {
@@ -31,30 +46,6 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
     public ModuleClazzClazzBase() {
         ModuleClazzClazzBase.putClazzBean(this.getClass().getName(), this);
     }
-
-    @Autowired
-    ComponentConfig componentConfig;
-
-    @Autowired
-    ModuleConfig moduleConfig;
-
-    @Autowired
-    OutputAndResourceCreate outputAndResourceCreate;
-
-    @Autowired
-    OutputAndResourceQuery outputAndResourceQuery;
-
-    @Autowired
-    OutputAndResourceDelete outputAndResourceDelete;
-
-    @Autowired
-    OutputAndResourceRecover outputAndResourceRecover;
-
-    @Autowired
-    OutputResourceComplete outputResourceComplete;
-
-    @Autowired
-    OutputResourceClear outputResourceClear;
 
     //
     //接口方法默认实现
@@ -69,32 +60,32 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
 
     @Override
     public void exploreOutputAndResource(Node node) {
-        outputAndResourceQuery.queryOutputAndResources(node);
+        OutputAndResourceHelper.queryOutputAndResources(node);
     }
 
     @Override
     public void prepareOutputAndResource(WorkflowContext workflowContext, Node node) {
-        outputAndResourceCreate.createOutputAndResources(workflowContext, node);
+        OutputAndResourceHelper.createOutputAndResources(workflowContext, node);
     }
 
     @Override
     public void completeOutputAndResource(WorkflowContext workflowContext, Node node) {
-        outputResourceComplete.completeOutputResource(workflowContext, node);
+        OutputAndResourceHelper.completeOutputResource(workflowContext, node);
     }
 
     @Override
     public void clearOutputAndResource(WorkflowContext workflowContext, Node node) {
-        outputResourceClear.clearOutputResource(workflowContext, node);
+        OutputAndResourceHelper.clearOutputResource(workflowContext, node);
     }
 
     @Override
     public void deleteOutputAndResource(WorkflowContext workflowContext, Node node) {
-        outputAndResourceDelete.deleteOutputAndResources(workflowContext, node);
+        OutputAndResourceHelper.deleteOutputAndResources(workflowContext, node);
     }
 
     @Override
     public void recoverOutputAndResource(WorkflowContext workflowContext, Node node) {
-        outputAndResourceRecover.recoverOutputAndResources(workflowContext, node);
+        OutputAndResourceHelper.recoverOutputAndResources(workflowContext, node);
     }
 
     @Override

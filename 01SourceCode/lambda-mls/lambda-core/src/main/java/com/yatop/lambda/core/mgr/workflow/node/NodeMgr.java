@@ -107,7 +107,7 @@ public class NodeMgr extends BaseMgr {
      *
      * */
     public int updateNode(WfFlowNode node, String operId) {
-        if( DataUtil.isNull(node) || node.isNodeNameNotColoured() || DataUtil.isEmpty(operId)) {
+        if( DataUtil.isNull(node) || DataUtil.isNull(node.getNodeId()) || DataUtil.isEmpty(operId)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Update node info failed -- invalid update condition.", "无效更新条件");
         }
 

@@ -6,7 +6,6 @@ import com.yatop.lambda.workflow.core.framework.module.ModuleClazzClazzBase;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
-import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -15,7 +14,6 @@ import java.io.InputStreamReader;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-@Service
 public class SqlScript extends ModuleClazzClazzBase {
 
     private static String SELECT_KEYWORD = "SELECT";

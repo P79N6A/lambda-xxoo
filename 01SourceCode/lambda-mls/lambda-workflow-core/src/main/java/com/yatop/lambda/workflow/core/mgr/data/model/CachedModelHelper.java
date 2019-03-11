@@ -36,7 +36,8 @@ public class CachedModelHelper {
         model.setRelFlowId(workflowContext.getWorkflow().data().getFlowId());
         model.setRelNodeId(node.data().getNodeId());
         model.setRelCharId(cmptChar.data().getCharId());
-        model.setRefAlgorithmId(node.getComponent().getAlgorithm().data().getAlgorithmId());
+        model.setRefAlgorithmId(-1L);
+        //model.setRefAlgorithmId(node.getComponent().getAlgorithm().data().getAlgorithmId());
         model.setModelState(ModelStateEnum.EMPTY.getState());
         model = MODEL_MGR.insertModel(model, workflowContext.getOperId());
 
@@ -66,6 +67,7 @@ public class CachedModelHelper {
         Model model = context.getCharValue().getModel();
 
         model.data().setModelNameColoured(true);
+        model.data().setRefAlgorithmIdColoured(true);
         model.data().setModelFileSizeColoured(true);
         model.data().setTrainTableIdColoured(true);
         model.data().setTrainCostTimeColoured(true);

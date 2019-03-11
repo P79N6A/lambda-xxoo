@@ -59,8 +59,8 @@ public enum SpecMaskEnum {
         return (!matchInputOrOutput ? matchParameterOrExecution : !matchParameterOrExecution);
     }
 
-    public static boolean isCorrectFitSpecType(int mask, SpecTypeEnum typeEnum) {
-        return (((0x01 << (typeEnum.getType() - 1)) & mask) > 0);
+    public static boolean isCorrectFitSpecType(int mask, SpecTypeEnum specType) {
+        return (((0x01 << specType.getType()) & mask) > 0);
     }
 
     public static boolean matchInput(int mask) {
@@ -71,8 +71,8 @@ public enum SpecMaskEnum {
         return (mask & OUTPUT.getBit()) > 0;
     }
 
-    public static boolean matchInputAndOutput(int mask) {
-        return matchInput(mask) && matchOutput(mask);
+    public static boolean matchInputOrOutput(int mask) {
+        return matchInput(mask) || matchOutput(mask);
     }
 
     public static boolean matchExecution(int mask) {

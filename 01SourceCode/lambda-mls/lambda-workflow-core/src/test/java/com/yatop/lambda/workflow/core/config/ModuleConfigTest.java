@@ -15,11 +15,11 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = LambdaApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ComponentConfigTest {
+public class ModuleConfigTest {
 
 
     @Autowired
-    ComponentConfig componentConfig;
+    ModuleConfig moduleConfig;
 
     private JSONObject toJSON(CharType charType) {
 
@@ -33,7 +33,7 @@ public class ComponentConfigTest {
     @Test
     public void testWorkflowNamedLock(){
 
-        List<CharType> portTypes = componentConfig.getPortCharacteristicTypes();
+        List<CharType> portTypes = moduleConfig.getOutputPortsMatch();
 
         JSONArray jsonArray = new JSONArray(portTypes.size());
         for(CharType portType : portTypes) {

@@ -3,11 +3,9 @@ package com.yatop.lambda.workflow.core.framework.chartype.clazz.basic;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-@Service
 public final class BasicDate extends BasicGeneric {
 
     private static String DATE_FORMAT = "yyyy-MM-dd";

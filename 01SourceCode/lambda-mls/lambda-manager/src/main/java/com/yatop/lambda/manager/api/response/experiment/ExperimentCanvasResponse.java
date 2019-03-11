@@ -15,15 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @create 2019-03-05-15:24
  */
 public class ExperimentCanvasResponse extends JSONObject {
-    @Autowired
-    private NodeResponse nodeResponse;
 
     public ExperimentCanvasResponse(WorkflowContext context) {
         super(true);
 
         JSONArray nodes = new JSONArray(context.nodeCount());
 
-        nodeResponse.addNodes(context,nodes,false);
+        NodeResponse.dumpNodes(context,nodes,false);
 
         JSONArray links = new JSONArray(context.linkCount());
         if(context.linkCount() > 0) {

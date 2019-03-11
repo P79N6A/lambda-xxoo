@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
-import org.springframework.stereotype.Service;
 
-@Service
 public class JsonObject extends JsonGeneric {
 
     @Override

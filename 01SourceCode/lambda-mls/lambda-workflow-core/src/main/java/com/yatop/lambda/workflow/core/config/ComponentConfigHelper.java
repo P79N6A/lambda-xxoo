@@ -7,8 +7,6 @@ import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class ComponentConfigHelper {
 
@@ -49,13 +47,5 @@ public class ComponentConfigHelper {
 
     public static CharType getCharacteristicTypeByCode(String typeCode) {
         return COMPONENT_CONFIG.getCharacteristicTypeByCode(typeCode);
-    }
-
-    public static CharType getPortCharacteristicType(Integer typeId) {
-        return COMPONENT_CONFIG.getPortCharacteristicType(typeId);
-    }
-
-    public static List<CharType> getPortCharacteristicTypes() {
-        return COMPONENT_CONFIG.getPortCharacteristicTypes();
     }
 }

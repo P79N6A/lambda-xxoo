@@ -124,7 +124,9 @@ public class DataTableService {
         } catch (Throwable e) {
             throw new InternalServerException("error", "error", e);
         } finally {
-            LineIterator.closeQuietly(it);
+            if(it != null) {
+                it.close();
+            }
         }
         tablePreviewDto.setSchema(schema);
         tablePreviewDto.setRecords(records);

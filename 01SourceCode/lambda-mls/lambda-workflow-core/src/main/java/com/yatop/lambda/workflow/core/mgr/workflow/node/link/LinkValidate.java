@@ -40,7 +40,7 @@ public class LinkValidate {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Validate node link failed -- source node port info missing.", "输出端口信息缺失", srcNode.data());
         }
 
-        NodeInputPort dstNodePort = srcNode.getInputNodePort(dstNodePortId);
+        NodeInputPort dstNodePort = dstNode.getInputNodePort(dstNodePortId);
         if(DataUtil.isNull(dstNodePort)) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Validate node link failed -- destination node port info missing.", "输入端口信息缺失", dstNode.data());
         }

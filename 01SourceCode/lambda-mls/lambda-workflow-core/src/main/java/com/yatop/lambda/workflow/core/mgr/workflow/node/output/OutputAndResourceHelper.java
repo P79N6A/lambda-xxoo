@@ -51,4 +51,73 @@ public class OutputAndResourceHelper {
         output.clearColoured();
     }
 
+
+    ///////////////////////////////////////////
+
+
+    private static OutputAndResourceCreate OUTPUT_AND_RESOURCE_CREATE;
+
+    @Autowired
+    public void setOutputAndResourceCreate(OutputAndResourceCreate outputAndResourceCreate) {
+        OUTPUT_AND_RESOURCE_CREATE = outputAndResourceCreate;
+    }
+
+    private static OutputAndResourceQuery OUTPUT_AND_RESOURCE_QUERY;
+
+    @Autowired
+    public void setOutputAndResourceQuery(OutputAndResourceQuery outputAndResourceQuery) {
+        OUTPUT_AND_RESOURCE_QUERY = outputAndResourceQuery;
+    }
+
+    private static OutputAndResourceDelete OUTPUT_AND_RESOURCE_DELETE;
+
+    @Autowired
+    public void setOutputAndResourceDelete(OutputAndResourceDelete outputAndResourceDelete) {
+        OUTPUT_AND_RESOURCE_DELETE = outputAndResourceDelete;
+    }
+
+    private static OutputAndResourceRecover OUTPUT_AND_RESOURCE_RECOVER;
+
+    @Autowired
+    public void setOutputAndResourceRecover(OutputAndResourceRecover outputAndResourceRecover) {
+        OUTPUT_AND_RESOURCE_RECOVER = outputAndResourceRecover;
+    }
+
+    private static OutputResourceComplete OUTPUT_RESOURCE_COMPLETE;
+
+    @Autowired
+    public void setOutputResourceComplete(OutputResourceComplete outputResourceComplete) {
+        OUTPUT_RESOURCE_COMPLETE = outputResourceComplete;
+    }
+
+    private static OutputResourceClear OUTPUT_RESOURCE_CLEAR;
+
+    @Autowired
+    public void setOutputResourceClear(OutputResourceClear outputResourceClear) {
+        OUTPUT_RESOURCE_CLEAR = outputResourceClear;
+    }
+
+    public static void createOutputAndResources(WorkflowContext workflowContext, Node node) {
+        OUTPUT_AND_RESOURCE_CREATE.createOutputAndResources(workflowContext, node);
+    }
+
+    public static void completeOutputResource(WorkflowContext workflowContext, Node node) {
+        OUTPUT_RESOURCE_COMPLETE.completeOutputResource(workflowContext, node);
+    }
+
+    public static void clearOutputResource(WorkflowContext workflowContext, Node node) {
+        OUTPUT_RESOURCE_CLEAR.clearOutputResource(workflowContext, node);
+    }
+
+    public static void deleteOutputAndResources(WorkflowContext workflowContext, Node node) {
+        OUTPUT_AND_RESOURCE_DELETE.deleteOutputAndResources(workflowContext, node);
+    }
+
+    public static void recoverOutputAndResources(WorkflowContext workflowContext, Node node) {
+        OUTPUT_AND_RESOURCE_RECOVER.recoverOutputAndResources(workflowContext, node);
+    }
+
+    public static void queryOutputAndResources(Node node) {
+        OUTPUT_AND_RESOURCE_QUERY.queryOutputAndResources(node);
+    }
 }

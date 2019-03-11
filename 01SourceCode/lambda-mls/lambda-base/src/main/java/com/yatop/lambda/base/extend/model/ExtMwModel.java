@@ -22,7 +22,7 @@ public class ExtMwModel extends MwModel {
 
     @Override
     public JSONObject toJSON() {
-        JSONObject jsonObj = new JSONObject(32, true);
+        JSONObject jsonObj = super.toJSON();
         if(this.algorithmLabels != null) {jsonObj.put("algorithmLabels", this.algorithmLabels);}
         return jsonObj;
     }

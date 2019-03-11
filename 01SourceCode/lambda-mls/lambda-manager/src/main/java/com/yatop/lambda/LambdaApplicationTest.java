@@ -9,6 +9,7 @@
 
  @SpringBootApplication(exclude = { /*SecurityAutoConfiguration.class, */ DataSourceAutoConfiguration.class})
  public class LambdaApplicationTest {
+
      public static void main(String[] args) {
 
          ApplicationListener<ApplicationPreparedEvent> listener = new LambdaApplicationListener();

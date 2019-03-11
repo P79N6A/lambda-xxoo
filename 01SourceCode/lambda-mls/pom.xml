@@ -71,7 +71,7 @@
     </properties>
 
     <modules>
-        <!--<module>lambda-mybatis-generator</module>-->
+       <!-- <module>lambda-mybatis-generator</module>-->
         <module>lambda-framework</module>
         <module>lambda-portal</module>
         <module>lambda-base</module>

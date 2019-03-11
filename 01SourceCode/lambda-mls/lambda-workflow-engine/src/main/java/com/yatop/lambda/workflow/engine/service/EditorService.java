@@ -37,6 +37,9 @@ import java.util.*;
 @Service
 public class EditorService {
 
+    private static String READ$DATA$TABLE_TABLENAME_CHARID = "tableName";
+    private static String READ$MODEL_MODELID_CHAR_ID = "modelId";
+
     @Autowired
     WorkflowEditUtil workflowEditUtil;
 
@@ -99,6 +102,7 @@ public class EditorService {
 
             WfFlow flow = thisWorkflowContext.getWorkflow().data().makeCopy();
             thisWorkflowContext.clear();
+            workflowEditUtil.releaseWorkflowResource();
             return flow;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
@@ -145,6 +149,7 @@ public class EditorService {
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(workflow, operId);
             workflowDelete.deleteWorkflow(workflowContext);
             workflowContext.clear();
+            workflowEditUtil.releaseWorkflowResource();
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
             throw exception;
@@ -169,6 +174,7 @@ public class EditorService {
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(workflow, operId);
             Snapshot snapshot = snapshotCreate.createSnapshot4Copy(workflowContext, snapshotName);
             workflowContext.clear();
+            workflowEditUtil.releaseWorkflowResource();
             return snapshot.data();
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
@@ -195,6 +201,7 @@ public class EditorService {
             Node node = nodeCreate.createNode(workflowContext, module, posX, posY);
             workflowContext.flush();
             workflowContext.clearSkipNodes();
+            workflowEditUtil.releaseWorkflowResource();
             return node;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
@@ -216,11 +223,13 @@ public class EditorService {
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(workflow, operId);
             Node node = nodeCreate.createNode(workflowContext, module, posX, posY);
 
-            //TODO 修改节点参数：数据表名 - CCP@IO-TableName
-            parameterCharValueUpdate.updateParameter(workflowContext, node, node.getParameterByCharCode("CCP@IO-TableName"), tableName);
+            //TODO 修改节点参数：数据表名 - READ$DATA$TABLE_TABLENAME_CHARID
+            parameterCharValueUpdate.updateParameter(workflowContext,
+                    node, node.getParameterByCharCode(READ$DATA$TABLE_TABLENAME_CHARID), tableName);
 
             workflowContext.flush();
             workflowContext.clearSkipNodes();
+            workflowEditUtil.releaseWorkflowResource();
             return node;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
@@ -243,11 +252,13 @@ public class EditorService {
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(workflow, operId);
             Node node = nodeCreate.createNode(workflowContext, module, posX, posY);
 
-            //TODO 修改节点参数：模型ID - CCP@IO-ModelID
-            parameterCharValueUpdate.updateParameter(workflowContext, node, node.getParameterByCharCode("CCP@IO-ModelID"), String.valueOf(modelId));
+            //TODO 修改节点参数：模型ID - READ$MODEL_MODELID_CHAR_ID
+            parameterCharValueUpdate.updateParameter(workflowContext,
+                    node, node.getParameterByCharCode(READ$MODEL_MODELID_CHAR_ID), String.valueOf(modelId));
 
             workflowContext.flush();
             workflowContext.clearSkipNodes();
+            workflowEditUtil.releaseWorkflowResource();
             return node;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
@@ -291,6 +302,7 @@ public class EditorService {
             linkCreate.createLink4CopyNodes(workflowContext, nodeIndexTable);
             workflowContext.flush();
             //workflowContext.clearSkipNodes();
+            workflowEditUtil.releaseWorkflowResource();
             return workflowContext;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
@@ -320,6 +332,7 @@ public class EditorService {
 
             List<NodeLink> deleteNodeLinks = workflowContext.getDeleteLinks();
             //workflowContext.clearSkipNodeLinks();
+            workflowEditUtil.releaseWorkflowResource();
             return workflowContext;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
@@ -341,6 +354,7 @@ public class EditorService {
             List<Node> recoverNodes = nodeRecover.recoverNodes(workflowContext);
             workflowContext.flush();
             workflowContext.clearSkipNodes();
+            workflowEditUtil.releaseWorkflowResource();
             return recoverNodes;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
@@ -359,6 +373,7 @@ public class EditorService {
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(workflow, operId, false);
             boolean isPassValidate = linkValidate.validateLink(workflowContext, srcNodeId, dstNodeId, srcNodePortId, dstNodePortId);
             workflowContext.clear();
+            workflowEditUtil.releaseWorkflowResource();
             return isPassValidate;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
@@ -379,6 +394,7 @@ public class EditorService {
             NodeLink nodeLink = linkCreate.createLink(workflowContext, srcNodeId, dstNodeId, srcNodePortId, dstNodePortId);
             workflowContext.flush();
             workflowContext.clearSkipNodeLinks();
+            workflowEditUtil.releaseWorkflowResource();
             return nodeLink;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
@@ -426,6 +442,7 @@ public class EditorService {
             linkDelete.deleteLink(workflowContext, targetLink);
             workflowContext.flush();
             //workflowContext.clear();
+            workflowEditUtil.releaseWorkflowResource();
             return workflowContext;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
@@ -440,6 +457,7 @@ public class EditorService {
         WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(workflow, operId);
         Node node = workflowContext.fetchNode(nodeId);
         workflowContext.clearSkipNodes();
+        workflowEditUtil.releaseWorkflowResource();
         return node;
     }
 
@@ -456,6 +474,7 @@ public class EditorService {
             NodeParameter nodeParameter = workflowEditUtil.findWorkflowNodeParameter(node, paramCode);
             boolean isPassValidate = ParameterHelper.validateUpdateNodeParameter(node, nodeParameter, paramValue);
             workflowContext.clear();
+            workflowEditUtil.releaseWorkflowResource();
             return isPassValidate;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
@@ -478,6 +497,7 @@ public class EditorService {
             parameterCharValueUpdate.updateParameter(workflowContext, node, nodeParameter, paramValue);
             workflowContext.flush();
             workflowContext.clearSkipNodes();
+            workflowEditUtil.releaseWorkflowResource();
             return node;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();

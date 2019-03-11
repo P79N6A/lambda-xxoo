@@ -30,7 +30,7 @@ public class NodePortCreate {
         nodePortMgr.insertNodePort(nodePort, workflowContext.getOperId());
         //nodePort.copyProperties(nodePortMgr.queryNodePort(nodePort.getNodePortId()));
         NodeInputPort richNodePort = new NodeInputPort(nodePort, inputPort);
-        return  richNodePort;
+        return richNodePort;
     }
 
     private NodeOutputPort createOutputPort(WorkflowContext workflowContext, Node node, ModulePort outputPort) {
@@ -40,22 +40,22 @@ public class NodePortCreate {
         nodePort.setOwnerNodeId(node.data().getNodeId());
         nodePort.setRefPortId(outputPort.data().getPortId());
         nodePort.setRefCharId(outputPort.getCmptChar().data().getCharId());
-        nodePortMgr.insertNodePort(nodePort, workflowContext.getOperId());
+        nodePort = nodePortMgr.insertNodePort(nodePort, workflowContext.getOperId());
         //nodePort.copyProperties(nodePortMgr.queryNodePort(nodePort.getNodePortId()));
         NodeOutputPort richNodePort = new NodeOutputPort(nodePort, outputPort);
 
-        if(richNodePort.isDataTablePort()) {
+        if (richNodePort.isDataTablePort()) {
             NodeSchemaHelper.createSchema(workflowContext, node, richNodePort);
         }
 
-        return  richNodePort;
+        return richNodePort;
     }
 
     public void createNodePorts(WorkflowContext workflowContext, Node node) {
 
         Module module = node.getModule();
         //节点输入端口
-        if(module.inputPortCount() > 0) {
+        if (module.inputPortCount() > 0) {
             List<ModulePort> inputPorts = module.getInputPorts();
             for (ModulePort inputPort : inputPorts) {
                 NodeInputPort inputNodePort = createInputPort(workflowContext, node, inputPort);
@@ -65,7 +65,7 @@ public class NodePortCreate {
         }
 
         //节点输出端口
-        if(module.outputPortCount() > 0) {
+        if (module.outputPortCount() > 0) {
             List<ModulePort> outputPorts = module.getOutputPorts();
             for (ModulePort outputPort : outputPorts) {
                 NodeOutputPort outputNodePort = createOutputPort(workflowContext, node, outputPort);

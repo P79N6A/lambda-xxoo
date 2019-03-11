@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-03-11 02:21:06
+Date: 2019-03-11 16:57:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -199,16 +199,16 @@ INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0001.01', '
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0001.02', 'epsilon', '组件参数 | 机器学习 | 算法 - 逻辑回归二分类 | 最小收敛误差', null, '最小收敛误差', '4', '106', '3', '1', '1', '10', '0.01', '0', '0.1', '{\n	\"value\": \"0.0000001\",\n	\"tune_range\": {\n		\"start\": \"0.00000001\",\n		\"end\": \"0.001\"\n	},\n	\"tune_udps\": [\"0.0001\", \"0.0000001\"]\n}', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0001.03', 'regularizedL1Coef', '组件参数 | 机器学习 | 算法 - 逻辑回归二分类 | 正则L1系数', null, '正则L1系数', '4', '106', '3', '1', '2', '10', '0.1', '0', '1', '{\r\n	\"value\": \"1.0\",\r\n	\"tune_range\": {\r\n		\"start\": \"0.1\",\r\n		\"end\": \"0.9\"\r\n	},\r\n	\"tune_udps\": [\"0.0\", \"0.01\", \"0.1\", \"1.0\"]\r\n}', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0001.04', 'regularizedL2Coef', '组件参数 | 机器学习 | 算法 - 逻辑回归二分类 | 正则L2系数', null, '正则L2系数', '4', '106', '3', '1', '2', '10', '0.1', '0', '1', '{\r\n	\"value\": \"1.0\",\r\n	\"tune_range\": {\r\n		\"start\": \"0.1\",\r\n		\"end\": \"0.9\"\r\n	},\r\n	\"tune_udps\": [\"0.01\", \"0.1\", \"1.0\"]\r\n}', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0002.01', 'treeNum', '组件参数 | 机器学习 | 算法 - 随机森林二分类 | 森林中树的个数', null, '森林中树的个数', '4', '104', '3', '1', '2', '10', null, '1', '1000', '{\r\n	\"value\": 100,\r\n	\"tune_range\": {\r\n		\"start\": 20,\r\n		\"end\": 100\r\n	},\r\n	\"tune_udps\": [32, 64, 128]\r\n}', null, '-1', '2017-05-17 18:00:30', 'admin', '2017-05-17 18:00:30', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0002.02', 'randomFeatureNum', '组件参数 | 机器学习 | 算法 - 随机森林二分类 | 单颗树的随机特征数', null, '单颗树的随机特征数', '4', '7', '3', '0', '0', null, null, null, null, null, '可填写sqrt，onethird，log2，(0, 1]，(1, N]，分类默认sqrt，回归默认onethird', '-1', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0002.03', 'minInstancePerNode', '组件参数 | 机器学习 | 算法 - 随机森林二分类 | 叶节点最少记录数', null, '叶节点最少记录数', '4', '104', '3', '0', '2', '10', '1', '2', '100', '{\r\n	\"value\": 2,\r\n	\"tune_range\": {\r\n		\"start\": 2,\r\n		\"end\": 100\r\n	},\r\n	\"tune_udps\": [2, 4, 16]\r\n}', null, '-1', '2017-05-17 19:28:46', 'admin', '2017-05-17 19:28:46', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0002.04', 'maxTreeDepth', '组件参数 | 机器学习 | 算法 - 随机森林二分类 | 单颗树的最大深度', null, '单颗树的最大深度', '4', '104', '3', '0', '2', '10', null, '1', null, '{\r\n	\"value\": 32,\r\n	\"tune_range\": {\r\n		\"start\": 1,\r\n		\"end\": 1000\r\n	},\r\n	\"tune_udps\": [4, 16, 64]\r\n}', null, '-1', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0002.05', 'subsamplingRate', '组件参数 | 机器学习 | 算法 - 随机森林二分类 | 单颗树的采样率', null, '单颗树的采样率', '4', '106', '3', '0', '3', '10', '0.1', '0', '1', '{\r\n	\"value\": \"1.0\",\r\n	\"tune_range\": {\r\n		\"start\": \"0.6\",\r\n		\"end\": \"1.0\"\r\n	},\r\n	\"tune_udps\": [\"0.7\", \"0.8\", \"1.0\"]\r\n}', null, '-1', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0002.01', 'treeNum', '组件参数 | 机器学习 | 算法 - 随机森林二分类 | 森林中树的个数', null, '森林中树的个数', '4', '104', '3', '1', '2', '10', null, '1', '1000', '{\r\n	\"value\": 100,\r\n	\"tune_range\": {\r\n		\"start\": 20,\r\n		\"end\": 100\r\n	},\r\n	\"tune_udps\": [32, 64, 128]\r\n}', null, '0', '2017-05-17 18:00:30', 'admin', '2017-05-17 18:00:30', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0002.02', 'randomFeatureNum', '组件参数 | 机器学习 | 算法 - 随机森林二分类 | 单颗树的随机特征数', null, '单颗树的随机特征数', '4', '7', '3', '0', '0', null, null, null, null, null, '可填写sqrt，onethird，log2，(0, 1]，(1, N]，分类默认sqrt，回归默认onethird', '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0002.03', 'minInstancePerNode', '组件参数 | 机器学习 | 算法 - 随机森林二分类 | 叶节点最少记录数', null, '叶节点最少记录数', '4', '104', '3', '0', '2', '10', '1', '2', '100', '{\r\n	\"value\": 2,\r\n	\"tune_range\": {\r\n		\"start\": 2,\r\n		\"end\": 100\r\n	},\r\n	\"tune_udps\": [2, 4, 16]\r\n}', null, '0', '2017-05-17 19:28:46', 'admin', '2017-05-17 19:28:46', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0002.04', 'maxTreeDepth', '组件参数 | 机器学习 | 算法 - 随机森林二分类 | 单颗树的最大深度', null, '单颗树的最大深度', '4', '104', '3', '0', '2', '10', null, '1', null, '{\r\n	\"value\": 32,\r\n	\"tune_range\": {\r\n		\"start\": 1,\r\n		\"end\": 1000\r\n	},\r\n	\"tune_udps\": [4, 16, 64]\r\n}', null, '0', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0002.05', 'subsamplingRate', '组件参数 | 机器学习 | 算法 - 随机森林二分类 | 单颗树的采样率', null, '单颗树的采样率', '4', '106', '3', '0', '3', '10', '0.1', '0', '1', '{\r\n	\"value\": \"1.0\",\r\n	\"tune_range\": {\r\n		\"start\": \"0.6\",\r\n		\"end\": \"1.0\"\r\n	},\r\n	\"tune_udps\": [\"0.7\", \"0.8\", \"1.0\"]\r\n}', null, '0', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0003.01', 'maxIterNum', '组件参数 | 机器学习 | 算法 - GBDT二分类 | 最大迭代次数', null, '最大迭代次数', '4', '104', '3', '1', '2', '10', null, '1', '1000', '{\r\n	\"value\": 100,\r\n	\"tune_range\": {\r\n		\"start\": 100,\r\n		\"end\": 1000\r\n	},\r\n	\"tune_udps\": [50, 100, 200]\r\n}', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0003.02', 'shrinkage', '组件参数 | 机器学习 | 算法 - GBDT二分类 | 学习速率', null, '学习速率', '4', '106', '3', '1', '1', '10', '0.1', '0', '1', '{\r\n	\"value\": \"0.1\",\r\n	\"tune_range\": {\r\n		\"start\": \"0.01\",\r\n		\"end\": \"0.9\"\r\n	},\r\n	\"tune_udps\": [\"0.025\", \"0.05\", \"0.1\", \"0.2\", \"0.4\"]\r\n}', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0003.03', 'minInstancePerNode', '组件参数 | 机器学习 | 算法 - GBDT二分类 | 叶节点最少记录数', null, '叶节点最少记录数', '4', '104', '3', '0', '2', '10', '1', '2', '100', '{\r\n	\"value\": 2,\r\n	\"tune_range\": {\r\n		\"start\": 2,\r\n		\"end\": 100\r\n	},\r\n	\"tune_udps\": [2, 4, 16]\r\n}', null, '-1', '2017-05-17 19:28:46', 'admin', '2017-05-17 19:28:46', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0003.04', 'maxTreeDepth', '组件参数 | 机器学习 | 算法 - GBDT二分类 | 单颗树的最大深度', null, '单颗树的最大深度', '4', '104', '3', '0', '2', '10', null, '1', null, '{\r\n	\"value\": 32,\r\n	\"tune_range\": {\r\n		\"start\": 1,\r\n		\"end\": 1000\r\n	},\r\n	\"tune_udps\": [4, 16, 64]\r\n}', null, '-1', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0003.05', 'subsamplingRate', '组件参数 | 机器学习 | 算法 - GBDT二分类 | 单颗树的采样率', null, '单颗树的采样率', '4', '106', '3', '0', '3', '10', '0.1', '0', '1', '{\r\n	\"value\": \"1.0\",\r\n	\"tune_range\": {\r\n		\"start\": \"0.6\",\r\n		\"end\": \"1.0\"\r\n	},\r\n	\"tune_udps\": [\"0.7\", \"0.8\", \"1.0\"]\r\n}', null, '-1', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0003.03', 'minInstancePerNode', '组件参数 | 机器学习 | 算法 - GBDT二分类 | 叶节点最少记录数', null, '叶节点最少记录数', '4', '104', '3', '0', '2', '10', '1', '2', '100', '{\r\n	\"value\": 2,\r\n	\"tune_range\": {\r\n		\"start\": 2,\r\n		\"end\": 100\r\n	},\r\n	\"tune_udps\": [2, 4, 16]\r\n}', null, '0', '2017-05-17 19:28:46', 'admin', '2017-05-17 19:28:46', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0003.04', 'maxTreeDepth', '组件参数 | 机器学习 | 算法 - GBDT二分类 | 单颗树的最大深度', null, '单颗树的最大深度', '4', '104', '3', '0', '2', '10', null, '1', null, '{\r\n	\"value\": 32,\r\n	\"tune_range\": {\r\n		\"start\": 1,\r\n		\"end\": 1000\r\n	},\r\n	\"tune_udps\": [4, 16, 64]\r\n}', null, '0', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0003.05', 'subsamplingRate', '组件参数 | 机器学习 | 算法 - GBDT二分类 | 单颗树的采样率', null, '单颗树的采样率', '4', '106', '3', '0', '3', '10', '0.1', '0', '1', '{\r\n	\"value\": \"1.0\",\r\n	\"tune_range\": {\r\n		\"start\": \"0.6\",\r\n		\"end\": \"1.0\"\r\n	},\r\n	\"tune_udps\": [\"0.7\", \"0.8\", \"1.0\"]\r\n}', null, '0', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0005.01', 'maxIterNum', '组件参数 | 机器学习 | 算法 - 线性回归 | 最大迭代次数', null, '最大迭代次数', '4', '104', '3', '1', '2', '10', '1', '1', '10000', '{\r\n	\"value\": 100,\r\n	\"tune_range\": {\r\n		\"start\": 100,\r\n		\"end\": 1000\r\n	},\r\n	\"tune_udps\": [50, 100, 200, 1000]\r\n}', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0005.02', 'epsilon', '组件参数 | 机器学习 | 算法 - 线性回归 | 最小收敛误差', null, '最小收敛误差', '4', '106', '3', '1', '1', '10', '0.01', '0', '0.1', '{\n	\"value\": \"0.0000001\",\n	\"tune_range\": {\n		\"start\": \"0.00000001\",\n		\"end\": \"0.001\"\n	},\n	\"tune_udps\": [\"0.0001\", \"0.0000001\"]\n}', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0005.03', 'regularizedL1Coef', '组件参数 | 机器学习 | 算法 - 线性回归 | 正则L1系数', null, '正则L1系数', '4', '106', '3', '1', '2', '10', '0.1', '0', '1', '{\r\n	\"value\": \"1.0\",\r\n	\"tune_range\": {\r\n		\"start\": \"0.1\",\r\n		\"end\": \"0.9\"\r\n	},\r\n	\"tune_udps\": [\"0.0\", \"0.01\", \"0.1\", \"1.0\"]\r\n}', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
@@ -216,9 +216,9 @@ INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0005.04', '
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0006.01', 'lossType', '组件参数 | 机器学习 | 算法 - GBDT回归 | 损失函数类型', null, '损失函数类型', '4', '7', '3', '1', '5', null, null, null, null, 'Squared Loss', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0006.02', 'maxIterNum', '组件参数 | 机器学习 | 算法 - GBDT回归 | 最大迭代次数', null, '最大迭代次数', '4', '104', '3', '1', '2', '10', null, '1', '1000', '{\r\n	\"value\": 100,\r\n	\"tune_range\": {\r\n		\"start\": 100,\r\n		\"end\": 1000\r\n	},\r\n	\"tune_udps\": [50, 100, 200]\r\n}', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0006.03', 'shrinkage', '组件参数 | 机器学习 | 算法 - GBDT回归 | 学习速率', null, '学习速率', '4', '106', '3', '1', '1', '10', '0.1', '0', '1', '{\r\n	\"value\": \"0.1\",\r\n	\"tune_range\": {\r\n		\"start\": \"0.01\",\r\n		\"end\": \"0.9\"\r\n	},\r\n	\"tune_udps\": [\"0.025\", \"0.05\", \"0.1\", \"0.2\", \"0.4\"]\r\n}', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0006.04', 'minInstancePerNode', '组件参数 | 机器学习 | 算法 - GBDT回归 | 叶节点最少记录数', null, '叶节点最少记录数', '4', '104', '3', '0', '2', '10', '1', '2', '100', '{\r\n	\"value\": 2,\r\n	\"tune_range\": {\r\n		\"start\": 2,\r\n		\"end\": 100\r\n	},\r\n	\"tune_udps\": [2, 4, 16]\r\n}', null, '-1', '2017-05-17 19:28:46', 'admin', '2017-05-17 19:28:46', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0006.05', 'maxTreeDepth', '组件参数 | 机器学习 | 算法 - GBDT回归 | 单颗树的最大深度', null, '单颗树的最大深度', '4', '104', '3', '0', '2', '10', null, '1', null, '{\r\n	\"value\": 32,\r\n	\"tune_range\": {\r\n		\"start\": 1,\r\n		\"end\": 1000\r\n	},\r\n	\"tune_udps\": [4, 16, 64]\r\n}', null, '-1', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
-INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0006.06', 'subsamplingRate', '组件参数 | 机器学习 | 算法 - GBDT回归 | 单颗树的采样率', null, '单颗树的采样率', '4', '106', '3', '0', '3', '10', '0.1', '0', '1', '{\r\n	\"value\": \"1.0\",\r\n	\"tune_range\": {\r\n		\"start\": \"0.6\",\r\n		\"end\": \"1.0\"\r\n	},\r\n	\"tune_udps\": [\"0.7\", \"0.8\", \"1.0\"]\r\n}', null, '-1', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0006.04', 'minInstancePerNode', '组件参数 | 机器学习 | 算法 - GBDT回归 | 叶节点最少记录数', null, '叶节点最少记录数', '4', '104', '3', '0', '2', '10', '1', '2', '100', '{\r\n	\"value\": 2,\r\n	\"tune_range\": {\r\n		\"start\": 2,\r\n		\"end\": 100\r\n	},\r\n	\"tune_udps\": [2, 4, 16]\r\n}', null, '0', '2017-05-17 19:28:46', 'admin', '2017-05-17 19:28:46', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0006.05', 'maxTreeDepth', '组件参数 | 机器学习 | 算法 - GBDT回归 | 单颗树的最大深度', null, '单颗树的最大深度', '4', '104', '3', '0', '2', '10', null, '1', null, '{\r\n	\"value\": 32,\r\n	\"tune_range\": {\r\n		\"start\": 1,\r\n		\"end\": 1000\r\n	},\r\n	\"tune_udps\": [4, 16, 64]\r\n}', null, '0', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
+INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.algorithm.0006.06', 'subsamplingRate', '组件参数 | 机器学习 | 算法 - GBDT回归 | 单颗树的采样率', null, '单颗树的采样率', '4', '106', '3', '0', '3', '10', '0.1', '0', '1', '{\r\n	\"value\": \"1.0\",\r\n	\"tune_range\": {\r\n		\"start\": \"0.6\",\r\n		\"end\": \"1.0\"\r\n	},\r\n	\"tune_udps\": [\"0.7\", \"0.8\", \"1.0\"]\r\n}', null, '0', '2017-05-17 19:45:05', 'admin', '2017-05-17 19:45:05', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.evaluate.0001.01', 'labelColumnName', '组件参数 | 机器学习 | 模型评估 - 二分类 | 原始标签列名', null, '原始标签列名', '4', '7', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.evaluate.0001.02', 'positiveValue', '组件参数 | 机器学习 | 模型评估 - 二分类 | 正样本标签值', null, '正样本标签值', '4', '7', '3', '1', '0', null, null, null, null, null, null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
 INSERT INTO `cf_characteristic` VALUES ('com-param.char.ml.evaluate.0001.03', 'scoreColumnName', '组件参数 | 机器学习 | 模型评估 - 二分类 | 预测分数列名', null, '预测分数列名', '4', '7', '3', '1', '0', null, null, null, null, 'prediction_score', null, '0', '2017-05-10 23:32:28', 'admin', '2017-05-10 23:32:28', 'admin');
@@ -301,10 +301,10 @@ INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.$.0002', '组件参数 | �
 INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.$.0002', '组件参数 | 机器学习 | K-Means | 质心初始化方法 | Random', 'Random', null, '0', null, '-1', '2017-05-17 21:13:49', 'admin', '2017-05-17 21:13:49', 'admin');
 INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.$.0002', '组件参数 | 机器学习 | K-Means | 质心初始化方法 | Top K', 'Top K', null, '1', null, '-1', '2017-05-17 21:14:51', 'admin', '2017-05-17 21:14:51', 'admin');
 INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.$.0002', '组件参数 | 机器学习 | K-Means | 质心初始化方法 | Uniform', 'Uniform', null, '2', null, '-1', '2017-05-17 21:15:12', 'admin', '2017-05-17 21:15:12', 'admin');
-INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.$001', '组件参数 | 机器学习 | 正则项类型 | L1', 'L1', null, '1', null, '0', '2017-05-12 02:07:04', 'admin', '2017-05-12 02:07:04', 'admin');
-INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.$001', '组件参数 | 机器学习 | 正则项类型 | L2', 'L2', null, '2', null, '0', '2017-05-12 02:07:39', 'admin', '2017-05-12 02:07:39', 'admin');
-INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.$001', '组件参数 | 机器学习 | 正则项类型 | Mixed L1/L2', 'Mixed L1/L2', null, '3', null, '0', '2017-05-12 02:06:11', 'admin', '2017-05-12 02:06:11', 'admin');
-INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.$001', '组件参数 | 机器学习 | 正则项类型 | None', 'None', null, '0', null, '0', '2017-05-12 02:06:11', 'admin', '2017-05-12 02:06:11', 'admin');
+INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.algorithm.$001', '组件参数 | 机器学习 | 正则项类型 | L1', 'L1', null, '1', null, '0', '2017-05-12 02:07:04', 'admin', '2017-05-12 02:07:04', 'admin');
+INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.algorithm.$001', '组件参数 | 机器学习 | 正则项类型 | L2', 'L2', null, '2', null, '0', '2017-05-12 02:07:39', 'admin', '2017-05-12 02:07:39', 'admin');
+INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.algorithm.$001', '组件参数 | 机器学习 | 正则项类型 | Mixed L1/L2', 'Mixed L1/L2', null, '3', null, '0', '2017-05-12 02:06:11', 'admin', '2017-05-12 02:06:11', 'admin');
+INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.algorithm.$001', '组件参数 | 机器学习 | 正则项类型 | None', 'None', null, '0', null, '0', '2017-05-12 02:06:11', 'admin', '2017-05-12 02:06:11', 'admin');
 INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.algorithm.0006.01', '组件参数 | 机器学习 | 算法 - GBDT回归 | 损失函数类型 | Absolute Loss', 'Absolute Loss', null, '0', null, '0', '2017-05-12 02:06:11', 'admin', '2017-05-12 02:06:11', 'admin');
 INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.algorithm.0006.01', '组件参数 | 机器学习 | 算法 - GBDT回归 | 损失函数类型 | Squared Loss', 'Squared Loss', null, '1', null, '0', '2017-05-12 02:07:04', 'admin', '2017-05-12 02:07:04', 'admin');
 INSERT INTO `cf_char_enum` VALUES ('com-param.char.ml.tune.$001', '组件参数 | 机器学习 | 调参 | 调参类型 | Customize Parameter', 'Customize Parameter', '自定义参数', '0', null, '0', '2017-05-17 21:16:46', 'admin', '2017-05-17 21:16:46', 'admin');
@@ -354,9 +354,9 @@ INSERT INTO `cf_char_type` VALUES ('8', 'Date', '日期', '0', '28', 'com.yatop.
 INSERT INTO `cf_char_type` VALUES ('9', 'DateTime', '日期时间', '0', '28', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.basic.BasicDateTime', '“yyyy-mm-dd hh24:mi:ss”格式字符串', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('104', 'Tuning-Parameter<Long>', '64位整数调参类型', '0', '16', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.tune.TuneLong', '可调参数据', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
 INSERT INTO `cf_char_type` VALUES ('106', 'Tuning-Parameter<Double>', '双精度浮点数调参类型', '0', '16', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.tune.TuneDouble', '可调参数据', '0', '2018-11-16 21:31:15', 'admin', '2018-11-16 21:31:15', 'admin');
-INSERT INTO `cf_char_type` VALUES ('1000', 'Data Table<?>', '通配任何数据表', '1', '1', 'only-for-input', '数据表', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_char_type` VALUES ('1000', 'Data Table<?>', '通配任何数据表', '1', '1', '#only-for-input', '数据表', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('1001', 'Data Table<Parquet>', 'Parquet数据表', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.table.TableParquet', '数据表', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
-INSERT INTO `cf_char_type` VALUES ('2000', 'Trained Model<?>', '通配任何模型', '1', '1', 'only-for-input', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
+INSERT INTO `cf_char_type` VALUES ('2000', 'Trained Model<?>', '通配任何模型', '1', '1', '#only-for-input', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('2001', 'Trained Model<OneClass-Classification>', '单分类模型', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelOneClassification', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('2002', 'Trained Model<TwoClass-Classification>', '二分类模型', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelTwoClassification', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('2003', 'Trained Model<MultipleClass-Classification>', '多分类模型', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.model.ModelMultipleClassification', '已训练模型', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
@@ -369,10 +369,10 @@ INSERT INTO `cf_char_type` VALUES ('3001', 'SQL Script', 'SQL脚本', '0', '16',
 INSERT INTO `cf_char_type` VALUES ('4001', 'Algorithm Parameters<OneClass-Classification>', '单分类算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmOneClassification', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
 INSERT INTO `cf_char_type` VALUES ('4002', 'Algorithm Parameters<TwoClass-Classification>', '二分类算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmTwoClassification', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
 INSERT INTO `cf_char_type` VALUES ('4003', 'Algorithm Parameters<MultipleClass-Classification>', '多分类算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmMultipleClassification', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
-INSERT INTO `cf_char_type` VALUES ('4004', 'Algorithm Parameters<Classification>', '通配分类算法（未训练模型）', '1', '1', 'only-for-input', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_char_type` VALUES ('4004', 'Algorithm Parameters<Classification>', '通配分类算法（未训练模型）', '1', '1', '#only-for-input', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
 INSERT INTO `cf_char_type` VALUES ('4005', 'Algorithm Parameters<Clustering>', '聚类算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmClustering', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
 INSERT INTO `cf_char_type` VALUES ('4006', 'Algorithm Parameters<Regression>', '回归算法（未训练模型）', '0', '3', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.algorithm.AlgorithmRegression', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
-INSERT INTO `cf_char_type` VALUES ('4007', 'Algorithm Parameters<Classification,Regression>', '通配分类和回归算法（未训练模型）', '1', '1', 'only-for-input', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
+INSERT INTO `cf_char_type` VALUES ('4007', 'Algorithm Parameters<Classification,Regression>', '通配分类和回归算法（未训练模型）', '1', '1', '#only-for-input', '未训练模型', '0', '2018-11-18 18:42:00', 'admin', '2018-11-18 18:42:00', 'admin');
 INSERT INTO `cf_char_type` VALUES ('5001', 'Model Evaluation Report', '模型评估报告', '0', '2', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.report.ReportModelEvaluation', '输出报告', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('5002', 'Statistical Analytics Report', '统计分析报告', '0', '2', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.report.ReportStatisticalAnalytics', '输出报告', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
 INSERT INTO `cf_char_type` VALUES ('5003', 'Cross Validation Report', '交叉验证报告', '0', '2', 'com.yatop.lambda.workflow.core.framework.chartype.clazz.report.ReportCrossValidation', '输出报告', '0', '2017-05-10 23:18:13', 'admin', '2017-05-10 23:18:13', 'admin');
@@ -436,6 +436,22 @@ CREATE TABLE `cf_cmpt_char_value` (
 -- ----------------------------
 -- Records of cf_cmpt_char_value
 -- ----------------------------
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.dp.sample.0001', 'com-exec.char.spark.0003', '0', 'Random Sample', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.dp.sample.0002', 'com-exec.char.spark.0003', '0', 'Weighted Sample', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.dp.sample.0003', 'com-exec.char.spark.0003', '0', 'Balanced Sample', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.dp.sample.0004', 'com-exec.char.spark.0003', '0', 'Stratified Sample', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.dp.split.0001', 'com-exec.char.spark.0003', '0', 'Data Split', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.dp.transform.0001', 'com-exec.char.spark.0003', '0', 'Type Transform', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.io.import.0001', 'com-exec.char.spark.0003', '0', 'Import Data File', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.ml.cross-validate.0001', 'com-exec.char.spark.0003', '0', 'Cross Validate Model', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.ml.evaluate.0001', 'com-exec.char.spark.0003', '0', 'Evaluate Model - Binary Classification', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.ml.evaluate.0002', 'com-exec.char.spark.0003', '0', 'Evaluate Model - Multiple Classification', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.ml.evaluate.0003', 'com-exec.char.spark.0003', '0', 'Evaluate Model - Clustering', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.ml.evaluate.0004', 'com-exec.char.spark.0003', '0', 'Evaluate Model - Regression', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.ml.predict.0001', 'com-exec.char.spark.0003', '0', 'Predict Model', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.ml.train.0001', 'com-exec.char.spark.0003', '0', 'Train Model', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.ml.tune.0001', 'com-exec.char.spark.0003', '0', 'Tune Model Hyperparameter', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
+INSERT INTO `cf_cmpt_char_value` VALUES ('com.st.sql.0001', 'com-exec.char.spark.0003', '0', 'Sql Script', '', '0', '2017-05-25 19:05:34', 'admin', '2017-05-25 19:05:34', 'admin');
 
 -- ----------------------------
 -- Table structure for cf_cmpt_spec_rel
@@ -603,18 +619,18 @@ INSERT INTO `cf_component` VALUES ('com.io.write.0001', 'Write Data Table', '输
 INSERT INTO `cf_component` VALUES ('com.ml.algorithm.0001', 'Algorithm - Binary Logistic Regression', '机器学习 | 算法 - 逻辑回归二分类', '5', '2001', null, '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
 INSERT INTO `cf_component` VALUES ('com.ml.algorithm.0002', 'Algorithm - Binary Random Forest', '机器学习 | 算法 - 随机森林二分类', '5', '2002', null, '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
 INSERT INTO `cf_component` VALUES ('com.ml.algorithm.0003', 'Algorithm - Binary Gradient Boost Decision', '机器学习 | 算法 - GBDT二分类', '5', '2003', null, '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
-INSERT INTO `cf_component` VALUES ('com.ml.algorithm.0004', 'Algorithm - Binary Linear Support Vector Machine', '机器学习 | 算法 - 线性SVM二分类（暂未实现）', '5', '2004', null, '-1', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
+INSERT INTO `cf_component` VALUES ('com.ml.algorithm.0004', 'Algorithm - Binary Linear Support Vector Machine', '机器学习 | 算法 - 线性SVM二分类（暂未实现）', '5', '2004', null, '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
 INSERT INTO `cf_component` VALUES ('com.ml.algorithm.0005', 'Algorithm - Linear Regression', '机器学习 | 算法 - 线性回归', '5', '5001', null, '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
 INSERT INTO `cf_component` VALUES ('com.ml.algorithm.0006', 'Algorithm - Gradient Boost Decision Tree Regression', '机器学习 | 算法 - GBDT回归', '5', '5002', null, '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
-INSERT INTO `cf_component` VALUES ('com.ml.cross-validate.0001', 'Cross Validate Model', '机器学习 | 模型交叉验证（暂未实现）', '5', '-1', '支持对回归和分类算法进行交叉验证', '-1', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
+INSERT INTO `cf_component` VALUES ('com.ml.cross-validate.0001', 'Cross Validate Model', '机器学习 | 模型交叉验证（暂未实现）', '5', '-1', '支持对回归和分类算法进行交叉验证', '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
 INSERT INTO `cf_component` VALUES ('com.ml.evaluate.0001', 'Evaluate Model - Binary Classification', '机器学习 | 模型评估 - 二分类', '5', '-1', null, '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
-INSERT INTO `cf_component` VALUES ('com.ml.evaluate.0002', 'Evaluate Model - Multiple Classification', '机器学习 | 模型评估 - 多分类（暂未实现）', '5', '-1', null, '-1', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
-INSERT INTO `cf_component` VALUES ('com.ml.evaluate.0003', 'Evaluate Model - Clustering', '机器学习 | 模型评估 - 聚类（暂未实现）', '5', '-1', null, '-1', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
+INSERT INTO `cf_component` VALUES ('com.ml.evaluate.0002', 'Evaluate Model - Multiple Classification', '机器学习 | 模型评估 - 多分类（暂未实现）', '5', '-1', null, '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
+INSERT INTO `cf_component` VALUES ('com.ml.evaluate.0003', 'Evaluate Model - Clustering', '机器学习 | 模型评估 - 聚类（暂未实现）', '5', '-1', null, '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
 INSERT INTO `cf_component` VALUES ('com.ml.evaluate.0004', 'Evaluate Model - Regression', '机器学习 | 模型评估 - 回归', '5', '-1', null, '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
 INSERT INTO `cf_component` VALUES ('com.ml.predict.0001', 'Predict Model', '机器学习 | 模型预测', '5', '-1', '支持对回归，聚类和分类模型进行模型预测', '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
 INSERT INTO `cf_component` VALUES ('com.ml.train.0001', 'Train Model', '机器学习 | 模型训练', '5', '-1', '支持对回归和分类算法进行模型训练', '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
-INSERT INTO `cf_component` VALUES ('com.ml.train.0002', 'Train Model - K-Means', '机器学习 | 模型训练 - K均值聚类（暂未实现）', '5', '4001', null, '-1', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
-INSERT INTO `cf_component` VALUES ('com.ml.tune.0001', 'Tune Model Hyperparameter', '机器学习 | 模型自动调参（暂未实现）', '5', '-1', '支持对回归和分类算法进行超参数调参', '-1', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
+INSERT INTO `cf_component` VALUES ('com.ml.train.0002', 'Train Model - K-Means', '机器学习 | 模型训练 - K均值聚类（暂未实现）', '5', '4001', null, '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
+INSERT INTO `cf_component` VALUES ('com.ml.tune.0001', 'Tune Model Hyperparameter', '机器学习 | 模型自动调参（暂未实现）', '5', '-1', '支持对回归和分类算法进行超参数调参', '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
 INSERT INTO `cf_component` VALUES ('com.st.sql.0001', 'Sql Script', '脚本工具 | SQL脚本', '1', '-1', null, '0', '2019-03-07 14:55:50', 'admin', '2019-03-07 14:55:50', 'admin');
 
 -- ----------------------------
@@ -939,7 +955,7 @@ CREATE TABLE `cf_spec_char_value` (
 -- ----------------------------
 -- Records of cf_spec_char_value
 -- ----------------------------
-INSERT INTO `cf_spec_char_value` VALUES ('com-exec.spec.spark.0001', 'com-exec.char.engine.0001', '0', 'spark on yarn', 'e.g. spark on yarn', '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
+INSERT INTO `cf_spec_char_value` VALUES ('com-exec.spec.spark.0001', 'com-exec.char.engine.$001', '0', 'Spark On Yarn', 'e.g. spark on yarn', '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
 INSERT INTO `cf_spec_char_value` VALUES ('com-exec.spec.spark.0001', 'com-exec.char.spark.0001', '1', 'CF_HDFS_COMPONENT_JAR_DIR', 'e.g. /user/lambda_mls/lib/scala', '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
 INSERT INTO `cf_spec_char_value` VALUES ('com-exec.spec.spark.0001', 'com-exec.char.spark.0002', '1', 'CF_HDFS_COMPONENT_JAR_FILE', 'e.g. lambda-component-1.0.0.jar', '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
 INSERT INTO `cf_spec_char_value` VALUES ('com-o-exec.spec.spark.0001', 'com-o-exec.char.spark.0001', '1', 'CF_SPARK_EXECUTOR_NUMBER', 'e.g. 2', '0', '2017-05-19 14:39:46', 'admin', '2017-05-19 14:39:46', 'admin');
@@ -1012,7 +1028,7 @@ CREATE TABLE `dw_data_warehouse` (
 -- ----------------------------
 -- Records of dw_data_warehouse
 -- ----------------------------
-INSERT INTO `dw_data_warehouse` VALUES ('10000', 'public_data_warehouse', '公共数据库', '0', '0', '${HDFS_SITE}/${DFS_WORK_ROOT}/dw_data/public_data_warehouse', '${LOCAL_WORK_ROOT}/dw_data/public_data_warehouse', '平台内置公共数据库，唯一', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
+INSERT INTO `dw_data_warehouse` VALUES ('10000', 'public_data', '公共数据库', '0', '10000', '${HDFS_SITE}/${DFS_WORK_ROOT}/dw_data/10000', '${LOCAL_WORK_ROOT}/dw_data/10000', '平台内置公共数据库，唯一', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
 
 -- ----------------------------
 -- Table structure for em_experiment
@@ -1126,7 +1142,7 @@ CREATE TABLE `mw_model_warehouse` (
 -- ----------------------------
 -- Records of mw_model_warehouse
 -- ----------------------------
-INSERT INTO `mw_model_warehouse` VALUES ('10000', 'public_model_warehouse', '公共模型库', '0', '0', '${HDFS_SITE}/${DFS_WORK_ROOT}/mw_data/public_model_warehouse', '${LOCAL_WORK_ROOT}/mw_data/public_model_warehouse', '平台内置公共模型库，唯一', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
+INSERT INTO `mw_model_warehouse` VALUES ('10000', 'public_model', '公共模型库', '0', '10000', '${HDFS_SITE}/${DFS_WORK_ROOT}/mw_data/10000', '${LOCAL_WORK_ROOT}/mw_data/10000', '平台内置公共模型库，唯一', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
 
 -- ----------------------------
 -- Table structure for pr_project
@@ -1154,23 +1170,7 @@ CREATE TABLE `pr_project` (
 -- ----------------------------
 -- Records of pr_project
 -- ----------------------------
-INSERT INTO `pr_project` VALUES ('10002', 'XXOO', 'Alpha', '999', '999', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('10003', 'XXOO1', 'Alpha1', '9992', '9991', '21', 'lock', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('10004', 'XXOO2', 'Alpha2', '9992', '9992', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('10005', 'XXOO3', 'Alpha3', '9993', '9993', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('10006', 'XXOO4', 'Alpha4', '999', '999', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('10007', 'XXOO5', 'Alpha5', '9991', '9991', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('10008', 'XXOO6', 'Alpha6', '9992', '9992', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('10009', 'XXOO7', 'Alpha7', '9993', '9993', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('100021', 'XXOO1', 'Alpha1', '999', '999', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('100031', 'XXOO11', 'Alpha11', '9991', '9991', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('100041', 'XXOO21', 'Alpha21', '9992', '9992', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('100051', 'XXOO31', 'Alpha31', '9993', '9993', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('100061', 'XXOO41', 'Alpha41', '999', '999', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('100071', 'XXOO51', 'Alpha51', '9991', '9991', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('100081', 'XXOO61', 'Alpha61', '9992', '9992', '21', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('100091', 'XXOO71', 'Alpha71', '9993', '9993', '21', '是龙卷风萨拉大坑副将哎算了废旧塑料', '0', '2018-12-03 15:26:58', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project` VALUES ('100092', 'BuiltIn_Project', '平台内置项目', '0', '0', '21', '平台内置项目', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
+INSERT INTO `pr_project` VALUES ('10000', 'BuiltIn_Project', '平台内置项目', '10000', '10000', '-1', '平台内置项目', '0', '2018-11-25 18:16:40', 'admin', '2018-11-25 18:16:40', 'admin');
 
 -- ----------------------------
 -- Table structure for pr_project_member
@@ -1194,22 +1194,7 @@ CREATE TABLE `pr_project_member` (
 -- ----------------------------
 -- Records of pr_project_member
 -- ----------------------------
-INSERT INTO `pr_project_member` VALUES ('10002', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('10003', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('10004', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('10005', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('10006', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('10007', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('10008', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('10009', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('100021', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('100031', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('100041', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('100051', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('100061', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('100071', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('100081', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
-INSERT INTO `pr_project_member` VALUES ('100091', '0', 'admin', null, '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
+INSERT INTO `pr_project_member` VALUES ('10000', '0', 'admin', '平台内置项目所有者admin', '0', '2018-12-03 14:37:19', 'admin', '2018-12-03 14:37:19', 'admin');
 
 -- ----------------------------
 -- Table structure for sys_parameter
@@ -1679,15 +1664,15 @@ CREATE TABLE `wf_module` (
 INSERT INTO `wf_module` VALUES ('0', 'ImportDataFile', '导入数据文件', '1', '-1', '-1', 'process', '0', 'com.yatop.lambda.workflow.module.clazz.input_output.ImportDataFile', 'com.io.import.0001', '用于HDFS数据文件和上传数据文件的导入', '0', '2017-05-27 17:39:48', 'admin', '2017-05-27 17:39:48', 'admin');
 INSERT INTO `wf_module` VALUES ('1', 'ReadDataTable', '读数据表', '0', '1', '0', 'source', '0', 'com.yatop.lambda.workflow.module.clazz.input_output.ReadDataTable', 'com.io.read.0001', '工作流中对数据表引入', '0', '2017-05-27 16:11:04', 'admin', '2017-05-27 16:11:04', 'admin');
 INSERT INTO `wf_module` VALUES ('2', 'ReadModel', '读模型', '0', '1', '1', 'source', '0', 'com.yatop.lambda.workflow.module.clazz.input_output.ReadModel', 'com.io.read.0002', '工作流中对模型表引入，支持对回归，聚类和分类模型读取', '0', '2017-05-27 16:13:58', 'admin', '2017-05-27 16:13:58', 'admin');
-INSERT INTO `wf_module` VALUES ('3', 'WriteDataTable', '写数据表', '0', '1', '2', 'destination', '0', 'com.yatop.lambda.workflow.module.clazz.input_output.WriteDataTable', 'com.io.write.0003', '更新到指定数据表名，表不存在自动创建', '0', '2017-05-27 16:11:04', 'admin', '2017-05-27 16:11:04', 'admin');
+INSERT INTO `wf_module` VALUES ('3', 'WriteDataTable', '写数据表', '0', '1', '2', 'destination', '0', 'com.yatop.lambda.workflow.module.clazz.input_output.WriteDataTable', 'com.io.write.0001', '更新到指定数据表名，表不存在自动创建', '0', '2017-05-27 16:11:04', 'admin', '2017-05-27 16:11:04', 'admin');
 INSERT INTO `wf_module` VALUES ('4', 'SqlScript', 'SQL脚本', '0', '2', '0', 'user_code', '0', 'com.yatop.lambda.workflow.module.clazz.script_tools.SqlScript', 'com.st.sql.0001', null, '0', '2017-05-27 16:18:13', 'admin', '2017-05-27 16:18:13', 'admin');
 INSERT INTO `wf_module` VALUES ('5', 'BinaryLogisticRegression', '逻辑回归二分类', '0', '10', '0', 'training', '0', 'com.yatop.lambda.workflow.module.clazz.machine_learning.classification.BinaryLogisticRegression', 'com.ml.algorithm.0001', null, '0', '2017-05-27 16:43:05', 'admin', '2017-05-27 16:43:05', 'admin');
 INSERT INTO `wf_module` VALUES ('6', 'BinaryRandomForest', '随机森林二分类', '0', '10', '1', 'training', '0', 'com.yatop.lambda.workflow.module.clazz.machine_learning.classification.BinaryRandomForest', 'com.ml.algorithm.0002', null, '0', '2017-05-27 16:49:30', 'admin', '2017-05-27 16:49:30', 'admin');
 INSERT INTO `wf_module` VALUES ('7', 'BinaryGBDT', 'GBDT二分类', '0', '10', '2', 'training', '0', 'com.yatop.lambda.workflow.module.clazz.machine_learning.classification.BinaryGBDT', 'com.ml.algorithm.0003', null, '0', '2017-05-27 16:50:15', 'admin', '2017-05-27 16:50:15', 'admin');
 INSERT INTO `wf_module` VALUES ('8', 'LinearRegression', '线性回归', '0', '12', '0', 'training', '0', 'com.yatop.lambda.workflow.module.clazz.machine_learning.regression.LinearRegression', 'com.ml.algorithm.0005', null, '0', '2017-05-27 17:26:08', 'admin', '2017-05-27 17:26:08', 'admin');
 INSERT INTO `wf_module` VALUES ('9', 'GBDTRegression', 'GBDT回归', '0', '12', '1', 'training', '0', 'com.yatop.lambda.workflow.module.clazz.machine_learning.regression.GBDTRegression', 'com.ml.algorithm.0006', null, '0', '2017-05-27 17:27:30', 'admin', '2017-05-27 17:27:30', 'admin');
-INSERT INTO `wf_module` VALUES ('10', 'Train', '训练', '0', '15', '0', 'prediction', '0', 'com.yatop.lambda.workflow.module.clazz.machine_learning.training.Train', 'com.ml.predict.0001', '支持对回归和分类算法进行模型训练', '0', '2017-05-27 17:37:12', 'admin', '2017-05-27 17:37:12', 'admin');
-INSERT INTO `wf_module` VALUES ('11', 'Predict', '预测', '0', '16', '0', 'prediction', '0', 'com.yatop.lambda.workflow.module.clazz.machine_learning.prediction.Predict', 'com.ml.train.0001', '支持对回归，聚类和分类模型进行模型预测', '0', '2017-05-27 17:37:12', 'admin', '2017-05-27 17:37:12', 'admin');
+INSERT INTO `wf_module` VALUES ('10', 'Train', '训练', '0', '15', '0', 'prediction', '0', 'com.yatop.lambda.workflow.module.clazz.machine_learning.training.Train', 'com.ml.train.0001', '支持对回归和分类算法进行模型训练', '0', '2017-05-27 17:37:12', 'admin', '2017-05-27 17:37:12', 'admin');
+INSERT INTO `wf_module` VALUES ('11', 'Predict', '预测', '0', '16', '0', 'prediction', '0', 'com.yatop.lambda.workflow.module.clazz.machine_learning.prediction.Predict', 'com.ml.predict.0001', '支持对回归，聚类和分类模型进行模型预测', '0', '2017-05-27 17:37:12', 'admin', '2017-05-27 17:37:12', 'admin');
 INSERT INTO `wf_module` VALUES ('12', 'BinaryClassificationEvaluate', '二分类评估', '0', '17', '0', 'evaluation', '0', 'com.yatop.lambda.workflow.module.clazz.machine_learning.evaluation.BinaryEvaluate', 'com.ml.evaluate.0001', null, '0', '2017-05-27 17:38:00', 'admin', '2017-05-27 17:38:00', 'admin');
 INSERT INTO `wf_module` VALUES ('13', 'RegressionEvaluate', '回归模型评估', '0', '17', '3', 'evaluation', '0', 'com.yatop.lambda.workflow.module.clazz.machine_learning.evaluation.RegressionEvaluate', 'com.ml.evaluate.0004', null, '0', '2017-05-27 17:39:48', 'admin', '2017-05-27 17:39:48', 'admin');
 INSERT INTO `wf_module` VALUES ('14', 'RandomSample', '随机采样', '0', '18', '0', 'process', '0', 'com.yatop.lambda.workflow.module.clazz.data_preprocessing.sample.RandomSample', 'com.dp.sample.0001', null, '0', '2017-05-27 17:26:08', 'admin', '2017-05-27 17:26:08', 'admin');
@@ -1875,45 +1860,3 @@ CREATE TABLE `wf_user_favorite_table` (
 -- ----------------------------
 -- Records of wf_user_favorite_table
 -- ----------------------------
-
--- ----------------------------
--- Function structure for findDeptChildren
--- ----------------------------
-DROP FUNCTION IF EXISTS `findDeptChildren`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `findDeptChildren`(rootId INT) RETURNS varchar(4000) CHARSET utf8
-BEGIN
-  DECLARE sTemp VARCHAR(4000);
-    DECLARE sTempChd VARCHAR(4000);
-    SET sTemp = '$';
-    SET sTempChd = CAST(rootId as CHAR);
-    WHILE sTempChd is not null DO
-    SET sTemp = CONCAT(sTemp,',',sTempChd);
-    SELECT GROUP_CONCAT(dept_id) INTO sTempChd FROM t_dept
-    WHERE FIND_IN_SET(parent_id,sTempChd)>0;
-END WHILE;
-RETURN sTemp;
-END
-;;
-DELIMITER ;
-
--- ----------------------------
--- Function structure for findMenuChildren
--- ----------------------------
-DROP FUNCTION IF EXISTS `findMenuChildren`;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `findMenuChildren`(rootId INT) RETURNS varchar(4000) CHARSET utf8
-BEGIN
-  DECLARE sTemp VARCHAR(4000);
-    DECLARE sTempChd VARCHAR(4000);
-    SET sTemp = '$';
-    SET sTempChd = CAST(rootId as CHAR);
-    WHILE sTempChd is not null DO
-    SET sTemp = CONCAT(sTemp,',',sTempChd);
-    SELECT GROUP_CONCAT(menu_id) INTO sTempChd FROM t_menu
-    WHERE FIND_IN_SET(parent_id,sTempChd)>0;
-END WHILE;
-RETURN sTemp;
-END
-;;
-DELIMITER ;

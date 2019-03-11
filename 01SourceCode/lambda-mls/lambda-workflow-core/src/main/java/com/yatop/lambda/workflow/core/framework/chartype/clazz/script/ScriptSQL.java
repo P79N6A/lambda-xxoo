@@ -5,9 +5,7 @@ import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.mgr.data.unstructured.CodeScriptHelper;
 import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
-import org.springframework.stereotype.Service;
 
-@Service
 public class ScriptSQL extends ScriptGeneric {
 
     @Override

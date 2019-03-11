@@ -1,13 +1,10 @@
 package com.yatop.lambda.manager.service;
 
 import com.yatop.lambda.base.extend.model.ExtEmExperiment;
-import com.yatop.lambda.base.model.EmExperiment;
-import com.yatop.lambda.base.model.EmExperimentTemplate;
-import com.yatop.lambda.base.model.WfSnapshot;
+import com.yatop.lambda.base.model.*;
 import com.yatop.lambda.core.mgr.experiment.ExperimentMgr;
+import com.yatop.lambda.core.mgr.experiment.ExperimentOpenMgr;
 import com.yatop.lambda.core.mgr.experiment.ExperimentTemplateMgr;
-import com.yatop.lambda.core.mgr.table.DataTableMgr;
-import com.yatop.lambda.core.mgr.workflow.WorkflowMgr;
 import com.yatop.lambda.core.mgr.workflow.snapshot.SnapshotMgr;
 import com.yatop.lambda.manager.api.request.experiment.ExperimentRequest;
 import com.yatop.lambda.manager.api.response.experiment.AddExperimentNodeResponse;
@@ -40,6 +37,8 @@ public class ExperimentService {
     private ProjectService projectService;
     @Autowired
     private SnapshotMgr snapshotMgr;
+    @Autowired
+    private ExperimentOpenMgr experimentOpenMgr;
 
     @Transactional
     public EmExperiment createExperiment(ExperimentRequest vo) {
@@ -57,6 +56,7 @@ public class ExperimentService {
     }
 
     public List<ExtEmExperiment> queryExperiment(ExperimentRequest vo) {
+        projectService.queryProject(vo.getProjectId());
         return experimentMgr.queryExperiment(vo.getProjectId(), vo.getKeyword(), vo);
     }
 
@@ -108,8 +108,8 @@ public class ExperimentService {
         experiment.setExperimentName(vo.getExperimentName());
         experiment.setDescription(vo.getDescription());
         experiment.setOwnerProjectId(vo.getProjectId());
-
         experiment = experimentMgr.insertExperiment(experiment, PortalUtil.getCurrentUserName());
+        //TODO Copy是否可以为空的实验
         editorService.createWorkflowByCopy(experiment, copyExperiment, PortalUtil.getCurrentUserName());
         return experiment;
     }
@@ -131,6 +131,28 @@ public class ExperimentService {
 
         return experiment;
     }
+
+    public EmExperimentOpen openExperiment(ExperimentRequest vo) {
+
+        String userName = PortalUtil.getCurrentUserName();
+        projectService.queryProject(vo.getProjectId());
+        experimentMgr.queryExperiment(vo.getExperimentId());
+
+        EmExperimentOpen experimentOpen = new EmExperimentOpen();
+        experimentOpen.setProjectId(vo.getProjectId());
+        experimentOpen.setExperimentId(vo.getExperimentId());
+        experimentOpen.setUserName(userName);
+
+        List<EmExperimentOpen> emExperimentOpenList = experimentOpenMgr.queryExperimentOpen(experimentOpen);
+        if (emExperimentOpenList.size() == 1) {
+            experimentOpenMgr.deleteExperimentOpen(vo.getProjectId(), userName);
+        }
+        if (emExperimentOpenList.size() > 4) {
+            experimentOpenMgr.deleteExperimentOpen(vo.getProjectId(), userName);
+        }
+        return experimentOpenMgr.insertExperimentOpen(experimentOpen, userName);
+    }
+
 
     public List<EmExperimentTemplate> queryExperimentTemplate() {
         return experimentTemplateMgr.queryExperimentTemplate("", null);
@@ -192,20 +214,18 @@ public class ExperimentService {
         EmExperiment emExperiment = new EmExperiment();
         emExperiment.setOwnerProjectId(vo.getProjectId());
         emExperiment.setExperimentId(vo.getExperimentId());
-        editorService.validateCreateWorkflowNodeLink(emExperiment, vo.getSrcNodeId(), vo.getDstNodeId(),
-                vo.getSrcNodePortId(), vo.getSrcNodePortId(), PortalUtil.getCurrentUserName());
-        return null;
+        return editorService.validateCreateWorkflowNodeLink(emExperiment, vo.getSrcNodeId(), vo.getDstNodeId(),
+                vo.getSrcNodePortId(), vo.getDstNodePortId(), PortalUtil.getCurrentUserName());
+        //return null;
     }
 
-    public NodeLink addExperimentNodeLink(ExperimentRequest vo) {
+    public WfFlowNodeLink addExperimentNodeLink(ExperimentRequest vo) {
         projectService.queryProject(vo.getProjectId());
         EmExperiment emExperiment = experimentMgr.queryExperiment(vo.getExperimentId());
 
-        NodeLink links = editorService.createWorkflowNodeLink(emExperiment, vo.getSrcNodeId(), vo.getDstNodeId(),
-                vo.getSrcNodePortId(), vo.getSrcNodePortId(), PortalUtil.getCurrentUserName());
-
-
-        return links;
+        NodeLink link = editorService.createWorkflowNodeLink(emExperiment, vo.getSrcNodeId(), vo.getDstNodeId(),
+                vo.getSrcNodePortId(), vo.getDstNodePortId(), PortalUtil.getCurrentUserName());
+        return link.data();
     }
 
 }

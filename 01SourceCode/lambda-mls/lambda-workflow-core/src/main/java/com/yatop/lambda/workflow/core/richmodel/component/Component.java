@@ -48,15 +48,15 @@ public class Component extends RichModel<CfComponent> {
     }
 
     public boolean haveExecutionContent() {
-        return DataUtil.isNull(getExecution()) && getExecution().cmptCharCount() > 0;
+        return DataUtil.isNotNull(getExecution()) && getExecution().cmptCharCount() > 0;
     }
 
     public boolean haveOptimizeExecutionContent() {
-        return DataUtil.isNull(getOptimizeExecution()) && getOptimizeExecution().cmptCharCount() > 0;
+        return DataUtil.isNotNull(getOptimizeExecution()) && getOptimizeExecution().cmptCharCount() > 0;
     }
 
     public boolean haveParameterContnent() {
-        return DataUtil.isNull(getParameter()) && getParameter().cmptCharCount() > 0;
+        return DataUtil.isNotNull(getParameter()) && getParameter().cmptCharCount() > 0;
     }
 
     public boolean isAlgorithmComponent() {

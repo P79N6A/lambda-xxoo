@@ -40,12 +40,13 @@ public class ModelService {
         PrProject prProject = projectService.queryProject(vo.getProjectId());
         return modelMgr.queryModel(prProject.getMwId(), ModelTypeEnum.GENERAL, vo.getKeyword(), vo);
     }
+
     @Transactional
     public int deleteModel(List<Long> modelIds) {
 
         for (Long modelId : modelIds) {
             MwModel model = modelMgr.queryModel(modelId);
-            if(model.getModelState() != ModelStateEnum.EMPTY.getState()){
+            if (model.getModelState() != ModelStateEnum.EMPTY.getState()) {
                 //TODO 清理相关的文件 根据 dfs 和 本地 路径清理文件
 //                model.getModelFile();
 //                model.getSummaryDfsFile();
@@ -59,8 +60,8 @@ public class ModelService {
 
     public JSONObject viewModel(ModelRequest vo) {
         MwModel model = modelMgr.queryModel(vo.getModelId());
-        if(model.getModelState() != ModelStateEnum.EMPTY.getState()){
-            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "model state empty","模型状态为空");
+        if (model.getModelState() != ModelStateEnum.EMPTY.getState()) {
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "model state empty", "模型状态为空");
         }
         try {
 //            model.getSummaryLocalFile();
@@ -72,14 +73,15 @@ public class ModelService {
         }
         return null;
     }
+
     @Transactional
     public MwModel saveTempModel(ModelRequest vo) {
         PrProject prProject = projectService.queryProject(vo.getProjectId());
         MwModelWarehouse modelWarehouse = modelWarehouseMgr.queryModelWarehouse(prProject.getMwId());
         MwModel tempModel = modelMgr.queryModel(vo.getModelId());
 
-        if(tempModel.getModelState() == ModelStateEnum.EMPTY.getState()) {
-            //TODO throw 要保存的临时表为空
+        if (tempModel.getModelState() == ModelStateEnum.EMPTY.getState()) {
+            throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "insert temporary table is empty", "临时表为空");
         }
 
         MwModel model = new MwModel();
@@ -104,9 +106,9 @@ public class ModelService {
 
         // copy file from temp model to destination model
         //tempTable.getModelFile() copy to dataTable.getModelFile();
-//                model.getModelFile();
-//                model.getSummaryDfsFile();
-//                model.getSummaryLocalFile();
+        //model.getModelFile();
+        //model.getSummaryDfsFile();
+        //model.getSummaryLocalFile();
 
         return model;
     }
