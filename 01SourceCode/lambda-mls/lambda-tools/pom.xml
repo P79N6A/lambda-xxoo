@@ -18,6 +18,12 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>com.yatop.lambda</groupId>
+            <artifactId>lambda-framework</artifactId>
+            <version>${yatop.lambda.framework}</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/net.alchim31.maven/scala-maven-plugin -->
         <dependency>
             <groupId>org.scala-lang.modules</groupId>
@@ -71,28 +77,8 @@
         </dependency>
 
         <!--=========================hadoop==========-->
-        <dependency>
-            <groupId>org.apache.avro</groupId>
-            <artifactId>avro</artifactId>
-            <version>${avro.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.parquet</groupId>
-            <artifactId>parquet-avro</artifactId>
-            <version>${parquet.avro.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.parquet</groupId>
-            <artifactId>parquet-tools</artifactId>
-            <version>${parquet.hadoop.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.parquet</groupId>
-            <artifactId>parquet-hadoop</artifactId>
-            <version>${parquet.hadoop.version}</version>
-        </dependency>
 
-       <!-- <dependency>
+        <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
             <version>${hadoop.version}</version>
@@ -101,13 +87,37 @@
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-hdfs</artifactId>
             <version>${hadoop.version}</version>
-        </dependency>-->
-
+        </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
             <version>${hadoop.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_${scala.binary.version}</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.parquet</groupId>
+            <artifactId>parquet-avro</artifactId>
+            <version>${parquet.avro.version}</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>${avro.version}</version>
+        </dependency>-->
+        <!--<dependency>
+            <groupId>org.apache.parquet</groupId>
+            <artifactId>parquet-tools</artifactId>
+            <version>${parquet.hadoop.version}</version>
+        </dependency>-->
+        <!--<dependency>
+            <groupId>org.apache.parquet</groupId>
+            <artifactId>parquet-hadoop</artifactId>
+            <version>${parquet.hadoop.version}</version>
+        </dependency>-->
         <!--<dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-yarn-common</artifactId>
@@ -118,11 +128,6 @@
             <artifactId>spark-core_${scala.binary.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>-->
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-sql_${scala.binary.version}</artifactId>
-            <version>${spark.version}</version>
-        </dependency>
         <!--<dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-hive_${scala.binary.version}</artifactId>

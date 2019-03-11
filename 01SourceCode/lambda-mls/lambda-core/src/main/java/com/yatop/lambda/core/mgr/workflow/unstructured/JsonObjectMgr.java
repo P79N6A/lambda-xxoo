@@ -11,6 +11,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
+import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -43,6 +44,8 @@ public class JsonObjectMgr extends BaseMgr {
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertJsonObject.copyProperties(jsonObject);
+            if(insertJsonObject.isObjectDfsFileColoured())
+                insertJsonObject.setObjectDfsFile(WorkDirectoryUtil.removeDfsSchemaPrefix(insertJsonObject.getObjectDfsFile()));
             insertJsonObject.setObjectIdColoured(false);
             insertJsonObject.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertJsonObject.setLastUpdateTime(dtCurrentTime);
@@ -50,6 +53,8 @@ public class JsonObjectMgr extends BaseMgr {
             insertJsonObject.setCreateTime(dtCurrentTime);
             insertJsonObject.setCreateOper(operId);
             wfJsonObjectMapper.insertSelective(insertJsonObject);
+            if(insertJsonObject.isObjectDfsFileColoured())
+                insertJsonObject.setObjectDfsFile(WorkDirectoryUtil.addDfsSchemaPrefix(insertJsonObject.getObjectDfsFile()));
             return insertJsonObject;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert json object failed.", "插入Json对象失败", e);
@@ -138,7 +143,7 @@ public class JsonObjectMgr extends BaseMgr {
             if(jsonObject.isObjectContentColoured())
                 updateJsonObject.setObjectContent(jsonObject.getObjectContent());
             if(jsonObject.isObjectDfsFileColoured())
-                updateJsonObject.setObjectDfsFile(jsonObject.getObjectDfsFile());
+                updateJsonObject.setObjectDfsFile(WorkDirectoryUtil.removeDfsSchemaPrefix(jsonObject.getObjectDfsFile()));
             if(jsonObject.isObjectLocalFileColoured())
                 updateJsonObject.setObjectLocalFile(jsonObject.getObjectLocalFile());
             if(jsonObject.isObjectStateColoured())
@@ -171,6 +176,7 @@ public class JsonObjectMgr extends BaseMgr {
         WfJsonObject jsonObject;
         try {
             jsonObject = wfJsonObjectMapper.selectByPrimaryKey(objectId);
+            jsonObject.setObjectDfsFile(WorkDirectoryUtil.addDfsSchemaPrefix(jsonObject.getObjectDfsFile()));
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query json object failed.", "查询Json对象失败", e);
         }
@@ -202,7 +208,14 @@ public class JsonObjectMgr extends BaseMgr {
 
             cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
-            return wfJsonObjectMapper.selectByExample(example);
+            List<WfJsonObject> resultList = wfJsonObjectMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (WfJsonObject jsonObject : resultList) {
+                    jsonObject.setObjectDfsFile(WorkDirectoryUtil.addDfsSchemaPrefix(jsonObject.getObjectDfsFile()));
+                }
+            }
+            return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query json object failed.", "查询Json对象失败", e);

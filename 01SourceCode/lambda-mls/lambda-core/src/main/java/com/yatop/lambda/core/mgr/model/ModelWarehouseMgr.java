@@ -10,6 +10,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
+import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -46,6 +47,8 @@ public class ModelWarehouseMgr extends BaseMgr {
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertWarehouse.copyProperties(warehouse);
+            if(insertWarehouse.isModelDfsDirColoured())
+                insertWarehouse.setModelDfsDir(WorkDirectoryUtil.removeDfsSchemaPrefix(insertWarehouse.getModelDfsDir()));
             insertWarehouse.setMwIdColoured(false);
             insertWarehouse.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertWarehouse.setLastUpdateTime(dtCurrentTime);
@@ -53,6 +56,8 @@ public class ModelWarehouseMgr extends BaseMgr {
             insertWarehouse.setCreateTime(dtCurrentTime);
             insertWarehouse.setCreateOper(operId);
             mwModelWarehouseMapper.insertSelective(insertWarehouse);
+            if(insertWarehouse.isModelDfsDirColoured())
+                insertWarehouse.setModelDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(insertWarehouse.getModelDfsDir()));
             return insertWarehouse;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Insert model warehouse info failed.", "插入模型库信息失败", e);
@@ -113,9 +118,10 @@ public class ModelWarehouseMgr extends BaseMgr {
                 updateWarehouse.setMwCode(warehouse.getMwCode());
             if(warehouse.isMwNameColoured())
                 updateWarehouse.setMwName(warehouse.getMwName());
-            if(warehouse.isModelDfsDirColoured())
-                updateWarehouse.setModelDfsDir(warehouse.getModelDfsDir());
-            if(warehouse.isModelDfsDirColoured())
+            if(warehouse.isModelDfsDirColoured()) {
+                updateWarehouse.setModelDfsDir(WorkDirectoryUtil.removeDfsSchemaPrefix(warehouse.getModelDfsDir()));
+            }
+            if(warehouse.isModelLocalDirColoured())
                 updateWarehouse.setModelLocalDir(warehouse.getModelLocalDir());
             if(warehouse.isDescriptionColoured())
                 updateWarehouse.setDescription(warehouse.getDescription());
@@ -146,6 +152,7 @@ public class ModelWarehouseMgr extends BaseMgr {
 
         try {
             warehouse = mwModelWarehouseMapper.selectByPrimaryKey(id);
+            warehouse.setModelDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(warehouse.getModelDfsDir()));
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed.", "查询模型库信息失败", e);
         }
@@ -171,6 +178,13 @@ public class ModelWarehouseMgr extends BaseMgr {
             MwModelWarehouseExample example = new MwModelWarehouseExample();
             example.createCriteria().andMwCodeEqualTo(mwCode).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             List<MwModelWarehouse> resultList = mwModelWarehouseMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (MwModelWarehouse warehouse : resultList) {
+                    warehouse.setModelDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(warehouse.getModelDfsDir()));
+                }
+            }
+
             return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed.", "查询模型库信息失败", e);
@@ -208,7 +222,14 @@ public class ModelWarehouseMgr extends BaseMgr {
             }
 
             example.setOrderByClause("CREATE_TIME ASC");
-            return mwModelWarehouseMapper.selectByExample(example);
+            List<MwModelWarehouse> resultList = mwModelWarehouseMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (MwModelWarehouse warehouse : resultList) {
+                    warehouse.setModelDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(warehouse.getModelDfsDir()));
+                }
+            }
+            return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model warehouse info failed.", "查询模型库信息失败", e);

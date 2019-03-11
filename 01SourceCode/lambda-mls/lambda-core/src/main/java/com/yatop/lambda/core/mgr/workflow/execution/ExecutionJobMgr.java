@@ -11,6 +11,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
+import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,8 @@ public class ExecutionJobMgr extends BaseMgr {
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertJob.copyProperties(job);
+            if(insertJob.isJobDfsDirColoured())
+                insertJob.setJobDfsDir(WorkDirectoryUtil.removeDfsSchemaPrefix(insertJob.getJobDfsDir()));
             insertJob.setJobIdColoured(false);
             insertJob.setJobDfsDirColoured(false);
             insertJob.setJobLocalDirColoured(false);
@@ -56,6 +59,8 @@ public class ExecutionJobMgr extends BaseMgr {
             insertJob.setCreateTime(dtCurrentTime);
             insertJob.setCreateOper(operId);
             wfExecutionJobMapper.insertSelective(insertJob);
+            if(insertJob.isJobDfsDirColoured())
+                insertJob.setJobDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(insertJob.getJobDfsDir()));
             return insertJob;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert job info failed.", "插入作业信息失败", e);
@@ -114,7 +119,7 @@ public class ExecutionJobMgr extends BaseMgr {
             if(job.isJobContentColoured())
                 updateJob.setJobContent(job.getJobContent());
             if(job.isJobDfsDirColoured())
-                updateJob.setJobDfsDir(job.getJobDfsDir());
+                updateJob.setJobDfsDir(WorkDirectoryUtil.removeDfsSchemaPrefix(job.getJobDfsDir()));
             if(job.isJobLocalDirColoured())
                 updateJob.setJobLocalDir(job.getJobLocalDir());
             if(job.isNextTaskSequenceColoured())
@@ -153,6 +158,7 @@ public class ExecutionJobMgr extends BaseMgr {
         WfExecutionJob job;
         try {
             job = wfExecutionJobMapper.selectByPrimaryKey(jobId);
+            job.setJobDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(job.getJobDfsDir()));
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed.", "查询作业信息失败", e);
         }
@@ -187,7 +193,15 @@ public class ExecutionJobMgr extends BaseMgr {
 
             cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
-            return wfExecutionJobMapper.selectByExample(example);
+            List<WfExecutionJob> resultList = wfExecutionJobMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (WfExecutionJob warehouse : resultList) {
+                    warehouse.setJobDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(warehouse.getJobDfsDir()));
+                }
+            }
+
+            return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query job info failed.", "查询作业信息失败", e);

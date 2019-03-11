@@ -12,6 +12,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
+import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +53,10 @@ public class ModelMgr extends BaseMgr {
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertModel.copyProperties(model);
+            if(insertModel.isModelFileColoured())
+                insertModel.setModelFile(WorkDirectoryUtil.removeDfsSchemaPrefix(insertModel.getModelFile()));
+            if(insertModel.isSummaryDfsFileColoured())
+                insertModel.setSummaryDfsFile(WorkDirectoryUtil.removeDfsSchemaPrefix(insertModel.getSummaryDfsFile()));
             insertModel.setModelIdColoured(false);
             insertModel.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertModel.setLastUpdateTime(dtCurrentTime);
@@ -59,6 +64,10 @@ public class ModelMgr extends BaseMgr {
             insertModel.setCreateTime(dtCurrentTime);
             insertModel.setCreateOper(operId);
             mwModelMapper.insertSelective(insertModel);
+            if(insertModel.isModelFileColoured())
+                insertModel.setModelFile(WorkDirectoryUtil.addDfsSchemaPrefix(insertModel.getModelFile()));
+            if(insertModel.isSummaryDfsFileColoured())
+                insertModel.setSummaryDfsFile(WorkDirectoryUtil.addDfsSchemaPrefix(insertModel.getSummaryDfsFile()));
             return insertModel;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Insert model info failed.", "插入模型信息失败", e);
@@ -140,9 +149,9 @@ public class ModelMgr extends BaseMgr {
             if(model.isModelFileSizeColoured())
                 updateModel.setModelFileSize(model.getModelFileSize());
             if(model.isModelFileColoured())
-                updateModel.setModelFile(model.getModelFile());
+                updateModel.setModelFile(WorkDirectoryUtil.removeDfsSchemaPrefix(model.getModelFile()));
             if(model.isSummaryDfsFileColoured())
-                updateModel.setSummaryDfsFile(model.getSummaryDfsFile());
+                updateModel.setSummaryDfsFile(WorkDirectoryUtil.removeDfsSchemaPrefix(model.getSummaryDfsFile()));
             if(model.isSummaryLocalFileColoured())
                 updateModel.setSummaryLocalFile(model.getSummaryLocalFile());
             if(model.isModelStateColoured())
@@ -172,6 +181,8 @@ public class ModelMgr extends BaseMgr {
         MwModel model;
         try {
             model = mwModelMapper.selectByPrimaryKey(modelId);
+            model.setModelFile(WorkDirectoryUtil.addDfsSchemaPrefix(model.getModelFile()));
+            model.setSummaryDfsFile(WorkDirectoryUtil.addDfsSchemaPrefix(model.getSummaryDfsFile()));
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed.", "查询模型信息失败", e);
         }
@@ -194,11 +205,21 @@ public class ModelMgr extends BaseMgr {
         }
         try {
             PagerUtil.startPage(pager);
+            List<ExtMwModel> resultList = null;
+
             if(DataUtil.isEmpty(keyword)){
-                return extMwModelMapper.findModelInfo(warehouseId,modelTypeEnum.getType(),DataStatusEnum.NORMAL.getStatus());
+                resultList = extMwModelMapper.findModelInfo(warehouseId,modelTypeEnum.getType(),DataStatusEnum.NORMAL.getStatus());
             }else {
-                return extMwModelMapper.findModelInfoBykeyWord(warehouseId,DataUtil.likeKeyword(keyword),modelTypeEnum.getType(),DataStatusEnum.NORMAL.getStatus());
+                resultList = extMwModelMapper.findModelInfoBykeyWord(warehouseId,DataUtil.likeKeyword(keyword),modelTypeEnum.getType(),DataStatusEnum.NORMAL.getStatus());
             }
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (ExtMwModel model : resultList) {
+                    model.setModelFile(WorkDirectoryUtil.addDfsSchemaPrefix(model.getModelFile()));
+                    model.setSummaryDfsFile(WorkDirectoryUtil.addDfsSchemaPrefix(model.getSummaryDfsFile()));
+                }
+            }
+            return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.E_MODEL_DEFAULT_ERROR, "Query model info failed.", "查询模型信息失败", e);

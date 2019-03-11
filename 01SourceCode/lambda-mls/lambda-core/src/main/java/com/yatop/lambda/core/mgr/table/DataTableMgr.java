@@ -8,6 +8,7 @@ import com.yatop.lambda.core.mgr.base.BaseMgr;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
+import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -48,6 +49,10 @@ public class DataTableMgr extends BaseMgr {
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertTable.copyProperties(table);
+            if(insertTable.isDataFileColoured())
+                insertTable.setDataFile(WorkDirectoryUtil.removeDfsSchemaPrefix(insertTable.getDataFile()));
+            if(insertTable.isSummaryDfsFileColoured())
+                insertTable.setSummaryDfsFile(WorkDirectoryUtil.removeDfsSchemaPrefix(insertTable.getSummaryDfsFile()));
             insertTable.setTableIdColoured(false);
             insertTable.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertTable.setLastUpdateTime(dtCurrentTime);
@@ -55,6 +60,10 @@ public class DataTableMgr extends BaseMgr {
             insertTable.setCreateTime(dtCurrentTime);
             insertTable.setCreateOper(operId);
             dwDataTableMapper.insertSelective(insertTable);
+            if(insertTable.isDataFileColoured())
+                insertTable.setDataFile(WorkDirectoryUtil.addDfsSchemaPrefix(insertTable.getDataFile()));
+            if(insertTable.isSummaryDfsFileColoured())
+                insertTable.setSummaryDfsFile(WorkDirectoryUtil.addDfsSchemaPrefix(insertTable.getSummaryDfsFile()));
             return insertTable;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Insert data table info failed.", "插入数据表信息失败", e);
@@ -146,9 +155,9 @@ public class DataTableMgr extends BaseMgr {
             if(table.isDataFileSizeColoured())
                 updateTable.setDataFileSize(table.getDataFileSize());
             if(table.isDataFileColoured())
-                updateTable.setDataFile(table.getDataFile());
+                updateTable.setDataFile(WorkDirectoryUtil.removeDfsSchemaPrefix(table.getDataFile()));
             if(table.isSummaryDfsFileColoured())
-                updateTable.setSummaryDfsFile(table.getSummaryDfsFile());
+                updateTable.setSummaryDfsFile(WorkDirectoryUtil.removeDfsSchemaPrefix(table.getSummaryDfsFile()));
             if(table.isSummaryLocalFileColoured())
                 updateTable.setSummaryLocalFile(table.getSummaryLocalFile());
             if(table.isTableStateColoured())
@@ -181,6 +190,8 @@ public class DataTableMgr extends BaseMgr {
         DwDataTable table;
         try {
             table = dwDataTableMapper.selectByPrimaryKey(tableId);
+            table.setDataFile(WorkDirectoryUtil.addDfsSchemaPrefix(table.getDataFile()));
+            table.setSummaryDfsFile(WorkDirectoryUtil.addDfsSchemaPrefix(table.getSummaryDfsFile()));
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed.", "查询数据表信息失败", e);
         }
@@ -205,6 +216,13 @@ public class DataTableMgr extends BaseMgr {
             DwDataTableExample example = new DwDataTableExample();
             example.createCriteria().andOwnerDwIdEqualTo(warehouseId).andTableNameEqualTo(tableName).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             List<DwDataTable> resultList = dwDataTableMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (DwDataTable table : resultList) {
+                    table.setDataFile(WorkDirectoryUtil.addDfsSchemaPrefix(table.getDataFile()));
+                    table.setSummaryDfsFile(WorkDirectoryUtil.addDfsSchemaPrefix(table.getSummaryDfsFile()));
+                }
+            }
             return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data table info failed.", "查询数据表信息失败", e);
@@ -238,6 +256,13 @@ public class DataTableMgr extends BaseMgr {
             cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
             List<DwDataTable> resultList = dwDataTableMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (DwDataTable table : resultList) {
+                    table.setDataFile(WorkDirectoryUtil.addDfsSchemaPrefix(table.getDataFile()));
+                    table.setSummaryDfsFile(WorkDirectoryUtil.addDfsSchemaPrefix(table.getSummaryDfsFile()));
+                }
+            }
             return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);

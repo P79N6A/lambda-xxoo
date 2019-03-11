@@ -11,6 +11,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
+import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -40,6 +41,12 @@ public class ExecutionTaskMgr extends BaseMgr {
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertTask.copyProperties(task);
+            if(insertTask.isSubmitFileColoured())
+                insertTask.setSubmitFile(WorkDirectoryUtil.removeDfsSchemaPrefix(insertTask.getSubmitFile()));
+            if(insertTask.isReturnFileColoured())
+                insertTask.setReturnFile(WorkDirectoryUtil.removeDfsSchemaPrefix(insertTask.getReturnFile()));
+            if(insertTask.isLogFileColoured())
+                insertTask.setLogFile(WorkDirectoryUtil.removeDfsSchemaPrefix(insertTask.getLogFile()));
             insertTask.setTaskIdColoured(false);
             insertTask.setEngineTypeColoured(false);
             insertTask.setExternalIdColoured(false);
@@ -59,6 +66,12 @@ public class ExecutionTaskMgr extends BaseMgr {
             insertTask.setCreateTime(dtCurrentTime);
             insertTask.setCreateOper(operId);
             wfExecutionTaskMapper.insertSelective(insertTask);
+            if(insertTask.isSubmitFileColoured())
+                insertTask.setSubmitFile(WorkDirectoryUtil.addDfsSchemaPrefix(insertTask.getSubmitFile()));
+            if(insertTask.isReturnFileColoured())
+                insertTask.setReturnFile(WorkDirectoryUtil.addDfsSchemaPrefix(insertTask.getReturnFile()));
+            if(insertTask.isLogFileColoured())
+                insertTask.setLogFile(WorkDirectoryUtil.addDfsSchemaPrefix(insertTask.getLogFile()));
             return insertTask;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert task info failed.", "插入任务信息失败", e);
@@ -124,11 +137,11 @@ public class ExecutionTaskMgr extends BaseMgr {
             if(task.isExternalIdColoured())
                 updateTask.setExternalId(task.getExternalId());
             if(task.isSubmitFileColoured())
-                updateTask.setSubmitFile(task.getSubmitFile());
+                updateTask.setSubmitFile(WorkDirectoryUtil.removeDfsSchemaPrefix(task.getSubmitFile()));
             if(task.isReturnFileColoured())
-                updateTask.setReturnFile(task.getReturnFile());
+                updateTask.setReturnFile(WorkDirectoryUtil.removeDfsSchemaPrefix(task.getReturnFile()));
             if(task.isLogFileColoured())
-                updateTask.setLogFile(task.getLogFile());
+                updateTask.setLogFile(WorkDirectoryUtil.removeDfsSchemaPrefix(task.getLogFile()));
             if(task.isCostTimeColoured())
                 updateTask.setCostTime(task.getCostTime());
             if(task.isTaskStartTimeColoured())
@@ -169,6 +182,9 @@ public class ExecutionTaskMgr extends BaseMgr {
         WfExecutionTask task;
         try {
             task = wfExecutionTaskMapper.selectByPrimaryKey(taskId);
+            task.setSubmitFile(WorkDirectoryUtil.addDfsSchemaPrefix(task.getSubmitFile()));
+            task.setReturnFile(WorkDirectoryUtil.addDfsSchemaPrefix(task.getReturnFile()));
+            task.setLogFile(WorkDirectoryUtil.addDfsSchemaPrefix(task.getLogFile()));
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed.", "查询任务信息失败", e);
         }
@@ -194,7 +210,16 @@ public class ExecutionTaskMgr extends BaseMgr {
             WfExecutionTaskExample example = new WfExecutionTaskExample();
             example.createCriteria().andOwnerJobIdEqualTo(jobId).andRelNodeIdEqualTo(nodeId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
-            return wfExecutionTaskMapper.selectByExample(example);
+            List<WfExecutionTask> resultList = wfExecutionTaskMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (WfExecutionTask task : resultList) {
+                    task.setSubmitFile(WorkDirectoryUtil.addDfsSchemaPrefix(task.getSubmitFile()));
+                    task.setReturnFile(WorkDirectoryUtil.addDfsSchemaPrefix(task.getReturnFile()));
+                    task.setLogFile(WorkDirectoryUtil.addDfsSchemaPrefix(task.getLogFile()));
+                }
+            }
+            return resultList;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed.", "查询任务信息失败", e);
         }
@@ -220,7 +245,16 @@ public class ExecutionTaskMgr extends BaseMgr {
             }
             cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
-            return wfExecutionTaskMapper.selectByExample(example);
+            List<WfExecutionTask> resultList = wfExecutionTaskMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (WfExecutionTask task : resultList) {
+                    task.setSubmitFile(WorkDirectoryUtil.addDfsSchemaPrefix(task.getSubmitFile()));
+                    task.setReturnFile(WorkDirectoryUtil.addDfsSchemaPrefix(task.getReturnFile()));
+                    task.setLogFile(WorkDirectoryUtil.addDfsSchemaPrefix(task.getLogFile()));
+                }
+            }
+            return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed.", "查询任务信息失败", e);
@@ -247,7 +281,16 @@ public class ExecutionTaskMgr extends BaseMgr {
             }
             cond.andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
-            return wfExecutionTaskMapper.selectByExample(example);
+            List<WfExecutionTask> resultList = wfExecutionTaskMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (WfExecutionTask task : resultList) {
+                    task.setSubmitFile(WorkDirectoryUtil.addDfsSchemaPrefix(task.getSubmitFile()));
+                    task.setReturnFile(WorkDirectoryUtil.addDfsSchemaPrefix(task.getReturnFile()));
+                    task.setLogFile(WorkDirectoryUtil.addDfsSchemaPrefix(task.getLogFile()));
+                }
+            }
+            return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query task info failed.", "查询任务信息失败", e);

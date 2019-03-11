@@ -11,6 +11,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
+import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -38,6 +39,8 @@ public class WorkflowMgr extends BaseMgr {
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertWorkflow.copyProperties(workflow);
+            if(insertWorkflow.isFlowDfsDirColoured())
+                insertWorkflow.setFlowDfsDir(WorkDirectoryUtil.removeDfsSchemaPrefix(insertWorkflow.getFlowDfsDir()));
             insertWorkflow.setShareLockState(ShareLockStateEnum.UNLOCKED.getState());
             insertWorkflow.setShareLockMsgColoured(false);
             insertWorkflow.setNextSnapshotVersion(1L);
@@ -54,6 +57,8 @@ public class WorkflowMgr extends BaseMgr {
             insertWorkflow.setCreateOper(operId);
             insertWorkflow.setVersion(1L);
             wfFlowMapper.insertSelective(insertWorkflow);
+            if(insertWorkflow.isFlowDfsDirColoured())
+                insertWorkflow.setFlowDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(insertWorkflow.getFlowDfsDir()));
             return insertWorkflow;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Insert workflow info failed.", "插入工作流信息失败", e);
@@ -128,7 +133,7 @@ public class WorkflowMgr extends BaseMgr {
             if(workflow.isLastJobIdColoured())
                 updateWorkflow.setLastJobId(workflow.getLastJobId());
             if(workflow.isFlowDfsDirColoured())
-                updateWorkflow.setFlowDfsDir(workflow.getFlowDfsDir());
+                updateWorkflow.setFlowDfsDir(WorkDirectoryUtil.removeDfsSchemaPrefix(workflow.getFlowDfsDir()));
             if(workflow.isFlowLocalDirColoured())
                 updateWorkflow.setFlowLocalDir(workflow.getFlowLocalDir());
             if(workflow.isDescriptionColoured())
@@ -161,6 +166,7 @@ public class WorkflowMgr extends BaseMgr {
         WfFlow workflow;
         try {
             workflow = wfFlowMapper.selectByPrimaryKey(workflowId);
+            workflow.setFlowDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(workflow.getFlowDfsDir()));
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow info failed.", "查询工作流信息失败", e);
         }
@@ -187,7 +193,15 @@ public class WorkflowMgr extends BaseMgr {
             WfFlowExample example = new WfFlowExample();
             example.createCriteria().andOwnerProjectIdEqualTo(projectId).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             example.setOrderByClause("CREATE_TIME ASC");
-            return wfFlowMapper.selectByExample(example);
+            List<WfFlow> resultList = wfFlowMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (WfFlow workflow : resultList) {
+                    workflow.setFlowDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(workflow.getFlowDfsDir()));
+                }
+            }
+
+            return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Query workflow info failed.", "查询工作流信息失败", e);

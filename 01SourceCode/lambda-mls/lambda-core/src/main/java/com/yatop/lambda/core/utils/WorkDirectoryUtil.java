@@ -4,6 +4,8 @@ import com.yatop.lambda.core.enums.SystemParameterEnum;
 
 public class WorkDirectoryUtil {
 
+    private static String HDFS_SCHEMA_PREFIX = "hdfs://";
+
     private static String getDfsDefautlFS() {
         return SystemParameterUtil.find4String(SystemParameterEnum.CF_HDFS_SITE_defaultFS);
     }
@@ -68,5 +70,35 @@ public class WorkDirectoryUtil {
 
     public static String getModelWarehouseLocalDirectory(Long mwId) {
         return String.format("%s/%s/%d", getLocalWorkRoot(), getModelFileDirName(), mwId);
+    }
+
+    public static boolean existDfsSchemaPrefix(String dfsPath) {
+        if(DataUtil.isEmpty(dfsPath))
+            return false;
+
+        if(dfsPath.substring(0, HDFS_SCHEMA_PREFIX.length()).equalsIgnoreCase(HDFS_SCHEMA_PREFIX)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static String removeDfsSchemaPrefix(String dfsPath) {
+
+        if(existDfsSchemaPrefix(dfsPath)) {
+            dfsPath = dfsPath.substring(HDFS_SCHEMA_PREFIX.length());
+            int rootDirIndex = dfsPath.indexOf('/');
+            if (rootDirIndex - 1 > 0) {
+                return dfsPath.substring(rootDirIndex);
+            }
+            return null;
+        }
+
+        return dfsPath;
+    }
+
+    public static String addDfsSchemaPrefix(String dfsPath) {
+
+        dfsPath = removeDfsSchemaPrefix(dfsPath);
+        return DataUtil.isNotEmpty(dfsPath) ? String.format("%s%s", getDfsDefautlFS(), dfsPath) : null;
     }
 }

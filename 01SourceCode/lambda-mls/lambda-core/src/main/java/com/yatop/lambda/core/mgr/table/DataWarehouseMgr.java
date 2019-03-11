@@ -10,6 +10,7 @@ import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.core.utils.PagerUtil;
 import com.yatop.lambda.core.utils.SystemTimeUtil;
+import com.yatop.lambda.core.utils.WorkDirectoryUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -46,6 +47,8 @@ public class DataWarehouseMgr extends BaseMgr {
         try {
             Date dtCurrentTime = SystemTimeUtil.getCurrentTime();
             insertWarehouse.copyProperties(warehouse);
+            if(insertWarehouse.isDataDfsDirColoured())
+                insertWarehouse.setDataDfsDir(WorkDirectoryUtil.removeDfsSchemaPrefix(insertWarehouse.getDataDfsDir()));
             insertWarehouse.setDwIdColoured(false);
             insertWarehouse.setStatus(DataStatusEnum.NORMAL.getStatus());
             insertWarehouse.setLastUpdateTime(dtCurrentTime);
@@ -53,6 +56,8 @@ public class DataWarehouseMgr extends BaseMgr {
             insertWarehouse.setCreateTime(dtCurrentTime);
             insertWarehouse.setCreateOper(operId);
             dwDataWarehouseMapper.insertSelective(insertWarehouse);
+            if(insertWarehouse.isDataDfsDirColoured())
+                insertWarehouse.setDataDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(insertWarehouse.getDataDfsDir()));
             return insertWarehouse;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Insert data warehouse info failed.", "插入数据库信息失败", e);
@@ -114,8 +119,8 @@ public class DataWarehouseMgr extends BaseMgr {
             if(warehouse.isDwNameColoured())
                 updateWarehouse.setDwName(warehouse.getDwName());
             if(warehouse.isDataDfsDirColoured())
-                updateWarehouse.setDataDfsDir(warehouse.getDataDfsDir());
-            if(warehouse.isDataDfsDirColoured())
+                updateWarehouse.setDataDfsDir(WorkDirectoryUtil.removeDfsSchemaPrefix(warehouse.getDataDfsDir()));
+            if(warehouse.isDataLocalDirColoured())
                 updateWarehouse.setDataLocalDir(warehouse.getDataLocalDir());
             if(warehouse.isDescriptionColoured())
                 updateWarehouse.setDescription(warehouse.getDescription());
@@ -146,6 +151,7 @@ public class DataWarehouseMgr extends BaseMgr {
 
         try {
             warehouse = dwDataWarehouseMapper.selectByPrimaryKey(id);
+            warehouse.setDataDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(warehouse.getDataDfsDir()));
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed.", "查询数据库信息失败", e);
         }
@@ -171,6 +177,13 @@ public class DataWarehouseMgr extends BaseMgr {
             DwDataWarehouseExample example = new DwDataWarehouseExample();
             example.createCriteria().andDwCodeEqualTo(dwCode).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
             List<DwDataWarehouse> resultList = dwDataWarehouseMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (DwDataWarehouse warehouse : resultList) {
+                    warehouse.setDataDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(warehouse.getDataDfsDir()));
+                }
+            }
+
             return DataUtil.isNotEmpty(resultList) ? resultList.get(0) : null;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed.", "查询数据库信息失败", e);
@@ -208,7 +221,15 @@ public class DataWarehouseMgr extends BaseMgr {
             }
             
             example.setOrderByClause("CREATE_TIME ASC");
-            return dwDataWarehouseMapper.selectByExample(example);
+            List<DwDataWarehouse> resultList = dwDataWarehouseMapper.selectByExample(example);
+
+            if(DataUtil.isNotEmpty(resultList)) {
+                for (DwDataWarehouse warehouse : resultList) {
+                    warehouse.setDataDfsDir(WorkDirectoryUtil.addDfsSchemaPrefix(warehouse.getDataDfsDir()));
+                }
+            }
+
+            return resultList;
         } catch (Throwable e) {
             PagerUtil.clearPage(pager);
             throw new LambdaException(LambdaExceptionEnum.D_DATA_DEFAULT_ERROR, "Query data warehouse info failed.", "查询数据库信息失败", e);
