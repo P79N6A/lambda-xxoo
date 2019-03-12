@@ -45,15 +45,16 @@ public class AnalyzeNodeStateHelper {
         if(DataUtil.isNotEmpty(missingInputPorts)) {
             StringBuilder sb = new StringBuilder().append(String.format("「%s」节点", node.getModule().data().getModuleName()));
             for(String message : CollectionUtil.toList(missingInputPorts)) {
-                sb.append(",").append(message);
+                sb.append("，").append(message);
             }
             node.changeOccuredWarning(sb.toString());
+            analyzeParameter(workflowContext, node, true);
         } else {
-            analyzeParameter(workflowContext, node);
+            analyzeParameter(workflowContext, node, false);
         }
     }
 
-    private static void analyzeParameter(WorkflowContext workflowContext, Node node) {
+    private static void analyzeParameter(WorkflowContext workflowContext, Node node, boolean existsInputPortWarning) {
 
         TreeSet<NodeParameter> missingParameters = new TreeSet<NodeParameter>();
         TreeSet<NodeParameter> warningParameters = new TreeSet<NodeParameter>();
@@ -97,17 +98,23 @@ public class AnalyzeNodeStateHelper {
         }
 
         if(DataUtil.isNotEmpty(missingParameters) || DataUtil.isNotEmpty(warningParameters)) {
-            StringBuilder sb = new StringBuilder().append(String.format("「%s」节点", node.getModule().data().getModuleName()));
+            StringBuilder sb = new StringBuilder();
+            if(existsInputPortWarning) {
+                sb.append(node.data().getWarningMsg());
+            } else {
+                sb.append(String.format("「%s」节点", node.getModule().data().getModuleName()));
+            }
             for(NodeParameter parameter : missingParameters) {
-                sb.append(",").append(parameter.data().getWarningMsg());
+                sb.append("，").append(parameter.data().getWarningMsg());
             }
             for(NodeParameter parameter : warningParameters) {
-                sb.append(",").append(parameter.data().getWarningMsg());
+                sb.append("，").append(parameter.data().getWarningMsg());
             }
 
             node.changeOccuredWarning(sb.toString());
         } else {
-            node.changeState2Ready();
+            if(!existsInputPortWarning)
+                node.changeState2Ready();
         }
     }
 }

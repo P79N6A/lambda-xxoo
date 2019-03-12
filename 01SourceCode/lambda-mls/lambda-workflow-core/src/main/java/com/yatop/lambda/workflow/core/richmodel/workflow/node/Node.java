@@ -300,7 +300,7 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
 
     public List<NodeInputPort> getInputDataTablePorts() {
         List<NodeInputPort> dataPorts = null;
-        if(outputDataTablePortCount() > 0) {
+        if(inputDataTablePortCount() > 0) {
             dataPorts = new ArrayList<NodeInputPort>();
             for (NodeInputPort inputNodePort : getInputNodePorts()) {
                 if (inputNodePort.isDataTablePort()) {
@@ -364,22 +364,32 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     }
 
     public NodeSchema getOutputDataTablePortSchema(String charId) {
+
+        if(isDeleted())
+            return null;
+
         NodeOutputPort outputNodePort = getOutputNodePort(charId);
         return outputNodePort.isDataTablePort() ? outputNodePort.getSchema() : null;
     }
 
     public NodeSchema getOutputDataTablePortSchemaByCharCode(String charCode) {
+        if(isDeleted())
+            return null;
+
         NodeOutputPort outputNodePort = getOutputNodePortByCharCode(charCode);
         return outputNodePort.isDataTablePort() ? outputNodePort.getSchema() : null;
     }
 
     public List<NodeSchema> getOutputDataTablePortSchemas() {
+        if(isDeleted())
+            return null;
+
         List<NodeSchema> nodeSchemas = null;
         if(outputDataTablePortCount() > 0) {
             nodeSchemas = new ArrayList<NodeSchema>(outputDataTablePortCount());
             for (NodeOutputPort outputNodePort : getOutputNodePorts()) {
                 if (outputNodePort.isDataTablePort()) {
-                    nodeSchemas.add(outputNodePort.getSchema());
+                    CollectionUtil.add(nodeSchemas, outputNodePort.getSchema());
                 }
             }
         }
@@ -424,6 +434,18 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
 
     public void markDeleted() {
         this.deleted = true;
+
+        if (!this.isHeadNode()) {
+            for (NodeInputPort inputPort : this.getInputNodePorts()) {
+                inputPort.markDeleted();
+            }
+        }
+
+        if (!this.isTailNode()) {
+            for (NodeOutputPort outputPort : this.getOutputNodePorts()) {
+                outputPort.markDeleted();
+            }
+        }
     }
 
     public boolean isAnalyzed() {

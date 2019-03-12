@@ -8,6 +8,7 @@ import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzer;
 import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzerHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.module.AnalyzeNodeStateHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.snapshot.SnapshotHelper;
+import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.data.model.ModelWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
@@ -334,7 +335,7 @@ public class WorkflowContext implements IWorkContext {
     }
 
     public boolean isAnalyzeWithRefreshSchema() {
-        return this.schemaAnalyze.getType() == AnalyzeTypeEnum.REFRESH_SCHEMA.getType();
+        return this.schemaAnalyze.getType() == AnalyzeTypeEnum.REFRESH_WORKFLOW.getType();
     }
 
     private void markAnalyzeWithNone() {
@@ -387,10 +388,10 @@ public class WorkflowContext implements IWorkContext {
         }
     }
 
-    public void markAnalyzeWithRefreshSchema() {
+    public void markAnalyzeWithRefreshWorkflow() {
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone())
-            this.schemaAnalyze = AnalyzeTypeEnum.REFRESH_SCHEMA;
+            this.schemaAnalyze = AnalyzeTypeEnum.REFRESH_WORKFLOW;
     }
 
     /*
@@ -809,6 +810,25 @@ public class WorkflowContext implements IWorkContext {
     public TreeMap<Long, List<NodeInputPort>> fetchDownstreamPorts(Node node) {
         WorkflowContextHelper.loadDownstreamPorts(this, node);
         return this.getDownstreamPorts(node);
+    }
+
+    //key: input port cmpt-char, value: upstream output port schema
+    public TreeMap<CmptChar, NodeSchema> fetchUpstreamSchema(Node node) {
+        if(node.inputDataTablePortCount() == 0)
+            return null;
+
+        WorkflowContextHelper.loadUpstreamPorts(this, node);
+        TreeMap<Long, NodeOutputPort> upstreamPorts = this.getUpstreamPorts(node);
+        if(DataUtil.isNotEmpty(upstreamPorts)) {
+            TreeMap<CmptChar, NodeSchema> resultMap = new TreeMap<CmptChar, NodeSchema>();
+            for(Map.Entry<Long, NodeOutputPort> entry : upstreamPorts.entrySet()) {
+                if(entry.getValue().isDataTablePort()) {
+                    CollectionUtil.put(resultMap, node.getInputNodePort(entry.getKey()).getCmptChar(), entry.getValue().getSchema());
+                }
+            }
+            return DataUtil.isEmpty(resultMap) ? null : resultMap;
+        }
+        return null;
     }
 
     /*

@@ -58,7 +58,7 @@ public class WorkflowCreate {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create workflow error -- other workflow context work in not load-node-parameter mode.", "系统内部错误，请联系管理员");
 
         WorkflowContext thisWorkFlowContext = createWorkflow(experiment, operId);
-        thisWorkFlowContext.markAnalyzeWithRefreshSchema();
+        thisWorkFlowContext.markAnalyzeWithRefreshWorkflow();
 
         if(otherWorkflowContext.nodeCount() > 0) {
             //key: otherNodeId, thisNode

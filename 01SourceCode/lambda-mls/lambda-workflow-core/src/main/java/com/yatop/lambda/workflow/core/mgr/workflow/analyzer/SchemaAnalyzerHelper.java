@@ -63,7 +63,7 @@ public class SchemaAnalyzerHelper {
                 for (NodeInputPort inputNodePort : node.getInputDataTablePorts()) {
                     if(inputNodePort.getCmptChar().isRequired()) {
                         NodeOutputPort upstreamPort = CollectionUtil.get(upstreamPorts, inputNodePort.data().getNodePortId());
-                        if(DataUtil.isNull(upstreamPort) || !upstreamPort.getSchema().isStateNormal()) {
+                        if(DataUtil.isNull(upstreamPort) || DataUtil.isNull(upstreamPort.getSchema()) || !upstreamPort.getSchema().isStateNormal()) {
                             return false;
                         }
                     }
@@ -80,7 +80,7 @@ public class SchemaAnalyzerHelper {
             if (moduleClazz.supportAnalyzeSchema()) {
                 if(!reanalyzeSchemaConditionReady(workflowContext, moduleClazz, node)) {
                     try {
-                        TreeMap<CmptChar, NodeSchema> outSchemas = moduleClazz.analyzeSchema(workflowContext, node);
+                        TreeMap<CmptChar, NodeSchema> outSchemas = moduleClazz.analyzeSchema(workflowContext, node, workflowContext.fetchUpstreamSchema(node));
                         List<NodeSchema> dataPortSchemas = node.getOutputDataTablePortSchemas();
                         if (DataUtil.isNotEmpty(dataPortSchemas)) {
                             for (NodeSchema nodeSchema : dataPortSchemas) {
@@ -101,17 +101,19 @@ public class SchemaAnalyzerHelper {
         }
     }
 
-    public static void searchDownstreamNodes(WorkflowContext workflowContext, Node currentNode, Deque<Node> analyzeStack) {
-        if(DataUtil.isNull(currentNode) || !currentNode.needAnalyzeSchema())
+    public static void searchDownstreamNodes(WorkflowContext workflowContext, Node currentNode, Deque<Node> analyzeStack, boolean skipSchemaChanged) {
+
+        List<NodeOutputPort> outputDataPorts = currentNode.getOutputDataTablePorts();
+        if(DataUtil.isEmpty(outputDataPorts))
             return;
 
-        for(NodeOutputPort outputDataPort : currentNode.getOutputDataTablePorts()) {
+        for(NodeOutputPort outputDataPort : outputDataPorts) {
             //仅数据输出端口为schema changed时，找出端口下游节点
-            if(outputDataPort.isSchemaChanged()) {
+            if(skipSchemaChanged || outputDataPort.isSchemaChanged()) {
                 List<Node> downstreamNodes = workflowContext.fetchDownstreamNodes(outputDataPort);
                 if(DataUtil.isNotEmpty(downstreamNodes)) {
                     for (Node downstreamNode : downstreamNodes) {
-                        if(downstreamNode.needAnalyzeSchema())
+                        if(downstreamNode.needAnalyzeSchema())  //non-deleted, non-analyzed, have data-table output
                             CollectionUtil.offerLast(analyzeStack, downstreamNode);
                     }
                 }

@@ -68,13 +68,13 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-					<!-- When using SPARK_PREPEND_CLASSES Spark classes compiled locally 
+					&lt;!&ndash; When using SPARK_PREPEND_CLASSES Spark classes compiled locally
 						don't use shaded deps. So here we store jars in their original form which 
-						are added when the classpath is computed. -->
+						are added when the classpath is computed. &ndash;&gt;
 					<execution>
 						<id>copy-dependencies</id>
 						<phase>package</phase>
@@ -91,7 +91,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 		</plugins>
 	</build>
 </project>

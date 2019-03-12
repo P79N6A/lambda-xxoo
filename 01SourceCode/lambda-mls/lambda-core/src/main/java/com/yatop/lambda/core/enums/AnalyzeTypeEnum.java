@@ -33,9 +33,9 @@ public enum AnalyzeTypeEnum {
     DELETE_LINK(5, "Delete Link In Canvas"),
 
     /**
-     * 刷新SCHEMA（独占，包括复制（实验、快照、模版）创建的实验，工作流刷新）
+     * 刷新Workflow（独占，包括复制（实验、快照、模版）创建的实验，工作流刷新）
      */
-    REFRESH_SCHEMA(6, "Refresh Schema");
+    REFRESH_WORKFLOW(6, "Refresh Workflow");
 
     private int type;
     private String name;

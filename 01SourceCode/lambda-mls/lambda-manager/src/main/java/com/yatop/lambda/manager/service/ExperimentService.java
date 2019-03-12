@@ -203,7 +203,7 @@ public class ExperimentService {
     }
 
     public Object updateExperimentNodeLocation(ExperimentRequest vo) {
-        editorService.batchUpdateWorkflowNodePostion(vo.getNodeIds(), vo.getPosXs(), vo.getPosYs(), PortalUtil.getCurrentUserName());
+        editorService.batchUpdateWorkflowNodePosition(vo.getNodeIds(), vo.getPosXs(), vo.getPosYs(), PortalUtil.getCurrentUserName());
         return "已更改位置！";
     }
 

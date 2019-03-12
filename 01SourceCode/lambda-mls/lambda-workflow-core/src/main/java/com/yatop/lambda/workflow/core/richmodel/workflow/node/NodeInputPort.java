@@ -11,6 +11,7 @@ public class NodeInputPort extends RichModel<WfFlowNodePort> implements Comparab
 
     private ModulePort modulePort;
     //private boolean analyzed;
+    private boolean deleted;
 
     public NodeInputPort(WfFlowNodePort data, ModulePort modulePort) {
         super(data);
@@ -48,6 +49,14 @@ public class NodeInputPort extends RichModel<WfFlowNodePort> implements Comparab
     protected void markAnalyzed() {
         this.analyzed = true;
     }*/
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void markDeleted() {
+        this.deleted = true;
+    }
 
     public CharType getType() {
         return this.getCmptChar().getType();

@@ -14,6 +14,7 @@ public class NodeOutputPort extends RichModel<WfFlowNodePort> {
     private ModulePort modulePort;
     private NodeSchema schema;
     private boolean analyzed;
+    private boolean deleted;
 
     public NodeOutputPort(WfFlowNodePort data, ModulePort modulePort) {
         super(data);
@@ -31,7 +32,7 @@ public class NodeOutputPort extends RichModel<WfFlowNodePort> {
     }
 
     protected void flush(String operId) {
-        if (this.isDataTablePort() && DataUtil.isNotNull(schema)) {
+        if (!this.isDeleted() && this.isDataTablePort() && DataUtil.isNotNull(schema)) {
             schema.flush(operId);
         }
     }
@@ -49,6 +50,9 @@ public class NodeOutputPort extends RichModel<WfFlowNodePort> {
     }
 
     public NodeSchema getSchema() {
+
+        if(isDeleted())
+            return null;
 
         if(!isDataTablePort())
             return null;
@@ -69,6 +73,14 @@ public class NodeOutputPort extends RichModel<WfFlowNodePort> {
 
     protected void markAnalyzed() {
         this.analyzed = true;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void markDeleted() {
+        this.deleted = true;
     }
 
     public CharType getType() {

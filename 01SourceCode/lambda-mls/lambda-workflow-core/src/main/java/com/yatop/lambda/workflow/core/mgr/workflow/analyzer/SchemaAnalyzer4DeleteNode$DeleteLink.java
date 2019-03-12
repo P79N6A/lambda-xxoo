@@ -11,18 +11,18 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 
-public class SchemaAnalyzer4Delete {
+public class SchemaAnalyzer4DeleteNode$DeleteLink {
 
-    public static List<Node> searchDownstreamNodes4DeleteNode(WorkflowContext workflowContext, Node deleteNode) {
+    public static List<Node> searchDownstreamNodes(WorkflowContext workflowContext, Node deleteNode) {
         if(DataUtil.isNull(deleteNode))
             return null;
 
         TreeMap<Long, Node> downstreamNodes = new TreeMap<Long, Node>();
         for(NodeOutputPort outputDataPort : deleteNode.getOutputDataTablePorts()) {
             List<Node> nodes = workflowContext.fetchDownstreamNodes(outputDataPort);
-            if(DataUtil.isNotEmpty(downstreamNodes)) {
+            if(DataUtil.isNotEmpty(nodes)) {
                 for (Node downstreamNode : nodes) {
-                    if(downstreamNode.needAnalyzeSchema())
+                    if(downstreamNode.needAnalyzeSchema())  //non-deleted, non-analyzed, have data-table output
                         CollectionUtil.put(downstreamNodes, downstreamNode.data().getNodeId(), downstreamNode);
                 }
             }
@@ -35,9 +35,10 @@ public class SchemaAnalyzer4Delete {
         if(DataUtil.isNull(currentNode) || !currentNode.needAnalyzeSchema())
             return;
 
-        currentNode.changeSchemas2Empty();
+
+        SchemaAnalyzerHelper.analyzeSchema(workflowContext, currentNode);
         currentNode.markAnalyzed();
-        SchemaAnalyzerHelper.searchDownstreamNodes(workflowContext, currentNode, analyzeStack);
+        SchemaAnalyzerHelper.searchDownstreamNodes(workflowContext, currentNode, analyzeStack, false);
     }
 
     private static void analyzeStackNodes(WorkflowContext workflowContext, Deque<Node> analyzeStack) {

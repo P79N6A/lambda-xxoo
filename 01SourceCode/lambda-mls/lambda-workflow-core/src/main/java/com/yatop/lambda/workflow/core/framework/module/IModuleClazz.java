@@ -66,5 +66,5 @@ public interface IModuleClazz {
 
     //分析数据输出端口schema
     //key:OutputPort-CmptChar, NodeSchema
-    TreeMap<CmptChar, NodeSchema> analyzeSchema(WorkflowContext workflowContext, Node node);
+    TreeMap<CmptChar, NodeSchema> analyzeSchema(WorkflowContext workflowContext, Node node, TreeMap<CmptChar, NodeSchema> upstreamSchemas);
 }

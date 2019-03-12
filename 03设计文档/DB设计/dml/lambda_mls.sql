@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-03-11 16:57:25
+Date: 2019-03-12 13:44:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1436,7 +1436,7 @@ CREATE TABLE `wf_flow_node` (
   `POSITION_X` bigint(20) NOT NULL DEFAULT '0' COMMENT '流程图节点X轴坐标',
   `POSITION_Y` bigint(20) NOT NULL DEFAULT '0' COMMENT '流程图节点Y轴坐标',
   `LAST_TASK_ID` bigint(20) DEFAULT NULL COMMENT '最后任务ID',
-  `WARNING_MSG` varchar(2048) DEFAULT NULL COMMENT '警告消息',
+  `WARNING_MSG` varchar(8096) DEFAULT NULL COMMENT '警告消息',
   `NODE_STATE` int(11) NOT NULL DEFAULT '0' COMMENT '节点状态\r\n            0：not ready，未就绪\r\n            1：ready，已就绪\r\n            2：preparing，准备中\r\n            3：running，运行中\r\n            4：success，运行成功\r\n            5：error，运行出错',
   `COMMENT` varchar(800) DEFAULT NULL COMMENT '备注，人工编辑',
   `SUMMARY` varchar(800) DEFAULT NULL COMMENT '概要，自动生成',

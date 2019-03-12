@@ -3,20 +3,13 @@ package com.yatop.lambda.workflow.core.framework.module;
 import com.yatop.lambda.core.enums.LambdaExceptionEnum;
 import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.workflow.core.config.ComponentConfig;
-import com.yatop.lambda.workflow.core.config.ModuleConfig;
 import com.yatop.lambda.workflow.core.context.ExecutionTaskContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.mgr.workflow.node.output.*;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.mgr.workflow.node.output.OutputAndResourceHelper;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeSchema;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 public abstract class ModuleClazzClazzBase implements IModuleClazz {
 

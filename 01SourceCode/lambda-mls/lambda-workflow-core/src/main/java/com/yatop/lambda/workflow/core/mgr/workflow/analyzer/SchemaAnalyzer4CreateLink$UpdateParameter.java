@@ -1,61 +1,37 @@
 package com.yatop.lambda.workflow.core.mgr.workflow.analyzer;
 
-import com.yatop.lambda.core.enums.LambdaExceptionEnum;
-import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
-import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeInputPort;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.NodeOutputPort;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.*;
 
-public class SchemaAnalyzer4CreateAndUpdate {
+public class SchemaAnalyzer4CreateLink$UpdateParameter {
 
-    private static void analyzeOneNode(WorkflowContext workflowContext, Node currentNode, boolean isIgnoreUpstreamAnalyzed, Deque<Node> analyzeStack, Deque<Node> analyzePendingStack) {
+    private static void analyzeOneNode(WorkflowContext workflowContext, Node currentNode, boolean ignoreUpstreamAnalyzed, Deque<Node> analyzeStack, Deque<Node> analyzePendingStack) {
 
         if(DataUtil.isNull(currentNode) || !currentNode.needAnalyzeSchema())
             return;
 
-        if(!currentNode.isHeadNode()) {
+        if(!currentNode.isHeadNode() && !ignoreUpstreamAnalyzed) {
             TreeMap<Long, NodeOutputPort> upstreamPorts = workflowContext.fetchUpstreamPorts(currentNode);
-            for (NodeInputPort inputDataPort : currentNode.getInputDataTablePorts()) {
-                //仅对必须输入端口的上游端口状态做分析判断
-                if (inputDataPort.getCmptChar().isRequired()) {
-                    NodeOutputPort upstreamDataPort = CollectionUtil.get(upstreamPorts, inputDataPort.data().getNodePortId());
-                    if (DataUtil.isNotNull(upstreamDataPort)) {
-                        if (!upstreamDataPort.isDataTablePort())
-                            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Schema Analyzer error -- Illegal upstream node port.", "系统数据异常，请联系管理员", upstreamDataPort.data(), inputDataPort.data());
+            if (DataUtil.isNotEmpty(upstreamPorts)) {
+                for (NodeOutputPort outputPort : CollectionUtil.toList(upstreamPorts)) {
 
-                        //isIgnoreUpstreamAnalyzed=true，或上游端口已分析，必须输入端口的上游端口schema state不是normal时，直接更改为empty
-                        if (isIgnoreUpstreamAnalyzed || upstreamDataPort.isAnalyzed()) {
-                            if (!upstreamDataPort.getSchema().isStateNormal()) {
-                                currentNode.changeSchemas2Empty();
-                                currentNode.markAnalyzed();
-                                SchemaAnalyzerHelper.searchDownstreamNodes(workflowContext, currentNode, analyzeStack);
-                                return;
-                            }
-
-                            //必须输入端口的上游端口schema state为normal时，继续确认下一必须输入端口的上游端口状况
-                            continue;
-                        } else {
-                            //isIgnoreUpstreamAnalyzed=false，以及上游必须输入端口未分析，转入pending队列
-                            CollectionUtil.offerLast(analyzePendingStack, currentNode);
-                            return;
-                        }
-                    } else {
-                        //必须输入端口无对应数据流入时，无需分析该节点
+                    if (outputPort.isDataTablePort() && !outputPort.isAnalyzed()) {
+                        //ignoreUpstreamAnalyzed=false，且上游输入端口存在未分析，转入pending队列
+                        CollectionUtil.offerLast(analyzePendingStack, currentNode);
                         return;
                     }
                 }
             }
         }
 
-
         SchemaAnalyzerHelper.analyzeSchema(workflowContext, currentNode);
         currentNode.markAnalyzed();
-        SchemaAnalyzerHelper.searchDownstreamNodes(workflowContext, currentNode, analyzeStack);
+        SchemaAnalyzerHelper.searchDownstreamNodes(workflowContext, currentNode, analyzeStack, false);
     }
 
     private static void analyzeStackNodes(WorkflowContext workflowContext, Deque<Node> analyzeStack, Deque<Node> analyzePendingStack) {

@@ -37,8 +37,8 @@ import java.util.*;
 @Service
 public class EditorService {
 
-    private static String READ$DATA$TABLE_TABLENAME_CHARID = "tableName";
-    private static String READ$MODEL_MODELID_CHAR_ID = "modelId";
+    private static String READ$DATA$TABLE_TABLENAME_CHARCODE = "tableName";
+    private static String READ$MODEL_MODELID_CHARCODE = "modelId";
 
     @Autowired
     WorkflowEditUtil workflowEditUtil;
@@ -223,9 +223,9 @@ public class EditorService {
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(workflow, operId);
             Node node = nodeCreate.createNode(workflowContext, module, posX, posY);
 
-            //TODO 修改节点参数：数据表名 - READ$DATA$TABLE_TABLENAME_CHARID
+            //TODO 修改节点参数：数据表名 - READ$DATA$TABLE_TABLENAME_CHARCODE
             parameterCharValueUpdate.updateParameter(workflowContext,
-                    node, node.getParameterByCharCode(READ$DATA$TABLE_TABLENAME_CHARID), tableName);
+                    node, node.getParameterByCharCode(READ$DATA$TABLE_TABLENAME_CHARCODE), tableName);
 
             workflowContext.flush();
             workflowContext.clearSkipNodes();
@@ -252,9 +252,9 @@ public class EditorService {
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(workflow, operId);
             Node node = nodeCreate.createNode(workflowContext, module, posX, posY);
 
-            //TODO 修改节点参数：模型ID - READ$MODEL_MODELID_CHAR_ID
+            //TODO 修改节点参数：模型ID - READ$MODEL_MODELID_CHARCODE
             parameterCharValueUpdate.updateParameter(workflowContext,
-                    node, node.getParameterByCharCode(READ$MODEL_MODELID_CHAR_ID), String.valueOf(modelId));
+                    node, node.getParameterByCharCode(READ$MODEL_MODELID_CHARCODE), String.valueOf(modelId));
 
             workflowContext.flush();
             workflowContext.clearSkipNodes();
@@ -268,7 +268,7 @@ public class EditorService {
 
     //批量更新实验工作流节点位置
     @Transactional
-    public void batchUpdateWorkflowNodePostion(Long[] nodeIds, Long[] posXs, Long[] posYs, String operId) {
+    public void batchUpdateWorkflowNodePosition(Long[] nodeIds, Long[] posXs, Long[] posYs, String operId) {
 
         for(int i = 0; i < nodeIds.length; i++) {
             NodeHelper.updateNodePosition(nodeIds[i], posXs[i], posYs[i], operId);

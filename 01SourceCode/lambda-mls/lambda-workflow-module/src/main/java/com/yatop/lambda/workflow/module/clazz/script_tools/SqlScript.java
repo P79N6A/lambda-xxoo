@@ -74,7 +74,7 @@ public class SqlScript extends ModuleClazzClazzBase {
     }
 
     @Override
-    public TreeMap<CmptChar, NodeSchema> analyzeSchema(WorkflowContext workflowContext, Node node) {
+    public TreeMap<CmptChar, NodeSchema> analyzeSchema(WorkflowContext workflowContext, Node node, TreeMap<CmptChar, NodeSchema> upstreamSchemas) {
         return null;
     }
 }
