@@ -21,19 +21,18 @@ public class JobContentAnalyzer4RunAll {
         if(DataUtil.isEmpty(allHeadNodes))
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- no executable nodes.", "无可运行节点");
 
-        TreeSet<Node> jobHeadNodes = new TreeSet<Node>();
+        TreeSet<Node> jobStartNodes = new TreeSet<Node>();
+        TreeSet<Node> jobSubNodes = new TreeSet<Node>();
         Deque<Node> analyzeStack = new LinkedList<Node>();
         for(Node headNode : allHeadNodes) {
-            CollectionUtil.add(jobHeadNodes, headNode);
+            CollectionUtil.add(jobStartNodes, headNode);
             CollectionUtil.offerLast(analyzeStack, headNode);
         }
-
-        TreeSet<Node> jobSubNodes = new TreeSet<Node>();
         analyzeDownstreamNodes(workflowContext, analyzeStack, jobSubNodes);
-        List<TreeSet<Node>> jobContent = new ArrayList<TreeSet<Node>>(2);
-        jobContent.add(jobHeadNodes);
-        jobContent.add(jobSubNodes);
-        return jobContent;
+        List<TreeSet<Node>> initialJobContent = new ArrayList<TreeSet<Node>>(2);
+        initialJobContent.add(jobStartNodes);
+        initialJobContent.add(jobSubNodes);
+        return initialJobContent;
     }
 
     private static void analyzeDownstreamNodes(WorkflowContext workflowContext, Deque<Node> analyzeStack, TreeSet<Node> jobSubNodes) {
@@ -46,29 +45,30 @@ public class JobContentAnalyzer4RunAll {
 
     private static void searchDownstreamNodes(WorkflowContext workflowContext, Node currentNode, Deque<Node> analyzeStack, TreeSet<Node> jobSubNodes) {
 
-        if(DataUtil.isNull(currentNode) || currentNode.isTailNode())
+        if(DataUtil.isNull(currentNode) || CollectionUtil.contains(jobSubNodes, currentNode))
             return;
 
-        for(NodeOutputPort outputPort : currentNode.getOutputNodePorts()) {
-            List<Node> downstreamNodes = workflowContext.fetchDownstreamNodes(outputPort);
-            if(DataUtil.isNotEmpty(downstreamNodes)) {
-                for (Node downstreamNode : downstreamNodes) {
-                    if(downstreamNode.isStateNotReady()) {
-                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", downstreamNode.data().getWarningMsg(), downstreamNode.data());
-                    }
+        if(currentNode.inputNodePortCount() > 0) {
+            for (NodeOutputPort outputPort : currentNode.getOutputNodePorts()) {
+                List<Node> downstreamNodes = workflowContext.fetchDownstreamNodes(outputPort);
+                if (DataUtil.isNotEmpty(downstreamNodes)) {
+                    for (Node downstreamNode : downstreamNodes) {
+                        if (downstreamNode.isStateNotReady()) {
+                            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", downstreamNode.data().getWarningMsg(), downstreamNode.data());
+                        }
 
-                    if(!isUpstreamNodeExecutionConditionReady(workflowContext, downstreamNode))
-                        continue;
+                        if (!isUpstreamNodeExecutionConditionReady(workflowContext, downstreamNode))
+                            continue;
 
-                    if(!CollectionUtil.contains(jobSubNodes, downstreamNode)) {
-                        CollectionUtil.add(jobSubNodes, downstreamNode);
-                        if(!downstreamNode.isTailNode()) {
+                        if (!CollectionUtil.contains(jobSubNodes, downstreamNode)) {
                             CollectionUtil.offerLast(analyzeStack, downstreamNode);
                         }
                     }
                 }
             }
         }
+
+        CollectionUtil.add(jobSubNodes, currentNode);
     }
 
     private static boolean isUpstreamNodeExecutionConditionReady(WorkflowContext workflowContext, Node currentNode) {

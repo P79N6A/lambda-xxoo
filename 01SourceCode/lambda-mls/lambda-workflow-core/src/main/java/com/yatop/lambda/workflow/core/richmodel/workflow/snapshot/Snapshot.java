@@ -43,6 +43,8 @@ public class Snapshot extends RichModel<WfSnapshot> {
     private TreeMap<Long, Node> nodes = new TreeMap<Long, Node>();
     private TreeMap<Long, NodeLink> links = new TreeMap<Long, NodeLink>();
 
+    private Workflow javaObjectWorkflow;
+
     //用于快照创建
     public static Snapshot BuildSnapshot4Create(WfSnapshot data) {
         Snapshot snapshot = new Snapshot(data, true);
@@ -85,10 +87,14 @@ public class Snapshot extends RichModel<WfSnapshot> {
         workflow.clear();
         CollectionUtil.clear(nodes);
         CollectionUtil.clear(links);
+        javaObjectWorkflow = null;
         super.clear();
     }
 
     public void syncSnapshot2WorkflowContext(WorkflowContext workflowContext) {
+
+        /*if(javaObjectWorkflow != workflowContext.getWorkflow())\
+            return;*/
 
         if(this.nodeCount() > 0) {
             for(Node node : this.getNodes()) {
@@ -119,6 +125,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
         this.project = workflowContext.getProject().toJSON();
         this.experiment = workflowContext.getExperiment().toJSON();
         this.workflow = workflowContext.getWorkflow().toJSON();
+        this.javaObjectWorkflow = workflowContext.getWorkflow();
 
         if(workflowContext.nodeCount() > 0) {
             for(Node node : workflowContext.getNodes()) {
@@ -220,6 +227,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
             this.project = jsonContent.getJSONObject(SNAPSHOT_CONTENT_KEY_PROJECT);
             this.experiment = jsonContent.getJSONObject(SNAPSHOT_CONTENT_KEY_EXPERIMENT);
             this.workflow = jsonContent.getJSONObject(SNAPSHOT_CONTENT_KEY_WORKFLOW);
+            this.javaObjectWorkflow = new Workflow(workflow.toJavaObject(WfFlow.class), new Experiment(experiment.toJavaObject(EmExperiment.class), new Project(project.toJavaObject(PrProject.class))));
             JSONArray jsonNodes = jsonContent.getJSONArray(SNAPSHOT_CONTENT_KEY_NODES);
             JSONArray jsonLinks = jsonContent.getJSONArray(SNAPSHOT_CONTENT_KEY_LINKS);
 
@@ -303,7 +311,7 @@ public class Snapshot extends RichModel<WfSnapshot> {
     }
 
     public Workflow getWorkflow() {
-        return new Workflow(workflow.toJavaObject(WfFlow.class), new Experiment(experiment.toJavaObject(EmExperiment.class), new Project(project.toJavaObject(PrProject.class))));
+        return javaObjectWorkflow;
     }
 
     public int nodeCount() {

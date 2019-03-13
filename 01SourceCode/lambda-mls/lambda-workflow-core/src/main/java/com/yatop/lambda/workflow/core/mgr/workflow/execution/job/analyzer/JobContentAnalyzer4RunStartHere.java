@@ -24,7 +24,7 @@ public class JobContentAnalyzer4RunStartHere {
 
         checkUpstreamNodeExecutionConditionReady(workflowContext, relatedNode);
 
-        TreeSet<Node> jobHeadNodes = new TreeSet<Node>() {{ add(relatedNode); }};
+        TreeSet<Node> jobStartNodes = new TreeSet<Node>() {{ add(relatedNode); }};
         TreeSet<Node> jobSubNodes = new TreeSet<Node>();
         Deque<Node> analyzeStack = new LinkedList<Node>() {{ add(relatedNode); }};
         analyzeDownstreamNodes(workflowContext, analyzeStack, jobSubNodes);
@@ -34,7 +34,7 @@ public class JobContentAnalyzer4RunStartHere {
         }
 
         List<TreeSet<Node>> jobContent = new ArrayList<TreeSet<Node>>(2);
-        jobContent.add(jobHeadNodes);
+        jobContent.add(jobStartNodes);
         jobContent.add(jobSubNodes);
         return jobContent;
     }
@@ -49,26 +49,27 @@ public class JobContentAnalyzer4RunStartHere {
 
     private static void searchDownstreamNodes(WorkflowContext workflowContext, Node currentNode, Deque<Node> analyzeStack, TreeSet<Node> jobSubNodes) {
 
-        if(DataUtil.isNull(currentNode) || currentNode.isTailNode())
+        if(DataUtil.isNull(currentNode) || CollectionUtil.contains(jobSubNodes, currentNode))
             return;
 
-        for(NodeOutputPort outputPort : currentNode.getOutputNodePorts()) {
-            List<Node> downstreamNodes = workflowContext.fetchDownstreamNodes(outputPort);
-            if(DataUtil.isNotEmpty(downstreamNodes)) {
-                for (Node downstreamNode : downstreamNodes) {
-                    if(downstreamNode.isStateNotReady()) {
-                        throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", downstreamNode.data().getWarningMsg(), downstreamNode.data());
-                    }
+        if(currentNode.inputNodePortCount() > 0) {
+            for(NodeOutputPort outputPort : currentNode.getOutputNodePorts()) {
+                List<Node> downstreamNodes = workflowContext.fetchDownstreamNodes(outputPort);
+                if(DataUtil.isNotEmpty(downstreamNodes)) {
+                    for (Node downstreamNode : downstreamNodes) {
+                        if(downstreamNode.isStateNotReady()) {
+                            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Analyze job content failed -- node not ready.", downstreamNode.data().getWarningMsg(), downstreamNode.data());
+                        }
 
-                    if(!CollectionUtil.contains(jobSubNodes, downstreamNode)) {
-                        CollectionUtil.add(jobSubNodes, downstreamNode);
-                        if(!downstreamNode.isTailNode()) {
+                        if (!CollectionUtil.contains(jobSubNodes, downstreamNode)) {
                             CollectionUtil.offerLast(analyzeStack, downstreamNode);
                         }
                     }
                 }
             }
         }
+
+        CollectionUtil.add(jobSubNodes, currentNode);
     }
 
     private static void checkUpstreamNodeExecutionConditionReady(WorkflowContext workflowContext, Node currentNode) {

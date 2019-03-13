@@ -22,8 +22,8 @@ import java.util.Map;
 
 public class ExecutionJob extends RichModel<WfExecutionJob> {
 
-    private static String JOB_CONTENT_KEY_WAIT_HEAD_NODES = "@@@WaitHeadNodes";
-    private static String JOB_CONTENT_KEY_WAIT_NODES = "@@@WaitNodes";
+    private static String JOB_CONTENT_KEY_WAIT_START_NODES = "@@@WaitStartNodes";
+    private static String JOB_CONTENT_KEY_WAIT_SUB_NODES = "@@@WaitSubNodes";
     private static String JOB_CONTENT_KEY_PENDING_NODES = "@@@PendingNodes";
   //private static String JOB_CONTENT_KEY_PREPARING_NODES = "@@@PreparingNodes";
   //private static String JOB_CONTENT_KEY_READY_NODES = "@@@ReadyNodes";
@@ -34,8 +34,8 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
 
     private Snapshot snapshot;
 
-    private TreeSet<Node> waitHeadNodes = new TreeSet<Node>();
-    private TreeSet<Node> waitNodes = new TreeSet<Node>();
+    private TreeSet<Node> waitStartNodes = new TreeSet<Node>();
+    private TreeSet<Node> waitSubNodes = new TreeSet<Node>();
     private TreeSet<Node> pendingNodes = new TreeSet<Node>();
   //private TreeMap<Node, Long> preparingNodes = new TreeMap<Node, Long>();
   //private TreeMap<Node, Long> readyNodes = new TreeMap<Node, Long>();
@@ -76,20 +76,20 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
         super.clear();
     }
 
-    private void initJobContent(WorkflowContext workflowContext, List<TreeSet<Node>> jobContent) {
+    private void initJobContent(WorkflowContext workflowContext, List<TreeSet<Node>> initialJobContent) {
 
-        if(DataUtil.isNull(jobContent) || jobContent.size() != 2 || DataUtil.isEmpty(jobContent.get(0))) {
+        if(DataUtil.isNull(initialJobContent) || initialJobContent.size() != 2 || DataUtil.isEmpty(initialJobContent.get(0))) {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Initialize job content failed -- empty content error.", "作业内容为空", workflowContext.getWorkflow().data());
         }
 
-        waitHeadNodes = jobContent.get(0);
-        waitNodes = jobContent.get(1);
+        waitStartNodes = initialJobContent.get(0);
+        waitSubNodes = initialJobContent.get(1);
 
-        for(Node node : waitHeadNodes) {
+        for(Node node : waitStartNodes) {
             node.changeState2Preparing();
         }
 
-        for(Node node : waitNodes) {
+        for(Node node : waitSubNodes) {
             node.changeState2Preparing();
         }
     }
@@ -97,8 +97,8 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
     public void flushJobContent() {
 
         JSONObject jsonContent = new JSONObject(8, true);
-        JSONArray jsonWaitHeadNodes = this.toJSONArray(waitHeadNodes);
-        JSONArray jsonWaitNodes = this.toJSONArray(waitNodes);
+        JSONArray jsonWaitHeadNodes = this.toJSONArray(waitStartNodes);
+        JSONArray jsonWaitNodes = this.toJSONArray(waitSubNodes);
         JSONArray jsonPendingNodes = this.toJSONArray(pendingNodes);
       //JSONObject jsonPreparingNodes = this.toJSONObject(this.preparingNodes);
       //JSONObject jsonReadyNodes = this.toJSONObject(this.readyNodes);
@@ -107,8 +107,8 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
         JSONObject jsonErrorNodes = this.toJSONObject(this.errorNodes);
         JSONObject jsonTerminatedNodes = this.toJSONObject(this.terminatedNodes);
 
-        jsonContent.put(JOB_CONTENT_KEY_WAIT_HEAD_NODES, jsonWaitHeadNodes);
-        jsonContent.put(JOB_CONTENT_KEY_WAIT_NODES, jsonWaitNodes);
+        jsonContent.put(JOB_CONTENT_KEY_WAIT_START_NODES, jsonWaitHeadNodes);
+        jsonContent.put(JOB_CONTENT_KEY_WAIT_SUB_NODES, jsonWaitNodes);
         jsonContent.put(JOB_CONTENT_KEY_PENDING_NODES, jsonPendingNodes);
       //jsonContent.put(JOB_CONTENT_KEY_PREPARING_NODES, jsonPreparingNodes);
       //jsonContent.put(JOB_CONTENT_KEY_READY_NODES, jsonReadyNodes);
@@ -151,8 +151,8 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
         try {
 
             JSONObject jsonContent = JSONObject.parseObject(this.data().getJobContent());
-            JSONArray jsonWaitHeadNodes = jsonContent.getJSONArray(JOB_CONTENT_KEY_WAIT_HEAD_NODES);
-            JSONArray jsonWaitNodes = jsonContent.getJSONArray(JOB_CONTENT_KEY_WAIT_NODES);
+            JSONArray jsonWaitHeadNodes = jsonContent.getJSONArray(JOB_CONTENT_KEY_WAIT_START_NODES);
+            JSONArray jsonWaitNodes = jsonContent.getJSONArray(JOB_CONTENT_KEY_WAIT_SUB_NODES);
             JSONArray jsonPendingNodes = jsonContent.getJSONArray(JOB_CONTENT_KEY_PENDING_NODES);
           //JSONObject jsonPreparingNodes = jsonContent.getJSONObject(JOB_CONTENT_KEY_PREPARING_NODES);
           //JSONObject jsonReadyNodes = jsonContent.getJSONObject(JOB_CONTENT_KEY_READY_NODES);
@@ -161,8 +161,8 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
             JSONObject jsonErrorNodes = jsonContent.getJSONObject(JOB_CONTENT_KEY_ERROR_NODES);
             JSONObject jsonTerminatedNodes = jsonContent.getJSONObject(JOB_CONTENT_KEY_TERMINATED_NODES);
 
-            this.parseJSONArray(workflowContext, jsonWaitHeadNodes, this.waitHeadNodes);
-            this.parseJSONArray(workflowContext, jsonWaitNodes, this.waitNodes);
+            this.parseJSONArray(workflowContext, jsonWaitHeadNodes, this.waitStartNodes);
+            this.parseJSONArray(workflowContext, jsonWaitNodes, this.waitSubNodes);
             this.parseJSONArray(workflowContext, jsonPendingNodes, this.pendingNodes);
           //this.parseJSONObject(workflowContext, jsonPreparingNodes, this.preparingNodes);
           //this.parseJSONObject(workflowContext, jsonReadyNodes, this.readyNodes);
@@ -312,12 +312,12 @@ public class ExecutionJob extends RichModel<WfExecutionJob> {
         return JobTypeEnum.enableFlushWorkflow(JobTypeEnum.valueOf(this.data().getJobType()));
     }
 
-    public TreeSet<Node> getWaitHeadNodes() {
-        return waitHeadNodes;
+    public TreeSet<Node> getWaitStartNodes() {
+        return waitStartNodes;
     }
 
-    public TreeSet<Node> getWaitNodes() {
-        return waitNodes;
+    public TreeSet<Node> getWaitSubNodes() {
+        return waitSubNodes;
     }
 
     public TreeSet<Node> getPendingNodes() {

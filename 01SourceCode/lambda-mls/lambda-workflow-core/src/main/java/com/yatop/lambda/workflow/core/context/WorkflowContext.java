@@ -51,6 +51,8 @@ public class WorkflowContext implements IWorkContext {
     private TreeMap<Long, Node> addNodes = new TreeMap<Long, Node>();      //删除节点，key=nodeId
     private TreeMap<Long, NodeLink> addLinks = new TreeMap<Long, NodeLink>();  //删除节点链接，key=linkId
 
+    private TreeMap<Long, Node> relatedNodes = new TreeMap<Long, Node>(); //添加链接、删除节点和删除链接等编辑操作，影响到的相关节点
+
     private Deque<Node> analyzeNodes = new LinkedList<Node>();      //待分析节点，key=nodeId
     private Deque<NodeLink> analyzeLinks = new LinkedList<NodeLink>();  //待分析节点链接，key=linkId
     private String operId;
@@ -205,6 +207,8 @@ public class WorkflowContext implements IWorkContext {
         CollectionUtil.clear(addNodes);
         CollectionUtil.clear(addLinks);
 
+        CollectionUtil.clear(relatedNodes);
+
         CollectionUtil.clear(analyzeNodes);
         CollectionUtil.clear(analyzeLinks);
     }
@@ -229,12 +233,12 @@ public class WorkflowContext implements IWorkContext {
         }
 
         if(this.isExecutionWorkMode()) {
-            /*if(tasks.size() > 0) {
+            if(tasks.size() > 0) {
                 for(ExecutionTask task : CollectionUtil.toList(tasks)) {
                     if(task.data().getOwnerJobId().equals(currentJob.data().getJobId()))
                         task.flush(this.getOperId());
                 }
-            }*/
+            }
             this.getCurrentJob().flush(this);
         }
     }
@@ -259,7 +263,10 @@ public class WorkflowContext implements IWorkContext {
         this.putAddLink(link);
         this.workflow.changeState2Draft();
         this.markAnalyzeWithCreateLink(link);
-        AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, this.fetchDownstreamNode(link));
+
+        Node downstreamNode = this.fetchDownstreamNode(link);
+        AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, downstreamNode);
+        this.putRelatedNode(downstreamNode);
     }
 
     public void doneUpdateNodeParameter(Node node, NodeParameter parameter) {
@@ -276,16 +283,6 @@ public class WorkflowContext implements IWorkContext {
         this.putDeleteNode(node);
         this.workflow.changeState2Draft();
         this.markAnalyzeWithDeleteNode(node);
-
-        //TreeMap<Long, List<Node>> downstreamNodes = this.fetchDownstreamNodes(node);
-        TreeMap<Long, List<Node>> downstreamNodes = this.getDownstreamNodes(node);
-        if(DataUtil.isNotEmpty(downstreamNodes)) {
-            for (List<Node> chainList : CollectionUtil.toList(downstreamNodes)) {
-                for(Node downstreamNode : chainList) {
-                    AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, downstreamNode);
-                }
-            }
-        }
     }
 
     public void doneRecoverNode(Node node) {
@@ -297,7 +294,10 @@ public class WorkflowContext implements IWorkContext {
         this.putDeleteLink(link);
         this.workflow.changeState2Draft();
         this.markAnalyzeWithDeleteLink(link);
-        AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, this.fetchDownstreamNode(link));
+
+        Node downstreamNode = this.fetchDownstreamNode(link);
+        AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, downstreamNode);
+        this.putRelatedNode(downstreamNode);
     }
 
     /*
@@ -381,6 +381,9 @@ public class WorkflowContext implements IWorkContext {
     }
 
     private void markAnalyzeWithDeleteLink(NodeLink link) {
+        if(this.isAnalyzeWithDeleteNode())
+            return;
+
         //TODO 对于异常情况是否抛出错误
         if(this.isAnalyzeWithNone() || this.isAnalyzeWithDeleteLink()) {
             this.schemaAnalyze = AnalyzeTypeEnum.DELETE_LINK;
@@ -876,6 +879,22 @@ public class WorkflowContext implements IWorkContext {
         }
     }
 
+    public void putInputPort(NodeInputPort inputPort) {
+        if(CollectionUtil.containsKey(inputPorts, inputPort.data().getNodePortId()))
+            return;
+
+        CollectionUtil.put(inputPorts, inputPort.data().getNodePortId(), inputPort);
+    }
+
+    public void putOutputPort(NodeOutputPort outputPort) {
+        if(CollectionUtil.containsKey(outputPorts, outputPort.data().getNodePortId()))
+            return;
+
+        CollectionUtil.put(outputPorts, outputPort.data().getNodePortId(), outputPort);
+    }
+
+    //////////////////////////////////
+
     public List<Node> getDeleteNodes() {
         return CollectionUtil.toList(deleteNodes);
     }
@@ -898,40 +917,47 @@ public class WorkflowContext implements IWorkContext {
         CollectionUtil.put(deleteLinks, link.data().getLinkId(), link);
     }
 
+    //////////////////////////////////
+
     public List<Node> getAddNodes() {
-        return CollectionUtil.toList(deleteNodes);
+        return CollectionUtil.toList(addNodes);
     }
 
     private void putAddNode(Node node) {
-        if(CollectionUtil.containsKey(deleteNodes, node.data().getNodeId()))
+        if(CollectionUtil.containsKey(addNodes, node.data().getNodeId()))
             return;
 
-        CollectionUtil.put(deleteNodes, node.data().getNodeId(), node);
+        CollectionUtil.put(addNodes, node.data().getNodeId(), node);
     }
 
     public List<NodeLink> getAddLinks() {
-        return CollectionUtil.toList(deleteLinks);
+        return CollectionUtil.toList(addLinks);
     }
 
     private void putAddLink(NodeLink link) {
-        if(CollectionUtil.containsKey(deleteLinks, link.data().getLinkId()))
+        if(CollectionUtil.containsKey(addLinks, link.data().getLinkId()))
             return;
 
-        CollectionUtil.put(deleteLinks, link.data().getLinkId(), link);
+        CollectionUtil.put(addLinks, link.data().getLinkId(), link);
     }
 
-    public void putInputPort(NodeInputPort inputPort) {
-        if(CollectionUtil.containsKey(inputPorts, inputPort.data().getNodePortId()))
-            return;
+    /////////////////////////////////////
 
-        CollectionUtil.put(inputPorts, inputPort.data().getNodePortId(), inputPort);
+    public List<Node> getRelatedNodes() {
+        return CollectionUtil.toList(relatedNodes);
     }
 
-    public void putOutputPort(NodeOutputPort outputPort) {
-        if(CollectionUtil.containsKey(outputPorts, outputPort.data().getNodePortId()))
+    private void putRelatedNode(Node node) {
+        if(CollectionUtil.containsKey(relatedNodes, node.data().getNodeId()))
             return;
 
-        CollectionUtil.put(outputPorts, outputPort.data().getNodePortId(), outputPort);
+        if(CollectionUtil.containsKey(addNodes, node.data().getNodeId()))
+            return;
+
+        if(CollectionUtil.containsKey(deleteNodes, node.data().getNodeId()))
+            return;
+
+        CollectionUtil.put(relatedNodes, node.data().getNodeId(), node);
     }
 
     /*
@@ -939,14 +965,6 @@ public class WorkflowContext implements IWorkContext {
      * Other Section
      *
      */
-
-/*    public int analyzeNodeCount() {
-        return analyzeNodes.size();
-    }
-
-    public int analyzeLinkCount() {
-        return analyzeLinks.size();
-    }*/
 
     public void pushAnalyzeNode(Node node) {
         CollectionUtil.offerLast(analyzeNodes, node);
@@ -963,36 +981,4 @@ public class WorkflowContext implements IWorkContext {
     public NodeLink popAnalyzeLink() {
         return CollectionUtil.pollLast(analyzeLinks);
     }
-
-/*    public void clearAnalyzeNodes() {
-        CollectionUtil.clear(analyzeNodes);
-    }
-
-    public void clearAnalyzeLinks() {
-        CollectionUtil.clear(analyzeLinks);
-    }*/
-
-/*    public void eraseNode(Node node) {
-
-        for(NodeInputPort inputNodePort : node.getInputNodePorts()) {
-            List<NodeLink> nodeLinks = this.getInLinks(inputNodePort.data().getNodePortId());
-            if(DataUtil.isNotEmpty(nodeLinks)) {
-                for(NodeLink link : nodeLinks)
-                    CollectionUtil.remove(links, link.data().getLinkId());
-                CollectionUtil.remove(inputLinks, inputNodePort.data().getNodePortId());
-            }
-            CollectionUtil.remove(inputPorts, inputNodePort.data().getNodePortId());
-        }
-
-        for(NodeOutputPort outputNodePort : node.getOutputNodePorts()) {
-            List<NodeLink> nodeLinks = this.getOutLinks(outputNodePort.data().getNodePortId());
-            if(DataUtil.isNotEmpty(nodeLinks)) {
-                for(NodeLink link : nodeLinks)
-                    CollectionUtil.remove(links, link.data().getLinkId());
-                CollectionUtil.remove(outputLinks, outputNodePort.data().getNodePortId());
-            }
-            CollectionUtil.remove(outputPorts, outputNodePort.data().getNodePortId());
-        }
-        CollectionUtil.remove(nodes, node.data().getNodeId());
-    }*/
 }

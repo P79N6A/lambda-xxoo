@@ -22,10 +22,10 @@ public class JobContentAnalyzer4RunThisNode {
 
         checkUpstreamNodeExecutionConditionReady(workflowContext, relatedNode);
 
-        TreeSet<Node> jobHeadNodes = new TreeSet<Node>() {{ add(relatedNode); }};
+        TreeSet<Node> jobStartNodes = new TreeSet<Node>() {{ add(relatedNode); }};
         TreeSet<Node> jobSubNodes = new TreeSet<Node>();
         List<TreeSet<Node>> jobContent = new ArrayList<TreeSet<Node>>(2);
-        jobContent.add(jobHeadNodes);
+        jobContent.add(jobStartNodes);
         jobContent.add(jobSubNodes);
         return jobContent;
     }

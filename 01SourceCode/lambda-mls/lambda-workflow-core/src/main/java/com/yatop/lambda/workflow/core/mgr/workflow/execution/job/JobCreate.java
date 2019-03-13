@@ -35,8 +35,8 @@ public class JobCreate {
 
     private ExecutionJob createJob(WorkflowContext workflowContext, JobTypeEnum jobType, Node relatedNode, Date jobTime) {
 
-        List<TreeSet<Node>> jobContent = JobContentAnalyzer.analyzeJobContent(workflowContext, jobType, relatedNode);
-        if(DataUtil.isNull(jobContent) || jobContent.size() != 2 || DataUtil.isEmpty(jobContent.get(0)))  {
+        List<TreeSet<Node>> initialJobContent = JobContentAnalyzer.analyzeJobContent(workflowContext, jobType, relatedNode);
+        if(DataUtil.isNull(initialJobContent) || initialJobContent.size() != 2 || DataUtil.isEmpty(initialJobContent.get(0)))  {
             throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create job content failed -- no executable nodes.", "无可运行节点");
         }
 
@@ -62,15 +62,17 @@ public class JobCreate {
         job.setJobLocalDir(WorkDirectoryUtil.getJobLocalDirectory(experiment.data().getOwnerProjectId(), workflow.data().getFlowId(), job.getJobId()));
         //executionJobMgr.updateJob(job, workflowContext.getOperId());
 
-        ExecutionJob richJob = ExecutionJob.BuildExecutionJob4Create(job, workflowContext, snapShot, jobContent);
+        ExecutionJob richJob = ExecutionJob.BuildExecutionJob4Create(job, workflowContext, snapShot, initialJobContent);
         workflow.lockWorkflow(String.format("工作流作业运行加锁 - %d", richJob.data().getJobId()));
         workflow.changeState2Preparing();
 
         JobQueueHelper.pushJobToQueue(richJob, workflowContext.getOperId());
         richJob.changeState2Queueing();
 
+        //flush workflowContext, execution job, execution snapshot
         workflowContext.flush();
         richJob.flush(workflowContext);
+        workflowContext.clear();
         return richJob;
     }
 

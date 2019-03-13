@@ -331,6 +331,8 @@ public class EditorService {
             workflowContext.flush();
 
             List<NodeLink> deleteNodeLinks = workflowContext.getDeleteLinks();
+
+
             //workflowContext.clearSkipNodeLinks();
             workflowEditUtil.releaseWorkflowResource();
             return workflowContext;
@@ -342,7 +344,7 @@ public class EditorService {
 
     //撤销删除实验工作流节点
     @Transactional
-    public List<Node> recoverDeleteWorkflowNodes(EmExperiment experiment, String operId) {
+    public WorkflowContext recoverDeleteWorkflowNodes(EmExperiment experiment, String operId) {
 
         Workflow workflow = WorkflowHelper.queryWorkflow(new Experiment(experiment));
 
@@ -353,9 +355,9 @@ public class EditorService {
 
             List<Node> recoverNodes = nodeRecover.recoverNodes(workflowContext);
             workflowContext.flush();
-            workflowContext.clearSkipNodes();
+            //workflowContext.clearSkipNodes();
             workflowEditUtil.releaseWorkflowResource();
-            return recoverNodes;
+            return workflowContext;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
             throw exception;
@@ -383,7 +385,7 @@ public class EditorService {
 
     //添加实验工作流节点链接
     @Transactional
-    public NodeLink createWorkflowNodeLink(EmExperiment experiment, Long srcNodeId, Long dstNodeId, Long srcNodePortId, Long dstNodePortId, String operId) {
+    public WorkflowContext createWorkflowNodeLink(EmExperiment experiment, Long srcNodeId, Long dstNodeId, Long srcNodePortId, Long dstNodePortId, String operId) {
 
         Workflow workflow = WorkflowHelper.queryWorkflow(new Experiment(experiment));
 
@@ -393,9 +395,9 @@ public class EditorService {
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(workflow, operId);
             NodeLink nodeLink = linkCreate.createLink(workflowContext, srcNodeId, dstNodeId, srcNodePortId, dstNodePortId);
             workflowContext.flush();
-            workflowContext.clearSkipNodeLinks();
+            //workflowContext.clearSkipNodeLinks();
             workflowEditUtil.releaseWorkflowResource();
-            return nodeLink;
+            return workflowContext;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
             throw exception;
