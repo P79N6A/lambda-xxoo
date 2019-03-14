@@ -1,0 +1,91 @@
+模块类别
+data-source：数据源节点（源头节点）
+model-source：模型源节点（源头节点）
+process：计算节点
+model-algorithm：模型算法节点（源头结点）
+model-training：模型训练节点（计算节点）
+model-prediction：模型预测节点（计算节点）
+model-evaluation：模型评估节点（计算节点，模型评估报告）
+tune-hyperparameter：模型调参节点（计算节点，自动调参报告）
+cross-validation：交叉验证节点（计算节点，交叉验证报告）
+statistical-analytics：统计分析节点（计算节点，统计分析报告）
+generate-rules：生成规则节点（计算节点，生成规则报告）
+
+通用节点 - 菜单：编辑<重命名，删除，复制>，输出端口<数据表[查看、保存]，模型[查看、保存、导出PMML]>
+源头节点 - 菜单：运行<从此处开始执行>，无日志，无报告
+计算节点 - 菜单：运行<从此处开始执行、执行到此处、执行该节点>，有日志，按节点种类提供报告菜单项
+
+
+
+
+sourceTableNameInput，来源表全名输入框，数据库代码 + 表名，字符串数据类型，具体行为待定
+writeTableNameInput，写入表名称输入框，字符串数据类型，具体行为待定
+
+sqlModeCodeMirror，sql脚本代码编辑器
+inputDataTableVariableDisplay，输入数据表变量显示框
+
+singleInputColumnSelect，单输入列选择框，单个列选择弹窗
+mutipleInputColumnSelect，多输入列选择框，多个列选择弹窗
+joinConditionColumnSelect，连接条件列选择框，左右连接条件列选择弹窗
+
+leftInputColumnsSelect，左边输入列选择框，多个列选择弹窗
+rightInputColumnsSelect，右边输入列选择框，多个列选择弹窗
+
+tableColumnInfo，表字段信息，暂不提供
+
+value@tuningParameterInput，调参类型单值输入框
+complex@tuningParameterInput，调参类型复合输入框
+
+select，单选下拉框，适用于枚举限定的特征，通常为字符串数据类型
+singleCheckBox，单个复选框，适用于布尔值数据类型
+number，整数值输入框
+float，浮点数输入框
+string，字符串输入框
+textarea，多行文本输入框
+
+
+feature tab（字段设置）
+
+parameter tab （参数设置）
+
+optimize parameter tab （执行调优）
+
+
+常规处理，每个控件可映射一个特征，控件之间设置控制行为 fromId, toId, value, action<reload, show, hide>
+
+
+=================================================
+
+moduleId
+
+controls
+
+parameters
+
+=================================================
+
+{
+	"value": 100,
+	"tune_range": {
+		"start": 100,
+		"end": 1000
+	},
+	"tune_udps": [50, 100, 200, 1000]
+}
+
+ctrlType: value@tuneParameter | complex@tuneParameter
+onChange: turn2TuneRange
+onChange: turn2TuneUdps
+
+
+自定义参数（turn2TuneUdps）
+网格搜索（turn2TuneRange）
+随机搜索（turn2TuneRange）
+启发式搜索（turn2TuneUdps）
+
+
+64位整数调参类型
+字符串
+64位整数调参类型
+64位整数调参类型
+双精度浮点数调参类型
