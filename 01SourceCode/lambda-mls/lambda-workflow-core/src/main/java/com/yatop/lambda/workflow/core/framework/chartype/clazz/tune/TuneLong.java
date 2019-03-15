@@ -3,7 +3,7 @@ package com.yatop.lambda.workflow.core.framework.chartype.clazz.tune;
 import com.alibaba.fastjson.JSONObject;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 
 import java.util.ArrayList;

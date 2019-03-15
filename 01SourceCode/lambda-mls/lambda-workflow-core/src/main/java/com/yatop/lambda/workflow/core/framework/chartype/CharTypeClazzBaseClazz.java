@@ -23,7 +23,7 @@ public abstract class CharTypeClazzBaseClazz implements ICharTypeClazz {
             try {
                 Class.forName(clazzPath).newInstance();
             } catch (Throwable e) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Initialize Char-Type-Clazz bean failed.", "工作流组件配置错误，请联系管理员", e);
+                return null;
             }
 
             clazzBean = CollectionUtil.get(CLAZZ_BEANS, clazzPath);

@@ -2,7 +2,7 @@ package com.yatop.lambda.workflow.core.framework.chartype.clazz.json;
 
 import com.alibaba.fastjson.JSONArray;
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 
 public class JsonArray extends JsonGeneric {

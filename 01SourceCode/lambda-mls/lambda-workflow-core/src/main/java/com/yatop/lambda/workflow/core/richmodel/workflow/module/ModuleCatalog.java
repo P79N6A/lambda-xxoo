@@ -1,19 +1,19 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.module;
 
 import com.google.common.collect.TreeMultimap;
-import com.yatop.lambda.base.model.WfModuleCatalog;
+import com.yatop.lambda.base.model.WfCfgModuleCatalog;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.List;
 
-public class ModuleCatalog extends RichModel<WfModuleCatalog> implements Comparable<ModuleCatalog> {
+public class ModuleCatalog extends RichModel<WfCfgModuleCatalog> implements Comparable<ModuleCatalog> {
 
     private TreeMultimap<Integer, ModuleCatalog> childCatalogs = TreeMultimap.create();     //下级目录按序号排序
     private TreeMultimap<Integer, Module> childModules = TreeMultimap.create();     //工作流组件按序号排序
 
-    public ModuleCatalog(WfModuleCatalog data) {
+    public ModuleCatalog(WfCfgModuleCatalog data) {
         super(data);
     }
 

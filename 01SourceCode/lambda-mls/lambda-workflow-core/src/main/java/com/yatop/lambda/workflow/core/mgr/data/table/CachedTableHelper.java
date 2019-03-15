@@ -2,15 +2,12 @@ package com.yatop.lambda.workflow.core.mgr.data.table;
 
 import com.yatop.lambda.base.model.DwDataTable;
 import com.yatop.lambda.core.enums.*;
-import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.table.DataTableMgr;
 import com.yatop.lambda.core.utils.DataTableFileUtil;
-import com.yatop.lambda.core.utils.DataTableNameUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataTable;
-import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;

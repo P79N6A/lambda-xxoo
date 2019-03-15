@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 
 public class HdfsUtilsTest {
 
@@ -96,4 +97,41 @@ public class HdfsUtilsTest {
         HdfsUtils hdfsUtil = new HdfsUtils("hdfs://192.168.20.41:8020", "root");
         hdfsUtil.writeFile("测试", "/tmp/crh3/crh/crh3/test.txt", true);
     }
+
+    @Test
+    public void readParquet() throws InterruptedException, IOException, URISyntaxException {
+//        Map<String, List<String[]>> parquetInfo = HdfsUtils.readParquet("file:\\F:\\yatop\\projects\\yatop-ai\\yatop-ai3\\lambda-mls-component\\lambda-component\\src\\main\\testDataSet\\yatop_train", 2);
+//        for (String[] cols: parquetInfo.get("head")){
+//            for(String col: cols){
+//                System.out.println(col);
+//            }
+//        }
+//
+//        for (String[] cols: parquetInfo.get("data")){
+//            for(String col: cols){
+//                System.out.println(col);
+//            }
+//        }
+
+        Map<String, Object> parquetInfo2 = HdfsUtils.readParquet("hdfs://192.168.20.41:8020/tmp/test/yatop_train22", 2);
+//        for (String[] cols: (List<String[]>) parquetInfo2.get("head")){
+//            for(String col: cols){
+//                System.out.println(col);
+//            }
+//        }
+//
+//        for (Map<String, String> colMap: (List<Map<String, String>>) parquetInfo2.get("records")){
+//            for(String col: colMap.keySet()){
+//                System.out.println(col);
+//            }
+//            for(String value: colMap.values()){
+//                System.out.println(value);
+//            }
+//
+//        }
+
+        System.out.println(JSONObject.toJSONString(parquetInfo2));
+
+    }
+
 }

@@ -1,7 +1,7 @@
 package com.yatop.lambda.workflow.core.framework.chartype.clazz.basic;
 
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 
 public final class BasicString extends BasicGeneric {

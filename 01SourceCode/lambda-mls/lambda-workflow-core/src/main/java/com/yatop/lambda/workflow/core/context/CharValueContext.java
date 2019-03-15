@@ -3,9 +3,9 @@ package com.yatop.lambda.workflow.core.context;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
-import com.yatop.lambda.workflow.core.richmodel.component.Component;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.Component;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.specification.CmptSpec;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 
 public class CharValueContext implements IWorkContext {

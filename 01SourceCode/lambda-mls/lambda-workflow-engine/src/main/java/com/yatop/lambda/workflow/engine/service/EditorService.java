@@ -189,7 +189,7 @@ public class EditorService {
 
     //添加实验工作流节点
     @Transactional
-    public Node createWorkflowNode(EmExperiment experiment, Long moduleId, Long posX, Long posY, String operId) {
+    public WorkflowContext createWorkflowNode(EmExperiment experiment, Long moduleId, Long posX, Long posY, String operId) {
 
         Module module = workflowEditUtil.findWorkflowModule(moduleId);
         Workflow workflow = WorkflowHelper.queryWorkflow(new Experiment(experiment));
@@ -200,9 +200,8 @@ public class EditorService {
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(workflow, operId);
             Node node = nodeCreate.createNode(workflowContext, module, posX, posY);
             workflowContext.flush();
-            workflowContext.clearSkipNodes();
             workflowEditUtil.releaseWorkflowResource();
-            return node;
+            return workflowContext;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
             throw exception;
@@ -211,7 +210,7 @@ public class EditorService {
 
     //添加实验工作流节点（指定数据表名）
     @Transactional
-    public Node createWorkflowNode4ReadTable(EmExperiment experiment, String tableName, Long posX, Long posY, String operId) {
+    public WorkflowContext createWorkflowNode4ReadTable(EmExperiment experiment, String tableName, Long posX, Long posY, String operId) {
 
         //读数据表的ModuleId为1
         Module module = workflowEditUtil.findWorkflowModule(1L);
@@ -228,9 +227,8 @@ public class EditorService {
                     node, node.getParameterByCharCode(READ$DATA$TABLE_TABLENAME_CHARCODE), tableName);
 
             workflowContext.flush();
-            workflowContext.clearSkipNodes();
             workflowEditUtil.releaseWorkflowResource();
-            return node;
+            return workflowContext;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
             throw exception;
@@ -240,7 +238,7 @@ public class EditorService {
 
     //添加实验工作流节点（指定模型ID）
     @Transactional
-    public Node createWorkflowNode4ReadModel(EmExperiment experiment, Long modelId, Long posX, Long posY, String operId) {
+    public WorkflowContext createWorkflowNode4ReadModel(EmExperiment experiment, Long modelId, Long posX, Long posY, String operId) {
 
         //读模型的ModuleId为2
         Module module = workflowEditUtil.findWorkflowModule(2L);
@@ -257,9 +255,8 @@ public class EditorService {
                     node, node.getParameterByCharCode(READ$MODEL_MODELID_CHARCODE), String.valueOf(modelId));
 
             workflowContext.flush();
-            workflowContext.clearSkipNodes();
             workflowEditUtil.releaseWorkflowResource();
-            return node;
+            return workflowContext;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
             throw exception;
@@ -301,7 +298,6 @@ public class EditorService {
 
             linkCreate.createLink4CopyNodes(workflowContext, nodeIndexTable);
             workflowContext.flush();
-            //workflowContext.clearSkipNodes();
             workflowEditUtil.releaseWorkflowResource();
             return workflowContext;
         } catch (Throwable exception) {
@@ -331,9 +327,6 @@ public class EditorService {
             workflowContext.flush();
 
             List<NodeLink> deleteNodeLinks = workflowContext.getDeleteLinks();
-
-
-            //workflowContext.clearSkipNodeLinks();
             workflowEditUtil.releaseWorkflowResource();
             return workflowContext;
         } catch (Throwable exception) {
@@ -355,7 +348,6 @@ public class EditorService {
 
             List<Node> recoverNodes = nodeRecover.recoverNodes(workflowContext);
             workflowContext.flush();
-            //workflowContext.clearSkipNodes();
             workflowEditUtil.releaseWorkflowResource();
             return workflowContext;
         } catch (Throwable exception) {
@@ -395,7 +387,6 @@ public class EditorService {
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(workflow, operId);
             NodeLink nodeLink = linkCreate.createLink(workflowContext, srcNodeId, dstNodeId, srcNodePortId, dstNodePortId);
             workflowContext.flush();
-            //workflowContext.clearSkipNodeLinks();
             workflowEditUtil.releaseWorkflowResource();
             return workflowContext;
         } catch (Throwable exception) {
@@ -443,7 +434,6 @@ public class EditorService {
 
             linkDelete.deleteLink(workflowContext, targetLink);
             workflowContext.flush();
-            //workflowContext.clear();
             workflowEditUtil.releaseWorkflowResource();
             return workflowContext;
         } catch (Throwable exception) {
@@ -486,7 +476,7 @@ public class EditorService {
 
     //更新实验工作流节点参数值
     @Transactional
-    public Node updateWorkflowNodeParameter(EmExperiment experiment, Long nodeId, String paramCode, String paramValue, String operId) {
+    public WorkflowContext updateWorkflowNodeParameter(EmExperiment experiment, Long nodeId, String paramCode, String paramValue, String operId) {
 
         Workflow workflow = WorkflowHelper.queryWorkflow(new Experiment(experiment));
 
@@ -498,9 +488,8 @@ public class EditorService {
             NodeParameter nodeParameter = workflowEditUtil.findWorkflowNodeParameter(node, paramCode);
             parameterCharValueUpdate.updateParameter(workflowContext, node, nodeParameter, paramValue);
             workflowContext.flush();
-            workflowContext.clearSkipNodes();
             workflowEditUtil.releaseWorkflowResource();
-            return node;
+            return workflowContext;
         } catch (Throwable exception) {
             workflowEditUtil.releaseWorkflowResource();
             throw exception;

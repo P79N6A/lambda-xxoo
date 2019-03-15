@@ -1,9 +1,9 @@
 package com.yatop.lambda.workflow.core.config;
 
-import com.yatop.lambda.workflow.core.richmodel.component.CmptAlgorithm;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CharType;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.CmptAlgorithm;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CharType;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.specification.CmptSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,11 +25,11 @@ public class ComponentConfigHelper {
         return COMPONENT_CONFIG.getAlgorithmByCode(algorithmCode);
     }
 
-    public static com.yatop.lambda.workflow.core.richmodel.component.Component getComponent(String cmptId) {
+    public static com.yatop.lambda.workflow.core.richmodel.workflow.component.Component getComponent(String cmptId) {
         return COMPONENT_CONFIG.getComponent(cmptId);
     }
 
-    public static com.yatop.lambda.workflow.core.richmodel.component.Component getComponentByCode(String cmptCode) {
+    public static com.yatop.lambda.workflow.core.richmodel.workflow.component.Component getComponentByCode(String cmptCode) {
         return COMPONENT_CONFIG.getComponentByCode(cmptCode);
     }
 

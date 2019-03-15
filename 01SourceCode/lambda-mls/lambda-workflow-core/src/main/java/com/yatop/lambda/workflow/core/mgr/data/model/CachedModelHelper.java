@@ -7,7 +7,7 @@ import com.yatop.lambda.core.mgr.model.ModelMgr;
 import com.yatop.lambda.core.utils.ModelFileUtil;
 import com.yatop.lambda.workflow.core.context.CharValueContext;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.model.Model;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
@@ -69,7 +69,7 @@ public class CachedModelHelper {
         model.data().setModelNameColoured(true);
         model.data().setRefAlgorithmIdColoured(true);
         model.data().setModelFileSizeColoured(true);
-        model.data().setTrainTableIdColoured(true);
+        //model.data().setTrainTableIdColoured(true);
         model.data().setTrainCostTimeColoured(true);
         model.data().setModelState(ModelStateEnum.NORMAL.getState());
         MODEL_MGR.updateModel(model.data(), workflowContext.getOperId());
@@ -82,7 +82,7 @@ public class CachedModelHelper {
         Model model = context.getCharValue().getModel();
 
         model.data().setModelFileSize(null);
-        model.data().setTrainTableId(null);
+        //model.data().setTrainTableId(null);
         model.data().setTrainCostTime(null);
         model.data().setModelState(ModelStateEnum.EMPTY.getState());
         MODEL_MGR.updateModel(model.data(), workflowContext.getOperId());

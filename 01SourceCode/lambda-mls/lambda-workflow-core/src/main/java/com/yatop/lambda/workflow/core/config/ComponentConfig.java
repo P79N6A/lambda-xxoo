@@ -2,26 +2,26 @@ package com.yatop.lambda.workflow.core.config;
 
 import com.yatop.lambda.base.model.*;
 import com.yatop.lambda.core.enums.*;
-import com.yatop.lambda.core.mgr.component.AlgorithmMgr;
-import com.yatop.lambda.core.mgr.component.CmptCharValueMgr;
-import com.yatop.lambda.core.mgr.component.CmptSpecRelMgr;
-import com.yatop.lambda.core.mgr.component.ComponentMgr;
-import com.yatop.lambda.core.mgr.component.characteristic.CharEnumMgr;
-import com.yatop.lambda.core.mgr.component.characteristic.CharacteristicMgr;
-import com.yatop.lambda.core.mgr.component.characteristic.CharTypeMgr;
-import com.yatop.lambda.core.mgr.component.characteristic.CharTypeWildMgr;
-import com.yatop.lambda.core.mgr.component.specification.SpecCharRelMgr;
-import com.yatop.lambda.core.mgr.component.specification.SpecCharValueMgr;
-import com.yatop.lambda.core.mgr.component.specification.SpecificationMgr;
+import com.yatop.lambda.core.mgr.workflow.component.AlgorithmMgr;
+import com.yatop.lambda.core.mgr.workflow.component.CmptCharValueMgr;
+import com.yatop.lambda.core.mgr.workflow.component.CmptSpecRelMgr;
+import com.yatop.lambda.core.mgr.workflow.component.ComponentMgr;
+import com.yatop.lambda.core.mgr.workflow.component.characteristic.CharOptionMgr;
+import com.yatop.lambda.core.mgr.workflow.component.characteristic.CharacteristicMgr;
+import com.yatop.lambda.core.mgr.workflow.component.characteristic.CharTypeMgr;
+import com.yatop.lambda.core.mgr.workflow.component.characteristic.CharTypeWildMgr;
+import com.yatop.lambda.core.mgr.workflow.component.specification.SpecCharRelMgr;
+import com.yatop.lambda.core.mgr.workflow.component.specification.SpecCharValueMgr;
+import com.yatop.lambda.core.mgr.workflow.component.specification.SpecificationMgr;
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.workflow.core.richmodel.component.CmptAlgorithm;
-import com.yatop.lambda.workflow.core.richmodel.component.CmptCharValue;
-import com.yatop.lambda.workflow.core.richmodel.component.Component;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CharType;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CharEnum;
-import com.yatop.lambda.workflow.core.richmodel.component.specification.CmptSpec;
-import com.yatop.lambda.workflow.core.richmodel.component.specification.SpecCharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.CmptAlgorithm;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.CmptCharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.Component;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CharType;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CharOption;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.specification.CmptSpec;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.specification.SpecCharValue;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +64,7 @@ public class ComponentConfig implements InitializingBean {
     private CharacteristicMgr characteristicMgr;
 
     @Autowired
-    private CharEnumMgr charEnumMgr;
+    private CharOptionMgr charOptionMgr;
 
     @Autowired
     private CharTypeMgr charTypeMgr;
@@ -140,13 +140,13 @@ public class ComponentConfig implements InitializingBean {
 
     private void loadCharTypeConfig() {
         long wildTypeCounter = 0;
-        List<CfCharType> typeList = charTypeMgr.queryCharType();
+        List<WfCfgCharType> typeList = charTypeMgr.queryCharType();
         if(DataUtil.isEmpty(typeList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic type configuration."));
             System.exit(-1);
         }
 
-        for(CfCharType type : typeList) {
+        for(WfCfgCharType type : typeList) {
             CharType richType = new CharType(type);
 
             IsWildTypeEnum wildTypeEnum = IsWildTypeEnum.valueOf(richType.data().getIsWildtype());
@@ -169,13 +169,13 @@ public class ComponentConfig implements InitializingBean {
         typeList.clear();
 
         if(wildTypeCounter > 0) {
-            List<CfCharTypeWild> matchTypeList = charTypeWildMgr.queryCharTypeWild();
+            List<WfCfgCharTypeWild> matchTypeList = charTypeWildMgr.queryCharTypeWild();
             if (DataUtil.isEmpty(matchTypeList)) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic type wild match configuration."));
                 System.exit(-1);
             }
 
-            for (CfCharTypeWild match : matchTypeList) {
+            for (WfCfgCharTypeWild match : matchTypeList) {
                 CharType targetCharType = ALL_CHARACTERISTIC_TYPES.get(match.getDstCharTypeId());
                 if (DataUtil.isNull(targetCharType)) {
                     logger.error(String.format("Loading component configuration occurs fatal error -- Destination port characteristic type not found:\n%s.", DataUtil.toPrettyJSONString(match)));
@@ -239,13 +239,13 @@ public class ComponentConfig implements InitializingBean {
     private void loadCharacteristicConfig() {
         long enumCharCounter = 0L;
 
-        List<CfCharacteristic> charList = characteristicMgr.queryCharacteristic();
+        List<WfCfgCharacteristic> charList = characteristicMgr.queryCharacteristic();
         if(DataUtil.isEmpty(charList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic configuration."));
             System.exit(-1);
         }
 
-        for(CfCharacteristic cmptChar : charList) {
+        for(WfCfgCharacteristic cmptChar : charList) {
 
             CharType charType =  ALL_CHARACTERISTIC_TYPES.get(cmptChar.getCharType());
             if(DataUtil.isNull(charType)) {
@@ -299,34 +299,34 @@ public class ComponentConfig implements InitializingBean {
         charList.clear();
 
         if(enumCharCounter > 0) {
-            List<CfCharEnum> enumList = charEnumMgr.queryCharEnum();
-            if(DataUtil.isEmpty(enumList)) {
-                logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic enumeration configuration."));
+            List<WfCfgCharOption> optionList = charOptionMgr.queryCharEnum();
+            if(DataUtil.isEmpty(optionList)) {
+                logger.error(String.format("Loading component configuration occurs fatal error -- Empty characteristic option configuration."));
                 System.exit(-1);
             }
 
-            for(CfCharEnum charEnum : enumList) {
-                CharEnum richCharEnum = new CharEnum(charEnum);
-                CmptChar cmptChar = ALL_CHARACTERISTICS.get(richCharEnum.data().getCharId());
+            for(WfCfgCharOption charEnum : optionList) {
+                CharOption richCharOption = new CharOption(charEnum);
+                CmptChar cmptChar = ALL_CHARACTERISTICS.get(richCharOption.data().getCharId());
                 if(DataUtil.isNotNull(cmptChar)) {
-                    cmptChar.putEnum(richCharEnum);
+                    cmptChar.putOption(richCharOption);
                 } else {
                     logger.error(String.format("Loading component configuration occurs fatal error -- Owner characteristic not found:\n%s.", DataUtil.toPrettyJSONString(charEnum)));
                     System.exit(-1);
                 }
             }
-            enumList.clear();
+            optionList.clear();
         }
     }
 
     private void loadSpecificationConfig() {
-        List<CfSpecification> specList = specificationMgr.querySpecification();
+        List<WfCfgSpecification> specList = specificationMgr.querySpecification();
         if(DataUtil.isEmpty(specList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty specification configuration."));
             System.exit(-1);
         }
 
-        for(CfSpecification cmptSpec : specList) {
+        for(WfCfgSpecification cmptSpec : specList) {
             CmptSpec richSpec = new CmptSpec(cmptSpec);
             if(DataUtil.isNull(SpecTypeEnum.valueOf(richSpec.data().getSpecType()))) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Spec-Type:\n%s.", DataUtil.toPrettyJSONString(cmptSpec)));
@@ -337,13 +337,13 @@ public class ComponentConfig implements InitializingBean {
         }
         specList.clear();
 
-        List<CfSpecCharRel> specCharRelList = specCharRelMgr.querySpecCharRel();
+        List<WfCfgSpecCharRel> specCharRelList = specCharRelMgr.querySpecCharRel();
         if(DataUtil.isEmpty(specCharRelList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty Spec-Char-Rel configuration."));
             System.exit(-1);
         }
 
-        for(CfSpecCharRel rel : specCharRelList) {
+        for(WfCfgSpecCharRel rel : specCharRelList) {
             CmptSpec cmptSpec = ALL_SPECIFICATIONS.get(rel.getSpecId());
             if(DataUtil.isNull(cmptSpec)) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.toPrettyJSONString(rel)));
@@ -369,10 +369,10 @@ public class ComponentConfig implements InitializingBean {
         }
         specCharRelList.clear();
 
-        List<CfSpecCharValue> charValueList = specCharValueMgr.querySpecCharValue();
+        List<WfCfgSpecCharValue> charValueList = specCharValueMgr.querySpecCharValue();
         if (DataUtil.isNotEmpty(charValueList)) {
 
-            for (CfSpecCharValue value : charValueList) {
+            for (WfCfgSpecCharValue value : charValueList) {
                 CmptSpec cmptSpec = ALL_SPECIFICATIONS.get(value.getSpecId());
                 if (DataUtil.isNull(cmptSpec)) {
                     logger.error(String.format("Loading component configuration occurs fatal error -- Specification not found:\n%s.", DataUtil.toPrettyJSONString(value)));
@@ -400,13 +400,13 @@ public class ComponentConfig implements InitializingBean {
     }
 
     private void loadComponentConfig() {
-        List<CfAlgorithm> algorithmList = algorithmMgr.queryAlgorithm();
+        List<WfCfgAlgorithm> algorithmList = algorithmMgr.queryAlgorithm();
         if(DataUtil.isEmpty(algorithmList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty algorithm configuration."));
             System.exit(-1);
         }
 
-        for(CfAlgorithm algorithm : algorithmList) {
+        for(WfCfgAlgorithm algorithm : algorithmList) {
             CmptAlgorithm richAlgorithm = new CmptAlgorithm(algorithm);
             if (DataUtil.isNull(AlgorithmTypeEnum.valueOf(richAlgorithm.data().getAlgorithmType()))) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Algorithm-Type:\n%s.", DataUtil.toPrettyJSONString(algorithm)));
@@ -418,13 +418,13 @@ public class ComponentConfig implements InitializingBean {
         }
         algorithmList.clear();
 
-        List<CfComponent> componentList = componentMgr.queryComponent();
+        List<WfCfgComponent> componentList = componentMgr.queryComponent();
         if(DataUtil.isEmpty(componentList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty component configuration."));
             System.exit(-1);
         }
 
-        for(CfComponent component : componentList) {
+        for(WfCfgComponent component : componentList) {
             Component richComponent = new Component(component);
             if (DataUtil.isNull(CmptTypeEnum.valueOf(richComponent.data().getCmptType()))) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Unknown Cmpt-Type:\n%s.", DataUtil.toPrettyJSONString(component)));
@@ -444,13 +444,13 @@ public class ComponentConfig implements InitializingBean {
         }
         componentList.clear();
 
-        List<CfCmptSpecRel> cmptSpecRelList = cmptSpecRelMgr.queryCmptSpecRel();
+        List<WfCfgCmptSpecRel> cmptSpecRelList = cmptSpecRelMgr.queryCmptSpecRel();
         if(DataUtil.isEmpty(cmptSpecRelList)) {
             logger.error(String.format("Loading component configuration occurs fatal error -- Empty Cmpt-Spec-Rel configuration."));
             System.exit(-1);
         }
 
-        for(CfCmptSpecRel rel : cmptSpecRelList) {
+        for(WfCfgCmptSpecRel rel : cmptSpecRelList) {
             Component component = ALL_COMPONENTS.get(rel.getCmptId());
             if(DataUtil.isNull(component)) {
                 logger.error(String.format("Loading component configuration occurs fatal error -- Component not found:\n%s.", DataUtil.toPrettyJSONString(rel)));
@@ -476,10 +476,10 @@ public class ComponentConfig implements InitializingBean {
         }
         cmptSpecRelList.clear();
 
-        List<CfCmptCharValue> charValueList = cmptCharValueMgr.queryCmptCharValue();
+        List<WfCfgCmptCharValue> charValueList = cmptCharValueMgr.queryCmptCharValue();
         if (DataUtil.isNotEmpty(charValueList)) {
 
-            for (CfCmptCharValue value : charValueList) {
+            for (WfCfgCmptCharValue value : charValueList) {
                 Component component = ALL_COMPONENTS.get(value.getCmptId());
                 if (DataUtil.isNull(component)) {
                     logger.error(String.format("Loading component configuration occurs fatal error -- Component not found:\n%s.", DataUtil.toPrettyJSONString(value)));

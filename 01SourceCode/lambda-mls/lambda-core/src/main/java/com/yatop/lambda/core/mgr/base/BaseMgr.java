@@ -1,5 +1,8 @@
 package com.yatop.lambda.core.mgr.base;
 
+import com.yatop.lambda.base.model.WfCfgModulePropCtrl;
+import com.yatop.lambda.base.model.WfCfgModulePropCtrlRel;
+import com.yatop.lambda.base.model.WfCfgModulePropTab;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.yatop.lambda.base.mapper.*;
 
@@ -89,36 +92,43 @@ public class BaseMgr {
     protected SysParameterMapper sysParameterMapper;
 
     @Autowired
-    protected CfAlgorithmMapper cfAlgorithmMapper;
+    protected WfCfgAlgorithmMapper wfCfgAlgorithmMapper;
 
     @Autowired
-    protected CfCharTypeMapper cfCharTypeMapper;
+    protected WfCfgCharTypeMapper wfCfgCharTypeMapper;
     @Autowired
-    protected CfCharTypeWildMapper cfCharTypeWildMapper;
+    protected WfCfgCharTypeWildMapper wfCfgCharTypeWildMapper;
 
     @Autowired
-    protected CfCharEnumMapper cfCharEnumMapper;
+    protected WfCfgCharOptionMapper wfCfgCharOptionMapper;
     @Autowired
-    protected CfCharacteristicMapper cfCharacteristicMapper;
+    protected WfCfgCharacteristicMapper wfCfgCharacteristicMapper;
 
     @Autowired
-    protected CfSpecCharRelMapper cfSpecCharRelMapper;
+    protected WfCfgSpecCharRelMapper wfCfgSpecCharRelMapper;
     @Autowired
-    protected CfSpecCharValueMapper cfSpecCharValueMapper;
+    protected WfCfgSpecCharValueMapper wfCfgSpecCharValueMapper;
     @Autowired
-    protected CfSpecificationMapper cfSpecificationMapper;
+    protected WfCfgSpecificationMapper wfCfgSpecificationMapper;
 
     @Autowired
-    protected CfCmptSpecRelMapper cfCmptSpecRelMapper;
+    protected WfCfgCmptSpecRelMapper wfCfgCmptSpecRelMapper;
     @Autowired
-    protected CfCmptCharValueMapper cfCmptCharValueMapper;
+    protected WfCfgCmptCharValueMapper wfCfgCmptCharValueMapper;
     @Autowired
-    protected CfComponentMapper cfComponentMapper;
+    protected WfCfgComponentMapper wfCfgComponentMapper;
 
     @Autowired
-    protected WfModuleCatalogMapper wfModuleCatalogMapper;
+    protected WfCfgModuleCatalogMapper wfCfgModuleCatalogMapper;
     @Autowired
-    protected WfModuleMapper wfModuleMapper;
+    protected WfCfgModuleMapper wfCfgModuleMapper;
     @Autowired
-    protected WfModulePortMapper wfModulePortMapper;
+    protected WfCfgModulePortMapper wfCfgModulePortMapper;
+
+    @Autowired
+    protected WfCfgModulePropTabMapper wfCfgModulePropTabMapper;
+    @Autowired
+    protected WfCfgModulePropCtrlMapper wfCfgModulePropCtrlMapper;
+    @Autowired
+    protected WfCfgModulePropCtrlRelMapper wfCfgModulePropCtrlRelMapper;
 }

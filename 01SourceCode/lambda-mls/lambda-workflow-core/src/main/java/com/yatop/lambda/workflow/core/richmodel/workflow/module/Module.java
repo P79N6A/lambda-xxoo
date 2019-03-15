@@ -1,18 +1,17 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.module;
 
-import com.yatop.lambda.base.model.WfModule;
+import com.yatop.lambda.base.model.WfCfgModule;
 import com.yatop.lambda.core.enums.PortTypeEnum;
-import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
-import com.yatop.lambda.workflow.core.richmodel.component.Component;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.Component;
 import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.List;
 import java.util.TreeMap;
 
-public class Module extends RichModel<WfModule> implements Comparable<Module> {
+public class Module extends RichModel<WfCfgModule> implements Comparable<Module> {
 
     private Component component;    //关联计算组件
     private TreeMap<Long, ModulePort> inputPorts = new TreeMap<Long, ModulePort>();     //工作流组件输入端口
@@ -24,7 +23,9 @@ public class Module extends RichModel<WfModule> implements Comparable<Module> {
     private int inputDataTablePortCount = 0;
     private int outputDataTablePortCount = 0;
 
-    public Module(WfModule data, Component component) {
+    private ModulePropertyPage propertyPage;
+
+    public Module(WfCfgModule data, Component component) {
         super(data);
         this.component = component;
     }
@@ -147,5 +148,17 @@ public class Module extends RichModel<WfModule> implements Comparable<Module> {
 
     public IModuleClazz getModuleClazzBean() {
         return ClazzHelperUtil.getModuleClazzBean(this);
+    }
+
+    public String getModuleCategory() {
+        return this.data().getCategory();
+    }
+
+    public ModulePropertyPage getPropertyPage() {
+        return propertyPage;
+    }
+
+    public void setPropertyPage(ModulePropertyPage propertyPage) {
+        this.propertyPage = propertyPage;
     }
 }

@@ -5,8 +5,8 @@ import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.chartype.ICharTypeClazz;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.schema.NodeSchemaHelper;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CharType;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CharType;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
 
 public class NodeOutputPort extends RichModel<WfFlowNodePort> {

@@ -1,6 +1,6 @@
 package com.yatop.lambda.workflow.core.config;
 
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CharType;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CharType;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModuleCatalog;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
@@ -17,6 +17,15 @@ public class ModuleConfigHelper {
     @Autowired
     public void setModuleConfig(ModuleConfig moduleConfig) {
         MODULE_CONFIG = moduleConfig;
+    }
+
+
+    public static List<ModuleCatalog> getAllCatalogs() {
+        return MODULE_CONFIG.getAllCatalogs();
+    }
+
+    public List<Module> getAllCatalogModules() {
+        return MODULE_CONFIG.getAllCatalogModules();
     }
 
     public static ModuleCatalog getRootCatalog() {
@@ -39,7 +48,7 @@ public class ModuleConfigHelper {
         return MODULE_CONFIG.getModulePort(portId);
     }
 
-    public static List<CharType> getOutputPortsMatch() {
-        return MODULE_CONFIG.getOutputPortsMatch();
+    public static List<CharType> getOutputPortsMatchTable() {
+        return MODULE_CONFIG.getOutputPortsMatchTable();
     }
 }

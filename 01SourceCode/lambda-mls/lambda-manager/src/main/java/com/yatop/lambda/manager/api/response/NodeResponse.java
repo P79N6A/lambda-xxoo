@@ -2,8 +2,8 @@ package com.yatop.lambda.manager.api.response;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yatop.lambda.base.model.CfComponent;
-import com.yatop.lambda.base.model.WfModule;
+import com.yatop.lambda.base.model.WfCfgComponent;
+import com.yatop.lambda.base.model.WfCfgModule;
 import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
@@ -49,7 +49,7 @@ public class NodeResponse {
                 jnode.put("inPorts", inPorts);
                 jnode.put("outPorts", outPorts);
                 if (flag) {
-                    WfModule data = node.getModule().data();
+                    WfCfgModule data = node.getModule().data();
 
                     jnode.put("nodeState", node.data().getNodeState());
                     jnode.put("posX", node.data().getPositionX());

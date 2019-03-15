@@ -8,7 +8,7 @@ import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzer;
 import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzerHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.module.AnalyzeNodeStateHelper;
 import com.yatop.lambda.workflow.core.mgr.workflow.snapshot.SnapshotHelper;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.data.model.ModelWarehouse;
 import com.yatop.lambda.workflow.core.richmodel.experiment.Experiment;
@@ -276,6 +276,7 @@ public class WorkflowContext implements IWorkContext {
             this.markAnalyzeWithUpdateNodeParameter(node, parameter);
         }
         AnalyzeNodeStateHelper.analyzeInputPortAndParameter(this, node);
+        this.putRelatedNode(node);
     }
 
     public void doneDeleteNode(Node node) {

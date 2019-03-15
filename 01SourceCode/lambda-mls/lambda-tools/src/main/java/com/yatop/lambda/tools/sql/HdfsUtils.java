@@ -1,8 +1,16 @@
 package com.yatop.lambda.tools.sql;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
+import org.apache.parquet.avro.AvroParquetReader;
+import org.apache.parquet.example.data.Group;
+import org.apache.parquet.hadoop.ParquetReader;
+import org.apache.parquet.hadoop.example.GroupReadSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,9 +20,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class HdfsUtils {
     private static Logger logger = LoggerFactory.getLogger(HdfsUtils.class);
@@ -255,7 +261,70 @@ public class HdfsUtils {
         this.fileSystem.copyFromLocalFile(false, overwrite, new Path(localDir), new Path(hdfsDir));
     }
 
+    public static Map<String, Object> readParquet(String path, int maxLine) throws IOException {
+        Map<String, Object> parquetInfo=new HashMap<>();
+        List<String[]> dataList=new ArrayList<>();
+        List<Map<String, String>> recordList = new ArrayList<>();
 
+        Schema.Field[] fields = null;
+        String[] fieldNames = new String[0];
+        try (
+                ParquetReader<GenericRecord> reader = AvroParquetReader.<GenericRecord>builder(new Path(path)).build()
+
+//                ParquetReader<GenericData.Record> reader =
+//                        AvroParquetReader.<GenericData.Record>builder(new Path(path)).build()
+        ){
+            int  x=0;
+            GenericRecord record;
+            //解析Parquet数据逐行读取
+            while ((record = reader.read()) != null && x<maxLine) {
+                //读取第一行获取列头信息
+                if (fields == null) {
+                    final List<Schema.Field> fieldsList = record.getSchema().getFields();
+                    fieldNames = getFieldNames(fields = fieldsList.toArray(new Schema.Field[0]));
+//                    System.out.println("列头:"+String.join(",", fieldNames));
+                    dataList.add(fieldNames);
+                    parquetInfo.put("head",dataList);
+                    dataList=new ArrayList<>();
+                }
+                int i = 0;
+//                String[]dataString=new String[fieldNames.length];
+                Map<String, String> map = new LinkedHashMap<>();
+                //读取数据获取列头信息
+                for (final String fieldName : fieldNames) {
+                    String recordData= record.get(fieldName) == null? "NA": record.get(fieldName).toString();
+
+                    map.put(fieldName, recordData);
+//                    if(recordData.contains("type")){
+//                        List<HashMap> dataFormValue= JSONArray.parseArray(JSONObject.parseObject(recordData).get("values").toString(),HashMap.class);
+//                        StringBuilder datas = new StringBuilder();
+//                        for(HashMap data:dataFormValue){
+//                            datas.append(data.get("element").toString()).append(",");
+//                        }
+//                        datas.deleteCharAt(datas.length() - 1);
+//                        recordData=datas.toString();
+//                    }
+
+//                    dataString[i++] =recordData;
+                }
+//                dataList.add(dataString);
+                recordList.add(map);
+                ++x;
+            }
+        }
+//        parquetInfo.put("data",dataList);
+        parquetInfo.put("records", recordList);
+        return parquetInfo;
+    }
+
+    private static String[] getFieldNames(final Schema.Field[] fields) {
+        final String[] fieldNames = new String[fields.length];
+        int i = 0;
+        for (final Schema.Field field : fields) {
+            fieldNames[i++] = field.name();
+        }
+        return fieldNames;
+    }
 
 
 }

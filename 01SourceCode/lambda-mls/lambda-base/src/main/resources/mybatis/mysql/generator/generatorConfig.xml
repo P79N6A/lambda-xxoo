@@ -47,7 +47,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="em_experiment_open" >
+		<table tableName="wf_cfg_%" >
 			<property name="ignoreQualifiersAtRuntime" value="true" />
 		</table>
 

@@ -13,7 +13,7 @@ import com.yatop.lambda.workflow.core.framework.chartype.clazz.table.TableGeneri
 import com.yatop.lambda.workflow.core.framework.chartype.clazz.tune.TuneGeneric;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.data.model.Model;
 import com.yatop.lambda.workflow.core.richmodel.data.table.DataTable;
 import com.yatop.lambda.workflow.core.richmodel.data.unstructured.JsonAlgorithm;

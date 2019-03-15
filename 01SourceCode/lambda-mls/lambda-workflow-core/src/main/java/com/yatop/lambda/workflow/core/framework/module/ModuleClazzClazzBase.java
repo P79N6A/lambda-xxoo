@@ -8,6 +8,8 @@ import com.yatop.lambda.workflow.core.context.WorkflowContext;
 import com.yatop.lambda.workflow.core.mgr.workflow.node.output.OutputAndResourceHelper;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
@@ -23,7 +25,7 @@ public abstract class ModuleClazzClazzBase implements IModuleClazz {
             try {
                 Class.forName(clazzPath).newInstance();
             } catch (Throwable e) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Initialize Char-Type-Clazz bean failed.", "工作流组件配置错误，请联系管理员", e);
+                return null;
             }
 
             clazzBean = CollectionUtil.get(CLAZZ_BEANS, clazzPath);

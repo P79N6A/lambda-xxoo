@@ -1,22 +1,19 @@
 package com.yatop.lambda.workflow.core.config;
 
-import com.yatop.lambda.base.model.WfModule;
-import com.yatop.lambda.base.model.WfModuleCatalog;
-import com.yatop.lambda.base.model.WfModulePort;
+import com.yatop.lambda.base.model.*;
 import com.yatop.lambda.core.enums.ModuleTypeEnum;
 import com.yatop.lambda.core.enums.PortTypeEnum;
 import com.yatop.lambda.core.enums.SpecMaskEnum;
 import com.yatop.lambda.core.enums.SpecTypeEnum;
-import com.yatop.lambda.core.mgr.workflow.module.ModuleCatalogMgr;
-import com.yatop.lambda.core.mgr.workflow.module.ModuleMgr;
-import com.yatop.lambda.core.mgr.workflow.module.ModulePortMgr;
+import com.yatop.lambda.core.mgr.workflow.module.*;
 import com.yatop.lambda.core.utils.DataUtil;
-import com.yatop.lambda.workflow.core.richmodel.component.Component;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CharType;
-import com.yatop.lambda.workflow.core.richmodel.component.characteristic.CmptChar;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.Component;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CharType;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModuleCatalog;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePort;
+import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePropertyPage;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +21,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 public class ModuleConfig implements InitializingBean {
@@ -44,13 +38,26 @@ public class ModuleConfig implements InitializingBean {
     private ModulePortMgr modulePortMgr;
 
     @Autowired
+    private ModulePropCtrlMgr modulePropCtrlMgr;
+
+    @Autowired
+    private ModulePropCtrlRelMgr modulePropCtrlRelMgr;
+
+    @Autowired
+    private ModulePropTabMgr modulePropTabMgr;
+
+    @Autowired
     private ComponentConfig componentConfig;
 
-    private HashMap<Long, ModuleCatalog> ALL_MODULE_CATALOGS = new HashMap<Long, ModuleCatalog>();       //工作流组件目录
-    private HashMap<Long, Module> ALL_MODULES = new HashMap<Long, Module>();                             //工作流组件
+    private TreeMap<Long, ModuleCatalog> ALL_MODULE_CATALOGS = new TreeMap<Long, ModuleCatalog>();       //工作流组件目录
+    private TreeMap<Long, Module> ALL_MODULES = new TreeMap<Long, Module>();                             //工作流组件
     private HashMap<String, Module> ALL_MODULES_BY_CODE = new HashMap<String, Module>();                             //工作流组件（按组件代码）
     private HashMap<Long, ModulePort> ALL_MODULE_PORTS = new HashMap<Long, ModulePort>();         //工作流组件端口
-    private TreeMap<Integer, CharType> ALL_OUTPUT_PORTS_MATCH = new TreeMap<Integer, CharType>();   //key: charTypeId, 工作流组件输出端口特征类型的输入输出匹配
+    private TreeMap<Integer, CharType> ALL_OUTPUT_PORTS_MATCH_TABLE = new TreeMap<Integer, CharType>();   //key: charTypeId, 工作流组件输出端口特征类型的输入输出匹配
+
+    public List<ModuleCatalog> getAllCatalogs() {
+        return CollectionUtil.toList(ALL_MODULE_CATALOGS);
+    }
 
     public ModuleCatalog getRootCatalog() {
         return getCatalog(0L);
@@ -58,6 +65,15 @@ public class ModuleConfig implements InitializingBean {
 
     public ModuleCatalog getCatalog(Long catalogId) {
         return CollectionUtil.get(ALL_MODULE_CATALOGS, catalogId);
+    }
+
+    public List<Module> getAllCatalogModules() {
+        List<Module> vlist = new ArrayList<Module>(ALL_MODULES.size());
+        for(Map.Entry<Long, Module> entry : ALL_MODULES.entrySet()) {
+            if(entry.getValue().data().getCatalogId() > 0)
+                vlist.add(entry.getValue());
+        }
+        return vlist;
     }
 
     public Module getModule(Long moduleId) {
@@ -72,8 +88,8 @@ public class ModuleConfig implements InitializingBean {
         return CollectionUtil.get(ALL_MODULE_PORTS, portId);
     }
 
-    public List<CharType> getOutputPortsMatch() {
-        return CollectionUtil.toList(ALL_OUTPUT_PORTS_MATCH);
+    public List<CharType> getOutputPortsMatchTable() {
+        return CollectionUtil.toList(ALL_OUTPUT_PORTS_MATCH_TABLE);
     }
 
     @Override
@@ -84,13 +100,13 @@ public class ModuleConfig implements InitializingBean {
     public void loadModuleConfiguration() {
         //工作流组件目录
         {
-            List<WfModuleCatalog> catalogList = moduleCatalogMgr.queryModuleCatalog();
+            List<WfCfgModuleCatalog> catalogList = moduleCatalogMgr.queryModuleCatalog();
             if(DataUtil.isEmpty(catalogList)) {
                 logger.error(String.format("Loading module configuration occurs fatal error -- Empty module catalog configuration."));
                 System.exit(-1);
             }
 
-            for (WfModuleCatalog catalog : catalogList) {
+            for (WfCfgModuleCatalog catalog : catalogList) {
                 ModuleCatalog richCatalog = new ModuleCatalog(catalog);
                 ALL_MODULE_CATALOGS.put(richCatalog.data().getCatalogId(), richCatalog);
             }
@@ -110,13 +126,13 @@ public class ModuleConfig implements InitializingBean {
         }
         //工作流组件
         {
-            List<WfModule> moduleList = moduleMgr.queryModule();
+            List<WfCfgModule> moduleList = moduleMgr.queryModule();
             if(DataUtil.isEmpty(moduleList)) {
                 logger.error(String.format("Loading module configuration occurs fatal error -- Empty module configuration."));
                 System.exit(-1);
             }
 
-            for (WfModule module : moduleList) {
+            for (WfCfgModule module : moduleList) {
 
                 ModuleTypeEnum moduleTypeEnum = ModuleTypeEnum.valueOf(module.getModuleType());
                 if(DataUtil.isNull(moduleTypeEnum)) {
@@ -159,13 +175,13 @@ public class ModuleConfig implements InitializingBean {
         }
         //工作流组件端口
         {
-            List<WfModulePort> portList = modulePortMgr.queryModulePort();
+            List<WfCfgModulePort> portList = modulePortMgr.queryModulePort();
             if(DataUtil.isEmpty(portList)) {
                 logger.error(String.format("Loading module configuration occurs fatal error -- Empty module port configuration."));
                 System.exit(-1);
             }
 
-            for (WfModulePort port : portList) {
+            for (WfCfgModulePort port : portList) {
                 PortTypeEnum portTypeEnum = PortTypeEnum.valueOf(port.getPortType());
                 if(DataUtil.isNull(portTypeEnum)) {
                     logger.error(String.format("Loading module configuration occurs fatal error -- Error port type:\n%s.", DataUtil.toPrettyJSONString(port)));
@@ -211,8 +227,8 @@ public class ModuleConfig implements InitializingBean {
                             System.exit(-1);
                         }
                         module.putOutputPort(richPort);
-                        if(!CollectionUtil.containsKey(ALL_OUTPUT_PORTS_MATCH, richPort.getCmptChar().getType().data().getCharTypeId())) {
-                            ALL_OUTPUT_PORTS_MATCH.put(richPort.getCmptChar().getType().data().getCharTypeId(), richPort.getCmptChar().getType());
+                        if(!CollectionUtil.containsKey(ALL_OUTPUT_PORTS_MATCH_TABLE, richPort.getCmptChar().getType().data().getCharTypeId())) {
+                            ALL_OUTPUT_PORTS_MATCH_TABLE.put(richPort.getCmptChar().getType().data().getCharTypeId(), richPort.getCmptChar().getType());
                         }
                         break;
                     }
@@ -258,6 +274,31 @@ public class ModuleConfig implements InitializingBean {
 
                 module.initializeDataPortCount();
             }
+        }
+
+        //工作流组件属性页初始化
+        {
+
+
+            /*@Autowired
+            private ModulePropCtrlMgr modulePropCtrlMgr;
+
+            @Autowired
+            private ModulePropCtrlRelMgr modulePropCtrlRelMgr;
+
+            @Autowired
+            private ModulePropTabMgr modulePropTabMgr;*/
+
+            HashMap<Long, WfCfgModulePropTab> propTabs = new HashMap<>();
+            HashMap<Long, HashMap<Long, HashMap<Long, WfCfgModulePropCtrl>>> modulePropTabCtrls = new HashMap<Long, HashMap<Long, HashMap<Long, WfCfgModulePropCtrl>>>();
+
+
+            List<WfCfgModulePropTab> propertyTabs = modulePropTabMgr.queryModulePropTab();
+            List<WfCfgModulePropCtrl> propertyCtrls = modulePropCtrlMgr.queryModulePropCtrl();
+            List<WfCfgModulePropCtrlRel> propertyRelations = modulePropCtrlRelMgr.queryModulePropCtrlRel();
+
+
+
         }
     }
 }
