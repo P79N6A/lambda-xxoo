@@ -360,7 +360,7 @@ public class ModuleConfig implements InitializingBean {
                             HashMap<Long, WfCfgModulePropCtrl> ctrlIndex = second_entry.getValue();
 
                             for (Map.Entry<Long, WfCfgModulePropCtrl> third_entry : ctrlIndex.entrySet()) {
-                                ModulePropertyControl propertyControl = new ModulePropertyControl(third_entry.getValue());
+                                ModulePropertyControl propertyControl = new ModulePropertyControl(third_entry.getValue(), module.searchParameterByCode(third_entry.getValue().getBindCharCode()));
                                 propertyTab.putControl(propertyControl);
                             }
                             propertyPage.putTab(propertyTab);
