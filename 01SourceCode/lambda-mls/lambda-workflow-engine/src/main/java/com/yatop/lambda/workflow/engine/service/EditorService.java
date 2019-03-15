@@ -192,6 +192,10 @@ public class EditorService {
     public WorkflowContext createWorkflowNode(EmExperiment experiment, Long moduleId, Long posX, Long posY, String operId) {
 
         Module module = workflowEditUtil.findWorkflowModule(moduleId);
+        if(DataUtil.isNull(module)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Find workflow node failed -- module not exists.", "工作流组件不存在");
+        }
         Workflow workflow = WorkflowHelper.queryWorkflow(new Experiment(experiment));
 
         try {
@@ -214,6 +218,10 @@ public class EditorService {
 
         //读数据表的ModuleId为1
         Module module = workflowEditUtil.findWorkflowModule(1L);
+        if(DataUtil.isNull(module)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Find workflow node failed -- module not exists.", "工作流组件不存在");
+        }
         Workflow workflow = WorkflowHelper.queryWorkflow(new Experiment(experiment));
 
         try {
@@ -242,6 +250,10 @@ public class EditorService {
 
         //读模型的ModuleId为2
         Module module = workflowEditUtil.findWorkflowModule(2L);
+        if(DataUtil.isNull(module)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Find workflow node failed -- module not exists.", "工作流组件不存在");
+        }
         Workflow workflow = WorkflowHelper.queryWorkflow(new Experiment(experiment));
 
         try {
@@ -292,6 +304,10 @@ public class EditorService {
             HashMap<Long, Node> nodeIndexTable = new HashMap<Long, Node>(copyNodeIds.length);
             for(int i = 0; i < copyNodeIds.length; i++) {
                 Node copyNode = workflowContext.fetchNode(copyNodeIds[i]);
+                if(DataUtil.isNull(copyNode)) {
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                            "Find workflow node failed -- delete node not exists.", "复制节点不存在");
+                }
                 Node newNode = nodeCreate.copyNode4SameWorkflow(workflowContext, copyNode, posXs[i], posYs[i]);
                 CollectionUtil.put(nodeIndexTable, copyNode.data().getNodeId(), newNode);
             }
@@ -320,13 +336,15 @@ public class EditorService {
             List<Node> deleteNodes = new ArrayList<>(nodeIds.length);
             for(int i = 0; i < nodeIds.length; i++) {
                 Node deleteNode = workflowContext.fetchNode(nodeIds[i]);
+                if(DataUtil.isNull(deleteNode)) {
+                    throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                            "Find workflow node failed -- delete node not exists.", "删除节点不存在");
+                }
                 deleteNodes.add(deleteNode);
             }
 
             nodeDelete.deleteNodes(workflowContext, deleteNodes);
             workflowContext.flush();
-
-            List<NodeLink> deleteNodeLinks = workflowContext.getDeleteLinks();
             workflowEditUtil.releaseWorkflowResource();
             return workflowContext;
         } catch (Throwable exception) {
@@ -345,8 +363,7 @@ public class EditorService {
             workflowEditUtil.requestWorkflowResource(workflow);
             workflowEditUtil.detectWorkflowShareLock(workflow);
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(workflow, operId);
-
-            List<Node> recoverNodes = nodeRecover.recoverNodes(workflowContext);
+            nodeRecover.recoverNodes(workflowContext);
             workflowContext.flush();
             workflowEditUtil.releaseWorkflowResource();
             return workflowContext;
@@ -385,7 +402,7 @@ public class EditorService {
             workflowEditUtil.requestWorkflowResource(workflow);
             workflowEditUtil.detectWorkflowShareLock(workflow);
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(workflow, operId);
-            NodeLink nodeLink = linkCreate.createLink(workflowContext, srcNodeId, dstNodeId, srcNodePortId, dstNodePortId);
+            linkCreate.createLink(workflowContext, srcNodeId, dstNodeId, srcNodePortId, dstNodePortId);
             workflowContext.flush();
             workflowEditUtil.releaseWorkflowResource();
             return workflowContext;
@@ -406,15 +423,25 @@ public class EditorService {
             workflowEditUtil.detectWorkflowShareLock(workflow);
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(workflow, operId);
             Node upstreamNode = workflowContext.fetchNode(srcNodeId);
-            NodeOutputPort upstreamNodePort = workflowContext.fetchOutputPort(srcNodePortId);
-            if(DataUtil.isNull(upstreamNode.getOutputNodePort(srcNodePortId))) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Remove workflow node link failed -- source node error.", "输出节点信息错误", upstreamNode.data(), upstreamNodePort.data());
+            if(DataUtil.isNull(upstreamNode)) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                        "Find workflow node failed -- source node not exists.", "源头节点不存在");
+            }
+            NodeOutputPort upstreamNodePort = upstreamNode.getOutputNodePort(srcNodePortId);
+            if(DataUtil.isNull(upstreamNodePort)) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                        "Find workflow node failed -- source node port not exists.", "输出端口不存在");
             }
 
             Node downstreamNode = workflowContext.fetchNode(dstNodeId);
-            NodeInputPort downstreamNodePort = workflowContext.fetchInputPort(dstNodePortId);
-            if(DataUtil.isNull(downstreamNode.getInputNodePort(dstNodePortId))) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Remove workflow node link failed -- destination node error.", "输入节点信息错误", downstreamNode.data(), downstreamNodePort.data());
+            if(DataUtil.isNull(downstreamNode)) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                        "Find workflow node failed -- destination node not exists.", "目的节点不存在");
+            }
+            NodeInputPort downstreamNodePort = downstreamNode.getInputNodePort(dstNodePortId);
+            if(DataUtil.isNull(downstreamNodePort)) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                        "Find workflow node failed -- destination node port not exists.", "输入端口不存在");
             }
 
             List<NodeLink> outLinks = workflowContext.fetchOutLinks(upstreamNodePort);
@@ -429,7 +456,8 @@ public class EditorService {
             }
 
             if(DataUtil.isNull(targetLink)) {
-                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Remove workflow node link failed -- node link not exists.", "节点链接不存在", upstreamNodePort.data(), downstreamNodePort.data());
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                        "Remove workflow node link failed -- node link not exists.", "节点链接不存在", upstreamNodePort.data(), downstreamNodePort.data());
             }
 
             linkDelete.deleteLink(workflowContext, targetLink);
@@ -448,6 +476,10 @@ public class EditorService {
         Workflow workflow = WorkflowHelper.queryWorkflow(new Experiment(experiment));
         WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(workflow, operId);
         Node node = workflowContext.fetchNode(nodeId);
+        if(DataUtil.isNull(node)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Find workflow node failed -- node not exists.", "节点不存在");
+        }
         workflowContext.clearSkipNodes();
         workflowEditUtil.releaseWorkflowResource();
         return node;
@@ -463,7 +495,15 @@ public class EditorService {
             workflowEditUtil.detectWorkflowShareLock(workflow);
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Lazyload(workflow, operId);
             Node node = workflowContext.fetchNode(nodeId);
-            NodeParameter nodeParameter = workflowEditUtil.findWorkflowNodeParameter(node, paramCode);
+            if(DataUtil.isNull(node)) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                        "Find workflow node failed -- node not exists.", "节点不存在");
+            }
+            NodeParameter nodeParameter = node.searchParameterByCode(paramCode);
+            if(DataUtil.isNull(nodeParameter)) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                        "Find workflow node parameter failed -- node parameter not exists.", "节点参数不存在");
+            }
             boolean isPassValidate = ParameterHelper.validateUpdateNodeParameter(node, nodeParameter, paramValue);
             workflowContext.clear();
             workflowEditUtil.releaseWorkflowResource();
@@ -485,7 +525,15 @@ public class EditorService {
             workflowEditUtil.detectWorkflowShareLock(workflow);
             WorkflowContext workflowContext = WorkflowContext.BuildWorkflowContext4Preload(workflow, operId);
             Node node = workflowContext.fetchNode(nodeId);
-            NodeParameter nodeParameter = workflowEditUtil.findWorkflowNodeParameter(node, paramCode);
+            if(DataUtil.isNull(node)) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                        "Find workflow node failed -- node not exists.", "节点不存在");
+            }
+            NodeParameter nodeParameter = node.searchParameterByCode(paramCode);
+            if(DataUtil.isNull(nodeParameter)) {
+                throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                        "Find workflow node parameter failed -- node parameter not exists.", "节点参数不存在");
+            }
             parameterCharValueUpdate.updateParameter(workflowContext, node, nodeParameter, paramValue);
             workflowContext.flush();
             workflowEditUtil.releaseWorkflowResource();

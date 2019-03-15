@@ -103,7 +103,7 @@
             <artifactId>parquet-avro</artifactId>
             <version>${parquet.avro.version}</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.apache.avro</groupId>
             <artifactId>avro</artifactId>
             <version>${avro.version}</version>
@@ -127,7 +127,7 @@
             <groupId>org.apache.parquet</groupId>
             <artifactId>parquet-format</artifactId>
             <version>${parquet.format}</version>
-        </dependency>
+        </dependency>-->
         <!--<dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-yarn-common</artifactId>

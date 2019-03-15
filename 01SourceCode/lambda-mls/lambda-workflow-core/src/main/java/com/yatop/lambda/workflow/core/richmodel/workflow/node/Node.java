@@ -2,6 +2,7 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.node;
 
 import com.yatop.lambda.base.model.WfFlowNode;
 import com.yatop.lambda.core.enums.NodeStateEnum;
+import com.yatop.lambda.core.enums.SpecTypeEnum;
 import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
 import com.yatop.lambda.workflow.core.mgr.workflow.analyzer.SchemaAnalyzerHelper;
@@ -11,6 +12,7 @@ import com.yatop.lambda.workflow.core.richmodel.workflow.component.Component;
 import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.richmodel.workflow.module.Module;
 import com.yatop.lambda.workflow.core.richmodel.workflow.charvalue.CharValue;
+import com.yatop.lambda.workflow.core.richmodel.workflow.module.ModulePropertyPage;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.ArrayList;
@@ -245,6 +247,22 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
     public void putOptimizeParameter(NodeParameter parameter) {
         CollectionUtil.put(optimizeParameters, parameter.data().getCharId(), parameter);
         CollectionUtil.put(optimizeParametersOrderByCharCode, parameter.getCmptChar().data().getCharCode(), parameter);
+    }
+
+    public NodeParameter searchParameterByCode(String paramCode) {
+        CmptChar cmptChar = this.module.searchParameterByCode(paramCode);
+
+        if(DataUtil.isNull(cmptChar))
+            return null;
+
+        switch (SpecTypeEnum.valueOf(cmptChar.data().getSpecType())) {
+            case PARAMETER:
+                return getParameter(cmptChar);
+            case OPTIMIZE_EXECUTION:
+                return getOptimizeParameter(cmptChar);
+            default:
+                return null;
+        }
     }
 
     public int inputPortCount() {
@@ -519,5 +537,18 @@ public class Node extends RichModel<WfFlowNode> implements Comparable<Node> {
 
     public IModuleClazz getModuleClazzBean() {
         return this.getModule().getModuleClazzBean();
+    }
+
+    public ModulePropertyPage getPropertyPage() {
+        return getModule().getPropertyPage();
+    }
+
+    public List<NodeParameter> getPropertyParameters() {
+        List<NodeParameter> propertyParameters = new ArrayList<>(parameterCount() + optimizeParameterCount());
+        if(parameterCount() > 0)
+            propertyParameters.addAll(getParameters());
+        if(optimizeParameterCount() > 0)
+            propertyParameters.addAll(getOptimizeParameters());
+        return propertyParameters;
     }
 }

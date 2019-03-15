@@ -1,15 +1,15 @@
 package com.yatop.lambda.workflow.core.richmodel.workflow.module;
 
+import com.google.common.collect.TreeMultimap;
 import com.yatop.lambda.workflow.core.richmodel.IRichModel;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
 import java.util.List;
 
 public class ModulePropertyPage implements IRichModel {
 
-    private TreeMap<Integer, ModulePropertyTab> tabs = new TreeMap<Integer, ModulePropertyTab>(); //key=priority
+    private TreeMultimap<Integer, ModulePropertyTab> tabs = TreeMultimap.create(); //key=priority
     private ArrayList<ModulePropertyRelation> relations = new ArrayList<ModulePropertyRelation>();
 
     @Override

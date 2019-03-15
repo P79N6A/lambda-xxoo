@@ -50,16 +50,4 @@ public class WorkflowEditUtil {
         }
         return module;
     }
-
-    public NodeParameter findWorkflowNodeParameter(Node node, String paramCode) {
-        NodeParameter nodeParameter = node.getParameterByCharCode(paramCode);
-        if(DataUtil.isNull(nodeParameter)) {
-            node.getOptimizeParameterByCharCode(paramCode);
-        }
-
-        if(DataUtil.isNull(nodeParameter)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Find workflow node parameter failed -- node parameter not exists.", "节点参数不存在");
-        }
-        return nodeParameter;
-    }
 }

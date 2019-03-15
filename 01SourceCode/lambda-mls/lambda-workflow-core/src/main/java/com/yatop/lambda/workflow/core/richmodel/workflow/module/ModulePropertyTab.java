@@ -7,12 +7,17 @@ import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 import java.util.List;
 import java.util.TreeMap;
 
-public class ModulePropertyTab extends RichModel<WfCfgModulePropTab> {
+public class ModulePropertyTab extends RichModel<WfCfgModulePropTab> implements Comparable<ModulePropertyTab> {
 
     private TreeMap<Integer, ModulePropertyControl> controls = new TreeMap<Integer, ModulePropertyControl>(); //key=Sequence
 
     public ModulePropertyTab(WfCfgModulePropTab data) {
         super(data);
+    }
+
+    @Override
+    public int compareTo(ModulePropertyTab o) {
+        return this.data().getPriority().compareTo(o.data().getPriority());
     }
 
     @Override

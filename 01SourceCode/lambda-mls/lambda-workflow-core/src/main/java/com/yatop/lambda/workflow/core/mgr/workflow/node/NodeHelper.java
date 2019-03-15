@@ -2,7 +2,10 @@ package com.yatop.lambda.workflow.core.mgr.workflow.node;
 
 
 import com.yatop.lambda.base.model.WfFlowNode;
+import com.yatop.lambda.core.enums.LambdaExceptionEnum;
+import com.yatop.lambda.core.exception.LambdaException;
 import com.yatop.lambda.core.mgr.workflow.node.NodeMgr;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.richmodel.workflow.node.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +28,10 @@ public class NodeHelper {
 
     public static WfFlowNode updateNodeName(Long nodeId, String name, String operId) {
         WfFlowNode node = NODE_MGR.queryNode(nodeId);
+        if(DataUtil.isNull(node)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Find workflow node failed -- update node not exists.", "节点不存在");
+        }
         node.clearColoured();
         node.setNodeName(name);
         NODE_MGR.updateNode(node, operId);
@@ -33,6 +40,10 @@ public class NodeHelper {
 
     public static WfFlowNode updateNodePosition(Long nodeId, Long x, Long y, String operId) {
         WfFlowNode node = NODE_MGR.queryNode(nodeId);
+        if(DataUtil.isNull(node)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Find workflow node failed -- update node not exists.", "节点不存在");
+        }
         node.clearColoured();
         node.setPositionX(x);
         node.setPositionY(y);
@@ -42,6 +53,10 @@ public class NodeHelper {
 
     public static WfFlowNode updateNodeComment(Long nodeId, String comment, String operId) {
         WfFlowNode node = NODE_MGR.queryNode(nodeId);
+        if(DataUtil.isNull(node)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Find workflow node failed -- update node not exists.", "节点不存在");
+        }
         node.clearColoured();
         node.setComment(comment);
         NODE_MGR.updateNode(node, operId);
@@ -50,6 +65,10 @@ public class NodeHelper {
 
     public static WfFlowNode updateNodeDescription(Long nodeId, String description, String operId) {
         WfFlowNode node = NODE_MGR.queryNode(nodeId);
+        if(DataUtil.isNull(node)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Find workflow node failed -- update node not exists.", "节点不存在");
+        }
         node.clearColoured();
         node.setDescription(description);
         NODE_MGR.updateNode(node, operId);

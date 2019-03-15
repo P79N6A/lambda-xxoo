@@ -26,9 +26,7 @@ public class ModuleCatalog extends RichModel<WfCfgModuleCatalog> implements Comp
     }
 
     public void putChildCatalog(ModuleCatalog catalog) {
-        if(DataUtil.isNull(catalog))
-            return;
-        this.childCatalogs.put(catalog.data().getSequence(), catalog);
+        CollectionUtil.put(childCatalogs, catalog.data().getSequence(), catalog);
     }
 
     public int childModuleCount() {
@@ -40,9 +38,7 @@ public class ModuleCatalog extends RichModel<WfCfgModuleCatalog> implements Comp
     }
 
     public void putChildModule(Module module) {
-        if(DataUtil.isNull(module))
-            return;
-        this.childModules.put(module.data().getSequence(), module);
+        CollectionUtil.put(childModules, module.data().getSequence(), module);
     }
 
     @Override

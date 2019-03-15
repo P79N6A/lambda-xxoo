@@ -105,9 +105,26 @@ public class CollectionUtil {
         return vlist;
     }
 
+    public static <M extends Multimap<K, V>, K, V> void put(M map, K key, V value) {
+        if(DataUtil.isNull(map) || DataUtil.isNull(key) || DataUtil.isNull(value))
+            return;
+
+        map.put(key, value);
+    }
+
     public static <M extends Multimap<K, V>, K, V> void clear(M map) {
         if(DataUtil.isNull(map) || map.isEmpty())
             return;
+        map.clear();
+    }
+
+    public static <M extends Multimap<K, V>, K, V extends IRichModel> void enhancedClear(M map) {
+        if(DataUtil.isNull(map) || map.isEmpty())
+            return;
+
+        for(Map.Entry<K, V> entry : map.entries()) {
+            entry.getValue().clear();
+        }
         map.clear();
     }
 

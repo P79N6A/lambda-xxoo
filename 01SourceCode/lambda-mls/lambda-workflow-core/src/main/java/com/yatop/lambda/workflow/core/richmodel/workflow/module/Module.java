@@ -2,9 +2,11 @@ package com.yatop.lambda.workflow.core.richmodel.workflow.module;
 
 import com.yatop.lambda.base.model.WfCfgModule;
 import com.yatop.lambda.core.enums.PortTypeEnum;
+import com.yatop.lambda.core.utils.DataUtil;
 import com.yatop.lambda.workflow.core.framework.module.IModuleClazz;
 import com.yatop.lambda.workflow.core.richmodel.RichModel;
 import com.yatop.lambda.workflow.core.richmodel.workflow.component.Component;
+import com.yatop.lambda.workflow.core.richmodel.workflow.component.characteristic.CmptChar;
 import com.yatop.lambda.workflow.core.utils.ClazzHelperUtil;
 import com.yatop.lambda.workflow.core.utils.CollectionUtil;
 
@@ -23,7 +25,7 @@ public class Module extends RichModel<WfCfgModule> implements Comparable<Module>
     private int inputDataTablePortCount = 0;
     private int outputDataTablePortCount = 0;
 
-    private ModulePropertyPage propertyPage;
+    private ModulePropertyPage propertyPage = new ModulePropertyPage();
 
     public Module(WfCfgModule data, Component component) {
         super(data);
@@ -46,6 +48,7 @@ public class Module extends RichModel<WfCfgModule> implements Comparable<Module>
         CollectionUtil.clear(outputPortsOrderBySequence);
         inputDataTablePortCount = 0;
         outputDataTablePortCount = 0;
+        propertyPage.clear();
         super.clear();
     }
 
@@ -158,7 +161,19 @@ public class Module extends RichModel<WfCfgModule> implements Comparable<Module>
         return propertyPage;
     }
 
-    public void setPropertyPage(ModulePropertyPage propertyPage) {
-        this.propertyPage = propertyPage;
+    public CmptChar searchParameterByCode(String paramCode) {
+        if(DataUtil.isEmpty(paramCode))
+            return null;
+
+        CmptChar cmptChar = null;
+        if(getComponent().haveParameterContnent()) {
+            cmptChar = getComponent().getParameter().getCmptCharByCode(paramCode);
+        }
+
+        if(DataUtil.isNull(cmptChar) && getComponent().haveOptimizeExecutionContent()) {
+            cmptChar = getComponent().getOptimizeExecution().getCmptCharByCode(paramCode);
+        }
+
+        return cmptChar;
     }
 }

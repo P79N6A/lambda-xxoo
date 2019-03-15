@@ -30,7 +30,8 @@ public class LinkCreate {
     public NodeLink createLink(WorkflowContext workflowContext, Node srcNode, Node dstNode, NodeOutputPort srcNodePort, NodeInputPort dstNodePort) {
 
         if(!linkValidate.validateLink(workflowContext, srcNode, dstNode, srcNodePort, dstNodePort)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- validation failed for establishing link.", "链接建立验证失败", srcNodePort.data(), dstNodePort.data());
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Create node link failed -- validation failed for establishing link.", "链接建立验证失败", srcNodePort.data(), dstNodePort.data());
         }
 
         WfFlowNodeLink nodeLink = new WfFlowNodeLink();
@@ -49,23 +50,35 @@ public class LinkCreate {
         workflowContext.doneCreateLink(richNodeLink);
 
         if(WorkflowContextHelper.existDirectedCyclicGraph(workflowContext)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- Create link will make workflow exists directed cyclic graph..", "新建链接将产生有向循环图", srcNodePort.data(), dstNodePort.data());
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Create node link failed -- Create link will make workflow exists directed cyclic graph..",
+                    "新建链接将产生有向循环图", srcNodePort.data(), dstNodePort.data());
         }
         return richNodeLink;
     }
 
     public NodeLink createLink(WorkflowContext workflowContext, Long srcNodeId, Long dstNodeId, Long srcNodePortId, Long dstNodePortId) {
         Node srcNode = workflowContext.fetchNode(srcNodeId);
+        if(DataUtil.isNull(srcNode)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Find workflow node failed -- source node not exists.", "源头节点不存在");
+        }
         Node dstNode = workflowContext.fetchNode(dstNodeId);
+        if(DataUtil.isNull(dstNode)) {
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Find workflow node failed -- destination node not exists.", "目的节点不存在");
+        }
 
         NodeOutputPort srcNodePort = srcNode.getOutputNodePort(srcNodePortId);
         if(DataUtil.isNull(srcNodePort)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- source node port info missing.", "输出端口信息缺失", srcNode.data());
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Create node link failed -- source node port info missing.", "输出端口信息缺失", srcNode.data());
         }
 
         NodeInputPort dstNodePort = dstNode.getInputNodePort(dstNodePortId);
         if(DataUtil.isNull(dstNodePort)) {
-            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR, "Create node link failed -- destination node port info missing.", "输入端口信息缺失", dstNode.data());
+            throw new LambdaException(LambdaExceptionEnum.F_WORKFLOW_DEFAULT_ERROR,
+                    "Create node link failed -- destination node port info missing.", "输入端口信息缺失", dstNode.data());
         }
 
         return createLink(workflowContext, srcNode, dstNode, srcNodePort, dstNodePort);
