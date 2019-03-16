@@ -193,29 +193,29 @@ public class ProjectMgr extends BaseMgr {
      *
      * */
     public boolean existsProject(String code, String name, Long originalId) {
-        if (DataUtil.isEmpty(code) && DataUtil.isEmpty(code))
+        if (DataUtil.isEmpty(code) && DataUtil.isEmpty(name))
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Check project exists failed -- invalid check condition.", "无效检查条件");
 
-        try {
-            PrProjectExample example = new PrProjectExample();
-            if (DataUtil.isNotEmpty(code)) {
-                PrProjectExample.Criteria criteria = example.createCriteria().andProjectCodeEqualTo(code).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-                if (DataUtil.isNotNull(originalId))
-                    criteria.andProjectIdNotEqualTo(originalId);
-                if (prProjectMapper.countByExample(example) > 0)
-                    return true;
-            }
+            try {
+                PrProjectExample example = new PrProjectExample();
+                if (DataUtil.isNotEmpty(code)) {
+                    PrProjectExample.Criteria criteria = example.createCriteria().andProjectCodeEqualTo(code).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+                    if (DataUtil.isNotNull(originalId))
+                        criteria.andProjectIdNotEqualTo(originalId);
+                    if (prProjectMapper.countByExample(example) > 0)
+                        return true;
+                }
 
-            example.clear();
-            if (DataUtil.isNotEmpty(name)) {
-                PrProjectExample.Criteria criteria = example.createCriteria().andProjectNameEqualTo(name).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
-                if (DataUtil.isNotNull(originalId))
-                    criteria.andProjectIdNotEqualTo(originalId);
-                if (prProjectMapper.countByExample(example) > 0)
-                    return true;
-            }
+                example.clear();
+                if (DataUtil.isNotEmpty(name)) {
+                    PrProjectExample.Criteria criteria = example.createCriteria().andProjectNameEqualTo(name).andStatusEqualTo(DataStatusEnum.NORMAL.getStatus());
+                    if (DataUtil.isNotNull(originalId))
+                        criteria.andProjectIdNotEqualTo(originalId);
+                    if (prProjectMapper.countByExample(example) > 0)
+                        return true;
+                }
 
-            return false;
+                return false;
         } catch (Throwable e) {
             throw new LambdaException(LambdaExceptionEnum.B_PROJECT_DEFAULT_ERROR, "Check project exists failed.", "检查已存在项目失败", e);
         }
