@@ -1,0 +1,1965 @@
+Message-ID: <1117710428.5746.1552732309717.JavaMail.confluence1@localhost.localdomain>
+Subject: Exported From Confluence
+MIME-Version: 1.0
+Content-Type: multipart/related; 
+	boundary="----=_Part_5745_466151514.1552732309717"
+
+------=_Part_5745_466151514.1552732309717
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Content-Location: file:///C:/exported.html
+
+<html xmlns:o=3D'urn:schemas-microsoft-com:office:office'
+      xmlns:w=3D'urn:schemas-microsoft-com:office:word'
+      xmlns:v=3D'urn:schemas-microsoft-com:vml'
+      xmlns=3D'urn:w3-org-ns:HTML'>
+<head>
+    <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8=
+">
+    <title>=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:TargetScreenSize>1024x640</o:TargetScreenSize>
+            <o:PixelsPerInch>72</o:PixelsPerInch>
+            <o:AllowPNG/>
+        </o:OfficeDocumentSettings>
+        <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>90</w:Zoom>
+            <w:DoNotOptimizeForBrowser/>
+        </w:WordDocument>
+    </xml>
+    <![endif]-->
+    <style>
+                <!--
+        @page Section1 {
+            size: 8.5in 11.0in;
+            margin: 1.0in;
+            mso-header-margin: .5in;
+            mso-footer-margin: .5in;
+            mso-paper-source: 0;
+        }
+
+        table {
+            border: solid 1px;
+            border-collapse: collapse;
+        }
+
+        table td, table th {
+            border: solid 1px;
+            padding: 5px;
+        }
+
+        td {
+            page-break-inside: avoid;
+        }
+
+        tr {
+            page-break-after: avoid;
+        }
+
+        div.Section1 {
+            page: Section1;
+        }
+
+        /* Confluence print stylesheet. Common to all themes for print medi=
+a */
+/* Full of !important until we improve batching for print CSS */
+
+@media print {
+    #main {
+        padding-bottom: 1em !important; /* The default padding of 6em is to=
+o much for printouts */
+    }
+
+    body {
+        font-family: Arial, Helvetica, FreeSans, sans-serif;
+        font-size: 10pt;
+        line-height: 1.2;
+    }
+
+    body, #full-height-container, #main, #page, #content, .has-personal-sid=
+ebar #content {
+        background: #fff !important;
+        color: #000 !important;
+        border: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    a, a:link, a:visited, a:focus, a:hover, a:active {
+        color: #000;
+    }
+
+    #content h1,
+    #content h2,
+    #content h3,
+    #content h4,
+    #content h5,
+    #content h6 {
+        font-family: Arial, Helvetica, FreeSans, sans-serif;
+        page-break-after: avoid;
+    }
+
+    pre {
+        font-family: Monaco, "Courier New", monospace;
+    }
+
+    #header,
+    .aui-header-inner,
+    #navigation,
+    #sidebar,
+    .sidebar,
+    #personal-info-sidebar,
+    .ia-fixed-sidebar,
+    .page-actions,
+    .navmenu,
+    .ajs-menu-bar,
+    .noprint,
+    .inline-control-link,
+    .inline-control-link a,
+    a.show-labels-editor,
+    .global-comment-actions,
+    .comment-actions,
+    .quick-comment-container,
+    #addcomment {
+        display: none !important;
+    }
+
+    /* CONF-28544 cannot print multiple pages in IE */
+    #splitter-content {
+        position: relative !important;
+    }
+
+    .comment .date::before {
+        content: none !important; /* remove middot for print view */
+    }
+
+    h1.pagetitle img {
+        height: auto;
+        width: auto;
+    }
+
+    .print-only {
+        display: block;
+    }
+
+    #footer {
+        position: relative !important; /* CONF-17506 Place the footer at en=
+d of the content */
+        margin: 0;
+        padding: 0;
+        background: none;
+        clear: both;
+    }
+
+    #poweredby {
+        border-top: none;
+        background: none;
+    }
+
+    #poweredby li.print-only {
+        display: list-item;
+        font-style: italic;
+    }
+
+    #poweredby li.noprint {
+        display: none;
+    }
+
+    /* no width controls in print */
+    .wiki-content .table-wrap,
+    .wiki-content p,
+    .panel .codeContent,
+    .panel .codeContent pre,
+    .image-wrap {
+        overflow: visible !important;
+    }
+
+    /* TODO - should this work? */
+    #children-section,
+    #comments-section .comment,
+    #comments-section .comment .comment-body,
+    #comments-section .comment .comment-content,
+    #comments-section .comment p {
+        page-break-inside: avoid;
+    }
+
+    #page-children a {
+        text-decoration: none;
+    }
+
+    /**
+     hide twixies
+
+     the specificity here is a hack because print styles
+     are getting loaded before the base styles. */
+    #comments-section.pageSection .section-header,
+    #comments-section.pageSection .section-title,
+    #children-section.pageSection .section-header,
+    #children-section.pageSection .section-title,
+    .children-show-hide {
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    .children-show-hide.icon {
+        display: none;
+    }
+
+    /* personal sidebar */
+    .has-personal-sidebar #content {
+        margin-right: 0px;
+    }
+
+    .has-personal-sidebar #content .pageSection {
+        margin-right: 0px;
+    }
+
+    .no-print, .no-print * {
+        display: none !important;
+    }
+}
+-->
+    </style>
+</head>
+<body>
+    <h1>=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91</h1>
+    <div class=3D"Section1">
+        <div class=3D"contentLayout2">=20
+<div class=3D"columnLayout two-right-sidebar" data-layout=3D"two-right-side=
+bar">=20
+<div class=3D"cell normal" data-type=3D"normal">=20
+<div class=3D"innerCell">=20
+<h3 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2=E6=B7=BB=E5=8A=A0=
+=E8=8A=82=E7=82=B9=EF=BC=88=E7=BB=84=E4=BB=B6=EF=BC=89addNode">1.1.2&nbsp;&=
+nbsp; =E6=B7=BB=E5=8A=A0=E8=8A=82=E7=82=B9=EF=BC=88=E7=BB=84=E4=BB=B6=EF=BC=
+=89 addNode</h3>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.1=E5=8A=9F=E8=83=BD=
+=E8=AF=B4=E6=98=8E">1.1.2.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=8E</h4>
+<p>&nbsp; &nbsp; =E4=BC=A0=E5=85=A5=E9=A1=B9=E7=9B=AEID=E3=80=81=E5=B7=A5=
+=E4=BD=9C=E6=B5=81ID=E3=80=81=E6=89=80=E5=B1=9E=E7=BB=84=E4=BB=B6ID=E5=92=
+=8CXY=E8=BD=B4=E4=BD=8D=E7=BD=AE=EF=BC=8C=E6=96=B0=E5=BB=BA=E4=B8=80=E4=B8=
+=AA=E8=8A=82=E7=82=B9=E3=80=82<br><br></p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.2=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E6=B3=95">1.1.2.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=95</h4>
+<div class=3D"table-wrap">
+<table class=3D"relative-table confluenceTable" style=3D"width: 653.6px;">
+<colgroup>
+<col style=3D"width: 0.0px;">
+<col style=3D"width: 0.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E5=BC=8F</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E8=B7=AF=E5=BE=84</strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center">POST</p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><a href=3D"http://loccalhost=
+experiment" class=3D"external-link" rel=3D"nofollow">http://loccalhost:expe=
+riment/addNode</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.3=E8=AF=B7=E6=B1=82=
+=E5=8F=82=E6=95=B0">1.1.2.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=B0</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>projectId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E9=A1=B9=E7=9B=AEID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>experimentId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E5=AE=9E=E9=AA=8CID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>moduleId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E5=BA=94=E7=94=A8=E7=BB=84=E4=BB=B6ID</p></t=
+d>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>posX</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9=E7=9A=84X=E8=BD=B4=E4=BD=
+=8D=E7=BD=AE</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>posY</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9=E7=9A=84Y=E8=BD=B4=E4=BD=
+=8D=E7=BD=AE</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.4=E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.2.4&nbsp; =E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>addNodes</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Array[Node]</p></td>
+<td class=3D"confluenceTd"><p><br></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.5=E8=AF=B7=E6=B1=82=
+=E5=AE=9E=E4=BE=8B">1.1.2.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=8B</h4>
+<div class=3D"table-wrap">
+<table class=3D"relative-table confluenceTable" style=3D"width: 611.2px;">
+<colgroup>
+<col style=3D"width: 0.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{</p>"projectId":"10000", "experimentId":"1",=
+ "posX":"1", "posY":"2", "moduleId":"4" }</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.6=E8=BF=94=E5=9B=9E=
+=E5=AE=9E=E4=BE=8B">1.1.2.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=8B</h4>
+<p>=E6=88=90=E5=8A=9F=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<p><br></p>
+<div class=3D"code panel pdl" style=3D"border-width: 1px;">
+<div class=3D"codeContent panelContent pdl">=20
+<pre class=3D"syntaxhighlighter-pre" data-syntaxhighlighter-params=3D"brush=
+: java; gutter: false; theme: Confluence" data-theme=3D"Confluence">{
+=09"success": true,
+=09"data": {
+=09=09"nodes": [{
+=09=09=09"inPorts": [],
+=09=09=09"outPorts": [{
+=09=09=09=09"nodePortId": 21,
+=09=09=09=09"nodePortName": "SQL=E8=84=9A=E6=9C=AC=E8=BE=93=E5=87=BA",
+=09=09=09=09"sequence": 0,
+=09=09=09=09"charTypeId": 1001
+=09=09=09}],
+=09=09=09"nodeId": 7,
+=09=09=09"nodeName": "SQL=E8=84=9A=E6=9C=AC-2",
+=09=09=09"nodeState": 0,
+=09=09=09"warningMsg": "=E3=80=8CSQL=E8=84=9A=E6=9C=AC=E3=80=8D=E8=8A=82=E7=
+=82=B9=EF=BC=8C=E3=80=8CSQL=E8=84=9A=E6=9C=AC=E8=BE=93=E5=85=A5t1=E3=80=8D=
+=E8=BE=93=E5=85=A5=E7=AB=AF=E5=8F=A3=E6=9C=AA=E8=BF=9E=E6=8E=A5",
+=09=09=09"positionX": 5,
+=09=09=09"positionY": 6,
+=09=09=09"moduleId": 4,
+=09=09=09"moduleCode": "SqlScript",
+=09=09=09"category": "process",
+=09=09=09"orignCmptCode": "Sql Script"
+=09=09}]
+=09}
+}</pre>=20
+</div>
+</div>
+<p><br></p>
+<p>=E5=A4=B1=E8=B4=A5=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<p align=3D"left"><br></p>
+<h3 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3=E6=B7=BB=E5=8A=A0=
+=E8=8A=82=E7=82=B9(=E6=8C=87=E5=AE=9A=E6=A8=A1=E5=9E=8B)addModelNode">1.1.3=
+&nbsp;&nbsp; =E6=B7=BB=E5=8A=A0=E8=8A=82=E7=82=B9(=E6=8C=87=E5=AE=9A=E6=A8=
+=A1=E5=9E=8B)&nbsp;addModelNode</h3>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.1=E5=8A=9F=E8=83=BD=
+=E8=AF=B4=E6=98=8E.1">1.1.2.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=8E</h=
+4>
+<p>&nbsp; &nbsp; =E4=BC=A0=E5=85=A5=E9=A1=B9=E7=9B=AEID=E3=80=81=E5=AE=9E=
+=E9=AA=8CID=E3=80=81=E6=89=80=E5=B1=9E=E6=A8=A1=E5=9E=8BID=E5=92=8CXY=E8=BD=
+=B4=E4=BD=8D=E7=BD=AE=EF=BC=8C=E6=96=B0=E5=BB=BA=E4=B8=80=E4=B8=AA=E8=8A=82=
+=E7=82=B9=E3=80=82<br><br></p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.2=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E6=B3=95.1">1.1.2.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=95</h=
+4>
+<div class=3D"table-wrap">
+<table class=3D"relative-table confluenceTable" style=3D"width: 462.4px;">
+<colgroup>
+<col style=3D"width: 0.0px;">
+<col style=3D"width: 0.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E5=BC=8F</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E8=B7=AF=E5=BE=84</strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center">POST</p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><a href=3D"http://loccalhost=
+experiment" class=3D"external-link" rel=3D"nofollow">http://loccalhost:expe=
+riment/addModelNode</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.3=E8=AF=B7=E6=B1=82=
+=E5=8F=82=E6=95=B0.1">1.1.2.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=B0</h=
+4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>projectId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E9=A1=B9=E7=9B=AEID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>experimentId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E5=AE=9E=E9=AA=8CID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>modelId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E6=A8=A1=E5=9E=8BID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>posX</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9=E7=9A=84X=E8=BD=B4=E4=BD=
+=8D=E7=BD=AE</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>posY</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9=E7=9A=84Y=E8=BD=B4=E4=BD=
+=8D=E7=BD=AE</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.4=E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89.1">1.1.2.4&nbsp; =E8=BF=94=E5=9B=
+=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>addNodes</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Array[Node]</p></td>
+<td class=3D"confluenceTd"><p><br></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.5=E8=AF=B7=E6=B1=82=
+=E5=AE=9E=E4=BE=8B.1">1.1.2.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=8B</h=
+4>
+<div class=3D"table-wrap">
+<table class=3D"relative-table confluenceTable" style=3D"width: 432.8px;">
+<colgroup>
+<col style=3D"width: 0.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{</p>"projectId":"10000", "experimentId":"1",=
+ "posX":"1", "posY":"2", "modelId":"1" }</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.6=E8=BF=94=E5=9B=9E=
+=E5=AE=9E=E4=BE=8B.1">1.1.2.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=8B</h=
+4>
+<p>=E6=88=90=E5=8A=9F=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<div class=3D"code panel pdl" style=3D"border-width: 1px;">
+<div class=3D"codeContent panelContent pdl">=20
+<pre class=3D"syntaxhighlighter-pre" data-syntaxhighlighter-params=3D"brush=
+: java; gutter: false; theme: Confluence" data-theme=3D"Confluence">{
+=09"success": true,
+=09"data": {
+=09=09"nodes": [{
+=09=09=09"inPorts": [],
+=09=09=09"outPorts": [{
+=09=09=09=09"nodePortId": 21,
+=09=09=09=09"nodePortName": "SQL=E8=84=9A=E6=9C=AC=E8=BE=93=E5=87=BA",
+=09=09=09=09"sequence": 0,
+=09=09=09=09"charTypeId": 1001
+=09=09=09}],
+=09=09=09"nodeId": 7,
+=09=09=09"nodeName": "SQL=E8=84=9A=E6=9C=AC-2",
+=09=09=09"nodeState": 0,
+=09=09=09"warningMsg": "=E3=80=8CSQL=E8=84=9A=E6=9C=AC=E3=80=8D=E8=8A=82=E7=
+=82=B9=EF=BC=8C=E3=80=8CSQL=E8=84=9A=E6=9C=AC=E8=BE=93=E5=85=A5t1=E3=80=8D=
+=E8=BE=93=E5=85=A5=E7=AB=AF=E5=8F=A3=E6=9C=AA=E8=BF=9E=E6=8E=A5",
+=09=09=09"positionX": 5,
+=09=09=09"positionY": 6,
+=09=09=09"moduleId": 4,
+=09=09=09"moduleCode": "SqlScript",
+=09=09=09"category": "process",
+=09=09=09"orignCmptCode": "Sql Script"
+=09=09}]
+=09}
+}</pre>=20
+</div>
+</div>
+<p><br></p>
+<p>=E5=A4=B1=E8=B4=A5=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{</p><p>"success": false,</p><p>"data":{},</p=
+><p>"errorCode": "error01",</p><p>"errorMsg": "=E6=9F=A5=E8=AF=A2=E5=A4=B1=
+=E8=B4=A5=EF=BC=81"</p><p>}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3=E6=B7=BB=E5=8A=A0=
+=E8=8A=82=E7=82=B9(=E6=8C=87=E5=AE=9A=E6=95=B0=E6=8D=AE=E8=A1=A8)addDataSou=
+rceNode">1.1.3&nbsp;&nbsp; =E6=B7=BB=E5=8A=A0=E8=8A=82=E7=82=B9(=E6=8C=87=
+=E5=AE=9A=E6=95=B0=E6=8D=AE=E8=A1=A8)&nbsp;addDataSourceNode</h3>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.1=E5=8A=9F=E8=83=BD=
+=E8=AF=B4=E6=98=8E.2">1.1.2.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=8E</h=
+4>
+<p>&nbsp; &nbsp; =E4=BC=A0=E5=85=A5=E9=A1=B9=E7=9B=AEID=E3=80=81=E5=AE=9E=
+=E9=AA=8CID=E3=80=81=E6=89=80=E5=B1=9E=E6=95=B0=E6=8D=AE=E8=A1=A8ID=E5=92=
+=8CXY=E8=BD=B4=E4=BD=8D=E7=BD=AE=EF=BC=8C=E6=96=B0=E5=BB=BA=E4=B8=80=E4=B8=
+=AA=E8=8A=82=E7=82=B9=E3=80=82<br><br></p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.2=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E6=B3=95.2">1.1.2.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=95</h=
+4>
+<div class=3D"table-wrap">
+<table class=3D"relative-table confluenceTable" style=3D"width: 462.4px;">
+<colgroup>
+<col style=3D"width: 0.0px;">
+<col style=3D"width: 0.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E5=BC=8F</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E8=B7=AF=E5=BE=84</strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center">POST</p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><a href=3D"http://loccalhost=
+experiment" class=3D"external-link" rel=3D"nofollow">http://loccalhost:expe=
+riment/addDataSourceNode</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.3=E8=AF=B7=E6=B1=82=
+=E5=8F=82=E6=95=B0.2">1.1.2.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=B0</h=
+4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>projectId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E9=A1=B9=E7=9B=AEID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>experimentId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E5=AE=9E=E9=AA=8CID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>tableName</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E6=95=B0=E6=8D=AE=E8=A1=A8=E5=90=8D</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>posX</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9=E7=9A=84X=E8=BD=B4=E4=BD=
+=8D=E7=BD=AE</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>posY</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9=E7=9A=84Y=E8=BD=B4=E4=BD=
+=8D=E7=BD=AE</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.4=E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89.2">1.1.2.4&nbsp; =E8=BF=94=E5=9B=
+=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col style=3D"width: 85.0px;">
+<col style=3D"width: 77.0px;">
+<col style=3D"width: 92.0px;">
+<col style=3D"width: 231.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>addNodes</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Array[Node]</p></td>
+<td class=3D"confluenceTd"><p><br></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.5=E8=AF=B7=E6=B1=82=
+=E5=AE=9E=E4=BE=8B.2">1.1.2.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=8B</h=
+4>
+<div class=3D"table-wrap">
+<table class=3D"relative-table confluenceTable" style=3D"width: 432.8px;">
+<colgroup>
+<col style=3D"width: 0.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{</p>"projectId":"10000", "experimentId":"1",=
+ "posX":"1", "posY":"2", "tableName":"1" }</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.6=E8=BF=94=E5=9B=9E=
+=E5=AE=9E=E4=BE=8B.2">1.1.2.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=8B</h=
+4>
+<p>=E6=88=90=E5=8A=9F=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<div class=3D"code panel pdl" style=3D"border-width: 1px;">
+<div class=3D"codeContent panelContent pdl">=20
+<pre class=3D"syntaxhighlighter-pre" data-syntaxhighlighter-params=3D"brush=
+: java; gutter: false; theme: Confluence" data-theme=3D"Confluence">{
+=09"success": true,
+=09"data": {
+=09=09"nodes": [{
+=09=09=09"inPorts": [],
+=09=09=09"outPorts": [{
+=09=09=09=09"nodePortId": 21,
+=09=09=09=09"nodePortName": "SQL=E8=84=9A=E6=9C=AC=E8=BE=93=E5=87=BA",
+=09=09=09=09"sequence": 0,
+=09=09=09=09"charTypeId": 1001
+=09=09=09}],
+=09=09=09"nodeId": 7,
+=09=09=09"nodeName": "SQL=E8=84=9A=E6=9C=AC-2",
+=09=09=09"nodeState": 0,
+=09=09=09"warningMsg": "=E3=80=8CSQL=E8=84=9A=E6=9C=AC=E3=80=8D=E8=8A=82=E7=
+=82=B9=EF=BC=8C=E3=80=8CSQL=E8=84=9A=E6=9C=AC=E8=BE=93=E5=85=A5t1=E3=80=8D=
+=E8=BE=93=E5=85=A5=E7=AB=AF=E5=8F=A3=E6=9C=AA=E8=BF=9E=E6=8E=A5",
+=09=09=09"positionX": 5,
+=09=09=09"positionY": 6,
+=09=09=09"moduleId": 4,
+=09=09=09"moduleCode": "SqlScript",
+=09=09=09"category": "process",
+=09=09=09"orignCmptCode": "Sql Script"
+=09=09}]
+=09}
+}</pre>=20
+</div>
+</div>
+<p><br></p>
+<p>=E5=A4=B1=E8=B4=A5=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<h3 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.3.=E5=A4=8D=E5=88=B6=E8=
+=8A=82=E7=82=B9copyNode(=E6=9C=AA=E5=AE=9E=E7=8E=B0)">1.3.&nbsp; &nbsp;=E5=
+=A4=8D=E5=88=B6=E8=8A=82=E7=82=B9copyNode(=E6=9C=AA=E5=AE=9E=E7=8E=B0)</h3>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3.1=E5=8A=9F=E8=83=BD=
+=E8=AF=B4=E6=98=8E">1.1.3.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=8E</h4>
+<p>=E4=BC=A0=E5=85=A5=E9=A1=B9=E7=9B=AEID=E3=80=81=E5=B7=A5=E4=BD=9C=E6=B5=
+=81ID=E3=80=81=E8=8A=82=E7=82=B9ID=E5=92=8CXY=E8=BD=B4=E4=BD=8D=E7=BD=AE=EF=
+=BC=8C=E9=80=9A=E8=BF=87=E8=8A=82=E7=82=B9ID=E5=A4=8D=E5=88=B6=E4=B8=80=E4=
+=B8=AA=E8=8A=82=E7=82=B9=E3=80=82</p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3.2=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E6=B3=95">1.1.3.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=95</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E5=BC=8F</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E8=B7=AF=E5=BE=84</strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center">POST</p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><a href=3D"https://localhost=
+:9527/experiment/copyNode" class=3D"external-link" rel=3D"nofollow">https:/=
+/localhost:9527/experiment/copyNode</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3.3=E8=AF=B7=E6=B1=82=
+=E5=8F=82=E6=95=B0">1.1.3.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=B0</h4>
+<div class=3D"table-wrap">
+<table class=3D"relative-table confluenceTable" style=3D"width: 623.2px;">
+<colgroup>
+<col style=3D"width: 0.0px;">
+<col style=3D"width: 0.0px;">
+<col style=3D"width: 0.0px;">
+<col style=3D"width: 0.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>projectId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E9=A1=B9=E7=9B=AEID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>experimentId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E5=AE=9E=E9=AA=8CID</p></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">nodeIds</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">Array[Number]</td>
+<td colspan=3D"1" class=3D"confluenceTd">=E8=8A=82=E7=82=B9ID=E6=95=B0=E7=
+=BB=84</td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>posXs</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Array[Number]</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9=E7=9A=84X=E8=BD=B4=E4=BD=
+=8D=E7=BD=AE=E6=95=B0=E7=BB=84</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>posYs</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Array[Number]</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9=E7=9A=84Y=E8=BD=B4=E4=BD=
+=8D=E7=BD=AE=E6=95=B0=E7=BB=84</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3.4=E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.3.4&nbsp; =E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>addNodes</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Array[Node]</p></td>
+<td class=3D"confluenceTd"><p><br></p></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">addLinks</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">Array[Link]</td>
+<td colspan=3D"1" class=3D"confluenceTd"><br></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3.5=E8=AF=B7=E6=B1=82=
+=E5=AE=9E=E4=BE=8B">1.1.3.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=8B</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p><br></p><p>{</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp; =E2=80=9CprojectId=E2=80=9D:10000,</p><p>&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =E2=80=9CexperimentId=E2=80=9D:1,</p>=
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =E2=80=9CnodeIds=E2=80=
+=9D:1001,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =E2=80=9Cp=
+osXs":96,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =E2=80=9Cp=
+osYs":55</p><p>}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3.6=E8=BF=94=E5=9B=9E=
+=E5=AE=9E=E4=BE=8B">1.1.3.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=8B</h4>
+<p>=E6=88=90=E5=8A=9F=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{ "success": true, "data": { "nodes": [ { "no=
+deId": 11, "nodeName": "SQL=E8=84=9A=E6=9C=AC-1", "ownerProjectId": 10000, =
+"ownerFlowId": 1, "refModuleId": 4, "sequence": 1, "positionX": 1, "positio=
+nY": 2, "warningMsg": "=E3=80=8CSQL=E8=84=9A=E6=9C=AC=E3=80=8D=E8=8A=82=E7=
+=82=B9,=E3=80=8CSQL=E8=84=9A=E6=9C=AC=E8=BE=93=E5=85=A5t1=E3=80=8D=E8=BE=93=
+=E5=85=A5=E7=AB=AF=E5=8F=A3=E6=9C=AA=E8=BF=9E=E6=8E=A5", "nodeState": 0, "s=
+tatus": 0, "lastUpdateTime": "2019-03-13 23:19:03", "lastUpdateOper": "scot=
+t", "createTime": "2019-03-12 06:57:31", "createOper": "scott", "inPorts": =
+[ { "nodePortId": 49, "nodePortName": "SQL=E8=84=9A=E6=9C=AC=E8=BE=93=E5=85=
+=A5t1", "ownerNodeId": 11, "refPortId": 400, "refCharId": "<a href=3D"http:=
+//com-input.char.st" class=3D"external-link" rel=3D"nofollow">com-input.cha=
+r.st</a>.sql.0001.01", "status": 0, "lastUpdateTime": "2019-03-13 23:19:02"=
+, "lastUpdateOper": "scott", "createTime": "2019-03-12 06:57:31", "createOp=
+er": "scott", "portDef": { "portId": 400, "portName": "SQL=E8=84=9A=E6=9C=
+=AC=E8=BE=93=E5=85=A5t1", "portType": 0, "ownerModuleId": 4, "bindCharId": =
+"<a href=3D"http://com-input.char.st" class=3D"external-link" rel=3D"nofoll=
+ow">com-input.char.st</a>.sql.0001.01", "sequence": 0, "status": 0, "lastUp=
+dateTime": "2017-05-28 09:44:40", "lastUpdateOper": "admin", "createTime": =
+"2017-05-28 09:44:40", "createOper": "admin" }, "type": 1000 } ], "outPorts=
+": [ { "nodePortId": 53, "nodePortName": "SQL=E8=84=9A=E6=9C=AC=E8=BE=93=E5=
+=87=BA", "ownerNodeId": 11, "refPortId": 410, "refCharId": "<a href=3D"http=
+://com-output.char.st" class=3D"external-link" rel=3D"nofollow">com-output.=
+char.st</a>.sql.0001.01", "status": 0, "lastUpdateTime": "2019-03-13 23:19:=
+02", "lastUpdateOper": "scott", "createTime": "2019-03-12 06:57:32", "creat=
+eOper": "scott", "portDef": { "portId": 410, "portName": "SQL=E8=84=9A=E6=
+=9C=AC=E8=BE=93=E5=87=BA", "portType": 1, "ownerModuleId": 4, "bindCharId":=
+ "<a href=3D"http://com-output.char.st" class=3D"external-link" rel=3D"nofo=
+llow">com-output.char.st</a>.sql.0001.01", "sequence": 0, "status": 0, "las=
+tUpdateTime": "2017-05-28 09:55:27", "lastUpdateOper": "admin", "createTime=
+": "2017-05-28 09:55:27", "createOper": "admin" }, "type": 1001 } ], "posX"=
+: 1, "posY": 2, "moduleCode": "SqlScript", "iconType": 0, "category": "user=
+_code" } ] } }</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>=E5=A4=B1=E8=B4=A5=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{</p><p>"success": false,</p><p>"data":{},</p=
+><p>"errorCode": "error01",</p><p>"errorMsg": "=E6=9F=A5=E8=AF=A2=E5=A4=B1=
+=E8=B4=A5=EF=BC=81"</p><p>}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5=E6=89=B9=E9=87=8F=
+=E4=BF=AE=E6=94=B9=E8=8A=82=E7=82=B9=E4=BD=8D=E7=BD=AEupdateNodePositions">=
+1.1.5&nbsp;&nbsp; =E6=89=B9=E9=87=8F=E4=BF=AE=E6=94=B9=E8=8A=82=E7=82=B9=E4=
+=BD=8D=E7=BD=AEupdateNodePositions</h3>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5.1=E5=8A=9F=E8=83=BD=
+=E8=AF=B4=E6=98=8E">1.1.5.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=8E</h4>
+<p>=E4=BC=A0=E5=85=A5=E8=8A=82=E7=82=B9=E6=98=AF=E6=95=B0=E6=8D=AE=E4=BD=8D=
+=E7=BD=AE=E7=B1=BB=E5=9E=8B=E6=95=B0=E7=BB=84=E5=92=8C=E6=93=8D=E4=BD=9C=E7=
+=94=A8=E6=88=B7=EF=BC=8C=E8=BF=94=E5=9B=9E=E8=8A=82=E7=82=B9=E4=BF=A1=E6=81=
+=AF=E6=95=B0=E7=BB=84=E3=80=82</p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5.2=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E6=B3=95">1.1.5.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=95</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E5=BC=8F</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E8=B7=AF=E5=BE=84</strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center">POST</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">https:// lambda-mls:3510/edi=
+tor/updateNodePostions</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5.3=E8=AF=B7=E6=B1=82=
+=E5=8F=82=E6=95=B0">1.1.5.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=B0</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">projectId</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">Number</td>
+<td colspan=3D"1" class=3D"confluenceTd">=E9=A1=B9=E7=9B=AEID</td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">experimentId</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">Number</td>
+<td colspan=3D"1" class=3D"confluenceTd">=E5=AE=9E=E9=AA=8CID</td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd"><p>nodeIds</p></td>
+<td colspan=3D"1" class=3D"confluenceTd">M</td>
+<td colspan=3D"1" class=3D"confluenceTd">Array[Number]</td>
+<td colspan=3D"1" class=3D"confluenceTd">=E8=8A=82=E7=82=B9ID=E6=95=B0=E7=
+=BB=84</td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">posXs</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">Array[Number]</td>
+<td colspan=3D"1" class=3D"confluenceTd">x=E8=BD=B4=E4=BD=8D=E7=BD=AE=E6=95=
+=B0=E7=BB=84</td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">posYs</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">Array[Number]</td>
+<td colspan=3D"1" class=3D"confluenceTd">Y=E8=BD=B4=E4=BD=8D=E7=BD=AE=E6=95=
+=B0=E7=BB=84</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><br></p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5.4=E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.5.4&nbsp; =E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p><br></p></td>
+<td class=3D"confluenceTd"><br></td>
+<td class=3D"confluenceTd"><br></td>
+<td class=3D"confluenceTd"><br></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5.5=E8=AF=B7=E6=B1=82=
+=E5=AE=9E=E4=BE=8B">1.1.5.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=8B</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col style=3D"width: 29.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p><br></p><p>{</p><p>"projectId":"10000",</p><p=
+>"experimentId":"1",</p><p>"posXs":[1,2],</p><p>"posYs":[2,2],</p><p>"nodeI=
+ds":[3,4]</p><p>}</p><p><br></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5.6=E8=BF=94=E5=9B=9E=
+=E5=AE=9E=E4=BE=8B">1.1.5.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=8B</h4>
+<p>=E6=88=90=E5=8A=9F=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col style=3D"width: 532.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{ "success": true, "data": []}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>=E5=A4=B1=E8=B4=A5=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{</p><p>"success": false,</p><p>"data":{},</p=
+><p>"errorCode": "error01",</p><p>"errorMsg": "=E4=BF=AE=E6=94=B9=E5=A4=B1=
+=E8=B4=A5=EF=BC=81"</p><p>}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p align=3D"left"><br></p>
+<h3 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6=E6=89=B9=E9=87=8F=
+=E5=88=A0=E9=99=A4=E8=8A=82=E7=82=B9deleteNodes">1.1.6&nbsp;&nbsp; =E6=89=
+=B9=E9=87=8F=E5=88=A0=E9=99=A4=E8=8A=82=E7=82=B9deleteNodes</h3>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6.1=E5=8A=9F=E8=83=BD=
+=E8=AF=B4=E6=98=8E">1.1.6.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=8E</h4>
+<p>=E4=BC=A0=E5=85=A5=E9=A1=B9=E7=9B=AEID=E3=80=81=E5=B7=A5=E4=BD=9C=E6=B5=
+=81ID=E3=80=81=E8=8A=82=E7=82=B9ID=E6=95=B0=E7=BB=84=EF=BC=8C=E8=BF=94=E5=
+=9B=9E=E8=8A=82=E7=82=B9=E7=8A=B6=E6=80=81=E6=95=B0=E7=BB=84=E6=95=B0=E6=8D=
+=AE=E7=B1=BB=E5=9E=8B=E7=9A=84=E6=95=B0=E6=8D=AE=E3=80=82</p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6.2=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E6=B3=95">1.1.6.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=95</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E5=BC=8F</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E8=B7=AF=E5=BE=84</strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center">POST</p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><a href=3D"https://localhost=
+:9527/experiment/deleteNodes" class=3D"external-link" rel=3D"nofollow">http=
+s://localhost:9527/experiment/deleteNodes</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6.3=E8=AF=B7=E6=B1=82=
+=E5=8F=82=E6=95=B0">1.1.6.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=B0</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>projectId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E9=A1=B9=E7=9B=AEID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>experimentId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E5=AE=9E=E9=AA=8CID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>nodeIds</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Array[Number]</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9=E5=AE=9E=E4=BE=8BID=E6=95=
+=B0=E7=BB=84</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6.4=E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.6.4&nbsp; =E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col style=3D"width: 92.0px;">
+<col style=3D"width: 77.0px;">
+<col style=3D"width: 195.0px;">
+<col style=3D"width: 133.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>relatedNodes</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Array[Node]</p></td>
+<td class=3D"confluenceTd"><p>=E5=BD=B1=E5=93=8D=E5=88=B0=E7=9A=84=E8=8A=82=
+=E7=82=B9=E6=95=B0=E7=BB=84=EF=BC=8C=E4=B8=8D=E5=B8=A6=E8=8A=82=E7=82=B9=E7=
+=AB=AF=E5=8F=A3=E4=BF=A1=E6=81=AF</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6.5=E8=AF=B7=E6=B1=82=
+=E5=AE=9E=E4=BE=8B">1.1.6.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=8B</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p><br></p><p>{</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp; =E2=80=9CprojectId=E2=80=9D:10000,</p><p>&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =E2=80=9CexperimentId=E2=80=9D:1,</p>=
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =E2=80=9CnodeIds=E2=80=
+=9D:[1001,1002]</p><p>}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6.6=E8=BF=94=E5=9B=9E=
+=E5=AE=9E=E4=BE=8B">1.1.6.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=8B</h4>
+<p>=E6=88=90=E5=8A=9F=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<p><br>=E5=A4=B1=E8=B4=A5=E5=AE=9E=E4=BE=8B=EF=BC=9A&nbsp;</p>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{</p><p>"success": false,</p><p>"data":null,<=
+/p><p>"errorCode": "error01",</p><p>"errorMsg": "=E4=BF=AE=E6=94=B9=E5=A4=
+=B1=E8=B4=A5=EF=BC=81"</p><p>}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7=E6=89=B9=E9=87=8F=
+=E6=92=A4=E9=94=80=E5=88=A0=E9=99=A4=E8=8A=82=E7=82=B9undodeleteNodes(=E6=
+=9C=AA=E5=AE=9E=E7=8E=B0)"><br>1.1.7&nbsp; &nbsp;=E6=89=B9=E9=87=8F=E6=92=
+=A4=E9=94=80=E5=88=A0=E9=99=A4=E8=8A=82=E7=82=B9undodeleteNodes(=E6=9C=AA=
+=E5=AE=9E=E7=8E=B0)</h3>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7.1=E5=8A=9F=E8=83=BD=
+=E8=AF=B4=E6=98=8E">1.1.7.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=8E</h4>
+<p>=E4=BC=A0=E5=85=A5=E9=A1=B9=E7=9B=AEID=E3=80=81=E5=B7=A5=E4=BD=9C=E6=B5=
+=81ID=E3=80=81=E8=8A=82=E7=82=B9ID=E6=95=B0=E7=BB=84=EF=BC=8C=E8=BF=94=E5=
+=9B=9E=E8=8A=82=E7=82=B9=E7=8A=B6=E6=80=81=E6=95=B0=E7=BB=84=E6=95=B0=E6=8D=
+=AE=E7=B1=BB=E5=9E=8B=E7=9A=84=E6=95=B0=E6=8D=AE=E3=80=82</p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7.2=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E6=B3=95">1.1.7.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=95</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E5=BC=8F</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E8=B7=AF=E5=BE=84</strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center">POST</p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><a href=3D"https://localhost=
+:9527/experiment/undoDeleteNodes" class=3D"external-link" rel=3D"nofollow">=
+https://localhost:9527/experiment/undoDeleteNodes</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7.3=E8=AF=B7=E6=B1=82=
+=E5=8F=82=E6=95=B0">1.1.7.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=B0</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col style=3D"width: 102.0px;">
+<col style=3D"width: 77.0px;">
+<col style=3D"width: 246.0px;">
+<col style=3D"width: 133.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>projectId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E9=A1=B9=E7=9B=AEID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>experimentId</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E5=AE=9E=E9=AA=8CID</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7.4=E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.7.4&nbsp; =E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>nodes</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Array[Node]</p></td>
+<td class=3D"confluenceTd"><p>=E8=BF=94=E5=9B=9E=E8=8A=82=E7=82=B9=E6=95=B0=
+=E6=8D=AE=E7=B1=BB=E5=9E=8B=E7=9A=84=E6=95=B0=E7=BB=84</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7.5=E8=AF=B7=E6=B1=82=
+=E5=AE=9E=E4=BE=8B">1.1.7.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=8B</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p><a href=3D"https://lambda-mls:3510/editor/und=
+oDeleteNodes" class=3D"external-link" rel=3D"nofollow">https://lambda-mls:3=
+510/editor/undoDeleteNodes</a></p><p>{</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp; =E2=80=9Cmethod=E2=80=9D:=E2=80=9DundoDeleteNodes=E2=80=
+=9D,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =E2=80=9Cprojec=
+tId=E2=80=9D:10001,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+=E2=80=9CflowId=E2=80=9D:801202,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; =E2=80=9CdeleteQueue=E2=80=9D:[{</p><p>"jobId":21313,</p><p>"d=
+eleteSequence":5</p><p>}]</p><p>}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7.6=E8=BF=94=E5=9B=9E=
+=E5=AE=9E=E4=BE=8B">1.1.7.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=8B</h4>
+<p>=E6=88=90=E5=8A=9F=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp; "success": &nbsp; true, &nbsp;</p><p>"data": &nbsp; {</p><p>"no=
+des": [{</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;"projectId": 31231,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"flowId": 6312313,</p><p>&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "nodeId": 666001,</p><p=
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp; "nodeName":=E2=80=9D=E6=95=B0=E6=8D=AE=E8=BF=87=E6=BB=A4=E8=
+=8A=82=E7=82=B901=E2=80=9D,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "defModuleId": &nbsp; =E2=80=
+=9C=E6=95=B0=E6=8D=AE=E8=BF=87=E6=BB=A4=E2=80=9D ,</p><p>&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "posi=
+tionX": &nbsp; 155,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "positionY":166=EF=BC=8C</p><p>&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; "lastTaskId": &nbsp; 100000,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "warningMsg":"" &nb=
+sp; ,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp; "nodeStatus": &nbsp; 0,</p><p>"status": 0,</p><p>"=
+description": =E2=80=9C=E7=94=A8=E4=BA=8E=E5=AE=9E=E9=AA=8C=E8=BF=87=E6=BB=
+=A4=E2=80=9D,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "inputPort": &nbsp; [{</p><p>&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;"refNodeId":166=EF=BC=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "por=
+tId":16666=EF=BC=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portname: =E2=80=
+=9Cinput1=E2=80=9D,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "descrription":"=
+=E7=94=A8=E4=BA=8E=E4=BC=A0=E5=85=A5=E6=95=B0=E6=8D=AE=E7=9A=84=E7=AB=AF=E5=
+=8F=A3" ,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "status": 0,</p><p>},{</p><=
+p>"refNodeId":166=EF=BC=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portId":1=
+6667=EF=BC=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portname: =E2=80=9Cinp=
+ut2=E2=80=9D,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "descrription":"=E7=94=
+=A8=E4=BA=8E=E4=BC=A0=E5=85=A5=E8=BF=87=E6=BB=A4=E8=A7=84=E5=88=99=E7=9A=84=
+=E7=AB=AF=E5=8F=A3" ,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "status": 0,</p=
+><p>}],</p><p>"outputPort": [{</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;"refNo=
+deId":166=EF=BC=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portId":16666=EF=
+=BC=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portname: =E2=80=9Cinput1=E2=
+=80=9D,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "descrription":"=E7=94=A8=E4=
+=BA=8E=E4=BC=A0=E5=85=A5=E6=95=B0=E6=8D=AE=E7=9A=84=E7=AB=AF=E5=8F=A3" ,</p=
+><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "status": 0,</p><p>},{</p><p>"refNodeId=
+":166=EF=BC=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portId":16667=EF=BC=
+=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portname: =E2=80=9Cinput2=E2=80=
+=9D,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "descrription":"=E7=94=A8=E4=BA=
+=8E=E4=BC=A0=E5=85=A5=E8=BF=87=E6=BB=A4=E8=A7=84=E5=88=99=E7=9A=84=E7=AB=AF=
+=E5=8F=A3" ,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "status": 0,</p><p>}]</p=
+><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;},{</p><p>=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"pr=
+ojectId": 31231,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;"flowId": 6312313,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "nodeId": 666001,</p><p>&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "=
+nodeName":=E2=80=9D=E6=95=B0=E6=8D=AE=E8=BF=87=E6=BB=A4=E8=8A=82=E7=82=B901=
+=E2=80=9D,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "defModuleId": &nbsp; =E2=80=9C=E6=95=B0=E6=
+=8D=AE=E8=BF=87=E6=BB=A4=E2=80=9D ,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "positionX": &nbsp; =
+155,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp; "positionY":166=EF=BC=8C</p><p>&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "lastTa=
+skId": &nbsp; 100000,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "warningMsg":"" &nbsp; ,</p><p>&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; "nodeStatus": &nbsp; 0,</p><p>"status": 0,</p><p>"description": =
+=E2=80=9C=E7=94=A8=E4=BA=8E=E5=AE=9E=E9=AA=8C=E8=BF=87=E6=BB=A4=E2=80=9D,</=
+p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp; "inputPort": &nbsp; [{</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"refNod=
+eId":166=EF=BC=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portId":16666=EF=
+=BC=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portname: =E2=80=9Cinput1=E2=
+=80=9D,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "descrription":"=E7=94=A8=E4=
+=BA=8E=E4=BC=A0=E5=85=A5=E6=95=B0=E6=8D=AE=E7=9A=84=E7=AB=AF=E5=8F=A3" ,</p=
+><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "status": 0,</p><p>},{</p><p>"refNodeId=
+":166=EF=BC=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portId":16667=EF=BC=
+=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portname: =E2=80=9Cinput2=E2=80=
+=9D,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "descrription":"=E7=94=A8=E4=BA=
+=8E=E4=BC=A0=E5=85=A5=E8=BF=87=E6=BB=A4=E8=A7=84=E5=88=99=E7=9A=84=E7=AB=AF=
+=E5=8F=A3" ,</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "status": 0,</p><p>}],</=
+p><p>"outputPort": [{</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;"refNodeId":166=
+=EF=BC=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portId":16666=EF=BC=8C</p>=
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portname: =E2=80=9Cinput1=E2=80=9D,</p>=
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "descrription":"=E7=94=A8=E4=BA=8E=E4=BC=
+=A0=E5=85=A5=E6=95=B0=E6=8D=AE=E7=9A=84=E7=AB=AF=E5=8F=A3" ,</p><p>&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp; &nbsp;&nbsp;&nbsp; "status": 0,</p><p>},{</p><p>"refNodeId":166=EF=BC=
+=8C</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "portId":16667=EF=BC=8C</p><p>&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; &nbsp;&nbsp;&nbsp; "portname: =E2=80=9Cinput2=E2=80=9D,</p><p>&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; &nbsp;&nbsp;&nbsp; "descrription":"=E7=94=A8=E4=BA=8E=E4=BC=A0=E5=
+=85=A5=E8=BF=87=E6=BB=A4=E8=A7=84=E5=88=99=E7=9A=84=E7=AB=AF=E5=8F=A3" ,</p=
+><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; "status": 0,</p><p>}]</p><p>&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;}]</p><p>}</p><p>}</p></t=
+d>
+</tr>
+</tbody>
+</table>
+</div>
+<p>=E5=A4=B1=E8=B4=A5=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{</p><p>"success": false,</p><p>"data":null,<=
+/p><p>"errorCode": "error01",</p><p>"errorMsg": "=E4=BF=AE=E6=94=B9=E5=A4=
+=B1=E8=B4=A5=EF=BC=81"</p><p>}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.12=E8=8A=82=E7=82=B9=
+=E9=87=8D=E5=91=BD=E5=90=8D">1.1.12&nbsp; &nbsp;=E8=8A=82=E7=82=B9=E9=87=8D=
+=E5=91=BD=E5=90=8D</h3>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.11.1=E5=8A=9F=E8=83=
+=BD=E8=AF=B4=E6=98=8E">1.1.11.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=8E<=
+/h4>
+<p>=E4=BC=A0=E5=85=A5=E5=92=8C=E8=8A=82=E7=82=B9id=E5=92=8C=E6=96=B0=E5=90=
+=8D=E7=A7=B0=EF=BC=8C=E8=BF=9B=E8=A1=8C=E4=BF=9D=E5=AD=98=E3=80=82</p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.11.2=E8=AF=B7=E6=B1=
+=82=E6=96=B9=E6=B3=95">1.1.11.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=95<=
+/h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E5=BC=8F</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E8=B7=AF=E5=BE=84</strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center">POST</p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><a href=3D"https://localhost=
+:9527/experiment/queryAllInputColumns" class=3D"external-link" rel=3D"nofol=
+low">https://localhost:9527/experiment/r</a>enameNode</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.11.3=E8=AF=B7=E6=B1=
+=82=E5=8F=82=E6=95=B0">1.1.11.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=B0<=
+/h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">experimentId</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">Number</td>
+<td colspan=3D"1" class=3D"confluenceTd">=E5=AE=9E=E9=AA=8CID</td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>nodeId</p></td>
+<td style=3D"text-align: center;" class=3D"confluenceTd"><p align=3D"center=
+">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9ID</p></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">newName</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">String</td>
+<td colspan=3D"1" class=3D"confluenceTd">=E6=96=B0=E5=90=8D=E7=A7=B0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.11.4=E8=BF=94=E5=9B=
+=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.11.4&nbsp; =E8=BF=94=E5=9B=
+=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</h4>
+<div class=3D"table-wrap">
+<table class=3D"relative-table confluenceTable" style=3D"width: 416.0px;">
+<colgroup>
+<col style=3D"width: 0.0px;">
+<col style=3D"width: 0.0px;">
+<col style=3D"width: 0.0px;">
+<col style=3D"width: 0.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p><br></p></td>
+<td class=3D"confluenceTd"><br></td>
+<td class=3D"confluenceTd"><br></td>
+<td class=3D"confluenceTd"><br></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>&nbsp;</p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.11.5=E8=AF=B7=E6=B1=
+=82=E5=AE=9E=E4=BE=8B">1.1.11.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=8B<=
+/h4>
+<p><br></p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.11.6=E8=BF=94=E5=9B=
+=9E=E5=AE=9E=E4=BE=8B">1.1.11.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=8B<=
+/h4>
+</div>=20
+</div>=20
+<div class=3D"cell aside" data-type=3D"aside">=20
+<div class=3D"innerCell">=20
+<p><style type=3D"text/css">/*<![CDATA[*/
+div.rbtoc1552732309699 {padding: 0px;}
+div.rbtoc1552732309699 ul {list-style: disc;margin-left: 0px;}
+div.rbtoc1552732309699 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style></p>
+<div class=3D"toc-macro rbtoc1552732309699">=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2=E6=B7=BB=E5=
+=8A=A0=E8=8A=82=E7=82=B9=EF=BC=88=E7=BB=84=E4=BB=B6=EF=BC=89addNode">1.1.2&=
+nbsp;&nbsp; =E6=B7=BB=E5=8A=A0=E8=8A=82=E7=82=B9=EF=BC=88=E7=BB=84=E4=BB=B6=
+=EF=BC=89 addNode</a>=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.1=E5=8A=9F=E8=
+=83=BD=E8=AF=B4=E6=98=8E">1.1.2.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=
+=8E</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.2=E8=AF=B7=E6=
+=B1=82=E6=96=B9=E6=B3=95">1.1.2.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=
+=95</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.3=E8=AF=B7=E6=
+=B1=82=E5=8F=82=E6=95=B0">1.1.2.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=
+=B0</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.4=E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.2.4&nbsp; =E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.5=E8=AF=B7=E6=
+=B1=82=E5=AE=9E=E4=BE=8B">1.1.2.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.6=E8=BF=94=E5=
+=9B=9E=E5=AE=9E=E4=BE=8B">1.1.2.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+</ul> </li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3=E6=B7=BB=E5=
+=8A=A0=E8=8A=82=E7=82=B9(=E6=8C=87=E5=AE=9A=E6=A8=A1=E5=9E=8B)addModelNode"=
+>1.1.3&nbsp;&nbsp; =E6=B7=BB=E5=8A=A0=E8=8A=82=E7=82=B9(=E6=8C=87=E5=AE=9A=
+=E6=A8=A1=E5=9E=8B)&nbsp;addModelNode</a>=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.1=E5=8A=9F=E8=
+=83=BD=E8=AF=B4=E6=98=8E.1">1.1.2.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=
+=8E</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.2=E8=AF=B7=E6=
+=B1=82=E6=96=B9=E6=B3=95.1">1.1.2.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=
+=95</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.3=E8=AF=B7=E6=
+=B1=82=E5=8F=82=E6=95=B0.1">1.1.2.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=
+=B0</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.4=E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89.1">1.1.2.4&nbsp; =E8=BF=94=
+=E5=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.5=E8=AF=B7=E6=
+=B1=82=E5=AE=9E=E4=BE=8B.1">1.1.2.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.6=E8=BF=94=E5=
+=9B=9E=E5=AE=9E=E4=BE=8B.1">1.1.2.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+</ul> </li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3=E6=B7=BB=E5=
+=8A=A0=E8=8A=82=E7=82=B9(=E6=8C=87=E5=AE=9A=E6=95=B0=E6=8D=AE=E8=A1=A8)addD=
+ataSourceNode">1.1.3&nbsp;&nbsp; =E6=B7=BB=E5=8A=A0=E8=8A=82=E7=82=B9(=E6=
+=8C=87=E5=AE=9A=E6=95=B0=E6=8D=AE=E8=A1=A8)&nbsp;addDataSourceNode</a>=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.1=E5=8A=9F=E8=
+=83=BD=E8=AF=B4=E6=98=8E.2">1.1.2.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=
+=8E</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.2=E8=AF=B7=E6=
+=B1=82=E6=96=B9=E6=B3=95.2">1.1.2.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=
+=95</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.3=E8=AF=B7=E6=
+=B1=82=E5=8F=82=E6=95=B0.2">1.1.2.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=
+=B0</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.4=E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89.2">1.1.2.4&nbsp; =E8=BF=94=
+=E5=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.5=E8=AF=B7=E6=
+=B1=82=E5=AE=9E=E4=BE=8B.2">1.1.2.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.2.6=E8=BF=94=E5=
+=9B=9E=E5=AE=9E=E4=BE=8B.2">1.1.2.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+</ul> </li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.3.=E5=A4=8D=E5=88=
+=B6=E8=8A=82=E7=82=B9copyNode(=E6=9C=AA=E5=AE=9E=E7=8E=B0)">1.3.&nbsp; &nbs=
+p;=E5=A4=8D=E5=88=B6=E8=8A=82=E7=82=B9copyNode(=E6=9C=AA=E5=AE=9E=E7=8E=B0)=
+</a>=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3.1=E5=8A=9F=E8=
+=83=BD=E8=AF=B4=E6=98=8E">1.1.3.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=
+=8E</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3.2=E8=AF=B7=E6=
+=B1=82=E6=96=B9=E6=B3=95">1.1.3.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=
+=95</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3.3=E8=AF=B7=E6=
+=B1=82=E5=8F=82=E6=95=B0">1.1.3.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=
+=B0</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3.4=E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.3.4&nbsp; =E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3.5=E8=AF=B7=E6=
+=B1=82=E5=AE=9E=E4=BE=8B">1.1.3.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.3.6=E8=BF=94=E5=
+=9B=9E=E5=AE=9E=E4=BE=8B">1.1.3.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+</ul> </li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5=E6=89=B9=E9=
+=87=8F=E4=BF=AE=E6=94=B9=E8=8A=82=E7=82=B9=E4=BD=8D=E7=BD=AEupdateNodePosit=
+ions">1.1.5&nbsp;&nbsp; =E6=89=B9=E9=87=8F=E4=BF=AE=E6=94=B9=E8=8A=82=E7=82=
+=B9=E4=BD=8D=E7=BD=AEupdateNodePositions</a>=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5.1=E5=8A=9F=E8=
+=83=BD=E8=AF=B4=E6=98=8E">1.1.5.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=
+=8E</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5.2=E8=AF=B7=E6=
+=B1=82=E6=96=B9=E6=B3=95">1.1.5.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=
+=95</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5.3=E8=AF=B7=E6=
+=B1=82=E5=8F=82=E6=95=B0">1.1.5.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=
+=B0</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5.4=E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.5.4&nbsp; =E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5.5=E8=AF=B7=E6=
+=B1=82=E5=AE=9E=E4=BE=8B">1.1.5.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.5.6=E8=BF=94=E5=
+=9B=9E=E5=AE=9E=E4=BE=8B">1.1.5.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+</ul> </li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6=E6=89=B9=E9=
+=87=8F=E5=88=A0=E9=99=A4=E8=8A=82=E7=82=B9deleteNodes">1.1.6&nbsp;&nbsp; =
+=E6=89=B9=E9=87=8F=E5=88=A0=E9=99=A4=E8=8A=82=E7=82=B9deleteNodes</a>=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6.1=E5=8A=9F=E8=
+=83=BD=E8=AF=B4=E6=98=8E">1.1.6.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=
+=8E</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6.2=E8=AF=B7=E6=
+=B1=82=E6=96=B9=E6=B3=95">1.1.6.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=
+=95</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6.3=E8=AF=B7=E6=
+=B1=82=E5=8F=82=E6=95=B0">1.1.6.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=
+=B0</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6.4=E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.6.4&nbsp; =E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6.5=E8=AF=B7=E6=
+=B1=82=E5=AE=9E=E4=BE=8B">1.1.6.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.6.6=E8=BF=94=E5=
+=9B=9E=E5=AE=9E=E4=BE=8B">1.1.6.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+</ul> </li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7=E6=89=B9=E9=
+=87=8F=E6=92=A4=E9=94=80=E5=88=A0=E9=99=A4=E8=8A=82=E7=82=B9undodeleteNodes=
+(=E6=9C=AA=E5=AE=9E=E7=8E=B0)">1.1.7&nbsp; &nbsp;=E6=89=B9=E9=87=8F=E6=92=
+=A4=E9=94=80=E5=88=A0=E9=99=A4=E8=8A=82=E7=82=B9undodeleteNodes(=E6=9C=AA=
+=E5=AE=9E=E7=8E=B0)</a>=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7.1=E5=8A=9F=E8=
+=83=BD=E8=AF=B4=E6=98=8E">1.1.7.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=
+=8E</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7.2=E8=AF=B7=E6=
+=B1=82=E6=96=B9=E6=B3=95">1.1.7.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=
+=95</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7.3=E8=AF=B7=E6=
+=B1=82=E5=8F=82=E6=95=B0">1.1.7.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=
+=B0</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7.4=E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.7.4&nbsp; =E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7.5=E8=AF=B7=E6=
+=B1=82=E5=AE=9E=E4=BE=8B">1.1.7.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.7.6=E8=BF=94=E5=
+=9B=9E=E5=AE=9E=E4=BE=8B">1.1.7.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+</ul> </li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.12=E8=8A=82=E7=
+=82=B9=E9=87=8D=E5=91=BD=E5=90=8D">1.1.12&nbsp; &nbsp;=E8=8A=82=E7=82=B9=E9=
+=87=8D=E5=91=BD=E5=90=8D</a>=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.11.1=E5=8A=9F=
+=E8=83=BD=E8=AF=B4=E6=98=8E">1.1.11.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=
+=98=8E</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.11.2=E8=AF=B7=
+=E6=B1=82=E6=96=B9=E6=B3=95">1.1.11.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=
+=B3=95</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.11.3=E8=AF=B7=
+=E6=B1=82=E5=8F=82=E6=95=B0">1.1.11.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=
+=95=B0</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.11.4=E8=BF=94=
+=E5=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.11.4&nbsp; =E8=BF=94=
+=E5=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.11.5=E8=AF=B7=
+=E6=B1=82=E5=AE=9E=E4=BE=8B">1.1.11.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=
+=BE=8B</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E7=BC=96=E8=BE=91-1.1.11.6=E8=BF=94=
+=E5=9B=9E=E5=AE=9E=E4=BE=8B">1.1.11.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=
+=BE=8B</a></li>=20
+</ul> </li>=20
+</ul>=20
+</div>
+<p></p>
+</div>=20
+</div>=20
+</div>=20
+</div>
+    </div>
+</body>
+</html>
+------=_Part_5745_466151514.1552732309717--

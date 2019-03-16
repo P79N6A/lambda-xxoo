@@ -1,0 +1,747 @@
+Message-ID: <1114944457.5752.1552732321407.JavaMail.confluence1@localhost.localdomain>
+Subject: Exported From Confluence
+MIME-Version: 1.0
+Content-Type: multipart/related; 
+	boundary="----=_Part_5751_1932626978.1552732321406"
+
+------=_Part_5751_1932626978.1552732321406
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Content-Location: file:///C:/exported.html
+
+<html xmlns:o=3D'urn:schemas-microsoft-com:office:office'
+      xmlns:w=3D'urn:schemas-microsoft-com:office:word'
+      xmlns:v=3D'urn:schemas-microsoft-com:vml'
+      xmlns=3D'urn:w3-org-ns:HTML'>
+<head>
+    <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8=
+">
+    <title>=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:TargetScreenSize>1024x640</o:TargetScreenSize>
+            <o:PixelsPerInch>72</o:PixelsPerInch>
+            <o:AllowPNG/>
+        </o:OfficeDocumentSettings>
+        <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>90</w:Zoom>
+            <w:DoNotOptimizeForBrowser/>
+        </w:WordDocument>
+    </xml>
+    <![endif]-->
+    <style>
+                <!--
+        @page Section1 {
+            size: 8.5in 11.0in;
+            margin: 1.0in;
+            mso-header-margin: .5in;
+            mso-footer-margin: .5in;
+            mso-paper-source: 0;
+        }
+
+        table {
+            border: solid 1px;
+            border-collapse: collapse;
+        }
+
+        table td, table th {
+            border: solid 1px;
+            padding: 5px;
+        }
+
+        td {
+            page-break-inside: avoid;
+        }
+
+        tr {
+            page-break-after: avoid;
+        }
+
+        div.Section1 {
+            page: Section1;
+        }
+
+        /* Confluence print stylesheet. Common to all themes for print medi=
+a */
+/* Full of !important until we improve batching for print CSS */
+
+@media print {
+    #main {
+        padding-bottom: 1em !important; /* The default padding of 6em is to=
+o much for printouts */
+    }
+
+    body {
+        font-family: Arial, Helvetica, FreeSans, sans-serif;
+        font-size: 10pt;
+        line-height: 1.2;
+    }
+
+    body, #full-height-container, #main, #page, #content, .has-personal-sid=
+ebar #content {
+        background: #fff !important;
+        color: #000 !important;
+        border: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    a, a:link, a:visited, a:focus, a:hover, a:active {
+        color: #000;
+    }
+
+    #content h1,
+    #content h2,
+    #content h3,
+    #content h4,
+    #content h5,
+    #content h6 {
+        font-family: Arial, Helvetica, FreeSans, sans-serif;
+        page-break-after: avoid;
+    }
+
+    pre {
+        font-family: Monaco, "Courier New", monospace;
+    }
+
+    #header,
+    .aui-header-inner,
+    #navigation,
+    #sidebar,
+    .sidebar,
+    #personal-info-sidebar,
+    .ia-fixed-sidebar,
+    .page-actions,
+    .navmenu,
+    .ajs-menu-bar,
+    .noprint,
+    .inline-control-link,
+    .inline-control-link a,
+    a.show-labels-editor,
+    .global-comment-actions,
+    .comment-actions,
+    .quick-comment-container,
+    #addcomment {
+        display: none !important;
+    }
+
+    /* CONF-28544 cannot print multiple pages in IE */
+    #splitter-content {
+        position: relative !important;
+    }
+
+    .comment .date::before {
+        content: none !important; /* remove middot for print view */
+    }
+
+    h1.pagetitle img {
+        height: auto;
+        width: auto;
+    }
+
+    .print-only {
+        display: block;
+    }
+
+    #footer {
+        position: relative !important; /* CONF-17506 Place the footer at en=
+d of the content */
+        margin: 0;
+        padding: 0;
+        background: none;
+        clear: both;
+    }
+
+    #poweredby {
+        border-top: none;
+        background: none;
+    }
+
+    #poweredby li.print-only {
+        display: list-item;
+        font-style: italic;
+    }
+
+    #poweredby li.noprint {
+        display: none;
+    }
+
+    /* no width controls in print */
+    .wiki-content .table-wrap,
+    .wiki-content p,
+    .panel .codeContent,
+    .panel .codeContent pre,
+    .image-wrap {
+        overflow: visible !important;
+    }
+
+    /* TODO - should this work? */
+    #children-section,
+    #comments-section .comment,
+    #comments-section .comment .comment-body,
+    #comments-section .comment .comment-content,
+    #comments-section .comment p {
+        page-break-inside: avoid;
+    }
+
+    #page-children a {
+        text-decoration: none;
+    }
+
+    /**
+     hide twixies
+
+     the specificity here is a hack because print styles
+     are getting loaded before the base styles. */
+    #comments-section.pageSection .section-header,
+    #comments-section.pageSection .section-title,
+    #children-section.pageSection .section-header,
+    #children-section.pageSection .section-title,
+    .children-show-hide {
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    .children-show-hide.icon {
+        display: none;
+    }
+
+    /* personal sidebar */
+    .has-personal-sidebar #content {
+        margin-right: 0px;
+    }
+
+    .has-personal-sidebar #content .pageSection {
+        margin-right: 0px;
+    }
+
+    .no-print, .no-print * {
+        display: none !important;
+    }
+}
+-->
+    </style>
+</head>
+<body>
+    <h1>=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA</h1>
+    <div class=3D"Section1">
+        <div class=3D"contentLayout2">=20
+<div class=3D"columnLayout two-right-sidebar" data-layout=3D"two-right-side=
+bar">=20
+<div class=3D"cell normal" data-type=3D"normal">=20
+<div class=3D"innerCell">=20
+<h3 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.5=E6=9F=A5=E8=AF=A2=
+=E8=8A=82=E7=82=B9=E6=97=A5=E5=BF=97viewNodeLog">1.1.5&nbsp;&nbsp; =E6=9F=
+=A5=E8=AF=A2=E8=8A=82=E7=82=B9=E6=97=A5=E5=BF=97viewNodeLog</h3>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.5.1=E5=8A=9F=E8=83=BD=
+=E8=AF=B4=E6=98=8E">1.1.5.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=8E</h4>
+<p>=E6=9F=A5=E7=9C=8B=E8=8A=82=E7=82=B9=E6=9C=80=E6=96=B0=E7=9A=84=E8=BF=90=
+=E8=A1=8C=E6=97=A5=E5=BF=97=E3=80=82</p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.5.2=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E6=B3=95">1.1.5.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=95</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E5=BC=8F</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E8=B7=AF=E5=BE=84</strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center">GET/POST</p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><a href=3D"http://localhost:=
+8080/" class=3D"external-link" rel=3D"nofollow">http://localhost:8080/</a>e=
+xcution/queryNodeLog</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.3=E8=AF=B7=E6=B1=82=
+=E5=8F=82=E6=95=B0">1.1.4.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=B0</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"left"><span style=3D"color: rgb(84,8=
+4,84);">experimentId</span></p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E5=AE=9E=E9=AA=8CID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"left"><span style=3D"color: rgb(84,8=
+4,84);">nodeId</span></p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9ID</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.4=E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.4.4&nbsp; =E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">taskId</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">Number</td>
+<td colspan=3D"1" class=3D"confluenceTd">=E4=BB=BB=E5=8A=A1ID</td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p>allLogs</p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Array[String]</p></td>
+<td class=3D"confluenceTd"><p>=E6=AF=8F=E8=A1=8C=E6=97=A5=E5=BF=97=E7=9A=84=
+=E6=95=B0=E7=BB=84</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.5=E8=AF=B7=E6=B1=82=
+=E5=AE=9E=E4=BE=8B">1.1.4.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=8B</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p><a href=3D"http://localhost:8080/" class=3D"e=
+xternal-link" rel=3D"nofollow">http://localhost:8080/</a>excution/queryNode=
+Log</p><p>{</p><p>=E2=80=9C<span style=3D"color: rgb(84,84,84);">experiment=
+Id</span>=E2=80=9D:1001,</p><p>=E2=80=9C<span style=3D"color: rgb(84,84,84)=
+;">nodeInstanceId</span>=E2=80=9D:1010010</p><p>}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.6=E8=BF=94=E5=9B=9E=
+=E5=AE=9E=E4=BE=8B">1.1.4.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=8B</h4>
+<p>=E6=88=90=E5=8A=9F=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp; "success": &nbsp; true, &nbsp;</p><p>"data": &nbsp; {</p><p>=E2=
+=80=9CtaskId=E2=80=9D=EF=BC=9A123131=EF=BC=8C</p><p>"allLogs":=E2=80=9C</p>=
+<p>"2018-12-24 10:06:33 INFO Current task status:RUNNING",</p><p>&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "2018-12-24 &nbsp;=
+ 10:06:33 INFO Start execute shell on node &nbsp; oxs-base-biz-gateway01119=
+3082232.nu29.",</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp; "2018-12-24 &nbsp; 10:06:33 INFO Current working dir &nbsp; /=
+home/admin/alisatasknode/taskinfo/20181224/phoenix/10/06/31/phezxlqllsgm822=
+9hyzyq6j6",</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; "2018-12-24 &nbsp; 10:06:33 INFO Full Command .. ",</p><p>&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "2018-12-24 &nb=
+sp; 10:06:33 INFO -------------------------",</p><p>&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "2018-12-24 &nbsp; 10:06:33 INF=
+O /opt/taobao/tbdpapp/paiwrapper/paiservice.sh &nbsp; /home/admin/alisatask=
+node/taskinfo//20181224/phoenix/10/06/31/phezxlqllsgm8229hyzyq6j6//995009 &=
+nbsp; 1670123928897057 PROD 995009 &nbsp; <a href=3D"http://dms.cn-beijing.=
+data.aliyun-inc.com/" class=3D"external-link" rel=3D"nofollow">http://dms.c=
+n-beijing.data.aliyun-inc.com/</a>",</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "2018-12-24 &nbsp; 10:06:33 INFO -------=
+------------------",</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp; "2018-12-24 &nbsp; 10:06:33 INFO List of passing environ=
+ment ..",</p><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; "2018-12-24 &nbsp; 10:06:33 INFO -------------------------"=E2=80=
+=9D</p><p>&nbsp;&nbsp;&nbsp; &nbsp; }</p><p>}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>=E5=A4=B1=E8=B4=A5=E5=AE=9E=E4=BE=8B=EF=BC=9A</p>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p>{</p><p>"success": false,</p><p>"data":{},</p=
+><p>"errorCode": "error01",</p><p>"errorMsg": "=E6=9F=A5=E8=AF=A2=E5=A4=B1=
+=E8=B4=A5=EF=BC=81"</p><p>}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6=E8=8E=B7=E5=8F=96=
+=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA=E8=B5=84=E6=BA=90IDexploreNodeOutputRe=
+source">1.1.6&nbsp; &nbsp;=E8=8E=B7=E5=8F=96=E8=8A=82=E7=82=B9=E8=BE=93=E5=
+=87=BA=E8=B5=84=E6=BA=90ID&nbsp; exploreNodeOutputResource</h3>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6.1=E5=8A=9F=E8=83=BD=
+=E8=AF=B4=E6=98=8E">1.1.6.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=8E</h4>
+<p>=E6=9F=A5=E7=9C=8B=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA=E8=B5=84=E6=BA=90=
+=E3=80=82</p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6.2=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E6=B3=95">1.1.6.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=95</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E5=BC=8F</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E8=B7=AF=E5=BE=84</strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center">GET/POST</p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><a href=3D"http://localhost:=
+8080/" class=3D"external-link" rel=3D"nofollow">http://localhost:8080/</a>e=
+xcution/</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6.3=E8=AF=B7=E6=B1=82=
+=E5=8F=82=E6=95=B0">1.1.6.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=B0</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"left"><span style=3D"color: rgb(84,8=
+4,84);">experimentId</span></p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E5=AE=9E=E9=AA=8CID</p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"left"><span style=3D"color: rgb(84,8=
+4,84);">nodeId</span></p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9ID</p></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">sequence</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">Number</td>
+<td colspan=3D"1" class=3D"confluenceTd">=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=
+=BA=E7=AB=AF=E5=8F=A3=E5=BA=8F=E5=8F=B7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.4=E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89.1">1.1.4.4&nbsp; =E8=BF=94=E5=9B=
+=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</h4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col style=3D"width: 71.0px;">
+<col style=3D"width: 77.0px;">
+<col style=3D"width: 99.0px;">
+<col style=3D"width: 119.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">resourceId</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">Number</td>
+<td colspan=3D"1" class=3D"confluenceTd">=E8=B5=84=E6=BA=90ID</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.5=E8=AF=B7=E6=B1=82=
+=E5=AE=9E=E4=BE=8B.1">1.1.4.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=8B</h=
+4>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.6=E8=BF=94=E5=9B=9E=
+=E5=AE=9E=E4=BE=8B.1"><br>1.1.4.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=
+=8B</h4>
+<h3 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.7=E6=9F=A5=E7=9C=8B=
+=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA=E6=8A=A5=E5=91=8AviewNodeOutputReport"=
+>1.1.7&nbsp; =E6=9F=A5=E7=9C=8B=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA=E6=8A=
+=A5=E5=91=8A &nbsp;viewNodeOutputReport</h3>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6.1=E5=8A=9F=E8=83=BD=
+=E8=AF=B4=E6=98=8E.1">1.1.6.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=8E</h=
+4>
+<p>=E6=9F=A5=E7=9C=8B=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA=E6=8A=A5=E5=91=8A=
+=E8=B5=84=E6=BA=90=E3=80=82</p>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6.2=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E6=B3=95.1">1.1.6.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=95</h=
+4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E6=96=B9=E5=BC=8F</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B7=E6=B1=82=
+=E8=B7=AF=E5=BE=84</strong></p></td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center">GET/POST</p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><a href=3D"http://localhost:=
+8080/" class=3D"external-link" rel=3D"nofollow">http://localhost:8080/</a>e=
+xcution/</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6.3=E8=AF=B7=E6=B1=82=
+=E5=8F=82=E6=95=B0.1">1.1.6.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=B0</h=
+4>
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">projectId</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">Number</td>
+<td colspan=3D"1" class=3D"confluenceTd">=E9=A1=B9=E7=9B=AEID</td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">experimentId</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">Number</td>
+<td colspan=3D"1" class=3D"confluenceTd">=E5=AE=9E=E9=AA=8CID</td>
+</tr>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"left"><span style=3D"color: rgb(84,8=
+4,84);">nodeId</span></p></td>
+<td class=3D"confluenceTd"><p align=3D"center">M</p></td>
+<td class=3D"confluenceTd"><p align=3D"left">Number</p></td>
+<td class=3D"confluenceTd"><p>=E8=8A=82=E7=82=B9ID</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.4=E8=BF=94=E5=9B=9E=
+=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89.2">1.1.4.4&nbsp; =E8=BF=94=E5=9B=
+=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</h4>
+<div class=3D"table-wrap">
+<table class=3D"relative-table confluenceTable" style=3D"width: 404.8px;">
+<colgroup>
+<col style=3D"width: 0.0px;">
+<col style=3D"width: 0.0px;">
+<col style=3D"width: 0.0px;">
+<col style=3D"width: 0.0px;">
+</colgroup>
+<tbody>
+<tr>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E5=8F=82=E6=95=B0</=
+strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=98=AF=E5=90=A6=
+=E5=BF=85=E5=A1=AB</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E6=95=B0=E6=8D=AE=
+=E7=B1=BB=E5=9E=8B</strong></p></td>
+<td class=3D"confluenceTd"><p align=3D"center"><strong>=E8=AF=B4=E6=98=8E</=
+strong></p></td>
+</tr>
+<tr>
+<td colspan=3D"1" class=3D"confluenceTd">-</td>
+<td style=3D"text-align: center;" colspan=3D"1" class=3D"confluenceTd">M</t=
+d>
+<td colspan=3D"1" class=3D"confluenceTd">JSON</td>
+<td colspan=3D"1" class=3D"confluenceTd">=E6=8A=A5=E5=91=8A=E6=95=B0=E6=8D=
+=AE</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.5=E8=AF=B7=E6=B1=82=
+=E5=AE=9E=E4=BE=8B.2">1.1.4.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=8B</h=
+4>
+<h4 id=3D"id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.6=E8=BF=94=E5=9B=9E=
+=E5=AE=9E=E4=BE=8B.2"><br>1.1.4.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=
+=8B</h4>
+</div>=20
+</div>=20
+<div class=3D"cell aside" data-type=3D"aside">=20
+<div class=3D"innerCell">=20
+<p><style type=3D"text/css">/*<![CDATA[*/
+div.rbtoc1552732321375 {padding: 0px;}
+div.rbtoc1552732321375 ul {list-style: disc;margin-left: 0px;}
+div.rbtoc1552732321375 li {margin-left: 0px;padding-left: 0px;}
+
+/*]]>*/</style></p>
+<div class=3D"toc-macro rbtoc1552732321375">=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.5=E6=9F=A5=E8=
+=AF=A2=E8=8A=82=E7=82=B9=E6=97=A5=E5=BF=97viewNodeLog">1.1.5&nbsp;&nbsp; =
+=E6=9F=A5=E8=AF=A2=E8=8A=82=E7=82=B9=E6=97=A5=E5=BF=97viewNodeLog</a>=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.5.1=E5=8A=9F=E8=
+=83=BD=E8=AF=B4=E6=98=8E">1.1.5.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=
+=8E</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.5.2=E8=AF=B7=E6=
+=B1=82=E6=96=B9=E6=B3=95">1.1.5.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=
+=95</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.3=E8=AF=B7=E6=
+=B1=82=E5=8F=82=E6=95=B0">1.1.4.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=
+=B0</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.4=E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89">1.1.4.4&nbsp; =E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.5=E8=AF=B7=E6=
+=B1=82=E5=AE=9E=E4=BE=8B">1.1.4.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.6=E8=BF=94=E5=
+=9B=9E=E5=AE=9E=E4=BE=8B">1.1.4.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+</ul> </li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6=E8=8E=B7=E5=
+=8F=96=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA=E8=B5=84=E6=BA=90IDexploreNodeOu=
+tputResource">1.1.6&nbsp; &nbsp;=E8=8E=B7=E5=8F=96=E8=8A=82=E7=82=B9=E8=BE=
+=93=E5=87=BA=E8=B5=84=E6=BA=90ID&nbsp; exploreNodeOutputResource</a>=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6.1=E5=8A=9F=E8=
+=83=BD=E8=AF=B4=E6=98=8E">1.1.6.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=
+=8E</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6.2=E8=AF=B7=E6=
+=B1=82=E6=96=B9=E6=B3=95">1.1.6.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=
+=95</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6.3=E8=AF=B7=E6=
+=B1=82=E5=8F=82=E6=95=B0">1.1.6.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=
+=B0</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.4=E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89.1">1.1.4.4&nbsp; =E8=BF=94=
+=E5=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.5=E8=AF=B7=E6=
+=B1=82=E5=AE=9E=E4=BE=8B.1">1.1.4.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.6=E8=BF=94=E5=
+=9B=9E=E5=AE=9E=E4=BE=8B.1">1.1.4.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+</ul> </li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.7=E6=9F=A5=E7=
+=9C=8B=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA=E6=8A=A5=E5=91=8AviewNodeOutputR=
+eport">1.1.7&nbsp; =E6=9F=A5=E7=9C=8B=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA=
+=E6=8A=A5=E5=91=8A &nbsp;viewNodeOutputReport</a>=20
+<ul class=3D"toc-indentation">=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6.1=E5=8A=9F=E8=
+=83=BD=E8=AF=B4=E6=98=8E.1">1.1.6.1&nbsp; =E5=8A=9F=E8=83=BD=E8=AF=B4=E6=98=
+=8E</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6.2=E8=AF=B7=E6=
+=B1=82=E6=96=B9=E6=B3=95.1">1.1.6.2&nbsp; =E8=AF=B7=E6=B1=82=E6=96=B9=E6=B3=
+=95</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.6.3=E8=AF=B7=E6=
+=B1=82=E5=8F=82=E6=95=B0.1">1.1.6.3&nbsp; =E8=AF=B7=E6=B1=82=E5=8F=82=E6=95=
+=B0</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.4=E8=BF=94=E5=
+=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89.2">1.1.4.4&nbsp; =E8=BF=94=
+=E5=9B=9E=E6=95=B0=E6=8D=AE=EF=BC=88JSON=EF=BC=89</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.5=E8=AF=B7=E6=
+=B1=82=E5=AE=9E=E4=BE=8B.2">1.1.4.5&nbsp; =E8=AF=B7=E6=B1=82=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+<li><a href=3D"#id-=E8=8A=82=E7=82=B9=E8=BE=93=E5=87=BA-1.1.4.6=E8=BF=94=E5=
+=9B=9E=E5=AE=9E=E4=BE=8B.2">1.1.4.6&nbsp; =E8=BF=94=E5=9B=9E=E5=AE=9E=E4=BE=
+=8B</a></li>=20
+</ul> </li>=20
+</ul>=20
+</div>
+<p></p>
+</div>=20
+</div>=20
+</div>=20
+</div>
+    </div>
+</body>
+</html>
+------=_Part_5751_1932626978.1552732321406--
